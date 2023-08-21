@@ -1,6 +1,27 @@
 import '@/styles/globals.css'
 import Head from 'next/head'
 import Script from 'next/script'
+import { ThemeProvider, createTheme } from '@mui/material/styles';
+import MontserratRegular from '../../public/fonts/montserrat.ttf';
+
+const mainTheme = createTheme({
+  palette: {
+    primary: {
+      main: '#009fda',
+    },
+    secondary: {
+      main: '#e5e5e5'
+    },
+    neutral: {
+      main: '#ffffff',
+      contrastText: '#ffffff',
+    },
+  },
+  typography: {
+    fontFamily: [MontserratRegular, 'Arial', 'sans-serif',
+    ].join(','),
+  },
+});
 
 export default function App({ Component, pageProps }) {
   return (
@@ -12,7 +33,9 @@ export default function App({ Component, pageProps }) {
         <link rel="icon" href="/favicon.ico" />
         <Script src="https://js.stripe.com/v3/" async></Script>
       </Head>
-      <Component {...pageProps} />
+      <ThemeProvider theme={mainTheme}>
+        <Component {...pageProps} />
+      </ThemeProvider>
     </div>
   )
 }
