@@ -2,7 +2,7 @@
     position: relative;
     display: flex;
 
-    height: 9%;
+    height: 5rem;
     width: 100%;
 
     background-color: var(--navbar-color);
@@ -12,6 +12,8 @@
     padding-left: 1rem;
     padding-right: 1rem;
     --text-color: var(--text-white);
+    padding-top: 1.2rem;
+    padding-bottom: 1.2rem;
 }
 
 #bodyContainer {
@@ -23,11 +25,12 @@
 }
 
 #leftSide {
+    width: 20%;
+    height: 100%;
+    
     display: flex;
     flex-direction: row;
     align-items: center;
-    width: 20%;
-    height: 100%;
     margin-left: 1rem;
 }
 
@@ -40,37 +43,38 @@
 }
 
 #middle {
+    width: 60%;
+    height: 100%;
+
     display: flex;
     align-items: center;
     justify-content: center;
-
-    width: 60%;
 }
 
 #rightSide {
+    width: 20%;
+    height: 100%;
+
     display: flex;
     align-items: center;
-    justify-content: flex-end;
+    justify-content: flex-start;
 
-    width: 20%;
-    gap: 1rem;
-    margin-right: 1rem;
+    gap: 2rem;
+    padding-left: 2rem;
 }
 
-#rightSideLogin {
+.rightSideLogin {
     display: flex;
     flex-direction: row;
     justify-content: center;
     align-items: center;
 
+    height: 100%;
     gap: 0.5rem;
 }
 
 .darkModeButton {
     position: relative;
-    animation: fade;
-    animation-duration: 2s;
-    animation-timing-function: ease-in-out;
     width: 75px;
     height: 75px;
     z-index: 10;
@@ -167,67 +171,8 @@
 /* Enable hover only on non-touch devices */
 @media (hover: hover) and (pointer: fine) {}
 
-/* Mobile, Tablet and Smaller Desktop*/
-@media (max-width: 1120px) {
-    #nav_menu_bar {
-        height: 35px;
-        width: 50px;
-        display: flex;
-        align-items: center;
-        flex-direction: column;
-        cursor: pointer;
-        position: relative;
-        -webkit-tap-highlight-color: transparent;
-    }
-
-    #rightSide {
-        width: 50%;
-    }
-
-    .nav_menu_list {
-        flex-direction: column;
-        width: 150px;
-        height: 91%;
-        background-color: var(--body-background-color);
-        border-left: solid var(--global-white);
-        row-gap: 24px;
-        right: -288px;
-        padding: 24px 16px;
-
-        box-shadow: -10px 0px 27px -20px black;
-
-        position: fixed;
-        top: 9%;
-    }
-
-    #middle {
-        width: 0%;
-    }
-
-    .navOption {
-        font-size: 15px;
-        color: var(--text-white)
-    }
-}
-
 /* Mobile */
-@media (max-width: 700px) {
-    /* #rightSideLogin {
-        display: flex;
-        flex-direction: column;
-        gap: 0.5rem;
-    } */
-}
+@media (max-width: 700px) {}
 
 /* Tablet and Smaller Desktop */
 @media (min-width: 701px) and (max-width: 1120px) {}
-
-@keyframes fade {
-    0% {
-        opacity: 0;
-    }
-
-    100% {
-        opacity: 1;
-    }
-}

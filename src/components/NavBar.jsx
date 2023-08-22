@@ -8,6 +8,9 @@ import { MenuToggle } from './MenuToggle';
 import { useCycle } from 'framer-motion';
 import { motion } from "framer-motion"
 import Logo from './Logo';
+import SearchBar from './SearchBar';
+import PersonOutlineOutlinedIcon from '@mui/icons-material/PersonOutlineOutlined';
+import ShoppingCartOutlinedIcon from '@mui/icons-material/ShoppingCartOutlined';
 
 const MENU_LIST = [
     { name: 'Lobby', href: '/lobby' },
@@ -49,46 +52,25 @@ export default function NavBar(props) {
                         <a>
                             {windowWidth > 450
                                 ? <Logo height='70%' hover />
-                                : <img src='logos/QT-logo.png' alt='Quiz-Time-Logo' style={{ height: '70%' }} />
+                                : <img src='logos/logo-black.png' alt='logo' style={{ height: '70%' }} />
                             }
                         </a>
                     </Link>
                 </div>
                 <div id={styles.middle}>
-                    <div className={`${navActive ? styles.active : undefined} ${styles.nav_menu_list}`}>
-                        {MENU_LIST.map((option, i) =>
-                            <div onClick={() => { setNavActive(false) }}
-                                key={option.name}>
-                                <Link legacyBehavior href={option.href}>
-                                    <a>
-                                        <h1
-                                            className={styles.navOption}
-                                            id={option.href === pathname ? styles.currentPage : undefined}
-                                        >
-                                            {option.name}
-                                        </h1>
-                                    </a>
-                                </Link>
-                            </div>
-                        )}
-                    </div>
+                    <SearchBar />
                 </div>
                 <div id={styles.rightSide}>
-                    {session &&
-                        <div id={styles.rightSideLogin}>
-                            <AvatarMenu session={session} signOut={signOut} />
-                        </div>
-                    }
-                    {!session &&
-                        <div>
-                            <Button variant="outlined" id={styles.loginButton} onClick={() => signIn()}>Login</Button>
-                        </div>
-                    }
-                    <div onClick={() => setNavActive(!navActive)} id={styles.nav_menu_bar}>
-                        <div className={`${navActive ? styles.active2 : styles.disactive} ${styles.navButton}`}></div>
-                        <div className={`${navActive ? styles.active : styles.disactive2} ${styles.navButton}`}></div>
-                        <div className={`${navActive ? styles.active2 : styles.disactive3} ${styles.navButton}`}></div>
-                    </div>
+                    <PersonOutlineOutlinedIcon
+                        sx={{
+                            scale: '1.9'
+                        }}
+                    />
+                    <ShoppingCartOutlinedIcon
+                        sx={{
+                            scale: '1.6'
+                        }}
+                    />
                 </div>
             </motion.div>
         </div>

@@ -4,8 +4,8 @@
 }
 
 :root {
-  --primary: #009fda;
-  --navbar-color: rgb(0, 92, 54);
+  --primary: #00acb7;
+  --navbar-color: #00acb7;
   --text-black: #0a0a0a;
   --text-white: #e5e5e5;
   --text-color: var(--text-black);
@@ -57,10 +57,6 @@ div {
   font-family: 'montserrat';
   text-align: center;
   --toastify-text-color-dark: var(--global-white);
-}
-
-input {
-  text-align: center;
 }
 
 button {

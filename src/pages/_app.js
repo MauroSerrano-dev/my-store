@@ -6,10 +6,12 @@ import MontserratRegular from '../../public/fonts/montserrat.ttf';
 import { SessionProvider } from 'next-auth/react'
 import DataHandler from '@/components/DataHandler'
 
+const primaryColor = '#00acb7'
+
 const mainTheme = createTheme({
   palette: {
     primary: {
-      main: '#009fda',
+      main: primaryColor,
     },
     secondary: {
       main: '#e5e5e5'
@@ -48,7 +50,7 @@ export default function App(props) {
       </Head>
       <ThemeProvider theme={mainTheme}>
         <SessionProvider>
-          <DataHandler pageProps={pageProps} Component={Component} />
+          <DataHandler pageProps={pageProps} Component={Component} primaryColor={primaryColor} />
         </SessionProvider>
       </ThemeProvider>
     </div>

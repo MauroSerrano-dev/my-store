@@ -47,7 +47,7 @@ export default function Home() {
 
 
   return (
-    <div>
+    <div className={styles.container}>
       <header>
       </header>
       <main className={`${styles.main} ${inter.className}`}>

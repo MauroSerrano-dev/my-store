@@ -4,7 +4,7 @@ import styles from '../styles/components/DataHandler.module.css'
 import { useEffect, useState } from "react"
 
 export default function DataHandler(props) {
-    const { Component, pageProps } = props
+    const { Component, pageProps, primaryColor } = props
     const { data: session } = useSession()
     const [loading, setLoading] = useState(true)
     const [windowWidth, setWindowWidth] = useState(0);
@@ -45,14 +45,7 @@ export default function DataHandler(props) {
             {showNavBar &&
                 <NavBar session={session} signIn={signIn} signOut={signOut} />
             }
-            <div
-                id={styles.componentContainer}
-                style={{
-                    height: showNavBar
-                        ? '91%'
-                        : '100%'
-                }}
-            >
+            <div id={styles.componentContainer}>
                 <Component{...pageProps} session={session} signIn={signIn} setShowNavBar={setShowNavBar} />
             </div>
         </div >
