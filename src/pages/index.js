@@ -3,6 +3,8 @@ import { Inter } from 'next/font/google'
 import styles from '@/styles/Home.module.css'
 import Carousel from '@/components/Carousel'
 import { useState } from 'react'
+import Inventory2OutlinedIcon from '@mui/icons-material/Inventory2Outlined';
+import LocalShippingOutlinedIcon from '@mui/icons-material/LocalShippingOutlined';
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -51,13 +53,49 @@ export default function Home() {
       <header>
       </header>
       <main className={`${styles.main} ${inter.className}`}>
-        <Carousel
-          items={categories}
-          height='150px'
-          width='90%'
-          animationDuration={200}
-          itemWidth={205}
-        />
+        <div className={styles.categoriesContainer}>
+          <p>T-SHIRTS</p>
+          <p>HOODIES</p>
+          <p>MUGS</p>
+          <p>BAGS</p>
+          <p>ACCESSORIES</p>
+          <p>KITCHEN</p>
+          <p>PILLOWS</p>
+          <p>SHOES</p>
+          <p>SOCKS</p>
+        </div>
+        <div className={styles.banner}>
+          <img
+            src='/banner-mock.webp'
+          />
+        </div>
+        <div className={styles.infos}>
+          <div className={styles.infosItem}>
+            <LocalShippingOutlinedIcon
+              sx={{
+                scale: '1.3'
+              }}
+            />
+            <p>Fast Shipping</p>
+          </div>
+          <div className={styles.infosItem}>
+            <Inventory2OutlinedIcon
+              sx={{
+                scale: '1.3'
+              }}
+            />
+            <p>Free Shipping</p>
+          </div>
+        </div>
+        <div className={styles.carousel}>
+          <Carousel
+            items={categories}
+            height='150px'
+            width='90%'
+            animationDuration={200}
+            itemWidth={205}
+          />
+        </div>
       </main>
       <footer>
       </footer>

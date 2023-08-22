@@ -5,7 +5,7 @@ import $ from 'jquery'
 export default function Logo(props) {
 
     const {
-        fill = '#00C3FF',
+        fill = '#ffffff',
         width,
         height,
         style,

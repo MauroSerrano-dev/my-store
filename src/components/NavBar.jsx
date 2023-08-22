@@ -24,20 +24,7 @@ export default function NavBar(props) {
     const [navActive, setNavActive] = useState(false)
     const { pathname } = useRouter()
     const [isOpen, toggleOpen] = useCycle(false, true);
-    const [windowWidth, setWindowWidth] = useState(0);
     const [cartItemsCounter, setCartItemsCounter] = useState(0);
-
-    useEffect(() => {
-        const handleResize = () => {
-            setWindowWidth(window.innerWidth);
-        }
-
-        window.addEventListener('resize', handleResize)
-
-        return () => {
-            window.removeEventListener('resize', handleResize)
-        }
-    }, [])
 
     return (
         <div id={styles.container}>
@@ -51,10 +38,7 @@ export default function NavBar(props) {
                     {/* <MenuToggle toggle={() => toggleOpen()} /> */}
                     <Link legacyBehavior href={'/'}>
                         <a>
-                            {windowWidth > 450
-                                ? <Logo height='70%' hover />
-                                : <img src='logos/logo-black.png' alt='logo' style={{ height: '70%' }} />
-                            }
+                            <Logo height='70%' hover />
                         </a>
                     </Link>
                 </div>
