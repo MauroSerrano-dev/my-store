@@ -5,6 +5,7 @@ import { ThemeProvider, createTheme } from '@mui/material/styles';
 import MontserratRegular from '../../public/fonts/montserrat.ttf';
 import { SessionProvider } from 'next-auth/react'
 import DataHandler from '@/components/DataHandler'
+import { Analytics } from '@vercel/analytics/react';
 
 const primaryColor = '#00acb7'
 
@@ -53,6 +54,7 @@ export default function App(props) {
           <DataHandler pageProps={pageProps} Component={Component} primaryColor={primaryColor} />
         </SessionProvider>
       </ThemeProvider>
+      <Analytics />
     </div>
   )
 }
