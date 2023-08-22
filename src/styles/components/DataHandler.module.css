@@ -1,0 +1,10 @@
+#componentContainer {
+    position: relative;
+
+    overflow-y: auto;
+    overflow-x: hidden;
+    transition: margin-top 650ms ease-in-out;
+}
+
+/* Mobile, Tablet and Smaller Desktop*/
+@media (max-width: 1120px) {}

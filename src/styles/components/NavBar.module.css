@@ -1,0 +1,233 @@
+#container {
+    position: relative;
+    display: flex;
+
+    height: 9%;
+    width: 100%;
+
+    background-color: var(--navbar-color);
+    transition: all 650ms ease-in-out;
+    z-index: 1;
+    border-bottom: solid var(--global-white);
+    padding-left: 1rem;
+    padding-right: 1rem;
+    --text-color: var(--text-white);
+}
+
+#bodyContainer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+}
+
+#leftSide {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    width: 20%;
+    height: 100%;
+    margin-left: 1rem;
+}
+
+#leftSide a {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    height: 100%;
+    gap: 0.5rem;
+}
+
+#middle {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 60%;
+}
+
+#rightSide {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+
+    width: 20%;
+    gap: 1rem;
+    margin-right: 1rem;
+}
+
+#rightSideLogin {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+
+    gap: 0.5rem;
+}
+
+.darkModeButton {
+    position: relative;
+    animation: fade;
+    animation-duration: 2s;
+    animation-timing-function: ease-in-out;
+    width: 75px;
+    height: 75px;
+    z-index: 10;
+    transition: all 300ms ease-in-out;
+}
+
+#nav_menu_bar {
+    display: none;
+}
+
+.nav_menu_list {
+    display: flex;
+    transition: right 650ms ease-in-out;
+    background-color: transparent;
+    position: unset;
+    flex-direction: row;
+    min-height: fit-content;
+    width: fit-content;
+    column-gap: 24px;
+    align-items: center;
+}
+
+.nav_menu_list.active {
+    right: 0;
+}
+
+.navButton.disactive {
+    top: 8px;
+}
+
+.navButton.disactive2 {
+    top: 16px;
+}
+
+.navButton.disactive3 {
+    top: 24px;
+}
+
+.navButton {
+    width: 40px;
+    height: 4px;
+    background-color: var(--global-white);
+    border-radius: 2px;
+    transform: rotate(0deg);
+    transition: all 0.2s;
+    position: absolute;
+}
+
+.navButton.active {
+    position: absolute;
+    transform: rotate(45deg);
+    transition: all 0.2s;
+    top: 16px;
+}
+
+.navButton.active2 {
+    position: absolute;
+    transform: rotate(-45deg);
+    transition: all 0.2s;
+    top: 16px;
+}
+
+.navOption {
+    transition: all 200ms ease-in-out;
+    font-size: 20px;
+    cursor: pointer;
+    font-weight: normal;
+    padding: 3px 0px;
+    border-bottom-color: transparent;
+    border-bottom-width: 2px;
+    border-bottom-style: solid;
+}
+
+.navOption:hover {
+    font-weight: bold;
+    border-bottom-color: currentColor;
+}
+
+#currentPage {
+    border-bottom: 2px solid currentColor;
+    transition: all 200ms ease-in-out;
+}
+
+#title {
+    font-size: 28px;
+    transition: all 200ms ease-in-out;
+}
+
+#loginButton {
+    height: 25px;
+    width: 110px;
+}
+
+/* Enable hover only on non-touch devices */
+@media (hover: hover) and (pointer: fine) {}
+
+/* Mobile, Tablet and Smaller Desktop*/
+@media (max-width: 1120px) {
+    #nav_menu_bar {
+        height: 35px;
+        width: 50px;
+        display: flex;
+        align-items: center;
+        flex-direction: column;
+        cursor: pointer;
+        position: relative;
+        -webkit-tap-highlight-color: transparent;
+    }
+
+    #rightSide {
+        width: 50%;
+    }
+
+    .nav_menu_list {
+        flex-direction: column;
+        width: 150px;
+        height: 91%;
+        background-color: var(--body-background-color);
+        border-left: solid var(--global-white);
+        row-gap: 24px;
+        right: -288px;
+        padding: 24px 16px;
+
+        box-shadow: -10px 0px 27px -20px black;
+
+        position: fixed;
+        top: 9%;
+    }
+
+    #middle {
+        width: 0%;
+    }
+
+    .navOption {
+        font-size: 15px;
+        color: var(--text-white)
+    }
+}
+
+/* Mobile */
+@media (max-width: 700px) {
+    /* #rightSideLogin {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+    } */
+}
+
+/* Tablet and Smaller Desktop */
+@media (min-width: 701px) and (max-width: 1120px) {}
+
+@keyframes fade {
+    0% {
+        opacity: 0;
+    }
+
+    100% {
+        opacity: 1;
+    }
+}
