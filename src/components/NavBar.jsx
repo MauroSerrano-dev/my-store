@@ -25,6 +25,7 @@ export default function NavBar(props) {
     const { pathname } = useRouter()
     const [isOpen, toggleOpen] = useCycle(false, true);
     const [windowWidth, setWindowWidth] = useState(0);
+    const [cartItemsCounter, setCartItemsCounter] = useState(0);
 
     useEffect(() => {
         const handleResize = () => {
@@ -62,15 +63,26 @@ export default function NavBar(props) {
                 </div>
                 <div id={styles.rightSide}>
                     <PersonOutlineOutlinedIcon
+                        className={styles.userIcon}
                         sx={{
                             scale: '1.9'
                         }}
                     />
-                    <ShoppingCartOutlinedIcon
-                        sx={{
-                            scale: '1.6'
-                        }}
-                    />
+                    <div className={styles.cartContainer}>
+                        <ShoppingCartOutlinedIcon
+                            sx={{
+                                scale: '1.5',
+                            }}
+                        />
+                        <div
+                            className={styles.cartCounter}
+                            style={{
+                                fontSize: cartItemsCounter > 99 ? '65%' : '80%'
+                            }}
+                        >
+                            {cartItemsCounter > 99 ? '99+' : cartItemsCounter}
+                        </div>
+                    </div>
                 </div>
             </motion.div>
         </div>
