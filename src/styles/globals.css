@@ -64,11 +64,14 @@ button {
   font-family: 'montserrat';
   text-align: center;
   cursor: pointer;
+  color: var(--text-color);
 }
 
 textarea,
 input,
-label {
+label,
+div,
+span {
   font-family: 'montserrat';
   color: var(--text-color);
 }

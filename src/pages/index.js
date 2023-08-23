@@ -94,6 +94,17 @@ export default function Home() {
             width='90%'
             animationDuration={200}
             itemWidth={205}
+            type='imgs'
+          />
+        </div>
+        <div className={styles.carousel}>
+          <Carousel
+            items={categories}
+            height='400px'
+            width='90%'
+            animationDuration={200}
+            itemWidth={230}
+            type='products'
           />
         </div>
       </main>

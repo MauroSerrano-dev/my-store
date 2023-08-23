@@ -1,0 +1,96 @@
+.container {
+    display: flex;
+    flex-direction: column;
+    position: relative;
+}
+
+.imgContainer {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 100%;
+    height: 70%;
+
+    overflow: hidden;
+    border-top-left-radius: 0.5rem;
+    border-top-right-radius: 0.5rem;
+}
+
+.imgHoverContainer {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 100%;
+    height: 70%;
+    position: absolute;
+
+    overflow: hidden;
+    border-top-left-radius: 0.5rem;
+    border-top-right-radius: 0.5rem;
+
+    transition: all ease-in-out 200ms;
+}
+
+.img {
+    height: 100%;
+}
+
+.infos {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+
+    background-color: #3b3a38;
+    width: 100%;
+    height: 30%;
+    padding: 5% 10%;
+
+    border-bottom-left-radius: 0.5rem;
+    border-bottom-right-radius: 0.5rem;
+    
+    z-index: 1;
+}
+
+.name {
+    color: var(--text-white);
+}
+
+.oldPrice {
+    color: grey;
+    text-decoration: line-through;
+    font-size: 14px;
+}
+
+.price {
+    color: var(--primary);
+    font-weight: bold;
+    font-size: 20px;
+}
+
+.buttonMore {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    position: absolute;
+    width: 100%;
+    height: 15%;
+    bottom: 0;
+    background-color: #3b3a38;
+
+    border-bottom-left-radius: 0.7rem;
+    border-bottom-right-radius: 0.7rem;
+
+    transition: all ease-in-out 200ms;
+}
+
+
+/* Enable hover only on non-touch devices */
+@media (hover: hover) and (pointer: fine) {
+    .container:hover {
+        cursor: pointer;
+    }
+}

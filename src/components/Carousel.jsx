@@ -4,6 +4,7 @@ import Image from 'next/image'
 import KeyboardArrowRightRoundedIcon from '@mui/icons-material/KeyboardArrowRightRounded';
 import KeyboardArrowLeftRoundedIcon from '@mui/icons-material/KeyboardArrowLeftRounded';
 import { useEffect, useState } from 'react';
+import Product from './Product';
 
 export default function Carousel(props) {
     const {
@@ -13,7 +14,8 @@ export default function Carousel(props) {
         loop,
         animationDuration = 200,
         itemWidth = 200,
-        gap = 20
+        gap = 20,
+        type = 'imgs'
     } = props
 
     const [itemsArray, setItemsArray] = useState(items.concat(items).concat(items).map((item, i) => ({ ...item, position: i - items.length })))
@@ -58,27 +60,53 @@ export default function Carousel(props) {
             <div
                 className={styles.itemsContainer}
             >
+
                 {itemsArray.map((item, i) =>
-                    <div
-                        className={styles.item}
-                        key={i}
-                        style={{
-                            left: `${(item.position) * (itemWidth + gap)}px`,
-                            width: `${itemWidth}px`,
-                            transition: item.position < items.length / 2 * (-1) || item.position > items.length * 1.5
-                                ? `all ${loop
-                                    ? 'linear'
-                                    : 'ease-in-out'} 0ms`
-                                : `all ${loop
-                                    ? 'linear'
-                                    : 'ease-in-out'} ${animationDuration}ms`
-                        }}
-                    >
-                        <img
-                            className={styles.itemImg}
-                            src={item.img}
-                        />
-                    </div>
+                    type === 'imgs'
+                        ? <div
+                            className={styles.item}
+                            key={i}
+                            style={{
+                                left: `${(item.position) * (itemWidth + gap)}px`,
+                                width: `${itemWidth}px`,
+                                transition: item.position < items.length / 2 * (-1) || item.position > items.length * 1.5
+                                    ? `all ${loop
+                                        ? 'linear'
+                                        : 'ease-in-out'} 0ms`
+                                    : `all ${loop
+                                        ? 'linear'
+                                        : 'ease-in-out'} ${animationDuration}ms`
+                            }}
+                        >
+                            <img
+                                className={styles.itemImg}
+                                src={item.img}
+                            />
+                        </div>
+                        : <div
+                            className={styles.product}
+                            key={i}
+                            style={{
+                                left: `${(item.position) * (itemWidth + gap)}px`,
+                                width: `${itemWidth}px`,
+                                transition: item.position < items.length / 2 * (-1) || item.position > items.length * 1.5
+                                    ? `all ${loop
+                                        ? 'linear'
+                                        : 'ease-in-out'} 0ms`
+                                    : `all ${loop
+                                        ? 'linear'
+                                        : 'ease-in-out'} ${animationDuration}ms`
+                            }}
+                        >
+                            <Product
+                                responsive
+                                name='Jett T-Shirt'
+                                price='$13.90'
+                                oldPrice='$20.90'
+                                img='https://images.printify.com/mockup/64df65c1a996f39335017a6c/12100/92573?s=608&t=1692362639000'
+                                imgHover='https://images.printify.com/mockup/64df65c1a996f39335017a6c/12100/92662?s=608&t=1692362639000'
+                            />
+                        </div>
                 )}
             </div>
             {!loop &&
@@ -91,7 +119,8 @@ export default function Carousel(props) {
                         left: -22,
                         backgroundColor: '#3b3a38',
                         transition: 'all 200ms ease-in-out',
-                        scale: '0.8'
+                        scale: '0.8',
+                        top: type === 'products' ? -30 : undefined
                     }}
                 >
                     <KeyboardArrowLeftRoundedIcon
@@ -113,7 +142,8 @@ export default function Carousel(props) {
                         right: -22,
                         backgroundColor: '#3b3a38',
                         transition: 'all 200ms ease-in-out',
-                        scale: '0.8'
+                        scale: '0.8',
+                        top: type === 'products' ? -30 : undefined
                     }}
                 >
                     <KeyboardArrowRightRoundedIcon
