@@ -103,7 +103,7 @@ export default function Home() {
             height='400px'
             width='90%'
             animationDuration={200}
-            itemWidth={230}
+            itemWidth={200}
             type='products'
           />
         </div>

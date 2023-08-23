@@ -8,8 +8,10 @@ export default function Product(props) {
         img,
         imgHover,
         name,
-        oldPrice,
-        price
+        price,
+        soldOut,
+        outOfStock,
+        currencySymbol
     } = props
 
     const [isHovered, setIsHovered] = useState(false)
@@ -66,11 +68,25 @@ export default function Product(props) {
                 />
             </div>
             <div className={styles.infos}>
-                <p className={styles.name}>{name}</p>
-                {oldPrice &&
-                    <p className={styles.oldPrice}>{oldPrice}</p>
+                {soldOut !== undefined &&
+                    <div className={styles.soldOut}>
+                        <p>{Math.round(100 * (1 - (soldOut / price)))}% OFF</p>
+                    </div>
                 }
-                <p className={styles.price}>{price}</p>
+                {outOfStock &&
+                    <div className={styles.outOfStock}>
+                        <p>OUT OF STOCK</p>
+                    </div>
+                }
+                <p className={styles.name}>{name}</p>
+                {soldOut !== undefined  &&
+                    <p className={styles.oldPrice}>
+                        {currencySymbol}{soldOut !== undefined ? price.toFixed(2) : soldOut.toFixed(2)}
+                    </p>
+                }
+                <p className={styles.price}>
+                    {currencySymbol}{soldOut !== undefined ? soldOut.toFixed(2) : price.toFixed(2)}
+                </p>
             </div>
             {supportsHoverAndPointer &&
                 <div
@@ -86,7 +102,7 @@ export default function Product(props) {
                             color: 'var(--text-white)'
                         }}
                     >
-                        More Options
+                        MORE OPTIONS
                     </Button>
                 </div>
             }

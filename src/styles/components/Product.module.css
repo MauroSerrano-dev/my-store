@@ -52,6 +52,8 @@
     border-bottom-right-radius: 0.5rem;
     
     z-index: 1;
+
+    position: relative;
 }
 
 .name {
@@ -87,6 +89,45 @@
     transition: all ease-in-out 200ms;
 }
 
+.outOfStock {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    background-color: #f9a11d;
+
+    border-radius: 30rem;
+    font-size: 70%;
+    font-weight: bold;
+    --text-color: var(--text-white);
+
+    position: absolute;
+    height: 17%;
+    width: 52%;
+
+    top: -8.5%;
+    left: 24%;
+}
+
+.soldOut {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    background-color: #ff5e5b;
+
+    border-radius: 30rem;
+    font-size: 70%;
+    font-weight: bold;
+    --text-color: var(--text-white);
+
+    position: absolute;
+    height: 17%;
+    width: 36%;
+
+    top: -8.5%;
+    left: 32%;
+}
 
 /* Enable hover only on non-touch devices */
 @media (hover: hover) and (pointer: fine) {

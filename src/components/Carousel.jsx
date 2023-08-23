@@ -101,8 +101,10 @@ export default function Carousel(props) {
                             <Product
                                 responsive
                                 name='Jett T-Shirt'
-                                price='$13.90'
-                                oldPrice='$20.90'
+                                price={20.90}
+                                currencySymbol='$'
+                                soldOut={13.90}
+                                outOfStock={false}
                                 img='https://images.printify.com/mockup/64df65c1a996f39335017a6c/12100/92573?s=608&t=1692362639000'
                                 imgHover='https://images.printify.com/mockup/64df65c1a996f39335017a6c/12100/92662?s=608&t=1692362639000'
                             />

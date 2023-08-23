@@ -180,7 +180,7 @@
 }
 
 .cartCounter {
-    background-color: white;
+    background-color: var(--text-white);
     position: absolute;
     width: 1.3rem;
     height: 1.3rem;
