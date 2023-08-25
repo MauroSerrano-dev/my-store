@@ -1,21 +1,12 @@
-import { useSession, signIn, signOut } from "next-auth/react"
 import NavBar from './NavBar'
 import styles from '../styles/components/DataHandler.module.css'
 import { useEffect, useState } from "react"
 
 export default function DataHandler(props) {
     const { Component, pageProps, primaryColor } = props
-    const { data: session } = useSession()
-    const [loading, setLoading] = useState(true)
     const [windowWidth, setWindowWidth] = useState(0);
     const [windowHeight, setWindowHeight] = useState(0);
     const [showNavBar, setShowNavBar] = useState(true);
-
-    useEffect(() => {
-        if (loading && session !== undefined) {
-            setTimeout(() => setLoading(false), 500)
-        }
-    }, [session])
 
     useEffect(() => {
         const handleResize = () => {
@@ -43,10 +34,10 @@ export default function DataHandler(props) {
             }}
         >
             {showNavBar &&
-                <NavBar session={session} signIn={signIn} signOut={signOut} />
+                <NavBar />
             }
             <div id={styles.componentContainer}>
-                <Component{...pageProps} session={session} signIn={signIn} setShowNavBar={setShowNavBar} />
+                <Component{...pageProps} setShowNavBar={setShowNavBar} />
             </div>
         </div >
     )

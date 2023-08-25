@@ -30,7 +30,6 @@ async function createSession() {
   await fetch('/api/hello', options)
     .then(response => response.json())
     .then(response => {
-      console.log(response.url)
       window.location.href = response.url
     })
     .catch(err => console.error(err))
@@ -103,7 +102,7 @@ export default function Home() {
             height='400px'
             width='90%'
             animationDuration={200}
-            itemWidth={200}
+            itemWidth={225}
             type='products'
           />
         </div>

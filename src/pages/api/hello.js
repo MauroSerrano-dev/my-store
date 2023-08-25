@@ -91,7 +91,6 @@ export default async function handler(req, res) {
       cancel_url: `http://localhost:3000/cart`,
     });
 
-    console.log('session.url', session.url)
     // res.redirect(303, session.url);
     res.send({ url: session.url });
   }

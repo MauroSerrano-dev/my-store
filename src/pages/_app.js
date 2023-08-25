@@ -3,7 +3,6 @@ import Head from 'next/head'
 import Script from 'next/script'
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import MontserratRegular from '../../public/fonts/montserrat.ttf';
-import { SessionProvider } from 'next-auth/react'
 import DataHandler from '@/components/DataHandler'
 import { Analytics } from '@vercel/analytics/react';
 
@@ -26,7 +25,8 @@ const mainTheme = createTheme({
     fontFamily: [MontserratRegular, 'Arial', 'sans-serif',
     ].join(','),
   },
-});
+})
+
 
 export default function App(props) {
   const { Component, pageProps } = props
@@ -50,9 +50,7 @@ export default function App(props) {
         <Script src="https://js.stripe.com/v3/" async></Script>
       </Head>
       <ThemeProvider theme={mainTheme}>
-        <SessionProvider>
-          <DataHandler pageProps={pageProps} Component={Component} primaryColor={primaryColor} />
-        </SessionProvider>
+        <DataHandler pageProps={pageProps} Component={Component} primaryColor={primaryColor} />
       </ThemeProvider>
       <Analytics />
     </div>

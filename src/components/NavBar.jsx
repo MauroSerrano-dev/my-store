@@ -1,29 +1,13 @@
 import React, { useEffect, useState } from 'react'
 import Link from 'next/link'
 import styles from '../styles/components/NavBar.module.css'
-import { useRouter } from 'next/router'
-import { Button } from '@mui/material';
-import AvatarMenu from './AvatarMenu';
-import { MenuToggle } from './MenuToggle';
-import { useCycle } from 'framer-motion';
 import { motion } from "framer-motion"
 import Logo from './Logo';
 import SearchBar from './SearchBar';
 import PersonOutlineOutlinedIcon from '@mui/icons-material/PersonOutlineOutlined';
 import ShoppingCartOutlinedIcon from '@mui/icons-material/ShoppingCartOutlined';
 
-const MENU_LIST = [
-    { name: 'Lobby', href: '/lobby' },
-].concat(process.env.NODE_ENV === 'development'
-    ? [{ name: 'Quiz Builder', href: '/quiz-builder' }]
-    : []
-)
-
 export default function NavBar(props) {
-    const { session, signIn, signOut } = props
-    const [navActive, setNavActive] = useState(false)
-    const { pathname } = useRouter()
-    const [isOpen, toggleOpen] = useCycle(false, true);
     const [cartItemsCounter, setCartItemsCounter] = useState(0);
 
     return (

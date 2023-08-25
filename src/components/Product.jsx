@@ -28,7 +28,6 @@ export default function Product(props) {
 
     function handleMouseEnter() {
         if (supportsHoverAndPointer) {
-            console.log('a')
             setIsHovered(true)
         }
     }

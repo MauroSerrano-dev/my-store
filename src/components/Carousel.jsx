@@ -51,7 +51,6 @@ export default function Carousel(props) {
     return (
         <div
             className={styles.container}
-            onClick={() => console.log(itemsArray)}
             style={{
                 height: height,
                 width: width

@@ -1,0 +1,13 @@
+.main {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    padding-top: 2rem;
+    gap: 1rem;
+}
+
+.productImg {
+    width: 150px;
+}
