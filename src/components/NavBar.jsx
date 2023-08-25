@@ -11,14 +11,14 @@ export default function NavBar(props) {
     const [cartItemsCounter, setCartItemsCounter] = useState(0);
 
     return (
-        <div id={styles.container}>
+        <div className={styles.container}>
             <motion.div
-                id={styles.bodyContainer}
+                className={styles.bodyContainer}
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ delay: 0, duration: 0, ease: [.48, 0, .15, 1.01] }}
             >
-                <div id={styles.leftSide}>
+                <div className={styles.leftSide}>
                     {/* <MenuToggle toggle={() => toggleOpen()} /> */}
                     <Link legacyBehavior href={'/'}>
                         <a>
@@ -26,21 +26,16 @@ export default function NavBar(props) {
                         </a>
                     </Link>
                 </div>
-                <div id={styles.middle}>
+                <div className={styles.middle}>
                     <SearchBar />
                 </div>
-                <div id={styles.rightSide}>
+                <div className={styles.rightSide}>
                     <PersonOutlineOutlinedIcon
                         className={styles.userIcon}
-                        sx={{
-                            scale: '1.9'
-                        }}
                     />
                     <div className={styles.cartContainer}>
                         <ShoppingCartOutlinedIcon
-                            sx={{
-                                scale: '1.5',
-                            }}
+                            className={styles.shoppingCartIcon}
                         />
                         <div
                             className={styles.cartCounter}
