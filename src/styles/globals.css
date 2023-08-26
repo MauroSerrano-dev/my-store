@@ -12,6 +12,8 @@
   --text-color: var(--text-black);
 
   --global-white: #f3f3f3;
+
+  --background-color: #222222
 }
 
 * {
@@ -31,10 +33,7 @@ body {
 }
 
 body {
-  color: rgb(var(--foreground-rgb));
-  background: linear-gradient(to bottom,
-      transparent,
-      rgb(var(--background-end-rgb))) rgb(var(--background-start-rgb));
+  background: var(--background-color)
 }
 
 a {
