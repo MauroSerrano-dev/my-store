@@ -84,26 +84,6 @@
     transition: all 300ms ease-in-out;
 }
 
-#nav_menu_bar {
-    display: none;
-}
-
-.nav_menu_list {
-    display: flex;
-    transition: right 650ms ease-in-out;
-    background-color: transparent;
-    position: unset;
-    flex-direction: row;
-    min-height: fit-content;
-    width: fit-content;
-    column-gap: 24px;
-    align-items: center;
-}
-
-.nav_menu_list.active {
-    right: 0;
-}
-
 .navButton.disactive {
     top: 8px;
 }
