@@ -1,4 +1,5 @@
 import { CustomTextField } from '@/components/CustomTextField'
+import ImagesSlider from '@/components/ImagesSlider'
 import styles from '@/styles/admin/new-product.module.css'
 import { Button } from '@mui/material'
 import { useEffect, useState } from 'react'
@@ -62,22 +63,11 @@ export default function NewProduct() {
             <header>
             </header>
             <main className={styles.main}>
-                <CustomTextField
-                    label='Product ID'
-                    size='small'
-                    autoComplete='off'
-                    spellCheck={false}
-                    onChange={(e) => setProductIdInput(e.target.value)}
-                />
-                <Button
-                    variant='contained'
-                    size='small'
-                    onClick={getProduct}
-                >
-                    Search
-                </Button>
                 {product &&
-                    <div>
+                    <div className={styles.productContainer}>
+                        <ImagesSlider
+                            images={product.images}
+                        />
                         <CustomTextField
                             label='New Product ID'
                             size='small'
@@ -92,14 +82,6 @@ export default function NewProduct() {
                         >
                             Save Product
                         </Button>
-                        {product.images.map((img, i) =>
-                            <img
-                                src={img.src}
-                                alt={`product-img${i}`}
-                                key={i}
-                                className={styles.productImg}
-                            />
-                        )}
                     </div>
                 }
                 {allProducts && !product &&
@@ -114,6 +96,7 @@ export default function NewProduct() {
                                     <img
                                         className={styles.productImg}
                                         src={prod.images[0].src}
+                                        alt={prod.title}
                                     />
                                     {prod.title}
                                 </Button>
