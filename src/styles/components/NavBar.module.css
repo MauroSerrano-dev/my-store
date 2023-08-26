@@ -171,7 +171,12 @@
     width: 110px;
 }
 
-.userIcon {
+.userIconContainer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+
     height: calc(var(--bar-height) * 0.6);
     width: calc(var(--bar-height) * 0.6);
     cursor: pointer;
@@ -180,6 +185,12 @@
     padding: 5px;
 
     transition: all ease-in-out 200ms;
+}
+
+.userIcon {
+    height: 95%;
+    width: 100%;
+    color: var(--global-white);
 }
 
 .cartContainer {
@@ -225,14 +236,16 @@
 
 /* Enable hover only on non-touch devices */
 @media (hover: hover) and (pointer: fine) {
-    .userIcon:hover {
+    .userIconContainer:hover {
         cursor: pointer;
         background-color: rgba(0, 0, 0, 0.15);
     }
+
     .cartContainer:hover {
         background-color: rgba(0, 0, 0, 0.15);
         cursor: pointer;
     }
+
     .cartContainer:hover .cartCounter {
         outline: 2px solid #00929c;
     }

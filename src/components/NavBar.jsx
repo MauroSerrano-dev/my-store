@@ -30,9 +30,11 @@ export default function NavBar(props) {
                     <SearchBar />
                 </div>
                 <div className={styles.rightSide}>
-                    <PersonOutlineOutlinedIcon
-                        className={styles.userIcon}
-                    />
+                    <div className={styles.userIconContainer}>
+                        <PersonOutlineOutlinedIcon
+                            className={styles.userIcon}
+                        />
+                    </div>
                     <div className={styles.cartContainer}>
                         <ShoppingCartOutlinedIcon
                             className={styles.shoppingCartIcon}
