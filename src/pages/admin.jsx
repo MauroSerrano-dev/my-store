@@ -1,8 +1,8 @@
 import styles from '@/styles/admin.module.css'
-import Link from 'next/link'
 import AddCircleOutlineRoundedIcon from '@mui/icons-material/AddCircleOutlineRounded';
 import EditNoteRoundedIcon from '@mui/icons-material/EditNoteRounded';
 import FormatListBulletedRoundedIcon from '@mui/icons-material/FormatListBulletedRounded';
+import Router from "next/router";
 
 export default function Admin() {
 
@@ -16,24 +16,33 @@ export default function Admin() {
                         <h2>Manage Product</h2>
                     </div>
                     <div className={styles.optionsBlock}>
-                        <Link legacyBehavior href={'/admin/new-product'}>
-                            <a className={styles.linkOption}>
+                        <div>
+                            <button
+                                className={styles.buttonOption}
+                                onClick={() => Router.push('/admin/new-product')}
+                            >
                                 <AddCircleOutlineRoundedIcon />
                                 Add New Product
-                            </a>
-                        </Link>
-                        <Link legacyBehavior href={'/admin/edit-product'}>
-                            <a className={styles.linkOption}>
+                            </button>
+                        </div>
+                        <div>
+                            <button
+                                className={styles.buttonOption}
+                                onClick={() => Router.push('/admin/edit-product')}
+                            >
                                 <EditNoteRoundedIcon />
                                 Edit Product
-                            </a>
-                        </Link>
-                        <Link legacyBehavior href={'/admin/consult-product'}>
-                            <a className={styles.linkOption}>
+                            </button>
+                        </div>
+                        <div>
+                            <button
+                                className={styles.buttonOption}
+                                onClick={() => Router.push('/admin/consult-product')}
+                            >
                                 <FormatListBulletedRoundedIcon />
                                 Consult Product
-                            </a>
-                        </Link>
+                            </button>
+                        </div>
                     </div>
                 </div>
             </main>

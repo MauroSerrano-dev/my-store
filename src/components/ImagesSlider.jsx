@@ -3,20 +3,52 @@ import { useState } from 'react'
 
 export default function ImagesSlider(props) {
     const {
-        images
+        images,
+        imagesIndexSelect,
+        setImagesIndexSelect
     } = props
 
     const [currentImgIndex, setCurrentImgIndex] = useState(0)
+
+    function handleViewClick(index) {
+        imagesIndexSelect.includes(index)
+            ? setImagesIndexSelect(prev => prev.filter(i => i !== index))
+            : setImagesIndexSelect(prev => [...prev, index])
+    }
 
     return (
         <div
             className={styles.container}
         >
-            <div className={styles.view}>
-                <img
-                    className={styles.imgView}
-                    src={images[currentImgIndex].src}
-                />
+            <div
+                className={styles.view}
+                onClick={() => handleViewClick(currentImgIndex)}
+            >
+                <div
+                    className={styles.viewImages}
+                    style={{
+                        transform: `translateX(${480 * currentImgIndex * (-1)}px)`
+                    }}
+                >
+                    {images.map((img, i) =>
+                        <div
+                            className={styles.imgViewContainer}
+                            key={i}
+                        >
+                            {imagesIndexSelect && imagesIndexSelect.includes(i) &&
+                                <div className={styles.select}>
+                                    <div className={styles.circle}>
+                                        {imagesIndexSelect.findIndex(ele => ele === i) + 1}
+                                    </div>
+                                </div>
+                            }
+                            <img
+                                className={styles.imgView}
+                                src={img.src}
+                            />
+                        </div>
+                    )}
+                </div>
             </div>
             <div
                 className={styles.options}
@@ -36,6 +68,13 @@ export default function ImagesSlider(props) {
                             }}
                         >
                         </div>
+                        {imagesIndexSelect && imagesIndexSelect.includes(i) &&
+                            <div className={styles.select}>
+                                <div className={styles.miniCircle}>
+                                    {imagesIndexSelect.findIndex(ele => ele === i) + 1}
+                                </div>
+                            </div>
+                        }
                         <img
                             className={styles.imgOption}
                             src={img.src}
