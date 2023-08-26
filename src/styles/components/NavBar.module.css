@@ -188,8 +188,7 @@
 }
 
 .userIcon {
-    height: 100%;
-    width: 100%;
+    font-size: calc(var(--bar-height) * 0.43);
     color: var(--global-white);
 }
 
@@ -209,19 +208,18 @@
 }
 
 .shoppingCartIcon {
-    height: 95%;
-    width: 100%;
+    font-size: calc(var(--bar-height) * 0.38);
     color: var(--global-white);
 }
 
 .cartCounter {
     background-color: var(--global-white);
     position: absolute;
-    width: 1.1rem;
-    height: 1.1rem;
+    width: calc(var(--bar-height) * 0.2);
+    height: calc(var(--bar-height) * 0.2);
     border-radius: 100%;
-    top: 5%;
-    right: 7%;
+    top: 8%;
+    right: 10%;
     outline: 2px solid var(--primary);
 
     display: flex;
