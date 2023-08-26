@@ -1,13 +1,33 @@
 import { CustomTextField } from '@/components/CustomTextField'
 import styles from '@/styles/admin/new-product.module.css'
 import { Button } from '@mui/material'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
 export default function NewProduct() {
 
     const [productIdInput, setProductIdInput] = useState()
     const [product, setProduct] = useState()
+    const [allProducts, setAllProducts] = useState()
     const [newProductId, setNewProductId] = useState()
+
+    useEffect(() => {
+        getAllProducts()
+    }, [])
+
+    useEffect(() => {
+        console.log(allProducts)
+    }, [allProducts])
+
+    async function getAllProducts() {
+        const options = {
+            method: 'GET',
+            headers: { id: productIdInput },
+        }
+        await fetch("/api/printify-all-products", options)
+            .then(response => response.json())
+            .then(response => setAllProducts(response.data))
+            .catch(err => console.error(err))
+    }
 
     async function getProduct() {
         const options = {
@@ -79,6 +99,25 @@ export default function NewProduct() {
                                 key={i}
                                 className={styles.productImg}
                             />
+                        )}
+                    </div>
+                }
+                {allProducts && !product &&
+                    <div className={styles.block}>
+                        {allProducts.map((prod, i) =>
+                            <div className={styles.productOption} key={i}>
+                                <Button
+                                    id={styles.productButton}
+                                    variant='outlined'
+                                    onClick={() => setProduct(prod)}
+                                >
+                                    <img
+                                        className={styles.productImg}
+                                        src={prod.images[0].src}
+                                    />
+                                    {prod.title}
+                                </Button>
+                            </div>
                         )}
                     </div>
                 }

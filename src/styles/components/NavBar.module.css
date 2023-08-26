@@ -28,12 +28,12 @@
 .leftSide {
     width: 20%;
     height: 100%;
-    min-width: calc(var(--bar-height) * 1.5);
+    min-width: calc(var(--bar-height) * 1.8);
 
     display: flex;
     flex-direction: row;
     align-items: center;
-    margin-left: 1rem;
+    padding-left: 1rem;
 }
 
 .leftSide a {
@@ -56,7 +56,7 @@
 .rightSide {
     width: 20%;
     height: 100%;
-    min-width: calc(var(--bar-height) * 1.5);
+    min-width: calc(var(--bar-height) * 1.8);
 
     display: flex;
     align-items: center;

@@ -13,7 +13,7 @@
     min-width: 300px;
     --text-color: var(--text-white);
     border-radius: 0.5rem;
-    overflow: hidden
+    overflow: hidden;
 }
 
 .blockTitle {
@@ -47,8 +47,11 @@
     min-width: 180px;
 }
 
-.linkOption:hover {
-    text-decoration: underline var(--text-color);
+/* Enable hover only on non-touch devices */
+@media (hover: hover) and (pointer: fine) {
+    .linkOption:hover {
+        text-decoration: underline var(--text-color);
+    }
 }
 
 /* Mobile */
