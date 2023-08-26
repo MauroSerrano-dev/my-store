@@ -188,7 +188,7 @@
 }
 
 .userIcon {
-    height: 95%;
+    height: 100%;
     width: 100%;
     color: var(--global-white);
 }
@@ -209,7 +209,7 @@
 }
 
 .shoppingCartIcon {
-    height: 85%;
+    height: 95%;
     width: 100%;
     color: var(--global-white);
 }
