@@ -187,11 +187,6 @@
     transition: all ease-in-out 200ms;
 }
 
-.userIcon {
-    font-size: calc(var(--bar-height) * 0.43);
-    color: var(--global-white);
-}
-
 .cartContainer {
     display: flex;
     justify-content: center;
@@ -205,11 +200,6 @@
     padding: 5px;
 
     transition: all ease-in-out 200ms;
-}
-
-.shoppingCartIcon {
-    font-size: calc(var(--bar-height) * 0.38);
-    color: var(--global-white);
 }
 
 .cartCounter {

@@ -32,12 +32,18 @@ export default function NavBar(props) {
                 <div className={styles.rightSide}>
                     <div className={styles.userIconContainer}>
                         <PersonOutlineOutlinedIcon
-                            className={styles.userIcon}
+                            style={{
+                                fontSize: 'calc(var(--bar-height) * 0.43)',
+                                color: 'var(--global-white)'
+                            }}
                         />
                     </div>
                     <div className={styles.cartContainer}>
                         <ShoppingCartOutlinedIcon
-                            className={styles.shoppingCartIcon}
+                            style={{
+                                fontSize: 'calc(var(--bar-height) * 0.38)',
+                                color: 'var(--global-white)'
+                            }}
                         />
                         <div
                             className={styles.cartCounter}
