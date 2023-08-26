@@ -16,6 +16,7 @@ export default function NewProduct() {
     const [newProductId, setNewProductId] = useState()
     const [imagesIndexSelect, setImagesIndexSelect] = useState([])
     const [tags, setTags] = useState([])
+    const [newTag, setNewTag] = useState('')
 
     useEffect(() => {
         getAllProducts()
@@ -61,7 +62,29 @@ export default function NewProduct() {
     function clearFields() {
         setProduct()
         setNewProductId()
+        setTags()
         setImagesIndexSelect([])
+    }
+
+    function handleSetProduct(product) {
+        setProduct(product)
+        setTags(product.tags)
+    }
+
+    function handleTagsOnChange(event) {
+        console.log(event.target.value)
+        setNewTag(event.target.value.toLowerCase())
+    }
+
+    function handleTagsKeyDown(event) {
+        if (event.key === 'Enter') {
+            setTags(prev => [...prev, newTag])
+            setNewTag('')
+        }
+    }
+
+    function handleAutoCompleteChange(event) {
+        console.log(event.target)
     }
 
     return (
@@ -111,26 +134,43 @@ export default function NewProduct() {
                                     width: '100%'
                                 }}
                             />
-                            <Stack spacing={3} sx={{ width: 500 }}>
-                                <Autocomplete
-                                    multiple
-                                    options={top100Films}
-                                    getOptionLabel={(option) => option.title}
-                                    defaultValue={[top100Films[13]]}
-                                    renderInput={(params) => (
-                                        <CustomTextField
-                                            {...params}
-                                            variant="outlined"
-                                            label="Tags"
-                                            placeholder="Tag"
-                                            className={styles.tagInput}
-                                            /* style={{
-                                                backgroundColor: 'white'
-                                            }} */
-                                        />
-                                    )}
-                                />
-                            </Stack>
+                            <Autocomplete
+                                multiple
+                                options={tags}
+                                value={tags}
+                                onChange={handleAutoCompleteChange}
+                                sx={{
+                                    '.MuiAutocomplete-tag': {
+                                        backgroundColor: '#363a3d',
+                                        '--text-color': 'var(--global-white)',
+                                    },
+                                    '.MuiAutocomplete-clearIndicator': {
+                                        color: 'var(--global-white)'
+                                    },
+                                    '.MuiAutocomplete-popupIndicator': {
+                                        color: 'var(--global-white)'
+                                    },
+                                    '.MuiChip-deleteIcon': {
+                                        color: 'rgba(255, 255, 255, 0.4) !important',
+                                        transition: 'all ease-in-out 200ms'
+                                    },
+                                    '.MuiChip-deleteIcon:hover': {
+                                        color: 'rgba(255, 255, 255, 0.8) !important',
+                                    },
+                                    width: '100%'
+                                }}
+                                renderInput={(params) => (
+                                    <CustomTextField
+                                        {...params}
+                                        variant="outlined"
+                                        label="Tags"
+                                        placeholder="Tag"
+                                        value={newTag}
+                                        onKeyDown={e => handleTagsKeyDown(e)}
+                                        onChange={e => handleTagsOnChange(e)}
+                                    />
+                                )}
+                            />
                             <Button
                                 variant='contained'
                                 size='small'
@@ -151,7 +191,7 @@ export default function NewProduct() {
                                 <Button
                                     id={styles.productButton}
                                     variant='outlined'
-                                    onClick={() => setProduct(prod)}
+                                    onClick={() => handleSetProduct(prod)}
                                 >
                                     <img
                                         className={styles.productImg}
