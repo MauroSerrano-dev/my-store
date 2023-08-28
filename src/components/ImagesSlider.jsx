@@ -1,14 +1,13 @@
 import styles from '@/styles/components/ImagesSlider.module.css'
-import { useState } from 'react'
 
 export default function ImagesSlider(props) {
     const {
         images,
         imagesIndexSelect,
-        setImagesIndexSelect
+        setImagesIndexSelect,
+        currentImgIndex,
+        setCurrentImgIndex,
     } = props
-
-    const [currentImgIndex, setCurrentImgIndex] = useState(0)
 
     function handleViewClick(index) {
         imagesIndexSelect.includes(index)
@@ -78,6 +77,7 @@ export default function ImagesSlider(props) {
                         <img
                             className={styles.imgOption}
                             src={img.src}
+                            crossOrigin='anonymous'
                         />
                     </div>
                 )}

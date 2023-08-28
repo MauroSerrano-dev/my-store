@@ -10,10 +10,8 @@ export default async function handler(req, res) {
         }
 
         try {
+            console.log('all products')
             const response = await axios.get(base_url, { headers })
-
-            // Set the cookie with the appropriate SameSite attribute
-            res.setHeader('Set-Cookie', 'SameSite=Strict; SameSite=None; Secure');
 
             const data = response.data
             res.status(200).json(data)

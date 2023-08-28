@@ -57,6 +57,7 @@ export default function Product(props) {
                     <img
                         src={imgHover}
                         className={styles.img}
+                        crossOrigin='anonymous'
                     />
                 </div>
             }
@@ -64,6 +65,7 @@ export default function Product(props) {
                 <img
                     src={img}
                     className={styles.img}
+                    crossOrigin='anonymous'
                 />
             </div>
             <div className={styles.infos}>

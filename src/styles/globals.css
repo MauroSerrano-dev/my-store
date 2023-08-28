@@ -82,6 +82,26 @@ input::placeholder {
   font-family: 'montserrat';
 }
 
+.flex {
+  display: flex;
+}
+
+.row {
+  flex-direction: row;
+}
+
+.column {
+  flex-direction: column;
+}
+
+.fillWidth {
+  width: 100%;
+}
+
+.fillHeight {
+  height: 100%;
+}
+
 ::-webkit-scrollbar {
   width: 0.4rem;
   height: 0.4rem;
@@ -106,20 +126,20 @@ input::placeholder {
   text-align: start;
 }
 
-.MuiAutocomplete-option {
+.MuiAutocomplete-option,
+.MuiMenuItem-gutters {
   color: var(--text-black);
+  transition: all ease-in-out 200ms;
 }
 
-.MuiAutocomplete-option[aria-selected="true"] {
-  background-color: rgba(var(--primaryRGB), 0.6) !important;
-  color: var(--text-black);
-}
-
-.MuiAutocomplete-option:hover {
+.MuiAutocomplete-option:hover,
+.MuiMenuItem-gutters:hover {
   background-color: rgba(var(--primaryRGB), 0.3) !important;
   color: var(--text-black);
 }
 
-.MuiAutocomplete-option[aria-selected="true"]:hover {
+.MuiAutocomplete-option[aria-selected="true"],
+.MuiMenuItem-gutters[aria-selected="true"] {
   background-color: rgba(var(--primaryRGB), 0.6) !important;
+  color: var(--text-black);
 }

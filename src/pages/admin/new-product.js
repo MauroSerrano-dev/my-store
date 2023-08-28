@@ -5,9 +5,8 @@ import { Button, Stack } from '@mui/material'
 import { useEffect, useState } from 'react'
 import KeyboardArrowLeftRoundedIcon from '@mui/icons-material/KeyboardArrowLeftRounded';
 import Router from "next/router";
-import Chip from '@mui/material/Chip';
 import Autocomplete from '@mui/material/Autocomplete';
-import TextField from '@mui/material/TextField';
+import MultiSelector from '@/components/MultiSelector'
 
 export default function NewProduct() {
 
@@ -15,8 +14,11 @@ export default function NewProduct() {
     const [allProducts, setAllProducts] = useState()
     const [newProductId, setNewProductId] = useState()
     const [imagesIndexSelect, setImagesIndexSelect] = useState([])
+    const [tagsList, setTagsList] = useState([])
     const [tags, setTags] = useState([])
+    const [categories, setCategories] = useState([])
     const [newTag, setNewTag] = useState('')
+    const [currentImgIndex, setCurrentImgIndex] = useState(0)
 
     useEffect(() => {
         getAllProducts()
@@ -32,18 +34,57 @@ export default function NewProduct() {
         }
         await fetch("/api/printify-all-products", options)
             .then(response => response.json())
-            .then(response => setAllProducts(response.data))
+            .then(response => {
+                console.log(response),
+                setAllProducts(response.data)
+            })
             .catch(err => console.error(err))
     }
 
-    async function saveProduct(product, newProductId) {
-        product.id_printify = product.id
-        product.id = newProductId
+    async function saveProduct(props) {
+        const {
+            productArg,
+            newProductIdArg,
+            categoriesArg,
+            tagsArg,
+            imagesIndexSelectArg
+        } = props
+
         const options = {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
-                product: product
+                product: {
+                    id: newProductIdArg,
+                    id_printify: productArg.id,
+                    categories: categoriesArg,
+                    tags: tagsArg,
+                    title: productArg.title,
+                    images: imagesIndexSelectArg.map(index => ({
+                        src: productArg.images[index].src,
+                        variant_ids: productArg.images[index].variant_ids
+                    })),
+                    image_showcase: {
+                        src: productArg.images[imagesIndexSelectArg[0]].src,
+                    },
+                    image_hover: {
+                        src: productArg.images[imagesIndexSelectArg[1]].src,
+                    },
+                    description: '',
+                    variants: productArg.variants.map(variant => ({
+                        id: variant.id,
+                        cost: variant.cost,
+                        price: variant.price,
+                        grams: variant.grams,
+                        is_printify_express_eligible: variant.is_printify_express_eligible,
+                        options: variant.options,
+                        quantity: variant.quantity,
+                        sku: variant.sku,
+                        title: variant.title,
+                    })),
+                    options: productArg.options,
+                    position: productArg.position,
+                }
             })
         }
         await fetch("/api/product", options)
@@ -53,7 +94,6 @@ export default function NewProduct() {
     }
 
     function handleGoBack() {
-
         product
             ? clearFields()
             : Router.push('/admin')
@@ -62,13 +102,17 @@ export default function NewProduct() {
     function clearFields() {
         setProduct()
         setNewProductId()
-        setTags()
         setImagesIndexSelect([])
+        setTagsList([])
+        setTags([])
+        setCurrentImgIndex(0)
+        setCategories([])
     }
 
     function handleSetProduct(product) {
         setProduct(product)
-        setTags(product.tags)
+        setTags(product.tags.map(tag => tag.toLowerCase()))
+        setTagsList(product.tags.map(tag => tag.toLowerCase()))
     }
 
     function handleTagsOnChange(event) {
@@ -78,13 +122,32 @@ export default function NewProduct() {
 
     function handleTagsKeyDown(event) {
         if (event.key === 'Enter') {
+            setTagsList(prev => [...prev, newTag])
             setTags(prev => [...prev, newTag])
             setNewTag('')
         }
     }
 
-    function handleAutoCompleteChange(event) {
-        console.log(event.target)
+    function handleAutoCompleteChange(event, value) {
+        setTags(value)
+    }
+
+    function handleCategorySelector(event, value) {
+        const newCategory = value.props.value
+        console.log(newCategory)
+        setCategories(prev =>
+            prev.includes(newCategory)
+                ? prev.filter(category => category !== newCategory)
+                : [...prev, newCategory]
+        )
+    }
+
+    function chooseMainImage() {
+
+    }
+
+    function chooseHoverImage() {
+
     }
 
     return (
@@ -122,6 +185,8 @@ export default function NewProduct() {
                             images={product.images}
                             imagesIndexSelect={imagesIndexSelect}
                             setImagesIndexSelect={setImagesIndexSelect}
+                            currentImgIndex={currentImgIndex}
+                            setCurrentImgIndex={setCurrentImgIndex}
                         />
                         <div className={styles.fieldsContainer}>
                             <CustomTextField
@@ -134,9 +199,18 @@ export default function NewProduct() {
                                     width: '100%'
                                 }}
                             />
+                            <MultiSelector
+                                list={[
+                                    'T-Shirts',
+                                    'Home',
+                                ]}
+                                value={categories}
+                                label='Categories'
+                                onChange={handleCategorySelector}
+                            />
                             <Autocomplete
                                 multiple
-                                options={tags}
+                                options={tagsList}
                                 value={tags}
                                 onChange={handleAutoCompleteChange}
                                 sx={{
@@ -157,7 +231,7 @@ export default function NewProduct() {
                                     '.MuiChip-deleteIcon:hover': {
                                         color: 'rgba(255, 255, 255, 0.8) !important',
                                     },
-                                    width: '100%'
+                                    width: '100%',
                                 }}
                                 renderInput={(params) => (
                                     <CustomTextField
@@ -174,7 +248,27 @@ export default function NewProduct() {
                             <Button
                                 variant='contained'
                                 size='small'
-                                onClick={() => saveProduct(product, newProductId)}
+                                onClick={() => chooseMainImage(currentImgIndex)}
+                            >
+                                Tornar Imagem Principal
+                            </Button>
+                            <Button
+                                variant='contained'
+                                size='small'
+                                onClick={() => chooseHoverImage(currentImgIndex)}
+                            >
+                                Tornar Imagem de Hover
+                            </Button>
+                            <Button
+                                variant='contained'
+                                size='small'
+                                onClick={() => saveProduct({
+                                    productArg: product,
+                                    newProductIdArg: newProductId,
+                                    categoriesArg, categories,
+                                    tagsArg: tags,
+                                    imagesIndexSelectArg: imagesIndexSelect
+                                })}
                             >
                                 Save Product
                             </Button>
@@ -197,6 +291,7 @@ export default function NewProduct() {
                                         className={styles.productImg}
                                         src={prod.images[0].src}
                                         alt={prod.title}
+                                        crossOrigin='anonymous'
                                     />
                                     {prod.title}
                                 </Button>

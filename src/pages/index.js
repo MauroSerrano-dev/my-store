@@ -27,7 +27,7 @@ async function createSession() {
     })
   }
 
-  await fetch('/api/hello', options)
+  await fetch('/api/stripe', options)
     .then(response => response.json())
     .then(response => {
       window.location.href = response.url
