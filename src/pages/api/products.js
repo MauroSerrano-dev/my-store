@@ -1,16 +1,9 @@
-import { getProductsByCategory } from "../../../backend/product";
+import { getAllProducts } from "../../../backend/product";
 
 export default async function handler(req, res) {
     if (req.method === "GET") {
-        const {
-            category
-        } = req.headers
 
-        let result
-
-        if (category) {
-            result = await getProductsByCategory(category)
-        }
+        const result = await getAllProducts()
 
         res.status(201).json({
             products: result.products,

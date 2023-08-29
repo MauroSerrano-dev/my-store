@@ -21,6 +21,7 @@ export default function Home() {
 
   const [productsHome, setProductsHome] = useState()
   const [productsTShirts, setProductsTShirts] = useState()
+  const [allProducts, setAllProducts] = useState()
 
   async function getProductsByCategory(categoryName) {
     let products
@@ -29,6 +30,23 @@ export default function Home() {
       headers: {
         category: categoryName
       }
+    }
+
+    await fetch("/api/products-by-categories", options)
+      .then(response => response.json())
+      .then(response => {
+        console.log(response.msg)
+        products = response.products
+      })
+      .catch(err => console.error(err))
+
+    return products
+  }
+
+  async function getAllProducts() {
+    let products
+    const options = {
+      method: 'GET'
     }
 
     await fetch("/api/products", options)
@@ -44,12 +62,13 @@ export default function Home() {
 
   useEffect(() => {
     getProductsFromCategories()
-    /* setProductsTShirts('T-Shirts') */
+    getAllProducts()
   }, [])
 
   async function getProductsFromCategories() {
     setProductsHome(await getProductsByCategory('Home'))
     setProductsTShirts(await getProductsByCategory('T-Shirts'))
+    setAllProducts(await getAllProducts())
   }
 
   return (
@@ -106,6 +125,23 @@ export default function Home() {
             />
           </div>
         </div>
+        {allProducts &&
+          <div className={styles.carouselAndTitle}>
+            <h2 className={styles.carouselTitle}>
+              All Products
+            </h2>
+            <div className={styles.carousel}>
+              <Carousel
+                items={allProducts}
+                height='400px'
+                width='90%'
+                animationDuration={200}
+                itemWidth={225}
+                type='products'
+              />
+            </div>
+          </div>
+        }
         {productsTShirts &&
           <div className={styles.carouselAndTitle}>
             <h2 className={styles.carouselTitle}>

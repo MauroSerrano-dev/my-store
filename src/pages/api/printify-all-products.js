@@ -1,4 +1,3 @@
-// pages/api/getPrintifyProducts.js
 import axios from 'axios'
 
 export default async function handler(req, res) {
@@ -10,7 +9,6 @@ export default async function handler(req, res) {
         }
 
         try {
-            console.log('all products')
             const response = await axios.get(base_url, { headers })
 
             const data = response.data

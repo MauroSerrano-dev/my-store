@@ -13,32 +13,29 @@ export default function NewProduct() {
     const [product, setProduct] = useState()
     const [allProducts, setAllProducts] = useState()
     const [newProductId, setNewProductId] = useState()
-    const [imagesIndexSelect, setImagesIndexSelect] = useState([])
     const [tagsList, setTagsList] = useState([])
     const [tags, setTags] = useState([])
     const [categories, setCategories] = useState([])
     const [newTag, setNewTag] = useState('')
+    const [newImage, setNewImage] = useState('')
     const [currentImgIndex, setCurrentImgIndex] = useState(0)
-    const [mainImgIndex, setMainImgIndex] = useState()
-    const [hoverImgIndex, setHoverImgIndex] = useState()
+    const [images, setImages] = useState([])
+    const [showcaseImage, setShowcaseImage] = useState('')
+    const [hoverImage, setHoverImage] = useState('')
 
     useEffect(() => {
         getAllProducts()
     }, [])
 
-    useEffect(() => {
-        console.log(allProducts)
-    }, [allProducts])
-
     async function getAllProducts() {
         const options = {
             method: 'GET',
         }
-        await fetch("/api/printify-all-products", options)
+        await fetch("/api/printify-all-new-products", options)
             .then(response => response.json())
             .then(response => {
-                console.log(response),
-                    setAllProducts(response.data)
+                console.log(response.msg)
+                setAllProducts(response.products)
             })
             .catch(err => console.error(err))
     }
@@ -49,9 +46,9 @@ export default function NewProduct() {
             newProductIdArg,
             categoriesArg,
             tagsArg,
-            imagesIndexSelectArg,
-            mainImgIndexArg,
-            hoverImgIndexArg,
+            imagesArg,
+            showcaseImgArg,
+            hoverImgArg,
         } = props
 
         const options = {
@@ -64,16 +61,9 @@ export default function NewProduct() {
                     categories: categoriesArg,
                     tags: tagsArg,
                     title: productArg.title,
-                    images: imagesIndexSelectArg.map(index => ({
-                        src: productArg.images[index].src,
-                        variant_ids: productArg.images[index].variant_ids
-                    })),
-                    image_showcase: {
-                        src: productArg.images[mainImgIndexArg].src,
-                    },
-                    image_hover: {
-                        src: productArg.images[hoverImgIndexArg].src,
-                    },
+                    images: imagesArg,
+                    image_showcase: showcaseImgArg,
+                    image_hover: hoverImgArg,
                     description: '',
                     variants: productArg.variants.map(variant => ({
                         id: variant.id,
@@ -106,11 +96,11 @@ export default function NewProduct() {
     function clearFields() {
         setProduct()
         setNewProductId()
-        setImagesIndexSelect([])
         setTagsList([])
         setTags([])
         setCurrentImgIndex(0)
         setCategories([])
+        setImages([])
     }
 
     function handleSetProduct(product) {
@@ -120,25 +110,51 @@ export default function NewProduct() {
     }
 
     function handleTagsOnChange(event) {
-        console.log(event.target.value)
+        event.preventDefault()
         setNewTag(event.target.value.toLowerCase())
     }
 
+    function handleImagesOnChange(event) {
+        event.preventDefault()
+        setNewImage(event.target.value.toLowerCase())
+    }
+
     function handleTagsKeyDown(event) {
-        if (event.key === 'Enter') {
-            setTagsList(prev => [...prev, newTag])
-            setTags(prev => [...prev, newTag])
-            setNewTag('')
+        if (event.key === 'Enter' && newTag !== '') {
+            event.preventDefault()
+            if (!tagsList.includes(newTag)) {
+                setTagsList(prev => [...prev, newTag])
+                setTags(prev => [...prev, newTag])
+                setNewTag('')
+            }
         }
     }
 
-    function handleAutoCompleteChange(event, value) {
-        setTags(value)
+    function handleImagesKeyDown(event) {
+        if (event.key === 'Enter' && newImage !== '') {
+            event.preventDefault()
+            setImages(prev => [...prev, newImage])
+            setNewImage('')
+        }
+    }
+
+    function handleAutoCompleteTagsChange(event, value) {
+        event.preventDefault()
+        if (event.key !== 'Enter') {
+            setTags(value)
+        }
+    }
+
+    function handleAutoCompleteImagesChange(event, value) {
+        event.preventDefault()
+        if (event.key !== 'Enter') {
+            setImages(value)
+        }
     }
 
     function handleCategorySelector(event, value) {
         const newCategory = value.props.value
-        console.log(newCategory)
+
         setCategories(prev =>
             prev.includes(newCategory)
                 ? prev.filter(category => category !== newCategory)
@@ -146,12 +162,12 @@ export default function NewProduct() {
         )
     }
 
-    function chooseMainImage(mainImgIndexArg) {
-        setMainImgIndex(mainImgIndexArg)
+    function handleShowcaseImageChange(event) {
+        setShowcaseImage(event.target.value)
     }
 
-    function chooseHoverImage(hoverImgIndexArg) {
-        setHoverImgIndex(hoverImgIndexArg)
+    function handleHoverImageChange(event) {
+        setHoverImage(event.target.value)
     }
 
     return (
@@ -186,16 +202,13 @@ export default function NewProduct() {
                 {product &&
                     <div className={styles.productContainer}>
                         <ImagesSlider
-                            images={product.images}
-                            imagesIndexSelect={imagesIndexSelect}
-                            setImagesIndexSelect={setImagesIndexSelect}
+                            images={images.map(img => ({ src: img }))}
                             currentImgIndex={currentImgIndex}
                             setCurrentImgIndex={setCurrentImgIndex}
                         />
                         <div className={styles.fieldsContainer}>
                             <CustomTextField
                                 label='New Product ID'
-                                size='small'
                                 autoComplete='off'
                                 spellCheck={false}
                                 onChange={(e) => setNewProductId(e.target.value)}
@@ -207,6 +220,8 @@ export default function NewProduct() {
                                 list={[
                                     'T-Shirts',
                                     'Home',
+                                    'Socks',
+                                    'Hoodies',
                                 ]}
                                 value={categories}
                                 label='Categories'
@@ -216,7 +231,7 @@ export default function NewProduct() {
                                 multiple
                                 options={tagsList}
                                 value={tags}
-                                onChange={handleAutoCompleteChange}
+                                onChange={handleAutoCompleteTagsChange}
                                 sx={{
                                     '.MuiAutocomplete-tag': {
                                         backgroundColor: '#363a3d',
@@ -249,32 +264,76 @@ export default function NewProduct() {
                                     />
                                 )}
                             />
+                            <Autocomplete
+                                multiple
+                                options={images}
+                                value={images}
+                                onChange={handleAutoCompleteImagesChange}
+                                sx={{
+                                    '.MuiAutocomplete-tag': {
+                                        backgroundColor: '#363a3d',
+                                        '--text-color': 'var(--global-white)',
+                                    },
+                                    '.MuiAutocomplete-clearIndicator': {
+                                        color: 'var(--global-white)'
+                                    },
+                                    '.MuiAutocomplete-popupIndicator': {
+                                        color: 'var(--global-white)'
+                                    },
+                                    '.MuiChip-deleteIcon': {
+                                        color: 'rgba(255, 255, 255, 0.4) !important',
+                                        transition: 'all ease-in-out 200ms'
+                                    },
+                                    '.MuiChip-deleteIcon:hover': {
+                                        color: 'rgba(255, 255, 255, 0.8) !important',
+                                    },
+                                    width: '100%',
+                                }}
+                                renderInput={(params) => (
+                                    <CustomTextField
+                                        {...params}
+                                        variant="outlined"
+                                        label="Images"
+                                        placeholder="Image"
+                                        value={newTag}
+                                        onKeyDown={handleImagesKeyDown}
+                                        onChange={handleImagesOnChange}
+                                    />
+                                )}
+                            />
+                            <CustomTextField
+                                variant="outlined"
+                                label="Showcase Image"
+                                value={showcaseImage}
+                                onChange={handleShowcaseImageChange}
+                                sx={{
+                                    width: '100%'
+                                }}
+                            />
+                            <CustomTextField
+                                variant="outlined"
+                                label="Hover Image"
+                                value={hoverImage}
+                                onChange={handleHoverImageChange}
+                                sx={{
+                                    width: '100%'
+                                }}
+                            />
                             <Button
                                 variant='contained'
-                                size='small'
-                                onClick={() => chooseMainImage(currentImgIndex)}
-                            >
-                                Tornar Imagem Principal
-                            </Button>
-                            <Button
-                                variant='contained'
-                                size='small'
-                                onClick={() => chooseHoverImage(currentImgIndex)}
-                            >
-                                Tornar Imagem de Hover
-                            </Button>
-                            <Button
-                                variant='contained'
-                                size='small'
                                 onClick={() => saveProduct({
                                     productArg: product,
                                     newProductIdArg: newProductId,
                                     categoriesArg: categories,
                                     tagsArg: tags,
-                                    imagesIndexSelectArg: imagesIndexSelect,
-                                    mainImgIndexArg: mainImgIndex,
-                                    hoverImgIndexArg: hoverImgIndex,
+                                    imagesArg: images.map(img => ({ src: img })),
+                                    showcaseImgArg: { src: showcaseImage },
+                                    hoverImgArg: { src: hoverImage },
                                 })}
+                                sx={{
+                                    width: '100%',
+                                    color: 'var(--global-white)',
+                                }}
                             >
                                 Save Product
                             </Button>

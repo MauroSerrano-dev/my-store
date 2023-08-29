@@ -6,6 +6,29 @@ initializeApp(firebaseConfig)
 
 const db = getFirestore()
 
+async function getAllProducts() {
+    const productsCollection = collection(db, process.env.COLL_PRODUCTS);
+    const querySnapshot = await getDocs(productsCollection);
+
+    const allProducts = [];
+
+    querySnapshot.forEach((doc) => {
+        const productData = doc.data();
+        allProducts.push(productData);
+    });
+
+    if (allProducts.length > 0) {
+        return {
+            msg: `All products retrieved successfully!`,
+            products: allProducts
+        };
+    } else {
+        return {
+            msg: `No products found.`,
+            products: []
+        };
+    }
+}
 
 async function createProduct(product) {
     const productRef = doc(db, process.env.COLL_PRODUCTS, product.id)
@@ -75,8 +98,27 @@ async function getProductById(id) {
     }
 }
 
+async function getAllProductPrintifyIds() {
+    const productsCollection = collection(db, process.env.COLL_PRODUCTS);
+    const querySnapshot = await getDocs(productsCollection);
+
+    const productPrintifyIds = [];
+
+    querySnapshot.forEach((doc) => {
+        const productData = doc.data();
+        productPrintifyIds.push(productData.id_printify);
+    });
+
+    return {
+        msg: `All product Printify IDs retrieved successfully!`,
+        printifyIds: productPrintifyIds
+    };
+}
+
 export {
     createProduct,
     getProductsByCategory,
-    getProductById
+    getProductById,
+    getAllProductPrintifyIds,
+    getAllProducts
 }

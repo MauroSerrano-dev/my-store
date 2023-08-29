@@ -73,48 +73,6 @@
     height: 100%;
 }
 
-.select {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    position: absolute;
-
-    height: 100%;
-    width: 100%;
-}
-
-.circle {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    
-    outline: 2px var(--primary) solid;
-    color: var(--primary);
-    font-size: 180px;
-    border-radius: 100%;
-
-    background-color: rgba(255, 255, 255, 0.5);
-
-    height: 50%;
-    width: 50%;
-}
-
-.miniCircle {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    
-    outline: 2px var(--primary) solid;
-    color: var(--primary);
-    font-size: 40px;
-    border-radius: 100%;
-
-    background-color: var(--global-white);
-
-    height: 50%;
-    width: 50%;
-}
-
 /* Enable hover only on non-touch devices */
 @media (hover: hover) and (pointer: fine) {
     .imgOptionContainer {

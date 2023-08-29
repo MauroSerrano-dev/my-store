@@ -27,10 +27,6 @@ export default function TagsInput(props) {
         setTags(prev => [...prev, newTag.toLowerCase()])
     }
 
-    useEffect(() => {
-        console.log('tags', tags)
-    }, [tags])
-
     function handleDeleteTag(index) {
         setTags(prev => prev.filter((tag, i) => index !== i))
     }

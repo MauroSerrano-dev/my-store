@@ -19,9 +19,6 @@ export default withRouter((props) => {
         if (id && !product)
             getProductsById(id)
     }, [id])
-    useEffect(() => {
-        console.log(product)
-    }, [product])
 
     function getProductsById(id) {
         const options = {
@@ -41,7 +38,6 @@ export default withRouter((props) => {
     }
 
     function handleBuyNow(prod) {
-        console.log(prod)
 
         const options = {
             method: 'POST',
@@ -54,7 +50,7 @@ export default withRouter((props) => {
                         image: prod.images[0].src,
                         desc: 'my product description',
                         id: prod.id,
-                        price: prod.variants[0].price / 100,
+                        price: prod.variants[0].price,
                         cartQuantity: 1,
                     }
                 ]

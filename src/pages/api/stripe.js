@@ -6,7 +6,6 @@ const stripe = Stripe(process.env.STRIPE_SECRET_KEY);
 export default async function handler(req, res) {
   if (req.method === 'POST') {
     // Process a POST request
-
     const customer = await stripe.customers.create({
       metadata: {
         userId: req.body.userId,
@@ -15,6 +14,7 @@ export default async function handler(req, res) {
     })
     
     const line_items = req.body.cartItems.map((item) => {
+      console.log(item.price)
       return {
         price_data: {
           currency: "usd",
@@ -26,7 +26,7 @@ export default async function handler(req, res) {
               id: item.id,
             },
           },
-          unit_amount: item.price * 100,
+          unit_amount: item.price,
         },
         quantity: item.cartQuantity,
       }
