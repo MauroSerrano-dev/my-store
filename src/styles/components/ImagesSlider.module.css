@@ -45,7 +45,8 @@
     justify-content: flex-start;
     align-items: center;
 
-    width: 80%;
+    width: auto;
+    max-width: 80%;
     height: 20%;
     gap: 1rem;
     padding-top: 1rem;
@@ -122,9 +123,5 @@
 
     .optionShadow:hover {
         opacity: 0;
-    }
-
-    .view {
-        cursor: pointer;
     }
 }

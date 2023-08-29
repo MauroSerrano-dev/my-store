@@ -13,7 +13,7 @@ export default async function handler(req, res) {
         cart: JSON.stringify(req.body.cartItems),
       },
     })
-
+    
     const line_items = req.body.cartItems.map((item) => {
       return {
         price_data: {

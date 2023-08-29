@@ -18,7 +18,12 @@ export default function Carousel(props) {
         type = 'imgs'
     } = props
 
-    const [itemsArray, setItemsArray] = useState(items.concat(items).concat(items).map((item, i) => ({ ...item, position: i - items.length })))
+    const [itemsArray, setItemsArray] = useState(items.concat(items).concat(items).map((item, i) => (
+        {
+            ...item,
+            position: i - items.length
+        }
+    )))
 
     useEffect(() => {
         if (loop) {
@@ -99,13 +104,13 @@ export default function Carousel(props) {
                         >
                             <Product
                                 responsive
-                                name='Jett T-Shirt'
-                                price={20.90}
+                                name={item.title}
+                                price={item.variants[0].price}
                                 currencySymbol='$'
-                                soldOut={13.90}
                                 outOfStock={false}
-                                img='https://images.printify.com/mockup/64df65c1a996f39335017a6c/12100/92573?s=608&t=1692362639000'
-                                imgHover='https://images.printify.com/mockup/64df65c1a996f39335017a6c/12100/92662?s=608&t=1692362639000'
+                                img={item.image_showcase.src}
+                                imgHover={item.image_hover.src}
+                                url={`/product?id=${item.id}`}
                             />
                         </div>
                 )}

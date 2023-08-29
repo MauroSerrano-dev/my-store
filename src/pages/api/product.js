@@ -1,9 +1,14 @@
-import { createProduct } from "../../../backend/product";
+import { getProductById, createProduct } from "../../../backend/product";
 
 export default async function handler(req, res) {
+    if (req.method === "GET") {
+        const { id } = req.headers
+        const result = await getProductById(id)
+        res.status(200).json(result)
+    }
     if (req.method === "POST") {
         const { product } = req.body
-        const result = await createProduct(product);
+        const result = await createProduct(product)
         res.status(201).json({
             msg: result.msg
         })

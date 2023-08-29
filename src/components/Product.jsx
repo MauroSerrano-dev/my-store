@@ -1,6 +1,7 @@
 import styles from '@/styles/components/Product.module.css'
 import { useEffect, useState } from 'react'
 import { Button } from '@mui/material'
+import Router from "next/router";
 
 export default function Product(props) {
     const {
@@ -11,7 +12,8 @@ export default function Product(props) {
         price,
         soldOut,
         outOfStock,
-        currencySymbol
+        currencySymbol,
+        url
     } = props
 
     const [isHovered, setIsHovered] = useState(false)
@@ -40,6 +42,7 @@ export default function Product(props) {
     return (
         <div
             className={styles.container}
+            onClick={() => Router.push(url)}
             onMouseEnter={handleMouseEnter}
             onMouseLeave={handleMouseLeave}
             style={{
@@ -82,11 +85,11 @@ export default function Product(props) {
                 <p className={styles.name}>{name}</p>
                 {soldOut !== undefined  &&
                     <p className={styles.oldPrice}>
-                        {currencySymbol}{soldOut !== undefined ? price.toFixed(2) : soldOut.toFixed(2)}
+                        {currencySymbol}{soldOut !== undefined ? (price / 100).toFixed(2).replace('.', ',') : (soldOut / 100).toFixed(2).replace('.', ',')}
                     </p>
                 }
                 <p className={styles.price}>
-                    {currencySymbol}{soldOut !== undefined ? soldOut.toFixed(2) : price.toFixed(2)}
+                    {currencySymbol}{soldOut !== undefined ? (soldOut / 100).toFixed(2).replace('.', ',') : (price / 100).toFixed(2).replace('.', ',')}
                 </p>
             </div>
             {supportsHoverAndPointer &&

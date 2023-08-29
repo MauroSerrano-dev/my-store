@@ -21,7 +21,15 @@ export default function ImagesSlider(props) {
         >
             <div
                 className={styles.view}
-                onClick={() => handleViewClick(currentImgIndex)}
+                style={{
+                    cursor: imagesIndexSelect
+                        ? 'pointer'
+                        : 'default'
+                }}
+                onClick={() => {
+                    if (imagesIndexSelect)
+                        handleViewClick(currentImgIndex)
+                }}
             >
                 <div
                     className={styles.viewImages}
@@ -44,6 +52,7 @@ export default function ImagesSlider(props) {
                             <img
                                 className={styles.imgView}
                                 src={img.src}
+                                crossOrigin='anonymous'
                             />
                         </div>
                     )}

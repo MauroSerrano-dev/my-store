@@ -47,7 +47,7 @@
   flex-direction: row;
   align-items: center;
   justify-content: center;
-  
+
   width: 100%;
   height: 50px;
   background-color: var(--primary);
@@ -65,14 +65,30 @@
   gap: 0.5rem;
 }
 
+.carouselAndTitle {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+
+  width: 100%;
+
+  padding-top: 2rem;
+
+  gap: 1rem;
+}
+
+.carouselTitle {
+  margin-left: 6%;
+  --text-color: var(--text-white)
+}
+
 .carousel {
   display: flex;
   flex-direction: row;
   align-items: center;
   justify-content: center;
 
-  padding-top: 4rem;
-  padding-bottom: 4rem;
   width: 100%;
 }
 

@@ -2,38 +2,11 @@ import Image from 'next/image'
 import { Inter } from 'next/font/google'
 import styles from '@/styles/Home.module.css'
 import Carousel from '@/components/Carousel'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import Inventory2OutlinedIcon from '@mui/icons-material/Inventory2Outlined';
 import LocalShippingOutlinedIcon from '@mui/icons-material/LocalShippingOutlined';
 
 const inter = Inter({ subsets: ['latin'] })
-
-async function createSession() {
-  const options = {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({
-      userId: 'userId',
-      cartItems: [
-        {
-          name: 'name',
-          image: 'https://99designs-blog.imgix.net/blog/wp-content/uploads/2016/12/Featured.jpg?auto=format&q=60&w=1200&h=675&fit=crop&crop=faces',
-          desc: 'desc',
-          id: 'id',
-          price: 4,
-          cartQuantity: 2,
-        }
-      ]
-    })
-  }
-
-  await fetch('/api/stripe', options)
-    .then(response => response.json())
-    .then(response => {
-      window.location.href = response.url
-    })
-    .catch(err => console.error(err))
-}
 
 const categories = [
   { id: 'gamer', name: 'Gamer', img: 'https://media.istockphoto.com/id/1320799591/pt/vetorial/game-on-neon-game-controller-or-joystick-for-game-console-on-blue-background.jpg?s=612x612&w=0&k=20&c=B6TK6N2MRoM434nt5SXX-bVLfYVw9odAeVLBAtI3Muc=' },
@@ -46,6 +19,38 @@ const categories = [
 
 export default function Home() {
 
+  const [productsHome, setProductsHome] = useState()
+  const [productsTShirts, setProductsTShirts] = useState()
+
+  async function getProductsByCategory(categoryName) {
+    let products
+    const options = {
+      method: 'GET',
+      headers: {
+        category: categoryName
+      }
+    }
+
+    await fetch("/api/products", options)
+      .then(response => response.json())
+      .then(response => {
+        console.log(response.msg)
+        products = response.products
+      })
+      .catch(err => console.error(err))
+
+    return products
+  }
+
+  useEffect(() => {
+    getProductsFromCategories()
+    /* setProductsTShirts('T-Shirts') */
+  }, [])
+
+  async function getProductsFromCategories() {
+    setProductsHome(await getProductsByCategory('Home'))
+    setProductsTShirts(await getProductsByCategory('T-Shirts'))
+  }
 
   return (
     <div className={styles.container}>
@@ -86,26 +91,55 @@ export default function Home() {
             <p>Free Shipping</p>
           </div>
         </div>
-        <div className={styles.carousel}>
-          <Carousel
-            items={categories}
-            height='150px'
-            width='90%'
-            animationDuration={200}
-            itemWidth={205}
-            type='imgs'
-          />
+        <div className={styles.carouselAndTitle}>
+          <h2 className={styles.carouselTitle}>
+            Categories
+          </h2>
+          <div className={styles.carousel}>
+            <Carousel
+              items={categories}
+              height='150px'
+              width='90%'
+              animationDuration={200}
+              itemWidth={205}
+              type='imgs'
+            />
+          </div>
         </div>
-        <div className={styles.carousel}>
-          <Carousel
-            items={categories}
-            height='400px'
-            width='90%'
-            animationDuration={200}
-            itemWidth={225}
-            type='products'
-          />
-        </div>
+        {productsTShirts &&
+          <div className={styles.carouselAndTitle}>
+            <h2 className={styles.carouselTitle}>
+              T-Shirts
+            </h2>
+            <div className={styles.carousel}>
+              <Carousel
+                items={productsTShirts}
+                height='400px'
+                width='90%'
+                animationDuration={200}
+                itemWidth={225}
+                type='products'
+              />
+            </div>
+          </div>
+        }
+        {productsHome &&
+          <div className={styles.carouselAndTitle}>
+            <h2 className={styles.carouselTitle}>
+              Home
+            </h2>
+            <div className={styles.carousel}>
+              <Carousel
+                items={productsHome}
+                height='400px'
+                width='90%'
+                animationDuration={200}
+                itemWidth={225}
+                type='products'
+              />
+            </div>
+          </div>
+        }
       </main>
       <footer>
       </footer>

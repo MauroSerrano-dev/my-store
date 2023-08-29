@@ -1,4 +1,4 @@
-import { collection, doc, getDoc, getDocs, getFirestore, setDoc, updateDoc } from "firebase/firestore";
+import { collection, doc, getDoc, getDocs, getFirestore, query, setDoc, updateDoc, where } from "firebase/firestore";
 import { initializeApp } from 'firebase/app'
 import { firebaseConfig } from "../firebase.config";
 
@@ -26,7 +26,57 @@ async function createProduct(product) {
     }
 }
 
+async function getProductsByCategory(category) {
+    const productsCollection = collection(db, process.env.COLL_PRODUCTS);
+    const q = query(productsCollection, where("categories", "array-contains", category));
+
+    const querySnapshot = await getDocs(q);
+
+    const productsInCategory = [];
+
+    querySnapshot.forEach((doc) => {
+        const productData = doc.data();
+        productsInCategory.push(productData);
+    });
+
+    if (productsInCategory.length > 0) {
+        return {
+            msg: `Category ${category} products successfully found!`,
+            products: productsInCategory
+        };
+    } else {
+        return {
+            msg: `No products found in category ${category}.`,
+            products: []
+        };
+    }
+}
+
+async function getProductById(id) {
+    const productRef = doc(db, process.env.COLL_PRODUCTS, id);
+    try {
+        const productDoc = await getDoc(productRef);
+        
+        if (productDoc.exists()) {
+            const productData = productDoc.data();
+            return {
+                msg: `Product with ID ${id} found!`,
+                product: productData
+            };
+        } else {
+            return {
+                msg: `Product with ID ${id} not found.`,
+                product: null
+            };
+        }
+    } catch (error) {
+        console.log("Error getting product:", error);
+        return null;
+    }
+}
 
 export {
-    createProduct
+    createProduct,
+    getProductsByCategory,
+    getProductById
 }
