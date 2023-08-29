@@ -52,7 +52,6 @@ export default function ImagesSlider(props) {
                             <img
                                 className={styles.imgView}
                                 src={img.src}
-                                crossOrigin='anonymous'
                             />
                         </div>
                     )}
@@ -86,7 +85,6 @@ export default function ImagesSlider(props) {
                         <img
                             className={styles.imgOption}
                             src={img.src}
-                            crossOrigin='anonymous'
                         />
                     </div>
                 )}

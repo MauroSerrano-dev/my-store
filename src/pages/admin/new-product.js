@@ -297,7 +297,6 @@ export default function NewProduct() {
                                         className={styles.productImg}
                                         src={prod.images[0].src}
                                         alt={prod.title}
-                                        crossOrigin='anonymous'
                                     />
                                     {prod.title}
                                 </Button>

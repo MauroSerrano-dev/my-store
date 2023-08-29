@@ -60,7 +60,6 @@ export default function Product(props) {
                     <img
                         src={imgHover}
                         className={styles.img}
-                        crossOrigin='anonymous'
                     />
                 </div>
             }
@@ -68,7 +67,6 @@ export default function Product(props) {
                 <img
                     src={img}
                     className={styles.img}
-                    crossOrigin='anonymous'
                 />
             </div>
             <div className={styles.infos}>
@@ -83,7 +81,7 @@ export default function Product(props) {
                     </div>
                 }
                 <p className={styles.name}>{name}</p>
-                {soldOut !== undefined  &&
+                {soldOut !== undefined &&
                     <p className={styles.oldPrice}>
                         {currencySymbol}{soldOut !== undefined ? (price / 100).toFixed(2).replace('.', ',') : (soldOut / 100).toFixed(2).replace('.', ',')}
                     </p>
