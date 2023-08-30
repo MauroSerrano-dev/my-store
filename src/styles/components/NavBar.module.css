@@ -13,8 +13,6 @@
     padding-left: 1rem;
     padding-right: 1rem;
     --text-color: var(--text-white);
-    padding-top: 1.2rem;
-    padding-bottom: 1.2rem;
 }
 
 .bodyContainer {
@@ -51,6 +49,8 @@
     display: flex;
     align-items: center;
     justify-content: center;
+    padding-top: 1.2rem;
+    padding-bottom: 1.2rem;
 }
 
 .rightSide {
