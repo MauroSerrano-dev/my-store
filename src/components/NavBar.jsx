@@ -22,7 +22,7 @@ export default function NavBar(props) {
                     {/* <MenuToggle toggle={() => toggleOpen()} /> */}
                     <Link legacyBehavior href={'/'}>
                         <a>
-                            <Logo height='70%' hover />
+                            <Logo height='170%' hover />
                         </a>
                     </Link>
                 </div>
