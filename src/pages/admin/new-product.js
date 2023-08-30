@@ -13,13 +13,18 @@ export default function NewProduct() {
     const [product, setProduct] = useState()
     const [allProducts, setAllProducts] = useState()
     const [newProductId, setNewProductId] = useState()
+
     const [tagsList, setTagsList] = useState([])
     const [tags, setTags] = useState([])
+    const [themes, setThemes] = useState([])
     const [categories, setCategories] = useState([])
-    const [newTag, setNewTag] = useState('')
-    const [newImage, setNewImage] = useState('')
-    const [currentImgIndex, setCurrentImgIndex] = useState(0)
     const [images, setImages] = useState([])
+
+    const [newTag, setNewTag] = useState('')
+    const [newTheme, setNewTheme] = useState('')
+    const [newImage, setNewImage] = useState('')
+
+    const [currentImgIndex, setCurrentImgIndex] = useState(0)
     const [showcaseImage, setShowcaseImage] = useState('')
     const [hoverImage, setHoverImage] = useState('')
 
@@ -98,9 +103,13 @@ export default function NewProduct() {
         setNewProductId()
         setTagsList([])
         setTags([])
+        setThemes([])
         setCurrentImgIndex(0)
         setCategories([])
         setImages([])
+        setNewImage('')
+        setNewTag('')
+        setNewTheme('')
     }
 
     function handleSetProduct(product) {
@@ -112,6 +121,11 @@ export default function NewProduct() {
     function handleTagsOnChange(event) {
         event.preventDefault()
         setNewTag(event.target.value.toLowerCase())
+    }
+
+    function handleThemesOnChange(event) {
+        event.preventDefault()
+        setNewTheme(event.target.value.toLowerCase())
     }
 
     function handleImagesOnChange(event) {
@@ -130,6 +144,16 @@ export default function NewProduct() {
         }
     }
 
+    function handleThemesKeyDown(event) {
+        if (event.key === 'Enter' && newTheme !== '') {
+            event.preventDefault()
+            if (!tagsList.includes(newTheme)) {
+                setThemes(prev => [...prev, newTheme])
+                setNewTheme('')
+            }
+        }
+    }
+
     function handleImagesKeyDown(event) {
         if (event.key === 'Enter' && newImage !== '') {
             event.preventDefault()
@@ -142,6 +166,13 @@ export default function NewProduct() {
         event.preventDefault()
         if (event.key !== 'Enter') {
             setTags(value)
+        }
+    }
+
+    function handleAutoCompleteThemesChange(event, value) {
+        event.preventDefault()
+        if (event.key !== 'Enter') {
+            setThemes(value)
         }
     }
 
@@ -259,8 +290,45 @@ export default function NewProduct() {
                                         label="Tags"
                                         placeholder="Tag"
                                         value={newTag}
-                                        onKeyDown={e => handleTagsKeyDown(e)}
-                                        onChange={e => handleTagsOnChange(e)}
+                                        onKeyDown={handleTagsKeyDown}
+                                        onChange={handleTagsOnChange}
+                                    />
+                                )}
+                            />
+                            <Autocomplete
+                                multiple
+                                options={themes}
+                                value={themes}
+                                onChange={handleAutoCompleteThemesChange}
+                                sx={{
+                                    '.MuiAutocomplete-tag': {
+                                        backgroundColor: '#363a3d',
+                                        '--text-color': 'var(--global-white)',
+                                    },
+                                    '.MuiAutocomplete-clearIndicator': {
+                                        color: 'var(--global-white)'
+                                    },
+                                    '.MuiAutocomplete-popupIndicator': {
+                                        color: 'var(--global-white)'
+                                    },
+                                    '.MuiChip-deleteIcon': {
+                                        color: 'rgba(255, 255, 255, 0.4) !important',
+                                        transition: 'all ease-in-out 200ms'
+                                    },
+                                    '.MuiChip-deleteIcon:hover': {
+                                        color: 'rgba(255, 255, 255, 0.8) !important',
+                                    },
+                                    width: '100%',
+                                }}
+                                renderInput={(params) => (
+                                    <CustomTextField
+                                        {...params}
+                                        variant="outlined"
+                                        label="Themes"
+                                        placeholder="Theme"
+                                        value={newTag}
+                                        onKeyDown={handleThemesKeyDown}
+                                        onChange={handleThemesOnChange}
                                     />
                                 )}
                             />

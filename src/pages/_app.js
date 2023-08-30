@@ -4,7 +4,7 @@ import Script from 'next/script'
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import MontserratRegular from '../../public/fonts/montserrat.ttf';
 import DataHandler from '@/components/DataHandler'
-import { Analytics } from '@vercel/analytics/react';
+import { SessionProvider } from 'next-auth/react'
 
 const primaryColor = '#00acb7'
 
@@ -50,9 +50,10 @@ export default function App(props) {
         <Script src="https://js.stripe.com/v3/" async></Script>
       </Head>
       <ThemeProvider theme={mainTheme}>
-        <DataHandler pageProps={pageProps} Component={Component} primaryColor={primaryColor} />
+        <SessionProvider>
+          <DataHandler pageProps={pageProps} Component={Component} primaryColor={primaryColor} />
+        </SessionProvider>
       </ThemeProvider>
-      <Analytics />
     </div>
   )
 }

@@ -43,7 +43,7 @@ export default function Logo(props) {
         >
             <svg
                 viewBox="0 0 234.375 135.3027933032084"
-                class="css-1j8o68f"
+                className="css-1j8o68f"
                 style={{
                     ...style,
                     width: '100%',

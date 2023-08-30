@@ -8,6 +8,7 @@ import PersonOutlineOutlinedIcon from '@mui/icons-material/PersonOutlineOutlined
 import ShoppingCartOutlinedIcon from '@mui/icons-material/ShoppingCartOutlined';
 
 export default function NavBar(props) {
+    const { session, signIn, signOut } = props
     const [cartItemsCounter, setCartItemsCounter] = useState(0);
 
     return (
@@ -30,7 +31,10 @@ export default function NavBar(props) {
                     <SearchBar />
                 </div>
                 <div className={styles.rightSide}>
-                    <div className={styles.userIconContainer}>
+                    <div
+                        className={styles.userIconContainer}
+                        onClick={() => signIn('google')}
+                    >
                         <PersonOutlineOutlinedIcon
                             style={{
                                 fontSize: 'calc(var(--bar-height) * 0.43)',
