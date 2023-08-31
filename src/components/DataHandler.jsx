@@ -39,7 +39,7 @@ export default function DataHandler(props) {
                 <NavBar session={session} signIn={signIn} signOut={signOut} />
             }
             <div id={styles.componentContainer}>
-                <Component{...pageProps} setShowNavBar={setShowNavBar} />
+                <Component{...pageProps} setShowNavBar={setShowNavBar} session={session} signIn={signIn} />
             </div>
         </div >
     )

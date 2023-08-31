@@ -31,17 +31,20 @@ export default function NavBar(props) {
                     <SearchBar />
                 </div>
                 <div className={styles.rightSide}>
-                    <div
-                        className={styles.userIconContainer}
-                        onClick={() => signIn('google')}
-                    >
-                        <PersonOutlineOutlinedIcon
-                            style={{
-                                fontSize: 'calc(var(--bar-height) * 0.43)',
-                                color: 'var(--global-white)'
-                            }}
-                        />
-                    </div>
+                    <Link legacyBehavior href={'/signin'}>
+                        <a>
+                            <div
+                                className={styles.userIconContainer}
+                            >
+                                <PersonOutlineOutlinedIcon
+                                    style={{
+                                        fontSize: 'calc(var(--bar-height) * 0.43)',
+                                        color: 'var(--global-white)'
+                                    }}
+                                />
+                            </div>
+                        </a>
+                    </Link>
                     <div className={styles.cartContainer}>
                         <ShoppingCartOutlinedIcon
                             style={{

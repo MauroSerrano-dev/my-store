@@ -75,7 +75,7 @@ export default function Home() {
     <div className={styles.container}>
       <header>
       </header>
-      <main className={`${styles.main} ${inter.className}`}>
+      <main className={styles.main}>
         <div className={styles.categoriesContainer}>
           <p>T-SHIRTS</p>
           <p>HOODIES</p>
