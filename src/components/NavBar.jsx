@@ -31,7 +31,7 @@ export default function NavBar(props) {
                     <SearchBar />
                 </div>
                 <div className={styles.rightSide}>
-                    <Link legacyBehavior href={'/signin'}>
+                    <Link legacyBehavior href={'/login'}>
                         <a>
                             <div
                                 className={styles.userIconContainer}

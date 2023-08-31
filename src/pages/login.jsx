@@ -1,10 +1,10 @@
-import styles from '@/styles/signin.module.css'
+import styles from '@/styles/login.module.css'
 import { Button, TextField } from '@mui/material'
 import Link from 'next/link'
 import { FcGoogle } from "react-icons/fc";
 import { PiHandshakeLight } from "react-icons/pi";
 
-export default function Signin(props) {
+export default function Login(props) {
     const { signIn } = props
 
     return (
@@ -18,7 +18,7 @@ export default function Signin(props) {
                     <div
                         className={styles.loginHead}
                     >
-                        <h1>Create an account</h1>
+                        <h1>Login</h1>
                     </div>
                     <div
                         className={styles.loginBody}
@@ -70,7 +70,7 @@ export default function Signin(props) {
                                         left: '1.5rem'
                                     }}
                                 />
-                                Sign in with Google
+                                Login with Google
                             </button>
                         </div>
                     </div>
@@ -82,7 +82,7 @@ export default function Signin(props) {
                         className={styles.joinHead}
                     >
                         <h3>
-                            Are you planning to buy?
+                            Don’t have an account?
                         </h3>
                         <p>
                             Join MKJ community!
@@ -102,6 +102,13 @@ export default function Signin(props) {
                             <li>Save your order data for next purchases.</li>
                             <li>Be the first one to know about our discounts.</li>
                         </ul>
+                        <Link legacyBehavior href={'/signin'}>
+                            <a
+                                className={styles.linkCreateAccount}
+                            >
+                                Create a Customer Account
+                            </a>
+                        </Link>
                     </div>
                 </div>
             </main>
