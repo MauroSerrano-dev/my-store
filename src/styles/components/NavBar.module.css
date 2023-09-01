@@ -185,8 +185,8 @@
 .cartCounter {
     background-color: var(--global-white);
     position: absolute;
-    width: calc(var(--bar-height) * 0.2);
-    height: calc(var(--bar-height) * 0.2);
+    width: calc(var(--bar-height) * 0.22);
+    height: calc(var(--bar-height) * 0.22);
     border-radius: 100%;
     top: 8%;
     right: 10%;

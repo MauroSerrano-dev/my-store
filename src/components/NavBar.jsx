@@ -45,27 +45,30 @@ export default function NavBar(props) {
                             </div>
                         </a>
                     </Link>
-                    <div
-                        className={styles.cartContainer}
-                        onClick={signOut}
-                    >
-                        <ShoppingCartOutlinedIcon
-                            style={{
-                                fontSize: 'calc(var(--bar-height) * 0.38)',
-                                color: 'var(--global-white)'
-                            }}
-                        />
-                        {session !== undefined &&
+                    <Link legacyBehavior href={'/cart'}>
+                        <a>
                             <div
-                                className={styles.cartCounter}
-                                style={{
-                                    fontSize: cart.length > 99 ? '65%' : '80%'
-                                }}
+                                className={styles.cartContainer}
                             >
-                                {cart.length > 99 ? '99+' : cart.length}
+                                <ShoppingCartOutlinedIcon
+                                    style={{
+                                        fontSize: 'calc(var(--bar-height) * 0.38)',
+                                        color: 'var(--global-white)'
+                                    }}
+                                />
+                                {session !== undefined &&
+                                    <div
+                                        className={styles.cartCounter}
+                                        style={{
+                                            fontSize: cart.reduce((acc, product) => acc + product.quantity, 0) > 99 ? '55%' : '72%'
+                                        }}
+                                    >
+                                        {cart.reduce((acc, product) => acc + product.quantity, 0) > 99 ? '99+' : cart.reduce((acc, product) => acc + product.quantity, 0)}
+                                    </div>
+                                }
                             </div>
-                        }
-                    </div>
+                        </a>
+                    </Link>
                 </div>
             </motion.div>
         </div>

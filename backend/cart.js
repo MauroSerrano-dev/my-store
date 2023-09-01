@@ -15,9 +15,9 @@ async function setUserCart(userId, cart) {
         // Update the "cart" field in the user's document
         await updateDoc(userRef, { cart: cart })
 
-        console.log("User's 'cart' field updated successfully!")
+        console.log(`User ${userId} cart updated successfully!`)
     } catch (error) {
-        console.error("Error updating user's 'cart' field:", error)
+        console.error(`Error updating user ${userId} cart:`, error)
     }
 }
 

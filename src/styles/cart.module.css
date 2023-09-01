@@ -1,0 +1,106 @@
+.container {
+    height: 100%;
+    width: 100%;
+
+    --text-color: #ffffff;
+}
+
+.main {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: flex-start;
+
+    padding: 4rem 5%;
+    gap: 1.5rem;
+
+    height: 100%;
+    width: 100%;
+}
+
+.productsContainer {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+
+    width: 65.45%;
+    max-width: 720px;
+    max-height: 900px;
+
+    border-radius: 0.2rem;
+    overflow: hidden;
+}
+
+.productsHead {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+
+    width: 100%;
+    height: 90px;
+
+    border-bottom: #ababab solid 1px
+}
+
+.productsBody {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+
+    width: 100%;
+    height: auto;
+}
+
+.detailsContainer {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+
+    padding: 0 1rem;
+
+    background-color: #ffffff;
+    height: 600px;
+    width: 34.55%;
+    max-width: 380px;
+    max-height: 900px;
+
+    border-radius: 0.2rem;
+    overflow: hidden;
+
+    --text-color: var(--text-black);
+}
+
+.detailsHead {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+
+    width: 100%;
+    height: 15%;
+
+    border-bottom: #d2d2d2 solid 1px;
+}
+
+.detailsBody {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+
+    width: 100%;
+    height: 85%;
+
+    padding-top: 0.8rem;
+
+    gap: 0.5rem;
+}
+
+/* Enable hover only on non-touch devices */
+@media (hover: hover) and (pointer: fine) {
+
+}
