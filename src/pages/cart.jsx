@@ -1,4 +1,4 @@
-import CartItem from '@/components/cartItem'
+import CartItem from '@/components/CartItem'
 import styles from '@/styles/cart.module.css'
 
 export default function Cart(props) {
