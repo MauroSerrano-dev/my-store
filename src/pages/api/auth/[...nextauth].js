@@ -55,7 +55,7 @@ export default NextAuth({
         }
       } */
 
-      return Promise.resolve(true); // Confirmação de login
+      return Promise.resolve(true)
     },
   },
   secret: process.env.NEXTAUTH_SECRET,
