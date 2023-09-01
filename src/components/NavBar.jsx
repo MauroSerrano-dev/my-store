@@ -55,14 +55,16 @@ export default function NavBar(props) {
                                 color: 'var(--global-white)'
                             }}
                         />
-                        <div
-                            className={styles.cartCounter}
-                            style={{
-                                fontSize: cart.length > 99 ? '65%' : '80%'
-                            }}
-                        >
-                            {session === undefined ? '' : cart.length > 99 ? '99+' : cart.length}
-                        </div>
+                        {session !== undefined &&
+                            <div
+                                className={styles.cartCounter}
+                                style={{
+                                    fontSize: cart.length > 99 ? '65%' : '80%'
+                                }}
+                            >
+                                {cart.length > 99 ? '99+' : cart.length}
+                            </div>
+                        }
                     </div>
                 </div>
             </motion.div>
