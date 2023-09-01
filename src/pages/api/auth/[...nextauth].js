@@ -1,9 +1,9 @@
 import NextAuth from "next-auth";
 import GoogleProvider from 'next-auth/providers/google';
-/* import { createCustomer, getCustomerByEmail } from "../../../backend-data/utils/stripe"; */
-
 import { FirestoreAdapter } from '@next-auth/firebase-adapter'
 import { cert } from "firebase-admin/app";
+import { removeEmailVerifiedField } from "../../../../backend/user";
+/* import { createCustomer, getCustomerByEmail } from "../../../backend-data/utils/stripe"; */
 
 export default NextAuth({
   providers: [
@@ -16,23 +16,32 @@ export default NextAuth({
           name: profile.name,
           email: profile.email,
           image: profile.picture,
-          createAt: new Date(),
+          email_verified: profile.email_verified,
+          cart: [],
+          create_at: new Date(),
         }
       },
     }),
   ],
   callbacks: {
-    session: async (session) => {
+    session: async (props) => {
+      const { session, user } = props
+
+      if (user.emailVerified !== undefined)
+        removeEmailVerifiedField(user.id)
+
       return Promise.resolve({
-        ...session,
+        ...props,
         user: {
-          name: session.user.name,
-          email: session.user.email,
+          id: user.id,
+          name: user.name,
+          email: user.email,
+          cart: user.cart
         }
-      });
+      })
     },
     async signIn(props) {
-      const { user, account, profile } = props;
+      const { user, account, profile } = props
       /* if (user && user.email) {
         try {
           const existingCustomer = await getCustomerByEmail(user.email);
@@ -45,7 +54,8 @@ export default NextAuth({
           return false
         }
       } */
-      return true
+
+      return Promise.resolve(true); // Confirmação de login
     },
   },
   secret: process.env.NEXTAUTH_SECRET,

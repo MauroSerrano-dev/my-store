@@ -94,6 +94,12 @@ input::placeholder {
   flex-direction: column;
 }
 
+.center {
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
 .fillWidth {
   width: 100%;
 }

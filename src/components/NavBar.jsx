@@ -6,10 +6,10 @@ import Logo from './Logo';
 import SearchBar from './SearchBar';
 import PersonOutlineOutlinedIcon from '@mui/icons-material/PersonOutlineOutlined';
 import ShoppingCartOutlinedIcon from '@mui/icons-material/ShoppingCartOutlined';
+import Cookies from 'js-cookie';
 
 export default function NavBar(props) {
-    const { session, signIn, signOut } = props
-    const [cartItemsCounter, setCartItemsCounter] = useState(0);
+    const { session, signIn, signOut, cart } = props
 
     return (
         <div className={styles.container}>
@@ -45,7 +45,10 @@ export default function NavBar(props) {
                             </div>
                         </a>
                     </Link>
-                    <div className={styles.cartContainer}>
+                    <div
+                        className={styles.cartContainer}
+                        onClick={signOut}
+                    >
                         <ShoppingCartOutlinedIcon
                             style={{
                                 fontSize: 'calc(var(--bar-height) * 0.38)',
@@ -55,10 +58,10 @@ export default function NavBar(props) {
                         <div
                             className={styles.cartCounter}
                             style={{
-                                fontSize: cartItemsCounter > 99 ? '65%' : '80%'
+                                fontSize: cart.length > 99 ? '65%' : '80%'
                             }}
                         >
-                            {cartItemsCounter > 99 ? '99+' : cartItemsCounter}
+                            {session === undefined ? '' : cart.length > 99 ? '99+' : cart.length}
                         </div>
                     </div>
                 </div>

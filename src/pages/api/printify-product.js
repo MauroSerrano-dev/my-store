@@ -14,9 +14,6 @@ export default async function handler(req, res) {
         try {
             const response = await axios.get(base_url, { headers })
 
-            // Set the cookie with the appropriate SameSite attribute
-            res.setHeader('Set-Cookie', 'SameSite=Strict; SameSite=None; Secure')
-
             const product = response.data.data.filter(product => product.id === id)[0]
             res.status(200).json(product)
         } catch (error) {

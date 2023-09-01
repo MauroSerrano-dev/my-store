@@ -5,10 +5,10 @@ import ImagesSlider from '@/components/ImagesSlider'
 import { Button } from '@mui/material'
 import ShoppingCartOutlinedIcon from '@mui/icons-material/ShoppingCartOutlined';
 import CreditCardOutlinedIcon from '@mui/icons-material/CreditCardOutlined';
+import Cookies from 'js-cookie';
 
 export default withRouter((props) => {
-    const {
-    } = props
+    const { session, cart, setCart } = props
 
     const { id } = props.router.query
 
@@ -65,7 +65,37 @@ export default withRouter((props) => {
             .catch(err => console.error(err))
     }
 
-    function handleAddToCart(prod) {
+    function handleAddToCart(productId, variantId, quantity) {
+        const productCart = {
+            id: productId,
+            variant: variantId,
+            quantity: quantity,
+        }
+
+        const newCart = cart.some(prod => prod.id === productId && prod.variant === variantId)
+            ? cart.map(p => p.id === productId && p.variant === variantId
+                ? ({ ...p, quantity: p.quantity + quantity })
+                : p
+            )
+            : cart.concat(productCart)
+
+        setCart(newCart)
+
+        if (session) {
+            const options = {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    userId: session.user.id,
+                    cart: newCart
+                })
+            }
+            fetch("/api/cart", options)
+                .catch(err => console.error(err))
+        }
+        else if (session === null) {
+            Cookies.set('cart', JSON.stringify(newCart))
+        }
     }
 
     return (
@@ -83,7 +113,7 @@ export default withRouter((props) => {
                         <h2>{product.title}</h2>
                         <Button
                             variant='contained'
-                            onClick={() => handleAddToCart(product)}
+                            onClick={() => handleAddToCart(product.id, product.variants[0].id, 1)}
                             sx={{
                                 width: '100%',
                                 height: '55px'

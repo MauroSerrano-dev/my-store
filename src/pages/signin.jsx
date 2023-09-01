@@ -25,6 +25,22 @@ export default function Signin(props) {
                     >
                         <TextField
                             variant='outlined'
+                            label='First Name'
+                            size='small'
+                            sx={{
+                                width: '100%'
+                            }}
+                        />
+                        <TextField
+                            variant='outlined'
+                            label='Last Name (optional)'
+                            size='small'
+                            sx={{
+                                width: '100%'
+                            }}
+                        />
+                        <TextField
+                            variant='outlined'
                             label='E-Mail'
                             size='small'
                             sx={{

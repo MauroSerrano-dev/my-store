@@ -3,9 +3,22 @@ import { Button, TextField } from '@mui/material'
 import Link from 'next/link'
 import { FcGoogle } from "react-icons/fc";
 import { PiHandshakeLight } from "react-icons/pi";
+import ReCAPTCHA from "react-google-recaptcha";
+import { useState } from 'react';
+import AppleIcon from '@mui/icons-material/Apple';
 
 export default function Login(props) {
     const { signIn } = props
+
+    const [reCaptchaSolve, setReCaptchaSolve] = useState(false)
+
+    function handleReCaptchaSuccess() {
+        setReCaptchaSolve(true)
+    }
+
+    function handleReCaptchaError() {
+        setReCaptchaSolve(false)
+    }
 
     return (
         <div className={styles.container}>
@@ -46,9 +59,18 @@ export default function Login(props) {
                                 Forgot my password
                             </a>
                         </Link>
+                        <div className='fillWidth center'>
+                            <ReCAPTCHA
+                                sitekey={process.env.NEXT_PUBLIC_RE_CAPTCHA_KEY}
+                                onChange={handleReCaptchaSuccess}
+                                onExpired={handleReCaptchaError}
+                                onErrored={handleReCaptchaError}
+                            />
+                        </div>
                         <div className={styles.loginButtons}>
                             <Button
                                 variant='contained'
+                                onClick={() => signIn()}
                                 sx={{
                                     width: '100%',
                                     height: '50px',
@@ -60,7 +82,7 @@ export default function Login(props) {
                                 Login
                             </Button>
                             <button
-                                className={styles.googleLogin}
+                                className={styles.providerLogin}
                                 onClick={() => signIn('google')}
                             >
                                 <FcGoogle
