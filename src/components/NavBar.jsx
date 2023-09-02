@@ -31,20 +31,6 @@ export default function NavBar(props) {
                     <SearchBar />
                 </div>
                 <div className={styles.rightSide}>
-                    <Link legacyBehavior href={'/login'}>
-                        <a>
-                            <div
-                                className={styles.userIconContainer}
-                            >
-                                <PersonOutlineOutlinedIcon
-                                    style={{
-                                        fontSize: 'calc(var(--bar-height) * 0.43)',
-                                        color: 'var(--global-white)'
-                                    }}
-                                />
-                            </div>
-                        </a>
-                    </Link>
                     <Link legacyBehavior href={'/cart'}>
                         <a>
                             <div
@@ -66,6 +52,20 @@ export default function NavBar(props) {
                                         {cart.reduce((acc, product) => acc + product.quantity, 0) > 99 ? '99+' : cart.reduce((acc, product) => acc + product.quantity, 0)}
                                     </div>
                                 }
+                            </div>
+                        </a>
+                    </Link>
+                    <Link legacyBehavior href={'/login'}>
+                        <a>
+                            <div
+                                className={styles.userIconContainer}
+                            >
+                                <PersonOutlineOutlinedIcon
+                                    style={{
+                                        fontSize: 'calc(var(--bar-height) * 0.43)',
+                                        color: 'var(--global-white)'
+                                    }}
+                                />
                             </div>
                         </a>
                     </Link>

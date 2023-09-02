@@ -7,14 +7,49 @@
     align-items: center;
 
     width: 100%;
-    height: 200px;
+    height: 250px;
 
-    padding: 1rem 2rem;
+    padding: 14px 28px;
 
-    border-bottom: #ababab solid 1px
+    border-bottom: #ababab solid 1px;
+}
+
+.imageContainer {
+    height: 100%;
+    width: 198.2143px;
+    overflow: hidden;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    border-radius: 0.3rem;
 }
 
 .image {
-    height: 90%;
-    width: auto;
+    height: 100%;
+}
+
+.middle {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+
+    width: 53%;
+    height: 100%;
+
+    padding: 0 0.5rem;
+}
+
+.priceContainer {
+    position: relative;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+
+    bottom: 20%;
 }
