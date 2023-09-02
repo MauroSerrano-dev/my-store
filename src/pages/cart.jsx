@@ -7,8 +7,11 @@ import { Button } from '@mui/material'
 export default function Cart(props) {
     const { session, cart, setCart } = props
 
-    function handleCheckout(cart) {
+    const ITEMS_TOTAL = (cart.reduce((acc, product) => acc + (product.price * product.quantity), 0) / 100).toFixed(2)
 
+    const ORDER_TOTAL = (15.55 + cart.reduce((acc, product) => acc + (product.price * product.quantity), 0) / 100).toFixed(2)
+
+    function handleCheckout(cart) {
         const options = {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
@@ -76,7 +79,7 @@ export default function Cart(props) {
                                 </InputLabel>
                                 <Select
                                     input={<OutlinedInput label="Country" />}
-                                    value={[]}
+                                    value={'us'}
                                     onChange={() => console.log()}
                                     size='small'
                                     sx={{
@@ -94,7 +97,7 @@ export default function Cart(props) {
                                 Items Total:
                             </p>
                             <p>
-                                {`$${(cart.reduce((acc, product) => acc + (product.price * product.quantity), 0) / 100).toFixed(2)}`}
+                                {`$${ITEMS_TOTAL}`}
                             </p>
                         </div>
                         <div className={styles.detailsItem}>
@@ -115,24 +118,30 @@ export default function Cart(props) {
                                         fontWeight: 'bold'
                                     }}
                                 >
-                                    {`$${(15.55 + cart.reduce((acc, product) => acc + (product.price * product.quantity), 0) / 100).toFixed(2)}`}
+                                    {`$${ORDER_TOTAL}`}
                                 </p>
                             </div>
                         </div>
                     </div>
-                    <Button
-                        variant='contained'
-                        size='large'
-                        onClick={() => handleCheckout(cart)}
-                        sx={{
-                            width: '100%',
-                            color: 'white',
-                            position: 'relative',
-                            bottom: 0,
-                        }}
+                    <div
+                        className={styles.detailsBottom}
                     >
-                        Checkout
-                    </Button>
+                        <Button
+                            variant='contained'
+                            size='large'
+                            onClick={() => handleCheckout(cart)}
+                            sx={{
+                                width: '100%',
+                                color: 'white',
+                                fontWeight: 'bold',
+                            }}
+                        >
+                            Checkout
+                        </Button>
+                        <p className={styles.securedText}>
+                            Transaction secured by <a href='https://stripe.com' target='_blank'>Stripe</a>
+                        </p>
+                    </div>
                 </div>
             </main>
             <footer>

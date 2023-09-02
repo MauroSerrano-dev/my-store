@@ -69,6 +69,7 @@ export default function MultiSelector(props) {
                 onBlur={() => setFocus(false)}
                 onMouseEnter={() => setHover(true)}
                 onMouseLeave={() => setHover(false)}
+                onClick={() => setHover(false)}
                 multiple
                 value={value}
                 onChange={onChange}

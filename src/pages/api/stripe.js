@@ -11,7 +11,7 @@ export default async function handler(req, res) {
         cart: JSON.stringify(req.body.cartItems),
       },
     })
-    
+
     const line_items = req.body.cartItems.map((item) => {
 
       return {
@@ -32,6 +32,9 @@ export default async function handler(req, res) {
     })
 
     const session = await stripe.checkout.sessions.create({
+      /* discounts: [
+        { coupon: '7Taroh9C' }
+      ], */
       payment_method_types: ["card"],
       shipping_address_collection: {
         allowed_countries: ["US", "CA", "KE", "PT", "BR", "GB"],
@@ -95,7 +98,7 @@ export default async function handler(req, res) {
   }
 }
 
-const createOrder = async (customer, data) => {
+/* const createOrder = async (customer, data) => {
   const Items = JSON.parse(customer.metadata.cart);
 
   const products = Items.map((item) => {
@@ -118,8 +121,8 @@ const createOrder = async (customer, data) => {
 
   try {
     const savedOrder = await newOrder.save();
-    console.log("Processed Order:", savedOrder);
+    console.log('Processed Order:', savedOrder);
   } catch (err) {
     console.log(err);
   }
-}
+} */

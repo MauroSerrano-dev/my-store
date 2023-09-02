@@ -41,7 +41,11 @@ export default function Product(props) {
 
     return (
         <Link legacyBehavior href={url}>
-            <a>
+            <a
+                style={{
+                    textDecoration: 'none',
+                }}
+            >
                 <div
                     className={styles.container}
                     onMouseEnter={handleMouseEnter}
