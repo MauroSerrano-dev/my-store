@@ -39,7 +39,8 @@ body {
 
 a {
   color: inherit;
-  text-decoration: none;
+  text-decoration: underline transparent;
+  transition: all ease-in-out 200ms;
 }
 
 p,
@@ -148,4 +149,11 @@ input::placeholder {
 .MuiMenuItem-gutters[aria-selected="true"] {
   background-color: rgba(var(--primaryRGB), 0.6) !important;
   color: var(--text-black);
+}
+
+/* Enable hover only on non-touch devices */
+@media (hover: hover) and (pointer: fine) {
+  a:hover {
+    text-decoration: underline var(--text-color);
+  }
 }

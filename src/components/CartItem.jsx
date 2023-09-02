@@ -2,6 +2,7 @@ import styles from '@/styles/components/CartItem.module.css'
 import { SlClose } from "react-icons/sl";
 import Cookies from 'js-cookie';
 import { motion } from "framer-motion";
+import Link from 'next/link';
 
 export default function CartItem(props) {
     const {
@@ -64,14 +65,20 @@ export default function CartItem(props) {
                     right: '1rem',
                 }}
             />
-            <div className={styles.imageContainer}>
-                <img
-                    className={styles.image}
-                    src={product.image}
-                />
-            </div>
+            <Link legacyBehavior href={`/product?id=${product.id}`}>
+                <a className={styles.imageContainer}>
+                    <img
+                        className={styles.image}
+                        src={product.image}
+                    />
+                </a>
+            </Link>
             <div className={styles.middle}>
-                <h4>{product.title}</h4>
+                <Link legacyBehavior href={`/product?id=${product.id}`}>
+                    <a>
+                        <h4>{product.title}</h4>
+                    </a>
+                </Link>
             </div>
             <div className={styles.priceContainer}>
                 <p>

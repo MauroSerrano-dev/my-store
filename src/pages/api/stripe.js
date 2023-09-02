@@ -1,11 +1,10 @@
-// Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 const Stripe = require("stripe");
 
 const stripe = Stripe(process.env.STRIPE_SECRET_KEY);
 
 export default async function handler(req, res) {
   if (req.method === 'POST') {
-    // Process a POST request
+
     const customer = await stripe.customers.create({
       metadata: {
         userId: req.body.userId,
@@ -14,12 +13,12 @@ export default async function handler(req, res) {
     })
     
     const line_items = req.body.cartItems.map((item) => {
-      console.log(item.price)
+
       return {
         price_data: {
           currency: "usd",
           product_data: {
-            name: item.name,
+            name: item.title,
             images: [item.image],
             description: item.desc,
             metadata: {
@@ -28,7 +27,7 @@ export default async function handler(req, res) {
           },
           unit_amount: item.price,
         },
-        quantity: item.cartQuantity,
+        quantity: item.quantity,
       }
     })
 

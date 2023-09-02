@@ -2,9 +2,29 @@ import CartItem from '@/components/CartItem'
 import styles from '@/styles/cart.module.css'
 import { FormControl, InputLabel, MenuItem, OutlinedInput, Select } from '@mui/material'
 import { motion } from "framer-motion";
+import { Button } from '@mui/material'
 
 export default function Cart(props) {
     const { session, cart, setCart } = props
+
+    function handleCheckout(cart) {
+
+        const options = {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                userId: 'userId',
+                cartItems: cart
+            })
+        }
+
+        fetch('/api/stripe', options)
+            .then(response => response.json())
+            .then(response => {
+                window.location.href = response.url
+            })
+            .catch(err => console.error(err))
+    }
 
     return (
         <div className={styles.container}>
@@ -100,6 +120,19 @@ export default function Cart(props) {
                             </div>
                         </div>
                     </div>
+                    <Button
+                        variant='contained'
+                        size='large'
+                        onClick={() => handleCheckout(cart)}
+                        sx={{
+                            width: '100%',
+                            color: 'white',
+                            position: 'relative',
+                            bottom: 0,
+                        }}
+                    >
+                        Checkout
+                    </Button>
                 </div>
             </main>
             <footer>
