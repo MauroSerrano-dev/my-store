@@ -15,14 +15,15 @@ import AccountCircleRoundedIcon from '@mui/icons-material/AccountCircleRounded';
 import Link from 'next/link'
 import PersonOutlineOutlinedIcon from '@mui/icons-material/PersonOutlineOutlined';
 import styles from '@/styles/components/AvatarMenu.module.css'
+import { Button } from '@mui/material'
 
 export default function AvatarMenu(props) {
   const { signOut, session } = props
 
   const [open, setOpen] = useState(false)
 
-  const handleLogout = () => {
-    signOut()
+  async function handleLogout() {
+    await signOut()
   }
 
   return (
@@ -31,65 +32,101 @@ export default function AvatarMenu(props) {
       onMouseEnter={() => setOpen(true)}
       onMouseLeave={() => setOpen(false)}
     >
-      <PersonOutlineOutlinedIcon
-        style={{
-          fontSize: 'calc(var(--bar-height) * 0.43)',
-          color: 'var(--global-white)'
-        }}
-      />
-      {open &&
-        <div className={styles.optionsContainerInvisible}>
+      <Link legacyBehavior href={`/login`}>
+        <a className={`${styles.iconContainer} flex center noUnderline`}>
+          <PersonOutlineOutlinedIcon
+            style={{
+              fontSize: 'calc(var(--bar-height) * 0.43)',
+              color: 'var(--global-white)'
+            }}
+          />
+        </a>
+      </Link>
+      {
+        open &&
+        <div
+          className={styles.contentContainer}
+          style={{
+            left: session
+              ? '-94.5px'
+              : '-201.5px'
+          }}
+        >
           <div className={styles.pointer}>
           </div>
-          <div
-            className={styles.optionsContainer}
-          >
-            <Link legacyBehavior href={`/profile?id=${session?.user.id}`}>
-              <a
-                className='noUnderline'
-              >
-                <MenuItem>
-                  <ListItemIcon>
-                    <AccountCircleRoundedIcon fontSize="medium" />
-                  </ListItemIcon>
-                  Profile
-                </MenuItem>
+          {session
+            ? <div
+              className={styles.session}
+            >
+              <Link legacyBehavior href={`/profile?id=${session?.user.id}`}>
+                <a
+                  className='noUnderline'
+                  onClick={() => setOpen(false)}
+                >
+                  <MenuItem>
+                    <ListItemIcon>
+                      <AccountCircleRoundedIcon fontSize="medium" />
+                    </ListItemIcon>
+                    Profile
+                  </MenuItem>
+                </a>
+              </Link>
+              <Divider />
+              <Link legacyBehavior href={'/settings'}>
+                <a
+                  className='noUnderline'
+                  onClick={() => setOpen(false)}
+                >
+                  <MenuItem>
+                    <ListItemIcon>
+                      <Settings fontSize="medium" />
+                    </ListItemIcon>
+                    Settings
+                  </MenuItem>
+                </a>
+              </Link>
+              <Link legacyBehavior href={'/support'}>
+                <a
+                  className='noUnderline'
+                  onClick={() => setOpen(false)}
+                >
+                  <MenuItem>
+                    <ListItemIcon>
+                      <SupportAgentIcon fontSize="medium" />
+                    </ListItemIcon>
+                    Support
+                  </MenuItem>
+                </a>
+              </Link>
+              <MenuItem onClick={handleLogout}>
+                <ListItemIcon>
+                  <Logout fontSize="medium" />
+                </ListItemIcon>
+                Logout
+              </MenuItem>
+            </div>
+            : <div className={styles.noSession}>
+              <Link legacyBehavior href={'/login'}><a onClick={() => setOpen(false)} className='noUnderline fillWidth'>
+                <Button
+                  variant='contained'
+                  sx={{
+                    width: '100%',
+                    color: '#ffffff',
+                    fontWeight: 'bold',
+                    zIndex: 10,
+                  }}
+                >
+                  Log In
+                </Button>
               </a>
-            </Link>
-            <Divider />
-            <Link legacyBehavior href={'/settings'}>
-              <a
-                className='noUnderline'
-              >
-                <MenuItem>
-                  <ListItemIcon>
-                    <Settings fontSize="medium" />
-                  </ListItemIcon>
-                  Settings
-                </MenuItem>
-              </a>
-            </Link>
-            <Link legacyBehavior href={'/support'}>
-              <a
-                className='noUnderline'
-              >
-                <MenuItem>
-                  <ListItemIcon>
-                    <SupportAgentIcon fontSize="medium" />
-                  </ListItemIcon>
-                  Support
-                </MenuItem>
-              </a>
-            </Link>
-            <MenuItem onClick={handleLogout}>
-              <ListItemIcon>
-                <Logout fontSize="medium" />
-              </ListItemIcon>
-              Logout
-            </MenuItem>
-          </div>
+              </Link>
+              <p>
+                Don't have an account yet? <Link legacyBehavior href={'/signin'}><a onClick={() => setOpen(false)} className='noUnderline'>Sign up</a></Link>
+              </p>
+            </div>
+          }
         </div>
       }
-    </div>
+    </div >
   )
 }

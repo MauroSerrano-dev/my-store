@@ -6,6 +6,7 @@ import Logo from './Logo';
 import SearchBar from './SearchBar';
 import PersonOutlineOutlinedIcon from '@mui/icons-material/PersonOutlineOutlined';
 import ShoppingCartOutlinedIcon from '@mui/icons-material/ShoppingCartOutlined';
+import FavoriteBorderRoundedIcon from '@mui/icons-material/FavoriteBorderRounded';
 import Cookies from 'js-cookie';
 import AvatarMenu from './AvatarMenu';
 
@@ -32,10 +33,26 @@ export default function NavBar(props) {
                     <SearchBar />
                 </div>
                 <div className={styles.rightSide}>
+                    <Link legacyBehavior href={'/wishlist'}>
+                        <a>
+                            <div
+                                className={styles.iconContainer}
+                            >
+                                <FavoriteBorderRoundedIcon
+                                    style={{
+                                        fontSize: 'calc(var(--bar-height) * 0.38)',
+                                        color: 'var(--global-white)',
+                                        position: 'relative',
+                                        top: '1px',
+                                    }}
+                                />
+                            </div>
+                        </a>
+                    </Link>
                     <Link legacyBehavior href={'/cart'}>
                         <a>
                             <div
-                                className={styles.cartContainer}
+                                className={styles.iconContainer}
                             >
                                 <ShoppingCartOutlinedIcon
                                     style={{
@@ -60,12 +77,6 @@ export default function NavBar(props) {
                         session={session}
                         signOut={signOut}
                     />
-                    {/* <PersonOutlineOutlinedIcon
-                                    style={{
-                                        fontSize: 'calc(var(--bar-height) * 0.43)',
-                                        color: 'var(--global-white)'
-                                    }}
-                                /> */}
                 </div>
             </motion.div>
         </div>
