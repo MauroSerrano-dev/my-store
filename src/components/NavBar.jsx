@@ -7,6 +7,7 @@ import SearchBar from './SearchBar';
 import PersonOutlineOutlinedIcon from '@mui/icons-material/PersonOutlineOutlined';
 import ShoppingCartOutlinedIcon from '@mui/icons-material/ShoppingCartOutlined';
 import Cookies from 'js-cookie';
+import AvatarMenu from './AvatarMenu';
 
 export default function NavBar(props) {
     const { session, signIn, signOut, cart } = props
@@ -55,20 +56,16 @@ export default function NavBar(props) {
                             </div>
                         </a>
                     </Link>
-                    <Link legacyBehavior href={'/login'}>
-                        <a>
-                            <div
-                                className={styles.userIconContainer}
-                            >
-                                <PersonOutlineOutlinedIcon
+                    <AvatarMenu
+                        session={session}
+                        signOut={signOut}
+                    />
+                    {/* <PersonOutlineOutlinedIcon
                                     style={{
                                         fontSize: 'calc(var(--bar-height) * 0.43)',
                                         color: 'var(--global-white)'
                                     }}
-                                />
-                            </div>
-                        </a>
-                    </Link>
+                                /> */}
                 </div>
             </motion.div>
         </div>

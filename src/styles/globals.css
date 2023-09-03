@@ -43,6 +43,10 @@ a {
   transition: all ease-in-out 200ms;
 }
 
+.noUnderline {
+  text-decoration: none;
+}
+
 p,
 h1,
 h2,
@@ -155,5 +159,9 @@ input::placeholder {
 @media (hover: hover) and (pointer: fine) {
   a:hover {
     text-decoration: underline var(--text-color);
+  }
+
+  .noUnderline:hover {
+    text-decoration: none;
   }
 }
