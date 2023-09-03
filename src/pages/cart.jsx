@@ -17,7 +17,9 @@ export default function Cart(props) {
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
                 userId: 'userId',
-                cartItems: cart
+                cartItems: cart,
+                cancel_url: window.location.href,
+                customer: session?.user
             })
         }
 

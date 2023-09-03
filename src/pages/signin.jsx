@@ -23,45 +23,47 @@ export default function Signin(props) {
                     <div
                         className={styles.loginBody}
                     >
-                        <TextField
-                            variant='outlined'
-                            label='First Name'
-                            size='small'
-                            sx={{
-                                width: '100%'
-                            }}
-                        />
-                        <TextField
-                            variant='outlined'
-                            label='Last Name (optional)'
-                            size='small'
-                            sx={{
-                                width: '100%'
-                            }}
-                        />
-                        <TextField
-                            variant='outlined'
-                            label='E-Mail'
-                            size='small'
-                            sx={{
-                                width: '100%'
-                            }}
-                        />
-                        <TextField
-                            variant='outlined'
-                            label='Password'
-                            size='small'
-                            sx={{
-                                width: '100%'
-                            }}
-                        />
-                        <Link legacyBehavior href={'/'}>
-                            <a
-                                className={styles.linkCreateAccount}
-                            >
-                                Forgot my password
-                            </a>
-                        </Link>
+                        <div className={styles.fieldsContainer}>
+                            <TextField
+                                variant='outlined'
+                                label='First Name'
+                                size='small'
+                                sx={{
+                                    width: '100%'
+                                }}
+                            />
+                            <TextField
+                                variant='outlined'
+                                label='Last Name (optional)'
+                                size='small'
+                                sx={{
+                                    width: '100%'
+                                }}
+                            />
+                            <TextField
+                                variant='outlined'
+                                label='E-Mail'
+                                size='small'
+                                sx={{
+                                    width: '100%'
+                                }}
+                            />
+                            <TextField
+                                variant='outlined'
+                                label='Password'
+                                size='small'
+                                sx={{
+                                    width: '100%'
+                                }}
+                            />
+                            <Link legacyBehavior href={'/'}>
+                                <a
+                                    className={styles.linkCreateAccount}
+                                >
+                                    Forgot my password
+                                </a>
+                            </Link>
+                        </div>
                         <div className={styles.loginButtons}>
                             <Button
                                 variant='contained'

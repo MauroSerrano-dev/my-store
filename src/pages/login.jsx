@@ -36,36 +36,38 @@ export default function Login(props) {
                     <div
                         className={styles.loginBody}
                     >
-                        <TextField
-                            variant='outlined'
-                            label='E-Mail'
-                            size='small'
-                            sx={{
-                                width: '100%'
-                            }}
-                        />
-                        <TextField
-                            variant='outlined'
-                            label='Password'
-                            size='small'
-                            sx={{
-                                width: '100%'
-                            }}
-                        />
-                        <Link legacyBehavior href={'/'}>
-                            <a
-                                className={styles.linkCreateAccount}
-                            >
-                                Forgot my password
-                            </a>
-                        </Link>
-                        <div className='fillWidth center'>
-                            <ReCAPTCHA
-                                sitekey={process.env.NEXT_PUBLIC_RE_CAPTCHA_KEY}
-                                onChange={handleReCaptchaSuccess}
-                                onExpired={handleReCaptchaError}
-                                onErrored={handleReCaptchaError}
+                        <div className={styles.fieldsContainer}>
+                            <TextField
+                                variant='outlined'
+                                label='E-Mail'
+                                size='small'
+                                sx={{
+                                    width: '100%'
+                                }}
                             />
+                            <TextField
+                                variant='outlined'
+                                label='Password'
+                                size='small'
+                                sx={{
+                                    width: '100%'
+                                }}
+                            />
+                            <Link legacyBehavior href={'/'}>
+                                <a
+                                    className={styles.linkCreateAccount}
+                                >
+                                    Forgot my password
+                                </a>
+                            </Link>
+                            <div className='fillWidth center'>
+                                <ReCAPTCHA
+                                    sitekey={process.env.NEXT_PUBLIC_RE_CAPTCHA_KEY}
+                                    onChange={handleReCaptchaSuccess}
+                                    onExpired={handleReCaptchaError}
+                                    onErrored={handleReCaptchaError}
+                                />
+                            </div>
                         </div>
                         <div className={styles.loginButtons}>
                             <Button

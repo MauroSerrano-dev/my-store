@@ -4,16 +4,36 @@ const stripe = Stripe(process.env.STRIPE_SECRET_KEY);
 
 export default async function handler(req, res) {
   if (req.method === 'POST') {
+    const customer = req.body.customer
 
-    const customer = await stripe.customers.create({
-      metadata: {
-        userId: req.body.userId,
-        cart: JSON.stringify(req.body.cartItems),
-      },
-    })
+    if (customer) {
+      // Check if the email already exists in Stripe
+      const existingCustomer = await stripe.customers.list({
+        email: customer.email,
+        limit: 1,
+      })
+
+      // The customer doesn't exist, create a new one
+      if (existingCustomer.data.length === 0) {
+        await stripe.customers.create({
+          name: customer.name,
+          email: customer.email,
+          metadata: {
+            cart: JSON.stringify(req.body.cartItems),
+          },
+        })
+      }
+    }
+    else {
+      await stripe.customers.create({
+        name: 'Anonymous',
+        metadata: {
+          cart: JSON.stringify(req.body.cartItems),
+        },
+      })
+    }
 
     const line_items = req.body.cartItems.map((item) => {
-
       return {
         price_data: {
           currency: "usd",
@@ -88,9 +108,10 @@ export default async function handler(req, res) {
       },
       line_items,
       mode: "payment",
-      customer: customer.id,
+      /* customer: customer.id, */
       success_url: `http://localhost:3000/checkout-success`,
-      cancel_url: `http://localhost:3000/cart`,
+      cancel_url: req.body.cancel_url,
+      customer_email: customer ? customer.email : undefined
     });
 
     // res.redirect(303, session.url);

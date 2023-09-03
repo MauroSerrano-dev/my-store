@@ -46,14 +46,16 @@ export default withRouter((props) => {
                 userId: 'userId',
                 cartItems: [
                     {
-                        name: prod.title,
+                        title: prod.title,
                         image: prod.images[0].src,
                         desc: 'my product description',
                         id: prod.id,
                         price: prod.variants[0].price,
-                        cartQuantity: 1,
+                        quantity: 1,
                     }
-                ]
+                ],
+                cancel_url: window.location.href,
+                customer: session?.user
             })
         }
 

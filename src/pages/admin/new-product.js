@@ -56,6 +56,8 @@ export default function NewProduct() {
             hoverImgArg,
         } = props
 
+        const create_at = new Date()
+
         const options = {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
@@ -83,6 +85,10 @@ export default function NewProduct() {
                     })),
                     options: productArg.options,
                     position: productArg.position,
+                    create_at: {
+                        text: create_at.toString(),
+                        number: create_at.valueOf(),
+                    }
                 }
             })
         }

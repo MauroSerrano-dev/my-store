@@ -16,6 +16,7 @@ import Link from 'next/link'
 import PersonOutlineOutlinedIcon from '@mui/icons-material/PersonOutlineOutlined';
 import styles from '@/styles/components/AvatarMenu.module.css'
 import { Button } from '@mui/material'
+import ReceiptLongRoundedIcon from '@mui/icons-material/ReceiptLongRounded';
 
 export default function AvatarMenu(props) {
   const { signOut, session } = props
@@ -72,6 +73,19 @@ export default function AvatarMenu(props) {
                 </a>
               </Link>
               <Divider />
+              <Link legacyBehavior href={'/orders'}>
+                <a
+                  className='noUnderline'
+                  onClick={() => setOpen(false)}
+                >
+                  <MenuItem>
+                    <ListItemIcon>
+                      <ReceiptLongRoundedIcon fontSize="medium" />
+                    </ListItemIcon>
+                    My Orders
+                  </MenuItem>
+                </a>
+              </Link>
               <Link legacyBehavior href={'/settings'}>
                 <a
                   className='noUnderline'
@@ -111,6 +125,7 @@ export default function AvatarMenu(props) {
                   variant='contained'
                   sx={{
                     width: '100%',
+                    height: '38px',
                     color: '#ffffff',
                     fontWeight: 'bold',
                     zIndex: 10,
