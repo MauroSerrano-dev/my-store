@@ -1,4 +1,4 @@
-import CartItem from '@/components/CartItem'
+import ProductCart from '@/components/ProductCart'
 import styles from '@/styles/cart.module.css'
 import { FormControl, InputLabel, MenuItem, OutlinedInput, Select } from '@mui/material'
 import { motion } from "framer-motion";
@@ -48,7 +48,7 @@ export default function Cart(props) {
                         className={styles.productsBody}
                     >
                         {cart.map((product, i) =>
-                            <CartItem
+                            <ProductCart
                                 session={session}
                                 setCart={setCart}
                                 product={product}

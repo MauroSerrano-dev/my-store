@@ -4,14 +4,18 @@ import styles from '../styles/components/NavBar.module.css'
 import { motion } from "framer-motion"
 import Logo from './Logo';
 import SearchBar from './SearchBar';
-import PersonOutlineOutlinedIcon from '@mui/icons-material/PersonOutlineOutlined';
 import ShoppingCartOutlinedIcon from '@mui/icons-material/ShoppingCartOutlined';
 import FavoriteBorderRoundedIcon from '@mui/icons-material/FavoriteBorderRounded';
-import Cookies from 'js-cookie';
 import AvatarMenu from './AvatarMenu';
+import CartIcon from './CartIcon';
 
 export default function NavBar(props) {
-    const { session, signIn, signOut, cart } = props
+    const {
+        session,
+        signOut,
+        cart,
+        setCart
+    } = props
 
     return (
         <div className={styles.container}>
@@ -49,7 +53,7 @@ export default function NavBar(props) {
                             </div>
                         </a>
                     </Link>
-                    <Link legacyBehavior href={'/cart'}>
+                    {/*                     <Link legacyBehavior href={'/cart'}>
                         <a>
                             <div
                                 className={styles.iconContainer}
@@ -72,7 +76,12 @@ export default function NavBar(props) {
                                 }
                             </div>
                         </a>
-                    </Link>
+                    </Link> */}
+                    <CartIcon
+                        session={session}
+                        cart={cart}
+                        setCart={setCart}
+                    />
                     <AvatarMenu
                         session={session}
                         signOut={signOut}

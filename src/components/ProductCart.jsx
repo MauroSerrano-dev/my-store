@@ -1,4 +1,4 @@
-import styles from '@/styles/components/CartItem.module.css'
+import styles from '@/styles/components/ProductCart.module.css'
 import { SlClose } from "react-icons/sl";
 import Cookies from 'js-cookie';
 import { motion } from "framer-motion";
@@ -17,7 +17,7 @@ const menuStyle = {
     width: '80px'
 }
 
-export default function CartItem(props) {
+export default function ProductCart(props) {
     const {
         session,
         product,

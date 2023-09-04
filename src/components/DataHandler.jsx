@@ -78,6 +78,7 @@ export default function DataHandler(props) {
                     signIn={signIn}
                     signOut={signOut}
                     cart={cart}
+                    setCart={setCart}
                 />
             }
             <div onClick={() => console.log(session)} id={styles.componentContainer}>

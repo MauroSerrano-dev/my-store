@@ -1,0 +1,74 @@
+.container {
+    position: relative;
+
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+
+    width: 100%;
+    height: 130px;
+
+    --text-color: var(--text-black);
+
+    padding: 0.7rem 0;
+
+    border-bottom: #ababab solid 1px;
+}
+
+.imageContainer {
+    width: 35%;
+    height: 100%;
+
+    overflow: hidden;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    border-radius: 0.3rem;
+}
+
+.image {
+    height: 100%;
+}
+
+.right {
+    position: relative;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+
+    width: 65%;
+    height: 100%;
+
+    padding: 0 0.5rem;
+}
+
+.priceContainer {
+    position: absolute;
+    bottom: 0;
+    right: 0.5rem;
+}
+
+.priceContainer p {
+    font-weight: bold;
+    font-size: 14px;
+}
+
+.infos {
+    position: absolute;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+
+    bottom: 0;
+    left: 0.5rem;
+
+    font-size: 11px;
+}
