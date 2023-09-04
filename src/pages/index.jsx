@@ -76,17 +76,6 @@ export default function Home() {
       <header>
       </header>
       <main className={styles.main}>
-        <div className={styles.categoriesContainer}>
-          <p>T-SHIRTS</p>
-          <p>HOODIES</p>
-          <p>MUGS</p>
-          <p>BAGS</p>
-          <p>ACCESSORIES</p>
-          <p>KITCHEN</p>
-          <p>PILLOWS</p>
-          <p>SHOES</p>
-          <p>SOCKS</p>
-        </div>
         <div className={styles.banner}>
           <img
             src='/banner-mock.webp'
@@ -125,7 +114,8 @@ export default function Home() {
             />
           </div>
         </div>
-        {allProducts &&
+        {
+          allProducts &&
           <div className={styles.carouselAndTitle}>
             <h2 className={styles.carouselTitle}>
               All Products
@@ -142,7 +132,8 @@ export default function Home() {
             </div>
           </div>
         }
-        {productsTShirts &&
+        {
+          productsTShirts &&
           <div className={styles.carouselAndTitle}>
             <h2 className={styles.carouselTitle}>
               T-Shirts
@@ -159,7 +150,8 @@ export default function Home() {
             </div>
           </div>
         }
-        {productsHome &&
+        {
+          productsHome &&
           <div className={styles.carouselAndTitle}>
             <h2 className={styles.carouselTitle}>
               Home
@@ -176,7 +168,7 @@ export default function Home() {
             </div>
           </div>
         }
-      </main>
+      </main >
       <footer>
       </footer>
     </div >

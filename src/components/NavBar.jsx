@@ -14,8 +14,11 @@ export default function NavBar(props) {
         session,
         signOut,
         cart,
-        setCart
+        setCart,
+        isScrollAtTop
     } = props
+
+    const [showSearchBar, setShowSearchBar] = useState(true)
 
     return (
         <div className={styles.container}>
@@ -26,15 +29,36 @@ export default function NavBar(props) {
                 transition={{ delay: 0, duration: 0, ease: [.48, 0, .15, 1.01] }}
             >
                 <div className={styles.leftSide}>
-                    {/* <MenuToggle toggle={() => toggleOpen()} /> */}
                     <Link legacyBehavior href={'/'}>
                         <a>
                             <Logo height='100%' hover />
                         </a>
                     </Link>
                 </div>
-                <div className={styles.middle}>
-                    <SearchBar />
+                <div
+                    className={styles.middle}
+                >
+                    <SearchBar
+                        show={isScrollAtTop}
+                    />
+                    <div
+                        className={styles.categoriesContainer}
+                        style={{
+                            bottom: isScrollAtTop
+                                ? '-37px'
+                                : '22px',
+                        }}
+                    >
+                        <p>T-SHIRTS</p>
+                        <p>HOODIES</p>
+                        <p>MUGS</p>
+                        <p>BAGS</p>
+                        <p>ACCESSORIES</p>
+                        <p>KITCHEN</p>
+                        <p>PILLOWS</p>
+                        <p>SHOES</p>
+                        <p>SOCKS</p>
+                    </div>
                 </div>
                 <div className={styles.rightSide}>
                     <Link legacyBehavior href={'/wishlist'}>
@@ -53,30 +77,6 @@ export default function NavBar(props) {
                             </div>
                         </a>
                     </Link>
-                    {/*                     <Link legacyBehavior href={'/cart'}>
-                        <a>
-                            <div
-                                className={styles.iconContainer}
-                            >
-                                <ShoppingCartOutlinedIcon
-                                    style={{
-                                        fontSize: 'calc(var(--bar-height) * 0.38)',
-                                        color: 'var(--global-white)'
-                                    }}
-                                />
-                                {session !== undefined &&
-                                    <div
-                                        className={styles.cartCounter}
-                                        style={{
-                                            fontSize: cart.reduce((acc, product) => acc + product.quantity, 0) > 99 ? '55%' : '72%'
-                                        }}
-                                    >
-                                        {cart.reduce((acc, product) => acc + product.quantity, 0) > 99 ? '99+' : cart.reduce((acc, product) => acc + product.quantity, 0)}
-                                    </div>
-                                }
-                            </div>
-                        </a>
-                    </Link> */}
                     <CartIcon
                         session={session}
                         cart={cart}

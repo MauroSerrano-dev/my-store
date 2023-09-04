@@ -62,17 +62,21 @@ export default function CartIcon(props) {
                                 )}
                             </div>
                         </div>
-                        <Button
-                            variant='contained'
-                            sx={{
-                                width: '100%',
-                                color: '#ffffff',
-                                fontWeight: 'bold',
-                                marginTop: '0.7rem',
-                            }}
-                        >
-                            Go to Cart
-                        </Button>
+                        <Link legacyBehavior href={`/cart`}>
+                            <a className={`${styles.iconContainer} flex center noUnderline`}>
+                                <Button
+                                    variant='contained'
+                                    sx={{
+                                        width: '100%',
+                                        color: '#ffffff',
+                                        fontWeight: 'bold',
+                                        marginTop: '0.7rem',
+                                    }}
+                                >
+                                    Go to Cart
+                                </Button>
+                            </a>
+                        </Link>
                     </div>
                 </div>
             }

@@ -13,7 +13,6 @@ export default function TagsInput(props) {
     const inputTextRef = useRef(null)
 
     function handleInput(event) {
-        console.log(event.target.innerHTML)
         if (event.target.innerHTML.includes('<div><br></div>')) {
             createTag(value)
             setValue('')

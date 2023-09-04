@@ -1,31 +1,30 @@
 import { useSession, signIn, signOut } from "next-auth/react"
 import NavBar from './NavBar'
 import styles from '../styles/components/DataHandler.module.css'
-import { useEffect, useState } from "react"
+import { useEffect, useState, useRef } from "react"
 import Cookies from 'js-cookie';
 
 export default function DataHandler(props) {
     const { Component, pageProps, primaryColor } = props
     const { data: session } = useSession()
-    const [windowWidth, setWindowWidth] = useState(0)
-    const [windowHeight, setWindowHeight] = useState(0)
-    const [showNavBar, setShowNavBar] = useState(true)
     const [cart, setCart] = useState([])
+    const [isScrollAtTop, setIsScrollAtTop] = useState(true)
 
     useEffect(() => {
-        const handleResize = () => {
-            setWindowWidth(window.innerWidth);
-            setWindowHeight(window.innerHeight);
+        const handleScroll = () => {
+            // Check if the scroll position is at the top (you can adjust the threshold if needed)
+            const isAtTop = window.scrollY === 0
+
+            // Update the state based on the scroll position
+            setIsScrollAtTop(isAtTop)
         }
 
-        window.addEventListener('resize', handleResize)
-
-        // Inicialize os valores iniciais ao carregar a página
-        setWindowWidth(window.innerWidth)
-        setWindowHeight(window.innerHeight)
+        // Attach the scroll event listener
+        window.addEventListener('scroll', handleScroll)
 
         return () => {
-            window.removeEventListener('resize', handleResize)
+            // Clean up the event listener when the component unmounts
+            window.removeEventListener('scroll', handleScroll)
         }
     }, [])
 
@@ -66,31 +65,38 @@ export default function DataHandler(props) {
 
 
     return (
-        <div
-            style={{
-                width: `${windowWidth}px`,
-                height: `${windowHeight}px`,
-            }}
-        >
-            {showNavBar &&
+        <div>
+            <div className={styles.topContainer}>
                 <NavBar
                     session={session}
                     signIn={signIn}
                     signOut={signOut}
                     cart={cart}
                     setCart={setCart}
+                    isScrollAtTop={isScrollAtTop}
                 />
-            }
-            <div onClick={() => console.log(session)} id={styles.componentContainer}>
+                <div
+                    className={styles.categoriesContainer}
+                    style={{
+                        transform: isScrollAtTop
+                            ? 'translateY(0)'
+                            : 'translateY(-100%)'
+                    }}
+                >
+                </div>
+            </div>
+            <div
+                onClick={() => console.log(session)}
+                id={styles.componentContainer}
+            >
                 <
                     Component{...pageProps}
-                    setShowNavBar={setShowNavBar}
                     session={session}
                     signIn={signIn}
                     cart={cart}
                     setCart={setCart}
                 />
             </div>
-        </div >
+        </div>
     )
 }
