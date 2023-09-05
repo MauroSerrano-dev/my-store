@@ -27,6 +27,7 @@ export default function Login(props) {
         // Inicialize o Firebase
         const firebaseApp = initializeApp(firebaseConfig);
         const auth = getAuth(firebaseApp);
+        console.log('auth', auth)
         signInWithPopup(auth, provider)
             .then((result) => {
                 // This gives you a Google Access Token. You can use it to access the Google API.
