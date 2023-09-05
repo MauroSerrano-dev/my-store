@@ -3,9 +3,44 @@ import { Button, TextField } from '@mui/material'
 import Link from 'next/link'
 import { FcGoogle } from "react-icons/fc";
 import { PiHandshakeLight } from "react-icons/pi";
+import ReCAPTCHA from "react-google-recaptcha";
+import { useState } from 'react';
 
 export default function Signin(props) {
     const { signIn } = props
+
+    const [reCaptchaSolve, setReCaptchaSolve] = useState(false)
+    const [newUser, setNewUser] = useState({})
+
+    function handleReCaptchaSuccess() {
+        setReCaptchaSolve(true)
+    }
+
+    function handleReCaptchaError() {
+        setReCaptchaSolve(false)
+    }
+
+    function handleNewUser(value, field) {
+        setNewUser(prev => (
+            {
+                ...prev,
+                [field]: value
+            }
+        ))
+    }
+
+    function handleCreateNewUser(user) {
+        const options = {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ user: user })
+        }
+
+        fetch('/api/user', options)
+            .then(response => response.json())
+            .then(response => console.log(response))
+            .catch(err => console.error(err))
+    }
 
     return (
         <div className={styles.container}>
@@ -28,6 +63,7 @@ export default function Signin(props) {
                                 variant='outlined'
                                 label='First Name'
                                 size='small'
+                                onChange={(e) => handleNewUser(e.target.value, 'first_name')}
                                 sx={{
                                     width: '100%'
                                 }}
@@ -36,6 +72,7 @@ export default function Signin(props) {
                                 variant='outlined'
                                 label='Last Name (optional)'
                                 size='small'
+                                onChange={(e) => handleNewUser(e.target.value, 'last_name')}
                                 sx={{
                                     width: '100%'
                                 }}
@@ -44,6 +81,7 @@ export default function Signin(props) {
                                 variant='outlined'
                                 label='E-Mail'
                                 size='small'
+                                onChange={(e) => handleNewUser(e.target.value, 'email')}
                                 sx={{
                                     width: '100%'
                                 }}
@@ -52,21 +90,22 @@ export default function Signin(props) {
                                 variant='outlined'
                                 label='Password'
                                 size='small'
+                                onChange={(e) => handleNewUser(e.target.value, 'password')}
                                 sx={{
                                     width: '100%'
                                 }}
                             />
-                            <Link legacyBehavior href={'/'}>
-                                <a
-                                    className={styles.linkCreateAccount}
-                                >
-                                    Forgot my password
-                                </a>
-                            </Link>
+                            <ReCAPTCHA
+                                sitekey={process.env.NEXT_PUBLIC_RE_CAPTCHA_KEY}
+                                onChange={handleReCaptchaSuccess}
+                                onExpired={handleReCaptchaError}
+                                onErrored={handleReCaptchaError}
+                            />
                         </div>
                         <div className={styles.loginButtons}>
                             <Button
                                 variant='contained'
+                                onClick={() => handleCreateNewUser(newUser)}
                                 sx={{
                                     width: '100%',
                                     height: '50px',
@@ -75,21 +114,15 @@ export default function Signin(props) {
                                     fontSize: '16px',
                                 }}
                             >
-                                Login
+                                Create an account
                             </Button>
-                            <button
-                                className={styles.googleLogin}
-                                onClick={() => signIn('google')}
-                            >
-                                <FcGoogle
-                                    size='30px'
-                                    style={{
-                                        position: 'absolute',
-                                        left: '1.5rem'
-                                    }}
-                                />
-                                Sign in with Google
-                            </button>
+                            <Link legacyBehavior href={'/login'}>
+                                <a
+                                    className={styles.linkCreateAccount}
+                                >
+                                    I already have an account
+                                </a>
+                            </Link>
                         </div>
                     </div>
                 </div>

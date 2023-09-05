@@ -8,6 +8,7 @@ import ShoppingCartOutlinedIcon from '@mui/icons-material/ShoppingCartOutlined';
 import FavoriteBorderRoundedIcon from '@mui/icons-material/FavoriteBorderRounded';
 import AvatarMenu from './AvatarMenu';
 import CartIcon from './CartIcon';
+import SearchRoundedIcon from '@mui/icons-material/SearchRounded';
 
 export default function NavBar(props) {
     const {
@@ -15,7 +16,8 @@ export default function NavBar(props) {
         signOut,
         cart,
         setCart,
-        isScrollAtTop
+        isScrollAtTop,
+        setIsScrollAtTop
     } = props
 
     const [showSearchBar, setShowSearchBar] = useState(true)
@@ -61,6 +63,27 @@ export default function NavBar(props) {
                     </div>
                 </div>
                 <div className={styles.rightSide}>
+                    <div
+                        className={styles.iconContainer}
+                        onClick={() => setIsScrollAtTop(true)}
+                        style={{
+                            pointerEvents: isScrollAtTop
+                                ? 'none'
+                                : 'auto',
+                            opacity: isScrollAtTop
+                                ? 0
+                                : 1
+                        }}
+                    >
+                        <SearchRoundedIcon
+                            style={{
+                                fontSize: 'calc(var(--bar-height) * 0.38)',
+                                color: 'var(--global-white)',
+                                position: 'relative',
+                                top: '1px',
+                            }}
+                        />
+                    </div>
                     <Link legacyBehavior href={'/wishlist'}>
                         <a>
                             <div

@@ -5,10 +5,13 @@ import { FcGoogle } from "react-icons/fc";
 import { PiHandshakeLight } from "react-icons/pi";
 import ReCAPTCHA from "react-google-recaptcha";
 import { useState } from 'react';
-import AppleIcon from '@mui/icons-material/Apple';
+import { getAuth, signInWithPopup, GoogleAuthProvider } from "firebase/auth";
+import { firebaseConfig } from '../../firebase.config';
+import { initializeApp } from 'firebase/app';
+
+const provider = new GoogleAuthProvider();
 
 export default function Login(props) {
-    const { signIn } = props
 
     const [reCaptchaSolve, setReCaptchaSolve] = useState(false)
 
@@ -18,6 +21,31 @@ export default function Login(props) {
 
     function handleReCaptchaError() {
         setReCaptchaSolve(false)
+    }
+
+    function googleLogin() {
+        // Inicialize o Firebase
+        const firebaseApp = initializeApp(firebaseConfig);
+        const auth = getAuth(firebaseApp);
+        signInWithPopup(auth, provider)
+            .then((result) => {
+                // This gives you a Google Access Token. You can use it to access the Google API.
+                const credential = GoogleAuthProvider.credentialFromResult(result);
+                const token = credential.accessToken;
+                // The signed-in user info.
+                const user = result.user;
+                // IdP data available using getAdditionalUserInfo(result)
+                // ...
+            }).catch((error) => {
+                // Handle Errors here.
+                const errorCode = error.code;
+                const errorMessage = error.message;
+                // The email of the user's account used.
+                const email = error.customData.email;
+                // The AuthCredential type that was used.
+                const credential = GoogleAuthProvider.credentialFromError(error);
+                // ...
+            });
     }
 
     return (
@@ -72,7 +100,6 @@ export default function Login(props) {
                         <div className={styles.loginButtons}>
                             <Button
                                 variant='contained'
-                                onClick={() => signIn()}
                                 sx={{
                                     width: '100%',
                                     height: '50px',
@@ -85,7 +112,7 @@ export default function Login(props) {
                             </Button>
                             <button
                                 className={styles.providerLogin}
-                                onClick={() => signIn('google')}
+                                onClick={googleLogin}
                             >
                                 <FcGoogle
                                     size='30px'

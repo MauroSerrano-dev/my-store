@@ -11,12 +11,19 @@ export default function DataHandler(props) {
     const [isScrollAtTop, setIsScrollAtTop] = useState(true)
 
     useEffect(() => {
+        let timeoutId
+
         const handleScroll = () => {
             // Check if the scroll position is at the top (you can adjust the threshold if needed)
             const isAtTop = window.scrollY === 0
 
+            clearTimeout(timeoutId);
+
             // Update the state based on the scroll position
-            setIsScrollAtTop(isAtTop)
+            timeoutId = setTimeout(() => {
+                setIsScrollAtTop(isAtTop)
+            }, 150)
+
         }
 
         // Attach the scroll event listener
@@ -66,7 +73,9 @@ export default function DataHandler(props) {
 
     return (
         <div>
-            <div className={styles.topContainer}>
+            <div
+                className={styles.topContainer}
+            >
                 <NavBar
                     session={session}
                     signIn={signIn}
@@ -74,6 +83,7 @@ export default function DataHandler(props) {
                     cart={cart}
                     setCart={setCart}
                     isScrollAtTop={isScrollAtTop}
+                    setIsScrollAtTop={setIsScrollAtTop}
                 />
                 <div
                     className={styles.categoriesContainer}
@@ -87,7 +97,7 @@ export default function DataHandler(props) {
             </div>
             <div
                 onClick={() => console.log(session)}
-                id={styles.componentContainer}
+                className={styles.componentContainer}
             >
                 <
                     Component{...pageProps}

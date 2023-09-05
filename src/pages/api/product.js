@@ -6,7 +6,7 @@ export default async function handler(req, res) {
         const result = await getProductById(id)
         res.status(200).json(result)
     }
-    if (req.method === "POST") {
+    else if (req.method === "POST") {
         const { product } = req.body
         const result = await createProduct(product)
         res.status(201).json({
