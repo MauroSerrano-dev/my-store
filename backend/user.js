@@ -44,6 +44,25 @@ async function createNewUser(user) {
     }
 }
 
+async function createNewUserWithGoogle(user) {
+    try {
+        // Create a reference to the users collection
+        const usersCollection = collection(db, process.env.COLL_USERS)
+
+        // Add the new user to the collection with password encryption
+        const newUserRef = doc(usersCollection)
+
+        // Set the document for the new user
+        await setDoc(newUserRef, user)
+
+        console.log(`${user.email} has been added as a new user, and a session has been created.`)
+
+    } catch (error) {
+        console.error("Error creating a new user and session:", error)
+        throw error;
+    }
+}
+
 async function removeEmailVerifiedField(userId) {
     try {
         const userRef = doc(db, process.env.COLL_USERS, userId); // Adjust the path accordingly
@@ -68,5 +87,6 @@ async function removeEmailVerifiedField(userId) {
 
 export {
     createNewUser,
+    createNewUserWithGoogle,
     removeEmailVerifiedField
 }

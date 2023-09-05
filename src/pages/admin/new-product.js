@@ -87,7 +87,7 @@ export default function NewProduct() {
                     position: productArg.position,
                     create_at: {
                         text: create_at.toString(),
-                        number: create_at.valueOf(),
+                        ms: create_at.valueOf(),
                     }
                 }
             })

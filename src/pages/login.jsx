@@ -34,17 +34,41 @@ export default function Login(props) {
                 const token = credential.accessToken;
                 // The signed-in user info.
                 const user = result.user;
+                console.log('credential', credential)
                 console.log('user', user)
+                const now = new Date()
+                createNewUserWithGoogle(
+                    {
+                        email: user.email,
+                        name: user.displayName,
+                        email_verified: user.emailVerified,
+                        create_at: {
+                            text: now.toString(),
+                            ms: now.valueOf(),
+                        }
+                    }
+                )
                 // IdP data available using getAdditionalUserInfo(result)
             }).catch((error) => {
                 // Handle Errors here.
                 const errorCode = error.code;
                 const errorMessage = error.message;
-                // The email of the user's account used.
-                const email = error.customData.email;
                 // The AuthCredential type that was used.
                 const credential = GoogleAuthProvider.credentialFromError(error);
             })
+    }
+
+    function createNewUserWithGoogle(user) {
+        const options = {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ user: user })
+        }
+
+        fetch('/api/user-google', options)
+            .then(response => response.json())
+            .then(response => console.log(response))
+            .catch(err => console.error(err))
     }
 
     return (
