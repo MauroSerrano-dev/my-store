@@ -1,7 +1,6 @@
 import styles from '@/styles/signin.module.css'
 import { Button, TextField } from '@mui/material'
 import Link from 'next/link'
-import { FcGoogle } from "react-icons/fc";
 import { PiHandshakeLight } from "react-icons/pi";
 import ReCAPTCHA from "react-google-recaptcha";
 import { useState } from 'react';
