@@ -8,10 +8,12 @@ import { useState } from 'react';
 import { getAuth, signInWithPopup, GoogleAuthProvider } from "firebase/auth";
 import { firebaseConfig } from '../../firebase.config';
 import { initializeApp } from 'firebase/app';
+import Cookies from 'js-cookie';
 
 const provider = new GoogleAuthProvider();
 
 export default function Login(props) {
+    const { session, login } = props
 
     const [reCaptchaSolve, setReCaptchaSolve] = useState(false)
 
@@ -34,13 +36,12 @@ export default function Login(props) {
                 const credential = GoogleAuthProvider.credentialFromResult(result);
                 const token = credential.accessToken;
                 const user = result.user;
-                console.log('credential', credential)
-                console.log('user', user)
                 const now = new Date()
                 createNewUserWithGoogle(
                     {
                         email: user.email,
                         name: user.displayName,
+                        cart: [],
                         email_verified: user.emailVerified,
                         create_at: {
                             text: now.toString(),
@@ -48,7 +49,6 @@ export default function Login(props) {
                         }
                     }
                 )
-                // IdP data available using getAdditionalUserInfo(result)
             }).catch((error) => {
                 // Handle Errors here.
                 const errorCode = error.code;
@@ -67,7 +67,10 @@ export default function Login(props) {
 
         fetch('/api/user-google', options)
             .then(response => response.json())
-            .then(response => console.log(response))
+            .then(response => {
+                Cookies.set('sessionToken', response.sessionToken)
+                login()
+            })
             .catch(err => console.error(err))
     }
 

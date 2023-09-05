@@ -8,6 +8,7 @@ import {
 import { initializeApp } from "firebase/app"
 import { getAuth, createUserWithEmailAndPassword } from "firebase/auth"
 import { firebaseConfig } from "../firebase.config"
+import { v4 as uuidv4 } from 'uuid';
 
 initializeApp(firebaseConfig)
 
@@ -47,18 +48,45 @@ async function createNewUser(user) {
 async function createNewUserWithGoogle(user) {
     try {
         // Create a reference to the users collection
-        const usersCollection = collection(db, process.env.COLL_USERS)
+        const usersCollection = collection(db, process.env.COLL_USERS);
 
         // Add the new user to the collection with password encryption
-        const newUserRef = doc(usersCollection)
+        const newUserRef = doc(usersCollection);
 
         // Set the document for the new user
-        await setDoc(newUserRef, user)
+        await setDoc(newUserRef, user);
 
-        console.log(`${user.email} has been added as a new user, and a session has been created.`)
+        // Create a reference to the sessions collection
+        const sessionsCollection = collection(db, process.env.COLL_SESSIONS);
 
+        // Create a new session document
+        const newSessionRef = doc(sessionsCollection);
+
+        // Generate a session token using uuid
+        const sessionToken = uuidv4();
+
+        // Calculate the expiration timestamp (1 month from now)
+        const expirationDate = new Date();
+        expirationDate.setMonth(expirationDate.getMonth() + 1);
+
+        // Set the document for the new session
+        const sessionData = {
+            userId: newUserRef.id,
+            sessionToken: sessionToken,
+            expiresAt: {
+                text: expirationDate.toString(),
+                ms: expirationDate.valueOf(),
+            }
+        }
+
+        await setDoc(newSessionRef, sessionData);
+
+        console.log(`${user.email} has been added as a new user, and a session has been created.`);
+
+        // Return the sessionToken
+        return sessionData.sessionToken;
     } catch (error) {
-        console.error("Error creating a new user and session:", error)
+        console.error("Error creating a new user and session:", error);
         throw error;
     }
 }

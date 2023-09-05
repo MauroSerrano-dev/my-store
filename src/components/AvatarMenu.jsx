@@ -13,12 +13,13 @@ import { Button } from '@mui/material'
 import ReceiptLongRoundedIcon from '@mui/icons-material/ReceiptLongRounded';
 
 export default function AvatarMenu(props) {
-  const { signOut, session } = props
+  const { logout, session } = props
 
   const [open, setOpen] = useState(false)
 
-  async function handleLogout() {
-    await signOut()
+  function handleLogout() {
+    logout()
+    setOpen(false)
   }
 
   return (

@@ -13,7 +13,7 @@ import SearchRoundedIcon from '@mui/icons-material/SearchRounded';
 export default function NavBar(props) {
     const {
         session,
-        signOut,
+        logout,
         cart,
         setCart,
         isScrollAtTop,
@@ -107,7 +107,7 @@ export default function NavBar(props) {
                     />
                     <AvatarMenu
                         session={session}
-                        signOut={signOut}
+                        logout={logout}
                     />
                 </div>
             </motion.div>

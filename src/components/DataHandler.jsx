@@ -2,15 +2,55 @@ import NavBar from './NavBar'
 import styles from '../styles/components/DataHandler.module.css'
 import { useEffect, useState, useRef } from "react"
 import Cookies from 'js-cookie';
+import Router from 'next/router';
 
 export default function DataHandler(props) {
     const { Component, pageProps, primaryColor } = props
     const [cart, setCart] = useState([])
     const [isScrollAtTop, setIsScrollAtTop] = useState(true)
+    const [session, setSession] = useState()
 
-    const session = null
+    async function getSession(token) {
+        const options = {
+            method: 'GET',
+            headers: {
+                session_token: token
+            }
+        }
+
+        const res = await fetch("/api/sessions", options)
+            .then(response => response.json())
+            .then(response => response)
+            .catch(err => console.error(err))
+
+        return res.session
+    }
+
+    function login() {
+        const sessionToken = Cookies.get('sessionToken')
+
+        getSession(sessionToken)
+            .then(res => {
+                setSession(res)
+                Router.push('/')
+            })
+            .catch(err => console.error(err))
+    }
+
+    function logout() {
+        setSession(null)
+        Cookies.remove('sessionToken')
+        setCart([])
+        Router.push('/')
+    }
 
     useEffect(() => {
+        const sessionToken = Cookies.get('sessionToken')
+        if (sessionToken)
+            login()
+        else
+            logout()
+
         let timeoutId
 
         const handleScroll = () => {
@@ -72,7 +112,7 @@ export default function DataHandler(props) {
 
 
     return (
-        <div>
+        <div onClick={() => console.log(session)}>
             <div
                 className={styles.topContainer}
             >
@@ -81,6 +121,9 @@ export default function DataHandler(props) {
                     setCart={setCart}
                     isScrollAtTop={isScrollAtTop}
                     setIsScrollAtTop={setIsScrollAtTop}
+                    session={session}
+                    login={login}
+                    logout={logout}
                 />
                 <div
                     className={styles.categoriesContainer}
@@ -99,6 +142,9 @@ export default function DataHandler(props) {
                     Component{...pageProps}
                     cart={cart}
                     setCart={setCart}
+                    session={session}
+                    login={login}
+                    logout={logout}
                 />
             </div>
         </div>
