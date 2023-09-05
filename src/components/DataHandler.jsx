@@ -1,4 +1,3 @@
-import { useSession, signIn, signOut } from "next-auth/react"
 import NavBar from './NavBar'
 import styles from '../styles/components/DataHandler.module.css'
 import { useEffect, useState, useRef } from "react"
@@ -6,9 +5,10 @@ import Cookies from 'js-cookie';
 
 export default function DataHandler(props) {
     const { Component, pageProps, primaryColor } = props
-    const { data: session } = useSession()
     const [cart, setCart] = useState([])
     const [isScrollAtTop, setIsScrollAtTop] = useState(true)
+
+    const session = null
 
     useEffect(() => {
         let timeoutId
@@ -77,9 +77,6 @@ export default function DataHandler(props) {
                 className={styles.topContainer}
             >
                 <NavBar
-                    session={session}
-                    signIn={signIn}
-                    signOut={signOut}
                     cart={cart}
                     setCart={setCart}
                     isScrollAtTop={isScrollAtTop}
@@ -96,13 +93,10 @@ export default function DataHandler(props) {
                 </div>
             </div>
             <div
-                onClick={() => console.log(session)}
                 className={styles.componentContainer}
             >
                 <
                     Component{...pageProps}
-                    session={session}
-                    signIn={signIn}
                     cart={cart}
                     setCart={setCart}
                 />

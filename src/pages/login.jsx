@@ -34,8 +34,8 @@ export default function Login(props) {
                 const token = credential.accessToken;
                 // The signed-in user info.
                 const user = result.user;
+                console.log('user', user)
                 // IdP data available using getAdditionalUserInfo(result)
-                // ...
             }).catch((error) => {
                 // Handle Errors here.
                 const errorCode = error.code;
@@ -44,8 +44,7 @@ export default function Login(props) {
                 const email = error.customData.email;
                 // The AuthCredential type that was used.
                 const credential = GoogleAuthProvider.credentialFromError(error);
-                // ...
-            });
+            })
     }
 
     return (

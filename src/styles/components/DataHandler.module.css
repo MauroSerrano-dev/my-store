@@ -6,7 +6,7 @@
 
     overflow-y: auto;
     overflow-x: hidden;
-    padding-top: 5rem
+    padding-top: calc(5rem + 35px);
 }
 
 .topContainer {
@@ -19,6 +19,7 @@
 
     z-index: 10;
 
+    top: 0;
     position: fixed;
 }
 
