@@ -1,4 +1,4 @@
-import { getFirestore, collection, query, where, getDocs, getDoc, doc } from "firebase/firestore"
+import { getFirestore, collection, query, where, getDocs, getDoc, doc, deleteDoc } from "firebase/firestore"
 
 const db = getFirestore()
 
@@ -45,6 +45,34 @@ async function getSession(sessionToken) {
     }
 }
 
+async function deleteSession(sessionToken) {
+    try {
+        // Consulte a coleção de sessões para encontrar a sessão com o token fornecido
+        const sessionsCollection = collection(db, process.env.COLL_SESSIONS);
+        const q = query(sessionsCollection, where("sessionToken", "==", sessionToken))
+        const querySnapshot = await getDocs(q)
+
+        // Verifique se a sessão existe
+        if (querySnapshot.size === 1) {
+            const sessionDoc = querySnapshot.docs[0];
+            
+            // Exclua o documento da sessão
+            await deleteDoc(sessionDoc.ref);
+
+            console.log(`Session with sessionToken ${sessionToken} deleted successfully.`);
+
+            return true; // Indica que a sessão foi encontrada e excluída
+        } else {
+            console.log(`Session with sessionToken ${sessionToken} not found.`);
+            return false; // Indica que a sessão não foi encontrada
+        }
+    } catch (error) {
+        console.error(`Error deleting session with sessionToken ${sessionToken}:`, error);
+        throw error;
+    }
+}
+
 export {
-    getSession
+    getSession,
+    deleteSession
 }

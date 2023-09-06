@@ -37,7 +37,7 @@ export default function Login(props) {
                 const token = credential.accessToken;
                 const user = result.user;
                 const now = new Date()
-                createNewUserWithGoogle(
+                getUserWithGoogle(
                     {
                         email: user.email,
                         name: user.displayName,
@@ -58,7 +58,7 @@ export default function Login(props) {
             })
     }
 
-    function createNewUserWithGoogle(user) {
+    function getUserWithGoogle(user) {
         const options = {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
@@ -72,6 +72,12 @@ export default function Login(props) {
                 login()
             })
             .catch(err => console.error(err))
+    }
+
+    async function handleSubmit(event) {
+
+        const email = event.target.email.value
+        const password = event.target.password.value
     }
 
     return (
@@ -90,41 +96,45 @@ export default function Login(props) {
                     <div
                         className={styles.loginBody}
                     >
-                        <div className={styles.fieldsContainer}>
-                            <TextField
-                                variant='outlined'
-                                label='E-Mail'
-                                size='small'
-                                sx={{
-                                    width: '100%'
-                                }}
-                            />
-                            <TextField
-                                variant='outlined'
-                                label='Password'
-                                size='small'
-                                sx={{
-                                    width: '100%'
-                                }}
-                            />
-                            <Link legacyBehavior href={'/'}>
-                                <a
-                                    className={styles.linkCreateAccount}
-                                >
-                                    Forgot my password
-                                </a>
-                            </Link>
-                            <div className='fillWidth center'>
-                                <ReCAPTCHA
-                                    sitekey={process.env.NEXT_PUBLIC_RE_CAPTCHA_KEY}
-                                    onChange={handleReCaptchaSuccess}
-                                    onExpired={handleReCaptchaError}
-                                    onErrored={handleReCaptchaError}
+                        <form onSubmit={handleSubmit} method='POST'>
+                            <div className={styles.fieldsContainer}>
+                                <TextField
+                                    variant='outlined'
+                                    label='E-Mail'
+                                    size='small'
+                                    name='email'
+                                    sx={{
+                                        width: '100%'
+                                    }}
                                 />
+                                <TextField
+                                    variant='outlined'
+                                    label='Password'
+                                    type='password'
+                                    name='password'
+                                    size='small'
+                                    sx={{
+                                        width: '100%'
+                                    }}
+                                />
+                                <Link legacyBehavior href={'/'}>
+                                    <a
+                                        className={styles.linkCreateAccount}
+                                    >
+                                        Forgot my password
+                                    </a>
+                                </Link>
+                                <div className='fillWidth center'>
+                                    <ReCAPTCHA
+                                        sitekey={process.env.NEXT_PUBLIC_RE_CAPTCHA_KEY}
+                                        onChange={handleReCaptchaSuccess}
+                                        onExpired={handleReCaptchaError}
+                                        onErrored={handleReCaptchaError}
+                                    />
+                                </div>
                             </div>
-                        </div>
-                        <div className={styles.loginButtons}>
-                            <Button
+                            <button
+                                type='submit'
                                 variant='contained'
                                 sx={{
                                     width: '100%',
@@ -135,21 +145,21 @@ export default function Login(props) {
                                 }}
                             >
                                 Login
-                            </Button>
-                            <button
-                                className={styles.providerLogin}
-                                onClick={googleLogin}
-                            >
-                                <FcGoogle
-                                    size='30px'
-                                    style={{
-                                        position: 'absolute',
-                                        left: '1.5rem'
-                                    }}
-                                />
-                                Login with Google
                             </button>
-                        </div>
+                        </form>
+                        <button
+                            className={styles.providerLogin}
+                            onClick={googleLogin}
+                        >
+                            <FcGoogle
+                                size='30px'
+                                style={{
+                                    position: 'absolute',
+                                    left: '1.5rem'
+                                }}
+                            />
+                            Login with Google
+                        </button>
                     </div>
                 </div>
                 <div
@@ -188,7 +198,7 @@ export default function Login(props) {
                         </Link>
                     </div>
                 </div>
-            </main>
+            </main >
             <footer>
             </footer>
         </div >

@@ -26,30 +26,48 @@ export default function DataHandler(props) {
         return res.session
     }
 
+    async function deleteSession(token) {
+        const options = {
+            method: 'DELETE',
+            headers: {
+                session_token: token
+            }
+        }
+
+        await fetch("/api/sessions", options)
+            .then(response => response.json())
+            .then(response => console.log(response))
+            .catch(err => console.error(err))
+    }
+
     function login() {
         const sessionToken = Cookies.get('sessionToken')
 
         getSession(sessionToken)
             .then(res => {
                 setSession(res)
-                Router.push('/')
             })
             .catch(err => console.error(err))
     }
 
     function logout() {
         setSession(null)
+        deleteSession(Cookies.get('sessionToken'))
         Cookies.remove('sessionToken')
         setCart([])
-        Router.push('/')
     }
 
     useEffect(() => {
         const sessionToken = Cookies.get('sessionToken')
-        if (sessionToken)
-            login()
+        if (sessionToken) {
+            getSession(sessionToken)
+                .then(res => {
+                    setSession(res)
+                })
+                .catch(err => console.error(err))
+        }
         else
-            logout()
+            setSession(null)
 
         let timeoutId
 
