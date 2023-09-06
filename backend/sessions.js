@@ -1,4 +1,5 @@
-import { getFirestore, collection, query, where, getDocs, getDoc, doc, deleteDoc } from "firebase/firestore"
+import { getFirestore, collection, query, where, getDocs, getDoc, doc, deleteDoc, setDoc } from "firebase/firestore"
+import { v4 as uuidv4 } from 'uuid';
 
 const db = getFirestore()
 
@@ -72,7 +73,45 @@ async function deleteSession(sessionToken) {
     }
 }
 
+async function createSessionForUser(userId) {
+    try {
+        // Create a reference to the sessions collection
+        const sessionsCollection = collection(db, process.env.COLL_SESSIONS);
+
+        // Create a new session document
+        const newSessionRef = doc(sessionsCollection);
+
+        // Generate a session token using uuid
+        const sessionToken = uuidv4();
+
+        // Calculate the expiration timestamp (1 month from now)
+        const expirationDate = new Date();
+        expirationDate.setMonth(expirationDate.getMonth() + 1);
+
+        // Set the document for the new session
+        const sessionData = {
+            userId: userId,
+            sessionToken: sessionToken,
+            expiresAt: {
+                text: expirationDate.toString(),
+                ms: expirationDate.valueOf(),
+            }
+        }
+
+        await setDoc(newSessionRef, sessionData);
+
+        console.log(`A session has been created for the user with ID: ${userId}.`);
+
+        // Return the sessionToken
+        return sessionData.sessionToken;
+    } catch (error) {
+        console.error("Error creating a session for the user:", error);
+        throw error;
+    }
+}
+
 export {
     getSession,
-    deleteSession
+    deleteSession,
+    createSessionForUser
 }

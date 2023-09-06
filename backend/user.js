@@ -9,9 +9,9 @@ import {
     query
 } from "firebase/firestore"
 import { initializeApp } from "firebase/app"
-import { getAuth, createUserWithEmailAndPassword } from "firebase/auth"
+import { getAuth, createUserWithEmailAndPassword, sendEmailVerification } from "firebase/auth"
 import { firebaseConfig } from "../firebase.config"
-import { v4 as uuidv4 } from 'uuid';
+import { createSessionForUser } from "./sessions"
 
 initializeApp(firebaseConfig)
 
@@ -40,32 +40,79 @@ async function getUserIdByEmail(email) {
     }
 }
 
-async function createNewUser(user) {
+async function getUserIdByUid(uid) {
     try {
         // Create a reference to the users collection
-        const usersCollection = collection(db, process.env.COLL_USERS)
+        const usersCollection = collection(db, process.env.COLL_USERS);
 
-        // Add the new user to the collection with password encryption
-        const newUserRef = doc(usersCollection)
+        // Query the user with the provided uid
+        const q = query(usersCollection, where("uid", "==", uid));
+        const querySnapshot = await getDocs(q);
 
-        // Create a session for the new user and return the session ID
-        const { user: authenticatedUser } = await createUserWithEmailAndPassword(auth, user.email, user.password)
-        const sessionID = authenticatedUser.uid;
-
-        // Set the document for the new user
-        await setDoc(newUserRef,
-            {
-                email: user.email,
-                first_name: user.first_name,
-                last_name: user.last_name,
-                uid: authenticatedUser.uid
-            })
-
-        console.log(`${user.email} has been added as a new user, and a session has been created.`)
-
-        return sessionID
+        // If a document is returned, return the userId
+        if (!querySnapshot.empty) {
+            const userDoc = querySnapshot.docs[0];
+            return userDoc.id;
+        } else {
+            return null;
+        }
     } catch (error) {
-        console.error("Error creating a new user and session:", error)
+        console.error("Error getting userId by uid:", error);
+        throw error;
+    }
+}
+
+async function createNewUserWithCredentials(user) {
+    try {
+        // Verifique se o usuário com o mesmo e-mail já existe
+        const userIdExists = await getUserIdByEmail(user.email);
+
+        // Se o usuário não existir, crie um novo
+        if (!userIdExists) {
+            // Create a reference to the users collection
+            const usersCollection = collection(db, process.env.COLL_USERS)
+
+            // Add the new user to the collection with password encryption
+            const newUserRef = doc(usersCollection)
+
+            // Create a session for the new user and return the session ID
+            const { user: authenticatedUser } = await createUserWithEmailAndPassword(auth, user.email, user.password)
+
+            const now = new Date()
+
+            // Set the document for the new user
+            await setDoc(newUserRef,
+                {
+                    email: user.email,
+                    first_name: user.first_name,
+                    last_name: user.last_name,
+                    uid: authenticatedUser.uid,
+                    cart: [],
+                    email_verified: false,
+                    create_at: {
+                        text: now.toString(),
+                        ms: now.valueOf(),
+                    }
+                })
+
+            // Envie o e-mail de verificação
+            sendEmailVerification(authenticatedUser)
+                .then(() => {
+                    // O e-mail de verificação foi enviado com sucesso
+                    console.log(`Verification email sent to ${authenticatedUser.email}`);
+                })
+                .catch((error) => {
+                    // Lidar com erros ao enviar o e-mail de verificação
+                    console.error("Error sending verification email:", error);
+                });
+
+            return await createSessionForUser(newUserRef.id);
+        } else {
+            console.log(`${user.email} already exists as a user.`);
+            return null;
+        }
+    } catch (error) {
+        console.error("Error creating a new user and session:", error);
         throw error;
     }
 }
@@ -74,9 +121,9 @@ async function createNewUserWithGoogle(user) {
     try {
         // Verifique se o usuário com o mesmo e-mail já existe
         const userIdExists = await getUserIdByEmail(user.email);
-
+        console.log('userIdExists', userIdExists)
+        // Se o usuário não existir, crie um novo
         if (!userIdExists) {
-            // Se o usuário não existir, crie um novo
             // Create a reference to the users collection
             const usersCollection = collection(db, process.env.COLL_USERS);
 
@@ -95,43 +142,6 @@ async function createNewUserWithGoogle(user) {
         }
     } catch (error) {
         console.error("Error creating a new user and session:", error);
-        throw error;
-    }
-}
-
-async function createSessionForUser(userId) {
-    try {
-        // Create a reference to the sessions collection
-        const sessionsCollection = collection(db, process.env.COLL_SESSIONS);
-
-        // Create a new session document
-        const newSessionRef = doc(sessionsCollection);
-
-        // Generate a session token using uuid
-        const sessionToken = uuidv4();
-
-        // Calculate the expiration timestamp (1 month from now)
-        const expirationDate = new Date();
-        expirationDate.setMonth(expirationDate.getMonth() + 1);
-
-        // Set the document for the new session
-        const sessionData = {
-            userId: userId,
-            sessionToken: sessionToken,
-            expiresAt: {
-                text: expirationDate.toString(),
-                ms: expirationDate.valueOf(),
-            }
-        }
-
-        await setDoc(newSessionRef, sessionData);
-
-        console.log(`A session has been created for the user with ID: ${userId}.`);
-
-        // Return the sessionToken
-        return sessionData.sessionToken;
-    } catch (error) {
-        console.error("Error creating a session for the user:", error);
         throw error;
     }
 }
@@ -179,8 +189,9 @@ async function removeEmailVerifiedField(userId) {
 }
 
 export {
-    createNewUser,
+    createNewUserWithCredentials,
     createNewUserWithGoogle,
     removeEmailVerifiedField,
-    checkUserExistsByEmail
+    checkUserExistsByEmail,
+    getUserIdByUid
 }

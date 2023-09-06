@@ -88,6 +88,7 @@ export default function Signin(props) {
                             <TextField
                                 variant='outlined'
                                 label='Password'
+                                type='password'
                                 size='small'
                                 onChange={(e) => handleNewUser(e.target.value, 'password')}
                                 sx={{

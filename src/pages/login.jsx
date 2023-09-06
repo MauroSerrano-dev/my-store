@@ -37,12 +37,14 @@ export default function Login(props) {
                 const token = credential.accessToken;
                 const user = result.user;
                 const now = new Date()
+
                 getUserWithGoogle(
                     {
                         email: user.email,
                         name: user.displayName,
                         cart: [],
                         email_verified: user.emailVerified,
+                        uid: user.uid,
                         create_at: {
                             text: now.toString(),
                             ms: now.valueOf(),
@@ -59,6 +61,7 @@ export default function Login(props) {
     }
 
     function getUserWithGoogle(user) {
+        console.log('user', user)
         const options = {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
@@ -75,9 +78,26 @@ export default function Login(props) {
     }
 
     async function handleSubmit(event) {
+        event.preventDefault()
 
         const email = event.target.email.value
         const password = event.target.password.value
+
+        const options = {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(
+                {
+                    email: email,
+                    password: password
+                }
+            )
+        }
+
+        fetch('/api/login', options)
+            .then(response => response.json())
+            .then(response => console.log(response))
+            .catch(err => console.error(err))
     }
 
     return (
