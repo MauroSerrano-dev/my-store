@@ -29,7 +29,7 @@ export default function Login(props) {
     }
 
     function googleLogin() {
-        signInWithPopup(auth, provider)
+        signInWithRedirect(auth, provider)
     }
 
     async function handleSubmit(event) {

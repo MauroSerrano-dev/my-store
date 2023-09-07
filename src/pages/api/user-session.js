@@ -4,8 +4,6 @@ export default async function handler(req, res) {
     if (req.method === "POST") {
         const { uid, new_user } = req.body
         
-        console.log('api', new_user, uid)
-
         const user = await getUserById(uid)
 
         if (user) {
