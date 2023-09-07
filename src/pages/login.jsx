@@ -58,7 +58,11 @@ export default function Login(props) {
                     <div
                         className={styles.loginBody}
                     >
-                        <form onSubmit={handleSubmit} method='POST'>
+                        <form
+                            onSubmit={handleSubmit}
+                            method='POST'
+                            className='fillWidth'
+                        >
                             <div className={styles.fieldsContainer}>
                                 <TextField
                                     variant='outlined'
@@ -95,7 +99,7 @@ export default function Login(props) {
                                     />
                                 </div>
                             </div>
-                            <button
+                            <Button
                                 type='submit'
                                 variant='contained'
                                 sx={{
@@ -107,7 +111,7 @@ export default function Login(props) {
                                 }}
                             >
                                 Login
-                            </button>
+                            </Button>
                         </form>
                         <button
                             className={styles.providerLogin}

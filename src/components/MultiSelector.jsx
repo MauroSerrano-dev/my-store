@@ -26,7 +26,6 @@ export default function MultiSelector(props) {
     const [supportsHoverAndPointer, setSupportsHoverAndPointer] = React.useState(false);
 
     React.useEffect(() => {
-        // Use useEffect to set the supportsHoverAndPointer state after the component mounts
         setSupportsHoverAndPointer(
             window.matchMedia('(hover: hover)').matches &&
             window.matchMedia('(pointer: fine)').matches

@@ -2,11 +2,15 @@ import styles from '@/styles/forgot-password.module.css'
 import { TextField } from '@mui/material'
 import Link from 'next/link'
 import { PiHandshakeLight } from "react-icons/pi";
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { sendPasswordResetEmail } from 'firebase/auth'; // Importar a função necessária
+import { Button } from '@mui/material'
 
 export default function ForgotPassword(props) {
     const { session, login, auth } = props
+    const [hover, setHover] = useState(false)
+    const [focus, setFocus] = useState(false)
+    const [supportsHoverAndPointer, setSupportsHoverAndPointer] = useState(false);
 
     const [reCaptchaSolve, setReCaptchaSolve] = useState(false)
 
@@ -39,16 +43,23 @@ export default function ForgotPassword(props) {
         }
     }
 
+    useEffect(() => {
+        setSupportsHoverAndPointer(
+            window.matchMedia('(hover: hover)').matches &&
+            window.matchMedia('(pointer: fine)').matches
+        )
+    }, [])
+
     return (
         <div className={styles.container}>
             <header>
             </header>
             <main className={styles.main}>
                 <div
-                    className={styles.loginContainer}
+                    className={styles.left}
                 >
                     <div
-                        className={styles.loginHead}
+                        className={styles.leftTitle}
                     >
                         <h1>Don’t remember your password?</h1>
                         <h2>Don’t worry! it happens :)</h2>
@@ -56,72 +67,72 @@ export default function ForgotPassword(props) {
                     <p>
                         Type in your e-mail and we will send you a link to change your password.
                     </p>
-                    <div
-                        className={styles.loginBody}
+                    <form
+                        onSubmit={handleSubmit}
+                        method='POST'
+                        className={styles.form}
                     >
-                        <form onSubmit={handleSubmit} method='POST'>
-                            <div className={styles.fieldsContainer}>
-                                <TextField
-                                    variant='outlined'
-                                    label='E-Mail'
-                                    size='small'
-                                    name='email'
-                                    sx={{
-                                        width: '100%'
-                                    }}
-                                />
-                            </div>
-                            <button
-                                type='submit'
-                                variant='contained'
+                        <div className={styles.fieldsContainer}>
+                            <TextField
+                                variant='outlined'
+                                label='E-Mail'
+                                size='small'
+                                name='email'
+                                autoComplete='off'
                                 sx={{
-                                    width: '100%',
-                                    height: '50px',
-                                    color: '#ffffff',
-                                    fontWeight: 'bold',
-                                    fontSize: '16px',
+                                    width: '80%',
+                                    '.MuiOutlinedInput-notchedOutline': {
+                                        borderColor: `${focus
+                                            ? 'var(--primary)' :
+                                            hover || !supportsHoverAndPointer
+                                                ? '#ffffff'
+                                                : '#ffffff90'
+                                            } !important`,
+                                        transition: 'all ease-in-out 200ms',
+                                    },
+                                    '.MuiInputLabel-outlined': {
+                                        color: `${focus
+                                            ? 'var(--primary)' : '#ffffff'} !important`,
+                                        transition: 'all ease-in-out 200ms',
+                                    },
+                                    '.MuiInputBase-input': {
+                                        color: '#ffffff',
+                                    },
                                 }}
-                            >
-                                Reset Password
-                            </button>
-                        </form>
-                        <Link legacyBehavior href={'/login'}>
-                            <a
-                                className={styles.linkCreateAccount}
-                            >
-                                Back to Login
-                            </a>
-                        </Link>
-                    </div>
+                                onFocus={() => setFocus(true)}
+                                onBlur={() => setFocus(false)}
+                                onMouseEnter={() => setHover(true)}
+                                onMouseLeave={() => setHover(false)}
+                            />
+                        </div>
+                        <Button
+                            type='submit'
+                            variant='contained'
+                            sx={{
+                                width: '25%',
+                                height: '50px',
+                                color: '#ffffff',
+                                fontWeight: 'bold',
+                            }}
+                        >
+                            Reset Password
+                        </Button>
+                    </form>
+                    <Link legacyBehavior href={'/login'}>
+                        <a
+                            className={styles.linkBackToLogin}
+                        >
+                            Back to Login
+                        </a>
+                    </Link>
                 </div>
                 <div
-                    className={styles.joinContainer}
+                    className={styles.right}
                 >
-                    <div
-                        className={styles.joinHead}
-                    >
-                        <h3>
-                            Don’t have an account?
-                        </h3>
-                        <p>
-                            Join MKJ community!
-                        </p>
-                    </div>
-                    <div
-                        className={styles.joinBody}
-                    >
-                        <PiHandshakeLight
-                            size='45px'
-                        />
-                        <h4>
-                            Join as a Customer
-                        </h4>
-                        <ul>
-                            <li>Save your wishlist picks.</li>
-                            <li>Save your order data for next purchases.</li>
-                            <li>Be the first one to know about our discounts.</li>
-                        </ul>
-                    </div>
+                    <img
+                        src='/reset_pass.webp'
+                        className={styles.imgRight}
+                    />
                 </div>
             </main >
             <footer>
