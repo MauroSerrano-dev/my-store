@@ -115,8 +115,9 @@ async function createNewUserWithCredentials(user) {
     }
 }
 
-async function createNewUserWithGoogle(user, id) {
+async function createNewUserWithGoogle(userJson, id) {
     try {
+        const user = JSON.parse(userJson)
         // Verifique se o usuário com o mesmo e-mail já existe
         const userIdExists = await getUserIdByEmail(user.email);
 
