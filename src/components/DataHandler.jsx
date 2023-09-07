@@ -1,8 +1,14 @@
 import NavBar from './NavBar'
 import styles from '../styles/components/DataHandler.module.css'
-import { useEffect, useState, useRef } from "react"
+import { useEffect, useState } from "react"
 import Cookies from 'js-cookie';
-import Router from 'next/router';
+import { getAuth, onAuthStateChanged, signOut } from "firebase/auth";
+import { initializeApp } from 'firebase/app';
+import { firebaseConfig } from '../../firebase.config';
+
+// Inicialize o Firebase
+const firebaseApp = initializeApp(firebaseConfig);
+const auth = getAuth(firebaseApp);
 
 export default function DataHandler(props) {
     const { Component, pageProps, primaryColor } = props
@@ -10,65 +16,62 @@ export default function DataHandler(props) {
     const [isScrollAtTop, setIsScrollAtTop] = useState(true)
     const [session, setSession] = useState()
 
-    async function getSession(token) {
+    useEffect(() => {
+        // Adicione um observador de estado de autenticação
+        const unsubscribe = onAuthStateChanged(auth, (authUser) => {
+            if (authUser) {
+                // O usuário está autenticado, faça algo com as informações do usuário
+                setUserSession(authUser)
+                console.log('Usuário autenticado:', authUser);
+            } else {
+                // O usuário fez logout ou não está autenticado
+                setSession(null)
+                console.log('Usuário não autenticado');
+            }
+        });
+
+        // Remova o ouvinte quando o componente for desmontado
+        return () => unsubscribe();
+    }, [])
+
+    function setUserSession(authUser) {
+        const now = new Date()
+
         const options = {
             method: 'GET',
             headers: {
-                session_token: token
+                uid: authUser.uid,
+                new_user: JSON.stringify({
+                    email: authUser.email,
+                    name: authUser.displayName,
+                    cart: [],
+                    email_verified: authUser.emailVerified,
+                    create_at: {
+                        text: now.toString(),
+                        ms: now.valueOf(),
+                    }
+                })
             }
         }
 
-        const res = await fetch("/api/sessions", options)
+        fetch("/api/user-session", options)
             .then(response => response.json())
-            .then(response => response)
-            .catch(err => console.error(err))
-
-        return res.session
-    }
-
-    async function deleteSession(token) {
-        const options = {
-            method: 'DELETE',
-            headers: {
-                session_token: token
-            }
-        }
-
-        await fetch("/api/sessions", options)
-            .then(response => response.json())
-            .then(response => console.log(response))
-            .catch(err => console.error(err))
-    }
-
-    function login() {
-        const sessionToken = Cookies.get('sessionToken')
-
-        getSession(sessionToken)
-            .then(res => {
-                setSession(res)
+            .then(response => {
+                setSession({ user: response })
             })
             .catch(err => console.error(err))
     }
 
+    function login() {
+    }
+
     function logout() {
         setSession(null)
-        deleteSession(Cookies.get('sessionToken'))
-        Cookies.remove('sessionToken')
         setCart([])
+        signOut(auth)
     }
 
     useEffect(() => {
-        const sessionToken = Cookies.get('sessionToken')
-        if (sessionToken) {
-            getSession(sessionToken)
-                .then(res => {
-                    setSession(res)
-                })
-                .catch(err => console.error(err))
-        }
-        else
-            setSession(null)
-
         let timeoutId
 
         const handleScroll = () => {
@@ -130,7 +133,11 @@ export default function DataHandler(props) {
 
 
     return (
-        <div onClick={() => console.log(session)}>
+        <div
+            onClick={() => {
+                console.log(session)
+            }}
+        >
             <div
                 className={styles.topContainer}
             >

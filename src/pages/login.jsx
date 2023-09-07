@@ -5,12 +5,15 @@ import { FcGoogle } from "react-icons/fc";
 import { PiHandshakeLight } from "react-icons/pi";
 import ReCAPTCHA from "react-google-recaptcha";
 import { useState } from 'react';
-import { getAuth, signInWithPopup, GoogleAuthProvider } from "firebase/auth";
 import { firebaseConfig } from '../../firebase.config';
 import { initializeApp } from 'firebase/app';
-import Cookies from 'js-cookie';
+import { getAuth, signInWithPopup, GoogleAuthProvider, signInWithEmailAndPassword } from "firebase/auth";
 
 const provider = new GoogleAuthProvider();
+
+// Inicialize o Firebase
+const firebaseApp = initializeApp(firebaseConfig);
+const auth = getAuth(firebaseApp);
 
 export default function Login(props) {
     const { session, login } = props
@@ -26,55 +29,7 @@ export default function Login(props) {
     }
 
     function googleLogin() {
-        // Inicialize o Firebase
-        const firebaseApp = initializeApp(firebaseConfig);
-        const auth = getAuth(firebaseApp);
-        console.log('auth', auth)
         signInWithPopup(auth, provider)
-            .then((result) => {
-                // This gives you a Google Access Token. You can use it to access the Google API.
-                const credential = GoogleAuthProvider.credentialFromResult(result);
-                const token = credential.accessToken;
-                const user = result.user;
-                const now = new Date()
-
-                getUserWithGoogle(
-                    {
-                        email: user.email,
-                        name: user.displayName,
-                        cart: [],
-                        email_verified: user.emailVerified,
-                        uid: user.uid,
-                        create_at: {
-                            text: now.toString(),
-                            ms: now.valueOf(),
-                        }
-                    }
-                )
-            }).catch((error) => {
-                // Handle Errors here.
-                const errorCode = error.code;
-                const errorMessage = error.message;
-                // The AuthCredential type that was used.
-                const credential = GoogleAuthProvider.credentialFromError(error);
-            })
-    }
-
-    function getUserWithGoogle(user) {
-        console.log('user', user)
-        const options = {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ user: user })
-        }
-
-        fetch('/api/user-google', options)
-            .then(response => response.json())
-            .then(response => {
-                Cookies.set('sessionToken', response.sessionToken)
-                login()
-            })
-            .catch(err => console.error(err))
     }
 
     async function handleSubmit(event) {
@@ -83,21 +38,13 @@ export default function Login(props) {
         const email = event.target.email.value
         const password = event.target.password.value
 
-        const options = {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(
-                {
-                    email: email,
-                    password: password
-                }
-            )
+        try {
+            const userCredential = await signInWithEmailAndPassword(auth, email, password);
+            // Se o login for bem-sucedido, você pode acessar os detalhes do usuário em userCredential.user
+            console.log('Usuário autenticado:', userCredential.user);
+        } catch (error) {
+            console.error('Erro ao fazer login:', error);
         }
-
-        fetch('/api/login', options)
-            .then(response => response.json())
-            .then(response => console.log(response))
-            .catch(err => console.error(err))
     }
 
     return (

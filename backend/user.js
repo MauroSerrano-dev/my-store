@@ -11,7 +11,6 @@ import {
 import { initializeApp } from "firebase/app"
 import { getAuth, createUserWithEmailAndPassword, sendEmailVerification } from "firebase/auth"
 import { firebaseConfig } from "../firebase.config"
-import { createSessionForUser } from "./sessions"
 
 initializeApp(firebaseConfig)
 
@@ -40,24 +39,23 @@ async function getUserIdByEmail(email) {
     }
 }
 
-async function getUserIdByUid(uid) {
+async function getUserById(id) {
+
     try {
-        // Create a reference to the users collection
-        const usersCollection = collection(db, process.env.COLL_USERS);
+        const userDocRef = doc(db, process.env.COLL_USERS, id);
 
-        // Query the user with the provided uid
-        const q = query(usersCollection, where("uid", "==", uid));
-        const querySnapshot = await getDocs(q);
+        // Obtenha o documento do usuário
+        const userDoc = await getDoc(userDocRef);
 
-        // If a document is returned, return the userId
-        if (!querySnapshot.empty) {
-            const userDoc = querySnapshot.docs[0];
-            return userDoc.id;
+        // Verifique se o documento existe e retorne os dados do usuário
+        if (userDoc.exists()) {
+
+            return userDoc.data();
         } else {
-            return null;
+            return null; // Retorna null se o usuário não for encontrado
         }
     } catch (error) {
-        console.error("Error getting userId by uid:", error);
+        console.error("Erro ao obter usuário pelo ID:", error);
         throw error;
     }
 }
@@ -72,11 +70,11 @@ async function createNewUserWithCredentials(user) {
             // Create a reference to the users collection
             const usersCollection = collection(db, process.env.COLL_USERS)
 
-            // Add the new user to the collection with password encryption
-            const newUserRef = doc(usersCollection)
-
             // Create a session for the new user and return the session ID
             const { user: authenticatedUser } = await createUserWithEmailAndPassword(auth, user.email, user.password)
+
+            // Add the new user to the collection with password encryption
+            const newUserRef = doc(usersCollection, authenticatedUser.uid)
 
             const now = new Date()
 
@@ -86,14 +84,14 @@ async function createNewUserWithCredentials(user) {
                     email: user.email,
                     first_name: user.first_name,
                     last_name: user.last_name,
-                    uid: authenticatedUser.uid,
                     cart: [],
                     email_verified: false,
                     create_at: {
                         text: now.toString(),
                         ms: now.valueOf(),
                     }
-                })
+                }
+            )
 
             // Envie o e-mail de verificação
             sendEmailVerification(authenticatedUser)
@@ -106,7 +104,7 @@ async function createNewUserWithCredentials(user) {
                     console.error("Error sending verification email:", error);
                 });
 
-            return await createSessionForUser(newUserRef.id);
+            return authenticatedUser.uid;
         } else {
             console.log(`${user.email} already exists as a user.`);
             return null;
@@ -117,28 +115,28 @@ async function createNewUserWithCredentials(user) {
     }
 }
 
-async function createNewUserWithGoogle(user) {
+async function createNewUserWithGoogle(user, id) {
     try {
         // Verifique se o usuário com o mesmo e-mail já existe
         const userIdExists = await getUserIdByEmail(user.email);
-        console.log('userIdExists', userIdExists)
+
         // Se o usuário não existir, crie um novo
         if (!userIdExists) {
             // Create a reference to the users collection
             const usersCollection = collection(db, process.env.COLL_USERS);
 
             // Add the new user to the collection with password encryption
-            const newUserRef = doc(usersCollection);
+            const newUserRef = doc(usersCollection, id);
 
             // Set the document for the new user
             await setDoc(newUserRef, user);
 
-            console.log(`${user.email} has been added as a new user, and a session has been created.`);
+            console.log(`${user.email} has been added as a new user.`);
 
-            return await createSessionForUser(newUserRef.id);
+            return user
         } else {
             console.log(`${user.email} already exists as a user.`);
-            return await createSessionForUser(userIdExists);
+            return null;
         }
     } catch (error) {
         console.error("Error creating a new user and session:", error);
@@ -193,5 +191,5 @@ export {
     createNewUserWithGoogle,
     removeEmailVerifiedField,
     checkUserExistsByEmail,
-    getUserIdByUid
+    getUserById,
 }
