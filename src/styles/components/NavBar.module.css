@@ -9,7 +9,7 @@
     background-color: var(--navbar-color);
     transition: all 650ms ease-in-out;
     z-index: 2;
-    border-bottom: solid var(--global-white);
+    border-bottom: 2px solid var(--global-white);
     padding-left: 1rem;
     padding-right: 1rem;
     --text-color: var(--text-white);

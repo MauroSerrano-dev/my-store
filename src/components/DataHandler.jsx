@@ -20,8 +20,7 @@ export default function DataHandler(props) {
         // Adicione um observador de estado de autenticação
         const unsubscribe = onAuthStateChanged(auth, (authUser) => {
             if (authUser) {
-                // O usuário está autenticado, faça algo com as informações do usuário
-                setUserSession(authUser)
+                handleLogin(authUser)
                 console.log('Usuário autenticado:', authUser);
             } else {
                 // O usuário fez logout ou não está autenticado
@@ -34,9 +33,9 @@ export default function DataHandler(props) {
         return () => unsubscribe();
     }, [])
 
-    function setUserSession(authUser) {
+    function handleLogin(authUser) {
         const now = new Date()
-
+        console.log('ui', authUser)
         const options = {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
@@ -46,12 +45,14 @@ export default function DataHandler(props) {
                     email: authUser.email,
                     name: authUser.displayName,
                     cart: [],
+                    prodiders: authUser.providerData.map(provider => provider.providerId),
                     email_verified: authUser.emailVerified,
                     create_at: {
                         text: now.toString(),
                         ms: now.valueOf(),
                     }
-                }
+                },
+                providers: authUser.providerData.map(provider => provider.providerId)
             })
         }
 
@@ -171,6 +172,7 @@ export default function DataHandler(props) {
                     session={session}
                     login={login}
                     logout={logout}
+                    auth={auth}
                 />
             </div>
         </div>

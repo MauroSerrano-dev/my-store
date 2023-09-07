@@ -1,15 +1,11 @@
-import styles from '@/styles/login.module.css'
-import { Button, TextField } from '@mui/material'
+import styles from '@/styles/forgot-password.module.css'
+import { TextField } from '@mui/material'
 import Link from 'next/link'
-import { FcGoogle } from "react-icons/fc";
 import { PiHandshakeLight } from "react-icons/pi";
-import ReCAPTCHA from "react-google-recaptcha";
 import { useState } from 'react';
-import { signInWithPopup, GoogleAuthProvider, signInWithEmailAndPassword, signInWithRedirect } from "firebase/auth";
+import { sendPasswordResetEmail } from 'firebase/auth'; // Importar a função necessária
 
-const provider = new GoogleAuthProvider();
-
-export default function Login(props) {
+export default function ForgotPassword(props) {
     const { session, login, auth } = props
 
     const [reCaptchaSolve, setReCaptchaSolve] = useState(false)
@@ -29,16 +25,17 @@ export default function Login(props) {
     }
 
     async function handleSubmit(event) {
-        event.preventDefault()
+        event.preventDefault();
 
-        const email = event.target.email.value
-        const password = event.target.password.value
+        const email = event.target.email.value;
 
         try {
-            const userCredential = await signInWithEmailAndPassword(auth, email, password);
-            console.log('Usuário autenticado:', userCredential.user);
+            // Enviar um e-mail de redefinição de senha
+            await sendPasswordResetEmail(auth, email);
+
+            console.log('E-mail de redefinição de senha enviado com sucesso para:', email);
         } catch (error) {
-            console.error('Erro ao fazer login:', error);
+            console.error('Erro ao enviar e-mail de redefinição de senha:', error);
         }
     }
 
@@ -53,8 +50,12 @@ export default function Login(props) {
                     <div
                         className={styles.loginHead}
                     >
-                        <h1>Login</h1>
+                        <h1>Don’t remember your password?</h1>
+                        <h2>Don’t worry! it happens :)</h2>
                     </div>
+                    <p>
+                        Type in your e-mail and we will send you a link to change your password.
+                    </p>
                     <div
                         className={styles.loginBody}
                     >
@@ -69,31 +70,6 @@ export default function Login(props) {
                                         width: '100%'
                                     }}
                                 />
-                                <TextField
-                                    variant='outlined'
-                                    label='Password'
-                                    type='password'
-                                    name='password'
-                                    size='small'
-                                    sx={{
-                                        width: '100%'
-                                    }}
-                                />
-                                <Link legacyBehavior href={'/forgot-password'}>
-                                    <a
-                                        className={styles.linkCreateAccount}
-                                    >
-                                        Forgot my password
-                                    </a>
-                                </Link>
-                                <div className='fillWidth center'>
-                                    <ReCAPTCHA
-                                        sitekey={process.env.NEXT_PUBLIC_RE_CAPTCHA_KEY}
-                                        onChange={handleReCaptchaSuccess}
-                                        onExpired={handleReCaptchaError}
-                                        onErrored={handleReCaptchaError}
-                                    />
-                                </div>
                             </div>
                             <button
                                 type='submit'
@@ -106,22 +82,16 @@ export default function Login(props) {
                                     fontSize: '16px',
                                 }}
                             >
-                                Login
+                                Reset Password
                             </button>
                         </form>
-                        <button
-                            className={styles.providerLogin}
-                            onClick={googleLogin}
-                        >
-                            <FcGoogle
-                                size='30px'
-                                style={{
-                                    position: 'absolute',
-                                    left: '1.5rem'
-                                }}
-                            />
-                            Login with Google
-                        </button>
+                        <Link legacyBehavior href={'/login'}>
+                            <a
+                                className={styles.linkCreateAccount}
+                            >
+                                Back to Login
+                            </a>
+                        </Link>
                     </div>
                 </div>
                 <div
@@ -151,13 +121,6 @@ export default function Login(props) {
                             <li>Save your order data for next purchases.</li>
                             <li>Be the first one to know about our discounts.</li>
                         </ul>
-                        <Link legacyBehavior href={'/signin'}>
-                            <a
-                                className={styles.linkCreateAccount}
-                            >
-                                Create a Customer Account
-                            </a>
-                        </Link>
                     </div>
                 </div>
             </main >

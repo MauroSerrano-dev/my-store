@@ -6,7 +6,7 @@
 
     overflow-y: auto;
     overflow-x: hidden;
-    padding-top: calc(5rem + 35px);
+    padding-top: calc(5rem + 40px);
 }
 
 .topContainer {
@@ -32,10 +32,12 @@
     gap: 2rem;
 
     width: 100%;
-    height: 35px;
+    height: 40px;
     background-color: var(--primary-dark);
     font-size: 90%;
     --text-color: var(--text-white);
+
+    border-bottom: 2px solid var(--global-white);
 
     transition: all ease-in-out 200ms;
 }

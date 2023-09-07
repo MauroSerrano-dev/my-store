@@ -6,7 +6,8 @@ import {
     getFirestore,
     getDocs,
     where,
-    query
+    query,
+    updateDoc
 } from "firebase/firestore"
 import { initializeApp } from "firebase/app"
 import { getAuth, createUserWithEmailAndPassword, sendEmailVerification } from "firebase/auth"
@@ -85,6 +86,7 @@ async function createNewUserWithCredentials(user) {
                     first_name: user.first_name,
                     last_name: user.last_name,
                     cart: [],
+                    providers: ['password'],
                     email_verified: false,
                     create_at: {
                         text: now.toString(),
@@ -93,7 +95,7 @@ async function createNewUserWithCredentials(user) {
                 }
             )
 
-            // Envie o e-mail de verificação
+            /* // Envie o e-mail de verificação
             sendEmailVerification(authenticatedUser)
                 .then(() => {
                     // O e-mail de verificação foi enviado com sucesso
@@ -103,7 +105,7 @@ async function createNewUserWithCredentials(user) {
                     // Lidar com erros ao enviar o e-mail de verificação
                     console.error("Error sending verification email:", error);
                 });
-
+ */
             return authenticatedUser.uid;
         } else {
             console.log(`${user.email} already exists as a user.`);
@@ -186,10 +188,33 @@ async function removeEmailVerifiedField(userId) {
     }
 }
 
+async function addProviders(userId, providersName) {
+    try {
+        const userRef = doc(db, process.env.COLL_USERS, userId);
+        const userDoc = await getDoc(userRef);
+
+        if (userDoc.exists()) {
+            const userData = userDoc.data();
+
+            userData.providers = providersName;
+
+            await updateDoc(userRef, userData);
+
+            console.log(`Campo providers atualizado ao usuário ${userId}`);
+        } else {
+            console.log(`Documento de usuário com ID ${userId} não encontrado.`);
+        }
+    } catch (error) {
+        console.error(`Erro ao adicionar provider ao usuário ${userId}:`, error);
+        throw error;
+    }
+}
+
 export {
     createNewUserWithCredentials,
     createNewUserWithGoogle,
     removeEmailVerifiedField,
     checkUserExistsByEmail,
     getUserById,
+    addProviders
 }

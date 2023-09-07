@@ -80,6 +80,7 @@ export default function Signin(props) {
                                 variant='outlined'
                                 label='E-Mail'
                                 size='small'
+                                name='email'
                                 onChange={(e) => handleNewUser(e.target.value, 'email')}
                                 sx={{
                                     width: '100%'

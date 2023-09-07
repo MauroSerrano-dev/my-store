@@ -47,7 +47,7 @@ export default function NavBar(props) {
                         className={styles.categoriesContainer}
                         style={{
                             bottom: isScrollAtTop
-                                ? '-37px'
+                                ? '-39px'
                                 : '22px',
                         }}
                     >
