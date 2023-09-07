@@ -36,12 +36,11 @@ export default function DataHandler(props) {
 
     function setUserSession(authUser) {
         const now = new Date()
-
-        console.log('abc', authUser)
-
+        
         const options = {
             method: 'GET',
             headers: {
+                'Content-Type': 'application/json',
                 uid: authUser.uid,
                 new_user: JSON.stringify({
                     email: authUser.email,
