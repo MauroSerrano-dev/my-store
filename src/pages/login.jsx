@@ -7,7 +7,7 @@ import ReCAPTCHA from "react-google-recaptcha";
 import { useState } from 'react';
 import { firebaseConfig } from '../../firebase.config';
 import { initializeApp } from 'firebase/app';
-import { getAuth, signInWithPopup, GoogleAuthProvider, signInWithEmailAndPassword } from "firebase/auth";
+import { getAuth, signInWithPopup, GoogleAuthProvider, signInWithEmailAndPassword, signInWithRedirect } from "firebase/auth";
 
 const provider = new GoogleAuthProvider();
 
@@ -29,7 +29,7 @@ export default function Login(props) {
     }
 
     function googleLogin() {
-        signInWithPopup(auth, provider)
+        signInWithRedirect(auth, provider)
     }
 
     async function handleSubmit(event) {
