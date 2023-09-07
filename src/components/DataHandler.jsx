@@ -36,13 +36,13 @@ export default function DataHandler(props) {
 
     function setUserSession(authUser) {
         const now = new Date()
-        
+
         const options = {
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json',
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
                 uid: authUser.uid,
-                new_user: JSON.stringify({
+                new_user: {
                     email: authUser.email,
                     name: authUser.displayName,
                     cart: [],
@@ -51,8 +51,8 @@ export default function DataHandler(props) {
                         text: now.toString(),
                         ms: now.valueOf(),
                     }
-                })
-            }
+                }
+            })
         }
 
         fetch("/api/user-session", options)
