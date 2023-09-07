@@ -3,7 +3,7 @@ import { createNewUserWithGoogle, getUserById } from "../../../backend/user";
 export default async function handler(req, res) {
     if (req.method === "GET") {
         const { uid, new_user } = req.headers
-
+        console.log('api', JSON.parse(new_user), uid, new_user)
         const user = await getUserById(uid)
         
         if (user) {
