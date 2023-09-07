@@ -37,6 +37,8 @@ export default function DataHandler(props) {
     function setUserSession(authUser) {
         const now = new Date()
 
+        console.log('abc', authUser)
+
         const options = {
             method: 'GET',
             headers: {
