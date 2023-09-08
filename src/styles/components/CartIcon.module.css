@@ -4,8 +4,8 @@
     align-items: center;
     position: relative;
 
-    height: calc(var(--bar-height) * 0.6);
-    width: calc(var(--bar-height) * 0.6);
+    height: calc(var(--bar-height) * 0.54);
+    width: calc(var(--bar-height) * 0.54);
     color: var(--global-white);
     border-radius: 100%;
 
@@ -42,7 +42,7 @@
 .contentContainer {
     position: absolute;
     top: 38px;
-    left: -210px;
+    left: -213px;
 }
 
 .contentVisible {

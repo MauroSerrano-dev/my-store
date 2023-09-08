@@ -47,8 +47,8 @@ export default function AvatarMenu(props) {
           className={styles.contentContainer}
           style={{
             left: session
-              ? '-96.5px'
-              : '-201.5px'
+              ? '-98.5px'
+              : '-203.5px'
           }}
         >
           <div className={styles.pointer}>
