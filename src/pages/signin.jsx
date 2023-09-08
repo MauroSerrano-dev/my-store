@@ -6,7 +6,7 @@ import ReCAPTCHA from "react-google-recaptcha";
 import { useState } from 'react';
 
 export default function Signin(props) {
-    const { signIn } = props
+    const { signIn, login } = props
 
     const [reCaptchaSolve, setReCaptchaSolve] = useState(false)
     const [newUser, setNewUser] = useState({})
@@ -37,7 +37,9 @@ export default function Signin(props) {
 
         fetch('/api/user', options)
             .then(response => response.json())
-            .then(response => console.log(response))
+            .then(response => {
+                login(user.email, user.password)
+            })
             .catch(err => console.error(err))
     }
 

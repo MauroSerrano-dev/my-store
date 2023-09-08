@@ -57,7 +57,7 @@ export default function AvatarMenu(props) {
             ? <div
               className={styles.session}
             >
-              <Link legacyBehavior href={`/profile?id=${session?.user.id}`}>
+              <Link legacyBehavior href={`/profile?id=${session?.id}`}>
                 <a
                   className='noUnderline'
                   onClick={() => setOpen(false)}

@@ -84,7 +84,7 @@ export default function ForgotPassword(props) {
                                 name='email'
                                 autoComplete='off'
                                 sx={{
-                                    width: '96%',
+                                    width: '93.5%',
                                     '.MuiOutlinedInput-notchedOutline': {
                                         borderColor: `${focus
                                             ? 'var(--primary)' :

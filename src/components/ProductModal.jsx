@@ -24,7 +24,7 @@ export default function ProductModal(props) {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
-                        userId: session.user.id,
+                        userId: session.id,
                         cart: newCart,
                     })
                 }

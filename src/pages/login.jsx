@@ -5,7 +5,7 @@ import { FcGoogle } from "react-icons/fc";
 import { PiHandshakeLight } from "react-icons/pi";
 import ReCAPTCHA from "react-google-recaptcha";
 import { useState } from 'react';
-import { signInWithPopup, GoogleAuthProvider, signInWithEmailAndPassword, signInWithRedirect } from "firebase/auth";
+import { signInWithPopup, GoogleAuthProvider, signInWithRedirect } from "firebase/auth";
 
 const provider = new GoogleAuthProvider();
 
@@ -33,13 +33,8 @@ export default function Login(props) {
 
         const email = event.target.email.value
         const password = event.target.password.value
-
-        try {
-            const userCredential = await signInWithEmailAndPassword(auth, email, password);
-            console.log('Usuário autenticado:', userCredential.user);
-        } catch (error) {
-            console.error('Erro ao fazer login:', error);
-        }
+        
+        login(email, password)
     }
 
     return (

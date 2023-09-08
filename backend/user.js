@@ -50,7 +50,6 @@ async function getUserById(id) {
 
         // Verifique se o documento existe e retorne os dados do usuário
         if (userDoc.exists()) {
-
             return userDoc.data();
         } else {
             return null; // Retorna null se o usuário não for encontrado
@@ -79,21 +78,22 @@ async function createNewUserWithCredentials(user) {
 
             const now = new Date()
 
-            // Set the document for the new user
-            await setDoc(newUserRef,
-                {
-                    email: user.email,
-                    first_name: user.first_name,
-                    last_name: user.last_name,
-                    cart: [],
-                    providers: ['password'],
-                    email_verified: false,
-                    create_at: {
-                        text: now.toString(),
-                        ms: now.valueOf(),
-                    }
+            const newUser = {
+                email: user.email,
+                first_name: user.first_name,
+                last_name: user.last_name,
+                cart: [],
+                providers: ['password'],
+                email_verified: false,
+                introduction_complete: false,
+                create_at: {
+                    text: now.toString(),
+                    ms: now.valueOf(),
                 }
-            )
+            }
+
+            // Set the document for the new user
+            await setDoc(newUserRef, newUser)
 
             /* // Envie o e-mail de verificação
             sendEmailVerification(authenticatedUser)
@@ -106,7 +106,10 @@ async function createNewUserWithCredentials(user) {
                     console.error("Error sending verification email:", error);
                 });
  */
-            return authenticatedUser.uid;
+            return {
+                ...newUser,
+                id: newUserRef.id
+            };
         } else {
             console.log(`${user.email} already exists as a user.`);
             return null;
@@ -188,7 +191,7 @@ async function removeEmailVerifiedField(userId) {
     }
 }
 
-async function addProviders(userId, providersName) {
+async function updateField(userId, fieldName, value) {
     try {
         const userRef = doc(db, process.env.COLL_USERS, userId);
         const userDoc = await getDoc(userRef);
@@ -196,16 +199,16 @@ async function addProviders(userId, providersName) {
         if (userDoc.exists()) {
             const userData = userDoc.data();
 
-            userData.providers = providersName;
+            userData[fieldName] = value;
 
             await updateDoc(userRef, userData);
 
-            console.log(`Campo providers atualizado ao usuário ${userId}`);
+            console.log(`User ${userId} field ${fieldName} updated successfully!`);
         } else {
-            console.log(`Documento de usuário com ID ${userId} não encontrado.`);
+            console.log(`User with id ${userId} not found.`);
         }
     } catch (error) {
-        console.error(`Erro ao adicionar provider ao usuário ${userId}:`, error);
+        console.error(`Error updating field ${fieldName} for user ${userId}.`, error);
         throw error;
     }
 }
@@ -216,5 +219,5 @@ export {
     removeEmailVerifiedField,
     checkUserExistsByEmail,
     getUserById,
-    addProviders
+    updateField
 }

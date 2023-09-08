@@ -2,10 +2,11 @@ import NavBar from './NavBar'
 import styles from '../styles/components/DataHandler.module.css'
 import { useEffect, useState } from "react"
 import Cookies from 'js-cookie';
-import { getAuth, onAuthStateChanged, signOut } from "firebase/auth";
+import { getAuth, onAuthStateChanged, signOut, signInWithEmailAndPassword } from "firebase/auth";
 import { initializeApp } from 'firebase/app';
 import { firebaseConfig } from '../../firebase.config';
 import { CART_COOKIE } from '../../labels';
+import Router from 'next/router';
 
 // Inicialize o Firebase
 const firebaseApp = initializeApp(firebaseConfig);
@@ -16,6 +17,7 @@ export default function DataHandler(props) {
     const [cart, setCart] = useState([])
     const [isScrollAtTop, setIsScrollAtTop] = useState(true)
     const [session, setSession] = useState()
+    const [showIntroduction, setShowIntroduction] = useState(false)
 
     useEffect(() => {
         // Adicione um observador de estado de autenticação
@@ -36,7 +38,6 @@ export default function DataHandler(props) {
 
     function handleLogin(authUser) {
         const now = new Date()
-        console.log('ui', authUser)
         const options = {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
@@ -48,6 +49,7 @@ export default function DataHandler(props) {
                     cart: [],
                     prodiders: authUser.providerData.map(provider => provider.providerId),
                     email_verified: authUser.emailVerified,
+                    introduction_complete: false,
                     create_at: {
                         text: now.toString(),
                         ms: now.valueOf(),
@@ -59,19 +61,47 @@ export default function DataHandler(props) {
 
         fetch("/api/user-session", options)
             .then(response => response.json())
-            .then(response => {
-                setSession({ user: response })
-            })
+            .then(response => handleSetSession(response))
             .catch(err => console.error(err))
     }
 
-    function login() {
+    function handleSetSession(session) {
+        setSession(session)
+        if (!session.introduction_complete)
+            setShowIntroduction(true)
+    }
+
+    async function login(email, password) {
+        try {
+            const userCredential = await signInWithEmailAndPassword(auth, email, password);
+            console.log('Usuário autenticado:', userCredential.user);
+        } catch (error) {
+            console.error('Erro ao fazer login:', error);
+        }
+        Router.push('/')
     }
 
     function logout() {
         setSession(null)
         setCart([])
         signOut(auth)
+        Router.push('/')
+    }
+
+    function handleIntroductionComplete() {
+        setShowIntroduction(false)
+        const options = {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                id: session.id,
+            })
+        }
+
+        fetch("/api/introduction-complete", options)
+            .then(response => response.json())
+            .then(response => console.log(response))
+            .catch(err => console.error(err))
     }
 
     useEffect(() => {
@@ -101,14 +131,14 @@ export default function DataHandler(props) {
 
     useEffect(() => {
         if (session) {
-            setCart(session.user.cart)
+            setCart(session.cart)
         }
         else if (session === null && Cookies.get(CART_COOKIE)) {
             setCart(JSON.parse(Cookies.get(CART_COOKIE)))
         }
         if (session && Cookies.get(CART_COOKIE)) {
             const cookieCart = JSON.parse(Cookies.get(CART_COOKIE))
-            const newCart = session.user.cart
+            const newCart = session.cart
                 .map(userProduct =>
                 ({
                     ...userProduct,
@@ -117,14 +147,14 @@ export default function DataHandler(props) {
                         : userProduct.quantity
                 }))
                 .concat(cookieCart.filter(cookieProduct =>
-                    session.user.cart.every(userProduct => cookieProduct.id !== userProduct.id || cookieProduct.variant !== userProduct.variant))
+                    session.cart.every(userProduct => cookieProduct.id !== userProduct.id || cookieProduct.variant !== userProduct.variant))
                 )
             setCart(newCart)
             const options = {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
-                    userId: session.user.id,
+                    userId: session.id,
                     cart: newCart
                 })
             }
@@ -138,7 +168,7 @@ export default function DataHandler(props) {
     return (
         <div
             onClick={() => {
-                console.log(session)
+                console.log('session', session)
             }}
         >
             <div
@@ -176,6 +206,16 @@ export default function DataHandler(props) {
                     auth={auth}
                 />
             </div>
+            {showIntroduction &&
+                <div
+                    className={styles.introduction}
+                    onClick={handleIntroductionComplete}
+                >
+                    <h1>
+                        Introduction
+                    </h1>
+                </div>
+            }
         </div>
     )
 }

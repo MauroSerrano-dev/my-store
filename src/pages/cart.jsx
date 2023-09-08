@@ -19,7 +19,7 @@ export default function Cart(props) {
                 userId: 'userId',
                 cartItems: cart,
                 cancel_url: window.location.href,
-                customer: session?.user
+                customer: session
             })
         }
 

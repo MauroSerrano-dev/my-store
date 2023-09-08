@@ -1,13 +1,13 @@
-import { addProviders, createNewUserWithGoogle, getUserById } from "../../../backend/user";
+import { updateField, createNewUserWithGoogle, getUserById } from "../../../backend/user";
 
 export default async function handler(req, res) {
     if (req.method === "POST") {
         const { uid, new_user, providers } = req.body
-        
+
         const user = await getUserById(uid)
 
         if (user) {
-            await addProviders(uid, providers)
+            await updateField(uid, 'providers', providers)
             res.status(200).json({
                 ...user,
                 id: uid

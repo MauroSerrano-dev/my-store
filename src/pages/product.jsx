@@ -60,7 +60,7 @@ export default withRouter((props) => {
                     }
                 ],
                 cancel_url: window.location.href,
-                customer: session?.user
+                customer: session
             })
         }
 
@@ -96,7 +96,7 @@ export default withRouter((props) => {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
-                    userId: session.user.id,
+                    userId: session.id,
                     cart: newCart
                 })
             }
