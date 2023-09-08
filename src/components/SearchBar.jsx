@@ -39,7 +39,10 @@ export default function SearchBar(props) {
                 className={styles.input}
                 placeholder='What are you looking for?'
             />
-            <button className={styles.icon}>
+            <button
+                className={styles.icon}
+                aria-label="Search"
+            >
                 <SearchRoundedIcon
                     color='primary'
                     sx={{

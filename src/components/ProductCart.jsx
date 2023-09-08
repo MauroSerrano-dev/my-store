@@ -8,6 +8,7 @@ import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 import { useEffect, useState } from 'react';
+import { CART_COOKIE } from '../../labels';
 
 const menuStyle = {
     display: 'flex',
@@ -55,7 +56,7 @@ export default function ProductCart(props) {
                     .catch(err => console.error(err))
             }
             else {
-                Cookies.set('cart', JSON.stringify(newCart))
+                Cookies.set(CART_COOKIE, JSON.stringify(newCart))
             }
             return newCart
         })
@@ -83,7 +84,7 @@ export default function ProductCart(props) {
                     .catch(err => console.error(err))
             }
             else {
-                Cookies.set('cart', JSON.stringify(newCart))
+                Cookies.set(CART_COOKIE, JSON.stringify(newCart))
             }
             return newCart
         })

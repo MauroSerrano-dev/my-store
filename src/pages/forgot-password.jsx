@@ -3,7 +3,7 @@ import { TextField } from '@mui/material'
 import Link from 'next/link'
 import { PiHandshakeLight } from "react-icons/pi";
 import { useEffect, useState } from 'react';
-import { sendPasswordResetEmail } from 'firebase/auth'; // Importar a função necessária
+import { sendPasswordResetEmail } from 'firebase/auth';
 import { Button } from '@mui/material'
 
 export default function ForgotPassword(props) {
@@ -61,10 +61,14 @@ export default function ForgotPassword(props) {
                     <div
                         className={styles.leftTitle}
                     >
-                        <h1>Don’t remember your password?</h1>
-                        <h2>Don’t worry! it happens :)</h2>
+                        <h2>Don’t remember your password?</h2>
+                        <h3>Don’t worry! it happens :)</h3>
                     </div>
-                    <p>
+                    <p
+                        style={{
+                            fontSize: '15px'
+                        }}
+                    >
                         Type in your e-mail and we will send you a link to change your password.
                     </p>
                     <form
@@ -80,7 +84,7 @@ export default function ForgotPassword(props) {
                                 name='email'
                                 autoComplete='off'
                                 sx={{
-                                    width: '80%',
+                                    width: '96%',
                                     '.MuiOutlinedInput-notchedOutline': {
                                         borderColor: `${focus
                                             ? 'var(--primary)' :
@@ -110,7 +114,8 @@ export default function ForgotPassword(props) {
                             variant='contained'
                             sx={{
                                 width: '25%',
-                                height: '50px',
+                                minWidth: '190px',
+                                height: '45px',
                                 color: '#ffffff',
                                 fontWeight: 'bold',
                             }}

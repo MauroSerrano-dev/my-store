@@ -6,9 +6,14 @@ import { Button } from '@mui/material'
 import ShoppingCartOutlinedIcon from '@mui/icons-material/ShoppingCartOutlined';
 import CreditCardOutlinedIcon from '@mui/icons-material/CreditCardOutlined';
 import Cookies from 'js-cookie';
+import { CART_COOKIE } from '../../labels'
 
 export default withRouter((props) => {
-    const { session, cart, setCart } = props
+    const {
+        session,
+        cart,
+        setCart,
+    } = props
 
     const { id } = props.router.query
 
@@ -99,7 +104,7 @@ export default withRouter((props) => {
                 .catch(err => console.error(err))
         }
         else if (session === null) {
-            Cookies.set('cart', JSON.stringify(newCart))
+            Cookies.set(CART_COOKIE, JSON.stringify(newCart))
         }
     }
 

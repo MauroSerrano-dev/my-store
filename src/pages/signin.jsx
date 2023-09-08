@@ -81,6 +81,7 @@ export default function Signin(props) {
                                 label='E-Mail'
                                 size='small'
                                 name='email'
+                                autoComplete='off'
                                 onChange={(e) => handleNewUser(e.target.value, 'email')}
                                 sx={{
                                     width: '100%'

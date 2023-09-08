@@ -29,7 +29,10 @@ export default function AvatarMenu(props) {
       onMouseLeave={() => setOpen(false)}
     >
       <Link legacyBehavior href={`/login`}>
-        <a className={`${styles.iconContainer} flex center noUnderline`}>
+        <a
+          className={`${styles.iconContainer} flex center noUnderline`}
+          aria-label='Login'
+        >
           <PersonOutlineOutlinedIcon
             style={{
               fontSize: 'calc(var(--bar-height) * 0.43)',

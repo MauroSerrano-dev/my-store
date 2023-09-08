@@ -32,7 +32,9 @@ export default function NavBar(props) {
             >
                 <div className={styles.leftSide}>
                     <Link legacyBehavior href={'/'}>
-                        <a>
+                        <a
+                            aria-label='Lobby'
+                        >
                             <Logo height='100%' hover />
                         </a>
                     </Link>
@@ -85,7 +87,9 @@ export default function NavBar(props) {
                         />
                     </div>
                     <Link legacyBehavior href={'/wishlist'}>
-                        <a>
+                        <a
+                            aria-label='Wishlist'
+                        >
                             <div
                                 className={styles.iconContainer}
                             >

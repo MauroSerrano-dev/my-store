@@ -5,6 +5,7 @@ import Cookies from 'js-cookie';
 import { getAuth, onAuthStateChanged, signOut } from "firebase/auth";
 import { initializeApp } from 'firebase/app';
 import { firebaseConfig } from '../../firebase.config';
+import { CART_COOKIE } from '../../labels';
 
 // Inicialize o Firebase
 const firebaseApp = initializeApp(firebaseConfig);
@@ -102,11 +103,11 @@ export default function DataHandler(props) {
         if (session) {
             setCart(session.user.cart)
         }
-        else if (session === null && Cookies.get('cart')) {
-            setCart(JSON.parse(Cookies.get('cart')))
+        else if (session === null && Cookies.get(CART_COOKIE)) {
+            setCart(JSON.parse(Cookies.get(CART_COOKIE)))
         }
-        if (session && Cookies.get('cart')) {
-            const cookieCart = JSON.parse(Cookies.get('cart'))
+        if (session && Cookies.get(CART_COOKIE)) {
+            const cookieCart = JSON.parse(Cookies.get(CART_COOKIE))
             const newCart = session.user.cart
                 .map(userProduct =>
                 ({
@@ -129,7 +130,7 @@ export default function DataHandler(props) {
             }
             fetch("/api/cart", options)
                 .catch(err => console.error(err))
-            Cookies.remove('cart')
+            Cookies.remove(CART_COOKIE)
         }
     }, [session])
 

@@ -3,6 +3,7 @@ import { SlClose } from "react-icons/sl";
 import Cookies from 'js-cookie';
 import { motion } from "framer-motion";
 import Link from 'next/link';
+import { CART_COOKIE } from '../../labels';
 
 export default function ProductModal(props) {
     const {
@@ -10,7 +11,7 @@ export default function ProductModal(props) {
         product,
         setCart,
         index,
-        setOpen
+        setOpen,
     } = props
 
     function handleDeleteCartProduct(productId) {
@@ -31,7 +32,7 @@ export default function ProductModal(props) {
                     .catch(err => console.error(err))
             }
             else {
-                Cookies.set('cart', JSON.stringify(newCart))
+                Cookies.set(CART_COOKIE, JSON.stringify(newCart))
             }
             return newCart
         })

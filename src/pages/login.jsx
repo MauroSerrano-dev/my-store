@@ -61,7 +61,7 @@ export default function Login(props) {
                         <form
                             onSubmit={handleSubmit}
                             method='POST'
-                            className='fillWidth'
+                            className={styles.form}
                         >
                             <div className={styles.fieldsContainer}>
                                 <TextField
@@ -69,6 +69,7 @@ export default function Login(props) {
                                     label='E-Mail'
                                     size='small'
                                     name='email'
+                                    autoComplete='off'
                                     sx={{
                                         width: '100%'
                                     }}
@@ -99,19 +100,23 @@ export default function Login(props) {
                                     />
                                 </div>
                             </div>
-                            <Button
-                                type='submit'
-                                variant='contained'
-                                sx={{
-                                    width: '100%',
-                                    height: '50px',
-                                    color: '#ffffff',
-                                    fontWeight: 'bold',
-                                    fontSize: '16px',
-                                }}
+                            <div
+                                className={styles.loginButton}
                             >
-                                Login
-                            </Button>
+                                <Button
+                                    type='submit'
+                                    variant='contained'
+                                    sx={{
+                                        width: '100%',
+                                        height: '50px',
+                                        color: '#ffffff',
+                                        fontWeight: 'bold',
+                                        fontSize: '16px',
+                                    }}
+                                >
+                                    Login
+                                </Button>
+                            </div>
                         </form>
                         <button
                             className={styles.providerLogin}
@@ -134,9 +139,13 @@ export default function Login(props) {
                     <div
                         className={styles.joinHead}
                     >
-                        <h3>
+                        <h2
+                            style={{
+                                fontSize: '19px'
+                            }}
+                        >
                             Don’t have an account?
-                        </h3>
+                        </h2>
                         <p>
                             Join MKJ community!
                         </p>
@@ -147,9 +156,13 @@ export default function Login(props) {
                         <PiHandshakeLight
                             size='45px'
                         />
-                        <h4>
+                        <h3
+                            style={{
+                                fontSize: '16px'
+                            }}
+                        >
                             Join as a Customer
-                        </h4>
+                        </h3>
                         <ul>
                             <li>Save your wishlist picks.</li>
                             <li>Save your order data for next purchases.</li>

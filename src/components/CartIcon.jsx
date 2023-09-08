@@ -21,7 +21,10 @@ export default function CartIcon(props) {
             onMouseLeave={() => setOpen(false)}
         >
             <Link legacyBehavior href={`/cart`}>
-                <a className={`${styles.iconContainer} flex center noUnderline`}>
+                <a
+                    className={`${styles.iconContainer} flex center noUnderline`}
+                    aria-label='Cart'
+                >
                     <ShoppingCartOutlinedIcon
                         style={{
                             fontSize: 'calc(var(--bar-height) * 0.38)',
