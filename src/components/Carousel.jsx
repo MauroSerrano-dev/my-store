@@ -85,6 +85,7 @@ export default function Carousel(props) {
                             <img
                                 className={styles.itemImg}
                                 src={item.img}
+                                alt='category-image'
                             />
                         </div>
                         : <div
@@ -120,6 +121,7 @@ export default function Carousel(props) {
                     onClick={handleGoLeft}
                     color='primary'
                     size='small'
+                    aria-label="Left"
                     sx={{
                         position: 'relative',
                         left: -22,
@@ -143,6 +145,7 @@ export default function Carousel(props) {
                     onClick={handleGoRight}
                     color='primary'
                     size='small'
+                    aria-label="Right"
                     sx={{
                         position: 'relative',
                         right: -22,

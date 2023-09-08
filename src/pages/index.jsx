@@ -79,6 +79,7 @@ export default function Home() {
         <div className={styles.banner}>
           <img
             src='/banner-mock.webp'
+            alt='banner'
           />
         </div>
         <div className={styles.infos}>

@@ -65,6 +65,7 @@ export default function Product(props) {
                             <img
                                 src={imgHover}
                                 className={styles.img}
+                                alt={name}
                             />
                         </div>
                     }
@@ -72,6 +73,7 @@ export default function Product(props) {
                         <img
                             src={img}
                             className={styles.img}
+                            alt={name}
                         />
                     </div>
                     <div className={styles.infos}>

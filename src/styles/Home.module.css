@@ -39,7 +39,7 @@
   align-items: center;
   justify-content: center;
 
-  --text-color: var(--text-white);
+  --text-color: #ffffff;
 
   gap: 0.5rem;
 }
