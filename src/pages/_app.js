@@ -49,15 +49,25 @@ export default function App(props) {
         <link rel="icon" href="/logo.ico" />
         <Script src="https://js.stripe.com/v3/" async></Script>
         {process.env.NODE_ENV === 'production' &&
-          <Script
+          <script
             strategy='afterInteractive'
+            async
             src={`https://www.googletagmanager.com/gtag/js?id=${process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS_ID}`}
           />
         }
         {process.env.NODE_ENV === 'production' &&
-          <Script
-            id='google-analytics'
+          <script
             strategy='afterInteractive'
+            dangerouslySetInnerHTML={{
+              __html: `
+              window.dataLayer = window.dataLayer || [];
+              function gtag(){dataLayer.push(arguments);}
+              gtag('js', new Date());
+              gtag('config', '${process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS_ID}', {
+                page_path: window.location.pathname,
+              });
+              `,
+            }}
           >
             {`
           window.dataLayer = window.dataLayer || [];
@@ -65,7 +75,7 @@ export default function App(props) {
           gtag('js', new Date());
           gtag('config', '${process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS_ID}');
         `}
-          </Script>
+          </script>
         }
       </Head>
       <ThemeProvider theme={mainTheme}>
