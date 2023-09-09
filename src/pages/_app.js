@@ -4,7 +4,6 @@ import Script from 'next/script'
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import MontserratRegular from '../../public/fonts/montserrat.ttf';
 import DataHandler from '@/components/DataHandler'
-import ReactGA from 'react-ga';
 
 const primaryColor = '#00acb7'
 
@@ -49,14 +48,14 @@ export default function App(props) {
         <link rel="icon" href="/logo.ico" />
         <Script src="https://js.stripe.com/v3/" async></Script>
         {process.env.NODE_ENV === 'production' &&
-          <Script
+          <script
             strategy='afterInteractive'
             async
             src={`https://www.googletagmanager.com/gtag/js?id=${process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS_ID}`}
           />
         }
         {process.env.NODE_ENV === 'production' &&
-          <Script
+          <script
             strategy='afterInteractive'
             dangerouslySetInnerHTML={{
               __html: `
