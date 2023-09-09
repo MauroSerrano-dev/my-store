@@ -28,18 +28,6 @@ const mainTheme = createTheme({
   },
 })
 
-useEffect(() => {
-  // Defina a variável dataLayer antes de chamar a função gtag
-  window.dataLayer = window.dataLayer || [];
-
-  // Chame a função gtag para configurar o Google Tag Manager
-  function gtag() {
-    window.dataLayer.push(arguments);
-  }
-
-  gtag('js', new Date());
-  gtag('config', 'G-FN1LVS0YZY');
-}, []);
 
 export default function App(props) {
   const { Component, pageProps } = props
@@ -64,9 +52,21 @@ export default function App(props) {
         {process.env.NODE_ENV === 'production' &&
           <Script
             strategy='afterInteractive'
-            async
             src={`https://www.googletagmanager.com/gtag/js?id=G-FN1LVS0YZY`}
           />
+        }
+        {process.env.NODE_ENV === 'production' &&
+          <Script
+            id='google-analytics'
+            strategy='afterInteractive'
+          >
+            {`
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', G-FN1LVS0YZY);
+        `}
+          </Script>
         }
       </Head>
       <ThemeProvider theme={mainTheme}>
