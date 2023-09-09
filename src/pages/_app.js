@@ -51,7 +51,7 @@ export default function App(props) {
         {process.env.NODE_ENV === 'production' &&
           <Script
             strategy='afterInteractive'
-            src={`https://www.googletagmanager.com/gtag/js?id=G-WXCK1NC0TD`}
+            src={`https://www.googletagmanager.com/gtag/js?id=${process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS_ID}`}
           />
         }
         {process.env.NODE_ENV === 'production' &&
@@ -63,7 +63,7 @@ export default function App(props) {
           window.dataLayer = window.dataLayer || [];
           function gtag(){dataLayer.push(arguments);}
           gtag('js', new Date());
-          gtag('config', G-WXCK1NC0TD);
+          gtag('config', ${process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS_ID});
         `}
           </Script>
         }
