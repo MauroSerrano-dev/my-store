@@ -32,6 +32,10 @@ const mainTheme = createTheme({
 export default function App(props) {
   const { Component, pageProps } = props
 
+  useEffect(() => {
+    console.log('a', process.env.NODE_ENV)
+  }, [])
+
   return (
     <div>
       <Head>
