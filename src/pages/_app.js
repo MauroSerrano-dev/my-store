@@ -48,14 +48,14 @@ export default function App(props) {
         <link rel="icon" href="/logo.ico" />
         <Script src="https://js.stripe.com/v3/" async></Script>
         {process.env.NODE_ENV === 'production' &&
-          <Script
+          <script
             strategy='afterInteractive'
             async
             src={`https://www.googletagmanager.com/gtag/js?id=${process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS_ID}`}
-          ></Script>
+          />
         }
         {process.env.NODE_ENV === 'production' &&
-          <Script
+          <script
             strategy='afterInteractive'
             dangerouslySetInnerHTML={{
               __html: `
@@ -67,7 +67,7 @@ export default function App(props) {
               });
               `,
             }}
-          ></Script>
+          />
         }
       </Head>
       <ThemeProvider theme={mainTheme}>
