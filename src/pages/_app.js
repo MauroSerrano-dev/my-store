@@ -1,5 +1,6 @@
 import '@/styles/globals.css'
 import Head from 'next/head'
+import Script from 'next/script'
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import MontserratRegular from '../../public/fonts/montserrat.ttf';
 import DataHandler from '@/components/DataHandler'
@@ -47,15 +48,15 @@ export default function App(props) {
         <meta property="og:url" content="https://quiztimeapp.com" /> */}
 
         <link rel="icon" href="/logo.ico" />
-        <script src="https://js.stripe.com/v3/" async></script>
+        <Script src="https://js.stripe.com/v3/" async></Script>
         {process.env.NODE_ENV === 'production' &&
-          <script
+          <Script
             strategy='afterInteractive'
             src={`https://www.googletagmanager.com/gtag/js?id=G-FN1LVS0YZY`}
           />
         }
         {process.env.NODE_ENV === 'production' &&
-          <script
+          <Script
             id='google-analytics'
             strategy='afterInteractive'
           >
@@ -65,7 +66,7 @@ export default function App(props) {
           gtag('js', new Date());
           gtag('config', G-FN1LVS0YZY);
         `}
-          </script>
+          </Script>
         }
       </Head>
       <ThemeProvider theme={mainTheme}>
