@@ -4,7 +4,6 @@ import Script from 'next/script'
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import MontserratRegular from '../../public/fonts/montserrat.ttf';
 import DataHandler from '@/components/DataHandler'
-import { useEffect } from 'react';
 import ReactGA from 'react-ga';
 
 const primaryColor = '#00acb7'
@@ -32,10 +31,6 @@ const mainTheme = createTheme({
 export default function App(props) {
   const { Component, pageProps } = props
 
-  useEffect(() => {
-    console.log('a', process.env.NODE_ENV)
-  }, [])
-
   return (
     <div>
       <Head>
@@ -56,7 +51,7 @@ export default function App(props) {
         {process.env.NODE_ENV === 'production' &&
           <Script
             strategy='afterInteractive'
-            src={`https://www.googletagmanager.com/gtag/js?id=G-FN1LVS0YZY`}
+            src={`https://www.googletagmanager.com/gtag/js?id=G-WXCK1NC0TD`}
           />
         }
         {process.env.NODE_ENV === 'production' &&
@@ -68,7 +63,7 @@ export default function App(props) {
           window.dataLayer = window.dataLayer || [];
           function gtag(){dataLayer.push(arguments);}
           gtag('js', new Date());
-          gtag('config', G-FN1LVS0YZY);
+          gtag('config', G-WXCK1NC0TD);
         `}
           </Script>
         }
