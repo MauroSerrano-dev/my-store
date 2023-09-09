@@ -7,6 +7,7 @@ import ShoppingCartOutlinedIcon from '@mui/icons-material/ShoppingCartOutlined';
 import CreditCardOutlinedIcon from '@mui/icons-material/CreditCardOutlined';
 import Cookies from 'js-cookie';
 import { CART_COOKIE } from '../../labels'
+import Head from 'next/head'
 
 export default withRouter((props) => {
     const {
@@ -110,6 +111,9 @@ export default withRouter((props) => {
 
     return (
         <div className={styles.container}>
+            <Head>
+                <title>{product.title}</title>
+            </Head>
             {product &&
                 <div className={styles.productContainer}>
                     <div className={styles.left}>
