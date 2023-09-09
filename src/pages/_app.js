@@ -32,10 +32,10 @@ const mainTheme = createTheme({
 export default function App(props) {
   const { Component, pageProps } = props
 
-/*   useEffect(() => {
-    ReactGA.initialize('G-FN1LVS0YZY');
-    ReactGA.pageview(window.location.pathname + window.location.search);
-  }, []); */
+  /*   useEffect(() => {
+      ReactGA.initialize('G-FN1LVS0YZY');
+      ReactGA.pageview(window.location.pathname + window.location.search);
+    }, []); */
 
   return (
     <div>
@@ -54,7 +54,25 @@ export default function App(props) {
 
         <link rel="icon" href="/logo.ico" />
         <Script src="https://js.stripe.com/v3/" async></Script>
-        <Script async src="https://www.googletagmanager.com/gtag/js?id=G-FN1LVS0YZY"></Script>
+        {process.env.NODE_ENV === 'production' &&
+          <Script
+            strategy='afterInteractive'
+            src={`https://www.googletagmanager.com/gtag/js?id=${process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS_ID}`}
+          />
+        }
+        {process.env.NODE_ENV === 'production' &&
+          <Script
+            id='google-analytics'
+            strategy='afterInteractive'
+          >
+            {`
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', ${process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS_ID});
+        `}
+          </Script>
+        }
       </Head>
       <ThemeProvider theme={mainTheme}>
         <DataHandler pageProps={pageProps} Component={Component} primaryColor={primaryColor} />
