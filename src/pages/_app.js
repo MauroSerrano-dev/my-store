@@ -32,10 +32,10 @@ const mainTheme = createTheme({
 export default function App(props) {
   const { Component, pageProps } = props
 
-  useEffect(() => {
+/*   useEffect(() => {
     ReactGA.initialize('G-FN1LVS0YZY');
     ReactGA.pageview(window.location.pathname + window.location.search);
-  }, []);
+  }, []); */
 
   return (
     <div>
@@ -54,6 +54,14 @@ export default function App(props) {
 
         <link rel="icon" href="/logo.ico" />
         <Script src="https://js.stripe.com/v3/" async></Script>
+        <Script async src="https://www.googletagmanager.com/gtag/js?id=G-FN1LVS0YZY"></Script>
+        <Script>
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments)}
+          gtag('js', new Date());
+
+          gtag('config', 'G-FN1LVS0YZY');
+        </Script>
       </Head>
       <ThemeProvider theme={mainTheme}>
         <DataHandler pageProps={pageProps} Component={Component} primaryColor={primaryColor} />
