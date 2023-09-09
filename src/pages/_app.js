@@ -32,11 +32,6 @@ const mainTheme = createTheme({
 export default function App(props) {
   const { Component, pageProps } = props
 
-  /*   useEffect(() => {
-      ReactGA.initialize('G-FN1LVS0YZY');
-      ReactGA.pageview(window.location.pathname + window.location.search);
-    }, []); */
-
   return (
     <div>
       <Head>
