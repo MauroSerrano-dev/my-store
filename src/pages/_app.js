@@ -33,7 +33,7 @@ export default function App(props) {
   const { Component, pageProps } = props
 
   useEffect(() => {
-    ReactGA.initialize('G-WXCK1NC0TD');
+    ReactGA.initialize('G-FN1LVS0YZY');
     ReactGA.pageview(window.location.pathname + window.location.search);
   }, []);
 
