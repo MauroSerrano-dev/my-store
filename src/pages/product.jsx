@@ -112,7 +112,7 @@ export default withRouter((props) => {
     return (
         <div className={styles.container}>
             <Head>
-                <title>{product.title}</title>
+                <title>{product?.title}</title>
             </Head>
             {product &&
                 <div className={styles.productContainer}>
