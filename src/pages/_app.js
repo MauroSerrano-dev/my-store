@@ -49,14 +49,14 @@ export default function App(props) {
         <link rel="icon" href="/logo.ico" />
         <Script src="https://js.stripe.com/v3/" async></Script>
         {process.env.NODE_ENV === 'production' &&
-          <script
+          <Script
             strategy='afterInteractive'
             async
             src={`https://www.googletagmanager.com/gtag/js?id=${process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS_ID}`}
           />
         }
         {process.env.NODE_ENV === 'production' &&
-          <script
+          <Script
             strategy='afterInteractive'
             dangerouslySetInnerHTML={{
               __html: `
