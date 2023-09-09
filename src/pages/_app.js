@@ -5,7 +5,7 @@ import { ThemeProvider, createTheme } from '@mui/material/styles';
 import MontserratRegular from '../../public/fonts/montserrat.ttf';
 import DataHandler from '@/components/DataHandler'
 import { useEffect } from 'react';
-import { initGA } from '../../analytics';
+import ReactGA from 'react-ga';
 
 const primaryColor = '#00acb7'
 
@@ -33,7 +33,7 @@ export default function App(props) {
   const { Component, pageProps } = props
 
   useEffect(() => {
-    initGA();
+    ReactGA.initialize('G-FN1LVS0YZY');
   }, []);
 
   return (
