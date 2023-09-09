@@ -4,6 +4,8 @@ import Script from 'next/script'
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import MontserratRegular from '../../public/fonts/montserrat.ttf';
 import DataHandler from '@/components/DataHandler'
+import { useEffect } from 'react';
+import { initGA } from '../../analytics';
 
 const primaryColor = '#00acb7'
 
@@ -29,6 +31,10 @@ const mainTheme = createTheme({
 
 export default function App(props) {
   const { Component, pageProps } = props
+
+  useEffect(() => {
+    initGA();
+  }, []);
 
   return (
     <div>

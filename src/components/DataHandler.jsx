@@ -8,16 +8,16 @@ import { firebaseConfig } from '../../firebase.config';
 import { CART_COOKIE } from '../../labels';
 import Router from 'next/router';
 
-// Inicialize o Firebase
-const firebaseApp = initializeApp(firebaseConfig);
-const auth = getAuth(firebaseApp);
-
 export default function DataHandler(props) {
     const { Component, pageProps, primaryColor } = props
     const [cart, setCart] = useState([])
     const [isScrollAtTop, setIsScrollAtTop] = useState(true)
     const [session, setSession] = useState()
     const [showIntroduction, setShowIntroduction] = useState(false)
+
+    // Inicialize o Firebase
+    const firebaseApp = initializeApp(firebaseConfig);
+    const auth = getAuth(firebaseApp);
 
     useEffect(() => {
         // Adicione um observador de estado de autenticação
