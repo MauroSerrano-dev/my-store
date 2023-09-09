@@ -65,7 +65,7 @@ export default function App(props) {
           <Script
             strategy='afterInteractive'
             async
-            src={`https://www.googletagmanager.com/gtag/js?id=${process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS_ID}`}
+            src={`https://www.googletagmanager.com/gtag/js?id=G-FN1LVS0YZY`}
           />
         }
       </Head>
