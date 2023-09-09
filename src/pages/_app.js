@@ -57,6 +57,7 @@ export default function App(props) {
         {process.env.NODE_ENV === 'production' &&
           <Script
             strategy='afterInteractive'
+            async
             src={`https://www.googletagmanager.com/gtag/js?id=${process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS_ID}`}
           />
         }
