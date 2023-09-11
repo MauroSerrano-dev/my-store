@@ -16,9 +16,10 @@
     padding-right: 4rem;
 
     gap: 1.5rem;
-
+    
     min-height: 100%;
     width: 100%;
+    overflow: hidden;
 }
 
 .productsContainer {
@@ -29,7 +30,7 @@
 
     width: 65.45%;
     max-width: 720px;
-
+    
     border-radius: 0.2rem;
 }
 
@@ -42,7 +43,7 @@
     width: 100%;
     height: 90px;
 
-    border-bottom: #ababab solid 1px
+    border-bottom: #ababab solid 1px;
 }
 
 .productsBody {
