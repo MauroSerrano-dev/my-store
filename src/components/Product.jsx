@@ -1,5 +1,5 @@
 import styles from '@/styles/components/Product.module.css'
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useRef } from 'react'
 import { Button } from '@mui/material'
 import Link from 'next/link'
 
@@ -13,10 +13,14 @@ export default function Product(props) {
         soldOut,
         outOfStock,
         currencySymbol,
-        url
+        url,
+        width = '230px',
+        style
     } = props
 
     const [isHovered, setIsHovered] = useState(false)
+    const productRef = useRef(null)
+    const [productWidth, setProductWidth] = useState()
 
     const [supportsHoverAndPointer, setSupportsHoverAndPointer] = useState(false);
 
@@ -39,21 +43,41 @@ export default function Product(props) {
             setIsHovered(false)
     }
 
+
+    useEffect(() => {
+        function updateProductWidth() {
+            if (productRef.current) {
+                const computedStyle = window.getComputedStyle(productRef.current);
+                const width = computedStyle.getPropertyValue('width');
+                setProductWidth(width);
+            }
+        }
+
+        window.addEventListener('resize', updateProductWidth);
+
+        updateProductWidth();
+
+        return () => {
+            window.removeEventListener('resize', updateProductWidth);
+        }
+    }, [])
+
     return (
         <Link legacyBehavior href={url}>
             <a
+                className={styles.container}
+                ref={productRef}
                 style={{
+                    ...style,
                     textDecoration: 'none',
+                    height: responsive ? `calc(${productWidth} * 1.575)` : `calc(${productWidth} * 1.575)`,
+                    width: responsive ? '100%' : width
                 }}
             >
                 <div
-                    className={styles.container}
+                    className={styles.productContainer}
                     onMouseEnter={handleMouseEnter}
                     onMouseLeave={handleMouseLeave}
-                    style={{
-                        height: responsive ? '100%' : '400px',
-                        width: responsive ? '100%' : '230px'
-                    }}
                 >
                     {supportsHoverAndPointer &&
                         <div
@@ -78,24 +102,59 @@ export default function Product(props) {
                     </div>
                     <div className={styles.infos}>
                         {soldOut !== undefined &&
-                            <div className={styles.soldOut}>
-                                <p>{Math.round(100 * (1 - (soldOut / price)))}% OFF</p>
+                            <div
+                                className={styles.soldOut}
+                            >
+                                <p
+                                    style={{
+                                        fontSize: `calc(${productWidth} * 0.055)`
+                                    }}
+                                >
+                                    {Math.round(100 * (1 - (soldOut / price)))}% OFF
+                                </p>
                             </div>
                         }
                         {outOfStock &&
-                            <div className={styles.outOfStock}>
-                                <p>OUT OF STOCK</p>
+                            <div
+                                className={styles.outOfStock}
+                            >
+                                <p
+                                    style={{
+                                        fontSize: `calc(${productWidth} * 0.055)`
+                                    }}
+                                >
+                                    OUT OF STOCK
+                                </p>
                             </div>
                         }
-                        <p className={styles.name}>{name}</p>
-                        {soldOut !== undefined &&
-                            <p className={styles.oldPrice}>
-                                {currencySymbol}{soldOut !== undefined ? (price / 100).toFixed(2).replace('.', ',') : (soldOut / 100).toFixed(2).replace('.', ',')}
-                            </p>
-                        }
-                        <p className={styles.price}>
-                            {currencySymbol}{soldOut !== undefined ? (soldOut / 100).toFixed(2).replace('.', ',') : (price / 100).toFixed(2).replace('.', ',')}
+                        <p
+                            className={styles.name}
+                            style={{
+                                fontSize: `calc(${productWidth} * 0.07)`
+                            }}
+                        >
+                            {name}
                         </p>
+                        <div className={styles.priceContainer}>
+                            {soldOut !== undefined &&
+                                <p
+                                    className={styles.oldPrice}
+                                    style={{
+                                        fontSize: `calc(${productWidth} * 0.056)`
+                                    }}
+                                >
+                                    {currencySymbol}{soldOut !== undefined ? (price / 100).toFixed(2).replace('.', ',') : (soldOut / 100).toFixed(2).replace('.', ',')}
+                                </p>
+                            }
+                            <p
+                                className={styles.price}
+                                style={{
+                                    fontSize: `calc(${productWidth} * 0.085)`
+                                }}
+                            >
+                                {currencySymbol}{soldOut !== undefined ? (soldOut / 100).toFixed(2).replace('.', ',') : (price / 100).toFixed(2).replace('.', ',')}
+                            </p>
+                        </div>
                     </div>
                     {supportsHoverAndPointer &&
                         <div
@@ -108,10 +167,13 @@ export default function Product(props) {
                                 variant='contained'
                                 size='small'
                                 sx={{
-                                    color: 'var(--text-white)'
+                                    color: 'var(--text-white)',
+                                    width: '75%',
+                                    fontSize: `calc(${productWidth} * 0.053)`,
+                                    fontWeight: 'bold'
                                 }}
                             >
-                                MORE OPTIONS
+                                MORE VARIANTS
                             </Button>
                         </div>
                     }

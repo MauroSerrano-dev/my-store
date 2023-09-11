@@ -4,11 +4,11 @@ import styles from '../styles/components/NavBar.module.css'
 import { motion } from "framer-motion"
 import Logo from './Logo';
 import SearchBar from './SearchBar';
-import ShoppingCartOutlinedIcon from '@mui/icons-material/ShoppingCartOutlined';
 import FavoriteBorderRoundedIcon from '@mui/icons-material/FavoriteBorderRounded';
 import AvatarMenu from './AvatarMenu';
 import CartIcon from './CartIcon';
 import SearchRoundedIcon from '@mui/icons-material/SearchRounded';
+import Router from 'next/router';
 
 export default function NavBar(props) {
     const {
@@ -21,6 +21,21 @@ export default function NavBar(props) {
     } = props
 
     const [showSearchBar, setShowSearchBar] = useState(true)
+    const [search, setSearch] = useState('')
+
+    function handleChangeSearch(event) {
+        setSearch(event.target.value)
+    }
+
+    function handleKeyDownSearch(event) {
+        if (event.key === 'Enter') {
+            handleClickSearch()
+        }
+    }
+
+    function handleClickSearch() {
+        Router.push(`/search?s=${search}`)
+    }
 
     return (
         <div className={styles.container}>
@@ -44,6 +59,10 @@ export default function NavBar(props) {
                 >
                     <SearchBar
                         show={isScrollAtTop}
+                        placeholder='What are you looking for?'
+                        onChange={handleChangeSearch}
+                        onKeyDown={handleKeyDownSearch}
+                        onClick={handleClickSearch}
                     />
                     <div
                         className={styles.categoriesContainer}
@@ -53,8 +72,26 @@ export default function NavBar(props) {
                                 : '22px',
                         }}
                     >
-                        <p>T-SHIRTS</p>
-                        <p>HOODIES</p>
+                        <Link legacyBehavior href={'/search?c=t-shirts'}>
+                            <a
+                                aria-label='t-shirts'
+                                className='noUnderline'
+                            >
+                                <p>
+                                    T-SHIRTS
+                                </p>
+                            </a>
+                        </Link>
+                        <Link legacyBehavior href={'/search?c=hoodies'}>
+                            <a
+                                aria-label='hoodies'
+                                className='noUnderline'
+                            >
+                                <p>
+                                    HOODIES
+                                </p>
+                            </a>
+                        </Link>
                         <p>MUGS</p>
                         <p>BAGS</p>
                         <p>ACCESSORIES</p>
@@ -114,7 +151,7 @@ export default function NavBar(props) {
                         logout={logout}
                     />
                 </div>
-            </motion.div>
-        </div>
+            </motion.div >
+        </div >
     )
 }

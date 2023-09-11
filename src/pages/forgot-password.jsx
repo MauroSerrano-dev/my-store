@@ -14,20 +14,6 @@ export default function ForgotPassword(props) {
 
     const [reCaptchaSolve, setReCaptchaSolve] = useState(false)
 
-    function handleReCaptchaSuccess() {
-        setReCaptchaSolve(true)
-    }
-
-    function handleReCaptchaError() {
-        setReCaptchaSolve(false)
-    }
-
-    function googleLogin() {
-        signInWithPopup(auth, provider)
-            .then(result => console.log(result))
-            .catch(error => console.error(error))
-    }
-
     async function handleSubmit(event) {
         event.preventDefault();
 

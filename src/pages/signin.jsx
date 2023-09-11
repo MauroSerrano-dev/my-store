@@ -4,6 +4,7 @@ import Link from 'next/link'
 import { PiHandshakeLight } from "react-icons/pi";
 import ReCAPTCHA from "react-google-recaptcha";
 import { useState } from 'react';
+import { STORE_NAME } from '../../labels';
 
 export default function Signin(props) {
     const { signIn, login } = props
@@ -140,7 +141,7 @@ export default function Signin(props) {
                             Are you planning to buy?
                         </h3>
                         <p>
-                            Join MKJ community!
+                            Join {STORE_NAME} community!
                         </p>
                     </div>
                     <div

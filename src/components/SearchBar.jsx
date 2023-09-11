@@ -3,7 +3,13 @@ import styles from '../styles/components/SearchBar.module.css'
 import SearchRoundedIcon from '@mui/icons-material/SearchRounded';
 
 export default function SearchBar(props) {
-    const { show } = props
+    const { 
+        show,
+        placeholder,
+        onChange,
+        onClick,
+        onKeyDown,
+     } = props
 
     const [opacity, setOpacity] = useState(1)
     const [boolean, setBoolean] = useState(show)
@@ -37,11 +43,14 @@ export default function SearchBar(props) {
         >
             <input
                 className={styles.input}
-                placeholder='What are you looking for?'
+                placeholder={placeholder}
+                onChange={onChange}
+                onKeyDown={onKeyDown}
             />
             <button
                 className={styles.icon}
                 aria-label="Search"
+                onClick={onClick}
             >
                 <SearchRoundedIcon
                     color='primary'

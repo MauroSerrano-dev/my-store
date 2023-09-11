@@ -73,14 +73,14 @@ export default withRouter((props) => {
             .catch(err => console.error(err))
     }
 
-    function handleAddToCart(productId, variantId, quantity, image, price, title) {
+    function handleAddToCart(productProp) {
         const productCart = {
-            id: productId,
-            variant: variantId,
-            quantity: quantity,
-            image: image,
-            price: price,
-            title: title,
+            id: productProp.id,
+            variant: productProp.variants[0].id,
+            quantity: 1,
+            image: productProp.images[0].src,
+            price: productProp.variants[0].price,
+            title: productProp.title
         }
 
         const newCart = cart.some(prod => prod.id === productId && prod.variant === variantId)
@@ -129,14 +129,7 @@ export default withRouter((props) => {
                         <h2>{product.title}</h2>
                         <Button
                             variant='contained'
-                            onClick={() => handleAddToCart(
-                                product.id,
-                                product.variants[0].id,
-                                1,
-                                product.images[0].src,
-                                product.variants[0].price,
-                                product.title
-                            )}
+                            onClick={() => handleAddToCart(product)}
                             sx={{
                                 width: '100%',
                                 height: '55px'

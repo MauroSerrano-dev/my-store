@@ -6,6 +6,8 @@ import { PiHandshakeLight } from "react-icons/pi";
 import ReCAPTCHA from "react-google-recaptcha";
 import { useState } from 'react';
 import { signInWithPopup, GoogleAuthProvider, signInWithRedirect } from "firebase/auth";
+import Router from 'next/router';
+import { STORE_NAME } from '../../labels';
 
 const provider = new GoogleAuthProvider();
 
@@ -24,7 +26,7 @@ export default function Login(props) {
 
     function googleLogin() {
         signInWithPopup(auth, provider)
-            .then(result => console.log(result))
+            .then(result => Router.push('/'))
             .catch(error => console.error(error))
     }
 
@@ -33,7 +35,7 @@ export default function Login(props) {
 
         const email = event.target.email.value
         const password = event.target.password.value
-        
+
         login(email, password)
     }
 
@@ -142,7 +144,7 @@ export default function Login(props) {
                             Don’t have an account?
                         </h2>
                         <p>
-                            Join MKJ community!
+                            Join {STORE_NAME} community!
                         </p>
                     </div>
                     <div

@@ -24,23 +24,19 @@ export default function Home() {
   const [allProducts, setAllProducts] = useState()
 
   async function getProductsByCategory(categoryName) {
-    let products
     const options = {
       method: 'GET',
       headers: {
-        category: categoryName
+        c: categoryName
       }
     }
 
-    await fetch("/api/products-by-categories", options)
+    const products = await fetch("/api/products-by-queries", options)
       .then(response => response.json())
-      .then(response => {
-        console.log(response.msg)
-        products = response.products
-      })
+      .then(response => response.products)
       .catch(err => console.error(err))
 
-    return products
+      return products
   }
 
   async function getAllProducts() {
@@ -66,8 +62,8 @@ export default function Home() {
   }, [])
 
   async function getProductsFromCategories() {
-    setProductsHome(await getProductsByCategory('Home'))
-    setProductsTShirts(await getProductsByCategory('T-Shirts'))
+    setProductsHome(await getProductsByCategory('home'))
+    setProductsTShirts(await getProductsByCategory('t-shirts'))
     setAllProducts(await getAllProducts())
   }
 

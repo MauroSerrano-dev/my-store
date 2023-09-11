@@ -1,0 +1,62 @@
+.main {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    --text-color: var(--text-white);
+    padding-top: 1rem;
+}
+
+.menuFilters {
+    width: 300px;
+    padding-left: 2rem;
+    padding-right: 2rem;
+}
+
+.priceFilter {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+
+    gap: 0.3rem;
+}
+
+.priceFilterInputs {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: flex-start;
+    gap: 0.5rem;
+    height: 30px;
+}
+
+.priceFilterInputs input {
+    width: 55px;
+    height: 100%;
+    border-radius: 0.3rem;
+    padding-left: 0.3rem;
+    padding-right: 0.3rem;
+}
+
+.priceFilterInputs button {
+    height: 100%;
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
+    border-radius: 0.3rem;
+}
+
+.products {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: flex-start;
+
+    width: calc(100% - 300px);
+
+    flex-wrap: wrap;
+    overflow: hidden;
+
+    gap: 1rem;
+
+    padding-left: 0.5rem;
+}

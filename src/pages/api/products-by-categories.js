@@ -12,9 +12,6 @@ export default async function handler(req, res) {
             result = await getProductsByCategory(category)
         }
 
-        res.status(201).json({
-            products: result.products,
-            msg: result.msg
-        })
+        res.status(201).json(result)
     }
 }
