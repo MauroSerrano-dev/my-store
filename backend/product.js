@@ -5,7 +5,7 @@ import {
     getDocs,
     orderBy,
     limit,
-    startAt,
+    startAfter,
     getFirestore,
     query,
     setDoc,
@@ -96,7 +96,8 @@ async function getProductsByQueries(queries) {
         t, // theme
         page = 1, // número da página
         min, // preço mínimo
-        max // preço máximo
+        max, // preço máximo
+        order = 'popularity', // order
     } = queries;
 
     try {
@@ -118,10 +119,7 @@ async function getProductsByQueries(queries) {
         // Filtre por tema (se presente)
         if (t) {
             const themes = t.split(';')
-
-            for (const theme of themes) {
-                q = query(q, where(`themes.${theme}`, "==", true));
-            }
+            q = query(q, where('themes', "array-contains-any", themes));
         }
 
         // Filtre por preço mínimo (se presente)
@@ -134,21 +132,31 @@ async function getProductsByQueries(queries) {
             q = query(q, where("price", "<=", parseFloat(max.concat('00'))));
         }
 
-        // Calcule a posição de início com base no número da página
-        const itemsPerPage = 60;
-        const startIndex = (parseFloat(page) - 1) * itemsPerPage;
+        const orders = new Map([
+            ['popularity', { value: 'popularity', direction: 'desc' }],
+            ['newest', { value: 'create_at', direction: 'desc' }],
+            ['lowest-price', { value: 'price', direction: 'asc' }],
+            ['higher-price', { value: 'price', direction: 'desc' }],
+        ])
 
-        q = query(q, orderBy("price"))
-        q = query(q, orderBy("title"))
-        q = query(q, orderBy("popularity"))
+        // Calcule a página inicial com base no número da página e no tamanho da página
+        const itemsPerPage = 60;
+        const startAfterDoc = (parseFloat(page) - 1) * itemsPerPage;
+
+        // Aplique a ordenação correta
+        q = query(q, orderBy(orders.get(order).value, orders.get(order).direction));
+
+        // Aplique a paginação usando startAfter()
+        if (startAfterDoc > 0) {
+            q = query(q, startAfter(startAfterDoc));
+        }
 
         // Crie uma nova consulta limitada ao número de itens por página
-        const paginatedQuery = query(q, limit(itemsPerPage), startAt(startIndex));
+        q = query(q, limit(itemsPerPage));
 
-        const querySnapshot = await getDocs(paginatedQuery);
+        const querySnapshot = await getDocs(q);
 
         const productsMatchingQueries = [];
-
         querySnapshot.forEach((doc) => {
             const productData = doc.data();
             productsMatchingQueries.push(productData);

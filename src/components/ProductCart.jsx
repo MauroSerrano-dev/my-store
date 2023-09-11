@@ -3,10 +3,7 @@ import { SlClose } from "react-icons/sl";
 import Cookies from 'js-cookie';
 import { motion } from "framer-motion";
 import Link from 'next/link';
-import InputLabel from '@mui/material/InputLabel';
-import MenuItem from '@mui/material/MenuItem';
-import FormControl from '@mui/material/FormControl';
-import Select from '@mui/material/Select';
+import { Select, FormControl, MenuItem, InputLabel } from '@mui/material';
 import { useEffect, useState } from 'react';
 import { CART_COOKIE } from '../../labels';
 

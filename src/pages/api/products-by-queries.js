@@ -8,7 +8,8 @@ export default async function handler(req, res) {
             t,
             page,
             min,
-            max
+            max,
+            order
         } = req.headers
         
         const result = await getProductsByQueries({
@@ -17,7 +18,8 @@ export default async function handler(req, res) {
             t: t,
             page: page,
             min: min,
-            max: max
+            max: max,
+            order: order,
         })
 
         res.status(201).json(result)

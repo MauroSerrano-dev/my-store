@@ -1,8 +1,6 @@
 .container {
-    height: 100%;
+    min-height: 100%;
     width: 100%;
-
-    --text-color: #ffffff;
 }
 
 .main {
@@ -32,6 +30,7 @@
     max-width: 720px;
     
     border-radius: 0.2rem;
+    --text-color: #ffffff;
 }
 
 .productsHead {
@@ -76,8 +75,6 @@
 
     border-radius: 0.2rem;
     overflow: hidden;
-
-    --text-color: var(--text-black);
 }
 
 .detailsHead {

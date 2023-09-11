@@ -4,6 +4,19 @@ import { useEffect, useState } from 'react'
 import Product from '@/components/Product'
 import { useRouter } from 'next/router';
 import Link from 'next/link';
+import Selector from '@/components/Selector';
+
+const categories = new Map([
+    ['t-shirts', 'T-Shirts'],
+    ['hoodies', 'Hoodies'],
+    ['mugs', 'Mugs'],
+    ['bags', 'Bags'],
+    ['accessories', 'Accessories'],
+    ['kitchen', 'Kitchen'],
+    ['pillows', 'Pillows'],
+    ['shoes', 'Shoes'],
+    ['socks', 'Socks'],
+])
 
 export default withRouter((props) => {
     const { } = props
@@ -14,9 +27,10 @@ export default withRouter((props) => {
         c,
         s,
         t,
-        page,
+        page = 1,
         min,
-        max
+        max,
+        order = 'popularity'
     } = props.router.query
 
     useEffect(() => {
@@ -51,6 +65,15 @@ export default withRouter((props) => {
             }
         }
         return ({ ...oldQueries, ...newQueries })
+    }
+
+    function handleChangeOrder(newOrder) {
+        router.push({
+            pathname: router.pathname,
+            query: newOrder === 'popularity'
+                ? getQueries({}, ['order'])
+                : getQueries({ order: newOrder })
+        })
     }
 
     return (
@@ -154,20 +177,40 @@ export default withRouter((props) => {
             <div
                 className={styles.products}
             >
-                {products.map((product, i) =>
-                    <Product
-                        key={i}
-                        name={product.title}
-                        price={product.variants[0].price}
-                        currencySymbol='$'
-                        outOfStock={false}
-                        img={product.image_showcase.src}
-                        imgHover={product.image_hover.src}
-                        url={`/product?id=${product.id}`}
-                        width='calc(25% - 1rem)'
+                <div className={styles.productsHead}>
+                    <h1>{categories.get(c)}</h1>
+                    <Selector
+                        label={'Order By'}
+                        value={order}
+                        options={[
+                            { value: 'popularity', name: 'Popularity' },
+                            { value: 'newest', name: 'Newest' },
+                            { value: 'lowest-price', name: 'Lowest Price' },
+                            { value: 'higher-price', name: 'Higher Price' },
+                        ]}
+                        style={{
+                            height: '40px',
+                            width: '170px',
+                        }}
+                        onChange={(event) => handleChangeOrder(event.target.value)}
                     />
-                )}
-            </div>
-        </div>
+                </div>
+                <div className={styles.productsBody}>
+                    {products.map((product, i) =>
+                        <Product
+                            key={i}
+                            name={product.title}
+                            price={product.variants[0].price}
+                            currencySymbol='$'
+                            outOfStock={false}
+                            img={product.image_showcase.src}
+                            imgHover={product.image_hover.src}
+                            url={`/product?id=${product.id}`}
+                            width='calc(25% - 1rem)'
+                        />
+                    )}
+                </div>
+            </div >
+        </div >
     )
 })
