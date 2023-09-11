@@ -24,7 +24,6 @@ export default function CartIcon(props) {
                 <a
                     className={`${styles.iconContainer} flex center noUnderline`}
                     aria-label='Cart'
-                    onClick={() => setOpen(false)}
                 >
                     <ShoppingCartOutlinedIcon
                         style={{
