@@ -8,7 +8,7 @@ import Link from 'next/link';
 export default withRouter((props) => {
     const { } = props
     const [products, setProducts] = useState([])
-    const router = useRouter();
+    const router = useRouter()
 
     const {
         c,
@@ -20,10 +20,9 @@ export default withRouter((props) => {
     } = props.router.query
 
     useEffect(() => {
-        console.log(router.query)
         if (Object.keys(router.query).length > 0) {
             getProductsByCategory()
-                .then(products => setProducts(products.concat(products).concat(products)))
+                .then(products => setProducts(products))
         }
     }, [router])
 

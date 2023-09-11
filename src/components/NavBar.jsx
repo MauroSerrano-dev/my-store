@@ -8,7 +8,7 @@ import FavoriteBorderRoundedIcon from '@mui/icons-material/FavoriteBorderRounded
 import AvatarMenu from './AvatarMenu';
 import CartIcon from './CartIcon';
 import SearchRoundedIcon from '@mui/icons-material/SearchRounded';
-import Router from 'next/router';
+import Router, { useRouter } from 'next/router';
 
 export default function NavBar(props) {
     const {
@@ -19,6 +19,8 @@ export default function NavBar(props) {
         isScrollAtTop,
         setIsScrollAtTop
     } = props
+
+    const router = useRouter();
 
     const [showSearchBar, setShowSearchBar] = useState(true)
     const [search, setSearch] = useState('')
@@ -36,6 +38,10 @@ export default function NavBar(props) {
     function handleClickSearch() {
         Router.push(`/search?s=${search}`)
     }
+
+    useEffect(() => {
+        setSearch(router?.query?.s ? router.query.s : '')
+    }, [router])
 
     return (
         <div className={styles.container}>
@@ -63,6 +69,7 @@ export default function NavBar(props) {
                         onChange={handleChangeSearch}
                         onKeyDown={handleKeyDownSearch}
                         onClick={handleClickSearch}
+                        value={search}
                     />
                     <div
                         className={styles.categoriesContainer}
@@ -98,7 +105,16 @@ export default function NavBar(props) {
                         <p>KITCHEN</p>
                         <p>PILLOWS</p>
                         <p>SHOES</p>
-                        <p>SOCKS</p>
+                        <Link legacyBehavior href={'/search?c=socks'}>
+                            <a
+                                aria-label='socks'
+                                className='noUnderline'
+                            >
+                                <p>
+                                    SOCKS
+                                </p>
+                            </a>
+                        </Link>
                     </div>
                 </div>
                 <div className={styles.rightSide}>

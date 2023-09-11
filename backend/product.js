@@ -64,7 +64,8 @@ async function createProduct(product) {
 
 async function getProductsByCategory(category) {
     const productsCollection = collection(db, process.env.COLL_PRODUCTS);
-    const q = query(productsCollection, where("categories", "array-contains", category));
+    let q = query(productsCollection, where("category", "==", category));
+    q = query(q, orderBy("popularity"))
 
     const querySnapshot = await getDocs(q);
 
@@ -89,76 +90,85 @@ async function getProductsByCategory(category) {
 }
 
 async function getProductsByQueries(queries) {
-
     const {
         c, // categories (array de strings)
         s, // search (string)
-        t, // themes (array de strings)
+        t, // theme
         page = 1, // número da página
         min, // preço mínimo
         max // preço máximo
     } = queries;
 
-    // Crie uma consulta base
-    const productsCollection = collection(db, process.env.COLL_PRODUCTS);
-    let q = query(productsCollection);
+    try {
+        // Crie uma consulta base
+        const productsCollection = collection(db, process.env.COLL_PRODUCTS);
+        let q = query(productsCollection);
 
-    // Filtre por categoria (se presente)
-    if (c) {
-        q = query(q, where("categories", "array-contains", c));
-    }
+        // Filtre por termo de busca (se presente)
+        if (s) {
+            const search = s.toLowerCase()
+            q = query(q, where("tags", "array-contains", search));
+        }
 
-    // Filtre por termo de busca (se presente)
-    if (s) {
-        const search = s.toLowerCase()
-        q = query(q, where("title", "==", s));
-        /* q = query(q, where("categories", "array-contains", search)); */
-    }
+        // Filtre por categoria (se presente)
+        if (c) {
+            q = query(q, where('category', "==", c));
+        }
 
-    // Filtre por tema (se presente)
-    if (t) {
-        t.forEach(t => {
-            q = query(q, where("themes", "array-contains", t));
+        // Filtre por tema (se presente)
+        if (t) {
+            const themes = t.split(';')
+
+            for (const theme of themes) {
+                q = query(q, where(`themes.${theme}`, "==", true));
+            }
+        }
+
+        // Filtre por preço mínimo (se presente)
+        if (min) {
+            q = query(q, where("price", ">=", parseFloat(min.concat('00'))));
+        }
+
+        // Filtre por preço máximo (se presente)
+        if (max) {
+            q = query(q, where("price", "<=", parseFloat(max.concat('00'))));
+        }
+
+        // Calcule a posição de início com base no número da página
+        const itemsPerPage = 60;
+        const startIndex = (parseFloat(page) - 1) * itemsPerPage;
+
+        q = query(q, orderBy("price"))
+        q = query(q, orderBy("title"))
+        q = query(q, orderBy("popularity"))
+
+        // Crie uma nova consulta limitada ao número de itens por página
+        const paginatedQuery = query(q, limit(itemsPerPage), startAt(startIndex));
+
+        const querySnapshot = await getDocs(paginatedQuery);
+
+        const productsMatchingQueries = [];
+
+        querySnapshot.forEach((doc) => {
+            const productData = doc.data();
+            productsMatchingQueries.push(productData);
         });
-    }
 
-    // Filtre por preço mínimo (se presente)
-    if (min) {
-        q = query(q, where("price", ">=", parseFloat(min.concat('00'))));
-    }
-
-    // Filtre por preço máximo (se presente)
-    if (max) {
-        q = query(q, where("price", "<=", parseFloat(max.concat('00'))));
-    }
-
-    // Calcule a posição de início com base no número da página
-    const itemsPerPage = 60;
-    const startIndex = (parseFloat(page) - 1) * itemsPerPage;
-
-    // Execute a consulta paginada
-    q = query(q, orderBy(s ? "title" : "price")); // Ordenar por título, você pode escolher o campo de ordenação desejado
-
-    // Crie uma nova consulta limitada ao número de itens por página
-    const paginatedQuery = query(q, limit(itemsPerPage), startAt(startIndex));
-
-    const querySnapshot = await getDocs(paginatedQuery);
-
-    const productsMatchingQueries = [];
-
-    querySnapshot.forEach((doc) => {
-        const productData = doc.data();
-        productsMatchingQueries.push(productData);
-    });
-
-    if (productsMatchingQueries.length > 0) {
+        if (productsMatchingQueries.length > 0) {
+            return {
+                msg: 'Products matching queries found successfully!',
+                products: productsMatchingQueries
+            };
+        } else {
+            return {
+                msg: 'No products found matching the queries.',
+                products: []
+            };
+        }
+    } catch (error) {
+        console.log('Error getting products.', error)
         return {
-            msg: `Products matching queries found successfully!`,
-            products: productsMatchingQueries
-        };
-    } else {
-        return {
-            msg: `No products found matching the queries.`,
+            msg: 'Error getting products.',
             products: []
         };
     }
@@ -199,7 +209,7 @@ async function getAllProductPrintifyIds() {
     });
 
     return {
-        msg: `All product Printify IDs retrieved successfully!`,
+        msg: 'All product Printify IDs retrieved successfully!',
         printifyIds: productPrintifyIds
     };
 }

@@ -9,6 +9,7 @@ export default function SearchBar(props) {
         onChange,
         onClick,
         onKeyDown,
+        value
      } = props
 
     const [opacity, setOpacity] = useState(1)
@@ -46,6 +47,7 @@ export default function SearchBar(props) {
                 placeholder={placeholder}
                 onChange={onChange}
                 onKeyDown={onKeyDown}
+                value={value}
             />
             <button
                 className={styles.icon}
