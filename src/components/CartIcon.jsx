@@ -24,6 +24,7 @@ export default function CartIcon(props) {
                 <a
                     className={`${styles.iconContainer} flex center noUnderline`}
                     aria-label='Cart'
+                    onClick={() => setOpen(false)}
                 >
                     <ShoppingCartOutlinedIcon
                         style={{
@@ -68,6 +69,7 @@ export default function CartIcon(props) {
                         <Link legacyBehavior href={`/cart`}>
                             <a className={`${styles.iconContainer} flex center noUnderline`}>
                                 <Button
+                                    onClick={() => setOpen(false)}
                                     variant='contained'
                                     sx={{
                                         width: '100%',
