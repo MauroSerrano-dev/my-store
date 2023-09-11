@@ -74,18 +74,20 @@ export default withRouter((props) => {
     }
 
     function handleAddToCart(productProp) {
+        const mookapQuantity = 1
+        const mookapVariant = 0
         const productCart = {
             id: productProp.id,
-            variant: productProp.variants[0].id,
-            quantity: 1,
-            image: productProp.images[0].src,
-            price: productProp.variants[0].price,
+            variant: productProp.variants[mookapVariant].id,
+            quantity: mookapQuantity,
+            image: productProp.images[mookapVariant].src,
+            price: productProp.variants[mookapVariant].price,
             title: productProp.title
         }
 
-        const newCart = cart.some(prod => prod.id === productId && prod.variant === variantId)
-            ? cart.map(p => p.id === productId && p.variant === variantId
-                ? ({ ...p, quantity: p.quantity + quantity })
+        const newCart = cart.some(prod => prod.id === productProp.id && prod.variant === productProp.variants[mookapVariant].id)
+            ? cart.map(p => p.id === productProp.id && p.variant === productProp.variants[mookapVariant].id
+                ? ({ ...p, quantity: p.quantity + mookapQuantity })
                 : p
             )
             : cart.concat(productCart)
