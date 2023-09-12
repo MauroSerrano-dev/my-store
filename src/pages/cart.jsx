@@ -84,6 +84,7 @@ export default function Cart(props) {
                                     value={'us'}
                                     onChange={() => console.log()}
                                     size='small'
+                                    MenuProps={{ disableScrollLock: true }}
                                     sx={{
                                         width: '100%',
                                     }}
@@ -146,8 +147,6 @@ export default function Cart(props) {
                     </div>
                 </div>
             </main>
-            <footer>
-            </footer>
-        </div >
+        </div>
     )
 }

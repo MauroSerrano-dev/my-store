@@ -47,6 +47,7 @@ export default function Selector(props) {
             <Select
                 label={label}
                 value={value}
+                MenuProps={{ disableScrollLock: true }}
                 sx={{
                     ...style,
                     color: colorText,
@@ -61,6 +62,9 @@ export default function Selector(props) {
                     '.MuiSelect-iconOutlined': {
                         color: colorIcon
                     },
+                    '.css-g3hgs1-MuiBackdrop-root-MuiModal-backdrop': {
+                        backgroundColor: 'red !important'
+                    }
                 }}
                 onChange={onChange}
                 onFocus={() => setFocus(true)}

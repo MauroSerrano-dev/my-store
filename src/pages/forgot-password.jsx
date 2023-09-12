@@ -125,9 +125,7 @@ export default function ForgotPassword(props) {
                         className={styles.imgRight}
                     />
                 </div>
-            </main >
-            <footer>
-            </footer>
-        </div >
+            </main>
+        </div>
     )
 }

@@ -16,6 +16,7 @@ const MenuProps = {
             width: 250,
         },
     },
+    disableScrollLock: true
 }
 
 export default function MultiSelector(props) {

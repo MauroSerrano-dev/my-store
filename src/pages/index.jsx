@@ -5,6 +5,7 @@ import Carousel from '@/components/Carousel'
 import { useEffect, useState } from 'react'
 import Inventory2OutlinedIcon from '@mui/icons-material/Inventory2Outlined';
 import LocalShippingOutlinedIcon from '@mui/icons-material/LocalShippingOutlined';
+import Footer from '@/components/Footer'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -36,7 +37,7 @@ export default function Home() {
       .then(response => response.products)
       .catch(err => console.error(err))
 
-      return products
+    return products
   }
 
   async function getAllProducts() {
@@ -165,9 +166,8 @@ export default function Home() {
             </div>
           </div>
         }
-      </main >
-      <footer>
-      </footer>
-    </div >
+      </main>
+      <Footer />
+    </div>
   )
 }

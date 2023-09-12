@@ -60,7 +60,7 @@
 }
 
 .productsScroll {
-    max-height: 300px;
+    max-height: 272px;
     overflow: auto;
 }
 
@@ -71,6 +71,7 @@
 
 .products {
     overflow: hidden;
+    padding-bottom: 12px;
 }
 
 .pointer {

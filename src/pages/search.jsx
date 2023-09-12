@@ -5,6 +5,7 @@ import Product from '@/components/Product'
 import { useRouter } from 'next/router';
 import Link from 'next/link';
 import Selector from '@/components/Selector';
+import { Checkbox, FormControlLabel } from '@mui/material';
 
 const categories = new Map([
     ['t-shirts', 'T-Shirts'],
@@ -18,9 +19,19 @@ const categories = new Map([
     ['socks', 'Socks'],
 ])
 
+const THEMES_VALUES = [
+    { name: 'Computer', value: 'computer' },
+    { name: 'Games', value: 'games' },
+    { name: 'Music', value: 'music' },
+]
+
+const MOST_SEARCHED_VALUES = [
+    { name: 'Funny', value: 'funny' },
+    { name: 'Birthday', value: 'birthday' },
+    { name: 'For Couples', value: 'for-couples' },
+]
+
 export default withRouter((props) => {
-    const { } = props
-    const [products, setProducts] = useState([])
     const router = useRouter()
 
     const {
@@ -33,15 +44,39 @@ export default withRouter((props) => {
         order = 'popularity'
     } = props.router.query
 
+    const [products, setProducts] = useState([])
+    const [themes, setThemes] = useState([])
+    const [orderBy, setOrderBy] = useState(order)
+    const [minOrMax, setMinOrMax] = useState(false)
+
     useEffect(() => {
         if (Object.keys(router.query).length > 0) {
             getProductsByCategory()
                 .then(products => setProducts(products))
         }
+        if (t) {
+            console.log('t', t)
+            setThemes(t?.split(','))
+        }
+        else {
+            setThemes([])
+        }
+        if ((min || max) && order !== 'lowest-price' && order !== 'higher-price') {
+            setOrderBy('lowest-price')
+        }
+        else {
+            setOrderBy(order)
+        }
+        if (!min && !max) {
+            setMinOrMax(false)
+        }
+        else {
+            setMinOrMax(true)
+        }
     }, [router])
 
     function getProductsByCategory() {
-
+        setProducts([])
         const options = {
             method: 'GET',
             headers: {
@@ -76,11 +111,72 @@ export default withRouter((props) => {
         })
     }
 
+    function handleCheckBox(checked, queryName, value) {
+        if (checked) {
+            router.push({
+                pathname: router.pathname,
+                query: { ...router.query, [queryName]: themes.concat(value).join(',') }
+            })
+        }
+        else {
+            router.push({
+                pathname: router.pathname,
+                query: themes.length === 1
+                    ? getQueries({}, [queryName])
+                    : { ...router.query, [queryName]: themes.filter(theme => theme !== value).join(',') }
+            })
+        }
+    }
+
     return (
         <div className={styles.main}>
             <div className={styles.menuFilters}>
-                <div className={styles.priceFilter}>
-                    <h4>Price</h4>
+                <div className={styles.filterBlock}>
+                    <h3>Categories</h3>
+                    {THEMES_VALUES.map((theme, i) =>
+                        <FormControlLabel
+                            key={i}
+                            sx={{
+                                marginTop: -0.8,
+                                marginBottom: -0.8,
+                            }}
+                            control={
+                                <Checkbox
+                                    checked={themes.includes(theme.value)}
+                                    onChange={e => handleCheckBox(e.target.checked, 't', theme.value)}
+                                    sx={{
+                                        color: '#ffffff'
+                                    }}
+                                />
+                            }
+                            label={theme.name}
+                        />
+                    )}
+                </div>
+                <div className={styles.filterBlock}>
+                    <h3>Most Searched</h3>
+                    {MOST_SEARCHED_VALUES.map((theme, i) =>
+                        <FormControlLabel
+                            key={i}
+                            sx={{
+                                marginTop: -0.8,
+                                marginBottom: -0.8,
+                            }}
+                            control={
+                                <Checkbox
+                                    checked={themes.includes(theme.value)}
+                                    onChange={e => handleCheckBox(e.target.checked, 't', theme.value)}
+                                    sx={{
+                                        color: '#ffffff'
+                                    }}
+                                />
+                            }
+                            label={theme.name}
+                        />
+                    )}
+                </div>
+                <div className={styles.filterBlock}>
+                    <h3>Price</h3>
                     <Link legacyBehavior href={{
                         pathname: router.pathname,
                         query: getQueries({}, ['min', 'max'])
@@ -178,16 +274,28 @@ export default withRouter((props) => {
                 className={styles.products}
             >
                 <div className={styles.productsHead}>
-                    <h1>{categories.get(c)}</h1>
+                    <h1>
+                        {c
+                            ? categories.get(c)
+                            : 'Search'
+                        }
+                    </h1>
                     <Selector
                         label={'Order By'}
-                        value={order}
-                        options={[
-                            { value: 'popularity', name: 'Popularity' },
-                            { value: 'newest', name: 'Newest' },
-                            { value: 'lowest-price', name: 'Lowest Price' },
-                            { value: 'higher-price', name: 'Higher Price' },
-                        ]}
+                        value={orderBy}
+                        options={
+                            minOrMax
+                                ? [
+                                    { value: 'lowest-price', name: 'Lowest Price' },
+                                    { value: 'higher-price', name: 'Higher Price' },
+                                ]
+                                : [
+                                    { value: 'popularity', name: 'Popularity' },
+                                    { value: 'newest', name: 'Newest' },
+                                    { value: 'lowest-price', name: 'Lowest Price' },
+                                    { value: 'higher-price', name: 'Higher Price' },
+                                ]
+                        }
                         style={{
                             height: '40px',
                             width: '170px',
@@ -207,6 +315,22 @@ export default withRouter((props) => {
                             imgHover={product.image_hover.src}
                             url={`/product?id=${product.id}`}
                             width='calc(25% - 1rem)'
+                            motionVariants={
+                                {
+                                    hidden: {
+                                        opacity: 0,
+                                        y: 20,
+                                    },
+                                    visible: {
+                                        opacity: 1,
+                                        y: 0,
+                                        transition: {
+                                            duration: 0.3,
+                                            delay: 0.1 + 0.3 * Math.floor(i / 4),
+                                        }
+                                    }
+                                }
+                            }
                         />
                     )}
                 </div>

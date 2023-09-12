@@ -46,8 +46,6 @@ export default function Admin() {
                     </div>
                 </div>
             </main>
-            <footer>
-            </footer>
         </div>
     )
 }

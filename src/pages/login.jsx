@@ -174,9 +174,7 @@ export default function Login(props) {
                         </Link>
                     </div>
                 </div>
-            </main >
-            <footer>
-            </footer>
-        </div >
+            </main>
+        </div>
     )
 }

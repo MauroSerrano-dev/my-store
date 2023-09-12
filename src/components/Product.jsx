@@ -2,6 +2,7 @@ import styles from '@/styles/components/Product.module.css'
 import { useEffect, useState, useRef } from 'react'
 import { Button } from '@mui/material'
 import Link from 'next/link'
+import { motion } from "framer-motion";
 
 export default function Product(props) {
     const {
@@ -15,7 +16,8 @@ export default function Product(props) {
         currencySymbol,
         url,
         width = '230px',
-        style
+        style,
+        motionVariants
     } = props
 
     const [isHovered, setIsHovered] = useState(false)
@@ -64,7 +66,7 @@ export default function Product(props) {
 
     return (
         <Link legacyBehavior href={url}>
-            <a
+            <motion.a
                 className={styles.container}
                 ref={productRef}
                 style={{
@@ -73,6 +75,9 @@ export default function Product(props) {
                     height: responsive ? `calc(${productWidth} * 1.575)` : `calc(${productWidth} * 1.575)`,
                     width: responsive ? '100%' : width
                 }}
+                variants={motionVariants}
+                initial='hidden'
+                animate='visible'
             >
                 <div
                     className={styles.productContainer}
@@ -178,7 +183,7 @@ export default function Product(props) {
                         </div>
                     }
                 </div>
-            </a>
+            </motion.a>
         </Link>
     )
 }

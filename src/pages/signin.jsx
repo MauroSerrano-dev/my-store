@@ -161,8 +161,6 @@ export default function Signin(props) {
                     </div>
                 </div>
             </main>
-            <footer>
-            </footer>
-        </div >
+        </div>
     )
 }

@@ -74,7 +74,6 @@ export default function CartIcon(props) {
                                         width: '100%',
                                         color: '#ffffff',
                                         fontWeight: 'bold',
-                                        marginTop: '0.7rem',
                                     }}
                                 >
                                     Go to Cart

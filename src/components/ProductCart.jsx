@@ -147,6 +147,7 @@ export default function ProductCart(props) {
                             value={product.quantity}
                             onChange={(event) => changeProductField('quantity', event.target.value, product.id)}
                             label="Quantity"
+                            MenuProps={{ disableScrollLock: true }}
                             sx={{
                                 color: '#ffffff',
                                 '.MuiOutlinedInput-notchedOutline': {
@@ -245,6 +246,7 @@ export default function ProductCart(props) {
                             onChange={() => console.log()}
                             autoWidth
                             label="Size"
+                            MenuProps={{ disableScrollLock: true }}
                             sx={{
                                 color: '#ffffff',
                                 '.MuiOutlinedInput-notchedOutline': {

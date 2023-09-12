@@ -9,7 +9,6 @@ import {
     getFirestore,
     query,
     setDoc,
-    updateDoc,
     where,
 } from "firebase/firestore";
 import { initializeApp } from 'firebase/app'
@@ -118,7 +117,7 @@ async function getProductsByQueries(queries) {
 
         // Filtre por tema (se presente)
         if (t) {
-            const themes = t.split(';')
+            const themes = t.split(',')
             q = query(q, where('themes', "array-contains-any", themes));
         }
 
@@ -143,8 +142,10 @@ async function getProductsByQueries(queries) {
         const itemsPerPage = 60;
         const startAfterDoc = (parseFloat(page) - 1) * itemsPerPage;
 
+        const filterByPrice = (min || max) && order !== 'lowest-price' && order !== 'higher-price'
+
         // Aplique a ordenação correta
-        q = query(q, orderBy(orders.get(order).value, orders.get(order).direction));
+        q = query(q, orderBy(orders.get(filterByPrice ? 'lowest-price' : order).value, orders.get(filterByPrice ? 'lowest-price' : order).direction));
 
         // Aplique a paginação usando startAfter()
         if (startAfterDoc > 0) {

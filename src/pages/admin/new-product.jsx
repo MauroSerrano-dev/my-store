@@ -443,8 +443,6 @@ export default function NewProduct() {
                     </div>
                 }
             </main>
-            <footer>
-            </footer>
-        </div >
+        </div>
     )
 }
