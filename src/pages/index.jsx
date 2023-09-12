@@ -67,10 +67,6 @@ export default function Home() {
     setAllProducts(await getAllProducts())
   }
 
-  useEffect(() => {
-    console.log('a', productsTShirts)
-  }, [productsTShirts])
-
   return (
     <div className={styles.container}>
       <header>
