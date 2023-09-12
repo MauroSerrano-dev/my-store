@@ -8,7 +8,7 @@
 
     overflow-y: auto;
     overflow-x: hidden;
-    padding-top: calc(5rem + 40px);
+    margin-top: calc(5rem + 40px);
 }
 
 .topContainer {
