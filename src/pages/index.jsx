@@ -20,9 +20,9 @@ const categories = [
 
 export default function Home() {
 
-  const [productsHome, setProductsHome] = useState()
-  const [productsTShirts, setProductsTShirts] = useState()
-  const [allProducts, setAllProducts] = useState()
+  const [productsHome, setProductsHome] = useState([])
+  const [productsTShirts, setProductsTShirts] = useState([])
+  const [allProducts, setAllProducts] = useState([])
 
   async function getProductsByCategory(categoryName) {
     const options = {
@@ -49,7 +49,6 @@ export default function Home() {
     await fetch("/api/products", options)
       .then(response => response.json())
       .then(response => {
-        console.log(response.msg)
         products = response.products
       })
       .catch(err => console.error(err))
@@ -67,6 +66,10 @@ export default function Home() {
     setProductsTShirts(await getProductsByCategory('t-shirts'))
     setAllProducts(await getAllProducts())
   }
+
+  useEffect(() => {
+    console.log('a', productsTShirts)
+  }, [productsTShirts])
 
   return (
     <div className={styles.container}>
@@ -112,60 +115,51 @@ export default function Home() {
             />
           </div>
         </div>
-        {
-          allProducts &&
-          <div className={styles.carouselAndTitle}>
-            <h2 className={styles.carouselTitle}>
-              All Products
-            </h2>
-            <div className={styles.carousel}>
-              <Carousel
-                items={allProducts}
-                height='400px'
-                width='90%'
-                animationDuration={200}
-                itemWidth={225}
-                type='products'
-              />
-            </div>
+        <div className={styles.carouselAndTitle}>
+          <h2 className={styles.carouselTitle}>
+            All Products
+          </h2>
+          <div className={styles.carousel}>
+            <Carousel
+              items={allProducts}
+              height='400px'
+              width='90%'
+              animationDuration={200}
+              itemWidth={225}
+              type='products'
+            />
           </div>
-        }
-        {
-          productsTShirts &&
-          <div className={styles.carouselAndTitle}>
-            <h2 className={styles.carouselTitle}>
-              T-Shirts
-            </h2>
-            <div className={styles.carousel}>
-              <Carousel
-                items={productsTShirts}
-                height='400px'
-                width='90%'
-                animationDuration={200}
-                itemWidth={225}
-                type='products'
-              />
-            </div>
+        </div>
+        <div className={styles.carouselAndTitle}>
+          <h2 className={styles.carouselTitle}>
+            T-Shirts
+          </h2>
+          <div className={styles.carousel}>
+            <Carousel
+              items={productsTShirts}
+              height='400px'
+              width='90%'
+              animationDuration={200}
+              itemWidth={225}
+              type='products'
+            />
           </div>
-        }
-        {
-          productsHome &&
-          <div className={styles.carouselAndTitle}>
-            <h2 className={styles.carouselTitle}>
-              Home
-            </h2>
-            <div className={styles.carousel}>
-              <Carousel
-                items={productsHome}
-                height='400px'
-                width='90%'
-                animationDuration={200}
-                itemWidth={225}
-                type='products'
-              />
-            </div>
+        </div>
+        <div className={styles.carouselAndTitle}>
+          <h2 className={styles.carouselTitle}>
+            Home
+          </h2>
+          <div className={styles.carousel}>
+            <Carousel
+              items={productsHome}
+              height='400px'
+              width='90%'
+              animationDuration={200}
+              itemWidth={225}
+              type='products'
+            />
           </div>
-        }
+        </div>
       </main>
       <Footer />
     </div>

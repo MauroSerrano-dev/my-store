@@ -18,12 +18,14 @@ export default function Carousel(props) {
         type = 'imgs'
     } = props
 
-    const [itemsArray, setItemsArray] = useState(items.concat(items).concat(items).map((item, i) => (
-        {
-            ...item,
-            position: i - items.length
-        }
-    )))
+    const [itemsArray, setItemsArray] = useState(
+        items.concat(items).concat(items).map((item, i) => (
+            {
+                ...item,
+                position: i - items.length
+            }
+        ))
+    )
 
     useEffect(() => {
         if (loop) {
@@ -32,6 +34,16 @@ export default function Carousel(props) {
             }, animationDuration)
         }
     }, [itemsArray])
+
+    useEffect(() => {
+        setItemsArray(
+            items.concat(items).concat(items).map((item, i) => (
+                {
+                    ...item,
+                    position: i - items.length
+                }
+            )))
+    }, [items])
 
     function handleGoLeft() {
         setItemsArray(prev => prev.map((item, i) => (
