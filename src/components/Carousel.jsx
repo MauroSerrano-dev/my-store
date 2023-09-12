@@ -5,6 +5,7 @@ import KeyboardArrowRightRoundedIcon from '@mui/icons-material/KeyboardArrowRigh
 import KeyboardArrowLeftRoundedIcon from '@mui/icons-material/KeyboardArrowLeftRounded';
 import { useEffect, useState } from 'react';
 import Product from './Product';
+import Link from 'next/link';
 
 export default function Carousel(props) {
     const {
@@ -79,27 +80,29 @@ export default function Carousel(props) {
 
                 {itemsArray.map((item, i) =>
                     type === 'imgs'
-                        ? <div
-                            className={styles.item}
-                            key={i}
-                            style={{
-                                left: `${(item.position) * (itemWidth + gap)}px`,
-                                width: `${itemWidth}px`,
-                                transition: item.position < items.length / 2 * (-1) || item.position > items.length * 1.5
-                                    ? `all ${loop
-                                        ? 'linear'
-                                        : 'ease-in-out'} 0ms`
-                                    : `all ${loop
-                                        ? 'linear'
-                                        : 'ease-in-out'} ${animationDuration}ms`
-                            }}
-                        >
-                            <img
-                                className={styles.itemImg}
-                                src={item.img}
-                                alt='category-image'
-                            />
-                        </div>
+                        ? <Link legacyBehavior href={item.url}>
+                            <a
+                                className={`${styles.item} noUnderline`}
+                                key={i}
+                                style={{
+                                    left: `${(item.position) * (itemWidth + gap)}px`,
+                                    width: `${itemWidth}px`,
+                                    transition: item.position < items.length / 2 * (-1) || item.position > items.length * 1.5
+                                        ? `all ${loop
+                                            ? 'linear'
+                                            : 'ease-in-out'} 0ms`
+                                        : `all ${loop
+                                            ? 'linear'
+                                            : 'ease-in-out'} ${animationDuration}ms`
+                                }}
+                            >
+                                <img
+                                    className={styles.itemImg}
+                                    src={item.img}
+                                    alt='category-image'
+                                />
+                            </a>
+                        </Link>
                         : <div
                             className={styles.product}
                             key={i}

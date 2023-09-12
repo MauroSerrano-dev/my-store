@@ -105,6 +105,18 @@ input::placeholder {
   text-align: center;
 }
 
+.justify-start {
+  justify-content: flex-start;
+}
+
+.align-center {
+  align-items: center;
+}
+
+.text-start {
+  text-align: start;
+}
+
 .fillWidth {
   width: 100%;
 }
@@ -163,6 +175,7 @@ body::-webkit-scrollbar-track {
 @media (hover: hover) and (pointer: fine) {
   a:hover {
     text-decoration: underline var(--text-color);
+    cursor: pointer;
   }
 
   .noUnderline:hover {

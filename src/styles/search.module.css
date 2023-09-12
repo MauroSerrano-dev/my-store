@@ -4,6 +4,7 @@
     flex-direction: row;
     --text-color: var(--text-white);
     padding-top: 1rem;
+    padding-bottom: 1rem;
 }
 
 .menuFilters {

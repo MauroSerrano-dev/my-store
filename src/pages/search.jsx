@@ -6,6 +6,7 @@ import { useRouter } from 'next/router';
 import Link from 'next/link';
 import Selector from '@/components/Selector';
 import { Checkbox, FormControlLabel } from '@mui/material';
+import Footer from '@/components/Footer';
 
 const categories = new Map([
     ['t-shirts', 'T-Shirts'],
@@ -48,6 +49,7 @@ export default withRouter((props) => {
     const [themes, setThemes] = useState([])
     const [orderBy, setOrderBy] = useState(order)
     const [minOrMax, setMinOrMax] = useState(false)
+    const [noResults, setNoResults] = useState(false)
 
     useEffect(() => {
         if (Object.keys(router.query).length > 0) {
@@ -86,7 +88,10 @@ export default withRouter((props) => {
 
         const products = fetch("/api/products-by-queries", options)
             .then(response => response.json())
-            .then(response => response.products)
+            .then(response => {
+                setNoResults(response.products.length === 0)
+                return response.products
+            })
             .catch(err => console.error(err))
 
         return products
@@ -129,212 +134,217 @@ export default withRouter((props) => {
     }
 
     return (
-        <div className={styles.main}>
-            <div className={styles.menuFilters}>
-                <div className={styles.filterBlock}>
-                    <h3>Categories</h3>
-                    {THEMES_VALUES.map((theme, i) =>
-                        <FormControlLabel
-                            key={i}
-                            sx={{
-                                marginTop: -0.8,
-                                marginBottom: -0.8,
-                            }}
-                            control={
-                                <Checkbox
-                                    checked={themes.includes(theme.value)}
-                                    onChange={e => handleCheckBox(e.target.checked, 't', theme.value)}
-                                    sx={{
-                                        color: '#ffffff'
-                                    }}
-                                />
-                            }
-                            label={theme.name}
-                        />
-                    )}
-                </div>
-                <div className={styles.filterBlock}>
-                    <h3>Most Searched</h3>
-                    {MOST_SEARCHED_VALUES.map((theme, i) =>
-                        <FormControlLabel
-                            key={i}
-                            sx={{
-                                marginTop: -0.8,
-                                marginBottom: -0.8,
-                            }}
-                            control={
-                                <Checkbox
-                                    checked={themes.includes(theme.value)}
-                                    onChange={e => handleCheckBox(e.target.checked, 't', theme.value)}
-                                    sx={{
-                                        color: '#ffffff'
-                                    }}
-                                />
-                            }
-                            label={theme.name}
-                        />
-                    )}
-                </div>
-                <div className={styles.filterBlock}>
-                    <h3>Price</h3>
-                    <Link legacyBehavior href={{
-                        pathname: router.pathname,
-                        query: getQueries({}, ['min', 'max'])
-                    }}>
-                        <a
-                            className={'noUnderline'}
-                            aria-label='Any Price'
-                            style={{
-                                fontWeight: !min && !max
-                                    ? 'bold'
-                                    : 400
-                            }}
-                        >
-                            Any Price
-                        </a>
-                    </Link>
-                    <Link legacyBehavior href={{
-                        pathname: router.pathname,
-                        query: getQueries({ max: 15 }, ['min'])
-                    }}>
-                        <a
-                            className={'noUnderline'}
-                            aria-label='up to 15'
-                            style={{
-                                fontWeight: !min && max === '15'
-                                    ? 'bold'
-                                    : 400
-                            }}
-                        >
-                            Up to $15
-                        </a>
-                    </Link>
-                    <Link legacyBehavior href={{
-                        pathname: router.pathname,
-                        query: getQueries({ min: '15', max: '25' })
-                    }}>
-                        <a
-                            className={'noUnderline'}
-                            aria-label='15 to 25'
-                            style={{
-                                fontWeight: min === '15' && max === '25'
-                                    ? 'bold'
-                                    : 400
-                            }}
-                        >
-                            $15 to $25
-                        </a>
-                    </Link>
-                    <Link legacyBehavior href={{
-                        pathname: router.pathname,
-                        query: getQueries({ min: '25', max: '40' })
-                    }}>
-                        <a
-                            className={'noUnderline'}
-                            aria-label='25 to 40'
-                            style={{
-                                fontWeight: min === '25' && max === '40'
-                                    ? 'bold'
-                                    : 400
-                            }}
-                        >
-                            $25 to $40
-                        </a>
-                    </Link>
-                    <Link legacyBehavior href={{
-                        pathname: router.pathname,
-                        query: getQueries({ min: '40' }, ['max'])
-                    }}>
-                        <a
-                            className={'noUnderline'}
-                            aria-label='40 and above'
-                            style={{
-                                fontWeight: min === '40' && !max
-                                    ? 'bold'
-                                    : 400
-                            }}
-                        >
-                            $40 & Above
-                        </a>
-                    </Link>
-                    <div className={styles.priceFilterInputs}>
-                        <input
-                            placeholder='Min'
-                        />
-                        <input
-                            placeholder='Max'
-                        />
-                        <button>
-                            Go
-                        </button>
+        <div className='fillWidth'>
+            <main className={styles.main}>
+                <div className={styles.menuFilters}>
+                    <div className={styles.filterBlock}>
+                        <h3>Categories</h3>
+                        {THEMES_VALUES.map((theme, i) =>
+                            <FormControlLabel
+                                key={i}
+                                sx={{
+                                    marginTop: -0.8,
+                                    marginBottom: -0.8,
+                                }}
+                                control={
+                                    <Checkbox
+                                        checked={themes.includes(theme.value)}
+                                        onChange={e => handleCheckBox(e.target.checked, 't', theme.value)}
+                                        sx={{
+                                            color: '#ffffff'
+                                        }}
+                                    />
+                                }
+                                label={theme.name}
+                            />
+                        )}
+                    </div>
+                    <div className={styles.filterBlock}>
+                        <h3>Most Searched</h3>
+                        {MOST_SEARCHED_VALUES.map((theme, i) =>
+                            <FormControlLabel
+                                key={i}
+                                sx={{
+                                    marginTop: -0.8,
+                                    marginBottom: -0.8,
+                                }}
+                                control={
+                                    <Checkbox
+                                        checked={themes.includes(theme.value)}
+                                        onChange={e => handleCheckBox(e.target.checked, 't', theme.value)}
+                                        sx={{
+                                            color: '#ffffff'
+                                        }}
+                                    />
+                                }
+                                label={theme.name}
+                            />
+                        )}
+                    </div>
+                    <div className={styles.filterBlock}>
+                        <h3>Price</h3>
+                        <Link legacyBehavior href={{
+                            pathname: router.pathname,
+                            query: getQueries({}, ['min', 'max'])
+                        }}>
+                            <a
+                                className={'noUnderline'}
+                                aria-label='Any Price'
+                                style={{
+                                    fontWeight: !min && !max
+                                        ? 'bold'
+                                        : 400
+                                }}
+                            >
+                                Any Price
+                            </a>
+                        </Link>
+                        <Link legacyBehavior href={{
+                            pathname: router.pathname,
+                            query: getQueries({ max: 15 }, ['min'])
+                        }}>
+                            <a
+                                className={'noUnderline'}
+                                aria-label='up to 15'
+                                style={{
+                                    fontWeight: !min && max === '15'
+                                        ? 'bold'
+                                        : 400
+                                }}
+                            >
+                                Up to $15
+                            </a>
+                        </Link>
+                        <Link legacyBehavior href={{
+                            pathname: router.pathname,
+                            query: getQueries({ min: '15', max: '25' })
+                        }}>
+                            <a
+                                className={'noUnderline'}
+                                aria-label='15 to 25'
+                                style={{
+                                    fontWeight: min === '15' && max === '25'
+                                        ? 'bold'
+                                        : 400
+                                }}
+                            >
+                                $15 to $25
+                            </a>
+                        </Link>
+                        <Link legacyBehavior href={{
+                            pathname: router.pathname,
+                            query: getQueries({ min: '25', max: '40' })
+                        }}>
+                            <a
+                                className={'noUnderline'}
+                                aria-label='25 to 40'
+                                style={{
+                                    fontWeight: min === '25' && max === '40'
+                                        ? 'bold'
+                                        : 400
+                                }}
+                            >
+                                $25 to $40
+                            </a>
+                        </Link>
+                        <Link legacyBehavior href={{
+                            pathname: router.pathname,
+                            query: getQueries({ min: '40' }, ['max'])
+                        }}>
+                            <a
+                                className={'noUnderline'}
+                                aria-label='40 and above'
+                                style={{
+                                    fontWeight: min === '40' && !max
+                                        ? 'bold'
+                                        : 400
+                                }}
+                            >
+                                $40 & Above
+                            </a>
+                        </Link>
+                        <div className={styles.priceFilterInputs}>
+                            <input
+                                placeholder='Min'
+                            />
+                            <input
+                                placeholder='Max'
+                            />
+                            <button>
+                                Go
+                            </button>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div
-                className={styles.products}
-            >
-                <div className={styles.productsHead}>
-                    <h1>
-                        {c
-                            ? categories.get(c)
-                            : 'Search'
-                        }
-                    </h1>
-                    <Selector
-                        label={'Order By'}
-                        value={orderBy}
-                        options={
-                            minOrMax
-                                ? [
-                                    { value: 'lowest-price', name: 'Lowest Price' },
-                                    { value: 'higher-price', name: 'Higher Price' },
-                                ]
-                                : [
-                                    { value: 'popularity', name: 'Popularity' },
-                                    { value: 'newest', name: 'Newest' },
-                                    { value: 'lowest-price', name: 'Lowest Price' },
-                                    { value: 'higher-price', name: 'Higher Price' },
-                                ]
-                        }
-                        style={{
-                            height: '40px',
-                            width: '170px',
-                        }}
-                        onChange={(event) => handleChangeOrder(event.target.value)}
-                    />
-                </div>
-                <div className={styles.productsBody}>
-                    {products.map((product, i) =>
-                        <Product
-                            key={i}
-                            name={product.title}
-                            price={product.variants[0].price}
-                            currencySymbol='$'
-                            outOfStock={false}
-                            img={product.image_showcase.src}
-                            imgHover={product.image_hover.src}
-                            url={`/product?id=${product.id}`}
-                            width='calc(25% - 1rem)'
-                            motionVariants={
-                                {
-                                    hidden: {
-                                        opacity: 0,
-                                        y: 20,
-                                    },
-                                    visible: {
-                                        opacity: 1,
-                                        y: 0,
-                                        transition: {
-                                            duration: 0.3,
-                                            delay: 0.1 + 0.3 * Math.floor(i / 4),
+                <div
+                    className={styles.products}
+                >
+                    <div className={styles.productsHead}>
+                        <h1>
+                            {c
+                                ? categories.get(c)
+                                : 'Search'
+                            }
+                        </h1>
+                        <Selector
+                            label={'Order By'}
+                            value={orderBy}
+                            options={
+                                minOrMax
+                                    ? [
+                                        { value: 'lowest-price', name: 'Lowest Price' },
+                                        { value: 'higher-price', name: 'Higher Price' },
+                                    ]
+                                    : [
+                                        { value: 'popularity', name: 'Popularity' },
+                                        { value: 'newest', name: 'Newest' },
+                                        { value: 'lowest-price', name: 'Lowest Price' },
+                                        { value: 'higher-price', name: 'Higher Price' },
+                                    ]
+                            }
+                            style={{
+                                height: '40px',
+                                width: '170px',
+                            }}
+                            onChange={(event) => handleChangeOrder(event.target.value)}
+                        />
+                    </div>
+                    <div className={styles.productsBody}>
+                        {noResults
+                            ? <h2>No Results</h2>
+                            : products.map((product, i) =>
+                                <Product
+                                    key={i}
+                                    name={product.title}
+                                    price={product.variants[0].price}
+                                    currencySymbol='$'
+                                    outOfStock={false}
+                                    img={product.image_showcase.src}
+                                    imgHover={product.image_hover.src}
+                                    url={`/product?id=${product.id}`}
+                                    width='calc(25% - 1rem)'
+                                    motionVariants={
+                                        {
+                                            hidden: {
+                                                opacity: 0,
+                                                y: 20,
+                                            },
+                                            visible: {
+                                                opacity: 1,
+                                                y: 0,
+                                                transition: {
+                                                    duration: 0.3,
+                                                    delay: 0.1 + 0.3 * Math.floor(i / 4),
+                                                }
+                                            }
                                         }
                                     }
-                                }
-                            }
-                        />
-                    )}
+                                />
+                            )}
+                    </div>
                 </div>
-            </div >
-        </div >
+            </main>
+            <Footer />
+        </div>
     )
 })
