@@ -103,7 +103,7 @@ export default function Home() {
           <div
             className={styles.carousel}
             style={{
-              marginBottom: '1rem',
+              marginBottom: '2rem',
             }}
           >
             <Carousel
