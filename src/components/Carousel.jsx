@@ -80,10 +80,13 @@ export default function Carousel(props) {
 
                 {itemsArray.map((item, i) =>
                     type === 'imgs'
-                        ? <Link legacyBehavior href={item.url}>
+                        ? <Link
+                            legacyBehavior
+                            href={item.url}
+                            key={i}
+                        >
                             <a
                                 className={`${styles.item} noUnderline`}
-                                key={i}
                                 style={{
                                     left: `${(item.position) * (itemWidth + gap)}px`,
                                     width: `${itemWidth}px`,
