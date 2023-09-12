@@ -4,7 +4,7 @@ import Link from 'next/link'
 import { PiHandshakeLight } from "react-icons/pi";
 import ReCAPTCHA from "react-google-recaptcha";
 import { useState } from 'react';
-import { STORE_NAME } from '../../labels';
+import { STORE_NAME } from '../../consts';
 
 export default function Signin(props) {
     const { signIn, login } = props

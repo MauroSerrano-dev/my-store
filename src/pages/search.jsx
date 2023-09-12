@@ -32,11 +32,12 @@ const MOST_SEARCHED_VALUES = [
     { name: 'For Couples', value: 'for-couples' },
 ]
 
+const ITEMS_PER_LINE = 5
+
 export default withRouter((props) => {
     const router = useRouter()
 
     const {
-        c,
         s,
         t,
         page = 1,
@@ -58,7 +59,7 @@ export default withRouter((props) => {
         }
         if (t) {
             console.log('t', t)
-            setThemes(t?.split(','))
+            setThemes(t?.split(' '))
         }
         else {
             setThemes([])
@@ -120,7 +121,7 @@ export default withRouter((props) => {
         if (checked) {
             router.push({
                 pathname: router.pathname,
-                query: { ...router.query, [queryName]: themes.concat(value).join(',') }
+                query: { ...router.query, [queryName]: themes.concat(value).join(' ') }
             })
         }
         else {
@@ -128,7 +129,7 @@ export default withRouter((props) => {
                 pathname: router.pathname,
                 query: themes.length === 1
                     ? getQueries({}, [queryName])
-                    : { ...router.query, [queryName]: themes.filter(theme => theme !== value).join(',') }
+                    : { ...router.query, [queryName]: themes.filter(theme => theme !== value).join(' ') }
             })
         }
     }
@@ -281,10 +282,7 @@ export default withRouter((props) => {
                 >
                     <div className={styles.productsHead}>
                         <h1>
-                            {c
-                                ? categories.get(c)
-                                : 'Search'
-                            }
+                            Search
                         </h1>
                         <Selector
                             label={'Order By'}
@@ -322,7 +320,7 @@ export default withRouter((props) => {
                                     img={product.image_showcase.src}
                                     imgHover={product.image_hover.src}
                                     url={`/product?id=${product.id}`}
-                                    width='calc(25% - 1rem)'
+                                    width={`calc(${100 / ITEMS_PER_LINE}% - 1rem)`}
                                     motionVariants={
                                         {
                                             hidden: {
@@ -334,7 +332,7 @@ export default withRouter((props) => {
                                                 y: 0,
                                                 transition: {
                                                     duration: 0.3,
-                                                    delay: 0.1 + 0.3 * Math.floor(i / 4),
+                                                    delay: 0.2 + 0.3 * Math.floor(i / ITEMS_PER_LINE),
                                                 }
                                             }
                                         }

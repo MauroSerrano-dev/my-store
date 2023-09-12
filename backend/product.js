@@ -13,6 +13,8 @@ import {
 } from "firebase/firestore";
 import { initializeApp } from 'firebase/app'
 import { firebaseConfig } from "../firebase.config";
+import Fuse from 'fuse.js'
+import { TAGS_POOL } from "../consts";
 
 initializeApp(firebaseConfig)
 
@@ -49,7 +51,7 @@ async function createProduct(product) {
         // Verifique se o documento já existe
         const docSnapshot = await getDoc(productRef)
         if (docSnapshot.exists()) {
-            return { msg: `Product ID ${product.id} already exists. Cannot create product.` } // Retornar algum valor para indicar que a criação falhou
+            return { msg: `Product ID ${product.id} already exists. Cannot create product.` }
         }
 
         // Salve o documento no Firestore
@@ -57,13 +59,14 @@ async function createProduct(product) {
         return { msg: `Product ${product.id} created successfully!` }
     } catch (error) {
         console.log("Error creating product:", error)
-        return null; // Retornar algum valor para indicar que a criação falhou
+        return null;
     }
 }
 
 async function getProductsByCategory(category) {
     const productsCollection = collection(db, process.env.COLL_PRODUCTS);
-    let q = query(productsCollection, where("category", "==", category));
+
+    let q = query(productsCollection, where("tags", "array-contains-any", [category]));
     q = query(q, orderBy("popularity"))
 
     const querySnapshot = await getDocs(q);
@@ -90,9 +93,8 @@ async function getProductsByCategory(category) {
 
 async function getProductsByQueries(queries) {
     const {
-        c, // categories (array de strings)
-        s, // search (string)
-        t, // theme
+        s, //search
+        t, // tags
         page = 1, // número da página
         min, // preço mínimo
         max, // preço máximo
@@ -104,21 +106,31 @@ async function getProductsByQueries(queries) {
         const productsCollection = collection(db, process.env.COLL_PRODUCTS);
         let q = query(productsCollection);
 
-        // Filtre por termo de busca (se presente)
-        if (s) {
-            const search = s.toLowerCase()
-            q = query(q, where("tags", "array-contains", search));
-        }
+        // Filtre por tag ou search (se presente)
+        if (t || s) {
+            const fuse = new Fuse(TAGS_POOL)
+            const x = s
+                ? s.split(' ')
+                : t.split(' ')
+            const tags = x
+                .map(tag => {
+                    const fuseRed = fuse.search(tag)
+                    return fuseRed.length > 0
+                        ? fuseRed[0].item
+                        : ''
+                }).filter(tag => tag !== '')
 
-        // Filtre por categoria (se presente)
-        if (c) {
-            q = query(q, where('category', "==", c));
-        }
-
-        // Filtre por tema (se presente)
-        if (t) {
-            const themes = t.split(',')
-            q = query(q, where('themes', "array-contains-any", themes));
+            if (tags.length === 0) {
+                return {
+                    msg: 'No products found matching the queries.',
+                    products: []
+                };
+            }
+            q = query(q, where(
+                'tags',
+                "array-contains-any",
+                tags
+            ))
         }
 
         // Filtre por preço mínimo (se presente)

@@ -5,7 +5,7 @@ import { motion } from "framer-motion";
 import Link from 'next/link';
 import { Select, FormControl, MenuItem, InputLabel } from '@mui/material';
 import { useEffect, useState } from 'react';
-import { CART_COOKIE } from '../../labels';
+import { CART_COOKIE } from '../../consts';
 
 const menuStyle = {
     display: 'flex',

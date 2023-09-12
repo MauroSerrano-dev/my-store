@@ -28,7 +28,7 @@ export default function Home() {
     const options = {
       method: 'GET',
       headers: {
-        c: categoryName
+        t: categoryName
       }
     }
 

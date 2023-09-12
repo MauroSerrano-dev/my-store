@@ -1,4 +1,4 @@
-import { STORE_NAME } from "../../labels";
+import { STORE_NAME } from "../../consts";
 import styles from '../styles/components/Footer.module.css'
 
 export default function Footer() {

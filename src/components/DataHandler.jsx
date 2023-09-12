@@ -5,7 +5,7 @@ import Cookies from 'js-cookie';
 import { getAuth, onAuthStateChanged, signOut, signInWithEmailAndPassword } from "firebase/auth";
 import { initializeApp } from 'firebase/app';
 import { firebaseConfig } from '../../firebase.config';
-import { CART_COOKIE } from '../../labels';
+import { CART_COOKIE } from '../../consts';
 import Router from 'next/router';
 
 export default function DataHandler(props) {

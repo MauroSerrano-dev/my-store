@@ -6,7 +6,7 @@ import { Button } from '@mui/material'
 import ShoppingCartOutlinedIcon from '@mui/icons-material/ShoppingCartOutlined';
 import CreditCardOutlinedIcon from '@mui/icons-material/CreditCardOutlined';
 import Cookies from 'js-cookie';
-import { CART_COOKIE } from '../../labels'
+import { CART_COOKIE } from '../../consts'
 import Head from 'next/head'
 
 export default withRouter((props) => {

@@ -3,7 +3,7 @@ import { SlClose } from "react-icons/sl";
 import Cookies from 'js-cookie';
 import { motion } from "framer-motion";
 import Link from 'next/link';
-import { CART_COOKIE } from '../../labels';
+import { CART_COOKIE } from '../../consts';
 
 export default function ProductModal(props) {
     const {
