@@ -5,7 +5,8 @@ const stripe = Stripe(process.env.STRIPE_SECRET_KEY);
 export default async function handler(req, res) {
   if (req.method === 'POST') {
     const customer = req.body.customer
-
+    const cartItems = req.body.cartItems
+  
     if (customer) {
       // Check if the email already exists in Stripe
       const existingCustomer = await stripe.customers.list({
@@ -18,22 +19,16 @@ export default async function handler(req, res) {
         await stripe.customers.create({
           name: customer.name,
           email: customer.email,
-          metadata: {
-            cart: JSON.stringify(req.body.cartItems),
-          },
         })
       }
     }
     else {
       await stripe.customers.create({
         name: 'Anonymous',
-        metadata: {
-          cart: JSON.stringify(req.body.cartItems),
-        },
       })
     }
 
-    const line_items = req.body.cartItems.map((item) => {
+    const line_items = cartItems.map((item) => {
       return {
         price_data: {
           currency: "usd",

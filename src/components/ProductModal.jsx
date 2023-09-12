@@ -11,14 +11,11 @@ export default function ProductModal(props) {
         product,
         setCart,
         index,
-        setOpen,
     } = props
 
     function handleDeleteCartProduct(productId) {
         setCart(prev => {
             const newCart = prev.filter(prod => prod.id !== productId)
-            if (newCart.length === 0)
-                setOpen(false)
             if (session) {
                 const options = {
                     method: 'POST',
