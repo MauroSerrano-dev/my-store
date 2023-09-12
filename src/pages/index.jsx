@@ -100,7 +100,12 @@ export default function Home() {
           <h2 className={styles.carouselTitle}>
             Categories
           </h2>
-          <div className={styles.carousel}>
+          <div
+            className={styles.carousel}
+            style={{
+              marginBottom: '1rem',
+            }}
+          >
             <Carousel
               items={categories}
               height='150px'
