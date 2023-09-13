@@ -56,6 +56,7 @@ export default withRouter((props) => {
                         image: prod.images[0].src,
                         desc: 'my product description',
                         id: prod.id,
+                        id_printify: prod.id_printify,
                         price: prod.variants[0].price,
                         quantity: 1,
                     }

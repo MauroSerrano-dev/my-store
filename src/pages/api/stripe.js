@@ -47,10 +47,10 @@ export default async function handler(req, res) {
     })
 
     const cartMetadata = {}
-
+    console.log(cartItems)
     cartItems.forEach((item, i) => {
       cartMetadata[i] = JSON.stringify({
-        product_id: item.id,
+        product_id: item.id_printify,
         variant_id: item.variant,
         quantity: item.quantity,
       })
