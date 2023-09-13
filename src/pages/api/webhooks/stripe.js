@@ -18,20 +18,9 @@ export default async function handler(req, res) {
                 },
             };
             const body_data = {
-                "external_id": "2225sadds3",
-                "label": "Order 222dsdsaa53",
-                "line_items": [
-                    {
-                        "product_id": "64df65c1a996f39335017a6c",
-                        "variant_id": 12149,
-                        "quantity": 1
-                    },
-                    {
-                        "product_id": "64ed7b0c2fce7b60bc02fb06",
-                        "variant_id": 38224,
-                        "quantity": 1
-                    }
-                ],
+                external_id: body.id,
+                label: body.id,
+                line_items: line_items,
                 "shipping_method": 1,
                 "send_shipping_notification": true,
                 "address_to": {
