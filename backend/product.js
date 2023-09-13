@@ -14,7 +14,7 @@ import {
 import { initializeApp } from 'firebase/app'
 import { firebaseConfig } from "../firebase.config"
 import Fuse from 'fuse.js'
-import { TAGS_POOL } from "../consts"
+import { TAGS_POOL, TYPES_POOL } from "../consts"
 import translate from "translate";
 
 initializeApp(firebaseConfig)
@@ -147,6 +147,7 @@ async function getProductsByQueries(props) {
     const {
         s, //search
         t, // tags
+        c, // type
         page = 1, // número da página
         min, // preço mínimo
         max, // preço máximo
@@ -158,58 +159,68 @@ async function getProductsByQueries(props) {
     try {
         // Crie uma consulta base
         const productsCollection = collection(db, process.env.COLL_PRODUCTS)
-        let q = query(productsCollection)
-        // Filtre por tag ou search (se presente)
-        if (t || s) {
 
-            const inicialTags = s
-                ? s.split(' ')
-                : t.split(' ')
+        let q = query(productsCollection)
+
+        // Filtre por search (se presente)
+        if (s) {
+            const inicialTags = s.split(' ')
 
             let searchArr = inicialTags
 
-            if (s) {
-                const translationPromises = []
-                inicialTags.forEach(word => {
-                    const translation = translate(word, { from: userLanguage, to: "en" })
-                    translationPromises.push(translation)
-                })
-                searchArr = inicialTags.concat(await Promise.all(translationPromises))
-            }
+            const translationPromises = []
+
+            inicialTags.forEach(word => {
+                const translation = translate(word, { from: userLanguage, to: "en" })
+                translationPromises.push(translation)
+            })
+
+            searchArr = inicialTags.concat(await Promise.all(translationPromises))
 
             const fuse = new Fuse(TAGS_POOL)
 
             const tags = searchArr.map(tag => {
-                const fuseRed = fuse.search(tag)
-                return fuseRed.length > 0
-                    ? fuseRed[0].item
+                const fuseRes = fuse.search(tag)
+                return fuseRes.length > 0
+                    ? fuseRes[0].item
                     : ''
             })
                 .filter(tag => tag !== '')
                 .reduce((acc, tag) => acc.includes(tag) ? acc : acc.concat(tag), [])
+
             if (tags.length === 0) {
                 return {
                     msg: 'No products found matching the queries.',
                     products: []
                 }
             }
+
             q = query(q, where(
                 'tags',
                 "array-contains-any",
                 tags
             ))
-
-            // Filtre por preço mínimo (se presente)
-            if (min) {
-                q = query(q, where("price", ">=", parseFloat(min.concat('00'))));
-            }
-
-            // Filtre por preço máximo (se presente)
-            if (max) {
-                q = query(q, where("price", "<=", parseFloat(max.concat('00'))));
-            }
         }
 
+        // Filtre por tag (se presente)
+        if (t) {
+            q = query(q, where("tags", "array-contains-any", t.split(' ')))
+        }
+
+        // Filtre por tipo (se presente)
+        if (c) {
+            q = query(q, where("type", "==", c))
+        }
+
+        // Filtre por preço mínimo (se presente)
+        if (min) {
+            q = query(q, where("price", ">=", parseFloat(min.concat('00'))))
+        }
+
+        // Filtre por preço máximo (se presente)
+        if (max) {
+            q = query(q, where("price", "<=", parseFloat(max.concat('00'))));
+        }
 
         const orders = new Map([
             ['popularity', { value: 'popularity', direction: 'desc' }],

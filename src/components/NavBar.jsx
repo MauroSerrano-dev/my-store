@@ -103,7 +103,7 @@ export default function NavBar(props) {
                                 : '22px',
                         }}
                     >
-                        <Link legacyBehavior href={'/search?t=t-shirts'}>
+                        <Link legacyBehavior href={'/search?c=t-shirts'}>
                             <a
                                 aria-label='t-shirts'
                                 className='noUnderline'
@@ -113,7 +113,7 @@ export default function NavBar(props) {
                                 </p>
                             </a>
                         </Link>
-                        <Link legacyBehavior href={'/search?t=hoodies'}>
+                        <Link legacyBehavior href={'/search?c=hoodies'}>
                             <a
                                 aria-label='hoodies'
                                 className='noUnderline'
@@ -127,7 +127,7 @@ export default function NavBar(props) {
                         <p>BAGS</p>
                         <p>ACCESSORIES</p>
                         <p>KITCHEN</p>
-                        <Link legacyBehavior href={'/search?t=pillows'}>
+                        <Link legacyBehavior href={'/search?c=pillows'}>
                             <a
                                 aria-label='pillows'
                                 className='noUnderline'
@@ -138,7 +138,7 @@ export default function NavBar(props) {
                             </a>
                         </Link>
                         <p>SHOES</p>
-                        <Link legacyBehavior href={'/search?t=socks'}>
+                        <Link legacyBehavior href={'/search?c=socks'}>
                             <a
                                 aria-label='socks'
                                 className='noUnderline'

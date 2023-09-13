@@ -5,6 +5,7 @@ export default async function handler(req, res) {
         const {
             s,
             t,
+            c,
             page,
             min,
             max,
@@ -16,6 +17,7 @@ export default async function handler(req, res) {
         const result = await getProductsByQueries({
             s: s,
             t: t,
+            c: c,
             page: page,
             min: min,
             max: max,

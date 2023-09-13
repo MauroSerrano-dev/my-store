@@ -24,11 +24,11 @@ export default function Home() {
   const [productsTShirts, setProductsTShirts] = useState([])
   const [allProducts, setAllProducts] = useState([])
 
-  async function getProductsByCategory(categoryName) {
+  async function getProductsByTagOrType(queryName, categoryName) {
     const options = {
       method: 'GET',
       headers: {
-        t: categoryName
+        [queryName]: categoryName
       }
     }
 
@@ -58,8 +58,8 @@ export default function Home() {
   }, [])
 
   async function getProductsFromCategories() {
-    setProductsHome(await getProductsByCategory('home'))
-    setProductsTShirts(await getProductsByCategory('t-shirts'))
+    setProductsHome(await getProductsByTagOrType('t', 'home'))
+    setProductsTShirts(await getProductsByTagOrType('c', 't-shirts'))
     setAllProducts(await getAllProducts())
   }
 
