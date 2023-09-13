@@ -15,7 +15,6 @@ import { initializeApp } from 'firebase/app'
 import { firebaseConfig } from "../firebase.config"
 import Fuse from 'fuse.js'
 import { TAGS_POOL } from "../consts"
-import langdetect from 'langdetect'
 import translate from "translate";
 
 initializeApp(firebaseConfig)
@@ -144,7 +143,7 @@ async function getProductsByTitle(s) {
     }
 }
 
-async function getProductsByQueries(queries) {
+async function getProductsByQueries(props) {
     const {
         s, //search
         t, // tags
@@ -152,16 +151,17 @@ async function getProductsByQueries(queries) {
         min, // preço mínimo
         max, // preço máximo
         order = 'popularity', // order
-        itemsPerPage = 60
-    } = queries;
+        itemsPerPage = 60,
+        userLang = 'en'
+    } = props;
 
     try {
         // Crie uma consulta base
         const productsCollection = collection(db, process.env.COLL_PRODUCTS);
         let q = query(productsCollection);
-
         // Filtre por tag ou search (se presente)
         if (t || s) {
+
             const inicialTags = s
                 ? s.split(' ')
                 : t.split(' ')
@@ -171,11 +171,8 @@ async function getProductsByQueries(queries) {
             if (s) {
                 const translationPromises = []
                 inicialTags.forEach(word => {
-                    const langArr = langdetect.detect(word)
-                    langArr.forEach(langObj => {
-                        const translation = translate(word, { from: langObj.lang, to: "en" })
-                        translationPromises.push(translation);
-                    })
+                    const translation = translate(word, { from: userLang, to: "en" })
+                    translationPromises.push(translation)
                 })
                 searchArr = inicialTags.concat(await Promise.all(translationPromises))
             }
