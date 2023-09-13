@@ -1,5 +1,3 @@
-import { setUserPlan } from "../../backend-data/users";
-
 export default async function handler(req, res) {
     if (req.method === "POST") {
         const type = req.body.type
