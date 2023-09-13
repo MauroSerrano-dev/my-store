@@ -32,8 +32,6 @@ const MOST_SEARCHED_VALUES = [
     { name: 'For Couples', value: 'for-couples' },
 ]
 
-const ITEMS_PER_LINE = 5
-
 export default withRouter((props) => {
     const router = useRouter()
 
@@ -51,6 +49,7 @@ export default withRouter((props) => {
     const [orderBy, setOrderBy] = useState(order)
     const [minOrMax, setMinOrMax] = useState(false)
     const [noResults, setNoResults] = useState(false)
+    const [itemsPerLine, setItemsPerLine] = useState(0)
 
     useEffect(() => {
         if (Object.keys(router.query).length > 0) {
@@ -58,7 +57,6 @@ export default withRouter((props) => {
                 .then(products => setProducts(products))
         }
         if (t) {
-            console.log('t', t)
             setThemes(t?.split(' '))
         }
         else {
@@ -77,6 +75,32 @@ export default withRouter((props) => {
             setMinOrMax(true)
         }
     }, [router])
+
+    useEffect(() => {
+        function getItemsPerLine(width) {
+            if (width > 1250)
+                return 5
+            if (width > 1060)
+                return 4
+            if (width > 860)
+                return 3
+            else
+                return 2
+        }
+
+        const handleResize = () => {
+            console.log(window.innerWidth)
+            setItemsPerLine(getItemsPerLine(window.innerWidth))
+        }
+
+        handleResize()
+
+        window.addEventListener('resize', handleResize)
+
+        return () => {
+            window.removeEventListener('resize', handleResize)
+        }
+    }, [])
 
     function getProductsByCategory() {
         setProducts([])
@@ -320,7 +344,7 @@ export default withRouter((props) => {
                                     img={product.image_showcase.src}
                                     imgHover={product.image_hover.src}
                                     url={`/product?id=${product.id}`}
-                                    width={`calc(${100 / ITEMS_PER_LINE}% - 1rem)`}
+                                    width={`calc(${100 / itemsPerLine}% - 1rem)`}
                                     motionVariants={
                                         {
                                             hidden: {
@@ -332,7 +356,7 @@ export default withRouter((props) => {
                                                 y: 0,
                                                 transition: {
                                                     duration: 0.3,
-                                                    delay: 0.2 + 0.3 * Math.floor(i / ITEMS_PER_LINE),
+                                                    delay: 0.2 + 0.3 * Math.floor(i / itemsPerLine),
                                                 }
                                             }
                                         }

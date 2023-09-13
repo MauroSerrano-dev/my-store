@@ -10,8 +10,8 @@ export default function Footer() {
                 height: '330px',
                 borderTop: '#d2d2d2 solid 1px',
                 backgroundColor: '#3b3a38',
-                paddingLeft: '13rem',
-                paddingRight: '13rem',
+                paddingLeft: '12.5%',
+                paddingRight: '12.5%',
                 paddingTop: '2rem',
                 '--text-color': 'var(--text-white)',
             }}

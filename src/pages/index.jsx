@@ -41,16 +41,13 @@ export default function Home() {
   }
 
   async function getAllProducts() {
-    let products
     const options = {
       method: 'GET'
     }
 
-    await fetch("/api/products", options)
+    const products = await fetch("/api/products", options)
       .then(response => response.json())
-      .then(response => {
-        products = response.products
-      })
+      .then(response => response.products)
       .catch(err => console.error(err))
 
     return products
@@ -58,7 +55,6 @@ export default function Home() {
 
   useEffect(() => {
     getProductsFromCategories()
-    getAllProducts()
   }, [])
 
   async function getProductsFromCategories() {

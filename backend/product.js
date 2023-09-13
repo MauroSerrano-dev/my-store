@@ -15,6 +15,8 @@ import { initializeApp } from 'firebase/app'
 import { firebaseConfig } from "../firebase.config";
 import Fuse from 'fuse.js'
 import { TAGS_POOL } from "../consts";
+import language from 'detect-language';
+import translate from 'google-translate-api';
 
 initializeApp(firebaseConfig)
 
@@ -91,6 +93,57 @@ async function getProductsByCategory(category) {
     }
 }
 
+async function getProductsByTitle(s) {
+
+    try {
+        if (s === '') {
+            return {
+                msg: 'Empty query.',
+                products: []
+            }
+        }
+        const searchQuery = s.toLowerCase()
+        // Crie uma consulta base
+        const productsCollection = collection(db, process.env.COLL_PRODUCTS)
+        let q = query(productsCollection)
+
+        q = query(q, where('title_lower_case', ">=", searchQuery))
+        q = query(q, where('title_lower_case', "<=", searchQuery + '\uf8ff'))
+
+        // Aplique a ordenação correta
+        q = query(q, orderBy('title_lower_case'));
+
+        // Crie uma nova consulta limitada ao número de itens por página
+        q = query(q, limit(5))
+
+        const querySnapshot = await getDocs(q)
+
+        const productsMatchingQueries = []
+        querySnapshot.forEach((doc) => {
+            const productData = doc.data()
+            productsMatchingQueries.push(productData)
+        })
+
+        if (productsMatchingQueries.length > 0) {
+            return {
+                msg: 'Products matching queries found successfully!',
+                products: productsMatchingQueries
+            }
+        } else {
+            return {
+                msg: 'No products found matching the queries.',
+                products: []
+            };
+        }
+    } catch (error) {
+        console.log('Error getting products.', error)
+        return {
+            msg: 'Error getting products.',
+            products: []
+        };
+    }
+}
+
 async function getProductsByQueries(queries) {
     const {
         s, //search
@@ -99,6 +152,7 @@ async function getProductsByQueries(queries) {
         min, // preço mínimo
         max, // preço máximo
         order = 'popularity', // order
+        itemsPerPage = 60
     } = queries;
 
     try {
@@ -112,13 +166,12 @@ async function getProductsByQueries(queries) {
             const x = s
                 ? s.split(' ')
                 : t.split(' ')
-            const tags = x
-                .map(tag => {
-                    const fuseRed = fuse.search(tag)
-                    return fuseRed.length > 0
-                        ? fuseRed[0].item
-                        : ''
-                }).filter(tag => tag !== '')
+            const tags = x.map(tag => {
+                const fuseRed = fuse.search(tag)
+                return fuseRed.length > 0
+                    ? fuseRed[0].item
+                    : ''
+            }).filter(tag => tag !== '')
 
             if (tags.length === 0) {
                 return {
@@ -131,17 +184,18 @@ async function getProductsByQueries(queries) {
                 "array-contains-any",
                 tags
             ))
+
+            // Filtre por preço mínimo (se presente)
+            if (min) {
+                q = query(q, where("price", ">=", parseFloat(min.concat('00'))));
+            }
+
+            // Filtre por preço máximo (se presente)
+            if (max) {
+                q = query(q, where("price", "<=", parseFloat(max.concat('00'))));
+            }
         }
 
-        // Filtre por preço mínimo (se presente)
-        if (min) {
-            q = query(q, where("price", ">=", parseFloat(min.concat('00'))));
-        }
-
-        // Filtre por preço máximo (se presente)
-        if (max) {
-            q = query(q, where("price", "<=", parseFloat(max.concat('00'))));
-        }
 
         const orders = new Map([
             ['popularity', { value: 'popularity', direction: 'desc' }],
@@ -151,7 +205,6 @@ async function getProductsByQueries(queries) {
         ])
 
         // Calcule a página inicial com base no número da página e no tamanho da página
-        const itemsPerPage = 60;
         const startAfterDoc = (parseFloat(page) - 1) * itemsPerPage;
 
         const filterByPrice = (min || max) && order !== 'lowest-price' && order !== 'higher-price'
@@ -241,5 +294,6 @@ export {
     getProductsByQueries,
     getProductById,
     getAllProductPrintifyIds,
-    getAllProducts
+    getAllProducts,
+    getProductsByTitle
 }

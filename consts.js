@@ -9,4 +9,5 @@ export const TAGS_POOL = [
     'pillow',
     'socks',
     'bed',
+    'computer'
 ]

@@ -73,7 +73,8 @@ export default function Product(props) {
                     ...style,
                     textDecoration: 'none',
                     height: responsive ? `calc(${productWidth} * 1.575)` : `calc(${productWidth} * 1.575)`,
-                    width: responsive ? '100%' : width
+                    width: responsive ? '100%' : width,
+                    marginBottom: `calc(${productWidth} * 0.2)`
                 }}
                 variants={motionVariants}
                 initial='hidden'

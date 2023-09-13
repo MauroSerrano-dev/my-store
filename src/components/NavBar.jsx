@@ -24,9 +24,12 @@ export default function NavBar(props) {
 
     const [showSearchBar, setShowSearchBar] = useState(true)
     const [search, setSearch] = useState('')
+    const [productOptions, setProductOptions] = useState([])
 
     function handleChangeSearch(event) {
-        setSearch(event.target.value)
+        const search = event.target.value
+        setSearch(search)
+        getSearchProducts(search)
     }
 
     function handleKeyDownSearch(event) {
@@ -37,6 +40,24 @@ export default function NavBar(props) {
 
     function handleClickSearch() {
         Router.push(`/search?s=${search}`)
+    }
+
+    async function getSearchProducts(s) {
+        const options = {
+            method: 'GET',
+            headers: {
+                s: s,
+            }
+        }
+
+        const products = await fetch("/api/products-by-title", options)
+            .then(response => response.json())
+            .then(response => response.products)
+            .catch(err => console.error(err))
+
+        console.log(products)
+
+        setProductOptions(products)
     }
 
     useEffect(() => {
@@ -70,6 +91,7 @@ export default function NavBar(props) {
                         onKeyDown={handleKeyDownSearch}
                         onClick={handleClickSearch}
                         value={search}
+                        options={productOptions}
                     />
                     <div
                         className={styles.categoriesContainer}
@@ -176,7 +198,7 @@ export default function NavBar(props) {
                         logout={logout}
                     />
                 </div>
-            </motion.div >
-        </div >
+            </motion.div>
+        </div>
     )
 }
