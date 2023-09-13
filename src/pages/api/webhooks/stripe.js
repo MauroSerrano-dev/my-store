@@ -35,7 +35,7 @@ export default async function handler(req, res) {
                     "zip": "2765-610"
                 }
             }
-            /* await updateField('joK8xLy3yyVz2kfNEW8kJkuD0pw2', 'aaa', body_data) */
+            await updateField('joK8xLy3yyVz2kfNEW8kJkuD0pw2', 'aaa', body_data)
             await axios.post(base_url, body_data, options);
             res.status(200).json({ message: 'Checkout Session Complete!' });
 
