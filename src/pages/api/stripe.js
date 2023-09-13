@@ -6,7 +6,7 @@ export default async function handler(req, res) {
   if (req.method === 'POST') {
     const customer = req.body.customer
     const cartItems = req.body.cartItems
-  
+
     if (customer) {
       // Check if the email already exists in Stripe
       const existingCustomer = await stripe.customers.list({
@@ -46,10 +46,21 @@ export default async function handler(req, res) {
       }
     })
 
+    const cartMetadata = {}
+
+    cartItems.forEach((item, i) => {
+      cartMetadata[i] = JSON.stringify({
+        product_id: item.id,
+        variant_id: item.variant,
+        quantity: item.quantity,
+      })
+    })
+
     const session = await stripe.checkout.sessions.create({
       /* discounts: [
         { coupon: '7Taroh9C' }
       ], */
+      metadata: cartMetadata,
       payment_method_types: ["card"],
       shipping_address_collection: {
         allowed_countries: ["US", "CA", "KE", "PT", "BR", "GB"],
@@ -101,7 +112,7 @@ export default async function handler(req, res) {
       phone_number_collection: {
         enabled: true,
       },
-      line_items,
+      line_items: line_items,
       mode: "payment",
       /* customer: customer.id, */
       success_url: `http://localhost:3000/checkout-success`,
