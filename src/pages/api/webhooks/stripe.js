@@ -18,22 +18,21 @@ export default async function handler(req, res) {
                 },
             };
             const body_data = {
-                external_id: body.id,
-                label: body.id,
+                "external_id": "aavv",
+                "label": "aavv",
                 line_items: line_items,
-                shipping_method: 1,
-                send_shipping_notification: true,
-                address_to: {
-                    first_name: data.customer_details.name,
-                    last_name: "Roge",
-                    email: data.customer_details.email,
-                    phone: data.customer_details.phone,
-                    country: data.shipping_details.address.country,
-                    region: data.shipping_details.address.state,
-                    address1: data.shipping_details.address.line1,
-                    address2: data.shipping_details.address.line2,
-                    city: data.shipping_details.address.city,
-                    zip: data.shipping_details.address.postal_code
+                "shipping_method": 1,
+                "send_shipping_notification": true,
+                "address_to": {
+                    "first_name": "Mauro",
+                    "email": "mauro.serrano.dev@gmail.com",
+                    "phone": "+351910651120",
+                    "country": "US",
+                    "region": "Lisbon",
+                    "address1": "R. Stefan Zweig 42, 1 esquerda",
+                    "address2": "",
+                    "city": "Estoril",
+                    "zip": "2765-610"
                 }
             }
             /* await updateField('joK8xLy3yyVz2kfNEW8kJkuD0pw2', 'aaa', body_data) */
