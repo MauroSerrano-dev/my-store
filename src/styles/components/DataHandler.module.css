@@ -6,8 +6,6 @@
     width: 100%;
     min-height: 100vh;
 
-    overflow-y: auto;
-    overflow-x: hidden;
     padding-top: calc(5rem + 40px);
 }
 

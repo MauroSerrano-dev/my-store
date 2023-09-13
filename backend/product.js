@@ -14,7 +14,7 @@ import {
 import { initializeApp } from 'firebase/app'
 import { firebaseConfig } from "../firebase.config"
 import Fuse from 'fuse.js'
-import { TAGS_POOL, TYPES_POOL } from "../consts"
+import { TAGS_POOL } from "../consts"
 import translate from "translate";
 
 initializeApp(firebaseConfig)
@@ -194,7 +194,7 @@ async function getProductsByQueries(props) {
                     products: []
                 }
             }
-
+            console.log(tags)
             q = query(q, where(
                 'tags',
                 "array-contains-any",

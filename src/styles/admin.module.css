@@ -1,15 +1,19 @@
+.container {
+    width: 100%;
+    padding-top: 2rem;
+}
+
 .main {
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-
-    padding-top: 2rem;
+    width: 100%;
 }
 
 .block {
     outline: var(--global-white) 2px solid;
-    width: 60%;
+    width: 50%;
     min-width: 300px;
     --text-color: var(--text-white);
     border-radius: 0.5rem;

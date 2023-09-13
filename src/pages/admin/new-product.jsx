@@ -32,6 +32,12 @@ export default function NewProduct() {
         getAllProducts()
     }, [])
 
+    useEffect(() => {
+        if (product) {
+            setImages([product.images[0].src, product.images[1].src])
+        }
+    }, [product])
+
     async function getAllProducts() {
         const options = {
             method: 'GET',

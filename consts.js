@@ -2,11 +2,11 @@ export const STORE_NAME = 'MKJ'
 export const CART_COOKIE = 'CART'
 
 export const TAGS_POOL = [
-    'game',
-    'hoodie',
-    't-shirt',
+    'games',
+    'hoodies',
+    't-shirts',
     'home',
-    'pillow',
+    'pillows',
     'socks',
     'bed',
     'computer'
