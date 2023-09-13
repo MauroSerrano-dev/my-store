@@ -10,7 +10,7 @@ export default async function handler(req, res) {
         if (type === 'checkout.session.completed') {
             const base_url = `https://api.printify.com/v1/shops/${process.env.PRINTIFY_SHOP_ID}/orders.json`;
             const line_items = Object.keys(data.metadata).map(key => JSON.parse(data.metadata[key]));
-            /*  */
+
             const options = {
                 headers: {
                     Authorization: process.env.PRINTIFY_ACCESS_TOKEN,
@@ -18,25 +18,35 @@ export default async function handler(req, res) {
                 },
             };
             const body_data = {
-                external_id: body.id,
-                label: body.id,
-                line_items: line_items,
-                shipping_method: 1,
-                send_shipping_notification: true,
-                address_to: {
-                    first_name: data.customer_details.name,
-                    last_name: "Roge",
-                    email: data.customer_details.email,
-                    phone: data.customer_details.phone,
-                    country: data.shipping_details.address.country,
-                    region: data.shipping_details.address.state,
-                    address1: data.shipping_details.address.line1,
-                    address2: data.shipping_details.address.line2,
-                    city: data.shipping_details.address.city,
-                    zip: data.shipping_details.address.postal_code
+                "external_id": "5ds3",
+                "label": "Order dsa53",
+                "line_items": [
+                    {
+                        "product_id": "64df65c1a996f39335017a6c",
+                        "variant_id": 12149,
+                        "quantity": 1
+                    },
+                    {
+                        "product_id": "64ed7b0c2fce7b60bc02fb06",
+                        "variant_id": 38224,
+                        "quantity": 1
+                    }
+                ],
+                "shipping_method": 1,
+                "send_shipping_notification": true,
+                "address_to": {
+                    "first_name": "Mauro",
+                    "email": "mauro.serrano.dev@gmail.com",
+                    "phone": "+351910651120",
+                    "country": "US",
+                    "region": "Lisbon",
+                    "address1": "R. Stefan Zweig 42, 1 esquerda",
+                    "address2": "",
+                    "city": "Estoril",
+                    "zip": "2765-610"
                 }
-            };
-            await updateField('joK8xLy3yyVz2kfNEW8kJkuD0pw2', 'aaa', body_data)
+            }
+            /* await updateField('joK8xLy3yyVz2kfNEW8kJkuD0pw2', 'aaa', body_data) */
             await axios.post(base_url, body_data, options);
             res.status(200).json({ message: 'Checkout Session Complete!' });
 
