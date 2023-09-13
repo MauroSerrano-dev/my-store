@@ -18,8 +18,8 @@ export default async function handler(req, res) {
                 },
             };
             const body_data = {
-                "external_id": "5ds3",
-                "label": "Order dsa53",
+                "external_id": "2225sadds3",
+                "label": "Order 222dsdsaa53",
                 "line_items": [
                     {
                         "product_id": "64df65c1a996f39335017a6c",
