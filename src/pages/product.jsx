@@ -59,6 +59,7 @@ export default withRouter((props) => {
                         id_printify: prod.id_printify,
                         price: prod.variants[0].price,
                         quantity: 1,
+                        variant_id: prod.variants[0].id,
                     }
                 ],
                 cancel_url: window.location.href,
@@ -80,7 +81,7 @@ export default withRouter((props) => {
         const productCart = {
             id: productProp.id,
             id_printify: productProp.id_printify,
-            variant: productProp.variants[mookapVariant].id,
+            variant_id: productProp.variants[mookapVariant].id,
             quantity: mookapQuantity,
             image: productProp.images[mookapVariant].src,
             price: productProp.variants[mookapVariant].price,
