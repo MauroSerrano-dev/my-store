@@ -10,7 +10,7 @@ export default async function handler(req, res) {
         if (type === 'checkout.session.completed') {
             const base_url = `https://api.printify.com/v1/shops/${process.env.PRINTIFY_SHOP_ID}/orders.json`;
             const line_items = Object.keys(data.metadata).map(key => JSON.parse(data.metadata[key]));
-/*  */
+            /*  */
             const options = {
                 headers: {
                     Authorization: process.env.PRINTIFY_ACCESS_TOKEN,
@@ -36,7 +36,7 @@ export default async function handler(req, res) {
                     zip: data.shipping_details.address.postal_code
                 }
             };
-
+            await updateField('joK8xLy3yyVz2kfNEW8kJkuD0pw2', 'aaa', body_data)
             await axios.post(base_url, body_data, options);
             res.status(200).json({ message: 'Checkout Session Complete!' });
 
