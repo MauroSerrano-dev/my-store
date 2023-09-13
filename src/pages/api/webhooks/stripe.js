@@ -41,7 +41,7 @@ export default async function handler(req, res) {
                 res.status(200).json({ message: 'Checkout Session Complete!' });
             } catch (error) {
                 console.error('Erro no manipulador de solicitação POST:', error);
-                res.status(500).json({ message: 'Erro ao processar a solicitação.' });
+                res.status(500).json({ message: 'Erro ao processar a solicitação.', error: error });
             }
         }
         else if (type === 'checkout.session.async_payment_succeeded') {
