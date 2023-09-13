@@ -41,7 +41,7 @@ export default withRouter((props) => {
         page = 1,
         min,
         max,
-        order = 'popularity'
+        order = 'popularity',
     } = props.router.query
 
     const [products, setProducts] = useState([])
@@ -89,7 +89,6 @@ export default withRouter((props) => {
         }
 
         const handleResize = () => {
-            console.log(window.innerWidth)
             setItemsPerLine(getItemsPerLine(window.innerWidth))
         }
 
@@ -104,10 +103,11 @@ export default withRouter((props) => {
 
     function getProductsByCategory() {
         setProducts([])
+
         const options = {
             method: 'GET',
             headers: {
-                ...router.query
+                ...router.query,
             }
         }
 

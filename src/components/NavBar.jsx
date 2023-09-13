@@ -9,6 +9,7 @@ import AvatarMenu from './AvatarMenu';
 import CartIcon from './CartIcon';
 import SearchRoundedIcon from '@mui/icons-material/SearchRounded';
 import Router, { useRouter } from 'next/router';
+import Cookies from 'js-cookie';
 
 export default function NavBar(props) {
     const {
@@ -17,12 +18,11 @@ export default function NavBar(props) {
         cart,
         setCart,
         isScrollAtTop,
-        setIsScrollAtTop
+        setIsScrollAtTop,
     } = props
 
     const router = useRouter();
 
-    const [showSearchBar, setShowSearchBar] = useState(true)
     const [search, setSearch] = useState('')
     const [productOptions, setProductOptions] = useState([])
 
@@ -39,7 +39,8 @@ export default function NavBar(props) {
     }
 
     function handleClickSearch() {
-        Router.push(`/search?s=${search}`)
+        const language = Cookies.get('LANG') === 'en' ? false : Cookies.get('LANG')
+        Router.push(`/search?s=${search}${language ? `&l=${language}` : ''}`)
     }
 
     async function getSearchProducts(s) {

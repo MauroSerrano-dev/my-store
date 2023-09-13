@@ -20,7 +20,6 @@ export default function DataHandler(props) {
     const auth = getAuth(firebaseApp);
 
     useEffect(() => {
-        // Adicione um observador de estado de autenticação
         const unsubscribe = onAuthStateChanged(auth, (authUser) => {
             if (authUser) {
                 handleLogin(authUser)
@@ -30,10 +29,21 @@ export default function DataHandler(props) {
                 setSession(null)
                 console.log('Usuário não autenticado');
             }
-        });
+        })
+
+        const handleLanguageChange = () => {
+            Cookies.set('LANG', (navigator.language || navigator.userLanguage).slice(0, 2))
+        }
+
+        handleLanguageChange()
+
+        window.addEventListener("languagechange", handleLanguageChange);
 
         // Remova o ouvinte quando o componente for desmontado
-        return () => unsubscribe();
+        return () => {
+            unsubscribe()
+            window.removeEventListener("languagechange", handleLanguageChange);
+        }
     }, [])
 
     function handleLogin(authUser) {

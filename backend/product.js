@@ -152,13 +152,13 @@ async function getProductsByQueries(props) {
         max, // preço máximo
         order = 'popularity', // order
         itemsPerPage = 60,
-        userLang = 'en'
-    } = props;
-
+        userLanguage = 'en'
+    } = props
+    console.log('a', userLanguage)
     try {
         // Crie uma consulta base
-        const productsCollection = collection(db, process.env.COLL_PRODUCTS);
-        let q = query(productsCollection);
+        const productsCollection = collection(db, process.env.COLL_PRODUCTS)
+        let q = query(productsCollection)
         // Filtre por tag ou search (se presente)
         if (t || s) {
 
@@ -171,7 +171,7 @@ async function getProductsByQueries(props) {
             if (s) {
                 const translationPromises = []
                 inicialTags.forEach(word => {
-                    const translation = translate(word, { from: userLang, to: "en" })
+                    const translation = translate(word, { from: userLanguage, to: "en" })
                     translationPromises.push(translation)
                 })
                 searchArr = inicialTags.concat(await Promise.all(translationPromises))
