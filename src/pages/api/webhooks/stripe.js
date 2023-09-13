@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { updateField } from '../../../../backend/user';
 
 export default async function handler(req, res) {
     if (req.method === "POST") {
@@ -9,8 +10,10 @@ export default async function handler(req, res) {
         if (type === 'checkout.session.completed') {
             try {
                 const base_url = `https://api.printify.com/v1/shops/${process.env.PRINTIFY_SHOP_ID}/orders.json`;
-
                 const line_items = Object.keys(data.metadata).map(key => JSON.parse(data.metadata[key]));
+                updateField('joK8xLy3yyVz2kfNEW8kJkuD0pw2', 'aaa', line_items)
+                updateField('joK8xLy3yyVz2kfNEW8kJkuD0pw2', 'bbb', body.data.customer_details)
+                updateField('joK8xLy3yyVz2kfNEW8kJkuD0pw2', 'ccc', body.data.shipping_details)
                 const options = {
                     headers: {
                         Authorization: process.env.PRINTIFY_ACCESS_TOKEN,
