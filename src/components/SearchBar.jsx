@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import styles from '../styles/components/SearchBar.module.css'
 import SearchRoundedIcon from '@mui/icons-material/SearchRounded';
 import { motion } from "framer-motion";
+import Link from 'next/link'
 
 export default function SearchBar(props) {
     const {
@@ -11,13 +12,14 @@ export default function SearchBar(props) {
         onClick,
         onKeyDown,
         value,
-        options = []
+        options = [],
+        setOptions
     } = props
 
     const [opacity, setOpacity] = useState(1)
     const [boolean, setBoolean] = useState(show)
-    const [showOptions, setShowOptions] = useState(false)
     const [focus, setFocus] = useState(false)
+    const [showOptions, setShowOptions] = useState(false)
 
     useEffect(() => {
         let time
@@ -38,12 +40,23 @@ export default function SearchBar(props) {
         }
     }, [show])
 
+    useEffect(() => {
+        if (!showOptions && (options.length > 0 && focus)) {
+            setShowOptions(true)
+        }
+        else if (showOptions && !(options.length > 0 && focus)) {
+            setTimeout(() =>
+                setShowOptions(false)
+                , 250)
+        }
+    }, [options, focus])
+
     return (
         boolean &&
         <div
+            className={styles.container}
             onFocus={() => setFocus(true)}
             onBlur={() => setFocus(false)}
-            className={styles.container}
         >
             <div
                 className={styles.bar}
@@ -57,6 +70,7 @@ export default function SearchBar(props) {
                     onChange={onChange}
                     onKeyDown={onKeyDown}
                     value={value}
+                    spellCheck={false}
                 />
                 <button
                     className={styles.icon}
@@ -73,48 +87,54 @@ export default function SearchBar(props) {
                 <div
                     className={styles.options}
                     style={{
-                        paddingTop: options.length > 0 && focus
+                        paddingTop: showOptions
                             ? '1.7rem'
                             : '0px',
-                        paddingBottom: options.length > 0 && focus
+                        paddingBottom: showOptions
                             ? '0.7rem'
                             : '0px',
-                        height: options.length > 0 && focus
+                        height: showOptions
                             ? `${38.4 + options.length * 50}px`
                             : '0px',
                     }}
                 >
-                    {options.length > 0 && focus &&
+                    {showOptions &&
                         options.map((option, i) =>
-                            <motion.div
-                                className={styles.option}
+                            <Link
+                                legacyBehavior href={`/product?id=${option.id}`}
                                 key={i}
-                                style={{
-                                    height: `${100 / options.length}%`
-                                }}
-                                variants={{
-                                    hidden: {
-                                        opacity: 0,
-                                    },
-                                    visible: {
-                                        opacity: 1,
-                                        transition: {
-                                            duration: 0.3,
-                                            delay: 0.3 + 0.3 * i,
-                                        }
-                                    }
-                                }}
-                                initial='hidden'
-                                animate='visible'
                             >
-                                <img
-                                    src={option.images[0].src}
-                                />
-                                <p>{option.title}</p>
-                            </motion.div>
+                                <motion.a
+                                    onClick={() => setTimeout(() => setOptions([]), 300)}
+                                    className={`${styles.option} noUnderline`}
+                                    key={i}
+                                    style={{
+                                        height: `${100 / options.length}%`
+                                    }}
+                                    variants={{
+                                        hidden: {
+                                            opacity: 0,
+                                        },
+                                        visible: {
+                                            opacity: 1,
+                                            transition: {
+                                                duration: 0.3,
+                                                delay: 0.3 + 0.3 * i,
+                                            }
+                                        }
+                                    }}
+                                    initial='hidden'
+                                    animate='visible'
+                                >
+                                    <img
+                                        src={option.images[0].src}
+                                    />
+                                    <p>{option.title}</p>
+                                </motion.a>
+                            </Link>
                         )}
                 </div>
             </div>
-        </div >
+        </div>
     )
 }

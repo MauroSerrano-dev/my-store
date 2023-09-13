@@ -154,7 +154,7 @@ async function getProductsByQueries(props) {
         itemsPerPage = 60,
         userLanguage = 'en'
     } = props
-    console.log('a', userLanguage)
+
     try {
         // Crie uma consulta base
         const productsCollection = collection(db, process.env.COLL_PRODUCTS)

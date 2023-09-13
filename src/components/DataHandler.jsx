@@ -32,7 +32,7 @@ export default function DataHandler(props) {
         })
 
         const handleLanguageChange = () => {
-            Cookies.set('LANG', (navigator.language || navigator.userLanguage).slice(0, 2))
+            Cookies.set('LANG', (navigator.language || navigator.userLanguage))
         }
 
         handleLanguageChange()

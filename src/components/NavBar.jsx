@@ -40,7 +40,7 @@ export default function NavBar(props) {
 
     function handleClickSearch() {
         const language = Cookies.get('LANG') === 'en' ? false : Cookies.get('LANG')
-        Router.push(`/search?s=${search}${language ? `&l=${language}` : ''}`)
+        Router.push(`/search?s=${search}${language ? `&l=${language.slice(0, 2)}` : ''}`)
     }
 
     async function getSearchProducts(s) {
@@ -93,6 +93,7 @@ export default function NavBar(props) {
                         onClick={handleClickSearch}
                         value={search}
                         options={productOptions}
+                        setOptions={setProductOptions}
                     />
                     <div
                         className={styles.categoriesContainer}

@@ -291,9 +291,11 @@ export default withRouter((props) => {
                         <div className={styles.priceFilterInputs}>
                             <input
                                 placeholder='Min'
+                                spellCheck={false}
                             />
                             <input
                                 placeholder='Max'
+                                spellCheck={false}
                             />
                             <button>
                                 Go
