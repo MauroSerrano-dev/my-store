@@ -11,8 +11,11 @@ export default async function handler(req, res) {
 
             const line_items = Object.keys(data.metadata).map(item => JSON.parse(item))
 
-            const headers = {
-                Authorization: process.env.PRINTIFY_ACCESS_TOKEN,
+            const options = {
+                headers: {
+                    Authorization: process.env.PRINTIFY_ACCESS_TOKEN,
+                    'Content-Type': 'application/json'
+                },
                 body: JSON.stringify({
                     external_id: body.id,
                     label: body.id,
@@ -34,7 +37,7 @@ export default async function handler(req, res) {
                 })
             }
 
-            await axios.get(base_url, { headers })
+            await axios.post(base_url, options)
 
             res.status(200).json({ message: 'Checkout Session Complete!' })
         }
