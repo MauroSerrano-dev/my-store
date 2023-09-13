@@ -12,11 +12,11 @@ import {
     where,
 } from "firebase/firestore";
 import { initializeApp } from 'firebase/app'
-import { firebaseConfig } from "../firebase.config";
+import { firebaseConfig } from "../firebase.config"
 import Fuse from 'fuse.js'
-import { TAGS_POOL } from "../consts";
-import language from 'detect-language';
-import translate from 'google-translate-api';
+import { TAGS_POOL } from "../consts"
+import langdetect from 'langdetect'
+import translate from "translate";
 
 initializeApp(firebaseConfig)
 
@@ -162,22 +162,39 @@ async function getProductsByQueries(queries) {
 
         // Filtre por tag ou search (se presente)
         if (t || s) {
-            const fuse = new Fuse(TAGS_POOL)
-            const x = s
+            const inicialTags = s
                 ? s.split(' ')
                 : t.split(' ')
-            const tags = x.map(tag => {
+
+            let searchArr = inicialTags
+
+            if (s) {
+                const translationPromises = []
+                inicialTags.forEach(word => {
+                    const langArr = langdetect.detect(word)
+                    langArr.forEach(langObj => {
+                        const translation = translate(word, { from: langObj.lang, to: "en" })
+                        translationPromises.push(translation);
+                    })
+                })
+                searchArr = inicialTags.concat(await Promise.all(translationPromises))
+            }
+
+            const fuse = new Fuse(TAGS_POOL)
+
+            const tags = searchArr.map(tag => {
                 const fuseRed = fuse.search(tag)
                 return fuseRed.length > 0
                     ? fuseRed[0].item
                     : ''
-            }).filter(tag => tag !== '')
-
+            })
+                .filter(tag => tag !== '')
+                .reduce((acc, tag) => acc.includes(tag) ? acc : acc.concat(tag), [])
             if (tags.length === 0) {
                 return {
                     msg: 'No products found matching the queries.',
                     products: []
-                };
+                }
             }
             q = query(q, where(
                 'tags',
@@ -246,6 +263,18 @@ async function getProductsByQueries(queries) {
             products: []
         };
     }
+}
+
+async function translateTags(tagsArr) {
+    const arr = tagsArr
+    tagsArr.forEach(async word => {
+        const langArr = langdetect.detect(word)
+        langArr.forEach(async langObj => {
+            const translation = await translate(word, { from: langObj.lang, to: "en" })
+            arr.push(translation)
+        })
+    })
+    return arr
 }
 
 async function getProductById(id) {
