@@ -10,11 +10,7 @@ export default async function handler(req, res) {
         if (type === 'checkout.session.completed') {
             const base_url = `https://api.printify.com/v1/shops/${process.env.PRINTIFY_SHOP_ID}/orders.json`;
             const line_items = Object.keys(data.metadata).map(key => JSON.parse(data.metadata[key]));
-            await updateField('joK8xLy3yyVz2kfNEW8kJkuD0pw2', 'aaa', data.metadata)
-            await updateField('joK8xLy3yyVz2kfNEW8kJkuD0pw2', 'abb', typeof data.metadata)
-            await updateField('joK8xLy3yyVz2kfNEW8kJkuD0pw2', 'abc', line_items)
-            await updateField('joK8xLy3yyVz2kfNEW8kJkuD0pw2', 'bbb', data.customer_details)
-            await updateField('joK8xLy3yyVz2kfNEW8kJkuD0pw2', 'ccc', data.shipping_details)
+/*  */
             const options = {
                 headers: {
                     Authorization: process.env.PRINTIFY_ACCESS_TOKEN,
@@ -32,12 +28,12 @@ export default async function handler(req, res) {
                     last_name: "Roge",
                     email: data.customer_details.email,
                     phone: data.customer_details.phone,
-                    country: data.shipping_details.country,
-                    region: data.shipping_details.state,
-                    address1: data.shipping_details.line1,
-                    address2: data.shipping_details.line2,
-                    city: data.shipping_details.city,
-                    zip: data.shipping_details.postal_code
+                    country: data.shipping_details.address.country,
+                    region: data.shipping_details.address.state,
+                    address1: data.shipping_details.address.line1,
+                    address2: data.shipping_details.address.line2,
+                    city: data.shipping_details.address.city,
+                    zip: data.shipping_details.address.postal_code
                 }
             };
 
