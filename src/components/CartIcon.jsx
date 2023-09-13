@@ -14,6 +14,11 @@ export default function CartIcon(props) {
 
     const [open, setOpen] = useState(false)
 
+    useEffect(() => {
+        if (cart.length === 0)
+            setOpen(false)
+    }, [cart])
+
     return (
         <div
             className={styles.container}
