@@ -194,7 +194,7 @@ async function getProductsByQueries(props) {
                     products: []
                 }
             }
-            console.log(tags)
+
             q = query(q, where(
                 'tags',
                 "array-contains-any",
