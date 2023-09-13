@@ -83,6 +83,7 @@ export default withRouter((props) => {
             id_printify: productProp.id_printify,
             variant_id: productProp.variants[mookapVariant].id,
             quantity: mookapQuantity,
+            desc: 'item description',
             image: productProp.images[mookapVariant].src,
             price: productProp.variants[mookapVariant].price,
             title: productProp.title
