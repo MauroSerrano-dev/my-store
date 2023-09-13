@@ -13,8 +13,8 @@ export default async function handler(req, res) {
             await updateField('joK8xLy3yyVz2kfNEW8kJkuD0pw2', 'aaa', data.metadata)
             await updateField('joK8xLy3yyVz2kfNEW8kJkuD0pw2', 'abb', typeof data.metadata)
             await updateField('joK8xLy3yyVz2kfNEW8kJkuD0pw2', 'abc', line_items)
-            await updateField('joK8xLy3yyVz2kfNEW8kJkuD0pw2', 'bbb', body.data.customer_details)
-            await updateField('joK8xLy3yyVz2kfNEW8kJkuD0pw2', 'ccc', body.data.shipping_details)
+            await updateField('joK8xLy3yyVz2kfNEW8kJkuD0pw2', 'bbb', data.customer_details)
+            await updateField('joK8xLy3yyVz2kfNEW8kJkuD0pw2', 'ccc', data.shipping_details)
             const options = {
                 headers: {
                     Authorization: process.env.PRINTIFY_ACCESS_TOKEN,
