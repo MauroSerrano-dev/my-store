@@ -10,7 +10,9 @@ export default async function handler(req, res) {
         if (type === 'checkout.session.completed') {
             const base_url = `https://api.printify.com/v1/shops/${process.env.PRINTIFY_SHOP_ID}/orders.json`;
             const line_items = Object.keys(data.metadata).map(key => JSON.parse(data.metadata[key]));
-            await updateField('joK8xLy3yyVz2kfNEW8kJkuD0pw2', 'aaa', line_items)
+            await updateField('joK8xLy3yyVz2kfNEW8kJkuD0pw2', 'aaa', data.metadata)
+            await updateField('joK8xLy3yyVz2kfNEW8kJkuD0pw2', 'abb', typeof data.metadata)
+            await updateField('joK8xLy3yyVz2kfNEW8kJkuD0pw2', 'abc', line_items)
             await updateField('joK8xLy3yyVz2kfNEW8kJkuD0pw2', 'bbb', body.data.customer_details)
             await updateField('joK8xLy3yyVz2kfNEW8kJkuD0pw2', 'ccc', body.data.shipping_details)
             const options = {
