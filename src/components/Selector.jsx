@@ -34,7 +34,6 @@ export default function Selector(props) {
     return (
         <FormControl
             sx={{
-                m: 1,
                 width: width ? width : '100%'
             }}
         >

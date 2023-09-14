@@ -12,22 +12,26 @@ import { TAGS_POOL, TYPES_POOL } from '../../../consts'
 import Selector from '@/components/Selector'
 import ColorSelector from '@/components/ColorSelector'
 
+const INICIAL_PRODUCT = {
+    colors: [],
+    images: [],
+    options: [],
+    variants: []
+}
+
 export default withRouter(props => {
 
     const { id_printify } = props.router.query
 
-    const [product, setProduct] = useState()
-    const [newProduct, setNewProduct] = useState(
-        {
-            colors: []
-        }
-    )
+    const [product, setProduct] = useState(INICIAL_PRODUCT)
+    const [newProduct, setNewProduct] = useState(INICIAL_PRODUCT)
     const [allProducts, setAllProducts] = useState()
     const [newProductId, setNewProductId] = useState()
 
+    const [currentColorIndex, setCurrentColorIndex] = useState(-1)
+
     const [tags, setTags] = useState([])
     const [categories, setCategories] = useState([])
-    const [images, setImages] = useState([])
 
     const [newTag, setNewTag] = useState('')
     const [newImage, setNewImage] = useState('')
@@ -42,16 +46,6 @@ export default withRouter(props => {
         else
             getAllProducts()
     }, [id_printify])
-
-    useEffect(() => {
-        console.log(product)
-        if (product) {
-            setImages([product.images[0].src, product.images[1].src])
-        }
-    }, [product])
-    useEffect(() => {
-        console.log('newProduct', newProduct)
-    }, [newProduct])
 
     async function getAllProducts() {
         const options = {
@@ -146,9 +140,9 @@ export default withRouter(props => {
         setTags([])
         setCurrentImgIndex(0)
         setCategories([])
-        setImages([])
         setNewImage('')
         setNewTag('')
+        setNewProduct()
     }
 
     function handleImagesOnChange(event) {
@@ -159,7 +153,7 @@ export default withRouter(props => {
     function handleImagesKeyDown(event) {
         if (event.key === 'Enter' && newImage !== '') {
             event.preventDefault()
-            setImages(prev => [...prev, newImage])
+            setNewProduct(prev => ({ ...prev, images: [...prev.images, newImage] }))
             setNewImage('')
         }
     }
@@ -174,7 +168,7 @@ export default withRouter(props => {
     function handleAutoCompleteImagesChange(event, value) {
         event.preventDefault()
         if (event.key !== 'Enter') {
-            setImages(value)
+            setNewProduct(prev => ({ ...prev, images: prev.images.filter(image => value.includes(image.src) || image.color_id !== prev.colors[currentColorIndex].id) }))
         }
     }
 
@@ -187,14 +181,47 @@ export default withRouter(props => {
     }
 
     function handleColorClick(option) {
-        setNewProduct(prev => (
-            {
-                ...prev,
-                colors: prev.colors.some(color => color.id === option.id)
-                    ? prev.colors.filter(color => color.id !== option.id)
-                    : prev.colors.concat(option)
+
+        function variantsHasThisImage(image, variants) {
+            return image.variant_ids.some(id => variants.some(variant => variant.id === id))
+        }
+
+        setNewProduct(prev => {
+            if (prev.colors.some(color => color.id === option.id)) {
+                setCurrentColorIndex(prevIndex => prevIndex > prev.colors.length - 2 ? prevIndex - 1 : prevIndex)
+                const newVariants = prev.variants.filter(variant => !variant.options.includes(option.id))
+                const newImages = prev.images.filter(image => variantsHasThisImage(image, newVariants))
+                return {
+                    ...prev,
+                    colors: prev.colors.filter(color => color.id !== option.id),
+                    variants: newVariants,
+                    images: newImages,
+                }
             }
-        ))
+            else {
+                setCurrentColorIndex(prev.colors.length)
+                const newVariants = product.variants.filter(variant => variant.options.includes(option.id))
+                const newImages = prev.images
+                    .concat(product.images
+                        .filter(image => variantsHasThisImage(image, newVariants))
+                        .map(image => ({
+                            ...image,
+                            color_id: option.id
+                        })))
+
+                return {
+                    ...prev,
+                    colors: prev.colors.concat(option),
+                    variants: prev.variants.concat(newVariants),
+                    images: newImages,
+                }
+
+            }
+        })
+    }
+
+    function handleChangeCurrentVariant(option, index) {
+        setCurrentColorIndex(index)
     }
 
     return (
@@ -240,11 +267,6 @@ export default withRouter(props => {
                 {id_printify &&
                     <div className={styles.productContainer}>
                         <div className={styles.productLeft}>
-                            <ImagesSlider
-                                images={images.map(img => ({ src: img }))}
-                                currentImgIndex={currentImgIndex}
-                                setCurrentImgIndex={setCurrentImgIndex}
-                            />
                             {product && product.options.some(option => option.type == 'color') &&
                                 <div
                                     style={{
@@ -254,10 +276,15 @@ export default withRouter(props => {
                                     <ColorSelector
                                         options={product.options.filter(option => option.type == 'color')[0].values}
                                         onClick={handleColorClick}
-                                        value={newProduct.colors} 
+                                        value={newProduct.colors}
                                     />
                                 </div>
                             }
+                            <ImagesSlider
+                                images={newProduct.images.filter(image => image.color_id === newProduct.colors[currentColorIndex].id)}
+                                currentImgIndex={currentImgIndex}
+                                setCurrentImgIndex={setCurrentImgIndex}
+                            />
                         </div>
                         <div className={styles.fieldsContainer}>
                             <CustomTextField
@@ -307,61 +334,70 @@ export default withRouter(props => {
                                     />
                                 )}
                             />
-                            <Autocomplete
-                                multiple
-                                options={images}
-                                value={images}
-                                onChange={handleAutoCompleteImagesChange}
-                                sx={{
-                                    '.MuiAutocomplete-tag': {
-                                        backgroundColor: '#363a3d',
-                                        '--text-color': 'var(--global-white)',
-                                    },
-                                    '.MuiAutocomplete-clearIndicator': {
-                                        color: 'var(--global-white)'
-                                    },
-                                    '.MuiAutocomplete-popupIndicator': {
-                                        color: 'var(--global-white)'
-                                    },
-                                    '.MuiChip-deleteIcon': {
-                                        color: 'rgba(255, 255, 255, 0.4) !important',
-                                        transition: 'all ease-in-out 200ms'
-                                    },
-                                    '.MuiChip-deleteIcon:hover': {
-                                        color: 'rgba(255, 255, 255, 0.8) !important',
-                                    },
-                                    width: '100%',
-                                }}
-                                renderInput={(params) => (
-                                    <CustomTextField
-                                        {...params}
-                                        variant="outlined"
-                                        label="Images"
-                                        placeholder="Image"
-                                        value={newTag}
-                                        onKeyDown={handleImagesKeyDown}
-                                        onChange={handleImagesOnChange}
-                                    />
-                                )}
-                            />
-                            <CustomTextField
-                                variant="outlined"
-                                label="Showcase Image"
-                                value={showcaseImage}
-                                onChange={handleShowcaseImageChange}
-                                sx={{
-                                    width: '100%'
-                                }}
-                            />
-                            <CustomTextField
-                                variant="outlined"
-                                label="Hover Image"
-                                value={hoverImage}
-                                onChange={handleHoverImageChange}
-                                sx={{
-                                    width: '100%'
-                                }}
-                            />
+                            {newProduct.colors.length > 0 &&
+                                <ColorSelector
+                                    options={newProduct.colors}
+                                    value={[newProduct.colors[currentColorIndex]]}
+                                    onClick={handleChangeCurrentVariant}
+                                />
+                            }
+                            <div className={styles.variantContainer}>
+                                <Autocomplete
+                                    multiple
+                                    options={newProduct.images.filter(image => image.color_id === newProduct.colors[currentColorIndex].id).map(image => image.src)}
+                                    value={newProduct.images.filter(image => image.color_id === newProduct.colors[currentColorIndex].id).map(image => image.src)}
+                                    onChange={handleAutoCompleteImagesChange}
+                                    sx={{
+                                        '.MuiAutocomplete-tag': {
+                                            backgroundColor: '#363a3d',
+                                            '--text-color': 'var(--global-white)',
+                                        },
+                                        '.MuiAutocomplete-clearIndicator': {
+                                            color: 'var(--global-white)'
+                                        },
+                                        '.MuiAutocomplete-popupIndicator': {
+                                            color: 'var(--global-white)'
+                                        },
+                                        '.MuiChip-deleteIcon': {
+                                            color: 'rgba(255, 255, 255, 0.4) !important',
+                                            transition: 'all ease-in-out 200ms'
+                                        },
+                                        '.MuiChip-deleteIcon:hover': {
+                                            color: 'rgba(255, 255, 255, 0.8) !important',
+                                        },
+                                        width: '100%',
+                                    }}
+                                    renderInput={(params) => (
+                                        <CustomTextField
+                                            {...params}
+                                            variant="outlined"
+                                            label="Images"
+                                            placeholder="Image"
+                                            value={newTag}
+                                            onKeyDown={handleImagesKeyDown}
+                                            onChange={handleImagesOnChange}
+                                        />
+                                    )}
+                                />
+                                <CustomTextField
+                                    variant="outlined"
+                                    label="Showcase Image"
+                                    value={showcaseImage}
+                                    onChange={handleShowcaseImageChange}
+                                    sx={{
+                                        width: '100%'
+                                    }}
+                                />
+                                <CustomTextField
+                                    variant="outlined"
+                                    label="Hover Image"
+                                    value={hoverImage}
+                                    onChange={handleHoverImageChange}
+                                    sx={{
+                                        width: '100%'
+                                    }}
+                                />
+                            </div>
                             <Button
                                 variant='contained'
                                 onClick={() => saveProduct({
@@ -369,7 +405,7 @@ export default withRouter(props => {
                                     newProductIdArg: newProductId,
                                     categoriesArg: categories,
                                     tagsArg: tags,
-                                    imagesArg: images.map(img => ({ src: img })),
+                                    imagesArg: newProduct.images.map(img => ({ src: img })),
                                     showcaseImgArg: { src: showcaseImage },
                                     hoverImgArg: { src: hoverImage },
                                 })}

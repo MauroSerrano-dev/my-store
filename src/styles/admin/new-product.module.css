@@ -51,6 +51,13 @@
     gap: 1rem;
 }
 
+.variantContainer {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    width: 100%;
+}
+
 .productImg {
     width: 150px;
 }

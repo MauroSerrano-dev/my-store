@@ -1,5 +1,4 @@
 import styles from '../styles/components/ColorSelector.module.css'
-import { Tooltip } from '@mui/material';
 import MyTooltip from './MyTooltip';
 
 export default function ColorSelector(props) {
@@ -22,12 +21,12 @@ export default function ColorSelector(props) {
                     titleColor='#ffffff'
                     content={
                         <button
-                            onClick={() => onClick(option)}
+                            onClick={() => onClick(option, i)}
                             className={styles.button}
                             style={{
                                 backgroundColor: option.colors[0],
-                                opacity: value.some(color => option.id === color.id) ? 1 : 0.5,
-                                outline: value.some(color => option.id === color.id) ? '2px solid var(--primary)' : '1px solid black',
+                                opacity: value.some(color => option.id === color?.id) ? 1 : 0.7,
+                                outline: value.some(color => option.id === color?.id) ? '2px solid var(--primary)' : '1px solid black',
                             }}
                         >
                         </button>
