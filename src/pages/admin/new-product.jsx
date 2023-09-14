@@ -23,7 +23,7 @@ export default withRouter(props => {
 
     const { id_printify } = props.router.query
 
-    const [product, setProduct] = useState(INICIAL_PRODUCT)
+    const [product, setProduct] = useState()
     const [newProduct, setNewProduct] = useState(INICIAL_PRODUCT)
     const [allProducts, setAllProducts] = useState()
     const [newProductId, setNewProductId] = useState()
@@ -142,7 +142,7 @@ export default withRouter(props => {
         setCategories([])
         setNewImage('')
         setNewTag('')
-        setNewProduct()
+        setNewProduct(INICIAL_PRODUCT)
     }
 
     function handleImagesOnChange(event) {
@@ -264,10 +264,10 @@ export default withRouter(props => {
                         </Link>
                     </div>
                 </div>
-                {id_printify &&
+                {product &&
                     <div className={styles.productContainer}>
                         <div className={styles.productLeft}>
-                            {product && product.options.some(option => option.type == 'color') &&
+                            {product.options.some(option => option.type == 'color') &&
                                 <div
                                     style={{
                                         padding: '0px 4rem'
