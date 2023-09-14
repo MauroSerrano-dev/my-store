@@ -9,7 +9,7 @@ import Cookies from 'js-cookie';
 import { CART_COOKIE } from '../../consts'
 import Head from 'next/head'
 
-export default withRouter((props) => {
+export default withRouter(props => {
     const {
         session,
         cart,

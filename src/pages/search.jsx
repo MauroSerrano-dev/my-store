@@ -32,7 +32,7 @@ const MOST_SEARCHED_VALUES = [
     { name: 'For Couples', value: 'for-couples' },
 ]
 
-export default withRouter((props) => {
+export default withRouter(props => {
     const router = useRouter()
 
     const {
@@ -326,10 +326,8 @@ export default withRouter((props) => {
                                         { value: 'higher-price', name: 'Higher Price' },
                                     ]
                             }
-                            style={{
-                                height: '40px',
-                                width: '170px',
-                            }}
+                            height='40px'
+                            width='170px'
                             onChange={(event) => handleChangeOrder(event.target.value)}
                         />
                     </div>

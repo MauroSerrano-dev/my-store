@@ -11,3 +11,10 @@ export const TAGS_POOL = [
     'bed',
     'computer'
 ]
+
+export const TYPES_POOL = [
+    'hoodies',
+    't-shirts',
+    'pillows',
+    'socks',
+]
