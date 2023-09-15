@@ -6,14 +6,15 @@ export default function Selector(props) {
         label = 'Label',
         options = [],
         value = '',
-        colorBorderHover = '#ffffff',
-        colorBorder = '#ffffff90',
+        dark,
+        colorBorderHover = dark ? '#000000' : '#ffffff',
+        colorBorder = dark ? '#00000070' : '#ffffff90',
         colorBorderFocus = 'var(--primary)',
-        colorLabelHover = '#ffffff',
-        colorLabel = '#ffffff',
+        colorLabelHover = dark ? '#000000' : '#ffffff',
+        colorLabel = dark ? '#000000' : '#ffffff',
         colorLabelFocus = 'var(--primary)',
-        colorText = '#ffffff',
-        colorIcon = '#ffffff',
+        colorText = dark ? '#000000' : '#ffffff',
+        colorIcon = dark ? '#000000' : '#ffffff',
         styleOption,
         onChange,
         width,
@@ -34,7 +35,7 @@ export default function Selector(props) {
     return (
         <FormControl
             sx={{
-                width: width ? width : '100%'
+                width: width ? width : '100%',
             }}
         >
             <InputLabel
@@ -53,8 +54,8 @@ export default function Selector(props) {
                 label={label}
                 value={value}
                 MenuProps={{ disableScrollLock: true }}
+                size='small'
                 sx={{
-                    height: height ? height : '100%',
                     color: colorText,
                     '.MuiOutlinedInput-notchedOutline': {
                         borderColor: `${focus

@@ -55,6 +55,7 @@ export default withRouter(props => {
                         title: prod.title,
                         image: prod.images[0].src,
                         desc: 'my product description',
+                        type: prod.type,
                         id: prod.id,
                         id_printify: prod.id_printify,
                         price: prod.variants[0].price,
@@ -84,6 +85,7 @@ export default withRouter(props => {
             variant_id: productProp.variants[mookapVariant].id,
             quantity: mookapQuantity,
             desc: 'item description',
+            type: productProp.type,
             image: productProp.images[mookapVariant].src,
             price: productProp.variants[mookapVariant].price,
             title: productProp.title

@@ -149,6 +149,7 @@ export default function ProductCart(props) {
                             label="Quantity"
                             MenuProps={{ disableScrollLock: true }}
                             sx={{
+                                height: '50px',
                                 color: '#ffffff',
                                 '.MuiOutlinedInput-notchedOutline': {
                                     borderColor: `${focusQuantity
@@ -242,12 +243,13 @@ export default function ProductCart(props) {
                             Size
                         </InputLabel>
                         <Select
-                            defaultValue={'M'}
+                            defaultValue='M'
                             onChange={() => console.log()}
                             autoWidth
                             label="Size"
                             MenuProps={{ disableScrollLock: true }}
                             sx={{
+                                height: '50px',
                                 color: '#ffffff',
                                 '.MuiOutlinedInput-notchedOutline': {
                                     borderColor: `${focusSize

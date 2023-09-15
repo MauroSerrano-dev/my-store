@@ -311,7 +311,7 @@ export default withRouter(props => {
                             Search
                         </h1>
                         <Selector
-                            label={'Order By'}
+                            label='Order By'
                             value={orderBy}
                             options={
                                 minOrMax
@@ -326,7 +326,6 @@ export default withRouter(props => {
                                         { value: 'higher-price', name: 'Higher Price' },
                                     ]
                             }
-                            height='40px'
                             width='170px'
                             onChange={(event) => handleChangeOrder(event.target.value)}
                         />

@@ -1,15 +1,19 @@
 import ProductCart from '@/components/ProductCart'
 import styles from '@/styles/cart.module.css'
 import { FormControl, InputLabel, MenuItem, OutlinedInput, Select } from '@mui/material'
-import { motion } from "framer-motion";
 import { Button } from '@mui/material'
+import { SHIPPING_OPTIONS } from '../../consts'
+import { useEffect, useState } from 'react'
+import Selector from '@/components/Selector'
 
 export default function Cart(props) {
     const { session, cart, setCart } = props
 
+    const [shippingValue, setShippingValue] = useState(0)
+
     const ITEMS_TOTAL = (cart.reduce((acc, product) => acc + (product.price * product.quantity), 0) / 100).toFixed(2)
 
-    const ORDER_TOTAL = (15.55 + cart.reduce((acc, product) => acc + (product.price * product.quantity), 0) / 100).toFixed(2)
+    const ORDER_TOTAL = (shippingValue + cart.reduce((acc, product) => acc + (product.price * product.quantity), 0) / 100).toFixed(2)
 
     function handleCheckout(cart) {
         const options = {
@@ -29,6 +33,30 @@ export default function Cart(props) {
                 window.location.href = response.url
             })
             .catch(err => console.error(err))
+    }
+
+    useEffect(() => {
+        getShippingValue()
+    }, [cart])
+
+    function getShippingValue() {
+        const contry = 'US'
+        let value = 0
+        let typesAlreadyIn = []
+
+        value = cart.reduce((acc, item, i) => {
+            const result = acc + (
+                typesAlreadyIn.includes(item.type)
+                    ? SHIPPING_OPTIONS[contry][item.type].add_item * item.quantity
+                    : SHIPPING_OPTIONS[contry][item.type].first_item + SHIPPING_OPTIONS[contry][item.type].add_item * (item.quantity - 1)
+            )
+            typesAlreadyIn.push(item.type)
+            return result
+        }
+            , 0
+        )
+
+        setShippingValue(value / 100)
     }
 
     return (
@@ -75,25 +103,18 @@ export default function Cart(props) {
                             <p>
                                 Ship To:
                             </p>
-                            <FormControl sx={{ width: '65%' }}>
-                                <InputLabel size='small'>
-                                    Country
-                                </InputLabel>
-                                <Select
-                                    input={<OutlinedInput label="Country" />}
-                                    value={'us'}
-                                    onChange={() => console.log()}
-                                    size='small'
-                                    MenuProps={{ disableScrollLock: true }}
-                                    sx={{
-                                        width: '100%',
-                                    }}
-                                >
-                                    <MenuItem value={'br'}>Brazil</MenuItem>
-                                    <MenuItem value={'uk'}>United Kingdom</MenuItem>
-                                    <MenuItem value={'us'}>United States</MenuItem>
-                                </Select>
-                            </FormControl>
+                            <Selector
+                                label='Country'
+                                value='US'
+                                options={[
+                                    { value: 'BR', name: 'Brazil' },
+                                    { value: 'UK', name: 'United Kingdom' },
+                                    { value: 'US', name: 'United States' },
+                                ]}
+                                width='170px'
+                                dark
+                                onChange={() => console.log()}
+                            />
                         </div>
                         <div className={styles.detailsItem}>
                             <p>
@@ -108,13 +129,13 @@ export default function Cart(props) {
                                 Shipping & Taxes:
                             </p>
                             <p>
-                                {`$${(15.55).toFixed(2)}`}
+                                {shippingValue.toFixed(2)}
                             </p>
                         </div>
                         <div className={styles.orderTotalContainer}>
                             <div className={styles.detailsItem}>
                                 <p>
-                                    Order total:
+                                    Order Total:
                                 </p>
                                 <p
                                     style={{
