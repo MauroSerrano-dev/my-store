@@ -2,7 +2,7 @@ import ProductCart from '@/components/ProductCart'
 import styles from '@/styles/cart.module.css'
 import { FormControl, InputLabel, MenuItem, OutlinedInput, Select } from '@mui/material'
 import { Button } from '@mui/material'
-import { SHIPPING_OPTIONS } from '../../consts'
+import { getShippingOptions } from '../../consts'
 import { useEffect, useState } from 'react'
 import Selector from '@/components/Selector'
 
@@ -10,6 +10,7 @@ export default function Cart(props) {
     const { session, cart, setCart } = props
 
     const [shippingValue, setShippingValue] = useState(0)
+    const [shippingContry, setShippingContry] = useState('US')
 
     const ITEMS_TOTAL = (cart.reduce((acc, product) => acc + (product.price * product.quantity), 0) / 100).toFixed(2)
 
@@ -37,18 +38,18 @@ export default function Cart(props) {
 
     useEffect(() => {
         getShippingValue()
-    }, [cart])
+    }, [cart, shippingContry])
 
     function getShippingValue() {
-        const contry = 'US'
+        const contry = getShippingOptions(shippingContry)
         let value = 0
         let typesAlreadyIn = []
 
         value = cart.reduce((acc, item, i) => {
             const result = acc + (
                 typesAlreadyIn.includes(item.type)
-                    ? SHIPPING_OPTIONS[contry][item.type].add_item * item.quantity
-                    : SHIPPING_OPTIONS[contry][item.type].first_item + SHIPPING_OPTIONS[contry][item.type].add_item * (item.quantity - 1)
+                    ? contry[item.type].add_item * item.quantity
+                    : contry[item.type].first_item + contry[item.type].add_item * (item.quantity - 1)
             )
             typesAlreadyIn.push(item.type)
             return result
@@ -57,6 +58,10 @@ export default function Cart(props) {
         )
 
         setShippingValue(value / 100)
+    }
+
+    function handleChangeContrySelector(event) {
+        setShippingContry(event.target.value)
     }
 
     return (
@@ -105,15 +110,17 @@ export default function Cart(props) {
                             </p>
                             <Selector
                                 label='Country'
-                                value='US'
+                                value={shippingContry}
                                 options={[
                                     { value: 'BR', name: 'Brazil' },
+                                    { value: 'DE', name: 'Germany' },
+                                    { value: 'PL', name: 'Poland' },
                                     { value: 'UK', name: 'United Kingdom' },
                                     { value: 'US', name: 'United States' },
                                 ]}
                                 width='170px'
                                 dark
-                                onChange={() => console.log()}
+                                onChange={handleChangeContrySelector}
                             />
                         </div>
                         <div className={styles.detailsItem}>
