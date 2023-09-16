@@ -19,6 +19,28 @@ export const TYPES_POOL = [
     'socks',
 ]
 
+export const T_SHIRT_COLORS = [
+    { id: 521, colors: ['#ffffff'], title: 'White' },
+    { id: 418, colors: ['#000000'], title: 'Black' },
+    { id: 358, colors: ['#CACACA'], title: 'Sport Grey' },
+    { id: 362, colors: ['#31221D'], title: 'Dark Chocolate' },
+    { id: 364, colors: ['#585c3b'], title: 'Military Green' },
+    { id: 392, colors: ['#d6e6f7'], title: 'Light Blue' },
+    { id: 424, colors: ['#585559'], title: 'Charcoal' },
+    { id: 425, colors: ['#084f97'], title: 'Royal' },
+    { id: 511, colors: ['#1a2237'], title: 'Navy' },
+    { id: 423, colors: ['#C62A32'], title: 'Red' }
+]
+
+export const T_SHIRT_SIZES = [
+    { id: 14, title: 'S' },
+    { id: 15, title: 'M' },
+    { id: 16, title: 'L' },
+    { id: 17, title: 'XL' },
+    { id: 18, title: '2XL' },
+    { id: 19, title: '3XL' }
+]
+
 export function getShippingOptions(contry) {
     switch (contry) {
         case 'US':

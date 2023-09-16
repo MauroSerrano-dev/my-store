@@ -1,6 +1,5 @@
 import ProductCart from '@/components/ProductCart'
 import styles from '@/styles/cart.module.css'
-import { FormControl, InputLabel, MenuItem, OutlinedInput, Select } from '@mui/material'
 import { Button } from '@mui/material'
 import { getShippingOptions } from '../../consts'
 import { useEffect, useState } from 'react'
@@ -14,17 +13,17 @@ export default function Cart(props) {
 
     const ITEMS_TOTAL = (cart.reduce((acc, product) => acc + (product.price * product.quantity), 0) / 100).toFixed(2)
 
-    const ORDER_TOTAL = (shippingValue + cart.reduce((acc, product) => acc + (product.price * product.quantity), 0) / 100).toFixed(2)
+    const ORDER_TOTAL = ((shippingValue + cart.reduce((acc, product) => acc + (product.price * product.quantity), 0)) / 100).toFixed(2)
 
     function handleCheckout(cart) {
         const options = {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
-                userId: 'userId',
                 cartItems: cart,
                 cancel_url: window.location.href,
-                customer: session
+                customer: session,
+                shippingValue: shippingValue,
             })
         }
 
@@ -57,7 +56,7 @@ export default function Cart(props) {
             , 0
         )
 
-        setShippingValue(value / 100)
+        setShippingValue(value)
     }
 
     function handleChangeContrySelector(event) {
@@ -136,7 +135,7 @@ export default function Cart(props) {
                                 Shipping & Taxes:
                             </p>
                             <p>
-                                {shippingValue.toFixed(2)}
+                                {(shippingValue / 100).toFixed(2)}
                             </p>
                         </div>
                         <div className={styles.orderTotalContainer}>

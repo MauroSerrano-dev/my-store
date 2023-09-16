@@ -6,6 +6,7 @@ export default async function handler(req, res) {
   if (req.method === 'POST') {
     const customer = req.body.customer
     const cartItems = req.body.cartItems
+    const shippingValue = req.body.shippingValue
 
     if (customer) {
       // Check if the email already exists in Stripe
@@ -70,11 +71,10 @@ export default async function handler(req, res) {
           shipping_rate_data: {
             type: "fixed_amount",
             fixed_amount: {
-              amount: 0,
+              amount: shippingValue,
               currency: "usd",
             },
-            display_name: "Free shipping",
-            // Delivers between 5-7 business days
+            display_name: "Standart",
             delivery_estimate: {
               minimum: {
                 unit: "business_day",
@@ -87,31 +87,10 @@ export default async function handler(req, res) {
             },
           },
         },
-        {
-          shipping_rate_data: {
-            type: "fixed_amount",
-            fixed_amount: {
-              amount: 1500,
-              currency: "usd",
-            },
-            display_name: "Next day air",
-            // Delivers in exactly 1 business day
-            delivery_estimate: {
-              minimum: {
-                unit: "business_day",
-                value: 1,
-              },
-              maximum: {
-                unit: "business_day",
-                value: 1,
-              },
-            },
-          },
-        },
       ],
-      phone_number_collection: {
+      /* phone_number_collection: {
         enabled: true,
-      },
+      }, */
       line_items: line_items,
       mode: "payment",
       /* customer: customer.id, */
