@@ -115,7 +115,7 @@ export default withRouter(props => {
                 .catch(err => console.error(err))
         }
         else if (session === null) {
-            (CART_COOKIE, JSON.stringify(newCart))
+            Cookies.set(CART_COOKIE, JSON.stringify(newCart))
         }
     }
 
