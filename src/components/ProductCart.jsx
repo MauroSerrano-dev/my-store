@@ -320,6 +320,6 @@ export default function ProductCart(props) {
                     </p>
                 }
             </div>
-        </motion.div >
+        </motion.div>
     )
 }
