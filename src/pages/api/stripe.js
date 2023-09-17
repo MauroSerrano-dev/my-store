@@ -7,6 +7,8 @@ export default async function handler(req, res) {
     const customer = req.body.customer
     const cartItems = req.body.cartItems
     const shippingValue = req.body.shippingValue
+    const currency = req.body.currency
+    const shippingCountry = req.body.shippingCountry
 
     if (customer) {
       // Check if the email already exists in Stripe
@@ -32,7 +34,7 @@ export default async function handler(req, res) {
     const line_items = cartItems.map((item) => {
       return {
         price_data: {
-          currency: "usd",
+          currency: currency,
           product_data: {
             name: item.title,
             images: [item.image],
@@ -64,7 +66,7 @@ export default async function handler(req, res) {
       metadata: cartMetadata,
       payment_method_types: ["card"],
       shipping_address_collection: {
-        allowed_countries: ["US", "CA", "KE", "PT", "BR", "GB"],
+        allowed_countries: [shippingCountry],
       },
       shipping_options: [
         {
@@ -72,7 +74,7 @@ export default async function handler(req, res) {
             type: "fixed_amount",
             fixed_amount: {
               amount: shippingValue,
-              currency: "usd",
+              currency: currency,
             },
             display_name: "Standart",
             delivery_estimate: {

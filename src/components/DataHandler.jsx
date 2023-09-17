@@ -5,7 +5,7 @@ import Cookies from 'js-cookie';
 import { getAuth, onAuthStateChanged, signOut, signInWithEmailAndPassword } from "firebase/auth";
 import { initializeApp } from 'firebase/app';
 import { firebaseConfig } from '../../firebase.config';
-import { CART_COOKIE } from '../../consts';
+import { CART_COOKIE, convertDolarToCurrency } from '../../consts';
 import Router from 'next/router';
 
 export default function DataHandler(props) {
@@ -14,6 +14,7 @@ export default function DataHandler(props) {
     const [isScrollAtTop, setIsScrollAtTop] = useState(true)
     const [session, setSession] = useState()
     const [showIntroduction, setShowIntroduction] = useState(false)
+    const [userCurrency, setUserCurrency] = useState({ code: 'usd', symbol: '$' })
 
     // Inicialize o Firebase
     const firebaseApp = initializeApp(firebaseConfig);
@@ -214,6 +215,8 @@ export default function DataHandler(props) {
                     login={login}
                     logout={logout}
                     auth={auth}
+                    userCurrency={userCurrency}
+                    setUserCurrency={setUserCurrency}
                 />
             </div>
             {showIntroduction &&

@@ -14,6 +14,7 @@ export default withRouter(props => {
         session,
         cart,
         setCart,
+        userCurrency,
     } = props
 
     const { id } = props.router.query

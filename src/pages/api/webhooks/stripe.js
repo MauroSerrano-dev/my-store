@@ -29,7 +29,7 @@ export default async function handler(req, res) {
                     email: data.customer_details.email,
                     phone: data.customer_details.phone,
                     country: data.shipping_details.address.country,
-                    region: data.shipping_details.address.city,
+                    region: data.shipping_details.address.state === '' ? data.shipping_details.address.city : data.shipping_details.address.state,
                     address1: data.shipping_details.address.line1,
                     address2: data.shipping_details.address.line2,
                     city: data.shipping_details.address.city,

@@ -1,5 +1,4 @@
-
-const MONSTER_DIGITAL_T_SHIRT = {
+const MONSTER_DIGITAL = {
     colors: {
         "name": "Colors",
         "type": "color",
@@ -19,13 +18,6 @@ const MONSTER_DIGITAL_T_SHIRT = {
                 ]
             },
             {
-                "id": 437,
-                "title": "Ice Grey",
-                "colors": [
-                    "#D7D6D3"
-                ]
-            },
-            {
                 "id": 358,
                 "title": "Sport Grey",
                 "colors": [
@@ -33,24 +25,10 @@ const MONSTER_DIGITAL_T_SHIRT = {
                 ]
             },
             {
-                "id": 362,
-                "title": "Dark Chocolate",
+                "id": 395,
+                "title": "Maroon",
                 "colors": [
-                    "#31221D"
-                ]
-            },
-            {
-                "id": 552,
-                "title": "Natural",
-                "colors": [
-                    "#FFF6E3"
-                ]
-            },
-            {
-                "id": 386,
-                "title": "Cornsilk",
-                "colors": [
-                    "#F7EF8F"
+                    "#642838"
                 ]
             },
             {
@@ -68,10 +46,10 @@ const MONSTER_DIGITAL_T_SHIRT = {
                 ]
             },
             {
-                "id": 376,
-                "title": "Tropical Blue",
+                "id": 367,
+                "title": "Dark Heather",
                 "colors": [
-                    "#0097A9"
+                    "#454545"
                 ]
             },
             {
@@ -145,12 +123,20 @@ const MONSTER_DIGITAL_T_SHIRT = {
             {
                 "id": 19,
                 "title": "3XL"
+            },
+            {
+                "id": 20,
+                "title": "4XL"
+            },
+            {
+                "id": 21,
+                "title": "5XL"
             }
         ]
     }
 }
 
-const PRINT_LOGISTIC_T_SHIRT = {
+/* const PRINT_LOGISTIC = {
     colors: {
         "name": "Colors",
         "type": "color",
@@ -310,9 +296,9 @@ const PRINT_LOGISTIC_T_SHIRT = {
             }
         ]
     }
-}
+} */
 
-const PRINT_TEXTILDRUCK_EUROPA_T_SHIRT = {
+const PRINT_TEXTILDRUCK_EUROPA = {
     colors: {
         "name": "Colors",
         "type": "color",
@@ -339,10 +325,17 @@ const PRINT_TEXTILDRUCK_EUROPA_T_SHIRT = {
                 ]
             },
             {
-                "id": 362,
-                "title": "Dark Chocolate",
+                "id": 420,
+                "title": "Orange",
                 "colors": [
-                    "#31221D"
+                    "#EA5F22"
+                ]
+            },
+            {
+                "id": 395,
+                "title": "Maroon",
+                "colors": [
+                    "#642838"
                 ]
             },
             {
@@ -350,6 +343,13 @@ const PRINT_TEXTILDRUCK_EUROPA_T_SHIRT = {
                 "title": "Military Green",
                 "colors": [
                     "#585c3b"
+                ]
+            },
+            {
+                "id": 369,
+                "title": "Irish Green",
+                "colors": [
+                    "#129447"
                 ]
             },
             {
@@ -367,13 +367,6 @@ const PRINT_TEXTILDRUCK_EUROPA_T_SHIRT = {
                 ]
             },
             {
-                "id": 424,
-                "title": "Charcoal",
-                "colors": [
-                    "#585559"
-                ]
-            },
-            {
                 "id": 425,
                 "title": "Royal",
                 "colors": [
@@ -385,6 +378,13 @@ const PRINT_TEXTILDRUCK_EUROPA_T_SHIRT = {
                 "title": "Navy",
                 "colors": [
                     "#1a2237"
+                ]
+            },
+            {
+                "id": 433,
+                "title": "Light Pink",
+                "colors": [
+                    "#FEE0EB"
                 ]
             },
             {
@@ -423,12 +423,20 @@ const PRINT_TEXTILDRUCK_EUROPA_T_SHIRT = {
             {
                 "id": 19,
                 "title": "3XL"
+            },
+            {
+                "id": 20,
+                "title": "4XL"
+            },
+            {
+                "id": 21,
+                "title": "5XL"
             }
         ]
     }
 }
 
-const PRINT_CLEVER_T_SHIRT = {
+const PRINT_CLEVER = {
     colors: {
         "name": "Colors",
         "type": "color",
@@ -438,6 +446,20 @@ const PRINT_CLEVER_T_SHIRT = {
                 "title": "White",
                 "colors": [
                     "#ffffff"
+                ]
+            },
+            {
+                "id": 366,
+                "title": "Ash",
+                "colors": [
+                    "#F6F6F6"
+                ]
+            },
+            {
+                "id": 451,
+                "title": "Ash",
+                "colors": [
+                    "#e9e9e9"
                 ]
             },
             {
@@ -462,10 +484,31 @@ const PRINT_CLEVER_T_SHIRT = {
                 ]
             },
             {
+                "id": 438,
+                "title": "Gold",
+                "colors": [
+                    "#ffb81c"
+                ]
+            },
+            {
+                "id": 535,
+                "title": "Old Gold",
+                "colors": [
+                    "#C99B5C"
+                ]
+            },
+            {
                 "id": 420,
                 "title": "Orange",
                 "colors": [
                     "#EA5F22"
+                ]
+            },
+            {
+                "id": 542,
+                "title": "Safety Orange",
+                "colors": [
+                    "#F88D20"
                 ]
             },
             {
@@ -483,24 +526,10 @@ const PRINT_CLEVER_T_SHIRT = {
                 ]
             },
             {
-                "id": 552,
-                "title": "Natural",
+                "id": 555,
+                "title": "Safety Green",
                 "colors": [
-                    "#FFF6E3"
-                ]
-            },
-            {
-                "id": 359,
-                "title": "Daisy",
-                "colors": [
-                    "#fed141"
-                ]
-            },
-            {
-                "id": 509,
-                "title": "Heather Military Green",
-                "colors": [
-                    "#828067"
+                    "#F2FB00"
                 ]
             },
             {
@@ -508,20 +537,6 @@ const PRINT_CLEVER_T_SHIRT = {
                 "title": "Military Green",
                 "colors": [
                     "#585c3b"
-                ]
-            },
-            {
-                "id": 434,
-                "title": "Lime",
-                "colors": [
-                    "#9EC46C"
-                ]
-            },
-            {
-                "id": 553,
-                "title": "Kiwi",
-                "colors": [
-                    "#8FA749"
                 ]
             },
             {
@@ -560,20 +575,6 @@ const PRINT_CLEVER_T_SHIRT = {
                 ]
             },
             {
-                "id": 376,
-                "title": "Tropical Blue",
-                "colors": [
-                    "#0097A9"
-                ]
-            },
-            {
-                "id": 415,
-                "title": "Jade Dome",
-                "colors": [
-                    "#19998A"
-                ]
-            },
-            {
                 "id": 392,
                 "title": "Light Blue",
                 "colors": [
@@ -585,13 +586,6 @@ const PRINT_CLEVER_T_SHIRT = {
                 "title": "Carolina Blue",
                 "colors": [
                     "#7BA4DB"
-                ]
-            },
-            {
-                "id": 514,
-                "title": "Heather Royal",
-                "colors": [
-                    "#7C8CD9"
                 ]
             },
             {
@@ -630,13 +624,6 @@ const PRINT_CLEVER_T_SHIRT = {
                 ]
             },
             {
-                "id": 388,
-                "title": "Metro Blue",
-                "colors": [
-                    "#424A7E"
-                ]
-            },
-            {
                 "id": 511,
                 "title": "Navy",
                 "colors": [
@@ -644,10 +631,17 @@ const PRINT_CLEVER_T_SHIRT = {
                 ]
             },
             {
-                "id": 550,
-                "title": "Heather Navy",
+                "id": 394,
+                "title": "Violet",
                 "colors": [
-                    "#424753"
+                    "#8381BA"
+                ]
+            },
+            {
+                "id": 546,
+                "title": "Orchid",
+                "colors": [
+                    "#D7C5F0"
                 ]
             },
             {
@@ -655,6 +649,13 @@ const PRINT_CLEVER_T_SHIRT = {
                 "title": "Purple",
                 "colors": [
                     "#3C214E"
+                ]
+            },
+            {
+                "id": 433,
+                "title": "Light Pink",
+                "colors": [
+                    "#FEE0EB"
                 ]
             },
             {
@@ -693,10 +694,10 @@ const PRINT_CLEVER_T_SHIRT = {
                 ]
             },
             {
-                "id": 430,
-                "title": "Cardinal Red",
+                "id": 540,
+                "title": "Garnet",
                 "colors": [
-                    "#911a30"
+                    "#6D222D"
                 ]
             }
         ]
@@ -732,28 +733,28 @@ const PRINT_CLEVER_T_SHIRT = {
             {
                 "id": 20,
                 "title": "4XL"
+            },
+            {
+                "id": 21,
+                "title": "5XL"
             }
         ]
     }
 }
 
-console.log(MONSTER_DIGITAL_T_SHIRT.colors.values
-    .filter(e => PRINT_LOGISTIC_T_SHIRT.colors.values.some(x => x.id === e.id))
-    .filter(e => PRINT_CLEVER_T_SHIRT.colors.values.some(x => x.id === e.id))
-    .filter(e => PRINT_TEXTILDRUCK_EUROPA_T_SHIRT.colors.values.some(x => x.id === e.id))
+console.log(MONSTER_DIGITAL.colors.values
+    .filter(e => PRINT_CLEVER.colors.values.some(x => x.id === e.id))
+    .filter(e => PRINT_TEXTILDRUCK_EUROPA.colors.values.some(x => x.id === e.id))
 )
-console.log(MONSTER_DIGITAL_T_SHIRT.colors.values.length,
-    PRINT_LOGISTIC_T_SHIRT.colors.values.length,
-    PRINT_CLEVER_T_SHIRT.colors.values.length,
-    PRINT_TEXTILDRUCK_EUROPA_T_SHIRT.colors.values.length,
+console.log(MONSTER_DIGITAL.colors.values.length,
+    PRINT_CLEVER.colors.values.length,
+    PRINT_TEXTILDRUCK_EUROPA.colors.values.length,
 )
-console.log(MONSTER_DIGITAL_T_SHIRT.sizes.values
-    .filter(e => PRINT_LOGISTIC_T_SHIRT.sizes.values.some(x => x.id === e.id))
-    .filter(e => PRINT_CLEVER_T_SHIRT.sizes.values.some(x => x.id === e.id))
-    .filter(e => PRINT_TEXTILDRUCK_EUROPA_T_SHIRT.sizes.values.some(x => x.id === e.id))
+console.log(MONSTER_DIGITAL.sizes.values
+    .filter(e => PRINT_CLEVER.sizes.values.some(x => x.id === e.id))
+    .filter(e => PRINT_TEXTILDRUCK_EUROPA.sizes.values.some(x => x.id === e.id))
 )
-console.log(MONSTER_DIGITAL_T_SHIRT.sizes.values.length,
-    PRINT_LOGISTIC_T_SHIRT.sizes.values.length,
-    PRINT_CLEVER_T_SHIRT.sizes.values.length,
-    PRINT_TEXTILDRUCK_EUROPA_T_SHIRT.sizes.values.length,
+console.log(MONSTER_DIGITAL.sizes.values.length,
+    PRINT_CLEVER.sizes.values.length,
+    PRINT_TEXTILDRUCK_EUROPA.sizes.values.length,
 )

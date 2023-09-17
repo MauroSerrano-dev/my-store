@@ -7,6 +7,7 @@ import Link from 'next/link';
 import Selector from '@/components/Selector';
 import { Checkbox, FormControlLabel } from '@mui/material';
 import Footer from '@/components/Footer';
+import { convertDolarToCurrency } from '../../consts';
 
 const categories = new Map([
     ['t-shirts', 'T-Shirts'],
@@ -34,7 +35,7 @@ const MOST_SEARCHED_VALUES = [
 
 export default withRouter(props => {
     const router = useRouter()
-
+    const { userCurrency } = props
     const {
         s,
         t,
@@ -337,8 +338,8 @@ export default withRouter(props => {
                                 <Product
                                     key={i}
                                     name={product.title}
-                                    price={product.variants[0].price}
-                                    currencySymbol='$'
+                                    price={convertDolarToCurrency(product.variants[0].price, userCurrency.code)}
+                                    currencySymbol={userCurrency.symbol}
                                     outOfStock={false}
                                     img={product.image_showcase.src}
                                     imgHover={product.image_hover.src}

@@ -5,7 +5,7 @@ import { motion } from "framer-motion";
 import Link from 'next/link';
 import { Select, FormControl, MenuItem, InputLabel } from '@mui/material';
 import { useEffect, useState } from 'react';
-import { CART_COOKIE } from '../../consts';
+import { CART_COOKIE, convertDolarToCurrency } from '../../consts';
 
 const menuStyle = {
     display: 'flex',
@@ -20,7 +20,8 @@ export default function ProductCart(props) {
         session,
         product,
         setCart,
-        index
+        index,
+        userCurrency
     } = props
 
     const [hoverQuantity, setHoverQuantity] = useState(false)
@@ -311,7 +312,7 @@ export default function ProductCart(props) {
                     Price:
                 </p>
                 <h2>
-                    {`$${((product.price / 100) * product.quantity).toFixed(2)}`}
+                    {`${userCurrency.symbol} ${(convertDolarToCurrency(product.price, userCurrency.code) * product.quantity / 100).toFixed(2)}`}
                 </h2>
             </div>
         </motion.div>

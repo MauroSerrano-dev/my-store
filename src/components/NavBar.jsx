@@ -10,6 +10,7 @@ import CartIcon from './CartIcon';
 import SearchRoundedIcon from '@mui/icons-material/SearchRounded';
 import Router, { useRouter } from 'next/router';
 import Cookies from 'js-cookie';
+import Selector from './Selector';
 
 export default function NavBar(props) {
     const {

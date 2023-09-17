@@ -6,6 +6,7 @@ import KeyboardArrowLeftRoundedIcon from '@mui/icons-material/KeyboardArrowLeftR
 import { useEffect, useState } from 'react';
 import Product from './Product';
 import Link from 'next/link';
+import { convertDolarToCurrency } from '../../consts';
 
 export default function Carousel(props) {
     const {
@@ -16,7 +17,8 @@ export default function Carousel(props) {
         animationDuration = 200,
         itemWidth = 200,
         gap = 20,
-        type = 'imgs'
+        type = 'imgs',
+        userCurrency,
     } = props
 
     const [itemsArray, setItemsArray] = useState(
@@ -124,8 +126,8 @@ export default function Carousel(props) {
                             <Product
                                 responsive
                                 name={item.title}
-                                price={item.variants[0].price}
-                                currencySymbol='$'
+                                price={convertDolarToCurrency(item.variants[0].price, userCurrency.code)}
+                                currencySymbol={userCurrency.symbol}
                                 outOfStock={false}
                                 img={item.image_showcase.src}
                                 imgHover={item.image_hover.src}

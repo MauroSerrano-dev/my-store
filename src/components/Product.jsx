@@ -149,7 +149,7 @@ export default function Product(props) {
                                         fontSize: `calc(${productWidth} * 0.056)`
                                     }}
                                 >
-                                    {currencySymbol}{soldOut !== undefined ? (price / 100).toFixed(2).replace('.', ',') : (soldOut / 100).toFixed(2).replace('.', ',')}
+                                    {currencySymbol} {soldOut !== undefined ? (price / 100).toFixed(2).replace('.', ',') : (soldOut / 100).toFixed(2).replace('.', ',')}
                                 </p>
                             }
                             <p
@@ -158,7 +158,7 @@ export default function Product(props) {
                                     fontSize: `calc(${productWidth} * 0.085)`
                                 }}
                             >
-                                {currencySymbol}{soldOut !== undefined ? (soldOut / 100).toFixed(2).replace('.', ',') : (price / 100).toFixed(2).replace('.', ',')}
+                                {currencySymbol} {soldOut !== undefined ? (soldOut / 100).toFixed(2).replace('.', ',') : (price / 100).toFixed(2).replace('.', ',')}
                             </p>
                         </div>
                     </div>

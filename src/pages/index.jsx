@@ -18,7 +18,8 @@ const categories = [
   { id: 'valentines', name: 'Valentines', url: '/search?t=valentines', img: 'https://www.kirsonfuller.com/wp-content/uploads/2022/02/thequint_2022-02_6edd07c4-aeb0-4241-95dc-b53bd2524634_Happy_Valentines_Day_Wishes_Quotes_Messages_love_HD_Wallpaper_915x515.jpg' },
 ]
 
-export default function Home() {
+export default function Home(props) {
+  const { userCurrency } = props
 
   const [productsHome, setProductsHome] = useState([])
   const [productsTShirts, setProductsTShirts] = useState([])
@@ -124,6 +125,7 @@ export default function Home() {
               animationDuration={200}
               itemWidth={225}
               type='products'
+              userCurrency={userCurrency}
             />
           </div>
         </div>
@@ -139,6 +141,7 @@ export default function Home() {
               animationDuration={200}
               itemWidth={225}
               type='products'
+              userCurrency={userCurrency}
             />
           </div>
         </div>
@@ -154,6 +157,7 @@ export default function Home() {
               animationDuration={200}
               itemWidth={225}
               type='products'
+              userCurrency={userCurrency}
             />
           </div>
         </div>

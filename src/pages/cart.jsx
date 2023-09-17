@@ -1,46 +1,48 @@
 import ProductCart from '@/components/ProductCart'
 import styles from '@/styles/cart.module.css'
 import { Button } from '@mui/material'
-import { getShippingOptions } from '../../consts'
+import { convertDolarToCurrency, getCurrencyByCode, getShippingOptions } from '../../consts'
 import { useEffect, useState } from 'react'
 import Selector from '@/components/Selector'
 
 export default function Cart(props) {
-    const { session, cart, setCart } = props
+    const { session, cart, setCart, userCurrency, setUserCurrency } = props
 
     const [shippingValue, setShippingValue] = useState(0)
-    const [shippingContry, setShippingContry] = useState('US')
+    const [shippingCountry, setShippingCountry] = useState('US')
 
-    const ITEMS_TOTAL = (cart.reduce((acc, product) => acc + (product.price * product.quantity), 0) / 100).toFixed(2)
+    const ITEMS_TOTAL = (cart.reduce((acc, product) => acc + (convertDolarToCurrency(product.price, userCurrency.code) * product.quantity), 0) / 100).toFixed(2)
 
-    const ORDER_TOTAL = ((shippingValue + cart.reduce((acc, product) => acc + (product.price * product.quantity), 0)) / 100).toFixed(2)
+    const SHIPPING_CONVERTED = convertDolarToCurrency(shippingValue, userCurrency.code)
+
+    const ORDER_TOTAL = ((SHIPPING_CONVERTED + cart.reduce((acc, product) => acc + (convertDolarToCurrency(product.price, userCurrency.code) * product.quantity), 0)) / 100).toFixed(2)
 
     function handleCheckout(cart) {
         const options = {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
-                cartItems: cart,
+                cartItems: cart.map(item => ({ ...item, price: convertDolarToCurrency(item.price, userCurrency.code) })),
                 cancel_url: window.location.href,
                 customer: session,
-                shippingValue: shippingValue,
+                shippingValue: convertDolarToCurrency(shippingValue, userCurrency.code),
+                shippingCountry: shippingCountry,
+                currency: userCurrency.code
             })
         }
 
         fetch('/api/stripe', options)
             .then(response => response.json())
-            .then(response => {
-                window.location.href = response.url
-            })
+            .then(response => window.location.href = response.url)
             .catch(err => console.error(err))
     }
 
     useEffect(() => {
         getShippingValue()
-    }, [cart, shippingContry])
+    }, [cart, shippingCountry])
 
     function getShippingValue() {
-        const contry = getShippingOptions(shippingContry)
+        const contry = getShippingOptions(shippingCountry)
         let value = 0
         let typesAlreadyIn = []
 
@@ -60,11 +62,11 @@ export default function Cart(props) {
     }
 
     function handleChangeContrySelector(event) {
-        setShippingContry(event.target.value)
+        setShippingCountry(event.target.value)
     }
 
     return (
-        <div className={styles.container}>
+        <div className={styles.container} >
             <header>
             </header>
             <main className={styles.main}>
@@ -86,6 +88,7 @@ export default function Cart(props) {
                                 product={product}
                                 key={i}
                                 index={i}
+                                userCurrency={userCurrency}
                             />
                         )}
                     </div>
@@ -109,7 +112,7 @@ export default function Cart(props) {
                             </p>
                             <Selector
                                 label='Country'
-                                value={shippingContry}
+                                value={shippingCountry}
                                 options={[
                                     { value: 'BR', name: 'Brazil' },
                                     { value: 'DE', name: 'Germany' },
@@ -124,10 +127,30 @@ export default function Cart(props) {
                         </div>
                         <div className={styles.detailsItem}>
                             <p>
+                                Currency:
+                            </p>
+                            <Selector
+                                label='currency'
+                                value={userCurrency.code}
+                                options={[
+                                    { value: 'aud', name: 'AUD' },
+                                    { value: 'brl', name: 'BRL' },
+                                    { value: 'cad', name: 'CAD' },
+                                    { value: 'gbp', name: 'GBP' },
+                                    { value: 'eur', name: 'EUR' },
+                                    { value: 'usd', name: 'USD' },
+                                ]}
+                                width='100px'
+                                dark
+                                onChange={(event) => setUserCurrency(getCurrencyByCode(event.target.value))}
+                            />
+                        </div>
+                        <div className={styles.detailsItem}>
+                            <p>
                                 Items Total:
                             </p>
                             <p>
-                                {`$${ITEMS_TOTAL}`}
+                                {`${userCurrency.symbol}${ITEMS_TOTAL}`}
                             </p>
                         </div>
                         <div className={styles.detailsItem}>
@@ -135,7 +158,7 @@ export default function Cart(props) {
                                 Shipping & Taxes:
                             </p>
                             <p>
-                                {(shippingValue / 100).toFixed(2)}
+                                {`${userCurrency.symbol}${(SHIPPING_CONVERTED / 100).toFixed(2)}`}
                             </p>
                         </div>
                         <div className={styles.orderTotalContainer}>
@@ -148,7 +171,7 @@ export default function Cart(props) {
                                         fontWeight: 'bold'
                                     }}
                                 >
-                                    {`$${ORDER_TOTAL}`}
+                                    {`${userCurrency.symbol}${ORDER_TOTAL}`}
                                 </p>
                             </div>
                         </div>
