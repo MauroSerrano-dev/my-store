@@ -80,6 +80,7 @@ export default withRouter(props => {
     function handleAddToCart(productProp) {
         const mookapQuantity = 1
         const mookapVariant = 0
+
         const productCart = {
             id: productProp.id,
             id_printify: productProp.id_printify,
@@ -92,8 +93,8 @@ export default withRouter(props => {
             title: productProp.title
         }
 
-        const newCart = cart.some(prod => prod.id === productProp.id && prod.variant === productProp.variants[mookapVariant].id)
-            ? cart.map(p => p.id === productProp.id && p.variant === productProp.variants[mookapVariant].id
+        const newCart = cart.some(prod => prod.id === productProp.id && prod.variant_id === productProp.variants[mookapVariant].id)
+            ? cart.map(p => p.id === productProp.id && p.variant_id === productProp.variants[mookapVariant].id
                 ? ({ ...p, quantity: p.quantity + mookapQuantity })
                 : p
             )
@@ -114,7 +115,7 @@ export default withRouter(props => {
                 .catch(err => console.error(err))
         }
         else if (session === null) {
-            Cookies.set(CART_COOKIE, JSON.stringify(newCart))
+            (CART_COOKIE, JSON.stringify(newCart))
         }
     }
 

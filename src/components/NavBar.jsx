@@ -20,6 +20,7 @@ export default function NavBar(props) {
         setCart,
         isScrollAtTop,
         setIsScrollAtTop,
+        userCurrency,
     } = props
 
     const router = useRouter();
@@ -195,6 +196,7 @@ export default function NavBar(props) {
                         session={session}
                         cart={cart}
                         setCart={setCart}
+                        userCurrency={userCurrency}
                     />
                     <AvatarMenu
                         session={session}

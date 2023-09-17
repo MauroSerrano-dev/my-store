@@ -20,7 +20,17 @@ export default function DataHandler(props) {
     const firebaseApp = initializeApp(firebaseConfig);
     const auth = getAuth(firebaseApp);
 
+    function handleChangeCurrency(newCurrency) {
+        Cookies.set('CURR', JSON.stringify(newCurrency))
+        setUserCurrency(newCurrency)
+    }
+
     useEffect(() => {
+        if (Cookies.get('CURR'))
+            setUserCurrency(JSON.parse(Cookies.get('CURR')))
+        else
+            Cookies.set('CURR', JSON.stringify(userCurrency))
+
         const unsubscribe = onAuthStateChanged(auth, (authUser) => {
             if (authUser) {
                 handleLogin(authUser)
@@ -193,6 +203,7 @@ export default function DataHandler(props) {
                     session={session}
                     login={login}
                     logout={logout}
+                    userCurrency={userCurrency}
                 />
                 <div
                     className={styles.categoriesContainer}
@@ -216,7 +227,7 @@ export default function DataHandler(props) {
                     logout={logout}
                     auth={auth}
                     userCurrency={userCurrency}
-                    setUserCurrency={setUserCurrency}
+                    handleChangeCurrency={handleChangeCurrency}
                 />
             </div>
             {showIntroduction &&

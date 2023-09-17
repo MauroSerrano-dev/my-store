@@ -6,7 +6,7 @@ import { useEffect, useState } from 'react'
 import Selector from '@/components/Selector'
 
 export default function Cart(props) {
-    const { session, cart, setCart, userCurrency, setUserCurrency } = props
+    const { session, cart, setCart, userCurrency, handleChangeCurrency } = props
 
     const [shippingValue, setShippingValue] = useState(0)
     const [shippingCountry, setShippingCountry] = useState('US')
@@ -42,15 +42,15 @@ export default function Cart(props) {
     }, [cart, shippingCountry])
 
     function getShippingValue() {
-        const contry = getShippingOptions(shippingCountry)
+        const country = getShippingOptions(shippingCountry)
         let value = 0
         let typesAlreadyIn = []
 
         value = cart.reduce((acc, item, i) => {
             const result = acc + (
                 typesAlreadyIn.includes(item.type)
-                    ? contry[item.type].add_item * item.quantity
-                    : contry[item.type].first_item + contry[item.type].add_item * (item.quantity - 1)
+                    ? country[item.type].add_item * item.quantity
+                    : country[item.type].first_item + country[item.type].add_item * (item.quantity - 1)
             )
             typesAlreadyIn.push(item.type)
             return result
@@ -61,7 +61,7 @@ export default function Cart(props) {
         setShippingValue(value)
     }
 
-    function handleChangeContrySelector(event) {
+    function handleChangeCountrySelector(event) {
         setShippingCountry(event.target.value)
     }
 
@@ -122,7 +122,7 @@ export default function Cart(props) {
                                 ]}
                                 width='170px'
                                 dark
-                                onChange={handleChangeContrySelector}
+                                onChange={handleChangeCountrySelector}
                             />
                         </div>
                         <div className={styles.detailsItem}>
@@ -142,7 +142,7 @@ export default function Cart(props) {
                                 ]}
                                 width='100px'
                                 dark
-                                onChange={(event) => setUserCurrency(getCurrencyByCode(event.target.value))}
+                                onChange={(event) => handleChangeCurrency(getCurrencyByCode(event.target.value))}
                             />
                         </div>
                         <div className={styles.detailsItem}>
@@ -150,7 +150,7 @@ export default function Cart(props) {
                                 Items Total:
                             </p>
                             <p>
-                                {`${userCurrency.symbol}${ITEMS_TOTAL}`}
+                                {`${userCurrency.symbol} ${ITEMS_TOTAL}`}
                             </p>
                         </div>
                         <div className={styles.detailsItem}>
@@ -158,7 +158,7 @@ export default function Cart(props) {
                                 Shipping & Taxes:
                             </p>
                             <p>
-                                {`${userCurrency.symbol}${(SHIPPING_CONVERTED / 100).toFixed(2)}`}
+                                {`${userCurrency.symbol} ${(SHIPPING_CONVERTED / 100).toFixed(2)}`}
                             </p>
                         </div>
                         <div className={styles.orderTotalContainer}>
@@ -171,7 +171,7 @@ export default function Cart(props) {
                                         fontWeight: 'bold'
                                     }}
                                 >
-                                    {`${userCurrency.symbol}${ORDER_TOTAL}`}
+                                    {`${userCurrency.symbol} ${ORDER_TOTAL}`}
                                 </p>
                             </div>
                         </div>

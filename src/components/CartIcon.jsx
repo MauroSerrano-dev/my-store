@@ -9,7 +9,8 @@ export default function CartIcon(props) {
     const {
         session,
         cart,
-        setCart
+        setCart,
+        userCurrency,
     } = props
 
     const [open, setOpen] = useState(false)
@@ -66,6 +67,7 @@ export default function CartIcon(props) {
                                         session={session}
                                         setCart={setCart}
                                         setOpen={setOpen}
+                                        userCurrency={userCurrency}
                                     />
                                 )}
                             </div>

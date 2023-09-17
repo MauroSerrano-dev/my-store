@@ -3,7 +3,7 @@ import { SlClose } from "react-icons/sl";
 import Cookies from 'js-cookie';
 import { motion } from "framer-motion";
 import Link from 'next/link';
-import { CART_COOKIE } from '../../consts';
+import { CART_COOKIE, convertDolarToCurrency } from '../../consts';
 
 export default function ProductModal(props) {
     const {
@@ -11,6 +11,7 @@ export default function ProductModal(props) {
         product,
         setCart,
         index,
+        userCurrency,
     } = props
 
     function handleDeleteCartProduct(productId) {
@@ -92,7 +93,7 @@ export default function ProductModal(props) {
                 </div>
                 <div className={styles.priceContainer}>
                     <p>
-                        {`$${((product.price / 100) * product.quantity).toFixed(2)}`}
+                        {`${userCurrency.symbol} ${((convertDolarToCurrency(product.price, userCurrency.code) / 100) * product.quantity).toFixed(2)}`}
                     </p>
                 </div>
             </div>
