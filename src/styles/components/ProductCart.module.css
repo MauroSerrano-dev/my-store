@@ -50,8 +50,10 @@
 
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    justify-content: flex-start;
     align-items: flex-start;
 
-    bottom: 22%;
+    height: 100%;
+
+    padding-top: 5%;
 }
