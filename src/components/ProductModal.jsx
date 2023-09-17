@@ -92,9 +92,19 @@ export default function ProductModal(props) {
                     </p>
                 </div>
                 <div className={styles.priceContainer}>
-                    <p>
+                    <p
+                        style={{
+                            fontWeight: 'bold',
+                            fontSize: '14px',
+                        }}
+                    >
                         {`${userCurrency.symbol} ${((convertDolarToCurrency(product.price, userCurrency.code) / 100) * product.quantity).toFixed(2)}`}
                     </p>
+                    {product.quantity > 1 &&
+                        <p style={{ fontSize: '10px', color: 'var(--text-black)' }}>
+                            {`${userCurrency.symbol} ${(convertDolarToCurrency(product.price, userCurrency.code) / 100).toFixed(2)} unit`}
+                        </p>
+                    }
                 </div>
             </div>
         </motion.div>

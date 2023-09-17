@@ -315,8 +315,8 @@ export default function ProductCart(props) {
                     {`${userCurrency.symbol} ${(convertDolarToCurrency(product.price, userCurrency.code) * product.quantity / 100).toFixed(2)}`}
                 </h2>
                 {product.quantity > 1 &&
-                    < p style={{ fontSize: '13px', color: '#c2c2c2' }}>
-                        {`${userCurrency.symbol} ${(convertDolarToCurrency(product.price, userCurrency.code) / 100).toFixed(2)} each`}
+                    <p style={{ fontSize: '13px', color: '#c2c2c2' }}>
+                        {`${userCurrency.symbol} ${(convertDolarToCurrency(product.price, userCurrency.code) / 100).toFixed(2)} unit`}
                     </p>
                 }
             </div>
