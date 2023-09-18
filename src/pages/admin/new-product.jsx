@@ -90,12 +90,8 @@ export default withRouter(props => {
             .catch(err => console.error(err))
     }
 
-    function handleChangeId(event) {
-
-    }
-
-    function handleChangeTags(event) {
-
+    function handleProductField(fieldName, newValue) {
+        setProduct(prev => ({ ...prev, [fieldName]: newValue }))
     }
 
     function handleChangeColors(value, i, colorId) {
@@ -210,7 +206,21 @@ export default withRouter(props => {
                         <div className={styles.productRight}>
                             <TextInput
                                 label='ID'
-                                onChange={handleChangeId}
+                                onChange={event => handleProductField('id', event.target.value)}
+                                style={{
+                                    width: '100%'
+                                }}
+                            />
+                            <TextInput
+                                label='US Printify ID'
+                                onChange={event => handleProductField('us_printify_id', event.target.value)}
+                                style={{
+                                    width: '100%'
+                                }}
+                            />
+                            <TextInput
+                                label='EU Printify ID'
+                                onChange={event => handleProductField('eu_printify_id', event.target.value)}
                                 style={{
                                     width: '100%'
                                 }}
