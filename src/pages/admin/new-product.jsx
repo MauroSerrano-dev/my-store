@@ -228,7 +228,7 @@ export default withRouter(props => {
                             <TagsSelector
                                 options={TAGS_POOL}
                                 label='Tags'
-                                onChange={handleChangeTags}
+                                onChange={event => handleProductField('tags', event.target.value)}
                                 style={{
                                     width: '100%'
                                 }}
