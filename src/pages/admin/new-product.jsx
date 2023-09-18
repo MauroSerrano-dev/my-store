@@ -1,93 +1,55 @@
-import { CustomTextField } from '@/components/CustomTextField'
 import ImagesSlider from '@/components/ImagesSlider'
 import styles from '@/styles/admin/new-product.module.css'
-import { Button } from '@mui/material'
+import { Button, Checkbox } from '@mui/material'
 import { useEffect, useState } from 'react'
 import KeyboardArrowLeftRoundedIcon from '@mui/icons-material/KeyboardArrowLeftRounded';
-import Router from "next/router";
-import Autocomplete from '@mui/material/Autocomplete';
 import { withRouter } from 'next/router'
 import Link from 'next/link'
-import { TAGS_POOL, TYPES_POOL } from '../../../consts'
-import Selector from '@/components/Selector'
+import { COLORS_POOL, TAGS_POOL, TYPES_POOL } from '../../../consts'
 import ColorSelector from '@/components/ColorSelector'
+import TextInput from '@/components/material-ui/TextInput'
+import TagsSelector from '@/components/material-ui/Autocomplete'
+import ClearRoundedIcon from '@mui/icons-material/ClearRounded';
+import ButtonIcon from '@/components/material-ui/ButtonIcon'
+
 
 const INICIAL_PRODUCT = {
+    id: '',
     colors: [],
     images: [],
-    options: [],
-    variants: []
 }
 
 export default withRouter(props => {
 
-    const { id_printify } = props.router.query
+    const { router } = props;
 
-    const [product, setProduct] = useState()
-    const [newProduct, setNewProduct] = useState(INICIAL_PRODUCT)
-    const [allProducts, setAllProducts] = useState()
-    const [newProductId, setNewProductId] = useState()
-
-    const [currentColorIndex, setCurrentColorIndex] = useState(-1)
-
-    const [tags, setTags] = useState([])
-    const [categories, setCategories] = useState([])
-
-    const [newTag, setNewTag] = useState('')
-    const [newImage, setNewImage] = useState('')
-
-    const [currentImgIndex, setCurrentImgIndex] = useState(0)
-    const [showcaseImage, setShowcaseImage] = useState('')
-    const [hoverImage, setHoverImage] = useState('')
+    const [product, setProduct] = useState(INICIAL_PRODUCT)
+    const [colorIndex, setColorIndex] = useState(0)
+    const [images, setImages] = useState()
+    const [type, setType] = useState()
 
     useEffect(() => {
-        if (id_printify)
-            getProductByPrintifyId(id_printify)
-        else
-            getAllProducts()
-    }, [id_printify])
-
-    async function getAllProducts() {
-        const options = {
-            method: 'GET',
-        }
-        await fetch("/api/printify-all-new-products", options)
-            .then(response => response.json())
-            .then(response => setAllProducts(response.products))
-            .catch(err => console.error(err))
-    }
-
-    async function getProductByPrintifyId(id) {
-        const options = {
-            method: 'GET',
-            headers: {
-                id: id
+        if (router.isReady) {
+            if (router.query.type) {
+                setType(router.query.type)
+            }
+            else {
+                setProduct(INICIAL_PRODUCT)
+                setColorIndex(0)
+                setImages()
+                setType(null)
             }
         }
-        await fetch("/api/printify-product", options)
-            .then(response => response.json())
-            .then(response => setProduct(response))
-            .catch(err => console.error(err))
-    }
+    }, [router])
 
-    async function saveProduct(props) {
-        const {
-            productArg,
-            newProductIdArg,
-            categoriesArg,
-            tagsArg,
-            imagesArg,
-            showcaseImgArg,
-            hoverImgArg,
-        } = props
-
+    async function saveProduct(product) {
         const create_at = new Date()
 
         const options = {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
-                product: {
+                product: product/* {
                     id: newProductIdArg,
                     id_printify: productArg.id,
                     categories: categoriesArg,
@@ -119,7 +81,7 @@ export default withRouter(props => {
                         text: create_at.toString(),
                         ms: create_at.valueOf(),
                     }
-                }
+                } */
             })
         }
         await fetch("/api/product", options)
@@ -128,101 +90,65 @@ export default withRouter(props => {
             .catch(err => console.error(err))
     }
 
-    function handleGoBack() {
-        product
-            ? clearFields()
-            : Router.push('/admin')
+    function handleChangeId(event) {
+
     }
 
-    function clearFields() {
-        setProduct()
-        setNewProductId()
-        setTags([])
-        setCurrentImgIndex(0)
-        setCategories([])
-        setNewImage('')
-        setNewTag('')
-        setNewProduct(INICIAL_PRODUCT)
+    function handleChangeTags(event) {
+
     }
 
-    function handleImagesOnChange(event) {
-        event.preventDefault()
-        setNewImage(event.target.value.toLowerCase())
-    }
-
-    function handleImagesKeyDown(event) {
-        if (event.key === 'Enter' && newImage !== '') {
-            event.preventDefault()
-            setNewProduct(prev => ({ ...prev, images: [...prev.images, newImage] }))
-            setNewImage('')
-        }
-    }
-
-    function handleAutoCompleteTagsChange(event, value) {
-        event.preventDefault()
-        if (event.key !== 'Enter') {
-            setTags(value)
-        }
-    }
-
-    function handleAutoCompleteImagesChange(event, value) {
-        event.preventDefault()
-        if (event.key !== 'Enter') {
-            setNewProduct(prev => ({ ...prev, images: prev.images.filter(image => value.includes(image.src) || image.color_id !== prev.colors[currentColorIndex].id) }))
-        }
-    }
-
-    function handleShowcaseImageChange(event) {
-        setShowcaseImage(event.target.value)
-    }
-
-    function handleHoverImageChange(event) {
-        setHoverImage(event.target.value)
-    }
-
-    function handleColorClick(option) {
-
-        function variantsHasThisImage(image, variants) {
-            return image.variant_ids.some(id => variants.some(variant => variant.id === id))
-        }
-
-        setNewProduct(prev => {
-            if (prev.colors.some(color => color.id === option.id)) {
-                setCurrentColorIndex(prevIndex => prevIndex > prev.colors.length - 2 ? prevIndex - 1 : prevIndex)
-                const newVariants = prev.variants.filter(variant => !variant.options.includes(option.id))
-                const newImages = prev.images.filter(image => variantsHasThisImage(image, newVariants))
-                return {
-                    ...prev,
-                    colors: prev.colors.filter(color => color.id !== option.id),
-                    variants: newVariants,
-                    images: newImages,
+    function handleChangeColors(value, i, colorId) {
+        setProduct(prev => {
+            setColorIndex(prevIndex => value.length > prev.colors.length
+                ? value.length - 1
+                : prevIndex >= prev.colors.length - 1
+                    ? value.length - 1
+                    : prevIndex
+            )
+            setImages(prevImgs => {
+                if (value.length > prev.colors.length)
+                    return { ...prevImgs, [colorId]: [{ src: '', variants_id: [], color_id: colorId, hover: false, showcase: false }] }
+                else {
+                    delete prevImgs[colorId]
+                    return prevImgs
                 }
-            }
-            else {
-                setCurrentColorIndex(prev.colors.length)
-                const newVariants = product.variants.filter(variant => variant.options.includes(option.id))
-                const newImages = prev.images
-                    .concat(product.images
-                        .filter(image => variantsHasThisImage(image, newVariants))
-                        .map(image => ({
-                            ...image,
-                            color_id: option.id
-                        })))
-
-                return {
-                    ...prev,
-                    colors: prev.colors.concat(option),
-                    variants: prev.variants.concat(newVariants),
-                    images: newImages,
-                }
-
+            })
+            return {
+                ...prev,
+                colors: value,
             }
         })
     }
 
-    function handleChangeCurrentVariant(option, index) {
-        setCurrentColorIndex(index)
+    function handleSelectedColor(value, i) {
+        setColorIndex(i)
     }
+
+    function handleAddNewImage() {
+        const colorId = [product.colors[colorIndex].id]
+        setImages(prev => ({ ...prev, [colorId]: prev[colorId].concat({ src: '', variants_id: [], color_id: colorId, hover: false, showcase: false }) }))
+    }
+
+    function handleDeleteImageField(index) {
+        const colorId = [product.colors[colorIndex].id]
+        setImages(prev => ({ ...prev, [colorId]: prev[colorId].filter((img, i) => index !== i) }))
+    }
+
+    function updateImageField(fieldname, newValue, index) {
+        const colorId = [product.colors[colorIndex].id]
+        console.log(newValue)
+        setImages(prev => ({ ...prev, [colorId]: prev[colorId].map((img, i) => index === i ? { ...img, [fieldname]: newValue } : img) }))
+    }
+
+    function updateImageHoverOrShowcase(fieldname, newValue, index) {
+        const colorId = [product.colors[colorIndex].id]
+        setImages(prev => ({ ...prev, [colorId]: prev[colorId].map((img, i) => index === i ? { ...img, [fieldname]: newValue } : !newValue ? img : { ...img, [fieldname]: false }) }))
+    }
+
+    useEffect(() => {
+        console.log('images', images)
+    }, [images])
 
     return (
         <div className={styles.container}>
@@ -233,14 +159,13 @@ export default withRouter(props => {
                     <div className={styles.productOption}>
                         <Link
                             legacyBehavior
-                            href={id_printify ? '/admin/new-product' : '/admin'}
+                            href={type ? '/admin/new-product' : '/admin'}
                         >
                             <a
                                 className='noUnderline'
                             >
                                 <Button
                                     variant='outlined'
-                                    onClick={handleGoBack}
                                     sx={{
                                         display: 'flex',
                                         alignItems: 'center',
@@ -264,154 +189,109 @@ export default withRouter(props => {
                         </Link>
                     </div>
                 </div>
-                {product &&
+                {type &&
                     <div className={styles.productContainer}>
                         <div className={styles.productLeft}>
-                            {product.options.some(option => option.type == 'color') &&
-                                <div
-                                    style={{
-                                        padding: '0px 4rem'
-                                    }}
-                                >
-                                    <ColorSelector
-                                        options={product.options.filter(option => option.type == 'color')[0].values}
-                                        onClick={handleColorClick}
-                                        value={newProduct.colors}
-                                    />
-                                </div>
-                            }
-                            <ImagesSlider
-                                images={newProduct.images.filter(image => image.color_id === newProduct.colors[currentColorIndex].id)}
-                                currentImgIndex={currentImgIndex}
-                                setCurrentImgIndex={setCurrentImgIndex}
+                            <ColorSelector
+                                value={product.colors}
+                                options={COLORS_POOL[type]}
+                                onChange={handleChangeColors}
+                                style={{
+                                    paddingLeft: '100px',
+                                    paddingRight: '100px',
+                                }}
                             />
+                            {images?.[product?.colors?.[colorIndex]?.id] &&
+                                <ImagesSlider
+                                    images={images[product.colors[colorIndex].id]}
+                                />
+                            }
                         </div>
-                        <div className={styles.fieldsContainer}>
-                            <CustomTextField
-                                label='New Product ID'
-                                autoComplete='off'
-                                spellCheck={false}
-                                onChange={(e) => setNewProductId(e.target.value)}
-                                sx={{
+                        <div className={styles.productRight}>
+                            <TextInput
+                                label='ID'
+                                onChange={handleChangeId}
+                                style={{
                                     width: '100%'
                                 }}
                             />
-                            <Selector
-                                options={TYPES_POOL.map(type => ({ value: type, name: type }))}
-                                label='Type'
-                            />
-                            <Autocomplete
-                                multiple
+                            <TagsSelector
                                 options={TAGS_POOL}
-                                onChange={handleAutoCompleteTagsChange}
-                                sx={{
-                                    '.MuiAutocomplete-tag': {
-                                        backgroundColor: '#363a3d',
-                                        '--text-color': 'var(--global-white)',
-                                    },
-                                    '.MuiAutocomplete-clearIndicator': {
-                                        color: 'var(--global-white)'
-                                    },
-                                    '.MuiAutocomplete-popupIndicator': {
-                                        color: 'var(--global-white)'
-                                    },
-                                    '.MuiChip-deleteIcon': {
-                                        color: 'rgba(255, 255, 255, 0.4) !important',
-                                        transition: 'all ease-in-out 200ms'
-                                    },
-                                    '.MuiChip-deleteIcon:hover': {
-                                        color: 'rgba(255, 255, 255, 0.8) !important',
-                                    },
-                                    width: '100%',
+                                label='Tags'
+                                onChange={handleChangeTags}
+                                style={{
+                                    width: '100%'
                                 }}
-                                renderInput={(params) => (
-                                    <CustomTextField
-                                        {...params}
-                                        variant="outlined"
-                                        label="Tags"
-                                        placeholder="Tag"
-                                        value={newTag}
-                                    />
-                                )}
                             />
-                            {newProduct.colors.length > 0 &&
-                                <ColorSelector
-                                    options={newProduct.colors}
-                                    value={[newProduct.colors[currentColorIndex]]}
-                                    onClick={handleChangeCurrentVariant}
-                                />
+                            <ColorSelector
+                                value={[product.colors[colorIndex]]}
+                                options={product.colors}
+                                onChange={handleSelectedColor}
+                                style={{
+                                    paddingTop: '1rem',
+                                    paddingBottom: '1rem',
+                                }}
+                            />
+                            {images?.[product?.colors?.[colorIndex]?.id] &&
+                                <div className='flex column'>
+                                    {images[product.colors[colorIndex].id].length > 0 &&
+                                        <div className='flex row justify-end' style={{ fontSize: '11px', gap: '1rem', width: '100%', paddingRight: '11%' }}>
+                                            <p>showcase</p>
+                                            <p>hover</p>
+                                        </div>
+                                    }
+                                    <div className='flex column' style={{ gap: '0.8rem' }} >
+                                        {images[product.colors[colorIndex].id].map((img, i) =>
+                                            <div
+                                                className='flex row align-center fillWidth space-between'
+                                                key={i}
+                                            >
+                                                <TextInput
+                                                    label={`Image ${i + 1}`}
+                                                    onChange={event => updateImageField('src', event.target.value, i)}
+                                                    style={{
+                                                        width: '70%'
+                                                    }}
+                                                    value={img.src}
+                                                />
+                                                <Checkbox
+                                                    checked={img.showcase}
+                                                    onChange={event => updateImageHoverOrShowcase('showcase', event.target.checked, i)}
+                                                    sx={{
+                                                        color: '#ffffff'
+                                                    }}
+                                                />
+                                                <Checkbox
+                                                    checked={img.hover}
+                                                    onChange={event => updateImageHoverOrShowcase('hover', event.target.checked, i)}
+                                                    sx={{
+                                                        color: '#ffffff'
+                                                    }}
+                                                />
+                                                <ButtonIcon
+                                                    icon={<ClearRoundedIcon />}
+                                                    onClick={() => handleDeleteImageField(i)}
+                                                />
+                                            </div>
+                                        )}
+                                        <Button
+                                            variant='outlined'
+                                            onClick={handleAddNewImage}
+                                            sx={{
+                                                width: '100%'
+                                            }}
+                                        >
+                                            Add New Image
+                                        </Button>
+                                    </div>
+                                </div>
                             }
-                            <div className={styles.variantContainer}>
-                                <Autocomplete
-                                    multiple
-                                    options={newProduct.images.filter(image => image.color_id === newProduct.colors[currentColorIndex].id).map(image => image.src)}
-                                    value={newProduct.images.filter(image => image.color_id === newProduct.colors[currentColorIndex].id).map(image => image.src)}
-                                    onChange={handleAutoCompleteImagesChange}
-                                    sx={{
-                                        '.MuiAutocomplete-tag': {
-                                            backgroundColor: '#363a3d',
-                                            '--text-color': 'var(--global-white)',
-                                        },
-                                        '.MuiAutocomplete-clearIndicator': {
-                                            color: 'var(--global-white)'
-                                        },
-                                        '.MuiAutocomplete-popupIndicator': {
-                                            color: 'var(--global-white)'
-                                        },
-                                        '.MuiChip-deleteIcon': {
-                                            color: 'rgba(255, 255, 255, 0.4) !important',
-                                            transition: 'all ease-in-out 200ms'
-                                        },
-                                        '.MuiChip-deleteIcon:hover': {
-                                            color: 'rgba(255, 255, 255, 0.8) !important',
-                                        },
-                                        width: '100%',
-                                    }}
-                                    renderInput={(params) => (
-                                        <CustomTextField
-                                            {...params}
-                                            variant="outlined"
-                                            label="Images"
-                                            placeholder="Image"
-                                            value={newTag}
-                                            onKeyDown={handleImagesKeyDown}
-                                            onChange={handleImagesOnChange}
-                                        />
-                                    )}
-                                />
-                                <CustomTextField
-                                    variant="outlined"
-                                    label="Showcase Image"
-                                    value={showcaseImage}
-                                    onChange={handleShowcaseImageChange}
-                                    sx={{
-                                        width: '100%'
-                                    }}
-                                />
-                                <CustomTextField
-                                    variant="outlined"
-                                    label="Hover Image"
-                                    value={hoverImage}
-                                    onChange={handleHoverImageChange}
-                                    sx={{
-                                        width: '100%'
-                                    }}
-                                />
-                            </div>
                             <Button
                                 variant='contained'
-                                onClick={() => saveProduct({
-                                    productArg: product,
-                                    newProductIdArg: newProductId,
-                                    categoriesArg: categories,
-                                    tagsArg: tags,
-                                    imagesArg: newProduct.images.map(img => ({ src: img })),
-                                    showcaseImgArg: { src: showcaseImage },
-                                    hoverImgArg: { src: hoverImage },
-                                })}
+                                onClick={() => saveProduct(product)}
                                 sx={{
                                     width: '100%',
-                                    color: 'var(--global-white)',
+                                    color: '#ffffff',
                                 }}
                             >
                                 Save Product
@@ -419,28 +299,28 @@ export default withRouter(props => {
                         </div>
                     </div>
                 }
-                {
-                    allProducts && !id_printify &&
-                    <div className={styles.block}>
-                        {allProducts.map((prod, i) =>
+                {type === null &&
+                    <div className={styles.menuContainer}>
+                        <h3>Create New Product</h3>
+                        {TYPES_POOL.map((type, i) =>
                             <Link
                                 legacyBehavior
-                                href={`/admin/new-product/?id_printify=${prod.id}`}
+                                href={`/admin/new-product?type=${type}`}
                                 key={i}
                             >
                                 <a
-                                    className={`${styles.productOption} noUnderline`}
+                                    className='noUnderline fillWidth'
                                 >
                                     <Button
-                                        id={styles.productButton}
                                         variant='outlined'
+                                        sx={{
+                                            display: 'flex',
+                                            alignItems: 'center',
+                                            justifyContent: 'center',
+                                            width: '100%'
+                                        }}
                                     >
-                                        <img
-                                            className={styles.productImg}
-                                            src={prod.images[0].src}
-                                            alt={prod.title}
-                                        />
-                                        {prod.title}
+                                        {type}
                                     </Button>
                                 </a>
                             </Link>

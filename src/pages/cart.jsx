@@ -3,7 +3,7 @@ import styles from '@/styles/cart.module.css'
 import { Button } from '@mui/material'
 import { convertDolarToCurrency, getCurrencyByCode, getShippingOptions } from '../../consts'
 import { useEffect, useState } from 'react'
-import Selector from '@/components/Selector'
+import Selector from '@/components/material-ui/Selector'
 
 export default function Cart(props) {
     const { session, cart, setCart, userCurrency, handleChangeCurrency } = props

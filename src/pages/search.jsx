@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react'
 import Product from '@/components/Product'
 import { useRouter } from 'next/router';
 import Link from 'next/link';
-import Selector from '@/components/Selector';
+import Selector from '@/components/material-ui/Selector';
 import { Checkbox, FormControlLabel } from '@mui/material';
 import Footer from '@/components/Footer';
 import { convertDolarToCurrency } from '../../consts';

@@ -20,12 +20,12 @@ export default withRouter(props => {
     const { id } = props.router.query
 
     const [product, setProduct] = useState()
-    const [currentImgIndex, setCurrentImgIndex] = useState(0)
 
     useEffect(() => {
+        console.log('aa', product)
         if (id && !product)
             getProductsById(id)
-    }, [id])
+    }, [id, product])
 
     function getProductsById(id) {
         const options = {
@@ -141,8 +141,6 @@ export default withRouter(props => {
                     <div className={styles.left}>
                         <ImagesSlider
                             images={product.images}
-                            currentImgIndex={currentImgIndex}
-                            setCurrentImgIndex={setCurrentImgIndex}
                         />
                     </div>
                     <div className={styles.right}>

@@ -18,7 +18,6 @@ export default function Selector(props) {
         styleOption,
         onChange,
         width,
-        height
     } = props
 
     const [hover, setHover] = useState(false)
@@ -66,11 +65,9 @@ export default function Selector(props) {
                         transition: 'all ease-in-out 200ms'
                     },
                     '.MuiSelect-iconOutlined': {
-                        color: colorIcon
+                        color: colorIcon,
+                        transition: 'all ease-in-out 200ms',
                     },
-                    '.css-g3hgs1-MuiBackdrop-root-MuiModal-backdrop': {
-                        backgroundColor: 'red !important'
-                    }
                 }}
                 onChange={onChange}
                 onFocus={() => setFocus(true)}

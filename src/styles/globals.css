@@ -91,6 +91,14 @@ input::placeholder {
   display: flex;
 }
 
+.relative {
+  position: relative;
+}
+
+.absolute {
+  position: absolute;
+}
+
 .row {
   flex-direction: row;
 }
@@ -107,6 +115,22 @@ input::placeholder {
 
 .justify-start {
   justify-content: flex-start;
+}
+
+.justify-end {
+  justify-content: flex-end;
+}
+
+.align-end {
+  align-items: flex-end;
+}
+
+.justify-center {
+  justify-content: center;
+}
+
+.space-between {
+  justify-content: space-between;
 }
 
 .align-center {

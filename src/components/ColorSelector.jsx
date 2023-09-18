@@ -2,14 +2,18 @@ import styles from '../styles/components/ColorSelector.module.css'
 import MyTooltip from './MyTooltip';
 
 export default function ColorSelector(props) {
-    const { options, onClick, value } = props
+    const {
+        options = [],
+        onChange,
+        value = [],
+        style
+    } = props
 
     return (
         <div
-            className='flex row fillWidth'
+            className={styles.container}
             style={{
-                gap: '0.5rem',
-                flexWrap: 'wrap',
+                ...style
             }}
         >
             {options.map((option, i) =>
@@ -21,7 +25,12 @@ export default function ColorSelector(props) {
                     titleColor='#ffffff'
                     content={
                         <button
-                            onClick={() => onClick(option, i)}
+                            onClick={() => onChange(value.some(color => option.id === color?.id)
+                                ? value.filter(color => option.id !== color?.id)
+                                : value.concat(option),
+                                i,
+                                option.id
+                            )}
                             className={styles.button}
                             style={{
                                 backgroundColor: option.colors[0],

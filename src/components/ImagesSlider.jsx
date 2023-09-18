@@ -1,11 +1,12 @@
 import styles from '@/styles/components/ImagesSlider.module.css'
+import { useState } from 'react'
 
 export default function ImagesSlider(props) {
     const {
-        images,
-        currentImgIndex,
-        setCurrentImgIndex,
+        images
     } = props
+
+    const [currentImgIndex, setCurrentImgIndex] = useState(0)
 
     return (
         <div

@@ -2,7 +2,7 @@ import styles from '@/styles/admin.module.css'
 import AddCircleOutlineRoundedIcon from '@mui/icons-material/AddCircleOutlineRounded';
 import EditNoteRoundedIcon from '@mui/icons-material/EditNoteRounded';
 import FormatListBulletedRoundedIcon from '@mui/icons-material/FormatListBulletedRounded';
-import Router from "next/router";
+import Link from 'next/link'
 
 export default function Admin() {
 
@@ -17,31 +17,55 @@ export default function Admin() {
                     </div>
                     <div className={styles.optionsBlock}>
                         <div>
-                            <button
-                                className={styles.buttonOption}
-                                onClick={() => Router.push('/admin/new-product')}
+                            <Link
+                                legacyBehavior
+                                href='/admin/new-product'
                             >
-                                <AddCircleOutlineRoundedIcon />
-                                Add New Product
-                            </button>
+                                <a
+                                    className='noUnderline fillWidth'
+                                >
+                                    <button
+                                        className={styles.buttonOption}
+                                    >
+                                        <AddCircleOutlineRoundedIcon />
+                                        Add New Product
+                                    </button>
+                                </a>
+                            </Link>
                         </div>
                         <div>
-                            <button
-                                className={styles.buttonOption}
-                                onClick={() => Router.push('/admin/edit-product')}
+                            <Link
+                                legacyBehavior
+                                href='/admin/edit-product'
                             >
-                                <EditNoteRoundedIcon />
-                                Edit Product
-                            </button>
+                                <a
+                                    className='noUnderline fillWidth'
+                                >
+                                    <button
+                                        className={styles.buttonOption}
+                                    >
+                                        <EditNoteRoundedIcon />
+                                        Edit Product
+                                    </button>
+                                </a>
+                            </Link>
                         </div>
                         <div>
-                            <button
-                                className={styles.buttonOption}
-                                onClick={() => Router.push('/admin/consult-product')}
+                            <Link
+                                legacyBehavior
+                                href='/admin/consult-product'
                             >
-                                <FormatListBulletedRoundedIcon />
-                                Consult Product
-                            </button>
+                                <a
+                                    className='noUnderline fillWidth'
+                                >
+                                    <button
+                                        className={styles.buttonOption}
+                                    >
+                                        <FormatListBulletedRoundedIcon />
+                                        Consult Product
+                                    </button>
+                                </a>
+                            </Link>
                         </div>
                     </div>
                 </div>
