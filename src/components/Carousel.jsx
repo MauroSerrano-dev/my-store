@@ -129,8 +129,8 @@ export default function Carousel(props) {
                                 price={convertDolarToCurrency(item.variants[0].price, userCurrency.code)}
                                 currencySymbol={userCurrency.symbol}
                                 outOfStock={false}
-                                img={item.image_showcase.src}
-                                imgHover={item.image_hover.src}
+                                img={item.images[item.image_showcase_index].src}
+                                imgHover={item.images[item.image_hover_index].src}
                                 url={`/product?id=${item.id}`}
                             />
                         </div>

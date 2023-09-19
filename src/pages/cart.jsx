@@ -133,12 +133,10 @@ export default function Cart(props) {
                                 label='currency'
                                 value={userCurrency.code}
                                 options={[
-                                    { value: 'aud', name: 'AUD' },
-                                    { value: 'brl', name: 'BRL' },
-                                    { value: 'cad', name: 'CAD' },
-                                    { value: 'gbp', name: 'GBP' },
-                                    { value: 'eur', name: 'EUR' },
                                     { value: 'usd', name: 'USD' },
+                                    { value: 'eur', name: 'EUR' },
+                                    { value: 'gbp', name: 'GBP' },
+                                    { value: 'brl', name: 'BRL' },
                                 ]}
                                 width='100px'
                                 dark

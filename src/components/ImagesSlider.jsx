@@ -3,7 +3,8 @@ import { useState } from 'react'
 
 export default function ImagesSlider(props) {
     const {
-        images
+        images,
+        style
     } = props
 
     const [currentImgIndex, setCurrentImgIndex] = useState(0)
@@ -11,6 +12,9 @@ export default function ImagesSlider(props) {
     return (
         <div
             className={styles.container}
+            style={{
+                ...style
+            }}
         >
             <div
                 className={styles.view}

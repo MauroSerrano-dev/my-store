@@ -1,22 +1,28 @@
 import ImagesSlider from '@/components/ImagesSlider'
 import styles from '@/styles/admin/new-product.module.css'
-import { Button, Checkbox } from '@mui/material'
+import { Button, Checkbox, Slider } from '@mui/material'
 import { useEffect, useState } from 'react'
 import KeyboardArrowLeftRoundedIcon from '@mui/icons-material/KeyboardArrowLeftRounded';
 import { withRouter } from 'next/router'
 import Link from 'next/link'
-import { COLORS_POOL, TAGS_POOL, TYPES_POOL } from '../../../consts'
+import { TAGS_POOL, TYPES_POOL } from '../../../consts'
 import ColorSelector from '@/components/ColorSelector'
 import TextInput from '@/components/material-ui/TextInput'
 import TagsSelector from '@/components/material-ui/Autocomplete'
 import ClearRoundedIcon from '@mui/icons-material/ClearRounded';
 import ButtonIcon from '@/components/material-ui/ButtonIcon'
+import SizesSelector from '@/components/SizesSelector';
 
 
 const INICIAL_PRODUCT = {
     id: '',
+    description: '',
     colors: [],
+    sizes: [],
     images: [],
+    image_showcase_index: 0,
+    image_hover_index: 1,
+    popularity: 0,
 }
 
 export default withRouter(props => {
@@ -32,6 +38,17 @@ export default withRouter(props => {
         if (router.isReady) {
             if (router.query.type) {
                 setType(router.query.type)
+                if (router.query.type === 't-shirts') {
+                    const tShirtsInfos = TYPES_POOL.find(t => t.id === 't-shirts')
+                    setProduct(prev => (
+                        {
+                            ...prev,
+                            sizes: tShirtsInfos.sizes,
+                            variants: tShirtsInfos.variants,
+                            tags: ['t-shirts']
+                        }
+                    ))
+                }
             }
             else {
                 setProduct(INICIAL_PRODUCT)
@@ -42,46 +59,24 @@ export default withRouter(props => {
         }
     }, [router])
 
-    async function saveProduct(product) {
+    async function saveProduct() {
         const create_at = new Date()
 
         const options = {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
-                product: product/* {
-                    id: newProductIdArg,
-                    id_printify: productArg.id,
-                    categories: categoriesArg,
-                    tags: tagsArg,
-                    title: productArg.title,
-                    images: imagesArg,
-                    image_showcase: showcaseImgArg,
-                    image_hover: hoverImgArg,
-                    description: '',
-                    variants: productArg.variants.map(variant => ({
-                        id: variant.id,
-                        cost: variant.cost,
-                        price: variant.price,
-                        grams: variant.grams,
-                        is_printify_express_eligible: variant.is_printify_express_eligible,
-                        options: variant.options,
-                        quantity: variant.quantity,
-                        sku: variant.sku,
-                        title: variant.title,
-                        sales: 0,
-                        popularity: 0,
-                        popularity_week: 0,
-                        popularity_month: 0,
-                        popularity_year: 0,
-                    })),
-                    options: productArg.options,
-                    position: productArg.position,
+                product: {
+                    ...product,
+                    title_lower_case: product.title.toLowerCase(),
+                    type: type,
+                    images: product.colors.reduce((acc, color) => acc.concat(images[color.id].map(img => ({ src: img.src, color_id: img.color_id, variants_id: img.variants_id }))), []),
+                    variants: product.variants.filter(vari => product.colors.some(color => vari.options.includes(color.id)) && product.sizes.some(size => vari.options.includes(size.id))),
                     create_at: {
                         text: create_at.toString(),
                         ms: create_at.valueOf(),
-                    }
-                } */
+                    },
+                }
             })
         }
         await fetch("/api/product", options)
@@ -90,11 +85,15 @@ export default withRouter(props => {
             .catch(err => console.error(err))
     }
 
-    function handleProductField(fieldName, newValue) {
+    function updateProductField(fieldName, newValue) {
         setProduct(prev => ({ ...prev, [fieldName]: newValue }))
     }
 
-    function handleChangeColors(value, i, colorId) {
+    function handlePrintifyId(providerId, newValue) {
+        setProduct(prev => ({ ...prev, printify_ids: { ...prev.printify_ids, [providerId]: newValue } }))
+    }
+
+    function handleChangeColors(value, i, color) {
         setProduct(prev => {
             setColorIndex(prevIndex => value.length > prev.colors.length
                 ? value.length - 1
@@ -103,10 +102,11 @@ export default withRouter(props => {
                     : prevIndex
             )
             setImages(prevImgs => {
-                if (value.length > prev.colors.length)
-                    return { ...prevImgs, [colorId]: [{ src: '', variants_id: [], color_id: colorId, hover: false, showcase: false }] }
+                if (value.length > prev.colors.length) {
+                    return { ...prevImgs, [color.id]: [{ src: '', variants_id: product.variants.filter(vari => vari.options.includes(color.id)).map(vari => vari.id), color_id: color.id, hover: false, showcase: false }] }
+                }
                 else {
-                    delete prevImgs[colorId]
+                    delete prevImgs[color.id]
                     return prevImgs
                 }
             })
@@ -122,29 +122,28 @@ export default withRouter(props => {
     }
 
     function handleAddNewImage() {
-        const colorId = [product.colors[colorIndex].id]
-        setImages(prev => ({ ...prev, [colorId]: prev[colorId].concat({ src: '', variants_id: [], color_id: colorId, hover: false, showcase: false }) }))
+        const colorId = product.colors[colorIndex].id
+        setImages(prev => ({ ...prev, [colorId]: prev[colorId].concat({ src: '', variants_id: product.variants.filter(vari => vari.options.includes(colorId)).map(vari => vari.id), color_id: colorId, hover: false, showcase: false }) }))
     }
 
     function handleDeleteImageField(index) {
-        const colorId = [product.colors[colorIndex].id]
+        const colorId = product.colors[colorIndex].id
         setImages(prev => ({ ...prev, [colorId]: prev[colorId].filter((img, i) => index !== i) }))
     }
 
     function updateImageField(fieldname, newValue, index) {
-        const colorId = [product.colors[colorIndex].id]
+        const colorId = product.colors[colorIndex].id
         console.log(newValue)
         setImages(prev => ({ ...prev, [colorId]: prev[colorId].map((img, i) => index === i ? { ...img, [fieldname]: newValue } : img) }))
     }
 
-    function updateImageHoverOrShowcase(fieldname, newValue, index) {
-        const colorId = [product.colors[colorIndex].id]
-        setImages(prev => ({ ...prev, [colorId]: prev[colorId].map((img, i) => index === i ? { ...img, [fieldname]: newValue } : !newValue ? img : { ...img, [fieldname]: false }) }))
+    function handleChangeSizes(value) {
+        setProduct(prev => ({ ...prev, sizes: value }))
     }
 
-    useEffect(() => {
-        console.log('images', images)
-    }, [images])
+    function handlePriceChange(sizeId, value) {
+        setProduct(prev => ({ ...prev, variants: prev.variants.map(vari => vari.options.includes(sizeId) ? { ...vari, price: Number(value) } : vari) }))
+    }
 
     return (
         <div className={styles.container}>
@@ -188,13 +187,22 @@ export default withRouter(props => {
                 {type &&
                     <div className={styles.productContainer}>
                         <div className={styles.productLeft}>
+                            <SizesSelector
+                                value={product.sizes}
+                                options={TYPES_POOL.find(t => t.id === type).sizes}
+                                onChange={handleChangeSizes}
+                            /* style={{
+                                paddingLeft: '50px',
+                                paddingRight: '50px',
+                            }} */
+                            />
                             <ColorSelector
                                 value={product.colors}
-                                options={COLORS_POOL[type]}
+                                options={TYPES_POOL.find(t => t.id === type).colors}
                                 onChange={handleChangeColors}
                                 style={{
-                                    paddingLeft: '100px',
-                                    paddingRight: '100px',
+                                    paddingLeft: '50px',
+                                    paddingRight: '50px',
                                 }}
                             />
                             {images?.[product?.colors?.[colorIndex]?.id] &&
@@ -206,43 +214,55 @@ export default withRouter(props => {
                         <div className={styles.productRight}>
                             <TextInput
                                 label='ID'
-                                onChange={event => handleProductField('id', event.target.value)}
+                                onChange={event => updateProductField('id', event.target.value)}
                                 style={{
                                     width: '100%'
                                 }}
                             />
                             <TextInput
-                                label='US Printify ID'
-                                onChange={event => handleProductField('us_printify_id', event.target.value)}
+                                label='Title'
+                                onChange={event => updateProductField('title', event.target.value)}
                                 style={{
                                     width: '100%'
                                 }}
                             />
                             <TextInput
-                                label='EU Printify ID'
-                                onChange={event => handleProductField('eu_printify_id', event.target.value)}
+                                label='Default Printify ID'
+                                onChange={event => updateProductField('printify_id_default', event.target.value)}
                                 style={{
                                     width: '100%'
                                 }}
                             />
+                            {TYPES_POOL.find(t => t.id === type).providers.map((provider, i) =>
+                                <TextInput
+                                    key={i}
+                                    label={`${provider.title} Printify ID`}
+                                    onChange={event => handlePrintifyId(provider.id, event.target.value)}
+                                    style={{
+                                        width: '100%'
+                                    }}
+                                />
+                            )}
                             <TagsSelector
                                 options={TAGS_POOL}
                                 label='Tags'
                                 value={product.tags}
-                                onChange={(event, value) => handleProductField('tags', value)}
+                                onChange={(event, value) => updateProductField('tags', value)}
                                 style={{
                                     width: '100%'
                                 }}
                             />
-                            <ColorSelector
-                                value={[product.colors[colorIndex]]}
-                                options={product.colors}
-                                onChange={handleSelectedColor}
-                                style={{
-                                    paddingTop: '1rem',
-                                    paddingBottom: '1rem',
-                                }}
-                            />
+                            {product.colors.length > 0 &&
+                                <ColorSelector
+                                    value={[product.colors[colorIndex]]}
+                                    options={product.colors}
+                                    onChange={handleSelectedColor}
+                                    style={{
+                                        paddingTop: '1rem',
+                                        paddingBottom: '1rem',
+                                    }}
+                                />
+                            }
                             {images?.[product?.colors?.[colorIndex]?.id] &&
                                 <div className='flex column'>
                                     {images[product.colors[colorIndex].id].length > 0 &&
@@ -266,15 +286,15 @@ export default withRouter(props => {
                                                     value={img.src}
                                                 />
                                                 <Checkbox
-                                                    checked={img.showcase}
-                                                    onChange={event => updateImageHoverOrShowcase('showcase', event.target.checked, i)}
+                                                    checked={i === product.image_showcase_index}
+                                                    onChange={event => updateProductField('image_showcase_index', event.target.checked ? i : -1)}
                                                     sx={{
                                                         color: '#ffffff'
                                                     }}
                                                 />
                                                 <Checkbox
-                                                    checked={img.hover}
-                                                    onChange={event => updateImageHoverOrShowcase('hover', event.target.checked, i)}
+                                                    checked={i === product.image_hover_index}
+                                                    onChange={event => updateProductField('image_hover_index', event.target.checked ? i : -1)}
                                                     sx={{
                                                         color: '#ffffff'
                                                     }}
@@ -289,7 +309,8 @@ export default withRouter(props => {
                                             variant='outlined'
                                             onClick={handleAddNewImage}
                                             sx={{
-                                                width: '100%'
+                                                width: '100%',
+                                                marginBottom: '1rem'
                                             }}
                                         >
                                             Add New Image
@@ -297,9 +318,37 @@ export default withRouter(props => {
                                     </div>
                                 </div>
                             }
+                            <h3>
+                                Price (USD)
+                            </h3>
+                            {product.sizes.map((size, i) =>
+                                <div
+                                    className='flex center'
+                                    style={{
+                                        gap: '1rem'
+                                    }}
+                                    key={i}
+                                >
+                                    <TextInput
+                                        label={`${size.title}`}
+                                        onChange={event => handlePriceChange(size.id, event.target.value)}
+                                        value={product.variants.find(vari => vari.options.includes(size.id)).price}
+                                        style={{
+                                            width: '80px',
+                                        }}
+                                    />
+                                    <Slider
+                                        value={product.variants.find(vari => vari.options.includes(size.id)).price}
+                                        min={product.variants.find(vari => vari.options.includes(size.id)).cost}
+                                        max={product.variants.find(vari => vari.options.includes(size.id)).cost * 4}
+                                        valueLabelDisplay="auto"
+                                        onChange={event => handlePriceChange(size.id, event.target.value)}
+                                    />
+                                </div>
+                            )}
                             <Button
                                 variant='contained'
-                                onClick={() => saveProduct(product)}
+                                onClick={() => saveProduct()}
                                 sx={{
                                     width: '100%',
                                     color: '#ffffff',
@@ -316,7 +365,7 @@ export default withRouter(props => {
                         {TYPES_POOL.map((type, i) =>
                             <Link
                                 legacyBehavior
-                                href={`/admin/new-product?type=${type}`}
+                                href={`/admin/new-product?type=${type.id}`}
                                 key={i}
                             >
                                 <a
@@ -331,7 +380,7 @@ export default withRouter(props => {
                                             width: '100%'
                                         }}
                                     >
-                                        {type}
+                                        {type.title}
                                     </Button>
                                 </a>
                             </Link>

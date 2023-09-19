@@ -194,6 +194,11 @@ export default function DataHandler(props) {
         >
             <div
                 className={styles.topContainer}
+                style={{
+                    height: isScrollAtTop
+                        ? 'calc(5rem + 40px)'
+                        : '5rem'
+                }}
             >
                 <NavBar
                     cart={cart}
@@ -230,7 +235,8 @@ export default function DataHandler(props) {
                     handleChangeCurrency={handleChangeCurrency}
                 />
             </div>
-            {showIntroduction &&
+            {
+                showIntroduction &&
                 <div
                     className={styles.introduction}
                     onClick={handleIntroductionComplete}
@@ -240,6 +246,6 @@ export default function DataHandler(props) {
                     </h1>
                 </div>
             }
-        </div>
+        </div >
     )
 }

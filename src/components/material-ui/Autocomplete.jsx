@@ -33,6 +33,7 @@ export default function TagsSelector(props) {
             multiple
             options={options}
             onChange={onChange}
+            value={value}
             sx={{
                 '.MuiAutocomplete-tag': {
                     backgroundColor: colorTagBg,
@@ -73,7 +74,6 @@ export default function TagsSelector(props) {
                     autoComplete={autoComplete}
                     placeholder={placeholder}
                     name={name}
-                    value={value}
                 />
             )}
         />

@@ -19,7 +19,8 @@ export default function TextInput(props) {
         name,
         params,
         placeholder,
-        value
+        value,
+        defaultValue,
     } = props
 
     const [hover, setHover] = useState(false)
@@ -43,6 +44,7 @@ export default function TextInput(props) {
             onChange={onChange}
             placeholder={placeholder}
             value={value}
+            defaultValue={defaultValue}
             sx={{
                 ...style,
                 '.MuiOutlinedInput-notchedOutline': {

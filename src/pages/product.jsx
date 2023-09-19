@@ -8,6 +8,7 @@ import CreditCardOutlinedIcon from '@mui/icons-material/CreditCardOutlined';
 import Cookies from 'js-cookie';
 import { CART_COOKIE } from '../../consts'
 import Head from 'next/head'
+import ColorSelector from '@/components/ColorSelector'
 
 export default withRouter(props => {
     const {
@@ -20,6 +21,7 @@ export default withRouter(props => {
     const { id } = props.router.query
 
     const [product, setProduct] = useState()
+    const [currentColor, setCurrentColor] = useState()
 
     useEffect(() => {
         console.log('aa', product)
@@ -40,6 +42,7 @@ export default withRouter(props => {
             .then(response => {
                 console.log(response.msg)
                 setProduct(response.product)
+                setCurrentColor(response.product.colors[0])
             })
             .catch(err => console.error(err))
     }
@@ -119,6 +122,10 @@ export default withRouter(props => {
         }
     }
 
+    function handleColorChange(arr, index, color) {
+        setCurrentColor(color)
+    }
+
     return (
         <div className={styles.container}>
             {product &&
@@ -139,12 +146,23 @@ export default withRouter(props => {
             {product &&
                 <div className={styles.productContainer}>
                     <div className={styles.left}>
-                        <ImagesSlider
-                            images={product.images}
-                        />
+                        {product.colors.map(color =>
+                            <ImagesSlider
+                                images={product.images.filter(img => img.color_id === color.id)}
+                                style={{
+                                    position: 'absolute',
+                                    zIndex: color.id === currentColor.id ? '1' : 0
+                                }}
+                            />
+                        )}
                     </div>
                     <div className={styles.right}>
                         <h2>{product.title}</h2>
+                        <ColorSelector
+                            options={product.colors}
+                            value={[currentColor]}
+                            onChange={handleColorChange}
+                        />
                         <Button
                             variant='contained'
                             onClick={() => handleAddToCart(product)}

@@ -21,6 +21,9 @@
 
     top: 0;
     position: fixed;
+
+    height: auto;
+    transition: all ease-in-out 200ms;
 }
 
 .categoriesContainer {
@@ -38,7 +41,6 @@
     --text-color: var(--text-white);
 
     border-bottom: 2px solid var(--global-white);
-
     transition: all ease-in-out 200ms;
 }
 
