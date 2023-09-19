@@ -5,7 +5,7 @@ import { motion } from "framer-motion";
 import Link from 'next/link';
 import { Select, FormControl, MenuItem, InputLabel } from '@mui/material';
 import { useEffect, useState } from 'react';
-import { CART_COOKIE, convertDolarToCurrency } from '../../consts';
+import { CART_COOKIE, TYPES_POOL, convertDolarToCurrency } from '../../consts';
 
 const menuStyle = {
     display: 'flex',
@@ -38,9 +38,9 @@ export default function ProductCart(props) {
         )
     }, [])
 
-    function handleDeleteCartProduct(productId) {
+    function handleDeleteCartProduct() {
         setCart(prev => {
-            const newCart = prev.filter(prod => prod.id !== productId)
+            const newCart = prev.filter(prod => prod.id !== product.id || prod.variant_id !== product.variant_id)
             if (session) {
                 const options = {
                     method: 'POST',
@@ -60,32 +60,32 @@ export default function ProductCart(props) {
         })
     }
 
-    function changeProductField(field, newValue, productId) {
-        setCart(prev => {
-            const newCart = prev.map(prod => prod.id === productId
+    function changeProductField(field, newValue) {
+        setCart(prev =>
+            prev.map(prod => prod.id === product.id && prod.variant_id === product.variant_id
                 ? {
                     ...prod,
                     [field]: newValue
                 }
                 : prod
             )
-            if (session) {
-                const options = {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        userId: session.id,
-                        cart: newCart,
-                    })
-                }
-                fetch("/api/cart", options)
-                    .catch(err => console.error(err))
-            }
-            else {
-                Cookies.set(CART_COOKIE, JSON.stringify(newCart))
-            }
-            return newCart
-        })
+        )
+    }
+
+    function changeSize(newSize) {
+
+        setCart(prev =>
+            prev.map(prod =>
+                prod.id === product.id && prod.variant_id === product.variant_id
+                    ? {
+                        ...prod,
+                        size: newSize,
+                        variant_id: prod.variants.find(vari => vari.options.includes(prod.color.id) && vari.options.includes(newSize.id)).id,
+                        price: prod.variants.find(vari => vari.options.includes(prod.color.id) && vari.options.includes(newSize.id)).price,
+                    }
+                    : prod
+            )
+        )
     }
 
     return (
@@ -109,7 +109,7 @@ export default function ProductCart(props) {
             animate='visible'
         >
             <SlClose
-                onClick={() => handleDeleteCartProduct(product.id)}
+                onClick={() => handleDeleteCartProduct()}
                 color='#ffffff'
                 style={{
                     fontSize: '22px',
@@ -146,7 +146,7 @@ export default function ProductCart(props) {
                         </InputLabel>
                         <Select
                             value={product.quantity}
-                            onChange={(event) => changeProductField('quantity', event.target.value, product.id)}
+                            onChange={(event) => changeProductField('quantity', event.target.value)}
                             label="Quantity"
                             MenuProps={{ disableScrollLock: true }}
                             sx={{
@@ -244,8 +244,8 @@ export default function ProductCart(props) {
                             Size
                         </InputLabel>
                         <Select
-                            defaultValue='M'
-                            onChange={() => console.log()}
+                            value={product.size.id}
+                            onChange={(event) => changeSize(TYPES_POOL.find(t => t.id === product.type).sizes.find(size => size.id === event.target.value))}
                             autoWidth
                             label="Size"
                             MenuProps={{ disableScrollLock: true }}
@@ -274,35 +274,14 @@ export default function ProductCart(props) {
                             onMouseLeave={() => setHoverSize(false)}
                             onClick={() => setHoverSize(false)}
                         >
-                            <MenuItem value={'S'}
-                                sx={menuStyle}
-                            >
-                                S
-                            </MenuItem>
-                            <MenuItem
-                                value={'M'}
-                                sx={menuStyle}
-                            >
-                                M
-                            </MenuItem>
-                            <MenuItem
-                                value={'L'}
-                                sx={menuStyle}
-                            >
-                                L
-                            </MenuItem>
-                            <MenuItem
-                                value={'XL'}
-                                sx={menuStyle}
-                            >
-                                XL
-                            </MenuItem>
-                            <MenuItem
-                                value={'XXL'}
-                                sx={menuStyle}
-                            >
-                                XXL
-                            </MenuItem>
+                            {TYPES_POOL.find(t => t.id === product.type).sizes.map((size, i) =>
+                                <MenuItem value={size.id}
+                                    key={i}
+                                    sx={menuStyle}
+                                >
+                                    {size.title}
+                                </MenuItem>
+                            )}
                         </Select>
                     </FormControl>
                 </div>

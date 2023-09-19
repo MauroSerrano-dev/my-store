@@ -9,6 +9,7 @@ import Cookies from 'js-cookie';
 import { CART_COOKIE } from '../../consts'
 import Head from 'next/head'
 import ColorSelector from '@/components/ColorSelector'
+import SizesSelector from '@/components/SizesSelector'
 
 export default withRouter(props => {
     const {
@@ -22,6 +23,7 @@ export default withRouter(props => {
 
     const [product, setProduct] = useState()
     const [currentColor, setCurrentColor] = useState()
+    const [currentSize, setCurrentSize] = useState()
 
     useEffect(() => {
         console.log('aa', product)
@@ -43,11 +45,12 @@ export default withRouter(props => {
                 console.log(response.msg)
                 setProduct(response.product)
                 setCurrentColor(response.product.colors[0])
+                setCurrentSize(response.product.sizes[0])
             })
             .catch(err => console.error(err))
     }
 
-    function handleBuyNow(prod) {
+    function handleBuyNow() {
 
         const options = {
             method: 'POST',
@@ -56,15 +59,15 @@ export default withRouter(props => {
                 userId: 'userId',
                 cartItems: [
                     {
-                        title: prod.title,
-                        image: prod.images[0].src,
-                        desc: 'my product description',
-                        type: prod.type,
-                        id: prod.id,
-                        id_printify: prod.id_printify,
-                        price: prod.variants[0].price,
+                        title: product.title,
+                        image: product.images[0].src,
+                        desc: 'my productuct description',
+                        type: product.type,
+                        id: product.id,
+                        id_printify: product.id_printify,
+                        price: product.variants[0].price,
                         quantity: 1,
-                        variant_id: prod.variants[0].id,
+                        variant_id: product.variants[0].id,
                     }
                 ],
                 cancel_url: window.location.href,
@@ -80,50 +83,41 @@ export default withRouter(props => {
             .catch(err => console.error(err))
     }
 
-    function handleAddToCart(productProp) {
-        const mookapQuantity = 1
-        const mookapVariant = 0
+    function handleAddToCart() {
+        const prodVariant = product.variants.find(vari => vari.options.includes(currentSize.id) && vari.options.includes(currentColor.id))
 
         const productCart = {
-            id: productProp.id,
-            id_printify: productProp.id_printify,
-            variant_id: productProp.variants[mookapVariant].id,
-            quantity: mookapQuantity,
+            id: product.id,
+            printify_ids: product.printify_ids,
+            printify_id_default: product.printify_id_default,
+            variant_id: prodVariant.id,
+            variants: product.variants,
+            quantity: prodVariant.quantity,
+            size: currentSize,
+            color: currentColor,
             desc: 'item description',
-            type: productProp.type,
-            image: productProp.images[mookapVariant].src,
-            price: productProp.variants[mookapVariant].price,
-            title: productProp.title
+            type: product.type,
+            image: product.images.find(img => img.variants_id.includes(prodVariant.id) && img.color_id === currentColor.id).src,
+            price: prodVariant.price,
+            title: product.title
         }
 
-        const newCart = cart.some(prod => prod.id === productProp.id && prod.variant_id === productProp.variants[mookapVariant].id)
-            ? cart.map(p => p.id === productProp.id && p.variant_id === productProp.variants[mookapVariant].id
-                ? ({ ...p, quantity: p.quantity + mookapQuantity })
+        const newCart = cart.some(prod => prod.id === product.id && prod.variant_id === prodVariant.id)
+            ? cart.map(p => p.id === product.id && p.variant_id === prodVariant.id
+                ? ({ ...p, quantity: p.quantity + prodVariant.quantity })
                 : p
             )
             : cart.concat(productCart)
 
         setCart(newCart)
-
-        if (session) {
-            const options = {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    userId: session.id,
-                    cart: newCart
-                })
-            }
-            fetch("/api/cart", options)
-                .catch(err => console.error(err))
-        }
-        else if (session === null) {
-            Cookies.set(CART_COOKIE, JSON.stringify(newCart))
-        }
     }
 
     function handleColorChange(arr, index, color) {
         setCurrentColor(color)
+    }
+
+    function handleSizeChange(arr, index, size) {
+        setCurrentSize(size)
     }
 
     return (
@@ -146,26 +140,47 @@ export default withRouter(props => {
             {product &&
                 <div className={styles.productContainer}>
                     <div className={styles.left}>
-                        {product.colors.map(color =>
+                        {product.colors.map((color, i) =>
                             <ImagesSlider
+                                key={i}
                                 images={product.images.filter(img => img.color_id === color.id)}
                                 style={{
                                     position: 'absolute',
-                                    zIndex: color.id === currentColor.id ? '1' : 0
+                                    zIndex: color.id === currentColor.id ? 1 : 0
                                 }}
                             />
                         )}
                     </div>
                     <div className={styles.right}>
                         <h2>{product.title}</h2>
-                        <ColorSelector
-                            options={product.colors}
-                            value={[currentColor]}
-                            onChange={handleColorChange}
-                        />
+                        <div>
+                            <p style={{ textAlign: 'start', fontWeight: 'bold' }}>Pick a color</p>
+                            <ColorSelector
+                                options={product.colors}
+                                value={[currentColor]}
+                                onChange={handleColorChange}
+                            />
+                        </div>
+                        <div>
+                            <p style={{ textAlign: 'start', fontWeight: 'bold' }}>Pick a size</p>
+                            <SizesSelector
+                                value={[currentSize]}
+                                options={product.sizes}
+                                onChange={handleSizeChange}
+                            />
+                        </div>
+                        <p
+                            style={{
+                                fontSize: '27px',
+                                color: 'var(--primary)',
+                                fontWeight: 'bold',
+                            }}
+                        >
+                            {`${userCurrency.symbol} ${(product.variants.find(vari => vari.options.includes(currentSize.id) && vari.options.includes(currentColor.id)).price / 100).toFixed(2)}`}
+                        </p>
                         <Button
                             variant='contained'
-                            onClick={() => handleAddToCart(product)}
+                            onClick={() => handleAddToCart()}
                             sx={{
                                 width: '100%',
                                 height: '55px'
@@ -176,7 +191,7 @@ export default withRouter(props => {
                         </Button>
                         <Button
                             variant='outlined'
-                            onClick={() => handleBuyNow(product)}
+                            onClick={() => handleBuyNow()}
                             sx={{
                                 width: '100%',
                                 height: '55px'

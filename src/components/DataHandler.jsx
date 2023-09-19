@@ -17,8 +17,26 @@ export default function DataHandler(props) {
     const [userCurrency, setUserCurrency] = useState({ code: 'usd', symbol: '$' })
 
     // Inicialize o Firebase
-    const firebaseApp = initializeApp(firebaseConfig);
-    const auth = getAuth(firebaseApp);
+    const firebaseApp = initializeApp(firebaseConfig)
+    const auth = getAuth(firebaseApp)
+
+    useEffect(() => {
+        if (session) {
+            const options = {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    userId: session.id,
+                    cart: cart,
+                })
+            }
+            fetch("/api/cart", options)
+                .catch(err => console.error(err))
+        }
+        else {
+            Cookies.set(CART_COOKIE, JSON.stringify(cart))
+        }
+    }, [cart])
 
     function handleChangeCurrency(newCurrency) {
         Cookies.set('CURR', JSON.stringify(newCurrency))
@@ -189,7 +207,7 @@ export default function DataHandler(props) {
     return (
         <div
             onClick={() => {
-                console.log('session', session)
+                console.log('cart', cart)
             }}
         >
             <div

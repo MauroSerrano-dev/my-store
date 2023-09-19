@@ -22,7 +22,7 @@ export default function SizesSelector(props) {
                         ? value.filter(color => option.id !== color?.id)
                         : value.concat(option),
                         i,
-                        option.id
+                        option
                     )}
                     className={styles.button}
                     style={{

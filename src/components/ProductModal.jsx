@@ -4,6 +4,7 @@ import Cookies from 'js-cookie';
 import { motion } from "framer-motion";
 import Link from 'next/link';
 import { CART_COOKIE, convertDolarToCurrency } from '../../consts';
+import { useEffect } from 'react';
 
 export default function ProductModal(props) {
     const {
@@ -14,9 +15,13 @@ export default function ProductModal(props) {
         userCurrency,
     } = props
 
-    function handleDeleteCartProduct(productId) {
+    useEffect(() => {
+        console.log('product', product)
+    }, [product])
+
+    function handleDeleteCartProduct() {
         setCart(prev => {
-            const newCart = prev.filter(prod => prod.id !== productId)
+            const newCart = prev.filter(prod => prod.id !== product.id || prod.variant_id !== product.variant_id)
             if (session) {
                 const options = {
                     method: 'POST',
@@ -57,7 +62,7 @@ export default function ProductModal(props) {
             animate='visible'
         >
             <SlClose
-                onClick={() => handleDeleteCartProduct(product.id)}
+                onClick={() => handleDeleteCartProduct()}
                 color='#ffffff'
                 style={{
                     fontSize: '15px',
@@ -85,7 +90,10 @@ export default function ProductModal(props) {
                 </Link>
                 <div className={styles.infos}>
                     <p>
-                        Size: M
+                        Size: {product.size.title}
+                    </p>
+                    <p>
+                        Color: {product.color.title}
                     </p>
                     <p>
                         Quantity: {product.quantity}
