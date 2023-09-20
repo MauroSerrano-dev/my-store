@@ -138,7 +138,13 @@ async function createNewUserWithGoogle(user, id, cart_cookie_id) {
 
             const cart_id = await createCart(newUserRef.id, cartProducts ? cartProducts : [])
 
-            const newUser = { ...user, cart_id: cart_id }
+            const now = new Date()
+
+            const newUser = {
+                ...user,
+                cart_id: cart_id,
+                create_at: now
+            }
 
             await setDoc(newUserRef, newUser)
 

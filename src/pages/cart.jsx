@@ -96,7 +96,7 @@ export default function Cart(props) {
                     >
                         <div className={styles.emptyTitle}>
                             <h2><b>Hmmmm....</b> it looks like your cart is empty.</h2>
-                            <h2>Explore our <b>best products!</b></h2>
+                            <h2>Explore some of our <b>best products!</b></h2>
                         </div>
                         <Carousel
                             items={allProducts}

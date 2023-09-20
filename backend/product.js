@@ -49,15 +49,20 @@ async function createProduct(product) {
     const productRef = doc(db, process.env.COLL_PRODUCTS, product.id)
 
     try {
-        // Verifique se o documento já existe
         const docSnapshot = await getDoc(productRef)
         if (docSnapshot.exists()) {
             return { msg: `Product ID ${product.id} already exists. Cannot create product.` }
         }
 
-        // Salve o documento no Firestore
-        await setDoc(productRef, product)
-        return { msg: `Product ${product.id} created successfully!` }
+        const now = new Date()
+
+        const newProduct = {
+            ...product,
+            create_at: now
+        }
+        
+        await setDoc(productRef, newProduct)
+        return { msg: `Product ${newProduct.id} created successfully!` }
     } catch (error) {
         console.log("Error creating product:", error)
         return null;
@@ -271,18 +276,6 @@ async function getProductsByQueries(props) {
             products: []
         };
     }
-}
-
-async function translateTags(tagsArr) {
-    const arr = tagsArr
-    tagsArr.forEach(async word => {
-        const langArr = langdetect.detect(word)
-        langArr.forEach(async langObj => {
-            const translation = await translate(word, { from: langObj.lang, to: "en" })
-            arr.push(translation)
-        })
-    })
-    return arr
 }
 
 async function getProductById(id) {

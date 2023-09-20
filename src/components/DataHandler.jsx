@@ -164,7 +164,6 @@ export default function DataHandler(props) {
     }, [])
 
     function handleLogin(authUser) {
-        const now = new Date()
         const options = {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
@@ -176,7 +175,6 @@ export default function DataHandler(props) {
                     prodiders: authUser.providerData.map(provider => provider.providerId),
                     email_verified: authUser.emailVerified,
                     introduction_complete: false,
-                    create_at: now
                 },
                 cart_cookie_id: Cookies.get(CART_COOKIE),
                 providers: authUser.providerData.map(provider => provider.providerId)

@@ -60,7 +60,6 @@ export default withRouter(props => {
     }, [router])
 
     async function saveProduct() {
-        const create_at = new Date()
 
         const options = {
             method: 'POST',
@@ -72,10 +71,6 @@ export default withRouter(props => {
                     type: type,
                     images: product.colors.reduce((acc, color) => acc.concat(images[color.id].map(img => ({ src: img.src, color_id: img.color_id, variants_id: img.variants_id }))), []),
                     variants: product.variants.filter(vari => product.colors.some(color => vari.options.includes(color.id)) && product.sizes.some(size => vari.options.includes(size.id))),
-                    create_at: {
-                        text: create_at.toString(),
-                        ms: create_at.valueOf(),
-                    },
                 }
             })
         }

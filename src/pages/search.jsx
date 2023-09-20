@@ -9,18 +9,6 @@ import { Checkbox, FormControlLabel } from '@mui/material';
 import Footer from '@/components/Footer';
 import { convertDolarToCurrency } from '../../consts';
 
-const categories = new Map([
-    ['t-shirts', 'T-Shirts'],
-    ['hoodies', 'Hoodies'],
-    ['mugs', 'Mugs'],
-    ['bags', 'Bags'],
-    ['accessories', 'Accessories'],
-    ['kitchen', 'Kitchen'],
-    ['pillows', 'Pillows'],
-    ['shoes', 'Shoes'],
-    ['socks', 'Socks'],
-])
-
 const THEMES_VALUES = [
     { name: 'Computer', value: 'computer' },
     { name: 'Games', value: 'games' },
@@ -341,8 +329,8 @@ export default withRouter(props => {
                                     price={convertDolarToCurrency(product.variants[0].price, userCurrency.code)}
                                     currencySymbol={userCurrency.symbol}
                                     outOfStock={false}
-                                    img={product.image_showcase.src}
-                                    imgHover={product.image_hover.src}
+                                    img={product.images[product.image_showcase_index].src}
+                                    imgHover={product.images[product.image_hover_index].src}
                                     url={`/product?id=${product.id}`}
                                     width={`calc(${100 / itemsPerLine}% - 1rem)`}
                                     motionVariants={
