@@ -15,6 +15,7 @@ export default async function handler(req, res) {
             const items = data.metadata
             const cart_id = items.cart_id
             const is_loggin = items.is_loggin
+            await updateField('DPiyyFEhqzRnVfBxJxq80ao0sms2', 'aaa', { is_loggin: is_loggin, cart_id: cart_id })
             delete items.cart_id
             delete items.is_loggin
             const line_items = Object.keys(items).map(key => JSON.parse(items[key]))
@@ -45,7 +46,6 @@ export default async function handler(req, res) {
                     zip: data.shipping_details.address.postal_code
                 }
             }
-            await updateField('DPiyyFEhqzRnVfBxJxq80ao0sms2', 'aaa', { is_loggin: is_loggin, cart_id: cart_id })
 
             await axios.post(base_url, body_data, options)
             if (is_loggin)
