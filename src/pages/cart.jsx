@@ -5,6 +5,7 @@ import { convertDolarToCurrency, getCurrencyByCode, getShippingOptions } from '.
 import { useEffect, useState } from 'react'
 import Selector from '@/components/material-ui/Selector'
 import CarouselProducts from '@/components/CarouselProducts'
+import Cookies from 'js-cookie'
 
 export default function Cart(props) {
     const { session, cart, setCart, userCurrency, handleChangeCurrency } = props
