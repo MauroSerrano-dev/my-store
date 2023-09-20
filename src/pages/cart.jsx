@@ -1,7 +1,7 @@
 import ProductCart from '@/components/ProductCart'
 import styles from '@/styles/cart.module.css'
 import { Button } from '@mui/material'
-import { convertDolarToCurrency, getCurrencyByCode, getShippingOptions } from '../../consts'
+import { CART_COOKIE, convertDolarToCurrency, getCurrencyByCode, getShippingOptions } from '../../consts'
 import { useEffect, useState } from 'react'
 import Selector from '@/components/material-ui/Selector'
 import CarouselProducts from '@/components/CarouselProducts'
