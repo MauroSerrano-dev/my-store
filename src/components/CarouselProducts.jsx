@@ -1,11 +1,12 @@
-import styles from '@/styles/components/Carousel.module.css'
+import styles from '@/styles/components/CarouselProducts.module.css'
 import { IconButton } from '@mui/material'
 import KeyboardArrowRightRoundedIcon from '@mui/icons-material/KeyboardArrowRightRounded';
 import KeyboardArrowLeftRoundedIcon from '@mui/icons-material/KeyboardArrowLeftRounded';
 import { useEffect, useState } from 'react';
-import Link from 'next/link';
+import Product from './Product';
+import { convertDolarToCurrency } from '../../consts';
 
-export default function Carousel(props) {
+export default function CarouselProducts(props) {
     const {
         items,
         height,
@@ -14,7 +15,7 @@ export default function Carousel(props) {
         animationDuration = 200,
         itemWidth = 200,
         gap = 20,
-        type = 'imgs',
+        userCurrency,
     } = props
 
     const [itemsArray, setItemsArray] = useState(
@@ -75,38 +76,34 @@ export default function Carousel(props) {
             <div
                 className={styles.itemsContainer}
             >
+
                 {itemsArray.map((item, i) =>
-                    <Link
-                        legacyBehavior
-                        href={item.url}
+                    <div
+                        className={styles.product}
                         key={i}
+                        style={{
+                            left: `${(item.position) * (itemWidth + gap)}px`,
+                            width: `${itemWidth}px`,
+                            transition: item.position < items.length / 2 * (-1) || item.position > items.length * 1.5
+                                ? `all ${loop
+                                    ? 'linear'
+                                    : 'ease-in-out'} 0ms`
+                                : `all ${loop
+                                    ? 'linear'
+                                    : 'ease-in-out'} ${animationDuration}ms`
+                        }}
                     >
-                        <a
-                            className={`${styles.item} noUnderline`}
-                            style={{
-                                left: `${(item.position) * (itemWidth + gap)}px`,
-                                width: `${itemWidth}px`,
-                                transition: item.position < items.length / 2 * (-1) || item.position > items.length * 1.5
-                                    ? `all ${loop
-                                        ? 'linear'
-                                        : 'ease-in-out'} 0ms`
-                                    : `all ${loop
-                                        ? 'linear'
-                                        : 'ease-in-out'} ${animationDuration}ms`
-                            }}
-                        >
-                            <div className={styles.blackShadow}>
-                            </div>
-                            <span className={styles.itemTitle}>
-                                {item.title}
-                            </span>
-                            <img
-                                className={styles.itemImg}
-                                src={item.img}
-                                alt='category-image'
-                            />
-                        </a>
-                    </Link>
+                        <Product
+                            responsive
+                            name={item.title}
+                            price={convertDolarToCurrency(item.variants[0].price, userCurrency.code)}
+                            currencySymbol={userCurrency.symbol}
+                            outOfStock={false}
+                            img={item.images[item.image_showcase_index].src}
+                            imgHover={item.images[item.image_hover_index].src}
+                            url={`/product?id=${item.id}`}
+                        />
+                    </div>
                 )}
             </div>
             {!loop &&
@@ -121,6 +118,7 @@ export default function Carousel(props) {
                         backgroundColor: '#3b3a38',
                         transition: 'all 200ms ease-in-out',
                         scale: '0.8',
+                        top: -30
                     }}
                 >
                     <KeyboardArrowLeftRoundedIcon
@@ -144,7 +142,7 @@ export default function Carousel(props) {
                         backgroundColor: '#3b3a38',
                         transition: 'all 200ms ease-in-out',
                         scale: '0.8',
-                        top: type === 'products' ? -30 : undefined
+                        top: '-30'
                     }}
                 >
                     <KeyboardArrowRightRoundedIcon

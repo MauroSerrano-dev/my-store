@@ -2,11 +2,12 @@ import axios from 'axios';
 import { updateField } from '../../../../backend/user';
 
 export default async function handler(req, res) {
+    console.log('fudeu')
     if (req.method === "POST") {
         const body = req.body;
         const type = body.type;
         const data = body.data.object;
-
+        console.log('data', data)
         if (type === 'checkout.session.completed') {
             const base_url = `https://api.printify.com/v1/shops/${process.env.PRINTIFY_SHOP_ID}/orders.json`;
             const line_items = Object.keys(data.metadata).map(key => JSON.parse(data.metadata[key]));
@@ -29,7 +30,7 @@ export default async function handler(req, res) {
                     email: data.customer_details.email,
                     phone: data.customer_details.phone,
                     country: data.shipping_details.address.country,
-                    region: data.shipping_details.address.state === '' ? data.shipping_details.address.city : data.shipping_details.address.state,
+                    region: data.shipping_details.address.city,
                     address1: data.shipping_details.address.line1,
                     address2: data.shipping_details.address.line2,
                     city: data.shipping_details.address.city,
@@ -39,7 +40,6 @@ export default async function handler(req, res) {
             /* await updateField('joK8xLy3yyVz2kfNEW8kJkuD0pw2', 'aaa', body_data) */
             await axios.post(base_url, body_data, options);
             res.status(200).json({ message: 'Checkout Session Complete!' });
-
         }
         else if (type === 'checkout.session.async_payment_succeeded') {
             // Lógica para pagamento bem-sucedido

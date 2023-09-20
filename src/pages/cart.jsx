@@ -4,7 +4,7 @@ import { Button } from '@mui/material'
 import { convertDolarToCurrency, getCurrencyByCode, getShippingOptions } from '../../consts'
 import { useEffect, useState } from 'react'
 import Selector from '@/components/material-ui/Selector'
-import Carousel from '@/components/Carousel'
+import CarouselProducts from '@/components/CarouselProducts'
 
 export default function Cart(props) {
     const { session, cart, setCart, userCurrency, handleChangeCurrency } = props
@@ -24,7 +24,15 @@ export default function Cart(props) {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
-                cartItems: cart.map(item => ({ ...item, price: convertDolarToCurrency(item.price, userCurrency.code) })),
+                cartItems: cart.map(item => (
+                    {
+                        ...item,
+                        variant_id: item.printify_ids[getShippingOptions(shippingCountry)[item.type].provider.id]
+                            ? item.printify_ids[getShippingOptions(shippingCountry)[item.type].provider.id]
+                            : item.printify_id_default,
+                        price: convertDolarToCurrency(item.price, userCurrency.code),
+                    }
+                )),
                 cancel_url: window.location.href,
                 customer: session,
                 shippingValue: convertDolarToCurrency(shippingValue, userCurrency.code),
@@ -98,13 +106,12 @@ export default function Cart(props) {
                             <h2><b>Hmmmm....</b> it looks like your cart is empty.</h2>
                             <h2>Explore some of our <b>best products!</b></h2>
                         </div>
-                        <Carousel
+                        <CarouselProducts
                             items={allProducts}
                             height='400px'
                             width='90%'
                             animationDuration={200}
                             itemWidth={225}
-                            type='products'
                             userCurrency={userCurrency}
                         />
                     </main>
