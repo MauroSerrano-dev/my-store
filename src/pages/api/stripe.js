@@ -69,8 +69,8 @@ export default async function handler(req, res) {
         { coupon: '7Taroh9C' }
       ], */
       metadata: {
-        cart_id: cart_id,
-        is_loggin: !!customer,
+        cart_id: JSON.stringify(cart_id),
+        is_loggin: JSON.stringify(!!customer),
         ...cartMetadata
       },
       payment_method_types: ["card"],

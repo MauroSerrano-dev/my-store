@@ -38,7 +38,8 @@ export default function Cart(props) {
                 customer: session,
                 shippingValue: convertDolarToCurrency(shippingValue, userCurrency.code),
                 shippingCountry: shippingCountry,
-                currency: userCurrency.code
+                currency: userCurrency.code,
+                cart_id: session ? session.cart_id : Cookies.get(CART_COOKIE),
             })
         }
 

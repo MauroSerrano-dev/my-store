@@ -70,6 +70,7 @@ export default withRouter(props => {
                         variant_id: product.variants[0].id,
                     }
                 ],
+                success_url: window.location.href,
                 cancel_url: window.location.href,
                 customer: session,
                 cart_id: session ? session.cart_id : Cookies.get(CART_COOKIE),

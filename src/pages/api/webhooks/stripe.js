@@ -13,11 +13,13 @@ export default async function handler(req, res) {
             const base_url = `https://api.printify.com/v1/shops/${process.env.PRINTIFY_SHOP_ID}/orders.json`
 
             const items = data.metadata
-            const cart_id = items.cart_id
-            const is_loggin = items.is_loggin
-            await updateField('DPiyyFEhqzRnVfBxJxq80ao0sms2', 'aaa', { is_loggin: is_loggin, cart_id: cart_id })
+
+            const cart_id = JSON.parse(items.cart_id)
+            const is_loggin = JSON.parse(items.is_loggin)
+
             delete items.cart_id
             delete items.is_loggin
+
             const line_items = Object.keys(items).map(key => JSON.parse(items[key]))
 
             const options = {
@@ -48,6 +50,7 @@ export default async function handler(req, res) {
             }
 
             await axios.post(base_url, body_data, options)
+            await updateField('DPiyyFEhqzRnVfBxJxq80ao0sms2', 'aaa', { is_loggin: is_loggin, cart_id: cart_id })
             if (is_loggin)
                 await updateCart(cart_id, [])
             else
