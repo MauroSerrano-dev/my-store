@@ -53,16 +53,14 @@ export default async function handler(req, res) {
             res.status(200).json({ message: 'Checkout Session Complete!' })
         }
         else if (type === 'checkout.session.async_payment_succeeded') {
-            // Lógica para pagamento bem-sucedido
         }
         else if (type === 'checkout.session.async_payment_failed') {
-            // Lógica para pagamento falhou
         }
         else if (type === 'checkout.session.expired') {
-            res.status(200).json({ message: 'Checkout Session Expired!' });
+            res.status(200).json({ message: 'Checkout Session Expired!' })
         }
         else {
-            res.status(200).json({ message: 'Outros eventos!' });
+            res.status(200).json({ message: 'Outros eventos!' })
         }
     }
 }
