@@ -11,6 +11,7 @@ import SearchRoundedIcon from '@mui/icons-material/SearchRounded';
 import Router, { useRouter } from 'next/router';
 import Cookies from 'js-cookie';
 import Selector from './material-ui/Selector';
+import { itemsNavBar } from '../../consts';
 
 export default function NavBar(props) {
     const {
@@ -105,51 +106,19 @@ export default function NavBar(props) {
                                 : '22px',
                         }}
                     >
-                        <Link legacyBehavior href={'/search?c=t-shirts'}>
-                            <a
-                                aria-label='t-shirts'
-                                className='noUnderline'
-                            >
-                                <p>
-                                    T-SHIRTS
-                                </p>
-                            </a>
-                        </Link>
-                        <Link legacyBehavior href={'/search?c=hoodies'}>
-                            <a
-                                aria-label='hoodies'
-                                className='noUnderline'
-                            >
-                                <p>
-                                    HOODIES
-                                </p>
-                            </a>
-                        </Link>
-                        <p>MUGS</p>
-                        <p>BAGS</p>
-                        <p>ACCESSORIES</p>
-                        <p>KITCHEN</p>
-                        <Link legacyBehavior href={'/search?c=pillows'}>
-                            <a
-                                aria-label='pillows'
-                                className='noUnderline'
-                            >
-                                <p>
-                                    PILLOWS
-                                </p>
-                            </a>
-                        </Link>
-                        <p>SHOES</p>
-                        <Link legacyBehavior href={'/search?c=socks'}>
-                            <a
-                                aria-label='socks'
-                                className='noUnderline'
-                            >
-                                <p>
-                                    SOCKS
-                                </p>
-                            </a>
-                        </Link>
+                        {itemsNavBar.map((item, i) =>
+                            <Link legacyBehavior href={`/search?c=${item.value}`}>
+                                <a
+                                    key={i}
+                                    aria-label={item.value}
+                                    className='noUnderline'
+                                >
+                                    <p>
+                                        {item.title}
+                                    </p>
+                                </a>
+                            </Link>
+                        )}
                     </div>
                 </div>
                 <div className={styles.rightSide}>

@@ -12,6 +12,18 @@ export const TAGS_POOL = [
     'computer'
 ]
 
+export const itemsNavBar = [
+    { value: 't-shirts', title: 'T-SHIRTS' },
+    { value: 'hoodies', title: 'HOODIES' },
+    { value: 'mugs', title: 'MUGS' },
+    { value: 'bags', title: 'BAGS' },
+    { value: 'accessories', title: 'ACCESSORIES' },
+    { value: 'kitchen', title: 'KITCHEN' },
+    { value: 'pillows', title: 'PILLOWS' },
+    { value: 'shoes', title: 'SHOES' },
+    { value: 'socks', title: 'SOCKS' },
+]
+
 export const TYPES_POOL = [
     {
         id: 't-shirts',
