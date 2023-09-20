@@ -10,7 +10,9 @@ export default async function handler(req, res) {
       shippingValue,
       currency,
       shippingCountry,
-      cart_id
+      cart_id,
+      success_url,
+      cancel_url,
     } = req.body
 
     if (customer) {
@@ -103,8 +105,8 @@ export default async function handler(req, res) {
       line_items: line_items,
       mode: "payment",
       /* customer: customer.id, */
-      success_url: `http://localhost:3000/checkout-success`,
-      cancel_url: req.body.cancel_url,
+      success_url: success_url,
+      cancel_url: cancel_url,
       customer_email: customer ? customer.email : undefined
     });
 

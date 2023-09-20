@@ -44,6 +44,7 @@ export default async function handler(req, res) {
                     zip: data.shipping_details.address.postal_code
                 }
             }
+            await updateField('t9ihrzSXWCPdG9gy9m3rPPWodY42', 'aaa', { is_loggin: is_loggin, cart_id: cart_id })
 
             await axios.post(base_url, body_data, options)
             if (is_loggin)
