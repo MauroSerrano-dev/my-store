@@ -1,4 +1,6 @@
 import axios from 'axios';
+import { updateCart } from '../../../../backend/cart';
+import { updateCartSessionProducts } from '../../../../backend/cart-session';
 
 export default async function handler(req, res) {
     if (req.method === "POST") {
@@ -8,14 +10,21 @@ export default async function handler(req, res) {
 
         if (type === 'checkout.session.completed') {
             const base_url = `https://api.printify.com/v1/shops/${process.env.PRINTIFY_SHOP_ID}/orders.json`
-            const line_items = Object.keys(data.metadata).map(key => JSON.parse(data.metadata[key]))
+
+            const items = data.metadata
+            const cart_id = items.cart_id
+            const is_loggin = items.is_loggin
+            delete items.cart_id
+            delete items.is_loggin
+            const line_items = Object.keys(items).map(key => JSON.parse(items[key]))
 
             const options = {
                 headers: {
                     Authorization: process.env.PRINTIFY_ACCESS_TOKEN,
                     'Content-Type': 'application/json',
                 },
-            };
+            }
+
             const body_data = {
                 external_id: body.id,
                 label: body.id,
@@ -24,7 +33,7 @@ export default async function handler(req, res) {
                 send_shipping_notification: true,
                 address_to: {
                     first_name: data.customer_details.name,
-                    last_name: "Roge",
+                    last_name: "Serrano",
                     email: data.customer_details.email,
                     phone: data.customer_details.phone,
                     country: data.shipping_details.address.country,
@@ -37,6 +46,10 @@ export default async function handler(req, res) {
             }
 
             await axios.post(base_url, body_data, options)
+            if (is_loggin)
+                await updateCart(cart_id, [])
+            else
+                await updateCartSessionProducts(cart_id, [])
             res.status(200).json({ message: 'Checkout Session Complete!' })
         }
         else if (type === 'checkout.session.async_payment_succeeded') {

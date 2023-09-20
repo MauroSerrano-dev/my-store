@@ -71,7 +71,8 @@ export default withRouter(props => {
                     }
                 ],
                 cancel_url: window.location.href,
-                customer: session
+                customer: session,
+                cart_id: session ? session.cart_id : Cookies.get(CART_COOKIE),
             })
         }
 

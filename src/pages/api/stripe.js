@@ -4,11 +4,14 @@ const stripe = Stripe(process.env.STRIPE_SECRET_KEY);
 
 export default async function handler(req, res) {
   if (req.method === 'POST') {
-    const customer = req.body.customer
-    const cartItems = req.body.cartItems
-    const shippingValue = req.body.shippingValue
-    const currency = req.body.currency
-    const shippingCountry = req.body.shippingCountry
+    const {
+      customer,
+      cartItems,
+      shippingValue,
+      currency,
+      shippingCountry,
+      cart_id
+    } = req.body
 
     if (customer) {
       // Check if the email already exists in Stripe
@@ -63,7 +66,11 @@ export default async function handler(req, res) {
       /* discounts: [
         { coupon: '7Taroh9C' }
       ], */
-      metadata: cartMetadata,
+      metadata: {
+        cart_id: cart_id,
+        is_loggin: !!customer,
+        ...cartMetadata
+      },
       payment_method_types: ["card"],
       shipping_address_collection: {
         allowed_countries: [shippingCountry],
