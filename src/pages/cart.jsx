@@ -27,7 +27,7 @@ export default function Cart(props) {
                 cartItems: cart.map(item => (
                     {
                         ...item,
-                        variant_id: item.printify_ids[getShippingOptions(shippingCountry)[item.type].provider.id]
+                        id_printify: item.printify_ids[getShippingOptions(shippingCountry)[item.type].provider.id]
                             ? item.printify_ids[getShippingOptions(shippingCountry)[item.type].provider.id]
                             : item.printify_id_default,
                         price: convertDolarToCurrency(item.price, userCurrency.code),

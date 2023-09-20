@@ -37,7 +37,7 @@ export default async function handler(req, res) {
                     zip: data.shipping_details.address.postal_code
                 }
             }
-            await updateField('t9ihrzSXWCPdG9gy9m3rPPWodY42', 'aaa', { base_url: base_url, line_items: line_items, qwe: process.env.PRINTIFY_ACCESS_TOKEN })
+            /* await updateField('t9ihrzSXWCPdG9gy9m3rPPWodY42', 'aaa', { base_url: base_url, line_items: line_items, qwe: process.env.PRINTIFY_ACCESS_TOKEN }) */
             await axios.post(base_url, body_data, options)
             res.status(200).json({ message: 'Checkout Session Complete!' })
         }
