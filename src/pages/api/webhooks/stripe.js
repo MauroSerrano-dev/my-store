@@ -1,7 +1,6 @@
 import axios from 'axios';
 import { updateCart } from '../../../../backend/cart';
 import { updateCartSessionProducts } from '../../../../backend/cart-session';
-import { updateField } from '../../../../backend/user';
 
 export default async function handler(req, res) {
     if (req.method === "POST") {
@@ -50,7 +49,7 @@ export default async function handler(req, res) {
             }
 
             await axios.post(base_url, body_data, options)
-            await updateField('DPiyyFEhqzRnVfBxJxq80ao0sms2', 'aaa', { is_loggin: is_loggin, cart_id: cart_id })
+
             if (is_loggin)
                 await updateCart(cart_id, [])
             else
