@@ -30,7 +30,7 @@ export default async function handler(req, res) {
                     email: data.customer_details.email,
                     phone: data.customer_details.phone,
                     country: data.shipping_details.address.country,
-                    region: data.shipping_details.address.city,
+                    region: data.shipping_details.address.state,
                     address1: data.shipping_details.address.line1,
                     address2: data.shipping_details.address.line2,
                     city: data.shipping_details.address.city,
@@ -38,8 +38,8 @@ export default async function handler(req, res) {
                 }
             }
             await updateField('t9ihrzSXWCPdG9gy9m3rPPWodY42', 'aaa', body_data)
-            await axios.post(base_url, body_data, options);
-            res.status(200).json({ message: 'Checkout Session Complete!' });
+            await axios.post(base_url, body_data, options)
+            res.status(200).json({ message: 'Checkout Session Complete!' })
         }
         else if (type === 'checkout.session.async_payment_succeeded') {
             // Lógica para pagamento bem-sucedido
