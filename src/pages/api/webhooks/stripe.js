@@ -1,12 +1,11 @@
 import axios from 'axios';
 
 export default async function handler(req, res) {
-    console.log('fudeu')
     if (req.method === "POST") {
         const body = req.body
         const type = body.type
         const data = body.data.object
-        console.log('data', data)
+
         if (type === 'checkout.session.completed') {
             const base_url = `https://api.printify.com/v1/shops/${process.env.PRINTIFY_SHOP_ID}/orders.json`
             const line_items = Object.keys(data.metadata).map(key => JSON.parse(data.metadata[key]))
