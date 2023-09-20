@@ -1,10 +1,8 @@
 import styles from '@/styles/components/ProductModal.module.css'
 import { SlClose } from "react-icons/sl";
-import Cookies from 'js-cookie';
 import { motion } from "framer-motion";
 import Link from 'next/link';
-import { CART_COOKIE, convertDolarToCurrency } from '../../consts';
-import { useEffect } from 'react';
+import { convertDolarToCurrency } from '../../consts';
 
 export default function ProductModal(props) {
     const {
@@ -15,30 +13,8 @@ export default function ProductModal(props) {
         userCurrency,
     } = props
 
-    useEffect(() => {
-        console.log('product', product)
-    }, [product])
-
     function handleDeleteCartProduct() {
-        setCart(prev => {
-            const newCart = prev.filter(prod => prod.id !== product.id || prod.variant_id !== product.variant_id)
-            if (session) {
-                const options = {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        userId: session.id,
-                        cart: newCart,
-                    })
-                }
-                fetch("/api/cart", options)
-                    .catch(err => console.error(err))
-            }
-            else {
-                Cookies.set(CART_COOKIE, JSON.stringify(newCart))
-            }
-            return newCart
-        })
+        setCart(prev => prev.filter(prod => prod.id !== product.id || prod.variant_id !== product.variant_id))
     }
 
     return (

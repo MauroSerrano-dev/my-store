@@ -12,6 +12,8 @@ import {
 import { initializeApp } from "firebase/app"
 import { getAuth, createUserWithEmailAndPassword, sendEmailVerification } from "firebase/auth"
 import { firebaseConfig } from "../firebase.config"
+import { createCart } from "./cart"
+import { getCartSessionById, deleteCartSession } from "./cart-session"
 
 initializeApp(firebaseConfig)
 
@@ -86,14 +88,12 @@ async function createNewUserWithCredentials(user) {
                 providers: ['password'],
                 email_verified: false,
                 introduction_complete: false,
-                create_at: {
-                    text: now.toString(),
-                    ms: now.valueOf(),
-                }
+                create_at: now
             }
 
+            const cart_id = await createCart(newUserRef.id, [])
             // Set the document for the new user
-            await setDoc(newUserRef, newUser)
+            await setDoc(newUserRef, { ...newUser, cart_id: cart_id })
 
             /* // Envie o e-mail de verificação
             sendEmailVerification(authenticatedUser)
@@ -120,27 +120,33 @@ async function createNewUserWithCredentials(user) {
     }
 }
 
-async function createNewUserWithGoogle(user, id) {
+async function createNewUserWithGoogle(user, id, cart_cookie_id) {
     try {
         // Verifique se o usuário com o mesmo e-mail já existe
-        const userIdExists = await getUserIdByEmail(user.email);
+        const userIdExists = await getUserIdByEmail(user.email)
 
         // Se o usuário não existir, crie um novo
         if (!userIdExists) {
             // Create a reference to the users collection
-            const usersCollection = collection(db, process.env.COLL_USERS);
+            const usersCollection = collection(db, process.env.COLL_USERS)
 
             // Add the new user to the collection with password encryption
-            const newUserRef = doc(usersCollection, id);
+            const newUserRef = doc(usersCollection, id)
 
-            // Set the document for the new user
-            await setDoc(newUserRef, user);
+            const cartProducts = await getCartSessionById(cart_cookie_id)
+            await deleteCartSession(cart_cookie_id)
 
-            console.log(`${user.email} has been added as a new user.`);
+            const cart_id = await createCart(newUserRef.id, cartProducts ? cartProducts : [])
 
-            return user
+            const newUser = { ...user, cart_id: cart_id }
+
+            await setDoc(newUserRef, newUser)
+
+            console.log(`${newUser.email} has been added as a new user.`)
+
+            return newUser
         } else {
-            console.log(`${user.email} already exists as a user.`);
+            console.log(`${user.email} already exists as a user.`)
             return null;
         }
     } catch (error) {
@@ -204,6 +210,10 @@ async function updateField(userId, fieldName, value) {
             await updateDoc(userRef, userData);
 
             console.log(`User ${userId} field ${fieldName} updated successfully!`);
+
+            const updatedUserDoc = await getDoc(userRef);
+
+            return updatedUserDoc.data()
         } else {
             console.log(`User with id ${userId} not found.`);
         }
@@ -219,5 +229,5 @@ export {
     removeEmailVerifiedField,
     checkUserExistsByEmail,
     getUserById,
-    updateField
+    updateField,
 }

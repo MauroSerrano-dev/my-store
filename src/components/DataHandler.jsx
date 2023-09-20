@@ -5,12 +5,12 @@ import Cookies from 'js-cookie';
 import { getAuth, onAuthStateChanged, signOut, signInWithEmailAndPassword } from "firebase/auth";
 import { initializeApp } from 'firebase/app';
 import { firebaseConfig } from '../../firebase.config';
-import { CART_COOKIE, convertDolarToCurrency } from '../../consts';
+import { CART_COOKIE } from '../../consts';
 import Router from 'next/router';
 
 export default function DataHandler(props) {
     const { Component, pageProps, primaryColor } = props
-    const [cart, setCart] = useState([])
+    const [cart, setCart] = useState()
     const [isScrollAtTop, setIsScrollAtTop] = useState(true)
     const [session, setSession] = useState()
     const [showIntroduction, setShowIntroduction] = useState(false)
@@ -21,22 +21,110 @@ export default function DataHandler(props) {
     const auth = getAuth(firebaseApp)
 
     useEffect(() => {
+        if (session !== undefined) {
+            getInicialCart()
+        }
+    }, [session])
+
+    useEffect(() => {
+        if (cart)
+            updateCart()
+    }, [cart])
+
+    function getInicialCart() {
         if (session) {
-            const options = {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    userId: session.id,
-                    cart: cart,
-                })
-            }
-            fetch("/api/cart", options)
-                .catch(err => console.error(err))
+            getUserCart()
         }
         else {
-            Cookies.set(CART_COOKIE, JSON.stringify(cart))
+            const cart_id = Cookies.get(CART_COOKIE)
+            if (cart_id) {
+                getUserCartSession(cart_id)
+            }
+            else {
+                setCart([])
+            }
         }
-    }, [cart])
+    }
+
+    function updateCart() {
+        if (session)
+            putCart()
+        else {
+            const cart_id = Cookies.get(CART_COOKIE)
+            if (cart_id) {
+                putCartSession(cart_id)
+            }
+            else {
+                postNewCart(cart)
+            }
+        }
+    }
+
+    function putCart() {
+        const options = {
+            method: 'PATCH',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                cartId: session.cart_id,
+                cart: cart,
+            })
+        }
+        fetch("/api/cart", options)
+    }
+
+    function putCartSession(cartId) {
+        const options = {
+            method: 'PATCH',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                cartId: cartId,
+                cart: cart,
+            })
+        }
+        fetch("/api/cart-session", options)
+    }
+
+    function postNewCart(cart) {
+        const options = {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                cart: cart
+            })
+        }
+        fetch("/api/cart-session", options)
+            .then(response => response.json())
+            .then(response => Cookies.set(CART_COOKIE, response.cart_id))
+            .catch(err => console.error(err))
+    }
+
+    function getUserCart() {
+        const options = {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                cart_id: session.cart_id,
+            },
+        }
+        fetch("/api/cart", options)
+            .then(response => response.json())
+            .then(response => setCart(response.cart))
+            .catch(err => console.error(err))
+    }
+
+    function getUserCartSession(cart_id) {
+        const options = {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                cart_id: cart_id,
+            },
+        }
+        fetch("/api/cart-session", options)
+            .then(response => response.json())
+            .then(response => setCart(response.cart))
+            .catch(err => console.error(err))
+    }
 
     function handleChangeCurrency(newCurrency) {
         Cookies.set('CURR', JSON.stringify(newCurrency))
@@ -85,15 +173,12 @@ export default function DataHandler(props) {
                 new_user: {
                     email: authUser.email,
                     name: authUser.displayName,
-                    cart: [],
                     prodiders: authUser.providerData.map(provider => provider.providerId),
                     email_verified: authUser.emailVerified,
                     introduction_complete: false,
-                    create_at: {
-                        text: now.toString(),
-                        ms: now.valueOf(),
-                    }
+                    create_at: now
                 },
+                cart_cookie_id: Cookies.get(CART_COOKIE),
                 providers: authUser.providerData.map(provider => provider.providerId)
             })
         }
@@ -102,6 +187,7 @@ export default function DataHandler(props) {
             .then(response => response.json())
             .then(response => handleSetSession(response))
             .catch(err => console.error(err))
+        Cookies.remove(CART_COOKIE)
     }
 
     function handleSetSession(session) {
@@ -122,7 +208,7 @@ export default function DataHandler(props) {
 
     function logout() {
         setSession(null)
-        setCart([])
+        /* setCart([]) */
         signOut(auth)
         Router.push('/')
     }
@@ -168,46 +254,10 @@ export default function DataHandler(props) {
         }
     }, [])
 
-    useEffect(() => {
-        if (session) {
-            setCart(session.cart)
-        }
-        else if (session === null && Cookies.get(CART_COOKIE)) {
-            setCart(JSON.parse(Cookies.get(CART_COOKIE)))
-        }
-        if (session && Cookies.get(CART_COOKIE)) {
-            const cookieCart = JSON.parse(Cookies.get(CART_COOKIE))
-            const newCart = session.cart
-                .map(userProduct =>
-                ({
-                    ...userProduct,
-                    quantity: cookieCart.some(cookieProduct => cookieProduct.id === userProduct.id && cookieProduct.variant === userProduct.variant)
-                        ? userProduct.quantity + cookieCart.filter(cookieProduct => cookieProduct.id === userProduct.id && cookieProduct.variant === userProduct.variant)[0].quantity
-                        : userProduct.quantity
-                }))
-                .concat(cookieCart.filter(cookieProduct =>
-                    session.cart.every(userProduct => cookieProduct.id !== userProduct.id || cookieProduct.variant !== userProduct.variant))
-                )
-            setCart(newCart)
-            const options = {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    userId: session.id,
-                    cart: newCart
-                })
-            }
-            fetch("/api/cart", options)
-                .catch(err => console.error(err))
-            Cookies.remove(CART_COOKIE)
-        }
-    }, [session])
-
-
     return (
         <div
             onClick={() => {
-                console.log('cart', cart)
+                console.log('session', session)
             }}
         >
             <div
@@ -264,6 +314,6 @@ export default function DataHandler(props) {
                     </h1>
                 </div>
             }
-        </div >
+        </div>
     )
 }

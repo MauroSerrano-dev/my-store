@@ -4,18 +4,20 @@ import { Button } from '@mui/material'
 import { convertDolarToCurrency, getCurrencyByCode, getShippingOptions } from '../../consts'
 import { useEffect, useState } from 'react'
 import Selector from '@/components/material-ui/Selector'
+import Carousel from '@/components/Carousel'
 
 export default function Cart(props) {
     const { session, cart, setCart, userCurrency, handleChangeCurrency } = props
 
     const [shippingValue, setShippingValue] = useState(0)
     const [shippingCountry, setShippingCountry] = useState('US')
+    const [allProducts, setAllProducts] = useState([])
 
-    const ITEMS_TOTAL = (cart.reduce((acc, product) => acc + (convertDolarToCurrency(product.price, userCurrency.code) * product.quantity), 0) / 100).toFixed(2)
+    const ITEMS_TOTAL = (cart?.reduce((acc, product) => acc + (convertDolarToCurrency(product.price, userCurrency.code) * product.quantity), 0) / 100).toFixed(2)
 
     const SHIPPING_CONVERTED = convertDolarToCurrency(shippingValue, userCurrency.code)
 
-    const ORDER_TOTAL = ((SHIPPING_CONVERTED + cart.reduce((acc, product) => acc + (convertDolarToCurrency(product.price, userCurrency.code) * product.quantity), 0)) / 100).toFixed(2)
+    const ORDER_TOTAL = ((SHIPPING_CONVERTED + cart?.reduce((acc, product) => acc + (convertDolarToCurrency(product.price, userCurrency.code) * product.quantity), 0)) / 100).toFixed(2)
 
     function handleCheckout(cart) {
         const options = {
@@ -37,16 +39,33 @@ export default function Cart(props) {
             .catch(err => console.error(err))
     }
 
+    async function getAllProducts() {
+        const options = {
+            method: 'GET'
+        }
+
+        const products = await fetch("/api/products", options)
+            .then(response => response.json())
+            .then(response => response.products)
+            .catch(err => console.error(err))
+
+        setAllProducts(products)
+    }
+
     useEffect(() => {
         getShippingValue()
     }, [cart, shippingCountry])
+
+    useEffect(() => {
+        getAllProducts()
+    }, [])
 
     function getShippingValue() {
         const country = getShippingOptions(shippingCountry)
         let value = 0
         let typesAlreadyIn = []
 
-        value = cart.reduce((acc, item, i) => {
+        value = cart?.reduce((acc, item, i) => {
             const result = acc + (
                 typesAlreadyIn.includes(item.type)
                     ? country[item.type].add_item * item.quantity
@@ -69,132 +88,153 @@ export default function Cart(props) {
         <div className={styles.container} >
             <header>
             </header>
-            <main className={styles.main}>
-                <div
-                    className={styles.productsContainer}
-                >
-                    <div
-                        className={styles.productsHead}
+            {!cart
+                ? <div></div>
+                : cart.length === 0
+                    ? <main
+                        className={`${styles.main} ${styles.mainEmpty}`}
                     >
-                        <h1>Your Cart</h1>
-                    </div>
-                    <div
-                        className={styles.productsBody}
-                    >
-                        {cart.map((product, i) =>
-                            <ProductCart
-                                session={session}
-                                setCart={setCart}
-                                product={product}
-                                key={i}
-                                index={i}
-                                userCurrency={userCurrency}
-                            />
-                        )}
-                    </div>
-                </div>
-                <div
-                    className={styles.detailsContainer}
-                >
-                    <div
-                        className={styles.detailsHead}
-                    >
-                        <h3>
-                            Order details
-                        </h3>
-                    </div>
-                    <div
-                        className={styles.detailsBody}
-                    >
-                        <div className={styles.detailsItem}>
-                            <p>
-                                Ship To:
-                            </p>
-                            <Selector
-                                label='Country'
-                                value={shippingCountry}
-                                options={[
-                                    { value: 'BR', name: 'Brazil' },
-                                    { value: 'DE', name: 'Germany' },
-                                    { value: 'PL', name: 'Poland' },
-                                    { value: 'UK', name: 'United Kingdom' },
-                                    { value: 'US', name: 'United States' },
-                                ]}
-                                width='170px'
-                                dark
-                                onChange={handleChangeCountrySelector}
-                            />
+                        <div className={styles.emptyTitle}>
+                            <h2><b>Hmmmm....</b> it looks like your cart is empty.</h2>
+                            <h2>Explore our <b>best products!</b></h2>
                         </div>
-                        <div className={styles.detailsItem}>
-                            <p>
-                                Currency:
-                            </p>
-                            <Selector
-                                label='currency'
-                                value={userCurrency.code}
-                                options={[
-                                    { value: 'usd', name: 'USD' },
-                                    { value: 'eur', name: 'EUR' },
-                                    { value: 'gbp', name: 'GBP' },
-                                    { value: 'brl', name: 'BRL' },
-                                ]}
-                                width='100px'
-                                dark
-                                onChange={(event) => handleChangeCurrency(getCurrencyByCode(event.target.value))}
-                            />
+                        <Carousel
+                            items={allProducts}
+                            height='400px'
+                            width='90%'
+                            animationDuration={200}
+                            itemWidth={225}
+                            type='products'
+                            userCurrency={userCurrency}
+                        />
+                    </main>
+                    : <main className={styles.main}>
+                        <div
+                            className={styles.productsContainer}
+                        >
+                            <div
+                                className={styles.productsHead}
+                            >
+                                <h1>Your Cart</h1>
+                            </div>
+                            <div
+                                className={styles.productsBody}
+                            >
+                                {cart.map((product, i) =>
+                                    <ProductCart
+                                        session={session}
+                                        setCart={setCart}
+                                        product={product}
+                                        key={i}
+                                        index={i}
+                                        userCurrency={userCurrency}
+                                    />
+                                )}
+                            </div>
                         </div>
-                        <div className={styles.detailsItem}>
-                            <p>
-                                Items Total:
-                            </p>
-                            <p>
-                                {`${userCurrency.symbol} ${ITEMS_TOTAL}`}
-                            </p>
-                        </div>
-                        <div className={styles.detailsItem}>
-                            <p>
-                                Shipping & Taxes:
-                            </p>
-                            <p>
-                                {`${userCurrency.symbol} ${(SHIPPING_CONVERTED / 100).toFixed(2)}`}
-                            </p>
-                        </div>
-                        <div className={styles.orderTotalContainer}>
-                            <div className={styles.detailsItem}>
-                                <p>
-                                    Order Total:
-                                </p>
-                                <p
-                                    style={{
-                                        fontWeight: 'bold'
+                        <div
+                            className={styles.detailsContainer}
+                        >
+                            <div
+                                className={styles.detailsHead}
+                            >
+                                <h3>
+                                    Order details
+                                </h3>
+                            </div>
+                            <div
+                                className={styles.detailsBody}
+                            >
+                                <div className={styles.detailsItem}>
+                                    <p>
+                                        Ship To:
+                                    </p>
+                                    <Selector
+                                        label='Country'
+                                        value={shippingCountry}
+                                        options={[
+                                            { value: 'BR', name: 'Brazil' },
+                                            { value: 'DE', name: 'Germany' },
+                                            { value: 'PL', name: 'Poland' },
+                                            { value: 'UK', name: 'United Kingdom' },
+                                            { value: 'US', name: 'United States' },
+                                        ]}
+                                        width='170px'
+                                        dark
+                                        onChange={handleChangeCountrySelector}
+                                    />
+                                </div>
+                                <div className={styles.detailsItem}>
+                                    <p>
+                                        Currency:
+                                    </p>
+                                    <Selector
+                                        label='currency'
+                                        value={userCurrency.code}
+                                        options={[
+                                            { value: 'usd', name: 'USD' },
+                                            { value: 'eur', name: 'EUR' },
+                                            { value: 'gbp', name: 'GBP' },
+                                            { value: 'brl', name: 'BRL' },
+                                        ]}
+                                        width='100px'
+                                        dark
+                                        onChange={(event) => handleChangeCurrency(getCurrencyByCode(event.target.value))}
+                                    />
+                                </div>
+                                <div className={styles.detailsItem}>
+                                    <p>
+                                        Items Total:
+                                    </p>
+                                    <p>
+                                        {`${userCurrency.symbol} ${ITEMS_TOTAL}`}
+                                    </p>
+                                </div>
+                                <div className={styles.detailsItem}>
+                                    <p>
+                                        Shipping & Taxes:
+                                    </p>
+                                    <p>
+                                        {`${userCurrency.symbol} ${(SHIPPING_CONVERTED / 100).toFixed(2)}`}
+                                    </p>
+                                </div>
+                                <div className={styles.orderTotalContainer}>
+                                    <div className={styles.detailsItem}>
+                                        <p>
+                                            Order Total:
+                                        </p>
+                                        <p
+                                            style={{
+                                                fontWeight: 'bold'
+                                            }}
+                                        >
+                                            {`${userCurrency.symbol} ${ORDER_TOTAL}`}
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div
+                                className={styles.detailsBottom}
+                            >
+                                <Button
+                                    variant='contained'
+                                    size='large'
+                                    onClick={() => handleCheckout(cart)}
+                                    sx={{
+                                        width: '100%',
+                                        color: 'white',
+                                        fontWeight: 'bold',
                                     }}
                                 >
-                                    {`${userCurrency.symbol} ${ORDER_TOTAL}`}
+                                    Checkout
+                                </Button>
+                                <p className={styles.securedText}>
+                                    Transaction secured by <a href='https://stripe.com' target='_blank'>Stripe</a>
                                 </p>
                             </div>
                         </div>
-                    </div>
-                    <div
-                        className={styles.detailsBottom}
-                    >
-                        <Button
-                            variant='contained'
-                            size='large'
-                            onClick={() => handleCheckout(cart)}
-                            sx={{
-                                width: '100%',
-                                color: 'white',
-                                fontWeight: 'bold',
-                            }}
-                        >
-                            Checkout
-                        </Button>
-                        <p className={styles.securedText}>
-                            Transaction secured by <a href='https://stripe.com' target='_blank'>Stripe</a>
-                        </p>
-                    </div>
-                </div>
-            </main>
+                    </main>
+            }
         </div>
     )
 }

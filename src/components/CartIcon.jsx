@@ -16,7 +16,7 @@ export default function CartIcon(props) {
     const [open, setOpen] = useState(false)
 
     useEffect(() => {
-        if (cart.length === 0)
+        if (cart && cart.length === 0)
             setOpen(false)
     }, [cart])
 
@@ -37,7 +37,7 @@ export default function CartIcon(props) {
                             color: 'var(--global-white)'
                         }}
                     />
-                    {session !== undefined && cart.length > 0 &&
+                    {session !== undefined && cart && cart.length > 0 &&
                         <div
                             className={styles.cartCounter}
                             style={{
@@ -50,7 +50,7 @@ export default function CartIcon(props) {
                 </a>
             </Link>
             {
-                open && cart.length > 0 &&
+                open && cart && cart.length > 0 &&
                 <div
                     className={styles.contentContainer}
                 >
