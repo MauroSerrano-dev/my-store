@@ -364,7 +364,7 @@ export default function DataHandler(props) {
                         options={productOptions}
                         setOptions={setProductOptions}
                         setSearch={setSearch}
-                        barHeight={32}
+                        barHeight={34}
                     />
                 </div>
             </div>
