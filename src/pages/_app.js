@@ -33,6 +33,8 @@ export default function App(props) {
   return (
     <div>
       <Head>
+        <meta name="theme-color" content={primaryColor} />
+
         <Script src="https://js.stripe.com/v3/" async></Script>
         {process.env.NODE_ENV === 'production' &&
           <script
