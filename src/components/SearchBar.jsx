@@ -15,6 +15,8 @@ export default function SearchBar(props) {
         options = [],
         setOptions,
         style,
+        barStyle,
+        barHeight = 38,
         setSearch
     } = props
 
@@ -45,14 +47,7 @@ export default function SearchBar(props) {
     }, [show])
 
     useEffect(() => {
-        if (!showOptions && (options.length > 0 && focus)) {
-            setShowOptions(true)
-        }
-        else if (showOptions && !(options.length > 0 && focus)) {
-            setTimeout(() =>
-                setShowOptions(false)
-                , 250)
-        }
+        setShowOptions(options.length > 0 && focus)
     }, [options, focus])
 
     return (
@@ -61,12 +56,17 @@ export default function SearchBar(props) {
             className={styles.container}
             onFocus={() => setFocus(true)}
             onBlur={() => setFocus(false)}
-            style={style}
+            style={{
+                ...style,
+                height: barHeight,
+                opacity: opacity
+            }}
         >
             <div
                 className={styles.bar}
                 style={{
-                    opacity: opacity
+                    ...barStyle,
+                    height: barHeight,
                 }}
             >
                 <input
@@ -85,37 +85,40 @@ export default function SearchBar(props) {
                     <SearchRoundedIcon
                         color='primary'
                         sx={{
-                            scale: '1.3'
+                            scale: String(barHeight * 0.038)
                         }}
                     />
                 </button>
-                <div
-                    className={styles.options}
-                    style={{
-                        paddingTop: showOptions
-                            ? '1.7rem'
-                            : '0px',
-                        paddingBottom: showOptions
-                            ? '0.7rem'
-                            : '0px',
-                        height: showOptions
-                            ? `${38.4 + options.length * 50}px`
-                            : '0px',
-                    }}
-                >
-                    {showOptions &&
-                        options.map((option, i) =>
-                            <Link
-                                legacyBehavior href={`/product?id=${option.id}`}
-                                key={i}
+            </div>
+            <div
+                className={styles.options}
+                style={{
+                    paddingTop: showOptions
+                        ? '1.7rem'
+                        : '0px',
+                    paddingBottom: showOptions
+                        ? '0.7rem'
+                        : '0px',
+                    height: showOptions
+                        ? `${38.4 + options.length * 50}px`
+                        : '0px',
+                }}
+            >
+                {showOptions &&
+                    options.map((option, i) =>
+                        <Link
+                            legacyBehavior href={`/product?id=${option.id}`}
+                            key={i}
+                        >
+                            <a
+                                onClick={() => setTimeout(() => setOptions([]), 300)}
+                                className={`${styles.option} noUnderline`}
+                                style={{
+                                    height: `${100 / options.length}%`
+                                }}
                             >
-                                <motion.a
-                                    onClick={() => setTimeout(() => setOptions([]), 300)}
-                                    className={`${styles.option} noUnderline`}
-                                    key={i}
-                                    style={{
-                                        height: `${100 / options.length}%`
-                                    }}
+                                <motion.div
+                                    className={styles.optionMotion}
                                     variants={{
                                         hidden: {
                                             opacity: 0,
@@ -135,10 +138,10 @@ export default function SearchBar(props) {
                                         src={option.images[0].src}
                                     />
                                     <p>{option.title}</p>
-                                </motion.a>
-                            </Link>
-                        )}
-                </div>
+                                </motion.div>
+                            </a>
+                        </Link>
+                    )}
             </div>
         </div>
     )

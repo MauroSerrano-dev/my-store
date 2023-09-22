@@ -344,7 +344,7 @@ export default withRouter(props => {
                                                 y: 0,
                                                 transition: {
                                                     duration: 0.3,
-                                                    delay: 0.2 + 0.3 * Math.floor(i / itemsPerLine),
+                                                    delay: 0.5 + 0.3 * Math.floor(i / itemsPerLine),
                                                 }
                                             }
                                         }

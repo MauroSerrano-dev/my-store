@@ -45,6 +45,8 @@
     transition: all ease-in-out 200ms;
 
     padding: 0 5%;
+
+    z-index: -1;
 }
 
 .subNavBar p {

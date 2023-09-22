@@ -90,9 +90,9 @@ export default function NavBar(props) {
                                 >
                                     <a
                                         aria-label={item.value}
-                                        className='noUnderline'
+                                        className={`noUnderline fillHeight flex center ${styles.titleLink}`}
                                     >
-                                        <p>
+                                        <p className={styles.title}>
                                             {item.title}
                                         </p>
                                     </a>

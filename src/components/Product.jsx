@@ -66,7 +66,7 @@ export default function Product(props) {
 
     return (
         <Link legacyBehavior href={url}>
-            <motion.a
+            <a
                 className={styles.container}
                 ref={productRef}
                 style={{
@@ -74,16 +74,16 @@ export default function Product(props) {
                     textDecoration: 'none',
                     height: responsive ? `calc(${productWidth} * 1.575)` : `calc(${productWidth} * 1.575)`,
                     width: responsive ? '100%' : width,
-                    marginBottom: `calc(${productWidth} * 0.2)`
+                    marginBottom: `calc(${productWidth} * 0.2)`,
                 }}
-                variants={motionVariants}
-                initial='hidden'
-                animate='visible'
             >
-                <div
+                <motion.div
                     className={styles.productContainer}
                     onMouseEnter={handleMouseEnter}
                     onMouseLeave={handleMouseLeave}
+                    variants={motionVariants}
+                    initial='hidden'
+                    animate='visible'
                 >
                     {supportsHoverAndPointer &&
                         <div
@@ -183,8 +183,8 @@ export default function Product(props) {
                             </Button>
                         </div>
                     }
-                </div>
-            </motion.a>
+                </motion.div>
+            </a>
         </Link>
     )
 }

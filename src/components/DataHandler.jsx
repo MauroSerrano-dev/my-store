@@ -313,6 +313,7 @@ export default function DataHandler(props) {
 
     useEffect(() => {
         setSearch(router?.query?.s ? router.query.s : '')
+        setProductOptions([])
     }, [router])
 
     return (
@@ -363,9 +364,7 @@ export default function DataHandler(props) {
                         options={productOptions}
                         setOptions={setProductOptions}
                         setSearch={setSearch}
-                        style={{
-                            height: '2.2rem'
-                        }}
+                        barHeight={32}
                     />
                 </div>
             </div>

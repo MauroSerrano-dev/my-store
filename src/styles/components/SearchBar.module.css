@@ -1,23 +1,27 @@
 .container {
     position: relative;
     width: 100%;
-    height: 2.4rem;
     z-index: 10;
+    padding-top: 1.2rem;
+
+    transition: all ease-in-out 200ms;
 }
 
 .bar {
+    top: 0;
     display: flex;
     flex-direction: row;
 
+    position: absolute;
+
     width: 100%;
-    height: 100%;
     background-color: white;
     border-radius: 7rem;
     box-shadow: 0px 0px 20px -9px black;
 
     border: rgb(145, 145, 145) 1px solid;
 
-    transition: all ease-in-out 200ms;
+    z-index: 1;
 }
 
 .input {
@@ -45,8 +49,7 @@
     display: flex;
     flex-direction: column;
 
-    position: absolute;
-    width: 100%;
+    width: calc(100% - 1px);
 
     background-color: rgb(235, 235, 235);
     top: 50%;
@@ -73,8 +76,6 @@
 
     padding: 0.3rem 1rem;
 
-    gap: 1rem;
-
     background-color: rgb(235, 235, 235);
 
     --text-color: var(--text-black);
@@ -82,7 +83,18 @@
     transition: background-color 150ms ease-in-out;
 }
 
-.option img {
+.optionMotion {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+
+    gap: 1rem;
+
+    height: 100%;
+}
+
+.optionMotion img {
     height: 100%;
 }
 
