@@ -317,7 +317,7 @@ export default function DataHandler(props) {
     }, [router])
 
     return (
-        true &&
+        mobile !== undefined &&
         <div
             onClick={() => {
                 console.log('session', session)
