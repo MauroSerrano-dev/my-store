@@ -131,9 +131,9 @@ export default withRouter(props => {
                 <meta property="og:title" content={product.title} key='og:title' />
                 <meta property="og:image:alt" content={product.title} key='og:image:alt' />
                 <meta property="og:description" content={product.description} key='og:description' />
-                <meta property="og:image" content={product.images[0].src} key='og:image' />
+                <meta property="og:image" itemprop="image" content={product.images[0].src} key='og:image' />
                 <meta property="og:type" content="product" key='og:type' />
-                <meta property="og:url" content={`https://my-store-sigma-nine.vercel.app/product/${product.id}`} key='url' />
+                <meta property="og:url" content={`https://my-store-sigma-nine.vercel.app/product/${product.id}`} key='og:url' />
             </Head>
             <div className={styles.productContainer}>
                 <div className={styles.left}>
