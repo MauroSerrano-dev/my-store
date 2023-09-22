@@ -50,7 +50,7 @@ export default function ProductModal(props) {
                     zIndex: 10,
                 }}
             />
-            <Link legacyBehavior href={`/product?id=${product.id}`}>
+            <Link legacyBehavior href={`/product/${product.id}`}>
                 <a className={styles.imageContainer}>
                     <img
                         className={styles.image}
@@ -59,7 +59,7 @@ export default function ProductModal(props) {
                 </a>
             </Link>
             <div className={styles.right}>
-                <Link legacyBehavior href={`/product?id=${product.id}`}>
+                <Link legacyBehavior href={`/product/${product.id}`}>
                     <a>
                         <h6>{product.title}</h6>
                     </a>

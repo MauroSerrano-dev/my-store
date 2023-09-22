@@ -331,7 +331,7 @@ export default withRouter(props => {
                                     outOfStock={false}
                                     img={product.images[product.image_showcase_index].src}
                                     imgHover={product.images[product.image_hover_index].src}
-                                    url={`/product?id=${product.id}`}
+                                    url={`/product/${product.id}`}
                                     width={`calc(${100 / itemsPerLine}% - 1rem)`}
                                     motionVariants={
                                         {

@@ -101,7 +101,7 @@ export default function CarouselProducts(props) {
                             outOfStock={false}
                             img={item.images[item.image_showcase_index].src}
                             imgHover={item.images[item.image_hover_index].src}
-                            url={`/product?id=${item.id}`}
+                            url={`/product/${item.id}`}
                         />
                     </div>
                 )}

@@ -107,7 +107,7 @@ export default function SearchBar(props) {
                 {showOptions &&
                     options.map((option, i) =>
                         <Link
-                            legacyBehavior href={`/product?id=${option.id}`}
+                            legacyBehavior href={`/product/${option.id}`}
                             key={i}
                         >
                             <a

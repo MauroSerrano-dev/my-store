@@ -100,7 +100,7 @@ export default function ProductCart(props) {
                     right: '1rem',
                 }}
             />
-            <Link legacyBehavior href={`/product?id=${product.id}`}>
+            <Link legacyBehavior href={`/product/${product.id}`}>
                 <a className={styles.imageContainer}>
                     <img
                         className={styles.image}
@@ -109,7 +109,7 @@ export default function ProductCart(props) {
                 </a>
             </Link>
             <div className={styles.middle}>
-                <Link legacyBehavior href={`/product?id=${product.id}`}>
+                <Link legacyBehavior href={`/product/${product.id}`}>
                     <a>
                         <h4>{product.title}</h4>
                     </a>
