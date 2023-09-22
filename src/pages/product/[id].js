@@ -126,6 +126,7 @@ export default withRouter(props => {
     }
 
     return (
+        product &&
         <div className={styles.container}>
             <Head>
                 <meta property="og:title" content={product.title} key='og:title' />
