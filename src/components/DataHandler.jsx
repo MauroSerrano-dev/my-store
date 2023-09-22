@@ -325,9 +325,7 @@ export default function DataHandler(props) {
             <div
                 className={styles.topContainer}
                 style={{
-                    height: isScrollAtTop
-                        ? `calc(5rem + ${mobile ? SUB_NAVBAR_HEIGHT_MOBILE : SUB_NAVBAR_HEIGHT}px)`
-                        : '5rem'
+                    height: `calc(5rem + ${mobile ? SUB_NAVBAR_HEIGHT_MOBILE : SUB_NAVBAR_HEIGHT}px)`
                 }}
             >
                 <NavBar

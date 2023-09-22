@@ -33,7 +33,7 @@ export default function CartIcon(props) {
                 >
                     <ShoppingCartOutlinedIcon
                         style={{
-                            fontSize: 'calc(var(--bar-height) * 0.38)',
+                            fontSize: 'calc(var(--bar-height) * 0.36)',
                             color: 'var(--global-white)'
                         }}
                     />

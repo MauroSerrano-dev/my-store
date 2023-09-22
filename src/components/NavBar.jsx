@@ -116,7 +116,7 @@ export default function NavBar(props) {
                     >
                         <SearchRoundedIcon
                             style={{
-                                fontSize: 'calc(var(--bar-height) * 0.38)',
+                                fontSize: 'calc(var(--bar-height) * 0.36)',
                                 color: 'var(--global-white)',
                                 position: 'relative',
                                 top: '1px',
@@ -132,7 +132,7 @@ export default function NavBar(props) {
                             >
                                 <FavoriteBorderRoundedIcon
                                     style={{
-                                        fontSize: 'calc(var(--bar-height) * 0.38)',
+                                        fontSize: 'calc(var(--bar-height) * 0.36)',
                                         color: 'var(--global-white)',
                                         position: 'relative',
                                         top: '1px',

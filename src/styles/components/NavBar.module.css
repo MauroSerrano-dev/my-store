@@ -64,8 +64,8 @@
     align-items: center;
     position: relative;
 
-    height: calc(var(--bar-height) * 0.54);
-    width: calc(var(--bar-height) * 0.54);
+    height: calc(var(--bar-height) * 0.51);
+    width: calc(var(--bar-height) * 0.51);
 
     border-radius: 100%;
     padding: 5px;
