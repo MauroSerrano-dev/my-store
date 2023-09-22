@@ -17,19 +17,22 @@ export default withRouter(props => {
         cart,
         setCart,
         userCurrency,
+        product
     } = props
 
     const { id } = props.router.query
 
-    const [product, setProduct] = useState()
-    const [currentColor, setCurrentColor] = useState()
-    const [currentSize, setCurrentSize] = useState()
+    /* const [product, setProduct] = useState() */
+    const [currentColor, setCurrentColor] = useState(product.colors[0])
+    const [currentSize, setCurrentSize] = useState(product.sizes[0])
 
     useEffect(() => {
-        console.log('aa', product)
+        console.log('product', product)
+    }, [product])
+    /* useEffect(() => {
         if (id && !product)
             getProductsById(id)
-    }, [id, product])
+    }, [id, product]) */
 
     function getProductsById(id) {
         const options = {
@@ -124,76 +127,107 @@ export default withRouter(props => {
 
     return (
         <div className={styles.container}>
-            {product &&
-                <Head>
-                </Head>
-            }
-            {product &&
-                <div className={styles.productContainer}>
-                    <div className={styles.left}>
-                        {product.colors.map((color, i) =>
-                            <ImagesSlider
-                                key={i}
-                                images={product.images.filter(img => img.color_id === color.id)}
-                                style={{
-                                    position: 'absolute',
-                                    zIndex: color.id === currentColor.id ? 1 : 0
-                                }}
-                            />
-                        )}
-                    </div>
-                    <div className={styles.right}>
-                        <h2>{product.title}</h2>
-                        <div>
-                            <p style={{ textAlign: 'start', fontWeight: 'bold' }}>Pick a color</p>
-                            <ColorSelector
-                                options={product.colors}
-                                value={[currentColor]}
-                                onChange={handleColorChange}
-                            />
-                        </div>
-                        <div>
-                            <p style={{ textAlign: 'start', fontWeight: 'bold' }}>Pick a size</p>
-                            <SizesSelector
-                                value={[currentSize]}
-                                options={product.sizes}
-                                onChange={handleSizeChange}
-                            />
-                        </div>
-                        <p
+            <Head>
+                <meta property="og:title" content='product boladao' key='title' />
+                <meta property="og:description" content="aaaaaaaaaaaaaaaaaaaaaa" key='description' />
+                <meta property="og:image" content={product.images[0]} key='shareimg' />
+            </Head>
+            <div className={styles.productContainer}>
+                <div className={styles.left}>
+                    {product.colors.map((color, i) =>
+                        <ImagesSlider
+                            key={i}
+                            images={product.images.filter(img => img.color_id === color.id)}
                             style={{
-                                fontSize: '27px',
-                                color: 'var(--primary)',
-                                fontWeight: 'bold',
+                                position: 'absolute',
+                                zIndex: color.id === currentColor.id ? 1 : 0
                             }}
-                        >
-                            {`${userCurrency.symbol} ${(product.variants.find(vari => vari.options.includes(currentSize.id) && vari.options.includes(currentColor.id)).price / 100).toFixed(2)}`}
-                        </p>
-                        <Button
-                            variant='contained'
-                            onClick={() => handleAddToCart()}
-                            sx={{
-                                width: '100%',
-                                height: '55px'
-                            }}
-                        >
-                            <ShoppingCartOutlinedIcon />
-                            Add to Cart
-                        </Button>
-                        <Button
-                            variant='outlined'
-                            onClick={() => handleBuyNow()}
-                            sx={{
-                                width: '100%',
-                                height: '55px'
-                            }}
-                        >
-                            <CreditCardOutlinedIcon />
-                            Buy Now
-                        </Button>
-                    </div>
+                        />
+                    )}
                 </div>
-            }
+                <div className={styles.right}>
+                    <h2>{product.title}</h2>
+                    <div>
+                        <p style={{ textAlign: 'start', fontWeight: 'bold' }}>Pick a color</p>
+                        <ColorSelector
+                            options={product.colors}
+                            value={[currentColor]}
+                            onChange={handleColorChange}
+                        />
+                    </div>
+                    <div>
+                        <p style={{ textAlign: 'start', fontWeight: 'bold' }}>Pick a size</p>
+                        <SizesSelector
+                            value={[currentSize]}
+                            options={product.sizes}
+                            onChange={handleSizeChange}
+                        />
+                    </div>
+                    <p
+                        style={{
+                            fontSize: '27px',
+                            color: 'var(--primary)',
+                            fontWeight: 'bold',
+                        }}
+                    >
+                        {`${userCurrency.symbol} ${(product.variants.find(vari => vari.options.includes(currentSize.id) && vari.options.includes(currentColor.id)).price / 100).toFixed(2)}`}
+                    </p>
+                    <Button
+                        variant='contained'
+                        onClick={() => handleAddToCart()}
+                        sx={{
+                            width: '100%',
+                            height: '55px'
+                        }}
+                    >
+                        <ShoppingCartOutlinedIcon />
+                        Add to Cart
+                    </Button>
+                    <Button
+                        variant='outlined'
+                        onClick={() => handleBuyNow()}
+                        sx={{
+                            width: '100%',
+                            height: '55px'
+                        }}
+                    >
+                        <CreditCardOutlinedIcon />
+                        Buy Now
+                    </Button>
+                </div>
+            </div>
         </div>
     )
 })
+
+export async function getServerSideProps(context) {
+    const { id } = context.query;
+
+    try {
+        const options = {
+            method: 'GET',
+            headers: {
+                id: id
+            }
+        }
+        console.log('context', id)
+
+        const product = await fetch("https://my-store-sigma-nine.vercel.app/api/product", options)
+            .then(response => response.json())
+            .then(response => response.product)
+            .catch(err => console.error(err))
+
+        return {
+            props: {
+                product: product,
+            },
+        }
+    } catch (error) {
+        console.error(error);
+        return {
+            props: {
+                product: null,
+            },
+        }
+    }
+}
