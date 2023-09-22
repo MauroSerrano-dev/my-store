@@ -131,12 +131,11 @@ export default withRouter(props => {
                     <meta name="keywords" content="shop, t-shirt, store" /> */}
 
                     {/* Meta tags Open Graph */}
-                    <meta property="og:title" content={product.title} />
-                    <meta property="og:description" content="Produto bolado" />
+                    <meta property="og:title" content={product.title} key='title'/>
+                    <meta property="og:description" content="Produto bolado" key='description'/>
                     <meta property="og:image" content='https://my-store-sigma-nine.vercel.app/logos/logo-green.jpg' key='shareimg' />
-                    <meta property="og:title" content='Product' key='title' />
-                    <meta property="og:type" content="product" />
-                    <meta property="og:url" content={window.location.href} />
+                    <meta property="og:type" content="product" key='type'/>
+                    <meta property="og:url" content={window.location.href} key='url'/>
                 </Head>
             }
             {product &&
