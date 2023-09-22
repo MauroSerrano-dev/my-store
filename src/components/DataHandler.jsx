@@ -1,6 +1,6 @@
 import NavBar from './NavBar'
 import styles from '../styles/components/DataHandler.module.css'
-import { useEffect, useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import Cookies from 'js-cookie';
 import { getAuth, onAuthStateChanged, signOut, signInWithEmailAndPassword } from "firebase/auth";
 import { initializeApp } from 'firebase/app';
@@ -19,6 +19,7 @@ export default function DataHandler(props) {
     const [isScrollAtTop, setIsScrollAtTop] = useState(true)
     const [session, setSession] = useState()
     const [mobile, setMobile] = useState()
+    const [showWebsite, setShowWebsite] = useState(false)
     const [showIntroduction, setShowIntroduction] = useState(false)
     const [userCurrency, setUserCurrency] = useState({ code: 'usd', symbol: '$' })
     const [search, setSearch] = useState('')
@@ -268,6 +269,9 @@ export default function DataHandler(props) {
         }
 
         handleResize()
+        setTimeout(() => {
+            setShowWebsite(true)
+        }, 200)
 
         window.addEventListener('resize', handleResize)
 
@@ -320,6 +324,9 @@ export default function DataHandler(props) {
         <div
             onClick={() => {
                 console.log('session', session)
+            }}
+            style={{
+                opacity: showWebsite ? 1 : 0,
             }}
         >
             <div
