@@ -6,15 +6,25 @@ import { getAuth, onAuthStateChanged, signOut, signInWithEmailAndPassword } from
 import { initializeApp } from 'firebase/app';
 import { firebaseConfig } from '../../firebase.config';
 import { CART_COOKIE } from '../../consts';
-import Router from 'next/router';
+import SearchBar from './SearchBar';
+import Router, { useRouter } from 'next/router';
+
+const SUB_NAVBAR_HEIGHT = 40
+const SUB_NAVBAR_HEIGHT_MOBILE = 55
+const MOBILE_LIMIT = 1075
 
 export default function DataHandler(props) {
     const { Component, pageProps, primaryColor } = props
     const [cart, setCart] = useState()
     const [isScrollAtTop, setIsScrollAtTop] = useState(true)
     const [session, setSession] = useState()
+    const [mobile, setMobile] = useState()
     const [showIntroduction, setShowIntroduction] = useState(false)
     const [userCurrency, setUserCurrency] = useState({ code: 'usd', symbol: '$' })
+    const [search, setSearch] = useState('')
+    const [productOptions, setProductOptions] = useState([])
+
+    const router = useRouter();
 
     // Inicialize o Firebase
     const firebaseApp = initializeApp(firebaseConfig)
@@ -131,38 +141,6 @@ export default function DataHandler(props) {
         setUserCurrency(newCurrency)
     }
 
-    useEffect(() => {
-        if (Cookies.get('CURR'))
-            setUserCurrency(JSON.parse(Cookies.get('CURR')))
-        else
-            Cookies.set('CURR', JSON.stringify(userCurrency))
-
-        const unsubscribe = onAuthStateChanged(auth, (authUser) => {
-            if (authUser) {
-                handleLogin(authUser)
-                console.log('Usuário autenticado:', authUser);
-            } else {
-                // O usuário fez logout ou não está autenticado
-                setSession(null)
-                console.log('Usuário não autenticado');
-            }
-        })
-
-        const handleLanguageChange = () => {
-            Cookies.set('LANG', (navigator.language || navigator.userLanguage))
-        }
-
-        handleLanguageChange()
-
-        window.addEventListener("languagechange", handleLanguageChange);
-
-        // Remova o ouvinte quando o componente for desmontado
-        return () => {
-            unsubscribe()
-            window.removeEventListener("languagechange", handleLanguageChange);
-        }
-    }, [])
-
     function handleLogin(authUser) {
         const options = {
             method: 'POST',
@@ -252,7 +230,93 @@ export default function DataHandler(props) {
         }
     }, [])
 
+    useEffect(() => {
+        if (Cookies.get('CURR'))
+            setUserCurrency(JSON.parse(Cookies.get('CURR')))
+        else
+            Cookies.set('CURR', JSON.stringify(userCurrency))
+
+        const unsubscribe = onAuthStateChanged(auth, (authUser) => {
+            if (authUser) {
+                handleLogin(authUser)
+                console.log('Usuário autenticado:', authUser);
+            } else {
+                // O usuário fez logout ou não está autenticado
+                setSession(null)
+                console.log('Usuário não autenticado');
+            }
+        })
+
+        const handleLanguageChange = () => {
+            Cookies.set('LANG', (navigator.language || navigator.userLanguage))
+        }
+
+        handleLanguageChange()
+
+        window.addEventListener("languagechange", handleLanguageChange);
+
+        // Remova o ouvinte quando o componente for desmontado
+        return () => {
+            unsubscribe()
+            window.removeEventListener("languagechange", handleLanguageChange);
+        }
+    }, [])
+
+    useEffect(() => {
+        function handleResize() {
+            setMobile(window.innerWidth < MOBILE_LIMIT)
+        }
+
+        handleResize()
+
+        window.addEventListener('resize', handleResize)
+
+        return () => {
+            window.removeEventListener('resize', handleResize)
+        }
+    }, [])
+
+    function handleChangeSearch(event) {
+        const search = event.target.value
+        setSearch(search)
+        getSearchProducts(search)
+    }
+
+    function handleClickSearch() {
+        const language = Cookies.get('LANG') === 'en' ? false : Cookies.get('LANG')
+        Router.push(`/search?s=${search}${language ? `&l=${language.slice(0, 2)}` : ''}`)
+    }
+
+    function handleKeyDownSearch(event) {
+        if (event.key === 'Enter') {
+            handleClickSearch()
+        }
+    }
+
+    async function getSearchProducts(s) {
+        const options = {
+            method: 'GET',
+            headers: {
+                s: s,
+            }
+        }
+
+        const products = await fetch("/api/products-by-title", options)
+            .then(response => response.json())
+            .then(response => response.products)
+            .catch(err => console.error(err))
+
+        console.log(products)
+
+        setProductOptions(products)
+    }
+
+    useEffect(() => {
+        setSearch(router?.query?.s ? router.query.s : '')
+    }, [router])
+
     return (
+        mobile !== undefined &&
         <div
             onClick={() => {
                 console.log('session', session)
@@ -262,7 +326,7 @@ export default function DataHandler(props) {
                 className={styles.topContainer}
                 style={{
                     height: isScrollAtTop
-                        ? 'calc(5rem + 40px)'
+                        ? `calc(5rem + ${mobile ? SUB_NAVBAR_HEIGHT_MOBILE : SUB_NAVBAR_HEIGHT}px)`
                         : '5rem'
                 }}
             >
@@ -275,19 +339,45 @@ export default function DataHandler(props) {
                     login={login}
                     logout={logout}
                     userCurrency={userCurrency}
+                    mobile={mobile}
+                    handleChangeSearch={handleChangeSearch}
+                    search={search}
+                    productOptions={productOptions}
+                    setProductOptions={setProductOptions}
+                    handleClickSearch={handleClickSearch}
+                    handleKeyDownSearch={handleKeyDownSearch}
+                    setSearch={setSearch}
                 />
                 <div
-                    className={styles.categoriesContainer}
+                    className={styles.subNavBar}
                     style={{
                         transform: isScrollAtTop
                             ? 'translateY(0)'
-                            : 'translateY(-100%)'
+                            : 'translateY(-100%)',
+                        height: `${mobile ? SUB_NAVBAR_HEIGHT_MOBILE : SUB_NAVBAR_HEIGHT}px`
                     }}
                 >
+                    <SearchBar
+                        show={isScrollAtTop && mobile}
+                        placeholder='What are you looking for?'
+                        onChange={handleChangeSearch}
+                        onKeyDown={handleKeyDownSearch}
+                        onClick={handleClickSearch}
+                        value={search}
+                        options={productOptions}
+                        setOptions={setProductOptions}
+                        setSearch={setSearch}
+                        style={{
+                            height: '2.2rem'
+                        }}
+                    />
                 </div>
             </div>
             <div
                 className={styles.componentContainer}
+                style={{
+                    paddingTop: `calc(5rem + ${mobile ? SUB_NAVBAR_HEIGHT_MOBILE : SUB_NAVBAR_HEIGHT}px)`
+                }}
             >
                 <
                     Component{...pageProps}

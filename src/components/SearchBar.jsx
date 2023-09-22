@@ -13,7 +13,9 @@ export default function SearchBar(props) {
         onKeyDown,
         value,
         options = [],
-        setOptions
+        setOptions,
+        style,
+        setSearch
     } = props
 
     const [opacity, setOpacity] = useState(1)
@@ -30,7 +32,9 @@ export default function SearchBar(props) {
             }, 10)
         }
         else {
+            setOptions([])
             setOpacity(0)
+            setSearch('')
             time = setTimeout(() => {
                 setBoolean(show)
             }, 200)
@@ -57,6 +61,7 @@ export default function SearchBar(props) {
             className={styles.container}
             onFocus={() => setFocus(true)}
             onBlur={() => setFocus(false)}
+            style={style}
         >
             <div
                 className={styles.bar}

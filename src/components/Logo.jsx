@@ -1,6 +1,4 @@
-import { useEffect, useRef, useState } from 'react'
-import styles from '../styles/components/Logo.module.css'
-import $ from 'jquery'
+import { useRef } from 'react'
 
 export default function Logo(props) {
 
@@ -9,28 +7,9 @@ export default function Logo(props) {
         width,
         height,
         style,
-        hover,
     } = props
 
     const containerRef = useRef(null)
-    const [containerSize, setContainerSize] = useState({ width: 0, height: 0 })
-
-    useEffect(() => {
-        function handleResize() {
-            setContainerSize({
-                width: containerRef.current.offsetWidth,
-                height: containerRef.current.offsetHeight
-            })
-        }
-
-        handleResize()
-
-        $(window).on('resize', handleResize)
-
-        return () => {
-            $(window).off('resize', handleResize)
-        }
-    }, [])
 
     return (
         <div
@@ -38,7 +17,6 @@ export default function Logo(props) {
             style={{
                 width: width ? width : undefined,
                 height: height ? height : undefined,
-                borderRadius: `${containerSize.width * 0.015}px`,
             }}
         >
             <svg

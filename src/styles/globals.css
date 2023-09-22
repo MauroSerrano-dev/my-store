@@ -25,15 +25,14 @@
 
 html {
   color-scheme: dark;
-}
-
-body {
   min-height: 100vh;
   min-width: 100vw;
   overflow-x: hidden;
 }
 
 body {
+  min-height: 100vh;
+  min-width: 100vw;
   background: var(--background-color)
 }
 

@@ -18,9 +18,7 @@ export const itemsNavBar = [
     { value: 'mugs', title: 'MUGS' },
     { value: 'bags', title: 'BAGS' },
     { value: 'accessories', title: 'ACCESSORIES' },
-    { value: 'kitchen', title: 'KITCHEN' },
     { value: 'pillows', title: 'PILLOWS' },
-    { value: 'shoes', title: 'SHOES' },
     { value: 'socks', title: 'SOCKS' },
 ]
 
