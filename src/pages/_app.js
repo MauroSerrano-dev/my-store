@@ -33,6 +33,8 @@ export default function App(props) {
   return (
     <div>
       <Head>
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <meta name="referrer" content="no-referrer" />
         <meta name="theme-color" content={primaryColor} />
 
         <Script src="https://js.stripe.com/v3/" async></Script>
