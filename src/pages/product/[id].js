@@ -128,8 +128,8 @@ export default withRouter(props => {
     return (
         <div className={styles.container}>
             <Head>
-                <meta property="og:title" content='product boladao' key='title' />
-                <meta property="og:description" content="aaaaaaaaaaaaaaaaaaaaaa" key='description' />
+                <meta property="og:title" content={product.title} key='title' />
+                <meta property="og:description" content={product.description} key='description' />
                 <meta property="og:image" content={product.images[0].src} key='shareimg' />
                 <meta property="og:type" content="website" key='type' />
             </Head>
