@@ -7,7 +7,7 @@ import { useState } from 'react';
 import { STORE_NAME } from '../../consts';
 
 export default function Signin(props) {
-    const { signIn, login } = props
+    const { signIn, login, mobile } = props
 
     const [reCaptchaSolve, setReCaptchaSolve] = useState(false)
     const [newUser, setNewUser] = useState({})
@@ -48,9 +48,17 @@ export default function Signin(props) {
         <div className={styles.container}>
             <header>
             </header>
-            <main className={styles.main}>
+            <main
+                className={styles.main}
+                style={{
+                    flexDirection: mobile ? 'column' : 'row'
+                }}
+            >
                 <div
                     className={styles.loginContainer}
+                    style={{
+                        width: mobile ? '100%' : '65.45%',
+                    }}
                 >
                     <div
                         className={styles.loginHead}
@@ -59,6 +67,10 @@ export default function Signin(props) {
                     </div>
                     <div
                         className={styles.loginBody}
+                        style={{
+                            paddingLeft: mobile ? '4.5vw' : '10vw',
+                            paddingRight: mobile ? '4.5vw' : '10vw'
+                        }}
                     >
                         <div className={styles.fieldsContainer}>
                             <TextField
@@ -133,6 +145,10 @@ export default function Signin(props) {
                 </div>
                 <div
                     className={styles.joinContainer}
+                    style={{
+                        width: mobile ? '100%' : '34.55%',
+                        height: mobile ? 'auto' : '600px' 
+                    }}
                 >
                     <div
                         className={styles.joinHead}

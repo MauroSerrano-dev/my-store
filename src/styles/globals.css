@@ -39,6 +39,10 @@ body {
 a {
   color: inherit;
   text-decoration: underline transparent;
+  -moz-user-select: none;
+  -webkit-user-select: none;
+  -webkit-tap-highlight-color: transparent;
+  user-select: none;
   transition: text-decoration ease-in-out 200ms;
 }
 
@@ -71,6 +75,10 @@ button {
   text-align: center;
   cursor: pointer;
   color: var(--text-color);
+  -moz-user-select: none;
+  -webkit-user-select: none;
+  -webkit-tap-highlight-color: transparent;
+  user-select: none;
 }
 
 textarea,
@@ -192,6 +200,13 @@ body::-webkit-scrollbar-track {
 .MuiMenuItem-gutters[aria-selected="true"] {
   background-color: rgba(var(--primaryRGB), 0.6) !important;
   color: var(--text-black);
+}
+
+.noSelection {
+  -moz-user-select: none;
+  -webkit-user-select: none;
+  -webkit-tap-highlight-color: transparent;
+  user-select: none;
 }
 
 /* Enable hover only on non-touch devices */

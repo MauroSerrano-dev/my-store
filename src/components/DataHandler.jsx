@@ -384,19 +384,20 @@ export default function DataHandler(props) {
                     auth={auth}
                     userCurrency={userCurrency}
                     handleChangeCurrency={handleChangeCurrency}
+                    mobile={mobile}
                 />
             </div>
             {
-        showIntroduction &&
-            <div
-                className={styles.introduction}
-                onClick={handleIntroductionComplete}
-            >
-                <h1>
-                    Introduction
-                </h1>
-            </div>
-    }
+                showIntroduction &&
+                <div
+                    className={styles.introduction}
+                    onClick={handleIntroductionComplete}
+                >
+                    <h1>
+                        Introduction
+                    </h1>
+                </div>
+            }
         </div >
     )
 }

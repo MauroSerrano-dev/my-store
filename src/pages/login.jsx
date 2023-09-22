@@ -12,7 +12,7 @@ import { STORE_NAME } from '../../consts';
 const provider = new GoogleAuthProvider();
 
 export default function Login(props) {
-    const { session, login, auth } = props
+    const { session, login, auth, mobile } = props
 
     const [reCaptchaSolve, setReCaptchaSolve] = useState(false)
 
@@ -43,9 +43,16 @@ export default function Login(props) {
         <div className={styles.container}>
             <header>
             </header>
-            <main className={styles.main}>
+            <main className={styles.main}
+                style={{
+                    flexDirection: mobile ? 'column' : 'row'
+                }}
+            >
                 <div
                     className={styles.loginContainer}
+                    style={{
+                        width: mobile ? '100%' : '65.45%',
+                    }}
                 >
                     <div
                         className={styles.loginHead}
@@ -54,6 +61,10 @@ export default function Login(props) {
                     </div>
                     <div
                         className={styles.loginBody}
+                        style={{
+                            paddingLeft: mobile ? '4.5vw' : '10vw',
+                            paddingRight: mobile ? '4.5vw' : '10vw'
+                        }}
                     >
                         <form
                             onSubmit={handleSubmit}
@@ -132,6 +143,10 @@ export default function Login(props) {
                 </div>
                 <div
                     className={styles.joinContainer}
+                    style={{
+                        width: mobile ? '100%' : '34.55%',
+                        height: mobile ? 'auto' : '600px' 
+                    }}
                 >
                     <div
                         className={styles.joinHead}
