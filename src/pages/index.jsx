@@ -68,7 +68,8 @@ export default function Home(props) {
   return (
     <div className={styles.container}>
       <Head>
-        <meta property="og:image" content='https://my-store-sigma-nine.vercel.app/logos/logo-green.jpeg' key='shareimg' />
+        <meta property="og:title" content='Main' key='title' />
+        {/* <meta property="og:image" content='https://my-store-sigma-nine.vercel.app/logos/logo-green.jpeg' key='shareimg' /> */}
       </Head>
       <main className={styles.main}>
         <div className={styles.banner}>
