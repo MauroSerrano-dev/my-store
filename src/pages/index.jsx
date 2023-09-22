@@ -73,7 +73,7 @@ export default function Home(props) {
         <meta property="og:image" content='https://my-store-sigma-nine.vercel.app/logos/logo-black.jpeg' key='shareimg' />
         <meta property="og:title" content='Main dasndjas' key='title' />
         <meta property="og:type" content="website" key='type' />
-        <meta property="og:url" content={window.location.href} key='url' />
+        {/* <meta property="og:url" content={window.location.href} key='url' /> */}
       </Head>
       <main className={styles.main}>
         <div className={styles.banner}>
