@@ -69,8 +69,7 @@ export default function Home(props) {
     <div className={styles.container}>
       <Head>
         {/* Meta tags Open Graph */}
-        <meta property="og:title" content='Main' key='title' />
-        <meta property="og:description" content="Produto bolado" />
+        <meta property="og:description" content="Main description bolado" />
         <meta property="og:image" content='https://my-store-sigma-nine.vercel.app/logos/logo-black.jpeg' key='shareimg' />
         <meta property="og:title" content='Main dasndjas' key='title' />
         <meta property="og:type" content="website" />
