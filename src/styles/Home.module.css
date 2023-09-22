@@ -27,6 +27,7 @@
 .banner img {
   height: 44vw;
   max-height: 450px;
+  min-height: 100px;
 }
 
 .infos {
