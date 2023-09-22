@@ -67,6 +67,7 @@ export default function Home(props) {
 
   return (
     <div className={styles.container}>
+
       <main className={styles.main}>
         <div className={styles.banner}>
           <img
