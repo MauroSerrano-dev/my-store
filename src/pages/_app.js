@@ -45,7 +45,7 @@ export default function App(props) {
         <meta property="og:image" content='https://my-store-sigma-nine.vercel.app/logos/logo-black.jpeg' key='shareimg' />
         <meta property="og:url" content='https://my-store-sigma-nine.vercel.app' />
         <meta property="og:type" content="website" />
-        <meta property="fb:app_id" content="1099212281058025" />
+        <meta property="fb:app_id" content={process.env.NEXT_PUBLIC_FACEBOOK_APP_ID} />
 
         <link rel="icon" href="/logo.ico" />
 
