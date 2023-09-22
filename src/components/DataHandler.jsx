@@ -325,7 +325,7 @@ export default function DataHandler(props) {
             <div
                 className={styles.topContainer}
                 style={{
-                    height: `calc(5rem + ${mobile ? SUB_NAVBAR_HEIGHT_MOBILE : SUB_NAVBAR_HEIGHT}px)`
+                    height: '5rem',
                 }}
             >
                 <NavBar
@@ -349,9 +349,7 @@ export default function DataHandler(props) {
                 <div
                     className={styles.subNavBar}
                     style={{
-                        transform: isScrollAtTop
-                            ? 'translateY(0)'
-                            : 'translateY(-100%)',
+                        top: isScrollAtTop ? '5rem' : 0,
                         height: `${mobile ? SUB_NAVBAR_HEIGHT_MOBILE : SUB_NAVBAR_HEIGHT}px`
                     }}
                 >
@@ -390,16 +388,16 @@ export default function DataHandler(props) {
                 />
             </div>
             {
-                showIntroduction &&
-                <div
-                    className={styles.introduction}
-                    onClick={handleIntroductionComplete}
-                >
-                    <h1>
-                        Introduction
-                    </h1>
-                </div>
-            }
-        </div>
+        showIntroduction &&
+            <div
+                className={styles.introduction}
+                onClick={handleIntroductionComplete}
+            >
+                <h1>
+                    Introduction
+                </h1>
+            </div>
+    }
+        </div >
     )
 }

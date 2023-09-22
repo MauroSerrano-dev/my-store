@@ -22,7 +22,6 @@
     top: 0;
     position: fixed;
 
-    height: auto;
     transition: all ease-in-out 200ms;
 }
 
@@ -32,6 +31,8 @@
     align-items: center;
     justify-content: center;
 
+    position: absolute;
+
     gap: 2rem;
 
     width: 100%;
@@ -40,6 +41,7 @@
     --text-color: var(--text-white);
 
     border-bottom: 2px solid var(--global-white);
+    
     transition: all ease-in-out 200ms;
 
     padding: 0 5%;
