@@ -20,9 +20,10 @@ export default withRouter(props => {
         userCurrency,
     } = props
 
+    const { id } = props.router.query
+    
     const productMeta = getProductMetaById(id)
 
-    const { id } = props.router.query
     const [product, setProduct] = useState()
 
     const [currentColor, setCurrentColor] = useState()
