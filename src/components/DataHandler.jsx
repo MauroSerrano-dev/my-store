@@ -371,7 +371,7 @@ export default function DataHandler(props) {
                 left: menuOpen
                     ? windowWidth < 420 ? '100vw' : '350px'
                     : 0,
-                transition: 'all ease-in-out 350ms'
+                transition: 'left ease-in-out 350ms'
             }}
         >
             <div

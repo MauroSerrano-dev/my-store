@@ -53,7 +53,8 @@ export default function NavBar(props) {
                                 className='fillHeight'
                                 aria-label='Home'
                                 style={{
-                                    height: '70%'
+                                    height: '70%',
+                                    paddingTop: '2%',
                                 }}
                             >
                                 <Logo height='100%' />
@@ -70,7 +71,8 @@ export default function NavBar(props) {
                                 className='fillHeight'
                                 aria-label='Home'
                                 style={{
-                                    height: '70%'
+                                    height: '70%',
+                                    paddingTop: '2%',
                                 }}
                             >
                                 <Logo height='100%' />
