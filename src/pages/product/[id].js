@@ -18,11 +18,9 @@ export default withRouter(props => {
         cart,
         setCart,
         userCurrency,
+        id,
+        productMeta,
     } = props
-
-    const { id } = props.router.query
-
-    const productMeta = getProductMetaById(id)
 
     const [product, setProduct] = useState()
 
@@ -125,16 +123,14 @@ export default withRouter(props => {
 
     return (
         <div className={styles.container}>
-            {id &&
-                <Head>
-                    <meta property="og:title" content={productMeta.id} key='og:title' />
-                    <meta property="og:image:alt" content={productMeta.title} key='og:image:alt' />
-                    <meta property="og:description" content={id} key='og:description' />
-                    <meta property="og:image" itemProp="image" content={productMeta.image} key='og:image' />
-                    <meta property="og:type" content="product" key='og:type' />
-                    <meta property="og:url" content={`https://my-store-sigma-nine.vercel.app/product/${id.concat(productMeta.image)}`} key='og:url' />
-                </Head>
-            }
+            <Head>
+                <meta property="og:title" content={productMeta.id} key='og:title' />
+                <meta property="og:image:alt" content={productMeta.title} key='og:image:alt' />
+                <meta property="og:description" content={id} key='og:description' />
+                <meta property="og:image" itemProp="image" content={productMeta.image} key='og:image' />
+                <meta property="og:type" content="product" key='og:type' />
+                <meta property="og:url" content={`https://my-store-sigma-nine.vercel.app/product/${id}`} key='og:url' />
+            </Head>
             {product &&
                 <div className={styles.productContainer}>
                     <div className={styles.left}>
@@ -205,33 +201,13 @@ export default withRouter(props => {
     )
 })
 
-/* export async function getServerSideProps(context) {
+export async function getServerSideProps(context) {
     const { id } = context.query;
 
-    try {
-        const options = {
-            method: 'GET',
-            headers: {
-                id: id
-            }
-        }
-
-        const product = await fetch("https://my-store-sigma-nine.vercel.app/api/product", options)
-            .then(response => response.json())
-            .then(response => response.product)
-            .catch(err => console.error(err))
-
-        return {
-            props: {
-                product: product,
-            },
-        }
-    } catch (error) {
-        console.error(error);
-        return {
-            props: {
-                product: null,
-            },
-        }
+    return {
+        props: {
+            id: id,
+            productMeta: getProductMetaById(id),
+        },
     }
-} */
+}
