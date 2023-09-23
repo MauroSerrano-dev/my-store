@@ -10,6 +10,7 @@ import SearchBar from './SearchBar';
 import Router, { useRouter } from 'next/router';
 import { useCycle } from "framer-motion";
 import Menu from './Menu';
+import { motion } from 'framer-motion';
 
 const SUB_NAVBAR_HEIGHT = 40
 const SUB_NAVBAR_HEIGHT_MOBILE = 55
@@ -360,17 +361,40 @@ export default function DataHandler(props) {
     }, [menuOpen])
 
     return (
-        <div
+        <motion.div
             onClick={() => {
                 console.log('session', session)
             }}
             className={styles.container}
             style={{
                 opacity: websiteVisible ? 1 : 0,
-                left: menuOpen
-                    ? windowWidth < 420 ? '100vw' : '350px'
-                    : 0,
-                transition: 'left ease-in-out 350ms'
+            }}
+            initial='closed'
+            animate={
+                menuOpen
+                    ? windowWidth < 420
+                        ? 'openMobile'
+                        : 'open'
+                    : 'closed'
+            }
+            variants={{
+                closed: {
+                    left: '0px',
+                },
+                open: {
+                    left: '350px',
+                    transition: {
+                        ease: 'easeInOut',
+                        duration: 0.35,
+                    },
+                },
+                openMobile: {
+                    left: '100vw',
+                    transition: {
+                        ease: 'easeInOut',
+                        duration: 0.35,
+                    },
+                },
             }}
         >
             <div
@@ -458,6 +482,6 @@ export default function DataHandler(props) {
                 switchMenu={switchMenu}
                 menuOpen={menuOpen}
             />
-        </div>
+        </motion.div>
     )
 }

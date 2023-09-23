@@ -55,11 +55,21 @@ export default function Menu(props) {
                         }}
                     />
                 </div>
-                <div
+                <motion.div
                     className={styles.menuBody}
-                    style={{
-                        left: optionMenu ? '-350px' : '0px',
-                        transition: 'left ease-in-out 350ms'
+                    initial='hidden'
+                    animate={optionMenu ? 'visible' : 'hidden'}
+                    variants={{
+                        hidden: {
+                            left: '0px',
+                        },
+                        visible: {
+                            left: '-350px',
+                            transition: {
+                                ease: 'easeInOut',
+                                duration: 0.35,
+                            }
+                        }
                     }}
                 >
                     <div className={styles.subTitle}>
@@ -112,17 +122,27 @@ export default function Menu(props) {
                                 }
                             </div>
                     )}
-                </div>
-                <div
+                </motion.div>
+                <motion.div
                     className={styles.bodyForward}
                     onClick={() => setOptionMenu()}
-                    style={{
-                        left: optionMenu ? 0 : '100%',
-                        transition: 'all ease-in-out 350ms'
+                    initial='hidden'
+                    animate={optionMenu ? 'visible' : 'hidden'
+                    }
+                    variants={{
+                        hidden: {
+                            left: '100%',
+                        },
+                        visible: {
+                            left: '0px',
+                            transition: {
+                                ease: 'easeInOut',
+                                duration: 0.35,
+                            },
+                        },
                     }}
                 >
-
-                </div>
+                </motion.div>
             </div>
         </div>
     )
