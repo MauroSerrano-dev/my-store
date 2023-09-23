@@ -21,7 +21,7 @@ export default withRouter(props => {
     } = props
 
     const { id } = props.router.query
-    
+
     const productMeta = getProductMetaById(id)
 
     const [product, setProduct] = useState()
@@ -125,14 +125,16 @@ export default withRouter(props => {
 
     return (
         <div className={styles.container}>
-            <Head>
-                <meta property="og:title" content={productMeta.id} key='og:title' />
-                <meta property="og:image:alt" content={productMeta.title} key='og:image:alt' />
-                <meta property="og:description" content={productMeta.description} key='og:description' />
-                <meta property="og:image" itemProp="image" content={productMeta.image} key='og:image' />
-                <meta property="og:type" content="product" key='og:type' />
-                <meta property="og:url" content={`https://my-store-sigma-nine.vercel.app/product/${id}`} key='og:url' />
-            </Head>
+            {id &&
+                <Head>
+                    <meta property="og:title" content={productMeta.id} key='og:title' />
+                    <meta property="og:image:alt" content={productMeta.title} key='og:image:alt' />
+                    <meta property="og:description" content={productMeta.description} key='og:description' />
+                    <meta property="og:image" itemProp="image" content={productMeta.image} key='og:image' />
+                    <meta property="og:type" content="product" key='og:type' />
+                    <meta property="og:url" content={`https://my-store-sigma-nine.vercel.app/product/${id}`} key='og:url' />
+                </Head>
+            }
             {product &&
                 <div className={styles.productContainer}>
                     <div className={styles.left}>
