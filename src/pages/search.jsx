@@ -23,7 +23,7 @@ const MOST_SEARCHED_VALUES = [
 
 export default withRouter(props => {
     const router = useRouter()
-    const { userCurrency } = props
+    const { userCurrency, supportsHoverAndPointer } = props
     const {
         s,
         t,
@@ -317,6 +317,7 @@ export default withRouter(props => {
                             }
                             width='170px'
                             onChange={(event) => handleChangeOrder(event.target.value)}
+                            supportsHoverAndPointer={supportsHoverAndPointer}
                         />
                     </div>
                     <div className={styles.productsBody}>
@@ -333,6 +334,7 @@ export default withRouter(props => {
                                     imgHover={product.images[product.image_hover_index].src}
                                     url={`/product/${product.id}`}
                                     width={`calc(${100 / itemsPerLine}% - 1rem)`}
+                                    supportsHoverAndPointer={supportsHoverAndPointer}
                                     motionVariants={
                                         {
                                             hidden: {

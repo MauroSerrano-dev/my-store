@@ -191,7 +191,6 @@ export default function DataHandler(props) {
 
     function logout() {
         setSession(null)
-        /* setCart([]) */
         signOut(auth)
         Router.push('/')
     }
@@ -338,8 +337,6 @@ export default function DataHandler(props) {
             .then(response => response.products)
             .catch(err => console.error(err))
 
-        console.log(products)
-
         setProductOptions(products)
     }
 
@@ -444,6 +441,7 @@ export default function DataHandler(props) {
                     userCurrency={userCurrency}
                     handleChangeCurrency={handleChangeCurrency}
                     mobile={mobile}
+                    supportsHoverAndPointer={supportsHoverAndPointer}
                 />
             </div>
             {
@@ -486,6 +484,7 @@ export default function DataHandler(props) {
                         <SlClose
                             onClick={switchMenu}
                             color='#ffffff'
+                            className='noSelection'
                             style={{
                                 fontSize: '21px',
                                 cursor: 'pointer',

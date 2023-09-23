@@ -13,7 +13,6 @@ import ClearRoundedIcon from '@mui/icons-material/ClearRounded';
 import ButtonIcon from '@/components/material-ui/ButtonIcon'
 import SizesSelector from '@/components/SizesSelector';
 
-
 const INICIAL_PRODUCT = {
     id: '',
     description: '',
@@ -27,7 +26,7 @@ const INICIAL_PRODUCT = {
 
 export default withRouter(props => {
 
-    const { router } = props;
+    const { router, supportsHoverAndPointer } = props;
 
     const [product, setProduct] = useState(INICIAL_PRODUCT)
     const [colorIndex, setColorIndex] = useState(0)
@@ -208,6 +207,7 @@ export default withRouter(props => {
                         </div>
                         <div className={styles.productRight}>
                             <TextInput
+                                supportsHoverAndPointer={supportsHoverAndPointer}
                                 label='ID'
                                 onChange={event => updateProductField('id', event.target.value)}
                                 style={{
@@ -215,6 +215,7 @@ export default withRouter(props => {
                                 }}
                             />
                             <TextInput
+                                supportsHoverAndPointer={supportsHoverAndPointer}
                                 label='Title'
                                 onChange={event => updateProductField('title', event.target.value)}
                                 style={{
@@ -222,6 +223,7 @@ export default withRouter(props => {
                                 }}
                             />
                             <TextInput
+                                supportsHoverAndPointer={supportsHoverAndPointer}
                                 label='Default Printify ID'
                                 onChange={event => updateProductField('printify_id_default', event.target.value)}
                                 style={{
@@ -230,6 +232,7 @@ export default withRouter(props => {
                             />
                             {TYPES_POOL.find(t => t.id === type).providers.map((provider, i) =>
                                 <TextInput
+                                    supportsHoverAndPointer={supportsHoverAndPointer}
                                     key={i}
                                     label={`${provider.title} Printify ID`}
                                     onChange={event => handlePrintifyId(provider.id, event.target.value)}
@@ -239,6 +242,7 @@ export default withRouter(props => {
                                 />
                             )}
                             <TagsSelector
+                                supportsHoverAndPointer={supportsHoverAndPointer}
                                 options={TAGS_POOL}
                                 label='Tags'
                                 value={product.tags}
@@ -273,6 +277,7 @@ export default withRouter(props => {
                                                 key={i}
                                             >
                                                 <TextInput
+                                                    supportsHoverAndPointer={supportsHoverAndPointer}
                                                     label={`Image ${i + 1}`}
                                                     onChange={event => updateImageField('src', event.target.value, i)}
                                                     style={{
@@ -295,6 +300,7 @@ export default withRouter(props => {
                                                     }}
                                                 />
                                                 <ButtonIcon
+                                                    supportsHoverAndPointer={supportsHoverAndPointer}
                                                     icon={<ClearRoundedIcon />}
                                                     onClick={() => handleDeleteImageField(i)}
                                                 />
@@ -325,6 +331,7 @@ export default withRouter(props => {
                                     key={i}
                                 >
                                     <TextInput
+                                        supportsHoverAndPointer={supportsHoverAndPointer}
                                         label={`${size.title}`}
                                         onChange={event => handlePriceChange(size.id, event.target.value)}
                                         value={product.variants.find(vari => vari.options.includes(size.id)).price}

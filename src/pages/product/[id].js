@@ -188,7 +188,6 @@ export async function getServerSideProps(context) {
                 id: id
             }
         }
-        console.log('context', id)
 
         const product = await fetch("https://my-store-sigma-nine.vercel.app/api/product", options)
             .then(response => response.json())

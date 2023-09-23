@@ -18,18 +18,11 @@ export default function Selector(props) {
         styleOption,
         onChange,
         width,
+        supportsHoverAndPointer,
     } = props
 
     const [hover, setHover] = useState(false)
     const [focus, setFocus] = useState(false)
-    const [supportsHoverAndPointer, setSupportsHoverAndPointer] = useState(false)
-
-    useEffect(() => {
-        setSupportsHoverAndPointer(
-            window.matchMedia('(hover: hover)').matches &&
-            window.matchMedia('(pointer: fine)').matches
-        )
-    }, [])
 
     return (
         <FormControl

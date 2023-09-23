@@ -8,7 +8,7 @@ import CarouselProducts from '@/components/CarouselProducts'
 import Cookies from 'js-cookie'
 
 export default function Cart(props) {
-    const { session, cart, setCart, userCurrency, handleChangeCurrency } = props
+    const { session, cart, setCart, userCurrency, handleChangeCurrency, supportsHoverAndPointer } = props
 
     const [shippingValue, setShippingValue] = useState(0)
     const [shippingCountry, setShippingCountry] = useState('US')
@@ -116,6 +116,7 @@ export default function Cart(props) {
                             animationDuration={200}
                             itemWidth={225}
                             userCurrency={userCurrency}
+                            supportsHoverAndPointer={supportsHoverAndPointer}
                         />
                     </main>
                     : <main className={styles.main}>
@@ -138,6 +139,7 @@ export default function Cart(props) {
                                         key={i}
                                         index={i}
                                         userCurrency={userCurrency}
+                                        supportsHoverAndPointer={supportsHoverAndPointer}
                                     />
                                 )}
                             </div>
@@ -172,6 +174,7 @@ export default function Cart(props) {
                                         width='170px'
                                         dark
                                         onChange={handleChangeCountrySelector}
+                                        supportsHoverAndPointer={supportsHoverAndPointer}
                                     />
                                 </div>
                                 <div className={styles.detailsItem}>
@@ -190,6 +193,7 @@ export default function Cart(props) {
                                         width='100px'
                                         dark
                                         onChange={(event) => handleChangeCurrency(getCurrencyByCode(event.target.value))}
+                                        supportsHoverAndPointer={supportsHoverAndPointer}
                                     />
                                 </div>
                                 <div className={styles.detailsItem}>

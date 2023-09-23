@@ -12,17 +12,10 @@ export default function ButtonIcon(props) {
         iconColorHover = dark ? '#000000' : '#ffffff',
         backgroundColor = dark ? 'transparent' : 'transparent',
         backgroundColorHover = dark ? '#00000020' : '#ffffff20',
+        supportsHoverAndPointer,
     } = props
 
     const [hover, setHover] = useState(false)
-    const [supportsHoverAndPointer, setSupportsHoverAndPointer] = useState(false)
-
-    useEffect(() => {
-        setSupportsHoverAndPointer(
-            window.matchMedia('(hover: hover)').matches &&
-            window.matchMedia('(pointer: fine)').matches
-        )
-    }, [])
 
     return (
         <IconButton

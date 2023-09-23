@@ -7,10 +7,9 @@ import { sendPasswordResetEmail } from 'firebase/auth';
 import { Button } from '@mui/material'
 
 export default function ForgotPassword(props) {
-    const { session, login, auth } = props
+    const { session, login, auth, supportsHoverAndPointer } = props
     const [hover, setHover] = useState(false)
     const [focus, setFocus] = useState(false)
-    const [supportsHoverAndPointer, setSupportsHoverAndPointer] = useState(false);
 
     const [reCaptchaSolve, setReCaptchaSolve] = useState(false)
 
@@ -28,13 +27,6 @@ export default function ForgotPassword(props) {
             console.error('Erro ao enviar e-mail de redefinição de senha:', error);
         }
     }
-
-    useEffect(() => {
-        setSupportsHoverAndPointer(
-            window.matchMedia('(hover: hover)').matches &&
-            window.matchMedia('(pointer: fine)').matches
-        )
-    }, [])
 
     return (
         <div className={styles.container}>

@@ -20,22 +20,15 @@ export default function ProductCart(props) {
         product,
         setCart,
         index,
-        userCurrency
+        userCurrency,
+        supportsHoverAndPointer
     } = props
 
     const [hoverQuantity, setHoverQuantity] = useState(false)
     const [focusQuantity, setFocusQuantity] = useState(false)
-    const [supportsHoverAndPointer, setSupportsHoverAndPointer] = useState(false)
 
     const [hoverSize, setHoverSize] = useState(false)
     const [focusSize, setFocusSize] = useState(false)
-
-    useEffect(() => {
-        setSupportsHoverAndPointer(
-            window.matchMedia('(hover: hover)').matches &&
-            window.matchMedia('(pointer: fine)').matches
-        )
-    }, [])
 
     function handleDeleteCartProduct() {
         setCart(prev => prev.filter(prod => prod.id !== product.id || prod.variant_id !== product.variant_id))

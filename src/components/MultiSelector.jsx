@@ -20,18 +20,9 @@ const MenuProps = {
 }
 
 export default function MultiSelector(props) {
-    const { list, label, onChange, value } = props
+    const { list, label, onChange, value, supportsHoverAndPointer } = props
     const [hover, setHover] = React.useState(false)
     const [focus, setFocus] = React.useState(false)
-
-    const [supportsHoverAndPointer, setSupportsHoverAndPointer] = React.useState(false);
-
-    React.useEffect(() => {
-        setSupportsHoverAndPointer(
-            window.matchMedia('(hover: hover)').matches &&
-            window.matchMedia('(pointer: fine)').matches
-        )
-    }, [])
 
     return (
         <FormControl

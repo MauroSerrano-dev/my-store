@@ -17,22 +17,13 @@ export default function Product(props) {
         url,
         width = '230px',
         style,
-        motionVariants
+        motionVariants,
+        supportsHoverAndPointer
     } = props
 
     const [isHovered, setIsHovered] = useState(false)
     const productRef = useRef(null)
     const [productWidth, setProductWidth] = useState()
-
-    const [supportsHoverAndPointer, setSupportsHoverAndPointer] = useState(false);
-
-    useEffect(() => {
-        // Use useEffect to set the supportsHoverAndPointer state after the component mounts
-        setSupportsHoverAndPointer(
-            window.matchMedia('(hover: hover)').matches &&
-            window.matchMedia('(pointer: fine)').matches
-        )
-    }, [])
 
     function handleMouseEnter() {
         if (supportsHoverAndPointer) {
