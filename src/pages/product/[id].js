@@ -20,38 +20,12 @@ export default withRouter(props => {
         product
     } = props
 
-    const { id } = props.router.query
-
-    /* const [product, setProduct] = useState() */
     const [currentColor, setCurrentColor] = useState(product.colors[0])
     const [currentSize, setCurrentSize] = useState(product.sizes[0])
 
     useEffect(() => {
         console.log('product', product)
     }, [product])
-    /* useEffect(() => {
-        if (id && !product)
-            getProductsById(id)
-    }, [id, product]) */
-
-    function getProductsById(id) {
-        const options = {
-            method: 'GET',
-            headers: {
-                id: id
-            }
-        }
-
-        fetch("/api/product", options)
-            .then(response => response.json())
-            .then(response => {
-                console.log(response.msg)
-                setProduct(response.product)
-                setCurrentColor(response.product.colors[0])
-                setCurrentSize(response.product.sizes[0])
-            })
-            .catch(err => console.error(err))
-    }
 
     function handleBuyNow() {
 
@@ -132,7 +106,7 @@ export default withRouter(props => {
                 <meta property="og:title" content={product.title} key='og:title' />
                 <meta property="og:image:alt" content={product.title} key='og:image:alt' />
                 <meta property="og:description" content={product.description} key='og:description' />
-                <meta property="og:image" itemprop="image" content={product.images[0].src} key='og:image' />
+                <meta property="og:image" itemprop="image" content={product.images[product.image_showcase_index].src} key='og:image' />
                 <meta property="og:type" content="product" key='og:type' />
                 <meta property="og:url" content={`https://my-store-sigma-nine.vercel.app/product/${product.id}`} key='og:url' />
             </Head>

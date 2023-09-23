@@ -1,7 +1,6 @@
 import React from 'react'
 import Link from 'next/link'
 import styles from '../styles/components/NavBar.module.css'
-import { motion } from "framer-motion"
 import Logo from './Logo';
 import SearchBar from './SearchBar';
 import FavoriteBorderRoundedIcon from '@mui/icons-material/FavoriteBorderRounded';
@@ -9,6 +8,8 @@ import AvatarMenu from './AvatarMenu';
 import CartIcon from './CartIcon';
 import SearchRoundedIcon from '@mui/icons-material/SearchRounded';
 import { itemsNavBar } from '../../consts';
+import { motion } from "framer-motion";
+import { MenuToggle } from './MenuToggle';
 
 export default function NavBar(props) {
     const {
@@ -26,18 +27,26 @@ export default function NavBar(props) {
         setProductOptions,
         handleClickSearch,
         handleKeyDownSearch,
-        setSearch
+        setSearch,
+        supportsHoverAndPointer,
+        menuOpen,
+        switchMenu,
     } = props
 
     return (
         <div className={styles.container}>
-            <motion.div
+            <div
                 className={styles.bodyContainer}
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ delay: 0, duration: 0, ease: [.48, 0, .15, 1.01] }}
             >
                 <div className={styles.leftSide}>
+                    <motion.div
+                        initial={false}
+                        animate={menuOpen ? "open" : "closed"}
+                    >
+                        <MenuToggle
+                            toggle={() => switchMenu()}
+                        />
+                    </motion.div>
                     {!mobile &&
                         <Link legacyBehavior href={'/'}>
                             <a
@@ -146,13 +155,15 @@ export default function NavBar(props) {
                         cart={cart}
                         setCart={setCart}
                         userCurrency={userCurrency}
+                        supportsHoverAndPointer={supportsHoverAndPointer}
                     />
                     <AvatarMenu
                         session={session}
                         logout={logout}
+                        supportsHoverAndPointer={supportsHoverAndPointer}
                     />
                 </div>
-            </motion.div>
+            </div>
         </div>
     )
 }

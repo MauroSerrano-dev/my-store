@@ -5,17 +5,7 @@ export default function Footer() {
 
     return (
         <footer
-            style={{
-                width: '100%',
-                height: '330px',
-                borderTop: '#d2d2d2 solid 1px',
-                backgroundColor: '#3b3a38',
-                paddingLeft: '12.5%',
-                paddingRight: '12.5%',
-                paddingTop: '2rem',
-                '--text-color': 'var(--text-white)',
-            }}
-            className="flex column"
+            className={styles.container}
         >
             <div className={styles.top}>
                 <div className={styles.column}>
@@ -48,6 +38,14 @@ export default function Footer() {
                     </div>
                     <div>
                         <a>Privacy policy</a>
+                    </div>
+                </div>
+                <div className={styles.column}>
+                    <h3 className="text-start">About</h3>
+                    <div>
+                        <a>
+                            About us
+                        </a>
                     </div>
                 </div>
                 <div className={styles.column}>

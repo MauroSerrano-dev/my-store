@@ -11,11 +11,13 @@ export default function CartIcon(props) {
         cart,
         setCart,
         userCurrency,
+        supportsHoverAndPointer
     } = props
 
     const [open, setOpen] = useState(false)
 
     useEffect(() => {
+        // Em caso de deletar ultimo elemento do cart
         if (cart && cart.length === 0)
             setOpen(false)
     }, [cart])
@@ -50,7 +52,7 @@ export default function CartIcon(props) {
                 </a>
             </Link>
             {
-                open && cart && cart.length > 0 &&
+                open && cart && cart.length > 0 && supportsHoverAndPointer &&
                 <div
                     className={styles.contentContainer}
                 >

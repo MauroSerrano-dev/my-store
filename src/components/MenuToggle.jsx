@@ -6,15 +6,19 @@ const Path = props => (
     <motion.path
         fill="transparent"
         strokeWidth="3"
-        stroke="hsl(0, 0%, 18%)"
+        stroke="var(--global-white)"
         strokeLinecap="round"
         {...props}
     />
 );
 
 export const MenuToggle = ({ toggle }) => (
-    <button id={styles.menuBurguer} onClick={toggle}>
-        <svg width="23" height="23" viewBox="0 0 23 23">
+    <button
+        className={styles.menuBurguer}
+        onClick={toggle}
+        aria-label='Menu'
+    >
+        <svg width="30" height="30" viewBox="0 0 21 23">
             <Path
                 variants={{
                     closed: { d: "M 2 2.5 L 20 2.5" },
@@ -36,5 +40,6 @@ export const MenuToggle = ({ toggle }) => (
                 }}
             />
         </svg>
+        <label>Menu</label>
     </button>
 );

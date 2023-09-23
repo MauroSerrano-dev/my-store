@@ -17,7 +17,7 @@ export default function SearchBar(props) {
         style,
         barStyle,
         barHeight = 38,
-        setSearch
+        setSearch,
     } = props
 
     const [opacity, setOpacity] = useState(1)

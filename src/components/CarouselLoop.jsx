@@ -5,12 +5,12 @@ import KeyboardArrowLeftRoundedIcon from '@mui/icons-material/KeyboardArrowLeftR
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
 
-export default function Carousel(props) {
+export default function CarouselLoop(props) {
     const {
         items,
         height,
         width,
-        loop,
+        autorun,
         animationDuration = 200,
         itemWidth = 200,
         gap = 20,
@@ -27,7 +27,7 @@ export default function Carousel(props) {
     )
 
     useEffect(() => {
-        if (loop) {
+        if (autorun) {
             setTimeout(() => {
                 handleGoRight()
             }, animationDuration)
@@ -87,10 +87,10 @@ export default function Carousel(props) {
                                 left: `${(item.position) * (itemWidth + gap)}px`,
                                 width: `${itemWidth}px`,
                                 transition: item.position < items.length / 2 * (-1) || item.position > items.length * 1.5
-                                    ? `all ${loop
+                                    ? `all ${autorun
                                         ? 'linear'
                                         : 'ease-in-out'} 0ms`
-                                    : `all ${loop
+                                    : `all ${autorun
                                         ? 'linear'
                                         : 'ease-in-out'} ${animationDuration}ms`
                             }}
@@ -109,7 +109,7 @@ export default function Carousel(props) {
                     </Link>
                 )}
             </div>
-            {!loop &&
+            {!autorun &&
                 <IconButton
                     onClick={handleGoLeft}
                     color='primary'
@@ -132,7 +132,7 @@ export default function Carousel(props) {
                     />
                 </IconButton>
             }
-            {!loop &&
+            {!autorun &&
                 <IconButton
                     onClick={handleGoRight}
                     color='primary'

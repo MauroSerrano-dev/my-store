@@ -8,8 +8,8 @@
     justify-content: center;
 
     padding-top: 2.5rem;
-    padding-left: 4rem;
-    padding-right: 4rem;
+    padding-left: 7%;
+    padding-right: 7%;
 
     gap: 1.5rem;
 
@@ -24,13 +24,13 @@
     align-items: center;
 }
 
-.emptyTitle{
+.emptyTitle {
     display: flex;
     flex-direction: column;
     --text-color: #ffffff;
 }
 
-.emptyTitle h2{
+.emptyTitle h2 {
     font-weight: 300;
 }
 
@@ -42,7 +42,6 @@
     align-items: center;
 
     width: 65.45%;
-    max-width: 720px;
 
     border-radius: 0.2rem;
 }
@@ -84,7 +83,6 @@
     background-color: #ffffff;
     height: 600px;
     width: 34.55%;
-    max-width: 380px;
     max-height: 900px;
 
     border-radius: 0.2rem;
@@ -152,4 +150,21 @@
 
 .securedText a {
     font-weight: bold;
+}
+
+/* Mobile and Tablet */
+@media (max-width: 1074.5px) {
+    .main {
+        flex-direction: column;
+        padding-left: 4%;
+        padding-right: 4%;
+    }
+
+    .productsContainer {
+        width: 100%;
+    }
+
+    .detailsContainer {
+        width: 100%;
+    }
 }

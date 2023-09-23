@@ -1,6 +1,6 @@
 import { Inter } from 'next/font/google'
 import styles from '@/styles/Home.module.css'
-import Carousel from '@/components/Carousel'
+import Carousel from '@/components/CarouselLoop'
 import CarouselProducts from '@/components/CarouselProducts'
 import { useEffect, useState } from 'react'
 import Inventory2OutlinedIcon from '@mui/icons-material/Inventory2Outlined';

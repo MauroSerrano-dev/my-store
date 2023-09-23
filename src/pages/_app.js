@@ -29,8 +29,6 @@ const mainTheme = createTheme({
 export default function App(props) {
   const { Component, pageProps } = props
 
-  const { openGraphData = [] } = pageProps
-
   return (
     <div>
       <Head>

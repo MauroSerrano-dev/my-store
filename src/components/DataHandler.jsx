@@ -8,6 +8,7 @@ import { firebaseConfig } from '../../firebase.config';
 import { CART_COOKIE } from '../../consts';
 import SearchBar from './SearchBar';
 import Router, { useRouter } from 'next/router';
+import { useCycle } from "framer-motion";
 
 const SUB_NAVBAR_HEIGHT = 40
 const SUB_NAVBAR_HEIGHT_MOBILE = 55
@@ -19,11 +20,13 @@ export default function DataHandler(props) {
     const [isScrollAtTop, setIsScrollAtTop] = useState(true)
     const [session, setSession] = useState()
     const [mobile, setMobile] = useState()
-    const [showWebsite, setShowWebsite] = useState(false)
+    const [websiteVisible, setWebsiteVisible] = useState(false)
     const [showIntroduction, setShowIntroduction] = useState(false)
     const [userCurrency, setUserCurrency] = useState({ code: 'usd', symbol: '$' })
     const [search, setSearch] = useState('')
     const [productOptions, setProductOptions] = useState([])
+    const [supportsHoverAndPointer, setSupportsHoverAndPointer] = useState()
+    const [menuOpen, switchMenu] = useCycle(false, true);
 
     const router = useRouter();
 
@@ -270,13 +273,34 @@ export default function DataHandler(props) {
 
         handleResize()
         setTimeout(() => {
-            setShowWebsite(true)
-        }, 200)
+            setWebsiteVisible(true)
+        }, 10)
 
         window.addEventListener('resize', handleResize)
 
         return () => {
             window.removeEventListener('resize', handleResize)
+        }
+    }, [])
+
+    useEffect(() => {
+        const hoverMediaQuery = window.matchMedia('(hover: hover)');
+        const pointerMediaQuery = window.matchMedia('(pointer: fine)');
+
+        const updateHoverAndPointer = () => {
+            setSupportsHoverAndPointer(
+                hoverMediaQuery.matches && pointerMediaQuery.matches
+            )
+        }
+
+        hoverMediaQuery.addListener(updateHoverAndPointer);
+        pointerMediaQuery.addListener(updateHoverAndPointer);
+
+        updateHoverAndPointer();
+
+        return () => {
+            hoverMediaQuery.removeListener(updateHoverAndPointer);
+            pointerMediaQuery.removeListener(updateHoverAndPointer);
         }
     }, [])
 
@@ -320,13 +344,30 @@ export default function DataHandler(props) {
         setProductOptions([])
     }, [router])
 
+    useEffect(() => {
+        if (menuOpen) {
+            document.documentElement.style.overflowY = "hidden"
+        } else {
+            document.documentElement.style.overflowY = "auto"
+        }
+
+        return () => {
+            document.documentElement.style.overflowY = "auto"
+        }
+    }, [menuOpen])
+
     return (
         <div
             onClick={() => {
                 console.log('session', session)
             }}
+            className={styles.container}
             style={{
-                opacity: showWebsite ? 1 : 0,
+                opacity: websiteVisible ? 1 : 0,
+                left: menuOpen
+                    ? '300px'
+                    : 0,
+                transition: 'all ease-in-out 350ms'
             }}
         >
             <div
@@ -352,12 +393,16 @@ export default function DataHandler(props) {
                     handleClickSearch={handleClickSearch}
                     handleKeyDownSearch={handleKeyDownSearch}
                     setSearch={setSearch}
+                    supportsHoverAndPointer={supportsHoverAndPointer}
+                    menuOpen={menuOpen}
+                    switchMenu={switchMenu}
                 />
                 <div
                     className={styles.subNavBar}
                     style={{
                         top: isScrollAtTop ? '5rem' : 0,
-                        height: `${mobile ? SUB_NAVBAR_HEIGHT_MOBILE : SUB_NAVBAR_HEIGHT}px`
+                        height: `${mobile ? SUB_NAVBAR_HEIGHT_MOBILE : SUB_NAVBAR_HEIGHT}px`,
+                        transition: `all ease-in-out ${websiteVisible ? 200 : 0}ms`,
                     }}
                 >
                     <SearchBar
@@ -377,7 +422,8 @@ export default function DataHandler(props) {
             <div
                 className={styles.componentContainer}
                 style={{
-                    paddingTop: `calc(5rem + ${mobile ? SUB_NAVBAR_HEIGHT_MOBILE : SUB_NAVBAR_HEIGHT}px)`
+                    paddingTop: `calc(5rem + ${mobile ? SUB_NAVBAR_HEIGHT_MOBILE : SUB_NAVBAR_HEIGHT}px)`,
+                    transition: `all ease-in-out ${websiteVisible ? 200 : 0}ms`,
                 }}
             >
                 <
@@ -404,6 +450,29 @@ export default function DataHandler(props) {
                     </h1>
                 </div>
             }
-        </div >
+            <div
+                className={styles.menuContainer}
+            >
+                <div
+                    className={styles.menuBackground}
+                    onClick={switchMenu}
+                    style={{
+                        backgroundColor: 'rgba(0, 0, 0, 0.5)',
+                        backdropFilter: 'blur(2px)',
+                        opacity: menuOpen ? 1 : 0,
+                        transition: 'all ease-in-out 350ms',
+                        pointerEvents: menuOpen ? 'auto' : 'none',
+                    }}
+                >
+                </div>
+                <div
+                    className={styles.menu}
+                    style={{
+                        transition: 'all ease-in-out 350ms'
+                    }}
+                >
+                </div>
+            </div>
+        </div>
     )
 }

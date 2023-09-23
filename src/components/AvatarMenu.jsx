@@ -13,7 +13,7 @@ import { Button } from '@mui/material'
 import ReceiptLongRoundedIcon from '@mui/icons-material/ReceiptLongRounded';
 
 export default function AvatarMenu(props) {
-  const { logout, session } = props
+  const { logout, session, supportsHoverAndPointer } = props
 
   const [open, setOpen] = useState(false)
 
@@ -28,7 +28,7 @@ export default function AvatarMenu(props) {
       onMouseEnter={() => setOpen(true)}
       onMouseLeave={() => setOpen(false)}
     >
-      <Link legacyBehavior href={`/login`}>
+      <Link legacyBehavior href={supportsHoverAndPointer ? `/login` : '#'}>
         <a
           className={`${styles.iconContainer} flex center noUnderline`}
           aria-label='Login'

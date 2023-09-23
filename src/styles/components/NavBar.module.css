@@ -7,7 +7,7 @@
     width: 100%;
 
     background-color: var(--navbar-color);
-    transition: all 650ms ease-in-out;
+
     z-index: 2;
     border-bottom: 2px solid var(--global-white);
     padding-left: 1rem;
@@ -24,7 +24,7 @@
 }
 
 .leftSide {
-    width: 200px;
+    width: 260px;
     height: 100%;
 
     display: flex;
@@ -37,7 +37,7 @@
 .middle {
     position: relative;
 
-    width: calc(100% - 400px);
+    width: calc(100% - 520px);
     height: 100%;
 
     display: flex;
@@ -48,7 +48,7 @@
 }
 
 .rightSide {
-    width: 200px;
+    width: 260px;
     height: 100%;
 
     display: flex;

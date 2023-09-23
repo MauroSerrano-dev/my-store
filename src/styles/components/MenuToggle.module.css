@@ -1,12 +1,26 @@
-#menuBurguer {
-  outline: none;
-  border: none;
-  cursor: pointer;
-  position: absolute;
-  top: 18px;
-  left: 15px;
-  width: 50px;
-  height: 50px;
-  border-radius: 50%;
-  background: transparent;
+.menuBurguer {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    outline: none;
+    border: none;
+
+    background-color: transparent;
+}
+
+.menuBurguer label {
+    font-size: 10px;
+}
+
+/* Enable hover only on non-touch devices */
+@media (hover: hover) and (pointer: fine) {
+    .menuBurguer:hover {
+        cursor: pointer;
+    }
+
+    .menuBurguer label:hover {
+        cursor: pointer;
+    }
 }
