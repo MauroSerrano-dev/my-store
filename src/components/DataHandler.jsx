@@ -9,8 +9,7 @@ import { CART_COOKIE } from '../../consts';
 import SearchBar from './SearchBar';
 import Router, { useRouter } from 'next/router';
 import { useCycle } from "framer-motion";
-import Logo from './Logo';
-import { SlClose } from "react-icons/sl";
+import Menu from './Menu';
 
 const SUB_NAVBAR_HEIGHT = 40
 const SUB_NAVBAR_HEIGHT_MOBILE = 55
@@ -455,45 +454,10 @@ export default function DataHandler(props) {
                     </h1>
                 </div>
             }
-            <div
-                className={styles.menuContainer}
-            >
-                <div
-                    className={styles.menuBackground}
-                    onClick={switchMenu}
-                    style={{
-                        backgroundColor: 'rgba(0, 0, 0, 0.5)',
-                        backdropFilter: 'blur(2px)',
-                        opacity: menuOpen ? 1 : 0,
-                        transition: 'opacity ease-in-out 350ms',
-                        pointerEvents: menuOpen ? 'auto' : 'none',
-                    }}
-                >
-                </div>
-                <div
-                    className={styles.menu}
-                    style={{
-                        transition: 'all ease-in-out 350ms'
-                    }}
-                >
-                    <div className={styles.menuHead}>
-                        <Logo
-                            width='50%'
-                            fill='black'
-                        />
-                        <SlClose
-                            onClick={switchMenu}
-                            color='#ffffff'
-                            className='noSelection'
-                            style={{
-                                fontSize: '21px',
-                                cursor: 'pointer',
-                                color: 'var(--global-black)',
-                            }}
-                        />
-                    </div>
-                </div>
-            </div>
+            <Menu
+                switchMenu={switchMenu}
+                menuOpen={menuOpen}
+            />
         </div>
     )
 }

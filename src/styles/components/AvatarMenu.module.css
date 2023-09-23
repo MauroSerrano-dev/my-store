@@ -70,6 +70,7 @@
 .noSession a {
     font-weight: bold;
     color: #1185ed;
+    transition: all ease-in-out 150ms;
 }
 
 .pointer {
