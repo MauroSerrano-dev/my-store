@@ -31,6 +31,10 @@
     flex-direction: row;
     align-items: center;
 
+    gap: 25%;
+
+    padding-left: 1%;
+
     transition: all 200ms ease-in-out;
 }
 

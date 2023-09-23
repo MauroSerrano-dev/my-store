@@ -52,6 +52,9 @@ export default function NavBar(props) {
                             <a
                                 className='fillHeight'
                                 aria-label='Home'
+                                style={{
+                                    height: '70%'
+                                }}
                             >
                                 <Logo height='100%' />
                             </a>
@@ -66,6 +69,9 @@ export default function NavBar(props) {
                             <a
                                 className='fillHeight'
                                 aria-label='Home'
+                                style={{
+                                    height: '70%'
+                                }}
                             >
                                 <Logo height='100%' />
                             </a>

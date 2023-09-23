@@ -57,6 +57,7 @@
 
 .menuContainer {
     position: fixed;
+
     top: 0;
 
     height: 100%;
@@ -76,10 +77,19 @@
     position: absolute;
 
     height: 100vh;
-    width: 300px;
-    left: -300px;
+    width: 350px;
+    left: -350px;
+    top: 0px;
+
+    padding: 3rem 2rem;
 
     background-color: var(--global-white);
+}
+
+.menuHead {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
 }
 
 /* Enable hover only on non-touch devices */
@@ -91,4 +101,9 @@
 }
 
 /* Mobile, Tablet and Smaller Desktop*/
-@media (max-width: 1120px) {}
+@media (max-width: 420px) {
+    .menu {
+        width: 100vw;
+        left: -100vw;
+    }
+}

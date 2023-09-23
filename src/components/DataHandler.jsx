@@ -1,6 +1,6 @@
 import NavBar from './NavBar'
 import styles from '../styles/components/DataHandler.module.css'
-import { useEffect, useRef, useState } from "react"
+import { useEffect, useState } from "react"
 import Cookies from 'js-cookie';
 import { getAuth, onAuthStateChanged, signOut, signInWithEmailAndPassword } from "firebase/auth";
 import { initializeApp } from 'firebase/app';
@@ -9,6 +9,8 @@ import { CART_COOKIE } from '../../consts';
 import SearchBar from './SearchBar';
 import Router, { useRouter } from 'next/router';
 import { useCycle } from "framer-motion";
+import Logo from './Logo';
+import { SlClose } from "react-icons/sl";
 
 const SUB_NAVBAR_HEIGHT = 40
 const SUB_NAVBAR_HEIGHT_MOBILE = 55
@@ -20,6 +22,7 @@ export default function DataHandler(props) {
     const [isScrollAtTop, setIsScrollAtTop] = useState(true)
     const [session, setSession] = useState()
     const [mobile, setMobile] = useState()
+    const [windowWidth, setWindowWidth] = useState()
     const [websiteVisible, setWebsiteVisible] = useState(false)
     const [showIntroduction, setShowIntroduction] = useState(false)
     const [userCurrency, setUserCurrency] = useState({ code: 'usd', symbol: '$' })
@@ -269,6 +272,7 @@ export default function DataHandler(props) {
     useEffect(() => {
         function handleResize() {
             setMobile(window.innerWidth < MOBILE_LIMIT)
+            setWindowWidth(window.innerWidth)
         }
 
         handleResize()
@@ -347,12 +351,15 @@ export default function DataHandler(props) {
     useEffect(() => {
         if (menuOpen) {
             document.documentElement.style.overflowY = "hidden"
+            document.body.style.overflowY = "hidden";
         } else {
             document.documentElement.style.overflowY = "auto"
+            document.body.style.overflowY = "auto"
         }
 
         return () => {
             document.documentElement.style.overflowY = "auto"
+            document.body.style.overflowY = "auto"
         }
     }, [menuOpen])
 
@@ -365,7 +372,7 @@ export default function DataHandler(props) {
             style={{
                 opacity: websiteVisible ? 1 : 0,
                 left: menuOpen
-                    ? '300px'
+                    ? windowWidth < 420 ? '100vw' : '350px'
                     : 0,
                 transition: 'all ease-in-out 350ms'
             }}
@@ -460,7 +467,7 @@ export default function DataHandler(props) {
                         backgroundColor: 'rgba(0, 0, 0, 0.5)',
                         backdropFilter: 'blur(2px)',
                         opacity: menuOpen ? 1 : 0,
-                        transition: 'all ease-in-out 350ms',
+                        transition: 'opacity ease-in-out 350ms',
                         pointerEvents: menuOpen ? 'auto' : 'none',
                     }}
                 >
@@ -471,6 +478,21 @@ export default function DataHandler(props) {
                         transition: 'all ease-in-out 350ms'
                     }}
                 >
+                    <div className={styles.menuHead}>
+                        <Logo
+                            width='50%'
+                            fill='black'
+                        />
+                        <SlClose
+                            onClick={switchMenu}
+                            color='#ffffff'
+                            style={{
+                                fontSize: '21px',
+                                cursor: 'pointer',
+                                color: 'var(--global-black)',
+                            }}
+                        />
+                    </div>
                 </div>
             </div>
         </div>
