@@ -18,15 +18,17 @@ export default withRouter(props => {
         cart,
         setCart,
         userCurrency,
+        id,
+        productMeta,
     } = props
 
     const [product, setProduct] = useState()
 
     const router = useRouter()
 
-    const id = router.query.id
+    /* const id = router.query.id
 
-    const productMeta = getProductMetaById(router.query.id)
+    const productMeta = getProductMetaById(router.query.id) */
 
     const [currentColor, setCurrentColor] = useState()
     const [currentSize, setCurrentSize] = useState()
@@ -206,7 +208,7 @@ export default withRouter(props => {
     )
 })
 
-/* export async function getServerSideProps(context) {
+export async function getServerSideProps(context) {
     const { id } = context.query;
 
     return {
@@ -215,4 +217,9 @@ export default withRouter(props => {
             productMeta: getProductMetaById(id),
         },
     }
-} */
+}
+
+/* export const config = {
+    runtime: 'experimental-edge',
+};
+ */
