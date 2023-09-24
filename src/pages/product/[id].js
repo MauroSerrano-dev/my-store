@@ -176,7 +176,7 @@ export default withRouter(props => {
 })
 
 export const config = {
-    runtime: process.env.NODE_ENV === 'production' ? 'experimental-edge' : 'nodejs',
+    runtime: 'experimental-edge'
 }
 
 export async function getServerSideProps(context) {
