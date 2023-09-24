@@ -20,7 +20,7 @@ const categories = [
 ]
 
 export default function Home(props) {
-  const { userCurrency, supportsHoverAndPointer, setLoadingProduct } = props
+  const { userCurrency, supportsHoverAndPointer, setLoadingProduct, loadingProduct } = props
 
   const [productsHome, setProductsHome] = useState([])
   const [productsTShirts, setProductsTShirts] = useState([])
@@ -132,6 +132,7 @@ export default function Home(props) {
               itemWidth={225}
               userCurrency={userCurrency}
               supportsHoverAndPointer={supportsHoverAndPointer}
+              loadingProduct={loadingProduct}
               setLoadingProduct={setLoadingProduct}
             />
           </div>
@@ -149,6 +150,7 @@ export default function Home(props) {
               itemWidth={225}
               userCurrency={userCurrency}
               supportsHoverAndPointer={supportsHoverAndPointer}
+              loadingProduct={loadingProduct}
               setLoadingProduct={setLoadingProduct}
             />
           </div>
@@ -166,6 +168,7 @@ export default function Home(props) {
               itemWidth={225}
               userCurrency={userCurrency}
               supportsHoverAndPointer={supportsHoverAndPointer}
+              loadingProduct={loadingProduct}
               setLoadingProduct={setLoadingProduct}
             />
           </div>

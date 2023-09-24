@@ -31,6 +31,7 @@ export default withRouter(props => {
         min,
         max,
         order = 'popularity',
+        loadingProduct,
         setLoadingProduct,
     } = props.router.query
 
@@ -336,6 +337,7 @@ export default withRouter(props => {
                                     url={`/product/${product.id}`}
                                     width={`calc(${100 / itemsPerLine}% - 1rem)`}
                                     supportsHoverAndPointer={supportsHoverAndPointer}
+                                    loadingProduct={loadingProduct}
                                     setLoadingProduct={setLoadingProduct}
                                     motionVariants={
                                         {

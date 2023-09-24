@@ -184,7 +184,7 @@ export default withRouter(props => {
 } */
 
 export async function getServerSideProps(context) {
-    console.log('context', context)
+
     const { id } = context.query;
     try {
         const options = {

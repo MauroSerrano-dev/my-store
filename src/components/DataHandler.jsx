@@ -362,11 +362,7 @@ export default function DataHandler(props) {
             document.body.style.overflowY = "auto"
         }
     }, [menuOpen])
-
-    useEffect(() => {
-        console.log('loadingProduct', loadingProduct)
-    }, [loadingProduct])
-
+    
     return (
         <motion.div
             onClick={() => {
@@ -472,6 +468,7 @@ export default function DataHandler(props) {
                     handleChangeCurrency={handleChangeCurrency}
                     mobile={mobile}
                     supportsHoverAndPointer={supportsHoverAndPointer}
+                    loadingProduct={loadingProduct}
                     setLoadingProduct={setLoadingProduct}
                 />
             </div>
