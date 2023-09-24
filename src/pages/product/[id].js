@@ -210,7 +210,7 @@ export default withRouter(props => {
 })
 
 export const config = {
-    runtime: 'nodejs', // or "edge"
+    runtime: 'experimental-edge', // warn: using an experimental edge runtime, the API might change
 }
 
 export async function getServerSideProps(context) {
