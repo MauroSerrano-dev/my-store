@@ -176,7 +176,7 @@ export default withRouter(props => {
 })
 
 export const config = {
-    runtime: 'experimental-edge', // warn: using an experimental edge runtime, the API might change
+    runtime: 'nodejs',
 }
 
 export async function getServerSideProps(context) {
@@ -206,8 +206,3 @@ export async function getServerSideProps(context) {
         }
     }
 }
-
-/* export const config = {
-    runtime: 'experimental-edge',
-};
- */
