@@ -16,7 +16,8 @@ export default function CarouselProducts(props) {
         itemWidth = 200,
         gap = 20,
         userCurrency,
-        supportsHoverAndPointer
+        supportsHoverAndPointer,
+        setLoadingProduct
     } = props
 
     const [itemsArray, setItemsArray] = useState(
@@ -104,6 +105,7 @@ export default function CarouselProducts(props) {
                             imgHover={item.images[item.image_hover_index].src}
                             url={`/product/${item.id}`}
                             supportsHoverAndPointer={supportsHoverAndPointer}
+                            setLoadingProduct={setLoadingProduct}
                         />
                     </div>
                 )}

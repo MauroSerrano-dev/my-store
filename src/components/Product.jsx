@@ -18,7 +18,8 @@ export default function Product(props) {
         width = '230px',
         style,
         motionVariants,
-        supportsHoverAndPointer
+        supportsHoverAndPointer,
+        setLoadingProduct
     } = props
 
     const [isHovered, setIsHovered] = useState(false)
@@ -58,6 +59,7 @@ export default function Product(props) {
     return (
         <Link legacyBehavior href={url}>
             <a
+                onClick={() => setLoadingProduct(true)}
                 className={styles.container}
                 ref={productRef}
                 style={{

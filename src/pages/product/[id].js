@@ -18,13 +18,17 @@ export default withRouter(props => {
         setCart,
         userCurrency,
         product,
+        setLoadingProduct,
     } = props
 
-    const [currentColor, setCurrentColor] = useState(product.colors[0])
-    const [currentSize, setCurrentSize] = useState(product.sizes[0])
+    const [currentColor, setCurrentColor] = useState(product?.colors[0])
+    const [currentSize, setCurrentSize] = useState(product?.sizes[0])
+
+    useEffect(() => {
+        setLoadingProduct(false)
+    }, [])
 
     function handleBuyNow() {
-
         const options = {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
@@ -175,11 +179,12 @@ export default withRouter(props => {
     )
 })
 
-export const config = {
+/* export const config = {
     runtime: 'experimental-edge'
-}
+} */
 
 export async function getServerSideProps(context) {
+    console.log('context', context)
     const { id } = context.query;
     try {
         const options = {

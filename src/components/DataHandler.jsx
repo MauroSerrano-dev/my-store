@@ -11,6 +11,7 @@ import Router, { useRouter } from 'next/router';
 import { useCycle } from "framer-motion";
 import Menu from './Menu';
 import { motion } from 'framer-motion';
+import { CircularProgress } from '@mui/material';
 
 const SUB_NAVBAR_HEIGHT = 40
 const SUB_NAVBAR_HEIGHT_MOBILE = 55
@@ -30,6 +31,8 @@ export default function DataHandler(props) {
     const [productOptions, setProductOptions] = useState([])
     const [supportsHoverAndPointer, setSupportsHoverAndPointer] = useState()
     const [menuOpen, switchMenu] = useCycle(false, true);
+
+    const [loadingProduct, setLoadingProduct] = useState(false)
 
     const router = useRouter();
 
@@ -360,6 +363,10 @@ export default function DataHandler(props) {
         }
     }, [menuOpen])
 
+    useEffect(() => {
+        console.log('loadingProduct', loadingProduct)
+    }, [loadingProduct])
+
     return (
         <motion.div
             onClick={() => {
@@ -465,8 +472,39 @@ export default function DataHandler(props) {
                     handleChangeCurrency={handleChangeCurrency}
                     mobile={mobile}
                     supportsHoverAndPointer={supportsHoverAndPointer}
+                    setLoadingProduct={setLoadingProduct}
                 />
             </div>
+            {loadingProduct &&
+                <div
+                    style={{
+                        position: 'fixed',
+                        right: '4rem',
+                        bottom: '4rem',
+                        zIndex: 100
+                    }}
+                >
+                    <CircularProgress
+                        variant="determinate"
+                        sx={{
+                            position: 'absolute',
+                            color: '#525252',
+                        }}
+                        size={40}
+                        thickness={4}
+                        value={100}
+                    />
+                    <CircularProgress
+                        disableShrink
+                        size={40}
+                        thickness={4}
+                        sx={{
+                            position: 'absolute',
+                            animationDuration: '750ms',
+                        }}
+                    />
+                </div>
+            }
             {
                 showIntroduction &&
                 <div
