@@ -99,7 +99,7 @@ export default withRouter(props => {
         product &&
         <div className={styles.container}>
             <Head>
-                <title>{productMeta.title}</title>
+                <title>{product.title}</title>
                 <meta property="og:title" content={product.title} key='og:title' />
                 <meta property="og:image:alt" content={product.title} key='og:image:alt' />
                 <meta property="og:description" content={product.description} key='og:description' />
