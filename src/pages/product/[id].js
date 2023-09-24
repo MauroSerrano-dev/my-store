@@ -1,4 +1,4 @@
-import { withRouter } from 'next/router'
+import { useRouter, withRouter } from 'next/router'
 import styles from '../../styles/product.module.css'
 import { useEffect, useState } from 'react'
 import ImagesSlider from '@/components/ImagesSlider'
@@ -18,16 +18,21 @@ export default withRouter(props => {
         cart,
         setCart,
         userCurrency,
-        id,
-        productMeta,
     } = props
 
     const [product, setProduct] = useState()
+
+    const router = useRouter()
+
+    const id = router.query.id
+
+    const productMeta = getProductMetaById(router.query.id)
 
     const [currentColor, setCurrentColor] = useState()
     const [currentSize, setCurrentSize] = useState()
 
     useEffect(() => {
+        console.log('router', router.query.id)
         if (id && !product)
             getProduct(id)
     }, [id, product])
@@ -124,7 +129,7 @@ export default withRouter(props => {
     return (
         <div className={styles.container}>
             <Head>
-                <meta property="og:title" content={productMeta.id} key='og:title' />
+                <meta property="og:title" content={productMeta.title} key='og:title' />
                 <meta property="og:image:alt" content={productMeta.title} key='og:image:alt' />
                 <meta property="og:description" content={id} key='og:description' />
                 <meta property="og:image" itemProp="image" content={productMeta.image} key='og:image' />
@@ -201,7 +206,7 @@ export default withRouter(props => {
     )
 })
 
-export async function getServerSideProps(context) {
+/* export async function getServerSideProps(context) {
     const { id } = context.query;
 
     return {
@@ -210,4 +215,4 @@ export async function getServerSideProps(context) {
             productMeta: getProductMetaById(id),
         },
     }
-}
+} */
