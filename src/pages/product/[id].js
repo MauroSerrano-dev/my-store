@@ -131,6 +131,7 @@ export default withRouter(props => {
     return (
         <div className={styles.container}>
             <Head>
+                <title>{productMeta.title}</title>
                 <meta property="og:title" content={productMeta.title} key='og:title' />
                 <meta property="og:image:alt" content={productMeta.title} key='og:image:alt' />
                 <meta property="og:description" content={productMeta.description} key='og:description' />
@@ -207,6 +208,10 @@ export default withRouter(props => {
         </div>
     )
 })
+
+export const config = {
+    runtime: 'nodejs', // or "edge"
+}
 
 export async function getServerSideProps(context) {
     const { id } = context.query;
