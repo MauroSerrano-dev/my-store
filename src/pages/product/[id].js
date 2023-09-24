@@ -10,7 +10,6 @@ import { CART_COOKIE } from '../../../consts'
 import Head from 'next/head'
 import ColorSelector from '@/components/ColorSelector'
 import SizesSelector from '@/components/SizesSelector'
-import { getProductMetaById } from '../../../productsMetas'
 
 export default withRouter(props => {
     const {
