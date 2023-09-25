@@ -103,14 +103,14 @@ export default function ProductCart(props) {
             </Link>
             <div className={styles.middle}>
                 <Link legacyBehavior href={`/product/${product.id}`}>
-                    <a>
+                    <a className={styles.productName}>
                         <h4>{product.title}</h4>
                     </a>
                 </Link>
                 <div
                     className={styles.inputsContainer}
                 >
-                    <FormControl sx={{ m: 1, minWidth: 80 }}>
+                    <FormControl sx={{ minWidth: 80, height: '25%', minHeight: 40 }}>
                         <InputLabel
                             sx={{
                                 color: '#ffffff'
@@ -124,7 +124,7 @@ export default function ProductCart(props) {
                             label="Quantity"
                             MenuProps={{ disableScrollLock: true }}
                             sx={{
-                                height: '50px',
+                                height: '100%',
                                 color: '#ffffff',
                                 '.MuiOutlinedInput-notchedOutline': {
                                     borderColor: `${focusQuantity
@@ -209,7 +209,7 @@ export default function ProductCart(props) {
                             </MenuItem>
                         </Select>
                     </FormControl>
-                    <FormControl sx={{ m: 1, minWidth: 80 }}>
+                    <FormControl sx={{ minWidth: 80, height: '25%', minHeight: 40 }}>
                         <InputLabel
                             sx={{
                                 color: '#ffffff'
@@ -224,7 +224,7 @@ export default function ProductCart(props) {
                             label="Size"
                             MenuProps={{ disableScrollLock: true }}
                             sx={{
-                                height: '50px',
+                                height: '100%',
                                 color: '#ffffff',
                                 '.MuiOutlinedInput-notchedOutline': {
                                     borderColor: `${focusSize

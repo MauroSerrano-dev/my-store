@@ -18,13 +18,13 @@
 
 .menu {
     position: absolute;
-    
+
     height: 100vh;
     width: 350px;
     left: -350px;
 
     top: 0px;
-    
+
     padding: 3rem 1rem;
 
     overflow: hidden;
@@ -41,6 +41,8 @@
 
     height: 85%;
     width: 100%;
+
+    padding: 3rem 1rem;
 }
 
 .menuHead {
@@ -94,6 +96,17 @@
     border-bottom: #ababab solid 1px;
 }
 
+.backButton {
+    color: #575757;
+    font-size: 25px;
+    padding-bottom: 0.5rem;
+}
+
+.forwardButton {
+    color: #575757;
+    font-size: 19px;
+}
+
 /* Mobile, Tablet and Smaller Desktop*/
 @media (max-width: 420px) {
     .menu {
@@ -110,5 +123,19 @@
 
     .subTitle a:hover {
         color: #444444;
+    }
+
+    .backButton:hover {
+        color: var(--global-black);
+        font-weight: bold;
+    }
+
+    .menuItem:hover {
+        font-weight: bold;
+    }
+
+    .menuItem:hover .forwardButton {
+        color: var(--global-black);
+        font-weight: bold;
     }
 }

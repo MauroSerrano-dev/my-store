@@ -1,6 +1,27 @@
 export const STORE_NAME = 'MKJ'
 export const CART_COOKIE = 'CART'
 
+export const MENU_OPTIONS = [
+    { title: 'Home', type: 'link', href: '/' },
+    { title: 'Departments', type: 'forward', value: 'departments' },
+    { title: 'Collections', type: 'forward', value: 'collections' },
+    { title: 'Support', type: 'link', href: '/support' },
+    { title: 'About us', type: 'link', href: '/about-us' },
+]
+
+export const MENU_FORWARD_OPTIONS = {
+    departments: [
+        { title: 'T-Shirt', type: 'link', href: '/search?c=t-shirts' },
+        { title: 'Kitchen', type: 'link', href:'/search?c=kitchen' },
+        { title: 'Socks', type: 'link', href: '/search?c=socks' }
+    ],
+    collections: [
+        { title: 'Music', type: 'link', href: '/search?c=music' },
+        { title: 'Zombies', type: 'link', href: '/search?c=zombies' },
+        { title: 'Games', type: 'link', href: '/search?c=games' }
+    ]
+}
+
 export const TAGS_POOL = [
     'games',
     'hoodies',

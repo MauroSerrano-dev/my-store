@@ -3,19 +3,30 @@ import Logo from './Logo';
 import { SlClose } from "react-icons/sl";
 import PersonOutlineOutlinedIcon from '@mui/icons-material/PersonOutlineOutlined';
 import Link from 'next/link';
-import { IoIosArrowForward } from "react-icons/io";
+import { IoIosArrowForward, IoIosArrowBack } from "react-icons/io";
 import { useState } from 'react';
 import { motion } from "framer-motion";
-
-const MENU_OTIONS = [
-    { title: 'Home', type: 'link', href: '/' },
-    { title: 'Departments', type: 'forward', value: 'departments' },
-]
+import { MENU_FORWARD_OPTIONS, MENU_OPTIONS } from '../../consts';
 
 export default function Menu(props) {
     const { switchMenu, menuOpen } = props
-    const [optionHover, setOptionHover] = useState()
     const [optionMenu, setOptionMenu] = useState()
+    const [optionMenuDelay, setOptionMenuDelay] = useState()
+
+    function handleCloseMenu() {
+        switchMenu()
+        setTimeout(() => {
+            setOptionMenu()
+            setOptionMenuDelay()
+        }, 350)
+    }
+
+    function handleGoBack() {
+        setOptionMenu()
+        setTimeout(() => {
+            setOptionMenuDelay()
+        }, 350)
+    }
 
     return (
         <div
@@ -23,7 +34,7 @@ export default function Menu(props) {
         >
             <div
                 className={styles.menuBackground}
-                onClick={switchMenu}
+                onClick={handleCloseMenu}
                 style={{
                     backgroundColor: 'rgba(0, 0, 0, 0.5)',
                     backdropFilter: 'blur(2px)',
@@ -44,16 +55,20 @@ export default function Menu(props) {
                         height='100%'
                         fill='black'
                     />
-                    <SlClose
-                        onClick={switchMenu}
-                        color='#ffffff'
-                        className='noSelection'
-                        style={{
-                            fontSize: '21px',
-                            cursor: 'pointer',
-                            color: 'var(--global-black)',
-                        }}
-                    />
+                    <button
+                        className='flex center buttonInvisible'
+                    >
+                        <SlClose
+                            onClick={handleCloseMenu}
+                            color='#ffffff'
+                            className='noSelection'
+                            style={{
+                                fontSize: '21px',
+                                cursor: 'pointer',
+                                color: 'var(--global-black)',
+                            }}
+                        />
+                    </button>
                 </div>
                 <motion.div
                     className={styles.menuBody}
@@ -78,71 +93,91 @@ export default function Menu(props) {
                                 fontSize: '25px',
                             }}
                         />
-                        Hello! <Link legacyBehavior href={'/login'}><a onClick={switchMenu} className='noUnderline'>Log in</a></Link> or <Link legacyBehavior href={'/signin'}><a onClick={switchMenu} className='noUnderline'>Sign up</a></Link>
+                        Hello! <Link legacyBehavior href={'/login'}><a onClick={handleCloseMenu} className='noUnderline'>Log in</a></Link> or <Link legacyBehavior href={'/signin'}><a onClick={handleCloseMenu} className='noUnderline'>Sign up</a></Link>
                     </div>
-                    {MENU_OTIONS.map((option, i) =>
+                    {MENU_OPTIONS.map((option, i) =>
                         option.type === 'link'
                             ? <Link
                                 legacyBehavior href={option.href}
                                 key={i}
                             >
                                 <a
-                                    onClick={switchMenu}
+                                    onClick={handleCloseMenu}
                                     className={`${styles.menuItem} noUnderline`}
-                                    onMouseEnter={() => setOptionHover(i)}
-                                    onMouseLeave={() => setOptionHover()}
-                                    style={{
-                                        fontWeight: optionHover === i
-                                            ? 'bold'
-                                            : '300'
-                                    }}
                                 >
                                     {option.title}
                                 </a>
                             </Link>
                             : <div
                                 key={i}
-                                onClick={() => setOptionMenu(option.value)}
-                                className={styles.menuItem}
-                                onMouseEnter={() => setOptionHover(i)}
-                                onMouseLeave={() => setOptionHover()}
-                                style={{
-                                    fontWeight: optionHover === i
-                                        ? 'bold'
-                                        : '300'
+                                onClick={() => {
+                                    setOptionMenuDelay(option.value)
+                                    setOptionMenu(option.value)
                                 }}
+                                className={styles.menuItem}
                             >
                                 {option.title}
                                 {option.type === 'forward' &&
                                     <IoIosArrowForward
-                                        strokeWidth={optionHover === i ? 20 : 0}
-                                        size={19}
-                                        color={optionHover === i ? 'var(--global-black)' : '#575757'}
+                                        className={styles.forwardButton}
                                     />
                                 }
                             </div>
                     )}
                 </motion.div>
-                <motion.div
-                    className={styles.bodyForward}
-                    onClick={() => setOptionMenu()}
-                    initial='hidden'
-                    animate={optionMenu ? 'visible' : 'hidden'
-                    }
-                    variants={{
-                        hidden: {
-                            left: '100%',
-                        },
-                        visible: {
-                            left: '0px',
-                            transition: {
-                                ease: 'easeInOut',
-                                duration: 0.35,
+                {optionMenuDelay &&
+                    <motion.div
+                        className={styles.bodyForward}
+                        initial='hidden'
+                        animate={optionMenu ? 'visible' : 'hidden'
+                        }
+                        variants={{
+                            hidden: {
+                                left: '100%',
                             },
-                        },
-                    }}
-                >
-                </motion.div>
+                            visible: {
+                                left: '0px',
+                                transition: {
+                                    ease: 'easeInOut',
+                                    duration: 0.35,
+                                },
+                            },
+                        }}
+                    >
+                        <button
+                            onClick={handleGoBack}
+                            className={`flex center buttonInvisible ${styles.backButton}`}
+                        >
+                            <IoIosArrowBack />
+                        </button>
+                        {MENU_FORWARD_OPTIONS[optionMenuDelay].map((option, i) =>
+                            option.type === 'link'
+                                ? <Link
+                                    legacyBehavior href={option.href}
+                                    key={i}
+                                >
+                                    <a
+                                        onClick={handleCloseMenu}
+                                        className={`${styles.menuItem} noUnderline`}
+                                    >
+                                        {option.title}
+                                    </a>
+                                </Link>
+                                : <div
+                                    key={i}
+                                    onClick={() => setOptionMenu(option.value)}
+                                    className={styles.menuItem}
+                                >
+                                    {option.title}
+                                    {option.type === 'forward' &&
+                                        <IoIosArrowForward
+                                            className={styles.forwardButton}
+                                        />
+                                    }
+                                </div>
+                        )}
+                    </motion.div>
+                }
             </div>
         </div>
     )

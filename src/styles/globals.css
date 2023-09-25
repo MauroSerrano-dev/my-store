@@ -211,6 +211,11 @@ body::-webkit-scrollbar-track {
   user-select: none;
 }
 
+.buttonInvisible {
+  background-color: transparent;
+  border: none;
+}
+
 /* Enable hover only on non-touch devices */
 @media (hover: hover) and (pointer: fine) {
   a:hover {
