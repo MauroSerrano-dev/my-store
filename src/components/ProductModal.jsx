@@ -11,6 +11,8 @@ export default function ProductModal(props) {
         setCart,
         index,
         userCurrency,
+        loadingProduct,
+        setLoadingProduct,
     } = props
 
     function handleDeleteCartProduct() {
@@ -51,7 +53,13 @@ export default function ProductModal(props) {
                 }}
             />
             <Link legacyBehavior href={`/product/${product.id}`}>
-                <a className={styles.imageContainer}>
+                <a
+                    className={styles.imageContainer}
+                    onClick={() => setLoadingProduct(true)}
+                    style={{
+                        pointerEvents: loadingProduct ? 'none' : 'auto',
+                    }}
+                >
                     <img
                         className={styles.image}
                         src={product.image}
@@ -60,7 +68,12 @@ export default function ProductModal(props) {
             </Link>
             <div className={styles.right}>
                 <Link legacyBehavior href={`/product/${product.id}`}>
-                    <a>
+                    <a
+                        onClick={() => setLoadingProduct(true)}
+                        style={{
+                            pointerEvents: loadingProduct ? 'none' : 'auto',
+                        }}
+                    >
                         <h6>{product.title}</h6>
                     </a>
                 </Link>

@@ -8,7 +8,16 @@ import CarouselProducts from '@/components/CarouselProducts'
 import Cookies from 'js-cookie'
 
 export default function Cart(props) {
-    const { session, cart, setCart, userCurrency, handleChangeCurrency, supportsHoverAndPointer, setLoadingProduct, loadingProduct } = props
+    const {
+        session,
+        cart,
+        setCart,
+        userCurrency,
+        handleChangeCurrency,
+        supportsHoverAndPointer,
+        setLoadingProduct,
+        loadingProduct
+    } = props
 
     const [shippingValue, setShippingValue] = useState(0)
     const [shippingCountry, setShippingCountry] = useState('US')
@@ -142,6 +151,8 @@ export default function Cart(props) {
                                         index={i}
                                         userCurrency={userCurrency}
                                         supportsHoverAndPointer={supportsHoverAndPointer}
+                                        loadingProduct={loadingProduct}
+                                        setLoadingProduct={setLoadingProduct}
                                     />
                                 )}
                             </div>

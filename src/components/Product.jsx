@@ -20,7 +20,7 @@ export default function Product(props) {
         motionVariants,
         supportsHoverAndPointer,
         setLoadingProduct,
-        loadingProduct
+        loadingProduct,
     } = props
 
     const [isHovered, setIsHovered] = useState(false)

@@ -21,7 +21,9 @@ export default function ProductCart(props) {
         setCart,
         index,
         userCurrency,
-        supportsHoverAndPointer
+        supportsHoverAndPointer,
+        loadingProduct,
+        setLoadingProduct,
     } = props
 
     const [hoverQuantity, setHoverQuantity] = useState(false)
@@ -82,19 +84,28 @@ export default function ProductCart(props) {
             initial='hidden'
             animate='visible'
         >
-            <SlClose
+            <button
                 onClick={() => handleDeleteCartProduct()}
-                color='#ffffff'
+                className='flex buttonInvisible'
                 style={{
-                    fontSize: '22px',
-                    cursor: 'pointer',
                     position: 'absolute',
                     top: '1rem',
                     right: '1rem',
+                    fontSize: '22px',
+                    color: '#ffffff',
+                    zIndex: 10,
                 }}
-            />
+            >
+                <SlClose />
+            </button>
             <Link legacyBehavior href={`/product/${product.id}`}>
-                <a className={styles.imageContainer}>
+                <a
+                    className={styles.imageContainer}
+                    onClick={() => setLoadingProduct(true)}
+                    style={{
+                        pointerEvents: loadingProduct ? 'none' : 'auto',
+                    }}
+                >
                     <img
                         className={styles.image}
                         src={product.image}
@@ -103,7 +114,13 @@ export default function ProductCart(props) {
             </Link>
             <div className={styles.middle}>
                 <Link legacyBehavior href={`/product/${product.id}`}>
-                    <a className={styles.productName}>
+                    <a
+                        className={styles.productName}
+                        onClick={() => setLoadingProduct(true)}
+                        style={{
+                            pointerEvents: loadingProduct ? 'none' : 'auto',
+                        }}
+                    >
                         <h4>{product.title}</h4>
                     </a>
                 </Link>

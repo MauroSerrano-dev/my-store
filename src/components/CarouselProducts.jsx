@@ -18,7 +18,7 @@ export default function CarouselProducts(props) {
         userCurrency,
         supportsHoverAndPointer,
         setLoadingProduct,
-        loadingProduct
+        loadingProduct,
     } = props
 
     const [itemsArray, setItemsArray] = useState(

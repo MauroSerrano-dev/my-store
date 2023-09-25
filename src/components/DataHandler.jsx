@@ -426,6 +426,8 @@ export default function DataHandler(props) {
                     supportsHoverAndPointer={supportsHoverAndPointer}
                     menuOpen={menuOpen}
                     switchMenu={switchMenu}
+                    loadingProduct={loadingProduct}
+                    setLoadingProduct={setLoadingProduct}
                 />
                 <div
                     className={styles.subNavBar}

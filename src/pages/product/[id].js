@@ -1,4 +1,4 @@
-import { withRouter } from 'next/router'
+import { useRouter, withRouter } from 'next/router'
 import styles from '../../styles/product.module.css'
 import { useEffect, useState } from 'react'
 import ImagesSlider from '@/components/ImagesSlider'
@@ -24,9 +24,11 @@ export default withRouter(props => {
     const [currentColor, setCurrentColor] = useState(product?.colors[0])
     const [currentSize, setCurrentSize] = useState(product?.sizes[0])
 
+    const router = useRouter()
+
     useEffect(() => {
         setLoadingProduct(false)
-    }, [])
+    }, [router])
 
     function handleBuyNow() {
         const options = {

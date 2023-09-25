@@ -158,8 +158,10 @@
 @media (max-width: 1074.5px) {
     .main {
         flex-direction: column;
+        justify-content: flex-start;
         padding-left: 4%;
         padding-right: 4%;
+        padding-top: 0px;
     }
 
     .productsContainer {
