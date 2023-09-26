@@ -22,6 +22,7 @@ export default withRouter(props => {
         windowWidth,
         cl,
         sz,
+        productMetaImage,
     } = props
 
     const [currentColor, setCurrentColor] = useState(cl ? cl : product?.colors[0])
@@ -128,16 +129,7 @@ export default withRouter(props => {
                 <meta property="og:title" content={product.title} key='og:title' />
                 <meta property="og:image:alt" content={product.title} key='og:image:alt' />
                 <meta property="og:description" content={product.description} key='og:description' />
-                <meta
-                    property="og:image"
-                    itemProp="image"
-                    content={
-                        cl
-                            ? product.images.filter(img => img.color_id === cl.id)[product.image_showcase_index].src
-                            : product.images[product.image_showcase_index].src
-                    }
-                    key='og:image'
-                />
+                <meta property="og:image" itemProp="image" content={productMetaImage} key='og:image' />
                 <meta property="og:type" content="product" key='og:type' />
                 <meta property="og:url" content={`https://my-store-sigma-nine.vercel.app/product/${product.id}`} key='og:url' />
             </Head>
@@ -246,6 +238,9 @@ export async function getServerSideProps(context) {
                 product: product,
                 cl: colorQuery === undefined ? null : colorQuery,
                 sz: sizeQuery === undefined ? null : sizeQuery,
+                productMetaImage: cl
+                    ? product.images.filter(img => img.color_id === cl.id)[product.image_showcase_index].src
+                    : product.images[product.image_showcase_index].src
             },
         }
     } catch (error) {
