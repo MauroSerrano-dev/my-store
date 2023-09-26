@@ -24,6 +24,7 @@ export default withRouter(props => {
         sz,
         productMetaImage,
         urlMeta,
+        mobile,
     } = props
 
     const [currentColor, setCurrentColor] = useState(cl ? cl : product?.colors[0])
@@ -101,25 +102,25 @@ export default withRouter(props => {
     function handleColorChange(arr, index, color) {
         setCurrentColor(color)
         const newQueries = { ...router.query, cl: color.title.toLowerCase() }
-        if (newQueries.cl === product.colors[0].title.toLowerCase()) {
-            delete newQueries.cl
-        }
-        router.push({
-            pathname: router.pathname,
-            query: newQueries
-        })
+        /*         if (newQueries.cl === product.colors[0].title.toLowerCase()) {
+                    delete newQueries.cl
+                }
+                router.push({
+                    pathname: router.pathname,
+                    query: newQueries
+                }) */
     }
 
     function handleSizeChange(arr, index, size) {
         setCurrentSize(size)
         const newQueries = { ...router.query, sz: size.title.toLowerCase() }
-        if (newQueries.sz === product.sizes[0].title.toLowerCase()) {
-            delete newQueries.sz
-        }
-        router.push({
-            pathname: router.pathname,
-            query: newQueries
-        })
+        /*         if (newQueries.sz === product.sizes[0].title.toLowerCase()) {
+                    delete newQueries.sz
+                }
+                router.push({
+                    pathname: router.pathname,
+                    query: newQueries
+                }) */
     }
 
     return (
@@ -178,6 +179,29 @@ export default withRouter(props => {
                     >
                         {`${userCurrency.symbol} ${(product.variants.find(vari => vari.options.includes(currentSize.id) && vari.options.includes(currentColor.id)).price / 100).toFixed(2)}`}
                     </p>
+                    <a
+                        href={`https://${mobile ? 'api' : 'web'}api.whatsapp.com/send?text=Check ${product.title}: https://my-store-sigma-nine.vercel.app/product/${product.id}
+                        ${currentColor.id !== product.colors[0].id && currentSize.id !== product.sizes[0].id
+                                ? `?sz=${currentSize.title.toLowerCase()}&cl=${currentColor.title.toLowerCase()}`
+                                : currentSize.id !== product.sizes[0].id
+                                    ? `?sz=${currentSize.title.toLowerCase()}`
+                                    : currentColor.id !== product.colors[0].id
+                                        ? `?cl=${currentColor.title.toLowerCase()}`
+                                        : ''
+                            }`
+                        }
+                        target="_blank"
+                    >
+                        <Button
+                            variant='contained'
+                            sx={{
+                                width: '100%',
+                                height: '55px'
+                            }}
+                        >
+                            Share With WhatsApp
+                        </Button>
+                    </a>
                     <Button
                         variant='contained'
                         onClick={() => handleAddToCart()}
