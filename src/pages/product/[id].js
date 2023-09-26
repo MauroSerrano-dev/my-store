@@ -239,7 +239,7 @@ export async function getServerSideProps(context) {
                 product: product,
                 cl: colorQuery === undefined ? null : colorQuery,
                 sz: sizeQuery === undefined ? null : sizeQuery,
-                urlMeta: 'https://my-store-sigma-nine.vercel.app/product/'.concat(product.id).concat(colorQuery ? colorQuery.title.toLowerCase() : '').concat(sizeQuery ? sizeQuery.title.toLowerCase() : ''),
+                urlMeta: 'https://my-store-sigma-nine.vercel.app'.concat(context.resolvedUrl),
                 productMetaImage: colorQuery
                     ? product.images.filter(img => img.color_id === colorQuery.id)[product.image_showcase_index].src
                     : product.images[product.image_showcase_index].src
