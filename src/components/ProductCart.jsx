@@ -3,8 +3,8 @@ import { SlClose } from "react-icons/sl";
 import { motion } from "framer-motion";
 import Link from 'next/link';
 import { Select, FormControl, MenuItem, InputLabel } from '@mui/material';
-import { useEffect, useState } from 'react';
-import { TYPES_POOL, convertDolarToCurrency } from '../../consts';
+import { useState } from 'react';
+import { convertDolarToCurrency } from '../../consts';
 
 const menuStyle = {
     display: 'flex',
@@ -16,7 +16,6 @@ const menuStyle = {
 
 export default function ProductCart(props) {
     const {
-        session,
         product,
         setCart,
         index,
@@ -28,9 +27,6 @@ export default function ProductCart(props) {
 
     const [hoverQuantity, setHoverQuantity] = useState(false)
     const [focusQuantity, setFocusQuantity] = useState(false)
-
-    const [hoverSize, setHoverSize] = useState(false)
-    const [focusSize, setFocusSize] = useState(false)
 
     function handleDeleteCartProduct() {
         setCart(prev => prev.filter(prod => prod.id !== product.id || prod.variant_id !== product.variant_id))
@@ -44,22 +40,6 @@ export default function ProductCart(props) {
                     [field]: newValue
                 }
                 : prod
-            )
-        )
-    }
-
-    function changeSize(newSize) {
-
-        setCart(prev =>
-            prev.map(prod =>
-                prod.id === product.id && prod.variant_id === product.variant_id
-                    ? {
-                        ...prod,
-                        size: newSize,
-                        variant_id: prod.variants.find(vari => vari.options.includes(prod.color.id) && vari.options.includes(newSize.id)).id,
-                        price: prod.variants.find(vari => vari.options.includes(prod.color.id) && vari.options.includes(newSize.id)).price,
-                    }
-                    : prod
             )
         )
     }
@@ -127,6 +107,7 @@ export default function ProductCart(props) {
                 </div>
                 <div className={styles.bodyContainer}>
                     <p className={styles.colorText}>Color: {product.color.title}</p>
+                    <p className={styles.colorText}>Size: {product.size.title}</p>
                     <div
                         className={styles.inputsContainer}
                     >
@@ -227,55 +208,6 @@ export default function ProductCart(props) {
                                 >
                                     10
                                 </MenuItem>
-                            </Select>
-                        </FormControl>
-                        <FormControl sx={{ minWidth: 80, height: '25%', minHeight: 40 }}>
-                            <InputLabel
-                                sx={{
-                                    color: '#ffffff'
-                                }}
-                            >
-                                Size
-                            </InputLabel>
-                            <Select
-                                value={product.size.id}
-                                onChange={(event) => changeSize(TYPES_POOL.find(t => t.id === product.type).sizes.find(size => size.id === event.target.value))}
-                                autoWidth
-                                label="Size"
-                                MenuProps={{ disableScrollLock: true }}
-                                sx={{
-                                    height: '100%',
-                                    color: '#ffffff',
-                                    '.MuiOutlinedInput-notchedOutline': {
-                                        borderColor: `${focusSize
-                                            ? 'var(--primary)' :
-                                            hoverSize || !supportsHoverAndPointer
-                                                ? '#ffffff'
-                                                : '#ffffff90'} !important`,
-                                        transition: 'all ease-in-out 200ms'
-                                    },
-                                    '.MuiSelect-iconOutlined': {
-                                        color: 'var(--global-white)'
-                                    },
-                                    '.MuiChip-root': {
-                                        backgroundColor: '#363a3d',
-                                        '--text-color': 'var(--global-white)',
-                                    },
-                                }}
-                                onFocus={() => setFocusSize(true)}
-                                onBlur={() => setFocusSize(false)}
-                                onMouseEnter={() => setHoverSize(true)}
-                                onMouseLeave={() => setHoverSize(false)}
-                                onClick={() => setHoverSize(false)}
-                            >
-                                {TYPES_POOL.find(t => t.id === product.type).sizes.map((size, i) =>
-                                    <MenuItem value={size.id}
-                                        key={i}
-                                        sx={menuStyle}
-                                    >
-                                        {size.title}
-                                    </MenuItem>
-                                )}
                             </Select>
                         </FormControl>
                     </div>

@@ -180,16 +180,19 @@ export default withRouter(props => {
                         {`${userCurrency.symbol} ${(product.variants.find(vari => vari.options.includes(currentSize.id) && vari.options.includes(currentColor.id)).price / 100).toFixed(2)}`}
                     </p>
                     <a
-                        href={`https://${mobile ? 'api' : 'web'}api.whatsapp.com/send?text=Check ${product.title}: https://my-store-sigma-nine.vercel.app/product/${product.id}
-                        ${currentColor.id !== product.colors[0].id && currentSize.id !== product.sizes[0].id
-                                ? `?sz=${currentSize.title.toLowerCase()}&cl=${currentColor.title.toLowerCase()}`
-                                : currentSize.id !== product.sizes[0].id
-                                    ? `?sz=${currentSize.title.toLowerCase()}`
-                                    : currentColor.id !== product.colors[0].id
-                                        ? `?cl=${currentColor.title.toLowerCase()}`
-                                        : ''
+                        href={`https://${mobile ? 'api' : 'web'}.whatsapp.com/send?text=${product.title} (${currentColor.title}): https://my-store-sigma-nine.vercel.app/product/${product.id}${currentColor.id !== product.colors[0].id && currentSize.id !== product.sizes[0].id
+                            ? `?sz=${currentSize.title.toLowerCase()}%26cl=${currentColor.title.replace(/ /g, '%2B').toLowerCase()}`
+                            : currentSize.id !== product.sizes[0].id
+                                ? `?sz=${currentSize.title.toLowerCase()}`
+                                : currentColor.id !== product.colors[0].id
+                                    ? `?cl=${currentColor.title.replace(/ /g, '%2B').toLowerCase()}`
+                                    : ''
                             }`
                         }
+                        style={{
+                            width: '100%',
+                            height: '55px'
+                        }}
                         target="_blank"
                     >
                         <Button
