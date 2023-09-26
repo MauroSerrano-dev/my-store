@@ -181,11 +181,11 @@ export default withRouter(props => {
                     </p>
                     <a
                         href={`https://${mobile ? 'api' : 'web'}.whatsapp.com/send?text=${product.title} (${currentColor.title}): https://my-store-sigma-nine.vercel.app/product/${product.id}${currentColor.id !== product.colors[0].id && currentSize.id !== product.sizes[0].id
-                            ? `?sz=${currentSize.title.toLowerCase()}%26cl=${currentColor.title.replace(/ /g, '%2B').toLowerCase()}`
+                            ? `?sz=${currentSize.title.toLowerCase()}%26cl=${currentColor.id}`
                             : currentSize.id !== product.sizes[0].id
                                 ? `?sz=${currentSize.title.toLowerCase()}`
                                 : currentColor.id !== product.colors[0].id
-                                    ? `?cl=${currentColor.title.replace(/ /g, '%2B').toLowerCase()}`
+                                    ? `?cl=${currentColor.id}`
                                     : ''
                             }`
                         }
@@ -254,7 +254,7 @@ export async function getServerSideProps(context) {
             .catch(err => console.error(err))
 
         const colorQuery = cl
-            ? product.colors.find(color => color.title.toLowerCase() === cl.toLowerCase())
+            ? product.colors.find(color => color.id == cl)
             : null
 
         const sizeQuery = sz
