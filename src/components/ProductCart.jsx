@@ -125,157 +125,160 @@ export default function ProductCart(props) {
                         </a>
                     </Link>
                 </div>
-                <div
-                    className={styles.inputsContainer}
-                >
-                    <FormControl sx={{ minWidth: 80, height: '25%', minHeight: 40 }}>
-                        <InputLabel
-                            sx={{
-                                color: '#ffffff'
-                            }}
-                        >
-                            Quantity
-                        </InputLabel>
-                        <Select
-                            value={product.quantity}
-                            onChange={(event) => changeProductField('quantity', event.target.value)}
-                            label="Quantity"
-                            MenuProps={{ disableScrollLock: true }}
-                            sx={{
-                                height: '100%',
-                                color: '#ffffff',
-                                '.MuiOutlinedInput-notchedOutline': {
-                                    borderColor: `${focusQuantity
-                                        ? 'var(--primary)' :
-                                        hoverQuantity || !supportsHoverAndPointer
-                                            ? '#ffffff'
-                                            : '#ffffff90'} !important`,
-                                    transition: 'all ease-in-out 200ms'
-                                },
-                                '.MuiSelect-iconOutlined': {
-                                    color: 'var(--global-white)'
-                                },
-                                '.MuiChip-root': {
-                                    backgroundColor: '#363a3d',
-                                    '--text-color': 'var(--global-white)',
-                                },
-                            }}
-                            onFocus={() => setFocusQuantity(true)}
-                            onBlur={() => setFocusQuantity(false)}
-                            onMouseEnter={() => setHoverQuantity(true)}
-                            onMouseLeave={() => setHoverQuantity(false)}
-                            onClick={() => setHoverQuantity(false)}
-                        >
-                            <MenuItem value={1}
-                                sx={menuStyle}
+                <div className={styles.bodyContainer}>
+                    <p className={styles.colorText}>Color: {product.color.title}</p>
+                    <div
+                        className={styles.inputsContainer}
+                    >
+                        <FormControl sx={{ minWidth: 80, height: '25%', minHeight: 40 }}>
+                            <InputLabel
+                                sx={{
+                                    color: '#ffffff'
+                                }}
                             >
-                                1
-                            </MenuItem>
-                            <MenuItem
-                                value={2}
-                                sx={menuStyle}
+                                Quantity
+                            </InputLabel>
+                            <Select
+                                value={product.quantity}
+                                onChange={(event) => changeProductField('quantity', event.target.value)}
+                                label="Quantity"
+                                MenuProps={{ disableScrollLock: true }}
+                                sx={{
+                                    height: '100%',
+                                    color: '#ffffff',
+                                    '.MuiOutlinedInput-notchedOutline': {
+                                        borderColor: `${focusQuantity
+                                            ? 'var(--primary)' :
+                                            hoverQuantity || !supportsHoverAndPointer
+                                                ? '#ffffff'
+                                                : '#ffffff90'} !important`,
+                                        transition: 'all ease-in-out 200ms'
+                                    },
+                                    '.MuiSelect-iconOutlined': {
+                                        color: 'var(--global-white)'
+                                    },
+                                    '.MuiChip-root': {
+                                        backgroundColor: '#363a3d',
+                                        '--text-color': 'var(--global-white)',
+                                    },
+                                }}
+                                onFocus={() => setFocusQuantity(true)}
+                                onBlur={() => setFocusQuantity(false)}
+                                onMouseEnter={() => setHoverQuantity(true)}
+                                onMouseLeave={() => setHoverQuantity(false)}
+                                onClick={() => setHoverQuantity(false)}
                             >
-                                2
-                            </MenuItem>
-                            <MenuItem
-                                value={3}
-                                sx={menuStyle}
-                            >
-                                3
-                            </MenuItem>
-                            <MenuItem
-                                value={4}
-                                sx={menuStyle}
-                            >
-                                4
-                            </MenuItem>
-                            <MenuItem
-                                value={5}
-                                sx={menuStyle}
-                            >
-                                5
-                            </MenuItem>
-                            <MenuItem
-                                value={6}
-                                sx={menuStyle}
-                            >
-                                6
-                            </MenuItem>
-                            <MenuItem
-                                value={7}
-                                sx={menuStyle}
-                            >
-                                7
-                            </MenuItem>
-                            <MenuItem
-                                value={8}
-                                sx={menuStyle}
-                            >
-                                8
-                            </MenuItem>
-                            <MenuItem
-                                value={9}
-                                sx={menuStyle}
-                            >
-                                9
-                            </MenuItem>
-                            <MenuItem
-                                value={10}
-                                sx={menuStyle}
-                            >
-                                10
-                            </MenuItem>
-                        </Select>
-                    </FormControl>
-                    <FormControl sx={{ minWidth: 80, height: '25%', minHeight: 40 }}>
-                        <InputLabel
-                            sx={{
-                                color: '#ffffff'
-                            }}
-                        >
-                            Size
-                        </InputLabel>
-                        <Select
-                            value={product.size.id}
-                            onChange={(event) => changeSize(TYPES_POOL.find(t => t.id === product.type).sizes.find(size => size.id === event.target.value))}
-                            autoWidth
-                            label="Size"
-                            MenuProps={{ disableScrollLock: true }}
-                            sx={{
-                                height: '100%',
-                                color: '#ffffff',
-                                '.MuiOutlinedInput-notchedOutline': {
-                                    borderColor: `${focusSize
-                                        ? 'var(--primary)' :
-                                        hoverSize || !supportsHoverAndPointer
-                                            ? '#ffffff'
-                                            : '#ffffff90'} !important`,
-                                    transition: 'all ease-in-out 200ms'
-                                },
-                                '.MuiSelect-iconOutlined': {
-                                    color: 'var(--global-white)'
-                                },
-                                '.MuiChip-root': {
-                                    backgroundColor: '#363a3d',
-                                    '--text-color': 'var(--global-white)',
-                                },
-                            }}
-                            onFocus={() => setFocusSize(true)}
-                            onBlur={() => setFocusSize(false)}
-                            onMouseEnter={() => setHoverSize(true)}
-                            onMouseLeave={() => setHoverSize(false)}
-                            onClick={() => setHoverSize(false)}
-                        >
-                            {TYPES_POOL.find(t => t.id === product.type).sizes.map((size, i) =>
-                                <MenuItem value={size.id}
-                                    key={i}
+                                <MenuItem value={1}
                                     sx={menuStyle}
                                 >
-                                    {size.title}
+                                    1
                                 </MenuItem>
-                            )}
-                        </Select>
-                    </FormControl>
+                                <MenuItem
+                                    value={2}
+                                    sx={menuStyle}
+                                >
+                                    2
+                                </MenuItem>
+                                <MenuItem
+                                    value={3}
+                                    sx={menuStyle}
+                                >
+                                    3
+                                </MenuItem>
+                                <MenuItem
+                                    value={4}
+                                    sx={menuStyle}
+                                >
+                                    4
+                                </MenuItem>
+                                <MenuItem
+                                    value={5}
+                                    sx={menuStyle}
+                                >
+                                    5
+                                </MenuItem>
+                                <MenuItem
+                                    value={6}
+                                    sx={menuStyle}
+                                >
+                                    6
+                                </MenuItem>
+                                <MenuItem
+                                    value={7}
+                                    sx={menuStyle}
+                                >
+                                    7
+                                </MenuItem>
+                                <MenuItem
+                                    value={8}
+                                    sx={menuStyle}
+                                >
+                                    8
+                                </MenuItem>
+                                <MenuItem
+                                    value={9}
+                                    sx={menuStyle}
+                                >
+                                    9
+                                </MenuItem>
+                                <MenuItem
+                                    value={10}
+                                    sx={menuStyle}
+                                >
+                                    10
+                                </MenuItem>
+                            </Select>
+                        </FormControl>
+                        <FormControl sx={{ minWidth: 80, height: '25%', minHeight: 40 }}>
+                            <InputLabel
+                                sx={{
+                                    color: '#ffffff'
+                                }}
+                            >
+                                Size
+                            </InputLabel>
+                            <Select
+                                value={product.size.id}
+                                onChange={(event) => changeSize(TYPES_POOL.find(t => t.id === product.type).sizes.find(size => size.id === event.target.value))}
+                                autoWidth
+                                label="Size"
+                                MenuProps={{ disableScrollLock: true }}
+                                sx={{
+                                    height: '100%',
+                                    color: '#ffffff',
+                                    '.MuiOutlinedInput-notchedOutline': {
+                                        borderColor: `${focusSize
+                                            ? 'var(--primary)' :
+                                            hoverSize || !supportsHoverAndPointer
+                                                ? '#ffffff'
+                                                : '#ffffff90'} !important`,
+                                        transition: 'all ease-in-out 200ms'
+                                    },
+                                    '.MuiSelect-iconOutlined': {
+                                        color: 'var(--global-white)'
+                                    },
+                                    '.MuiChip-root': {
+                                        backgroundColor: '#363a3d',
+                                        '--text-color': 'var(--global-white)',
+                                    },
+                                }}
+                                onFocus={() => setFocusSize(true)}
+                                onBlur={() => setFocusSize(false)}
+                                onMouseEnter={() => setHoverSize(true)}
+                                onMouseLeave={() => setHoverSize(false)}
+                                onClick={() => setHoverSize(false)}
+                            >
+                                {TYPES_POOL.find(t => t.id === product.type).sizes.map((size, i) =>
+                                    <MenuItem value={size.id}
+                                        key={i}
+                                        sx={menuStyle}
+                                    >
+                                        {size.title}
+                                    </MenuItem>
+                                )}
+                            </Select>
+                        </FormControl>
+                    </div>
                 </div>
             </div>
             <div className={styles.priceContainer}>

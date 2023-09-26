@@ -66,6 +66,20 @@
     font-weight: bold;
 }
 
+.bodyContainer {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+    width: 100%;
+
+    height: calc(100% - 40px);
+}
+
+.colorText {
+    font-size: 13px;
+}
+
 .inputsContainer {
     display: flex;
     flex-direction: row;
@@ -73,7 +87,6 @@
 
     padding-top: 15px;
 
-    height: calc(100% - 40px);
 }
 
 .priceContainer {
@@ -88,6 +101,10 @@
     width: 90px;
 
     padding-top: 5%;
+}
+
+.priceContainer h2 {
+    font-size: 21px;
 }
 
 /* Mobile and Tablet */
@@ -119,14 +136,18 @@
 /* Small Mobile */
 @media (max-width: 475px) {
     .imageContainer {
-        width: 110px;
+        width: 130px;
     }
 
     .container {
-        height: 170px;
+        height: 185px;
     }
 
     .middle {
         width: calc(100% - 110px - 90px);
+    }
+
+    .priceContainer h2 {
+        font-size: 19px;
     }
 }
