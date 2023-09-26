@@ -19,11 +19,13 @@ export default withRouter(props => {
         userCurrency,
         product,
         setLoadingProduct,
-        windowWidth
+        windowWidth,
+        cl,
+        sz,
     } = props
 
-    const [currentColor, setCurrentColor] = useState(product?.colors[0])
-    const [currentSize, setCurrentSize] = useState(product?.sizes[0])
+    const [currentColor, setCurrentColor] = useState(cl ? cl : product?.colors[0])
+    const [currentSize, setCurrentSize] = useState(sz ? sz : product?.sizes[0])
 
     const router = useRouter()
 
@@ -96,10 +98,26 @@ export default withRouter(props => {
 
     function handleColorChange(arr, index, color) {
         setCurrentColor(color)
+        const newQueries = { ...router.query, cl: color.title.toLowerCase() }
+        if (newQueries.cl === product.colors[0].title.toLowerCase()) {
+            delete newQueries.cl
+        }
+        router.push({
+            pathname: router.pathname,
+            query: newQueries
+        })
     }
 
     function handleSizeChange(arr, index, size) {
         setCurrentSize(size)
+        const newQueries = { ...router.query, sz: size.title.toLowerCase() }
+        if (newQueries.sz === product.sizes[0].title.toLowerCase()) {
+            delete newQueries.sz
+        }
+        router.push({
+            pathname: router.pathname,
+            query: newQueries
+        })
     }
 
     return (
@@ -110,7 +128,16 @@ export default withRouter(props => {
                 <meta property="og:title" content={product.title} key='og:title' />
                 <meta property="og:image:alt" content={product.title} key='og:image:alt' />
                 <meta property="og:description" content={product.description} key='og:description' />
-                <meta property="og:image" itemProp="image" content={product.images[product.image_showcase_index].src} key='og:image' />
+                <meta
+                    property="og:image"
+                    itemProp="image"
+                    content={
+                        cl
+                            ? product.images.filter(img => img.color_id === cl.id)[product.image_showcase_index].src
+                            : product.images[product.image_showcase_index].src
+                    }
+                    key='og:image'
+                />
                 <meta property="og:type" content="product" key='og:type' />
                 <meta property="og:url" content={`https://my-store-sigma-nine.vercel.app/product/${product.id}`} key='og:url' />
             </Head>
@@ -192,21 +219,33 @@ export default withRouter(props => {
 
 export async function getServerSideProps(context) {
 
-    const { id } = context.query;
+    const { id, cl, sz } = context.query;
+
     try {
         const options = {
             method: 'GET',
             headers: {
-                id: id
+                id: id,
             }
         }
         const product = await fetch("https://my-store-sigma-nine.vercel.app/api/product", options)
             .then(response => response.json())
             .then(response => response.product)
             .catch(err => console.error(err))
+
+        const colorQuery = cl
+            ? product.colors.find(color => color.title.toLowerCase() === cl.toLowerCase())
+            : null
+
+        const sizeQuery = sz
+            ? product.sizes.find(size => size.title.toLowerCase() === sz.toLowerCase())
+            : null
+
         return {
             props: {
                 product: product,
+                cl: colorQuery === undefined ? null : colorQuery,
+                sz: sizeQuery === undefined ? null : sizeQuery,
             },
         }
     } catch (error) {

@@ -77,9 +77,13 @@ export default function Menu(props) {
                     variants={{
                         hidden: {
                             left: '0px',
+                            transition: {
+                                ease: 'easeInOut',
+                                duration: 0.35,
+                            }
                         },
                         visible: {
-                            left: '-350px',
+                            left: '-110%',
                             transition: {
                                 ease: 'easeInOut',
                                 duration: 0.35,
@@ -134,6 +138,10 @@ export default function Menu(props) {
                         variants={{
                             hidden: {
                                 left: '100%',
+                                transition: {
+                                    ease: 'easeInOut',
+                                    duration: 0.35,
+                                },
                             },
                             visible: {
                                 left: '0px',
