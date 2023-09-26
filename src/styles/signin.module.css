@@ -101,7 +101,7 @@
     align-items: flex-start;
 
     width: 100%;
-    
+
     padding-bottom: 1rem;
     border-bottom: #d2d2d2 solid 1px;
 }
@@ -158,5 +158,21 @@
 @media (hover: hover) and (pointer: fine) {
     .linkCreateAccount:hover {
         text-decoration: underline #1185ed;
+    }
+}
+
+
+/* Mobile and Tablet */
+@media (max-width: 1074.5px) {
+    .loginContainer {
+        max-width: 100%;
+    }
+
+    .joinContainer {
+        max-width: 100%;
+    }
+
+    .loginContainer {
+        height: 520px;
     }
 }
