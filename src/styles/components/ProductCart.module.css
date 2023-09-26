@@ -53,21 +53,25 @@
 }
 
 .productName {
-    height: 40px;
-    width: calc(100% + 70px);
+    display: flex;
+    width: calc(100% + 75px);
+    height: 25px;
 }
 
-.productName h4 {
+.productName a {
     text-align: start;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+    font-weight: bold;
 }
 
 .inputsContainer {
     display: flex;
     flex-direction: row;
     gap: 0.5rem;
+
+    padding-top: 15px;
 
     height: calc(100% - 40px);
 }

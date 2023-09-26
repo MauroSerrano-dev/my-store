@@ -14,7 +14,7 @@ import { motion } from 'framer-motion';
 import { CircularProgress } from '@mui/material';
 
 const SUB_NAVBAR_HEIGHT = 40
-const SUB_NAVBAR_HEIGHT_MOBILE = 55
+const SUB_NAVBAR_HEIGHT_MOBILE = 43
 const MOBILE_LIMIT = 1075
 
 export default function DataHandler(props) {
@@ -447,7 +447,7 @@ export default function DataHandler(props) {
                         options={productOptions}
                         setOptions={setProductOptions}
                         setSearch={setSearch}
-                        barHeight={34}
+                        barHeight={30}
                     />
                 </div>
             </div>
@@ -472,6 +472,7 @@ export default function DataHandler(props) {
                     supportsHoverAndPointer={supportsHoverAndPointer}
                     loadingProduct={loadingProduct}
                     setLoadingProduct={setLoadingProduct}
+                    windowWidth={windowWidth}
                 />
             </div>
             {loadingProduct &&

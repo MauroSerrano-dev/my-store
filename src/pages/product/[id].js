@@ -19,6 +19,7 @@ export default withRouter(props => {
         userCurrency,
         product,
         setLoadingProduct,
+        windowWidth
     } = props
 
     const [currentColor, setCurrentColor] = useState(product?.colors[0])
@@ -115,16 +116,20 @@ export default withRouter(props => {
             </Head>
             <div className={styles.productContainer}>
                 <div className={styles.left}>
-                    {product.colors.map((color, i) =>
-                        <ImagesSlider
-                            key={i}
-                            images={product.images.filter(img => img.color_id === color.id)}
-                            style={{
-                                position: 'absolute',
-                                zIndex: color.id === currentColor.id ? 1 : 0
-                            }}
-                        />
-                    )}
+                    <div className={styles.sliderContainer}>
+                        {product.colors.map((color, i) =>
+                            <ImagesSlider
+                                key={i}
+                                size={windowWidth > 1074 ? 600 : windowWidth > 549 ? 450 : 350}
+                                images={product.images.filter(img => img.color_id === color.id)}
+                                style={{
+                                    position: 'absolute',
+                                    zIndex: color.id === currentColor.id ? 1 : 0,
+                                    opacity: color.id === currentColor.id ? 1 : 0,
+                                }}
+                            />
+                        )}
+                    </div>
                 </div>
                 <div className={styles.right}>
                     <h2>{product.title}</h2>

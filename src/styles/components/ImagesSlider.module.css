@@ -6,6 +6,9 @@
 
     height: 600px;
     width: 600px;
+
+    transition: width ease-in-out 200ms,
+        height ease-in-out 200ms;
 }
 
 .view {
@@ -48,8 +51,6 @@
     width: auto;
     max-width: 80%;
     height: 20%;
-    gap: 1rem;
-    padding-top: 1rem;
 
     overflow: auto;
 }

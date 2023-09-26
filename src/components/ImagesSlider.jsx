@@ -4,7 +4,8 @@ import { useState } from 'react'
 export default function ImagesSlider(props) {
     const {
         images,
-        style
+        style,
+        size,
     } = props
 
     const [currentImgIndex, setCurrentImgIndex] = useState(0)
@@ -13,16 +14,21 @@ export default function ImagesSlider(props) {
         <div
             className={styles.container}
             style={{
-                ...style
+                ...style,
+                width: size,
+                height: size,
             }}
         >
+            <div>
+
+            </div>
             <div
                 className={styles.view}
             >
                 <div
                     className={styles.viewImages}
                     style={{
-                        transform: `translateX(${480 * currentImgIndex * (-1)}px)`
+                        transform: `translateX(${size * 0.8 * currentImgIndex * (-1)}px)`
                     }}
                 >
                     {images.map((img, i) =>
@@ -40,6 +46,10 @@ export default function ImagesSlider(props) {
             </div>
             <div
                 className={styles.options}
+                style={{
+                    gap: size * 0.025,
+                    paddingTop: size * 0.025,
+                }}
             >
                 {images.map((img, i) =>
                     <div

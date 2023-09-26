@@ -113,17 +113,18 @@ export default function ProductCart(props) {
                 </a>
             </Link>
             <div className={styles.middle}>
-                <Link legacyBehavior href={`/product/${product.id}`}>
-                    <a
-                        className={styles.productName}
-                        onClick={() => setLoadingProduct(true)}
-                        style={{
-                            pointerEvents: loadingProduct ? 'none' : 'auto',
-                        }}
-                    >
-                        <h4>{product.title}</h4>
-                    </a>
-                </Link>
+                <div className={styles.productName}>
+                    <Link legacyBehavior href={`/product/${product.id}`}>
+                        <a
+                            onClick={() => setLoadingProduct(true)}
+                            style={{
+                                pointerEvents: loadingProduct ? 'none' : 'auto',
+                            }}
+                        >
+                            {product.title}
+                        </a>
+                    </Link>
+                </div>
                 <div
                     className={styles.inputsContainer}
                 >
