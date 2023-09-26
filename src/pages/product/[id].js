@@ -238,8 +238,8 @@ export async function getServerSideProps(context) {
                 product: product,
                 cl: colorQuery === undefined ? null : colorQuery,
                 sz: sizeQuery === undefined ? null : sizeQuery,
-                productMetaImage: cl
-                    ? product.images.filter(img => img.color_id === cl.id)[product.image_showcase_index].src
+                productMetaImage: colorQuery
+                    ? product.images.filter(img => img.color_id === colorQuery.id)[product.image_showcase_index].src
                     : product.images[product.image_showcase_index].src
             },
         }
