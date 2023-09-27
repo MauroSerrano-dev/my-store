@@ -103,25 +103,25 @@ export default withRouter(props => {
     function handleColorChange(arr, index, color) {
         setCurrentColor(color)
         const newQueries = { ...router.query, cl: color.title.toLowerCase() }
-        /*         if (newQueries.cl === product.colors[0].title.toLowerCase()) {
-                    delete newQueries.cl
-                }
-                router.push({
-                    pathname: router.pathname,
-                    query: newQueries
-                }) */
+        if (newQueries.cl === product.colors[0].title.toLowerCase()) {
+            delete newQueries.cl
+        }
+        router.push({
+            pathname: router.pathname,
+            query: newQueries,
+        }, undefined, { scroll: false })
     }
 
     function handleSizeChange(arr, index, size) {
         setCurrentSize(size)
         const newQueries = { ...router.query, sz: size.title.toLowerCase() }
-        /*         if (newQueries.sz === product.sizes[0].title.toLowerCase()) {
-                    delete newQueries.sz
-                }
-                router.push({
-                    pathname: router.pathname,
-                    query: newQueries
-                }) */
+        if (newQueries.sz === product.sizes[0].title.toLowerCase()) {
+            delete newQueries.sz
+        }
+        router.push({
+            pathname: router.pathname,
+            query: newQueries,
+        }, undefined, { scroll: false })
     }
 
     return (
