@@ -244,7 +244,7 @@ export async function getServerSideProps(context) {
             .catch(err => console.error(err))
 
         const colorQuery = cl
-            ? product.colors.find(color => color.title.replace(' ', '').toLowerCase() === cl.toLowerCase())
+            ? product.colors.find(color => color.title.toLowerCase() === cl.toLowerCase())
             : null
 
         const sizeQuery = sz
@@ -263,7 +263,7 @@ export async function getServerSideProps(context) {
                 urlMeta: 'https://my-store-sigma-nine.vercel.app'.concat(context.resolvedUrl),
                 productMetaImage: colorQuery
                     ? product.images.filter(img => img.color_id === colorQuery.id)[product.image_showcase_index].src
-                    : product.images[product.image_showcase_index].src
+                    : product.images.filter(img => img.color_id === colorQuery.id)[5].src//product.images[product.image_showcase_index].src
             },
         }
     } catch (error) {
