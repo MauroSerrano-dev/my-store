@@ -244,7 +244,7 @@ export async function getServerSideProps(context) {
             .catch(err => console.error(err))
 
         const colorQuery = cl
-            ? product.colors.find(color => color.title.replace(' ', '').toLowerCase() === cl.toLowerCase())
+            ? product.colors.find(color => color.title.toLowerCase() === cl.toLowerCase())
             : null
 
         const sizeQuery = sz
