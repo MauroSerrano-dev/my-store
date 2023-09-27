@@ -263,7 +263,7 @@ export async function getServerSideProps(context) {
                 urlMeta: 'https://my-store-sigma-nine.vercel.app'.concat(context.resolvedUrl),
                 productMetaImage: colorQuery
                     ? product.images.filter(img => img.color_id === colorQuery.id)[product.image_showcase_index].src
-                    : product.images.filter(img => img.color_id === colorQuery.id)[5].src//product.images[product.image_showcase_index].src
+                    : product.images[product.image_showcase_index].src
             },
         }
     } catch (error) {
