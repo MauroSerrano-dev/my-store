@@ -251,10 +251,6 @@ export async function getServerSideProps(context) {
             ? product.sizes.find(size => size.title.toLowerCase() === sz.toLowerCase())
             : null
 
-        console.log(colorQuery
-            ? product.images.filter(img => img.color_id === colorQuery.id)[product.image_showcase_index].src
-            : product.images[product.image_showcase_index].src, 'https://my-store-sigma-nine.vercel.app'.concat(context.resolvedUrl))
-
         return {
             props: {
                 product: product,
