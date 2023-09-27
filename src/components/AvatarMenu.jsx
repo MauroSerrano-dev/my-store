@@ -30,10 +30,22 @@ export default function AvatarMenu(props) {
       onMouseEnter={() => setOpen(true)}
       onMouseLeave={() => setOpen(false)}
     >
-      <Link legacyBehavior href={supportsHoverAndPointer ? `/login` : router.pathname}>
-        <a
-          className={`${styles.iconContainer} flex center noUnderline`}
-          aria-label='Login'
+      {supportsHoverAndPointer
+        ? <Link legacyBehavior href={'/login'}>
+          <a
+            className={`${styles.iconContainer} flex center noUnderline`}
+            aria-label='Login'
+          >
+            <PersonOutlineOutlinedIcon
+              style={{
+                fontSize: 'calc(var(--bar-height) * 0.43)',
+                color: 'var(--global-white)'
+              }}
+            />
+          </a>
+        </Link>
+        : <div
+          className={`${styles.iconContainer} flex center`}
         >
           <PersonOutlineOutlinedIcon
             style={{
@@ -41,8 +53,9 @@ export default function AvatarMenu(props) {
               color: 'var(--global-white)'
             }}
           />
-        </a>
-      </Link>
+        </div>
+      }
+
       {
         open &&
         <div

@@ -35,11 +35,14 @@
 }
 
 .sliderContainer {
+    position: relative;
+    
     display: flex;
     justify-content: center;
     align-items: center;
 
     height: 600px;
+    width: 600px;
 
     transition: all ease-in-out 200ms;
 }
@@ -72,6 +75,7 @@
         justify-content: center;
         align-items: center;
 
+        width: 450px;
         height: 450px;
     }
 
@@ -85,6 +89,7 @@
 /* Mobile */
 @media (max-width: 550px) {
     .sliderContainer {
+        width: 350px;
         height: 350px;
     }
 

@@ -10,6 +10,7 @@ import { CART_COOKIE } from '../../../consts'
 import Head from 'next/head'
 import ColorSelector from '@/components/ColorSelector'
 import SizesSelector from '@/components/SizesSelector'
+import ShareButton from '@/components/ShareButton'
 
 export default withRouter(props => {
     const {
@@ -138,6 +139,21 @@ export default withRouter(props => {
             <div className={styles.productContainer}>
                 <div className={styles.left}>
                     <div className={styles.sliderContainer}>
+                        <ShareButton
+                            wpp={`https://${mobile ? 'api' : 'web'}.whatsapp.com/send?text=${product.title} (${currentColor.title}): https://my-store-sigma-nine.vercel.app/product/${product.id}${currentColor.id !== product.colors[0].id && currentSize.id !== product.sizes[0].id
+                                ? `?sz=${currentSize.title.toLowerCase()}%26cl=${currentColor.title.replace(/ /g, '%2B').toLowerCase()}`
+                                : currentSize.id !== product.sizes[0].id
+                                    ? `?sz=${currentSize.title.toLowerCase()}`
+                                    : currentColor.id !== product.colors[0].id
+                                        ? `?cl=${currentColor.title.replace(/ /g, '%2B').toLowerCase()}`
+                                        : ''
+                                }`}
+                            style={{
+                                position: 'absolute',
+                                top: '4%',
+                                right: '14%'
+                            }}
+                        />
                         {product.colors.map((color, i) =>
                             <ImagesSlider
                                 key={i}
@@ -179,32 +195,6 @@ export default withRouter(props => {
                     >
                         {`${userCurrency.symbol} ${(product.variants.find(vari => vari.options.includes(currentSize.id) && vari.options.includes(currentColor.id)).price / 100).toFixed(2)}`}
                     </p>
-                    <a
-                        href={`https://${mobile ? 'api' : 'web'}.whatsapp.com/send?text=${product.title} (${currentColor.title}): https://my-store-sigma-nine.vercel.app/product/${product.id}${currentColor.id !== product.colors[0].id && currentSize.id !== product.sizes[0].id
-                            ? `?sz=${currentSize.title.toLowerCase()}%26cl=${currentColor.title.replace(/ /g, '%2B').toLowerCase()}`
-                            : currentSize.id !== product.sizes[0].id
-                                ? `?sz=${currentSize.title.toLowerCase()}`
-                                : currentColor.id !== product.colors[0].id
-                                    ? `?cl=${currentColor.title.replace(/ /g, '%2B').toLowerCase()}`
-                                    : ''
-                            }`
-                        }
-                        style={{
-                            width: '100%',
-                            height: '55px'
-                        }}
-                        target="_blank"
-                    >
-                        <Button
-                            variant='contained'
-                            sx={{
-                                width: '100%',
-                                height: '55px'
-                            }}
-                        >
-                            Share With WhatsApp
-                        </Button>
-                    </a>
                     <Button
                         variant='contained'
                         onClick={() => handleAddToCart()}
