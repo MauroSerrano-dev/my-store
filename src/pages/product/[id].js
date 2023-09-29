@@ -11,7 +11,7 @@ import Head from 'next/head'
 import ColorSelector from '@/components/ColorSelector'
 import SizesSelector from '@/components/SizesSelector'
 import ShareButton from '@/components/ShareButton'
-import CareInstructionsIcons from '@/components/CareInstructionsIcons'
+import CareInstructionsIcons from '@/components/svgs/CareInstructionsIcons'
 
 export default withRouter(props => {
     const {
@@ -158,6 +158,15 @@ export default withRouter(props => {
                     </div>
                     <div className={styles.right}>
                         <h2>{product.title}</h2>
+                        <p
+                            style={{
+                                fontSize: '27px',
+                                color: 'var(--primary)',
+                                fontWeight: 'bold',
+                            }}
+                        >
+                            {`${userCurrency.symbol} ${(product.variants.find(vari => vari.options.includes(currentSize.id) && vari.options.includes(currentColor.id)).price / 100).toFixed(2)}`}
+                        </p>
                         <div>
                             <p style={{ textAlign: 'start', fontWeight: 'bold' }}>Pick a color</p>
                             <ColorSelector
@@ -174,15 +183,6 @@ export default withRouter(props => {
                                 onChange={handleSizeChange}
                             />
                         </div>
-                        <p
-                            style={{
-                                fontSize: '27px',
-                                color: 'var(--primary)',
-                                fontWeight: 'bold',
-                            }}
-                        >
-                            {`${userCurrency.symbol} ${(product.variants.find(vari => vari.options.includes(currentSize.id) && vari.options.includes(currentColor.id)).price / 100).toFixed(2)}`}
-                        </p>
                         <Button
                             variant='contained'
                             onClick={() => handleAddToCart()}
@@ -226,7 +226,11 @@ export default withRouter(props => {
                         <h1 style={{ textAlign: 'start' }}>Care instructions</h1>
                     </div>
                     <div className={styles.sectionBody}>
-                        <CareInstructionsIcons />
+                        <CareInstructionsIcons
+                            itemSize={mobile ? '33.333%' : '20%'}
+                            iconSize={50}
+                            fontSize={mobile ? 10 : 14}
+                        />
                     </div>
                 </section>
                 <section className={`${styles.section} ${styles.five}`}>

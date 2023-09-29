@@ -6,6 +6,7 @@
     width: 100%;
     min-height: 100%;
 
+    padding-top: 3rem;
     padding-bottom: 3rem;
 
     --text-color: var(--text-white)
@@ -24,16 +25,14 @@
 }
 
 .section {
-    padding-top: 3rem;
-    padding-bottom: 3rem;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
 
     border-bottom: solid 1px #616161;
 }
 
 .one {
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
     align-items: center;
 
     width: 100%;
@@ -46,12 +45,12 @@
 .three,
 .four,
 .five {
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
     align-items: flex-start;
 
     width: 100%;
+
+    padding-top: 3rem;
+    padding-bottom: 3rem;
 }
 
 .sectionTitle {
@@ -105,8 +104,24 @@
         padding-bottom: 1.5rem;
     }
 
-    .one {
+    .section {
         flex-direction: column;
+    }
+
+    .one {
+        padding-bottom: 2rem;
+    }
+
+    .two,
+    .three,
+    .four,
+    .five {
+        padding-top: 1rem;
+        padding-bottom: 1rem;
+    }
+
+    .sectionBody {
+        width: 100%;
     }
 
     .sliderContainer {

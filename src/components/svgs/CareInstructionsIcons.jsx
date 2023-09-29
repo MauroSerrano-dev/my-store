@@ -2,6 +2,9 @@ export default function CareInstructionsIcons(props) {
 
     const {
         fill = '#ffffff',
+        itemSize = 50,
+        fontSize = 14,
+        iconSize
     } = props
 
     const itemStyle = {
@@ -9,9 +12,9 @@ export default function CareInstructionsIcons(props) {
         flexDirection: 'column',
         alignItems: 'center',
         justifyContent: 'center',
-        width: '180px',
-        gap: '0.5rem',
-        fontSize: '14px'
+        width: itemSize,
+        gap: '0.2rem',
+        fontSize: fontSize,
     }
 
     return (
@@ -21,14 +24,15 @@ export default function CareInstructionsIcons(props) {
                 display: 'flex',
                 flexDirection: 'row',
                 alignItems: 'flex-start',
-                justifyContent: 'space-between',
+                justifyContent: 'space-around',
+                flexWrap: 'wrap',
             }}
         >
             <div style={itemStyle}>
-                <svg width="60" height="60" viewBox="0 0 81 81" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <svg width={iconSize} height={iconSize} viewBox="0 0 81 81" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <g xmlns="http://www.w3.org/2000/svg" id="bg" display="none">
                         <g display="inline">
-                            <rect fill="#D4EBF4" width="60" height="60" />
+                            <rect fill="#D4EBF4" width={iconSize} height={iconSize} />
                         </g>
                     </g>
                     <path
@@ -41,10 +45,10 @@ export default function CareInstructionsIcons(props) {
                 <label>Do not dryclean</label>
             </div>
             <div style={itemStyle}>
-                <svg width="60" height="60" viewBox="0 0 81 81" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <svg width={iconSize} height={iconSize} viewBox="0 0 81 81" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <g xmlns="http://www.w3.org/2000/svg" id="bg" display="none">
                         <g display="inline">
-                            <rect fill="#D4EBF4" width="60" height="60" />
+                            <rect fill="#D4EBF4" width={iconSize} height={iconSize} />
                         </g>
                     </g>
                     <path
@@ -54,13 +58,13 @@ export default function CareInstructionsIcons(props) {
                         fill={fill}
                     />
                 </svg>
-                <label>Machine wash: warm (max 40C or 105F)</label>
+                <label>Machine wash: warm<br />(max 40C or 105F)</label>
             </div>
             <div style={itemStyle}>
-                <svg width="60" height="60" viewBox="0 0 81 81" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <svg width={iconSize} height={iconSize} viewBox="0 0 81 81" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <g xmlns="http://www.w3.org/2000/svg" id="bg" display="none">
                         <g display="inline">
-                            <rect fill="#D4EBF4" width="60" height="60" />
+                            <rect fill="#D4EBF4" width={iconSize} height={iconSize} />
                         </g>
                     </g>
                     <path
@@ -73,10 +77,10 @@ export default function CareInstructionsIcons(props) {
                 <label>Do not bleach</label>
             </div>
             <div style={itemStyle}>
-                <svg width="60" height="60" viewBox="0 0 81 81" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <svg width={iconSize} height={iconSize} viewBox="0 0 81 81" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <g xmlns="http://www.w3.org/2000/svg" id="bg" display="none">
                         <g display="inline">
-                            <rect fill="#D4EBF4" width="60" height="60" />
+                            <rect fill="#D4EBF4" width={iconSize} height={iconSize} />
                         </g>
                     </g>
                     <path
@@ -86,13 +90,13 @@ export default function CareInstructionsIcons(props) {
                         fill={fill}
                     />
                 </svg>
-                <label>Tumble dry: low heat</label>
+                <label>Tumble dry:<br />low heat</label>
             </div>
             <div style={itemStyle}>
-                <svg width="60" height="60" viewBox="0 0 81 81" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <svg width={iconSize} height={iconSize} viewBox="0 0 81 81" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <g xmlns="http://www.w3.org/2000/svg" id="bg" display="none">
                         <g display="inline">
-                            <rect fill="#D4EBF4" width="60" height="60" />
+                            <rect fill="#D4EBF4" width={iconSize} height={iconSize} />
                         </g>
                     </g>
                     <path
@@ -102,7 +106,7 @@ export default function CareInstructionsIcons(props) {
                         fill={fill}
                     />
                 </svg>
-                <label>Iron, steam or dry: low heat</label>
+                <label>Iron, steam or dry:<br />low heat</label>
             </div>
         </div>
     )

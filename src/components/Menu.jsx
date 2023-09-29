@@ -1,5 +1,5 @@
 import styles from '../styles/components/Menu.module.css'
-import Logo from './Logo';
+import Logo from './svgs/Logo';
 import { SlClose } from "react-icons/sl";
 import PersonOutlineOutlinedIcon from '@mui/icons-material/PersonOutlineOutlined';
 import Link from 'next/link';
