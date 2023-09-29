@@ -1,6 +1,7 @@
 @font-face {
   font-family: 'montserrat';
   src: url('/_next/static/fonts/montserrat.ttf') format('truetype');
+  display: swap;
 }
 
 :root {
