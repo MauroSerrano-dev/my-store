@@ -1,5 +1,3 @@
-import { useRef } from 'react'
-
 export default function Logo(props) {
 
     const {
@@ -9,11 +7,8 @@ export default function Logo(props) {
         style,
     } = props
 
-    const containerRef = useRef(null)
-
     return (
         <div
-            ref={containerRef}
             style={{
                 width: width ? width : undefined,
                 height: height ? height : undefined,

@@ -23,7 +23,12 @@ const MOST_SEARCHED_VALUES = [
 
 export default withRouter(props => {
     const router = useRouter()
-    const { userCurrency, supportsHoverAndPointer } = props
+    const {
+        userCurrency,
+        supportsHoverAndPointer,
+        loading,
+        setLoading,
+    } = props
     const {
         s,
         t,
@@ -31,8 +36,6 @@ export default withRouter(props => {
         min,
         max,
         order = 'popularity',
-        loadingProduct,
-        setLoadingProduct,
     } = props.router.query
 
     const [products, setProducts] = useState([])
@@ -337,8 +340,8 @@ export default withRouter(props => {
                                     url={`/product/${product.id}`}
                                     width={`calc(${100 / itemsPerLine}% - 1rem)`}
                                     supportsHoverAndPointer={supportsHoverAndPointer}
-                                    loadingProduct={loadingProduct}
-                                    setLoadingProduct={setLoadingProduct}
+                                    loading={loading}
+                                    setLoading={setLoading}
                                     motionVariants={
                                         {
                                             hidden: {

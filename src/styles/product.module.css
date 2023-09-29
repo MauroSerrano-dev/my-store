@@ -6,7 +6,6 @@
     width: 100%;
     min-height: 100%;
 
-    padding-top: 3rem;
     padding-bottom: 3rem;
 
     --text-color: var(--text-white)
@@ -14,7 +13,7 @@
 
 .productContainer {
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
 
@@ -22,6 +21,46 @@
     height: 100%;
     padding-right: 10%;
     padding-left: 10%;
+}
+
+.section {
+    padding-top: 3rem;
+    padding-bottom: 3rem;
+
+    border-bottom: solid 1px #616161;
+}
+
+.one {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+
+    width: 100%;
+    height: 100%;
+
+    padding-bottom: 5rem;
+}
+
+.two,
+.three,
+.four,
+.five {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: flex-start;
+
+    width: 100%;
+}
+
+.sectionTitle {
+    font-size: 20px;
+    width: 280px;
+}
+
+.sectionBody {
+    width: calc(100% - 280px);
 }
 
 .left {
@@ -36,7 +75,7 @@
 
 .sliderContainer {
     position: relative;
-    
+
     display: flex;
     justify-content: center;
     align-items: center;
@@ -61,13 +100,13 @@
 
 /* Mobile and Tablet */
 @media (max-width: 1074.5px) {
-    .productContainer {
-        flex-direction: column;
-    }
-
     .container {
         padding-top: 1.5rem;
         padding-bottom: 1.5rem;
+    }
+
+    .one {
+        flex-direction: column;
     }
 
     .sliderContainer {

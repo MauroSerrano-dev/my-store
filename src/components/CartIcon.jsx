@@ -12,8 +12,8 @@ export default function CartIcon(props) {
         setCart,
         userCurrency,
         supportsHoverAndPointer,
-        setLoadingProduct,
-        loadingProduct,
+        setLoading,
+        loading,
     } = props
 
     const [open, setOpen] = useState(false)
@@ -72,8 +72,8 @@ export default function CartIcon(props) {
                                         setCart={setCart}
                                         setOpen={setOpen}
                                         userCurrency={userCurrency}
-                                        loadingProduct={loadingProduct}
-                                        setLoadingProduct={setLoadingProduct}
+                                        loading={loading}
+                                        setLoading={setLoading}
                                     />
                                 )}
                             </div>

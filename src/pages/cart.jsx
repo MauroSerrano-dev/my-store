@@ -15,8 +15,8 @@ export default function Cart(props) {
         userCurrency,
         handleChangeCurrency,
         supportsHoverAndPointer,
-        setLoadingProduct,
-        loadingProduct
+        setLoading,
+        loading
     } = props
 
     const [shippingValue, setShippingValue] = useState(0)
@@ -126,8 +126,8 @@ export default function Cart(props) {
                             itemWidth={225}
                             userCurrency={userCurrency}
                             supportsHoverAndPointer={supportsHoverAndPointer}
-                            loadingProduct={loadingProduct}
-                            setLoadingProduct={setLoadingProduct}
+                            loading={loading}
+                            setLoading={setLoading}
                         />
                     </main>
                     : <main className={styles.main}>
@@ -151,8 +151,8 @@ export default function Cart(props) {
                                         index={i}
                                         userCurrency={userCurrency}
                                         supportsHoverAndPointer={supportsHoverAndPointer}
-                                        loadingProduct={loadingProduct}
-                                        setLoadingProduct={setLoadingProduct}
+                                        loading={loading}
+                                        setLoading={setLoading}
                                     />
                                 )}
                             </div>

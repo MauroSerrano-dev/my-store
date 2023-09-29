@@ -1,52 +1,69 @@
 import { useState } from 'react'
 import MenuItem from '@mui/material/MenuItem'
 import ListItemIcon from '@mui/material/ListItemIcon'
-import Divider from '@mui/material/Divider'
-import Settings from '@mui/icons-material/Settings'
-import Logout from '@mui/icons-material/Logout'
-import SupportAgentIcon from '@mui/icons-material/SupportAgent'
-import AccountCircleRoundedIcon from '@mui/icons-material/AccountCircleRounded';
-import Link from 'next/link'
-import PersonOutlineOutlinedIcon from '@mui/icons-material/PersonOutlineOutlined';
 import styles from '@/styles/components/ShareButton.module.css'
-import { Button } from '@mui/material'
-import ReceiptLongRoundedIcon from '@mui/icons-material/ReceiptLongRounded';
-import { useRouter } from 'next/router'
+import IosShareRoundedIcon from '@mui/icons-material/IosShareRounded';
+import { BsWhatsapp } from "react-icons/bs";
+import { MdOutlineContentCopy } from "react-icons/md";
+import { ImFacebook2 } from "react-icons/im";
 
 export default function ShareButton(props) {
     const {
-        wpp,
+        link,
+        wppMsg,
         supportsHoverAndPointer,
-        style
+        style,
+        mobile
     } = props
-    const router = useRouter()
+
+    const link_replace = link.replace('+', '%2B').replace('&', '%26')
 
     const [open, setOpen] = useState(false)
+    const [copied, setCopied] = useState(false)
 
-    function handleLogout() {
+    function handleCopy() {
+        navigator.clipboard.writeText(link)
+        setCopied(true)
+    }
+
+    function closeModal() {
         setOpen(false)
+        setCopied(false)
+    }
+
+    function openModal() {
+        setOpen(true)
+    }
+
+    function openFacebookWindow() {
+        const width = 600;
+        const height = 400;
+
+        const left = (screen.width - width) / 2;
+        const top = (screen.height - height) / 2;
+
+        window.open(`https://www.facebook.com/sharer/sharer.php?u=${link_replace}`, '_blank', `width=${width},height=${height},left=${left},top=${top}`);
+        closeModal();
     }
 
     return (
         <div
             className={styles.container}
             style={style}
-            onMouseEnter={() => setOpen(true)}
-            onMouseLeave={() => setOpen(false)}
+            onMouseEnter={openModal}
+            onMouseLeave={closeModal}
         >
-            <PersonOutlineOutlinedIcon
-                style={{
-                    fontSize: 'calc(var(--bar-height) * 0.43)',
-                    color: 'var(--global-black)'
-                }}
-            />
+            <div className={styles.iconContainer}>
+                <IosShareRoundedIcon
+                    style={{
+                        color: 'var(--global-black)'
+                    }}
+                />
+            </div>
             {
                 open &&
                 <div
                     className={styles.contentContainer}
-                    style={{
-                        left: '-98.5px'
-                    }}
                 >
                     <div className={styles.pointer}>
                     </div>
@@ -54,23 +71,37 @@ export default function ShareButton(props) {
                         className={styles.session}
                     >
                         <a
-                            href={wpp}
+                            href={`https://${mobile ? 'api' : 'web'}.whatsapp.com/send?text=${wppMsg}: ${link_replace}`}
                             className='noUnderline'
-                            onClick={() => setOpen(false)}
+                            onClick={closeModal}
                             target='_blank'
+                            rel='noopener noreferrer'
                         >
                             <MenuItem>
                                 <ListItemIcon>
-                                    <AccountCircleRoundedIcon fontSize="medium" />
+                                    <BsWhatsapp size={23} />
                                 </ListItemIcon>
                                 WhatsApp
                             </MenuItem>
                         </a>
-                        <MenuItem>
+                        <a
+                            className='noUnderline'
+                            onClick={openFacebookWindow}
+                            target='_blank'
+                            rel='noopener noreferrer'
+                        >
+                            <MenuItem>
+                                <ListItemIcon>
+                                    <ImFacebook2 size={23} />
+                                </ListItemIcon>
+                                Facebook
+                            </MenuItem>
+                        </a>
+                        <MenuItem onClick={handleCopy}>
                             <ListItemIcon>
-                                <SupportAgentIcon fontSize="medium" />
+                                <MdOutlineContentCopy size={23} />
                             </ListItemIcon>
-                            Copy Link
+                            {copied ? 'Link Copied!' : 'Copy Link'}
                         </MenuItem>
                     </div>
                 </div>

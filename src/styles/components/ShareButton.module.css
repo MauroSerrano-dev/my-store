@@ -4,38 +4,46 @@
     align-items: center;
     position: relative;
 
-    height: calc(var(--bar-height) * 0.51);
-    width: calc(var(--bar-height) * 0.51);
-    color: var(--global-white);
-    border-radius: 100%;
+    height: 40px;
+    width: 40px;
 
+    border-radius: 100%;
+    
     z-index: 10;
+
+    background-color: rgba(255, 255, 255, 0.5);
 
     transition: all ease-in-out 200ms;
 }
 
 .iconContainer {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    
     border-radius: 100%;
     height: 100%;
     width: 100%;
-    z-index: 30;
+
+    z-index: 5;
 }
 
 .contentContainer {
     position: absolute;
-    top: 38px;
+    width: 170px;
+    top: 23px;
+    left: -118px;
 }
 
-.session {
-    min-width: 165px;
-
+.session {    
     background-color: white;
-    
+
     border: rgba(0, 0, 0, 0.2) solid 1px;
 
     border-radius: 0.3rem;
     padding: 1rem 0;
-    margin-top: 1rem;
+    margin-top: 1.5rem;
 
     box-shadow: 0px 2px 4px -1px rgba(0, 0, 0, 0.2),
         0px 4px 5px 0px rgba(0, 0, 0, 0.14),
@@ -44,44 +52,10 @@
     --text-color: #757575;
 }
 
-.noSession {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-
-    width: 270px;
-    background-color: white;
-
-    margin-top: 1rem;
-
-    border-radius: 0.3rem;
-    padding: 1rem 1rem;
-
-    box-shadow: 0px 2px 4px -1px rgba(0, 0, 0, 0.2),
-        0px 4px 5px 0px rgba(0, 0, 0, 0.14),
-        0px 1px 10px 0px rgba(0, 0, 0, 0.12);
-
-    --text-color: var(--text-black);
-
-    top: 5px;
-    left: -95px;
-
-    gap: 0.5rem;
-
-    font-size: 13px;
-}
-
-.noSession a {
-    font-weight: bold;
-    color: #1185ed;
-    transition: all ease-in-out 150ms;
-}
-
 .pointer {
     position: absolute;
-    right: 30px;
-    top: 8px;
+    right: 24px;
+    top: 17px;
 
     border-top-left-radius: 3px;
 
@@ -96,13 +70,12 @@
 }
 
 .container:hover {
-    background-color: rgba(0, 0, 0, 0.15);
+    background-color: rgba(255, 255, 255, 0.9);
 }
 
 /* Enable hover only on non-touch devices */
 @media (hover: hover) and (pointer: fine) {
-
-    .noSession a:hover {
-        color: #444444;
+    .iconContainer:hover {
+        cursor: pointer;
     }
 }

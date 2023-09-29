@@ -11,6 +11,7 @@ import Head from 'next/head'
 import ColorSelector from '@/components/ColorSelector'
 import SizesSelector from '@/components/SizesSelector'
 import ShareButton from '@/components/ShareButton'
+import CareInstructionsIcons from '@/components/CareInstructionsIcons'
 
 export default withRouter(props => {
     const {
@@ -19,7 +20,7 @@ export default withRouter(props => {
         setCart,
         userCurrency,
         product,
-        setLoadingProduct,
+        setLoading,
         windowWidth,
         cl,
         sz,
@@ -34,7 +35,7 @@ export default withRouter(props => {
     const router = useRouter()
 
     useEffect(() => {
-        setLoadingProduct(false)
+        setLoading(false)
     }, [router])
 
     function handleBuyNow() {
@@ -102,26 +103,10 @@ export default withRouter(props => {
 
     function handleColorChange(arr, index, color) {
         setCurrentColor(color)
-        const newQueries = { ...router.query, cl: color.title.toLowerCase() }
-        if (newQueries.cl === product.colors[0].title.toLowerCase()) {
-            delete newQueries.cl
-        }
-        router.push({
-            pathname: router.pathname,
-            query: newQueries,
-        }, undefined, { scroll: false })
     }
 
     function handleSizeChange(arr, index, size) {
         setCurrentSize(size)
-        const newQueries = { ...router.query, sz: size.title.toLowerCase() }
-        if (newQueries.sz === product.sizes[0].title.toLowerCase()) {
-            delete newQueries.sz
-        }
-        router.push({
-            pathname: router.pathname,
-            query: newQueries,
-        }, undefined, { scroll: false })
     }
 
     return (
@@ -137,87 +122,120 @@ export default withRouter(props => {
                 <meta property="og:url" content={urlMeta} key='og:url' />
             </Head>
             <div className={styles.productContainer}>
-                <div className={styles.left}>
-                    <div className={styles.sliderContainer}>
-                        <ShareButton
-                            wpp={`https://${mobile ? 'api' : 'web'}.whatsapp.com/send?text=${product.title} (${currentColor.title}): https://my-store-sigma-nine.vercel.app/product/${product.id}${currentColor.id !== product.colors[0].id && currentSize.id !== product.sizes[0].id
-                                ? `?sz=${currentSize.title.toLowerCase()}%26cl=${currentColor.title.replace(/ /g, '%2B').toLowerCase()}`
-                                : currentSize.id !== product.sizes[0].id
-                                    ? `?sz=${currentSize.title.toLowerCase()}`
-                                    : currentColor.id !== product.colors[0].id
-                                        ? `?cl=${currentColor.title.replace(/ /g, '%2B').toLowerCase()}`
-                                        : ''
-                                }`}
-                            style={{
-                                position: 'absolute',
-                                top: '4%',
-                                right: '14%'
-                            }}
-                        />
-                        {product.colors.map((color, i) =>
-                            <ImagesSlider
-                                key={i}
-                                size={windowWidth > 1074 ? 600 : windowWidth > 549 ? 450 : 350}
-                                images={product.images.filter(img => img.color_id === color.id)}
+                <section className={`${styles.section} ${styles.one}`}>
+                    <div className={styles.left}>
+                        <div className={styles.sliderContainer}>
+                            <ShareButton
+                                link={`https://my-store-sigma-nine.vercel.app/product/${product.id}${currentColor.id !== product.colors[0].id && currentSize.id !== product.sizes[0].id
+                                    ? `?sz=${currentSize.title.toLowerCase()}&cl=${currentColor.title.replace(' ', '+').toLowerCase()}`
+                                    : currentSize.id !== product.sizes[0].id
+                                        ? `?sz=${currentSize.title.toLowerCase()}`
+                                        : currentColor.id !== product.colors[0].id
+                                            ? `?cl=${currentColor.title.replace(' ', '+').toLowerCase()}`
+                                            : ''
+                                    }`}
+                                wppMsg={`${product.title} (${currentColor.title})`}
+                                mobile={mobile}
                                 style={{
                                     position: 'absolute',
-                                    zIndex: color.id === currentColor.id ? 1 : 0,
-                                    opacity: color.id === currentColor.id ? 1 : 0,
+                                    top: '3%',
+                                    right: '13%'
                                 }}
                             />
-                        )}
+                            {product.colors.map((color, i) =>
+                                <ImagesSlider
+                                    key={i}
+                                    size={windowWidth > 1074 ? 600 : windowWidth > 549 ? 450 : 350}
+                                    images={product.images.filter(img => img.color_id === color.id)}
+                                    style={{
+                                        position: 'absolute',
+                                        zIndex: color.id === currentColor.id ? 1 : 0,
+                                        opacity: color.id === currentColor.id ? 1 : 0,
+                                    }}
+                                />
+                            )}
+                        </div>
                     </div>
-                </div>
-                <div className={styles.right}>
-                    <h2>{product.title}</h2>
-                    <div>
-                        <p style={{ textAlign: 'start', fontWeight: 'bold' }}>Pick a color</p>
-                        <ColorSelector
-                            options={product.colors}
-                            value={[currentColor]}
-                            onChange={handleColorChange}
-                        />
+                    <div className={styles.right}>
+                        <h2>{product.title}</h2>
+                        <div>
+                            <p style={{ textAlign: 'start', fontWeight: 'bold' }}>Pick a color</p>
+                            <ColorSelector
+                                options={product.colors}
+                                value={[currentColor]}
+                                onChange={handleColorChange}
+                            />
+                        </div>
+                        <div>
+                            <p style={{ textAlign: 'start', fontWeight: 'bold' }}>Pick a size</p>
+                            <SizesSelector
+                                value={[currentSize]}
+                                options={product.sizes}
+                                onChange={handleSizeChange}
+                            />
+                        </div>
+                        <p
+                            style={{
+                                fontSize: '27px',
+                                color: 'var(--primary)',
+                                fontWeight: 'bold',
+                            }}
+                        >
+                            {`${userCurrency.symbol} ${(product.variants.find(vari => vari.options.includes(currentSize.id) && vari.options.includes(currentColor.id)).price / 100).toFixed(2)}`}
+                        </p>
+                        <Button
+                            variant='contained'
+                            onClick={() => handleAddToCart()}
+                            sx={{
+                                width: '100%',
+                                height: '55px'
+                            }}
+                        >
+                            <ShoppingCartOutlinedIcon />
+                            Add to Cart
+                        </Button>
+                        <Button
+                            variant='outlined'
+                            onClick={() => handleBuyNow()}
+                            sx={{
+                                width: '100%',
+                                height: '55px'
+                            }}
+                        >
+                            <CreditCardOutlinedIcon />
+                            Buy Now
+                        </Button>
                     </div>
-                    <div>
-                        <p style={{ textAlign: 'start', fontWeight: 'bold' }}>Pick a size</p>
-                        <SizesSelector
-                            value={[currentSize]}
-                            options={product.sizes}
-                            onChange={handleSizeChange}
-                        />
+                </section>
+                <section className={`${styles.section} ${styles.two}`}>
+                    <div className={styles.sectionTitle}>
+                        <h1 style={{ textAlign: 'start' }}>Description</h1>
                     </div>
-                    <p
-                        style={{
-                            fontSize: '27px',
-                            color: 'var(--primary)',
-                            fontWeight: 'bold',
-                        }}
-                    >
-                        {`${userCurrency.symbol} ${(product.variants.find(vari => vari.options.includes(currentSize.id) && vari.options.includes(currentColor.id)).price / 100).toFixed(2)}`}
-                    </p>
-                    <Button
-                        variant='contained'
-                        onClick={() => handleAddToCart()}
-                        sx={{
-                            width: '100%',
-                            height: '55px'
-                        }}
-                    >
-                        <ShoppingCartOutlinedIcon />
-                        Add to Cart
-                    </Button>
-                    <Button
-                        variant='outlined'
-                        onClick={() => handleBuyNow()}
-                        sx={{
-                            width: '100%',
-                            height: '55px'
-                        }}
-                    >
-                        <CreditCardOutlinedIcon />
-                        Buy Now
-                    </Button>
-                </div>
+                    <div className={styles.sectionBody}>
+                    </div>
+                </section>
+                <section className={`${styles.section} ${styles.three}`}>
+                    <div className={styles.sectionTitle}>
+                        <h1 style={{ textAlign: 'start' }}>Key features</h1>
+                    </div>
+                    <div className={styles.sectionBody}>
+                    </div>
+                </section>
+                <section className={`${styles.section} ${styles.four}`}>
+                    <div className={styles.sectionTitle}>
+                        <h1 style={{ textAlign: 'start' }}>Care instructions</h1>
+                    </div>
+                    <div className={styles.sectionBody}>
+                        <CareInstructionsIcons />
+                    </div>
+                </section>
+                <section className={`${styles.section} ${styles.five}`}>
+                    <div className={styles.sectionTitle}>
+                        <h1 style={{ textAlign: 'start' }}>Size guide</h1>
+                    </div>
+                    <div className={styles.sectionBody}>
+                    </div>
+                </section>
             </div>
         </div>
     )

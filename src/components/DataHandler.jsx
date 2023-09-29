@@ -32,7 +32,7 @@ export default function DataHandler(props) {
     const [supportsHoverAndPointer, setSupportsHoverAndPointer] = useState()
     const [menuOpen, switchMenu] = useCycle(false, true);
 
-    const [loadingProduct, setLoadingProduct] = useState(false)
+    const [loading, setLoading] = useState(false)
 
     const router = useRouter();
 
@@ -426,8 +426,8 @@ export default function DataHandler(props) {
                     supportsHoverAndPointer={supportsHoverAndPointer}
                     menuOpen={menuOpen}
                     switchMenu={switchMenu}
-                    loadingProduct={loadingProduct}
-                    setLoadingProduct={setLoadingProduct}
+                    loading={loading}
+                    setLoading={setLoading}
                 />
                 <div
                     className={styles.subNavBar}
@@ -470,12 +470,12 @@ export default function DataHandler(props) {
                     handleChangeCurrency={handleChangeCurrency}
                     mobile={mobile}
                     supportsHoverAndPointer={supportsHoverAndPointer}
-                    loadingProduct={loadingProduct}
-                    setLoadingProduct={setLoadingProduct}
+                    loading={loading}
+                    setLoading={setLoading}
                     windowWidth={windowWidth}
                 />
             </div>
-            {loadingProduct &&
+            {loading &&
                 <div
                     style={{
                         position: 'fixed',

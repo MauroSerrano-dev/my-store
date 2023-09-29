@@ -21,8 +21,8 @@ export default function ProductCart(props) {
         index,
         userCurrency,
         supportsHoverAndPointer,
-        loadingProduct,
-        setLoadingProduct,
+        loading,
+        setLoading,
     } = props
 
     const [hoverQuantity, setHoverQuantity] = useState(false)
@@ -81,9 +81,9 @@ export default function ProductCart(props) {
             <Link legacyBehavior href={`/product/${product.id}`}>
                 <a
                     className={styles.imageContainer}
-                    onClick={() => setLoadingProduct(true)}
+                    onClick={() => setLoading(true)}
                     style={{
-                        pointerEvents: loadingProduct ? 'none' : 'auto',
+                        pointerEvents: loading ? 'none' : 'auto',
                     }}
                 >
                     <img
@@ -96,9 +96,9 @@ export default function ProductCart(props) {
                 <div className={styles.productName}>
                     <Link legacyBehavior href={`/product/${product.id}`}>
                         <a
-                            onClick={() => setLoadingProduct(true)}
+                            onClick={() => setLoading(true)}
                             style={{
-                                pointerEvents: loadingProduct ? 'none' : 'auto',
+                                pointerEvents: loading ? 'none' : 'auto',
                             }}
                         >
                             {product.title}
