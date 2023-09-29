@@ -2,7 +2,6 @@ import { withRouter } from 'next/router'
 import styles from '../styles/search.module.css'
 import { useEffect, useState } from 'react'
 import Product from '@/components/Product'
-import { useRouter } from 'next/router';
 import Link from 'next/link';
 import Selector from '@/components/material-ui/Selector';
 import { Checkbox, FormControlLabel } from '@mui/material';
@@ -22,12 +21,12 @@ const MOST_SEARCHED_VALUES = [
 ]
 
 export default withRouter(props => {
-    const router = useRouter()
     const {
         userCurrency,
         supportsHoverAndPointer,
         loading,
         setLoading,
+        router
     } = props
     const {
         s,
@@ -160,10 +159,11 @@ export default withRouter(props => {
                         <h3>Categories</h3>
                         {THEMES_VALUES.map((theme, i) =>
                             <FormControlLabel
+                                label={theme.name}
                                 key={i}
                                 sx={{
-                                    marginTop: -0.8,
-                                    marginBottom: -0.8,
+                                    marginTop: '-0.8',
+                                    marginBottom: '-0.8',
                                 }}
                                 control={
                                     <Checkbox
@@ -174,7 +174,6 @@ export default withRouter(props => {
                                         }}
                                     />
                                 }
-                                label={theme.name}
                             />
                         )}
                     </div>

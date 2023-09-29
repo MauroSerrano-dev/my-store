@@ -11,7 +11,6 @@ export default function ShareButton(props) {
     const {
         link,
         wppMsg,
-        supportsHoverAndPointer,
         style,
         mobile
     } = props

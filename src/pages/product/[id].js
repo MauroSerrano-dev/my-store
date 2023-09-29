@@ -1,4 +1,4 @@
-import { useRouter, withRouter } from 'next/router'
+import { withRouter } from 'next/router'
 import styles from '../../styles/product.module.css'
 import { useEffect, useState } from 'react'
 import ImagesSlider from '@/components/ImagesSlider'
@@ -27,12 +27,11 @@ export default withRouter(props => {
         productMetaImage,
         urlMeta,
         mobile,
+        router,
     } = props
 
     const [currentColor, setCurrentColor] = useState(cl ? cl : product?.colors[0])
     const [currentSize, setCurrentSize] = useState(sz ? sz : product?.sizes[0])
-
-    const router = useRouter()
 
     useEffect(() => {
         setLoading(false)

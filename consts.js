@@ -11,7 +11,7 @@ export const MENU_OPTIONS = [
 
 export const MENU_FORWARD_OPTIONS = {
     departments: [
-        { title: 'T-Shirt', type: 'link', href: '/search?c=t-shirts' },
+        { title: 'T-Shirts', type: 'link', href: '/search?c=t-shirts' },
         { title: 'Kitchen', type: 'link', href:'/search?c=kitchen' },
         { title: 'Socks', type: 'link', href: '/search?c=socks' }
     ],

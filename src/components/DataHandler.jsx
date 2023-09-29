@@ -473,6 +473,7 @@ export default function DataHandler(props) {
                     loading={loading}
                     setLoading={setLoading}
                     windowWidth={windowWidth}
+                    router={router}
                 />
             </div>
             {loading &&

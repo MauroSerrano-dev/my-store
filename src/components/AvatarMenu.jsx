@@ -11,11 +11,9 @@ import PersonOutlineOutlinedIcon from '@mui/icons-material/PersonOutlineOutlined
 import styles from '@/styles/components/AvatarMenu.module.css'
 import { Button } from '@mui/material'
 import ReceiptLongRoundedIcon from '@mui/icons-material/ReceiptLongRounded';
-import { useRouter } from 'next/router'
 
 export default function AvatarMenu(props) {
   const { logout, session, supportsHoverAndPointer } = props
-  const router = useRouter()
 
   const [open, setOpen] = useState(false)
 
