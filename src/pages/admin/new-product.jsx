@@ -12,6 +12,8 @@ import TagsSelector from '@/components/material-ui/Autocomplete'
 import ClearRoundedIcon from '@mui/icons-material/ClearRounded';
 import ButtonIcon from '@/components/material-ui/ButtonIcon'
 import SizesSelector from '@/components/SizesSelector';
+import Chain from '@/components/svgs/Chain';
+import BrokeChain from '@/components/svgs/BrokeChain';
 
 const INICIAL_PRODUCT = {
     id: '',
@@ -330,19 +332,30 @@ export default withRouter(props => {
                                     }}
                                     key={i}
                                 >
+                                    <Button
+                                        variant='outlined'
+                                        sx={{
+                                            minWidth: 45,
+                                            width: 45,
+                                            height: 45,
+                                            padding: 0,
+                                        }}
+                                    >
+                                        <BrokeChain />
+                                    </Button>
                                     <TextInput
                                         supportsHoverAndPointer={supportsHoverAndPointer}
                                         label={`${size.title}`}
                                         onChange={event => handlePriceChange(size.id, event.target.value)}
                                         value={product.variants.find(vari => vari.options.includes(size.id)).price}
                                         style={{
-                                            width: '80px',
+                                            width: '90px',
                                         }}
                                     />
                                     <Slider
                                         value={product.variants.find(vari => vari.options.includes(size.id)).price}
-                                        min={product.variants.find(vari => vari.options.includes(size.id)).cost}
-                                        max={product.variants.find(vari => vari.options.includes(size.id)).cost * 4}
+                                        min={product.variants[0].cost}
+                                        max={product.variants.reduce((acc, vari) => vari.cost > acc.cost ? vari : acc, { cost: 0 }).cost * 3}
                                         valueLabelDisplay="auto"
                                         onChange={event => handlePriceChange(size.id, event.target.value)}
                                     />

@@ -1,5 +1,5 @@
 import { TextField } from '@mui/material';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 
 export default function TextInput(props) {
     const {
@@ -22,6 +22,7 @@ export default function TextInput(props) {
         value,
         defaultValue,
         supportsHoverAndPointer,
+        disabled
     } = props
 
     const [hover, setHover] = useState(false)
@@ -38,6 +39,7 @@ export default function TextInput(props) {
             placeholder={placeholder}
             value={value}
             defaultValue={defaultValue}
+            disabled={disabled}
             sx={{
                 ...style,
                 '.MuiOutlinedInput-notchedOutline': {
@@ -59,7 +61,8 @@ export default function TextInput(props) {
                     transition: 'all ease-in-out 200ms',
                 },
                 '.MuiInputBase-input': {
-                    color: colorText,
+                    WebkitTextFillColor: `${colorText} !important`,
+                    color: `${colorText} !important`,
                     transition: 'all ease-in-out 200ms',
                 },
             }}

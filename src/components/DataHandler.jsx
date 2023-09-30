@@ -219,7 +219,7 @@ export default function DataHandler(props) {
 
         const handleScroll = () => {
             // Check if the scroll position is at the top (you can adjust the threshold if needed)
-            const isAtTop = window.scrollY === 0
+            const isAtTop = window.scrollY <= (mobile ? SUB_NAVBAR_HEIGHT_MOBILE : SUB_NAVBAR_HEIGHT) / 2
 
             clearTimeout(timeoutId);
 
@@ -227,7 +227,6 @@ export default function DataHandler(props) {
             timeoutId = setTimeout(() => {
                 setIsScrollAtTop(isAtTop)
             }, 150)
-
         }
 
         // Attach the scroll event listener
@@ -237,7 +236,7 @@ export default function DataHandler(props) {
             // Clean up the event listener when the component unmounts
             window.removeEventListener('scroll', handleScroll)
         }
-    }, [])
+    }, [mobile])
 
     useEffect(() => {
         if (Cookies.get('CURR'))
@@ -362,7 +361,7 @@ export default function DataHandler(props) {
             document.body.style.overflowY = "auto"
         }
     }, [menuOpen])
-    
+
     return (
         <motion.div
             onClick={() => {
@@ -433,7 +432,7 @@ export default function DataHandler(props) {
                     className={styles.subNavBar}
                     style={{
                         top: isScrollAtTop ? '5rem' : 0,
-                        height: `${mobile ? SUB_NAVBAR_HEIGHT_MOBILE : SUB_NAVBAR_HEIGHT}px`,
+                        height: mobile ? SUB_NAVBAR_HEIGHT_MOBILE : SUB_NAVBAR_HEIGHT,
                         transition: `all ease-in-out ${websiteVisible ? 200 : 0}ms`,
                     }}
                 >

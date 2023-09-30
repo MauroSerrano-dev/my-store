@@ -6,7 +6,7 @@ import { Button } from '@mui/material'
 import ShoppingCartOutlinedIcon from '@mui/icons-material/ShoppingCartOutlined';
 import CreditCardOutlinedIcon from '@mui/icons-material/CreditCardOutlined';
 import Cookies from 'js-cookie';
-import { CART_COOKIE } from '../../../consts'
+import { CART_COOKIE, convertDolarToCurrency } from '../../../consts'
 import Head from 'next/head'
 import ColorSelector from '@/components/ColorSelector'
 import SizesSelector from '@/components/SizesSelector'
@@ -33,6 +33,14 @@ export default withRouter(props => {
     const [currentColor, setCurrentColor] = useState(cl ? cl : product?.colors[0])
     const [currentSize, setCurrentSize] = useState(sz ? sz : product?.sizes[0])
 
+    const productPrice = `${userCurrency.symbol} ${(convertDolarToCurrency(product.variants.find(vari => vari.options.includes(currentSize.id) && vari.options.includes(currentColor.id)).price, userCurrency.code) / 100).toFixed(2)}`
+
+    useEffect(() => {
+        setCurrentColor(cl ? cl : product?.colors[0])
+        setCurrentSize(sz ? sz : product?.sizes[0])
+        setLoading(false)
+    }, [router])
+    
     useEffect(() => {
         setCurrentColor(cl ? cl : product?.colors[0])
         setCurrentSize(sz ? sz : product?.sizes[0])
@@ -166,7 +174,7 @@ export default withRouter(props => {
                                 fontWeight: 'bold',
                             }}
                         >
-                            {`${userCurrency.symbol} ${(product.variants.find(vari => vari.options.includes(currentSize.id) && vari.options.includes(currentColor.id)).price / 100).toFixed(2)}`}
+                            {productPrice}
                         </p>
                         <div>
                             <p style={{ textAlign: 'start', fontWeight: 'bold' }}>Pick a color</p>

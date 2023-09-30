@@ -1,0 +1,22 @@
+.container {
+    width: 100%;
+    --text-color: var(--text-white);
+}
+
+.productContainer {
+    display: flex;
+    width: 100%;
+}
+
+.productLeft {
+    width: 50%;
+}
+
+.productRight {
+    display: flex;
+    flex-direction: column;
+
+    gap: 1rem;
+    
+    width: 50%;
+}
