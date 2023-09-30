@@ -9,7 +9,11 @@ import { motion } from "framer-motion";
 import { MENU_FORWARD_OPTIONS, MENU_OPTIONS } from '../../consts';
 
 export default function Menu(props) {
-    const { switchMenu, menuOpen } = props
+    const {
+        switchMenu,
+        menuOpen,
+        session,
+    } = props
     const [optionMenu, setOptionMenu] = useState()
     const [optionMenuDelay, setOptionMenuDelay] = useState()
 
@@ -97,7 +101,16 @@ export default function Menu(props) {
                                 fontSize: '25px',
                             }}
                         />
-                        Hello! <Link legacyBehavior href={'/login'}><a onClick={handleCloseMenu} className='noUnderline'>Log in</a></Link> or <Link legacyBehavior href={'/signin'}><a onClick={handleCloseMenu} className='noUnderline'>Sign up</a></Link>
+                        {session &&
+                            <div>
+                                Welcome! <span style={{ color: 'var(--primary)', fontWeight: 'bold' }}>{session.name}</span>
+                            </div>
+                        }
+                        {session === null &&
+                            <div>
+                                Hello! <Link legacyBehavior href={'/login'}><a onClick={handleCloseMenu} className='noUnderline'>Log in</a></Link> or <Link legacyBehavior href={'/signin'}><a onClick={handleCloseMenu} className='noUnderline'>Sign up</a></Link>
+                            </div>
+                        }
                     </div>
                     {MENU_OPTIONS.map((option, i) =>
                         option.type === 'link'

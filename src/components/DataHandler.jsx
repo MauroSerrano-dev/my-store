@@ -520,6 +520,7 @@ export default function DataHandler(props) {
             <Menu
                 switchMenu={switchMenu}
                 menuOpen={menuOpen}
+                session={session}
             />
         </motion.div>
     )
