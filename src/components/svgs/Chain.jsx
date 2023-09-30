@@ -2,7 +2,7 @@ export default function Chain(props) {
 
     const {
         fill = '#ffffff',
-        iconSize = 50
+        iconSize = 30
     } = props
 
     return (

@@ -34,6 +34,7 @@ export default withRouter(props => {
     const [colorIndex, setColorIndex] = useState(0)
     const [images, setImages] = useState()
     const [type, setType] = useState()
+    const [sizesChained, setSizesChained] = useState([])
 
     useEffect(() => {
         if (router.isReady) {
@@ -137,8 +138,54 @@ export default withRouter(props => {
         setProduct(prev => ({ ...prev, sizes: value }))
     }
 
-    function handlePriceChange(sizeId, value) {
-        setProduct(prev => ({ ...prev, variants: prev.variants.map(vari => vari.options.includes(sizeId) ? { ...vari, price: Number(value) } : vari) }))
+    function changeChainedColorsChainedPrices(value) {
+        setProduct(prev => (
+            {
+                ...prev,
+                variants: prev.variants.map(vari =>
+                    sizesChained.some(sId => vari.options.includes(sId))
+                        ? { ...vari, price: Number(value) }
+                        : vari
+                )
+            }
+        ))
+    }
+
+    function changeChainedColorsPrice(sizeId, value) {
+        setProduct(prev => (
+            {
+                ...prev,
+                variants: prev.variants.map(vari =>
+                    vari.options.includes(sizeId)
+                        ? { ...vari, price: Number(value) }
+                        : vari
+                )
+            }
+        ))
+    }
+
+    function handleChained(sizeId) {
+        if (!sizesChained.includes(sizeId)) {
+            setProduct(prev => (
+                {
+                    ...prev,
+                    variants: prev.variants.map(vari =>
+                        vari.options.includes(sizeId)
+                            ? {
+                                ...vari,
+                                price: prev.variants.find(v => sizesChained.some(sId => v.options.includes(sId)))
+                                    ? prev.variants.find(v => sizesChained.some(sId => v.options.includes(sId))).price
+                                    : vari.price
+                            }
+                            : vari
+                    )
+                }
+            ))
+            setSizesChained(prev => prev.concat(sizeId))
+        }
+        else {
+            setSizesChained(prev => prev.filter(ele => ele !== sizeId))
+        }
     }
 
     return (
@@ -319,48 +366,57 @@ export default withRouter(props => {
                                             Add New Image
                                         </Button>
                                     </div>
+                                    <h3>
+                                        Price (USD)
+                                    </h3>
+                                    {product.sizes.map((size, i) =>
+                                        <div
+                                            className='flex center'
+                                            style={{
+                                                gap: '1rem'
+                                            }}
+                                            key={i}
+                                        >
+                                            <Button
+                                                variant={sizesChained.includes(size.id) ? 'contained' : 'outlined'}
+                                                onClick={() => handleChained(size.id)}
+                                                sx={{
+                                                    minWidth: 45,
+                                                    width: 45,
+                                                    height: 45,
+                                                    padding: 0,
+                                                }}
+                                            >
+                                                {sizesChained.includes(size.id) ? <Chain /> : <BrokeChain />}
+                                            </Button>
+                                            <TextInput
+                                                supportsHoverAndPointer={supportsHoverAndPointer}
+                                                label={`${size.title}`}
+                                                onChange={event =>
+                                                    sizesChained.includes(size.id)
+                                                        ? changeChainedColorsChainedPrices(event.target.value)
+                                                        : changeChainedColorsPrice(size.id, event.target.value)
+                                                }
+                                                value={product.variants.find(vari => vari.options.includes(size.id)).price}
+                                                style={{
+                                                    width: '90px',
+                                                }}
+                                            />
+                                            <Slider
+                                                value={product.variants.find(vari => vari.options.includes(size.id)).price}
+                                                min={product.variants[0].cost}
+                                                max={product.variants.reduce((acc, vari) => vari.cost > acc.cost ? vari : acc, { cost: 0 }).cost * 3}
+                                                valueLabelDisplay="auto"
+                                                onChange={event =>
+                                                    sizesChained.includes(size.id)
+                                                        ? changeChainedColorsChainedPrices(event.target.value)
+                                                        : changeChainedColorsPrice(size.id, event.target.value)
+                                                }
+                                            />
+                                        </div>
+                                    )}
                                 </div>
                             }
-                            <h3>
-                                Price (USD)
-                            </h3>
-                            {product.sizes.map((size, i) =>
-                                <div
-                                    className='flex center'
-                                    style={{
-                                        gap: '1rem'
-                                    }}
-                                    key={i}
-                                >
-                                    <Button
-                                        variant='outlined'
-                                        sx={{
-                                            minWidth: 45,
-                                            width: 45,
-                                            height: 45,
-                                            padding: 0,
-                                        }}
-                                    >
-                                        <BrokeChain />
-                                    </Button>
-                                    <TextInput
-                                        supportsHoverAndPointer={supportsHoverAndPointer}
-                                        label={`${size.title}`}
-                                        onChange={event => handlePriceChange(size.id, event.target.value)}
-                                        value={product.variants.find(vari => vari.options.includes(size.id)).price}
-                                        style={{
-                                            width: '90px',
-                                        }}
-                                    />
-                                    <Slider
-                                        value={product.variants.find(vari => vari.options.includes(size.id)).price}
-                                        min={product.variants[0].cost}
-                                        max={product.variants.reduce((acc, vari) => vari.cost > acc.cost ? vari : acc, { cost: 0 }).cost * 3}
-                                        valueLabelDisplay="auto"
-                                        onChange={event => handlePriceChange(size.id, event.target.value)}
-                                    />
-                                </div>
-                            )}
                             <Button
                                 variant='contained'
                                 onClick={() => saveProduct()}
