@@ -49,8 +49,8 @@
 
     width: 100%;
 
-    padding-top: 3rem;
-    padding-bottom: 3rem;
+    padding-top: 1.5rem;
+    padding-bottom: 1.5rem;
 }
 
 .sectionTitle {
@@ -95,6 +95,8 @@
     height: 100%;
 
     gap: 0.5rem;
+
+    z-index: 1;
 }
 
 /* Mobile and Tablet */

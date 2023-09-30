@@ -78,7 +78,14 @@ export default function ProductCart(props) {
             >
                 <SlClose />
             </button>
-            <Link legacyBehavior href={`/product/${product.id}`}>
+            <Link legacyBehavior href={`/product/${product.id}${product.color.id !== product.default_variant.color.id && product.size.id !== product.default_variant.size.id
+                ? `?sz=${product.size.title.toLowerCase()}&cl=${product.color.title.replace(' ', '+').toLowerCase()}`
+                : product.size.id !== product.default_variant.size.id
+                    ? `?sz=${product.size.title.toLowerCase()}`
+                    : product.color.id !== product.default_variant.color.id
+                        ? `?cl=${product.color.title.replace(' ', '+').toLowerCase()}`
+                        : ''
+                }`}>
                 <a
                     className={styles.imageContainer}
                     onClick={() => setLoading(true)}
@@ -94,7 +101,14 @@ export default function ProductCart(props) {
             </Link>
             <div className={styles.middle}>
                 <div className={styles.productName}>
-                    <Link legacyBehavior href={`/product/${product.id}`}>
+                    <Link legacyBehavior href={`/product/${product.id}${product.color.id !== product.default_variant.color.id && product.size.id !== product.default_variant.size.id
+                        ? `?sz=${product.size.title.toLowerCase()}&cl=${product.color.title.replace(' ', '+').toLowerCase()}`
+                        : product.size.id !== product.default_variant.size.id
+                            ? `?sz=${product.size.title.toLowerCase()}`
+                            : product.color.id !== product.default_variant.color.id
+                                ? `?cl=${product.color.title.replace(' ', '+').toLowerCase()}`
+                                : ''
+                        }`}>
                         <a
                             onClick={() => setLoading(true)}
                             style={{

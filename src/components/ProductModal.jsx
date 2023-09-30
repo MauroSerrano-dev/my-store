@@ -52,7 +52,14 @@ export default function ProductModal(props) {
                     zIndex: 10,
                 }}
             />
-            <Link legacyBehavior href={`/product/${product.id}`}>
+            <Link legacyBehavior href={`/product/${product.id}${product.color.id !== product.default_variant.color.id && product.size.id !== product.default_variant.size.id
+                ? `?sz=${product.size.title.toLowerCase()}&cl=${product.color.title.replace(' ', '+').toLowerCase()}`
+                : product.size.id !== product.default_variant.size.id
+                    ? `?sz=${product.size.title.toLowerCase()}`
+                    : product.color.id !== product.default_variant.color.id
+                        ? `?cl=${product.color.title.replace(' ', '+').toLowerCase()}`
+                        : ''
+                }`}>
                 <a
                     className={styles.imageContainer}
                     onClick={() => setLoading(true)}
@@ -67,7 +74,14 @@ export default function ProductModal(props) {
                 </a>
             </Link>
             <div className={styles.right}>
-                <Link legacyBehavior href={`/product/${product.id}`}>
+                <Link legacyBehavior href={`/product/${product.id}${product.color.id !== product.default_variant.color.id && product.size.id !== product.default_variant.size.id
+                    ? `?sz=${product.size.title.toLowerCase()}&cl=${product.color.title.replace(' ', '+').toLowerCase()}`
+                    : product.size.id !== product.default_variant.size.id
+                        ? `?sz=${product.size.title.toLowerCase()}`
+                        : product.color.id !== product.default_variant.color.id
+                            ? `?cl=${product.color.title.replace(' ', '+').toLowerCase()}`
+                            : ''
+                    }`}>
                     <a
                         onClick={() => setLoading(true)}
                         style={{

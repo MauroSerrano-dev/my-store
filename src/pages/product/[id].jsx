@@ -34,6 +34,8 @@ export default withRouter(props => {
     const [currentSize, setCurrentSize] = useState(sz ? sz : product?.sizes[0])
 
     useEffect(() => {
+        setCurrentColor(cl ? cl : product?.colors[0])
+        setCurrentSize(sz ? sz : product?.sizes[0])
         setLoading(false)
     }, [router])
 
@@ -79,7 +81,7 @@ export default withRouter(props => {
             printify_ids: product.printify_ids,
             printify_id_default: product.printify_id_default,
             variant_id: prodVariant.id,
-            variants: product.variants,
+            default_variant: { size: product.sizes[0], color: product.colors[0] },
             quantity: prodVariant.quantity,
             size: currentSize,
             color: currentColor,
@@ -125,7 +127,7 @@ export default withRouter(props => {
                     <div className={styles.left}>
                         <div className={styles.sliderContainer}>
                             <ShareButton
-                                link={`https://my-store-sigma-nine.vercel.app/product/${product.id}${currentColor.id !== product.colors[0].id && currentSize.id !== product.sizes[0].id
+                                link={`${process.env.NEXT_PUBLIC_DOMAIN}/product/${product.id}${currentColor.id !== product.colors[0].id && currentSize.id !== product.sizes[0].id
                                     ? `?sz=${currentSize.title.toLowerCase()}&cl=${currentColor.title.replace(' ', '+').toLowerCase()}`
                                     : currentSize.id !== product.sizes[0].id
                                         ? `?sz=${currentSize.title.toLowerCase()}`
@@ -259,7 +261,7 @@ export async function getServerSideProps(context) {
                 id: id,
             }
         }
-        const product = await fetch("https://my-store-sigma-nine.vercel.app/api/product", options)
+        const product = await fetch(`${process.env.NEXT_PUBLIC_DOMAIN}/api/product`, options)
             .then(response => response.json())
             .then(response => response.product)
             .catch(err => console.error(err))
@@ -277,7 +279,7 @@ export async function getServerSideProps(context) {
                 product: product,
                 cl: colorQuery === undefined ? null : colorQuery,
                 sz: sizeQuery === undefined ? null : sizeQuery,
-                urlMeta: 'https://my-store-sigma-nine.vercel.app'.concat(context.resolvedUrl),
+                urlMeta: `${process.env.NEXT_PUBLIC_DOMAIN}`.concat(context.resolvedUrl),
                 productMetaImage: colorQuery
                     ? product.images.filter(img => img.color_id === colorQuery.id)[product.image_showcase_index].src
                     : product.images[product.image_showcase_index].src
