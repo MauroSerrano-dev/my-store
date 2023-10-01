@@ -58,6 +58,8 @@ export default withRouter(props => {
                 setColorIndex(0)
                 setImages()
                 setType(null)
+                setColorsChained([])
+                setSizesChained({})
             }
         }
     }, [router])
@@ -102,7 +104,11 @@ export default withRouter(props => {
             // add color
             if (value.length > prev.colors.length) {
                 setColorsChained(prevC => prevC.concat(color.id))
-                setSizesChained(prevS => ({ ...prevS, [color.id]: [] }))
+                if (Object.keys(sizesChained).map(ele => Number(ele)).some(cId => colorsChained.includes(cId)))
+                    setSizesChained(prev => ({ ...prev, [color.id]: prev[Object.keys(prev).map(ele => Number(ele)).find(cId => colorsChained.includes(cId))] }))
+                else {
+                    setSizesChained(prev => ({ ...prev, [color.id]: [] }))
+                }
                 setImages(prevImgs => ({ ...prevImgs, [color.id]: [{ src: '', variants_id: product.variants.filter(vari => vari.options.includes(color.id)).map(vari => vari.id), color_id: color.id, hover: false, showcase: false }] }))
             }
             // remove color
@@ -149,36 +155,82 @@ export default withRouter(props => {
     }
 
     function handleChainSize(sizeId) {
-        if (!sizesChained[product.colors[colorIndex].id].includes(sizeId)) {
-            setProduct(prev => (
-                {
-                    ...prev,
-                    variants: prev.variants.map(vari =>
-                        vari.options.includes(sizeId)
-                            ? {
-                                ...vari,
-                                price: prev.variants.find(v => sizesChained[product.colors[colorIndex].id].some(sId => v.options.includes(sId)))
-                                    ? prev.variants.find(v => sizesChained[product.colors[colorIndex].id].some(sId => v.options.includes(sId))).price
-                                    : vari.price
-                            }
-                            : vari
-                    )
-                }
-            ))
-            setSizesChained(prev => (
-                {
-                    ...prev,
-                    [product.colors[colorIndex].id]: prev[product.colors[colorIndex].id].concat(sizeId)
-                }
-            ))
+        const colorId = product.colors[colorIndex].id
+        // unchain
+        if (sizesChained[colorId].includes(sizeId)) {
+            if (isCurrentColorChained()) {
+                setSizesChained(prev => {
+                    let newValue = { ...prev } //criar uma nova referencia de obj, para ser detectada a mudança
+                    colorsChained.forEach(clId => newValue[clId] = newValue[clId].filter(sId => sId !== sizeId))
+                    return newValue
+                })
+            }
+            else {
+                setSizesChained(prev => (
+                    {
+                        ...prev,
+                        [colorId]: prev[colorId].filter(sId => sId !== sizeId)
+                    }
+                ))
+            }
         }
+        //chain
         else {
-            setSizesChained(prev => ({ ...prev, [product.colors[colorIndex].id]: prev[product.colors[colorIndex].id].filter(sId => sId !== sizeId) }))
+            if (isCurrentColorChained()) {
+                setProduct(prev => (
+                    {
+                        ...prev,
+                        variants: prev.variants.map(vari =>
+                            vari.options.includes(sizeId) && vari.options.some(op => colorsChained.includes(op))
+                                ? {
+                                    ...vari,
+                                    price: prev.variants.find(v => v.options.includes(colorId) && sizesChained[colorId].some(sId => v.options.includes(sId)))
+                                        ? prev.variants.find(v => v.options.includes(colorId) && sizesChained[colorId].some(sId => v.options.includes(sId))).price
+                                        : vari.price
+                                }
+                                : vari
+                        )
+                    }
+                ))
+                setSizesChained(prev => {
+                    let newValue = { ...prev } //criar uma nova referencia de obj, para ser detectada a mudança
+                    colorsChained.forEach(clId => newValue[clId] = prev[clId].concat(sizeId))
+                    return newValue
+                })
+            }
+            else {
+                setProduct(prev => (
+                    {
+                        ...prev,
+                        variants: prev.variants.map(vari =>
+                            vari.options.includes(sizeId) && vari.options.includes(colorId)
+                                ? {
+                                    ...vari,
+                                    price: prev.variants.find(v => v.options.includes(colorId) && sizesChained[colorId].some(sId => v.options.includes(sId)))
+                                        ? prev.variants.find(v => v.options.includes(colorId) && sizesChained[colorId].some(sId => v.options.includes(sId))).price
+                                        : vari.price
+                                }
+                                : vari
+                        )
+                    }
+                ))
+                setSizesChained(prev => (
+                    {
+                        ...prev,
+                        [colorId]: prev[colorId].concat(sizeId)
+                    }
+                ))
+            }
         }
     }
 
     function handleChainColor(colorId) {
-        if (!colorsChained.includes(colorId)) {
+        //unchain
+        if (colorsChained.includes(colorId)) {
+            setColorsChained(prev => prev.filter(ele => ele !== colorId))
+        }
+        //chain
+        else {
             setProduct(prev => (
                 {
                     ...prev,
@@ -186,8 +238,8 @@ export default withRouter(props => {
                         vari.options.includes(colorId)
                             ? {
                                 ...vari,
-                                price: prev.variants.find(v => colorsChained.some(cId => v.options.includes(cId)))
-                                    ? prev.variants.find(v => colorsChained.some(cId => v.options.includes(cId))).price
+                                price: colorsChained.length > 0
+                                    ? prev.variants.find(v => colorsChained.some(cId => v.options.includes(cId)) && vari.options.some(ele => v.options.includes(ele))).price
                                     : vari.price
                             }
                             : vari
@@ -195,18 +247,18 @@ export default withRouter(props => {
                 }
             ))
             setColorsChained(prev => prev.concat(colorId))
-        }
-        else {
-            setColorsChained(prev => prev.filter(ele => ele !== colorId))
+            if (Object.keys(sizesChained).map(ele => Number(ele)).some(cId => colorsChained.includes(cId))) {
+                setSizesChained(prev => ({ ...prev, [colorId]: prev[Object.keys(prev).map(ele => Number(ele)).find(cId => colorsChained.includes(cId))] }))
+            }
         }
     }
 
-    function changeChainedColorsChainedPrices(value) {
+    function changeChainedColorsChainedSizesPrice(value) {
         setProduct(prev => (
             {
                 ...prev,
                 variants: prev.variants.map(vari =>
-                    sizesChained[product.colors[colorIndex].id].some(sId => vari.options.includes(sId))
+                    sizesChained[product.colors[colorIndex].id].some(sId => vari.options.includes(sId)) && colorsChained.some(cId => vari.options.includes(cId))
                         ? { ...vari, price: Number(value) }
                         : vari
                 )
@@ -255,14 +307,18 @@ export default withRouter(props => {
 
     function handleChangePrice(value, sizeId) {
         const colorId = product.colors[colorIndex].id
-        if (sizesChained[product.colors[colorIndex].id].includes(sizeId) && colorsChained.includes(colorId))
-            changeChainedColorsChainedPrices(value)
-        else if (colorsChained.includes(colorId))
+        if (sizesChained[product.colors[colorIndex].id].includes(sizeId) && isCurrentColorChained())
+            changeChainedColorsChainedSizesPrice(value)
+        else if (isCurrentColorChained())
             changeChainedColorsUnchainedSizePrice(sizeId, value)
         else if (sizesChained[product.colors[colorIndex].id].includes(sizeId))
             changeChainedSizesUnchainedColorPrice(colorId, value)
         else
             changeVariantPrice(sizeId, colorId, value)
+    }
+
+    function isCurrentColorChained() {
+        return colorsChained.includes(product.colors[colorIndex].id)
     }
 
     return (
@@ -408,60 +464,7 @@ export default withRouter(props => {
                                 </div>
                             }
                             {images?.[product?.colors?.[colorIndex]?.id] &&
-                                <div className='flex column'>
-                                    {images[product.colors[colorIndex].id].length > 0 &&
-                                        <div className='flex row justify-end' style={{ fontSize: '11px', gap: '1rem', width: '100%', paddingRight: '11%' }}>
-                                            <p>showcase</p>
-                                            <p>hover</p>
-                                        </div>
-                                    }
-                                    <div className='flex column' style={{ gap: '0.8rem' }} >
-                                        {images[product.colors[colorIndex].id].map((img, i) =>
-                                            <div
-                                                className='flex row align-center fillWidth space-between'
-                                                key={i}
-                                            >
-                                                <TextInput
-                                                    supportsHoverAndPointer={supportsHoverAndPointer}
-                                                    label={`Image ${i + 1}`}
-                                                    onChange={event => updateImageField('src', event.target.value, i)}
-                                                    style={{
-                                                        width: '70%'
-                                                    }}
-                                                    value={img.src}
-                                                />
-                                                <Checkbox
-                                                    checked={i === product.image_showcase_index}
-                                                    onChange={event => updateProductField('image_showcase_index', event.target.checked ? i : -1)}
-                                                    sx={{
-                                                        color: '#ffffff'
-                                                    }}
-                                                />
-                                                <Checkbox
-                                                    checked={i === product.image_hover_index}
-                                                    onChange={event => updateProductField('image_hover_index', event.target.checked ? i : -1)}
-                                                    sx={{
-                                                        color: '#ffffff'
-                                                    }}
-                                                />
-                                                <ButtonIcon
-                                                    supportsHoverAndPointer={supportsHoverAndPointer}
-                                                    icon={<ClearRoundedIcon />}
-                                                    onClick={() => handleDeleteImageField(i)}
-                                                />
-                                            </div>
-                                        )}
-                                        <Button
-                                            variant='outlined'
-                                            onClick={handleAddNewImage}
-                                            sx={{
-                                                width: '100%',
-                                                marginBottom: '1rem'
-                                            }}
-                                        >
-                                            Add New Image
-                                        </Button>
-                                    </div>
+                                <div className='flex column' style={{ gap: '1rem' }}>
                                     <div
                                         className='flex center column fillWidth'
                                         style={{
@@ -517,6 +520,62 @@ export default withRouter(props => {
                                                 />
                                             </div>
                                         )}
+                                    </div>
+                                    <div>
+                                        <h3>Images</h3>
+                                        {images[product.colors[colorIndex].id].length > 0 &&
+                                            <div className='flex row justify-end' style={{ fontSize: '11px', gap: '1rem', width: '100%', paddingRight: '11%' }}>
+                                                <p>showcase</p>
+                                                <p>hover</p>
+                                            </div>
+                                        }
+                                        <div className='flex column' style={{ gap: '0.8rem' }} >
+                                            {images[product.colors[colorIndex].id].map((img, i) =>
+                                                <div
+                                                    className='flex row align-center fillWidth space-between'
+                                                    key={i}
+                                                >
+                                                    <TextInput
+                                                        supportsHoverAndPointer={supportsHoverAndPointer}
+                                                        label={`Image ${i + 1}`}
+                                                        onChange={event => updateImageField('src', event.target.value, i)}
+                                                        style={{
+                                                            width: '70%'
+                                                        }}
+                                                        value={img.src}
+                                                    />
+                                                    <Checkbox
+                                                        checked={i === product.image_showcase_index}
+                                                        onChange={event => updateProductField('image_showcase_index', event.target.checked ? i : -1)}
+                                                        sx={{
+                                                            color: '#ffffff'
+                                                        }}
+                                                    />
+                                                    <Checkbox
+                                                        checked={i === product.image_hover_index}
+                                                        onChange={event => updateProductField('image_hover_index', event.target.checked ? i : -1)}
+                                                        sx={{
+                                                            color: '#ffffff'
+                                                        }}
+                                                    />
+                                                    <ButtonIcon
+                                                        supportsHoverAndPointer={supportsHoverAndPointer}
+                                                        icon={<ClearRoundedIcon />}
+                                                        onClick={() => handleDeleteImageField(i)}
+                                                    />
+                                                </div>
+                                            )}
+                                            <Button
+                                                variant='outlined'
+                                                onClick={handleAddNewImage}
+                                                sx={{
+                                                    width: '100%',
+                                                    marginBottom: '1rem'
+                                                }}
+                                            >
+                                                Add New Image
+                                            </Button>
+                                        </div>
                                     </div>
                                 </div>
                             }
