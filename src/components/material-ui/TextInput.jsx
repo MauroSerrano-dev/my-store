@@ -14,6 +14,7 @@ export default function TextInput(props) {
         colorText = dark ? '#000000' : '#ffffff',
         onChange,
         style,
+        styleInput,
         variant = 'outlined',
         autoComplete = 'off',
         name,
@@ -64,6 +65,7 @@ export default function TextInput(props) {
                     WebkitTextFillColor: `${colorText} !important`,
                     color: `${colorText} !important`,
                     transition: 'all ease-in-out 200ms',
+                    ...styleInput,
                 },
             }}
             onFocus={() => setFocus(true)}

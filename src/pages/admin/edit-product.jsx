@@ -3,6 +3,7 @@ import styles from '@/styles/admin/edit-product.module.css'
 import { Button } from '@mui/material'
 import Link from 'next/link'
 import { useState } from 'react'
+import KeyboardArrowLeftRoundedIcon from '@mui/icons-material/KeyboardArrowLeftRounded';
 
 export default function EditProduct(props) {
 
@@ -15,6 +16,36 @@ export default function EditProduct(props) {
             <header>
             </header>
             <main className={styles.main}>
+                <Link
+                    legacyBehavior
+                    href={'/admin'}
+                >
+                    <a
+                        className='noUnderline'
+                    >
+                        <Button
+                            variant='outlined'
+                            sx={{
+                                display: 'flex',
+                                alignItems: 'center',
+                                justifyContent: 'center',
+                            }}
+                        >
+                            <KeyboardArrowLeftRoundedIcon
+                                style={{
+                                    marginLeft: '-0.5rem'
+                                }}
+                            />
+                            <p
+                                style={{
+                                    color: 'var(--primary)'
+                                }}
+                            >
+                                Voltar
+                            </p>
+                        </Button>
+                    </a>
+                </Link>
                 <TextInput
                     label='Product ID'
                     value={productIdInput}

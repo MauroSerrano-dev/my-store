@@ -5,7 +5,7 @@ export default function ImagesSlider(props) {
     const {
         images,
         style,
-        size,
+        size = 600,
     } = props
 
     const [currentImgIndex, setCurrentImgIndex] = useState(0)

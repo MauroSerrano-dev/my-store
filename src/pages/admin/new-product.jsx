@@ -34,7 +34,8 @@ export default withRouter(props => {
     const [colorIndex, setColorIndex] = useState(0)
     const [images, setImages] = useState()
     const [type, setType] = useState()
-    const [sizesChained, setSizesChained] = useState([])
+    const [colorsChained, setColorsChained] = useState([])
+    const [sizesChained, setSizesChained] = useState({})
 
     useEffect(() => {
         if (router.isReady) {
@@ -98,15 +99,24 @@ export default withRouter(props => {
                     ? value.length - 1
                     : prevIndex
             )
-            setImages(prevImgs => {
-                if (value.length > prev.colors.length) {
-                    return { ...prevImgs, [color.id]: [{ src: '', variants_id: product.variants.filter(vari => vari.options.includes(color.id)).map(vari => vari.id), color_id: color.id, hover: false, showcase: false }] }
-                }
-                else {
+            // add color
+            if (value.length > prev.colors.length) {
+                setColorsChained(prevC => prevC.concat(color.id))
+                setSizesChained(prevS => ({ ...prevS, [color.id]: [] }))
+                setImages(prevImgs => ({ ...prevImgs, [color.id]: [{ src: '', variants_id: product.variants.filter(vari => vari.options.includes(color.id)).map(vari => vari.id), color_id: color.id, hover: false, showcase: false }] }))
+            }
+            // remove color
+            else {
+                setColorsChained(prevC => prevC.filter(ccId => ccId !== color.id))
+                setSizesChained(prevS => {
+                    delete prevS[color.id]
+                    return prevS
+                })
+                setImages(prevImgs => {
                     delete prevImgs[color.id]
                     return prevImgs
-                }
-            })
+                })
+            }
             return {
                 ...prev,
                 colors: value,
@@ -138,34 +148,8 @@ export default withRouter(props => {
         setProduct(prev => ({ ...prev, sizes: value }))
     }
 
-    function changeChainedColorsChainedPrices(value) {
-        setProduct(prev => (
-            {
-                ...prev,
-                variants: prev.variants.map(vari =>
-                    sizesChained.some(sId => vari.options.includes(sId))
-                        ? { ...vari, price: Number(value) }
-                        : vari
-                )
-            }
-        ))
-    }
-
-    function changeChainedColorsPrice(sizeId, value) {
-        setProduct(prev => (
-            {
-                ...prev,
-                variants: prev.variants.map(vari =>
-                    vari.options.includes(sizeId)
-                        ? { ...vari, price: Number(value) }
-                        : vari
-                )
-            }
-        ))
-    }
-
-    function handleChained(sizeId) {
-        if (!sizesChained.includes(sizeId)) {
+    function handleChainSize(sizeId) {
+        if (!sizesChained[product.colors[colorIndex].id].includes(sizeId)) {
             setProduct(prev => (
                 {
                     ...prev,
@@ -173,19 +157,112 @@ export default withRouter(props => {
                         vari.options.includes(sizeId)
                             ? {
                                 ...vari,
-                                price: prev.variants.find(v => sizesChained.some(sId => v.options.includes(sId)))
-                                    ? prev.variants.find(v => sizesChained.some(sId => v.options.includes(sId))).price
+                                price: prev.variants.find(v => sizesChained[product.colors[colorIndex].id].some(sId => v.options.includes(sId)))
+                                    ? prev.variants.find(v => sizesChained[product.colors[colorIndex].id].some(sId => v.options.includes(sId))).price
                                     : vari.price
                             }
                             : vari
                     )
                 }
             ))
-            setSizesChained(prev => prev.concat(sizeId))
+            setSizesChained(prev => (
+                {
+                    ...prev,
+                    [product.colors[colorIndex].id]: prev[product.colors[colorIndex].id].concat(sizeId)
+                }
+            ))
         }
         else {
-            setSizesChained(prev => prev.filter(ele => ele !== sizeId))
+            setSizesChained(prev => ({ ...prev, [product.colors[colorIndex].id]: prev[product.colors[colorIndex].id].filter(sId => sId !== sizeId) }))
         }
+    }
+
+    function handleChainColor(colorId) {
+        if (!colorsChained.includes(colorId)) {
+            setProduct(prev => (
+                {
+                    ...prev,
+                    variants: prev.variants.map(vari =>
+                        vari.options.includes(colorId)
+                            ? {
+                                ...vari,
+                                price: prev.variants.find(v => colorsChained.some(cId => v.options.includes(cId)))
+                                    ? prev.variants.find(v => colorsChained.some(cId => v.options.includes(cId))).price
+                                    : vari.price
+                            }
+                            : vari
+                    )
+                }
+            ))
+            setColorsChained(prev => prev.concat(colorId))
+        }
+        else {
+            setColorsChained(prev => prev.filter(ele => ele !== colorId))
+        }
+    }
+
+    function changeChainedColorsChainedPrices(value) {
+        setProduct(prev => (
+            {
+                ...prev,
+                variants: prev.variants.map(vari =>
+                    sizesChained[product.colors[colorIndex].id].some(sId => vari.options.includes(sId))
+                        ? { ...vari, price: Number(value) }
+                        : vari
+                )
+            }
+        ))
+    }
+
+    function changeChainedColorsUnchainedSizePrice(sizeId, value) {
+        setProduct(prev => (
+            {
+                ...prev,
+                variants: prev.variants.map(vari =>
+                    colorsChained.some(cId => vari.options.includes(cId)) && vari.options.includes(sizeId)
+                        ? { ...vari, price: Number(value) }
+                        : vari
+                )
+            }
+        ))
+    }
+
+    function changeChainedSizesUnchainedColorPrice(colorId, value) {
+        setProduct(prev => (
+            {
+                ...prev,
+                variants: prev.variants.map(vari =>
+                    sizesChained[product.colors[colorIndex].id].some(sId => vari.options.includes(sId)) && vari.options.includes(colorId)
+                        ? { ...vari, price: Number(value) }
+                        : vari
+                )
+            }
+        ))
+    }
+
+    function changeVariantPrice(sizeId, colorId, value) {
+        setProduct(prev => (
+            {
+                ...prev,
+                variants: prev.variants.map(vari =>
+                    vari.options.includes(sizeId) && vari.options.includes(colorId)
+                        ? { ...vari, price: Number(value) }
+                        : vari
+                )
+            }
+        ))
+    }
+
+    function handleChangePrice(value, sizeId) {
+        const colorId = product.colors[colorIndex].id
+        if (sizesChained[product.colors[colorIndex].id].includes(sizeId) && colorsChained.includes(colorId))
+            changeChainedColorsChainedPrices(value)
+        else if (colorsChained.includes(colorId))
+            changeChainedColorsUnchainedSizePrice(sizeId, value)
+        else if (sizesChained[product.colors[colorIndex].id].includes(sizeId))
+            changeChainedSizesUnchainedColorPrice(colorId, value)
+        else
+            changeVariantPrice(sizeId, colorId, value)
     }
 
     return (
@@ -301,15 +378,34 @@ export default withRouter(props => {
                                 }}
                             />
                             {product.colors.length > 0 &&
-                                <ColorSelector
-                                    value={[product.colors[colorIndex]]}
-                                    options={product.colors}
-                                    onChange={handleSelectedColor}
-                                    style={{
-                                        paddingTop: '1rem',
-                                        paddingBottom: '1rem',
-                                    }}
-                                />
+                                <div>
+                                    <ColorSelector
+                                        value={[product.colors[colorIndex]]}
+                                        options={product.colors}
+                                        onChange={handleSelectedColor}
+                                        style={{
+                                            paddingTop: '1rem',
+                                            paddingBottom: '1rem',
+                                        }}
+                                    />
+                                    <div className='flex' style={{ gap: '0.5rem' }}>
+                                        {product.colors.map((color, i) =>
+                                            <Button
+                                                key={i}
+                                                variant={colorsChained.includes(color.id) ? 'contained' : 'outlined'}
+                                                onClick={() => handleChainColor(color.id)}
+                                                sx={{
+                                                    minWidth: 40,
+                                                    width: 40,
+                                                    height: 40,
+                                                    padding: 0,
+                                                }}
+                                            >
+                                                {colorsChained.includes(color.id) ? <Chain iconSize={25} /> : <BrokeChain iconSize={25} />}
+                                            </Button>
+                                        )}
+                                    </div>
+                                </div>
                             }
                             {images?.[product?.colors?.[colorIndex]?.id] &&
                                 <div className='flex column'>
@@ -366,55 +462,62 @@ export default withRouter(props => {
                                             Add New Image
                                         </Button>
                                     </div>
-                                    <h3>
-                                        Price (USD)
-                                    </h3>
-                                    {product.sizes.map((size, i) =>
-                                        <div
-                                            className='flex center'
-                                            style={{
-                                                gap: '1rem'
-                                            }}
-                                            key={i}
-                                        >
-                                            <Button
-                                                variant={sizesChained.includes(size.id) ? 'contained' : 'outlined'}
-                                                onClick={() => handleChained(size.id)}
-                                                sx={{
-                                                    minWidth: 45,
-                                                    width: 45,
-                                                    height: 45,
-                                                    padding: 0,
-                                                }}
-                                            >
-                                                {sizesChained.includes(size.id) ? <Chain /> : <BrokeChain />}
-                                            </Button>
-                                            <TextInput
-                                                supportsHoverAndPointer={supportsHoverAndPointer}
-                                                label={`${size.title}`}
-                                                onChange={event =>
-                                                    sizesChained.includes(size.id)
-                                                        ? changeChainedColorsChainedPrices(event.target.value)
-                                                        : changeChainedColorsPrice(size.id, event.target.value)
-                                                }
-                                                value={product.variants.find(vari => vari.options.includes(size.id)).price}
+                                    <div
+                                        className='flex center column fillWidth'
+                                        style={{
+                                            gap: '1rem'
+                                        }}
+                                    >
+                                        <h3>
+                                            {product.colors[colorIndex].title} Price (USD)
+                                        </h3>
+                                        {product.sizes.map((size, i) =>
+                                            <div
+                                                className='flex center fillWidth'
                                                 style={{
-                                                    width: '90px',
+                                                    gap: '1rem'
                                                 }}
-                                            />
-                                            <Slider
-                                                value={product.variants.find(vari => vari.options.includes(size.id)).price}
-                                                min={product.variants[0].cost}
-                                                max={product.variants.reduce((acc, vari) => vari.cost > acc.cost ? vari : acc, { cost: 0 }).cost * 3}
-                                                valueLabelDisplay="auto"
-                                                onChange={event =>
-                                                    sizesChained.includes(size.id)
-                                                        ? changeChainedColorsChainedPrices(event.target.value)
-                                                        : changeChainedColorsPrice(size.id, event.target.value)
-                                                }
-                                            />
-                                        </div>
-                                    )}
+                                                key={i}
+                                            >
+                                                <Button
+                                                    variant={sizesChained[product.colors[colorIndex].id].includes(size.id) ? 'contained' : 'outlined'}
+                                                    onClick={() => handleChainSize(size.id)}
+                                                    sx={{
+                                                        minWidth: 45,
+                                                        width: 45,
+                                                        height: 45,
+                                                        padding: 0,
+                                                    }}
+                                                >
+                                                    {sizesChained[product.colors[colorIndex].id].includes(size.id) ? <Chain /> : <BrokeChain />}
+                                                </Button>
+                                                <TextInput
+                                                    supportsHoverAndPointer={supportsHoverAndPointer}
+                                                    label={`${size.title}`}
+                                                    onChange={event => handleChangePrice(event.target.value, size.id)}
+                                                    value={product.variants.find(vari => vari.options.includes(size.id) && vari.options.includes(product.colors[colorIndex].id)).price}
+                                                    style={{
+                                                        width: 90,
+                                                    }}
+                                                    styleInput={{
+                                                        display: 'flex',
+                                                        justifyContent: 'center',
+                                                        alignItems: 'center',
+                                                        textAlign: 'center',
+                                                        padding: 0,
+                                                        height: 45,
+                                                    }}
+                                                />
+                                                <Slider
+                                                    value={product.variants.find(vari => vari.options.includes(size.id) && vari.options.includes(product.colors[colorIndex].id)).price}
+                                                    min={product.variants[0].cost}
+                                                    max={product.variants.reduce((acc, vari) => vari.cost > acc.cost ? vari : acc, { cost: 0 }).cost * 3}
+                                                    valueLabelDisplay="auto"
+                                                    onChange={event => handleChangePrice(event.target.value, size.id)}
+                                                />
+                                            </div>
+                                        )}
+                                    </div>
                                 </div>
                             }
                             <Button
