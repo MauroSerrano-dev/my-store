@@ -1,5 +1,5 @@
 import { withRouter } from 'next/router'
-import styles from '../../styles/product.module.css'
+import styles from '../../styles/profile/id.module.css'
 import Head from 'next/head'
 
 export default withRouter(props => {

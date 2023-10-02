@@ -219,19 +219,19 @@ async function getProductsByQueries(props) {
 
         // Filtre por preço mínimo (se presente)
         if (min) {
-            q = query(q, where("price", ">=", parseFloat(min.concat('00'))))
+            q = query(q, where("min_price", ">=", parseFloat(min.concat('00'))))
         }
 
         // Filtre por preço máximo (se presente)
         if (max) {
-            q = query(q, where("price", "<=", parseFloat(max.concat('00'))));
+            q = query(q, where("min_price", "<=", parseFloat(max.concat('00'))));
         }
 
         const orders = new Map([
             ['popularity', { value: 'popularity', direction: 'desc' }],
             ['newest', { value: 'create_at', direction: 'desc' }],
-            ['lowest-price', { value: 'price', direction: 'asc' }],
-            ['higher-price', { value: 'price', direction: 'desc' }],
+            ['lowest-price', { value: 'min_price', direction: 'asc' }],
+            ['higher-price', { value: 'min_price', direction: 'desc' }],
         ])
 
         // Calcule a página inicial com base no número da página e no tamanho da página

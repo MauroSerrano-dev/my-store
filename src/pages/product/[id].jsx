@@ -1,5 +1,5 @@
 import { withRouter } from 'next/router'
-import styles from '../../styles/product.module.css'
+import styles from '../../styles/product/id.module.css'
 import { useEffect, useState } from 'react'
 import ImagesSlider from '@/components/ImagesSlider'
 import { Button } from '@mui/material'
@@ -32,6 +32,7 @@ export default withRouter(props => {
 
     const [currentColor, setCurrentColor] = useState(cl ? cl : product?.colors[0])
     const [currentSize, setCurrentSize] = useState(sz ? sz : product?.sizes[0])
+    const [currentImgIndex, setCurrentImgIndex] = useState(0)
 
     const productPrice = `${userCurrency.symbol} ${(convertDolarToCurrency(product.variants.find(vari => vari.options.includes(currentSize.id) && vari.options.includes(currentColor.id)).price, userCurrency.code) / 100).toFixed(2)}`
 
@@ -40,7 +41,7 @@ export default withRouter(props => {
         setCurrentSize(sz ? sz : product?.sizes[0])
         setLoading(false)
     }, [router])
-    
+
     useEffect(() => {
         setCurrentColor(cl ? cl : product?.colors[0])
         setCurrentSize(sz ? sz : product?.sizes[0])
@@ -133,7 +134,13 @@ export default withRouter(props => {
             <div className={styles.productContainer}>
                 <section className={`${styles.section} ${styles.one}`}>
                     <div className={styles.left}>
-                        <div className={styles.sliderContainer}>
+                        <div
+                            className={styles.sliderContainer}
+                            style={{
+                                width: windowWidth > 1074 ? 600 : windowWidth > 549 ? 450 : 350,
+                                height: windowWidth > 1074 ? 600 * 10 / 9 : windowWidth > 549 ? 450 : 350 * 10 / 9,
+                            }}
+                        >
                             <ShareButton
                                 link={`${process.env.NEXT_PUBLIC_DOMAIN}/product/${product.id}${currentColor.id !== product.colors[0].id && currentSize.id !== product.sizes[0].id
                                     ? `?sz=${currentSize.title.toLowerCase()}&cl=${currentColor.title.replace(' ', '+').toLowerCase()}`
@@ -154,7 +161,9 @@ export default withRouter(props => {
                             {product.colors.map((color, i) =>
                                 <ImagesSlider
                                     key={i}
-                                    size={windowWidth > 1074 ? 600 : windowWidth > 549 ? 450 : 350}
+                                    index={currentImgIndex}
+                                    onChange={(imgIndex) => setCurrentImgIndex(imgIndex)}
+                                    width={windowWidth > 1074 ? 600 : windowWidth > 549 ? 450 : 350}
                                     images={product.images.filter(img => img.color_id === color.id)}
                                     style={{
                                         position: 'absolute',

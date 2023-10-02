@@ -5,7 +5,10 @@ export default function ImagesSlider(props) {
     const {
         images,
         style,
-        size = 600,
+        width = 480,
+        height = width * 10 / 9,
+        index,
+        onChange
     } = props
 
     const [currentImgIndex, setCurrentImgIndex] = useState(0)
@@ -15,8 +18,8 @@ export default function ImagesSlider(props) {
             className={styles.container}
             style={{
                 ...style,
-                width: size,
-                height: size,
+                width: width,
+                height: height,
             }}
         >
             <div>
@@ -28,7 +31,7 @@ export default function ImagesSlider(props) {
                 <div
                     className={styles.viewImages}
                     style={{
-                        transform: `translateX(${size * 0.8 * currentImgIndex * (-1)}px)`
+                        transform: `translateX(${width * 0.8 * (index ? index : currentImgIndex) * (-1)}px)`
                     }}
                 >
                     {images.map((img, i) =>
@@ -47,20 +50,20 @@ export default function ImagesSlider(props) {
             <div
                 className={styles.options}
                 style={{
-                    gap: size * 0.025,
-                    paddingTop: size * 0.025,
+                    gap: width * 0.025,
+                    paddingTop: width * 0.025,
                 }}
             >
                 {images.map((img, i) =>
                     <div
                         className={styles.imgOptionContainer}
                         key={i}
-                        onClick={() => setCurrentImgIndex(i)}
+                        onClick={() => onChange ? onChange(i) : setCurrentImgIndex(i)}
                     >
                         <div
                             className={styles.optionShadow}
                             style={{
-                                opacity: currentImgIndex === i
+                                opacity: (index ? index : currentImgIndex) === i
                                     ? 0
                                     : undefined
                             }}
