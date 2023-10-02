@@ -22,7 +22,6 @@ const categories = [
 export default function Home(props) {
   const { userCurrency, supportsHoverAndPointer, setLoading, loading } = props
 
-  const [productsHome, setProductsHome] = useState([])
   const [productsTShirts, setProductsTShirts] = useState([])
   const [allProducts, setAllProducts] = useState([])
 
@@ -60,7 +59,6 @@ export default function Home(props) {
   }, [])
 
   async function getProductsFromCategories() {
-    setProductsHome(await getProductsByTagOrType('t', 'home'))
     setProductsTShirts(await getProductsByTagOrType('c', 't-shirts'))
     setAllProducts(await getAllProducts())
   }
@@ -144,24 +142,6 @@ export default function Home(props) {
           <div className={styles.carousel}>
             <CarouselProducts
               items={productsTShirts}
-              height='400px'
-              width='90%'
-              animationDuration={200}
-              itemWidth={225}
-              userCurrency={userCurrency}
-              supportsHoverAndPointer={supportsHoverAndPointer}
-              loading={loading}
-              setLoading={setLoading}
-            />
-          </div>
-        </div>
-        <div className={styles.carouselAndTitle}>
-          <h2 className={styles.carouselTitle}>
-            Home
-          </h2>
-          <div className={styles.carousel}>
-            <CarouselProducts
-              items={productsHome}
               height='400px'
               width='90%'
               animationDuration={200}
