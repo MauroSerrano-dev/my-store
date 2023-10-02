@@ -9,7 +9,7 @@
     width: 100%;
     height: 250px;
 
-    padding: 14px 4%;
+    padding: 14px 3%;
 
     border-bottom: #ababab solid 1px;
 }
@@ -49,7 +49,7 @@
     width: calc(100% - 198.2143px - 90px);
     height: 100%;
 
-    padding: 0 0.5rem;
+    padding: 0 1rem;
 }
 
 .productName {
@@ -69,24 +69,25 @@
 .bodyContainer {
     display: flex;
     flex-direction: column;
-    justify-content: flex-start;
+    justify-content: space-between;
     align-items: flex-start;
     width: 100%;
 
     height: calc(100% - 40px);
 }
 
-.colorText {
-    font-size: 13px;
+.bodyTop {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
 }
 
-.inputsContainer {
+.bodyBottom {
     display: flex;
-    flex-direction: row;
-    gap: 0.5rem;
-
-    padding-top: 15px;
-
+    flex-direction: column;
+    justify-content: flex-end;
+    align-items: flex-start;
 }
 
 .priceContainer {
@@ -105,6 +106,21 @@
 
 .priceContainer h2 {
     font-size: 21px;
+}
+
+.soldOut {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    background-color: var(--sold-out-bg);
+
+    border-radius: 30rem;
+    font-weight: bold;
+    --text-color: var(--text-white);
+
+    font-size: 13px;
+    padding: 0.1rem 0.6rem;
 }
 
 /* Mobile and Tablet */
@@ -126,6 +142,7 @@
 
     .middle {
         width: calc(100% - 140px - 90px);
+        padding: 0 0.5rem;
     }
 
     .priceContainer {

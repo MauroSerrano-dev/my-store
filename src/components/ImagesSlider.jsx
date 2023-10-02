@@ -5,7 +5,7 @@ export default function ImagesSlider(props) {
     const {
         images,
         style,
-        width = 480,
+        width = 450,
         height = width * 10 / 9,
         index,
         onChange
@@ -18,8 +18,6 @@ export default function ImagesSlider(props) {
             className={styles.container}
             style={{
                 ...style,
-                width: width,
-                height: height,
             }}
         >
             <div>
@@ -27,11 +25,15 @@ export default function ImagesSlider(props) {
             </div>
             <div
                 className={styles.view}
+                style={{
+                    width: width,
+                    height: height,
+                }}
             >
                 <div
                     className={styles.viewImages}
                     style={{
-                        transform: `translateX(${width * 0.8 * (index ? index : currentImgIndex) * (-1)}px)`
+                        transform: `translateX(${width * (index ? index : currentImgIndex) * (-1)}px)`
                     }}
                 >
                     {images.map((img, i) =>
@@ -52,6 +54,8 @@ export default function ImagesSlider(props) {
                 style={{
                     gap: width * 0.025,
                     paddingTop: width * 0.025,
+                    maxWidth: '100%',
+                    height: height * 0.23,
                 }}
             >
                 {images.map((img, i) =>
@@ -76,6 +80,6 @@ export default function ImagesSlider(props) {
                     </div>
                 )}
             </div>
-        </div>
+        </div >
     )
 }

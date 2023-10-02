@@ -31,7 +31,6 @@ export default function DataHandler(props) {
     const [productOptions, setProductOptions] = useState([])
     const [supportsHoverAndPointer, setSupportsHoverAndPointer] = useState()
     const [menuOpen, switchMenu] = useCycle(false, true);
-
     const [loading, setLoading] = useState(false)
 
     const router = useRouter();
@@ -39,6 +38,10 @@ export default function DataHandler(props) {
     // Inicialize o Firebase
     const firebaseApp = initializeApp(firebaseConfig)
     const auth = getAuth(firebaseApp)
+
+    useEffect(() => {
+        setLoading(false)
+    }, [router])
 
     useEffect(() => {
         if (session !== undefined) {

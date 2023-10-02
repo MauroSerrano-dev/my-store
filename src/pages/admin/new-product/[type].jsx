@@ -71,6 +71,10 @@ export default withRouter(props => {
                     min_price: variants.reduce((acc, vari) => acc < vari.price ? acc : vari.price, variants[0].price),
                     images: product.colors.reduce((acc, color) => acc.concat(images[color.id].map(img => ({ src: img.src, color_id: img.color_id, variants_id: img.variants_id }))), []),
                     variants: variants,
+                    sold_out: {
+                        expiration_date: null,
+                        percentage: null,
+                    },
                 }
             })
         }

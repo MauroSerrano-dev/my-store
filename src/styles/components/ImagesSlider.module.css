@@ -13,9 +13,6 @@
     justify-content: flex-start;
     align-items: center;
 
-    width: 80%;
-    height: 80%;
-
     overflow: hidden;
 }
 
@@ -46,8 +43,6 @@
     align-items: center;
 
     width: auto;
-    max-width: 80%;
-    height: 20%;
 
     overflow: auto;
 }

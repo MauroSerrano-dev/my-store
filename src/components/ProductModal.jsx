@@ -6,7 +6,6 @@ import { convertDolarToCurrency } from '../../consts';
 
 export default function ProductModal(props) {
     const {
-        session,
         product,
         setCart,
         index,
@@ -14,6 +13,10 @@ export default function ProductModal(props) {
         loading,
         setLoading,
     } = props
+
+    const price = `${userCurrency.symbol} ${((convertDolarToCurrency(product.price * (product.sold_out.percentage ? 1 - product.sold_out.percentage : 1), userCurrency.code) / 100) * product.quantity).toFixed(2)}`
+
+    const priceUnit = `${userCurrency.symbol} ${(convertDolarToCurrency(product.price * (product.sold_out.percentage ? 1 - product.sold_out.percentage : 1), userCurrency.code) / 100).toFixed(2)} unit`
 
     function handleDeleteCartProduct() {
         setCart(prev => prev.filter(prod => prod.id !== product.id || prod.variant_id !== product.variant_id))
@@ -109,11 +112,11 @@ export default function ProductModal(props) {
                             fontSize: '14px',
                         }}
                     >
-                        {`${userCurrency.symbol} ${((convertDolarToCurrency(product.price, userCurrency.code) / 100) * product.quantity).toFixed(2)}`}
+                        {price}
                     </p>
                     {product.quantity > 1 &&
                         <p style={{ fontSize: '10px', color: 'var(--text-black)' }}>
-                            {`${userCurrency.symbol} ${(convertDolarToCurrency(product.price, userCurrency.code) / 100).toFixed(2)} unit`}
+                            {priceUnit}
                         </p>
                     }
                 </div>

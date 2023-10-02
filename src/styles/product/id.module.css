@@ -68,7 +68,7 @@
     justify-content: flex-start;
     align-items: center;
 
-    width: 60%;
+    width: 50%;
     height: 100%;
 }
 
@@ -88,12 +88,33 @@
     justify-content: flex-start;
     align-items: flex-start;
 
-    width: 40%;
+    width: 50%;
     height: 100%;
+
+    padding: 0 5%;
 
     gap: 0.5rem;
 
     z-index: 1;
+}
+
+.prices p {
+    text-align: start;
+}
+
+.soldOut {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    background-color: var(--sold-out-bg);
+
+    border-radius: 30rem;
+    font-weight: bold;
+    --text-color: var(--text-white);
+
+    font-size: 13px;
+    padding: 0.1rem 0.6rem;
 }
 
 /* Mobile and Tablet */
@@ -127,9 +148,6 @@
         display: flex;
         justify-content: center;
         align-items: center;
-
-        width: 450px;
-        height: 450px;
     }
 
     .right {
@@ -141,11 +159,6 @@
 
 /* Mobile */
 @media (max-width: 550px) {
-    .sliderContainer {
-        width: 350px;
-        height: 350px;
-    }
-
     .right {
         max-width: 300px;
     }

@@ -4,7 +4,7 @@
     position: relative;
 }
 
-.productContainer {
+.linkContainer {
     display: flex;
     flex-direction: column;
     position: relative;
@@ -59,7 +59,7 @@
     border-bottom-left-radius: 0.5rem;
     border-bottom-right-radius: 0.5rem;
 
-    z-index: 1;
+    z-index: 10;
 
     position: relative;
 }
@@ -96,9 +96,8 @@
     font-weight: bold;
 }
 
-.buttonMore {
+.bottomHover {
     display: flex;
-    justify-content: center;
     align-items: center;
 
     position: absolute;
@@ -110,7 +109,14 @@
     border-bottom-left-radius: 0.7rem;
     border-bottom-right-radius: 0.7rem;
 
+    overflow: auto;
+    white-space: nowrap;
+
     transition: all ease-in-out 200ms;
+}
+
+.bottomHover::-webkit-scrollbar {
+    display: none;
 }
 
 .outOfStock {
@@ -137,7 +143,7 @@
     justify-content: center;
     align-items: center;
 
-    background-color: #ff5e5b;
+    background-color: var(--sold-out-bg);
 
     border-radius: 30rem;
     font-weight: bold;
@@ -153,7 +159,7 @@
 
 /* Enable hover only on non-touch devices */
 @media (hover: hover) and (pointer: fine) {
-    .container:hover {
+    .linkContainer:hover {
         cursor: pointer;
     }
 }

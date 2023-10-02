@@ -98,16 +98,11 @@ export default function CarouselProducts(props) {
                     >
                         <Product
                             responsive
-                            name={item.title}
-                            price={convertDolarToCurrency(item.variants[0].price, userCurrency.code)}
-                            currencySymbol={userCurrency.symbol}
-                            outOfStock={false}
-                            img={item.images[item.image_showcase_index].src}
-                            imgHover={item.images[item.image_hover_index].src}
-                            url={`/product/${item.id}`}
+                            userCurrency={userCurrency}
                             supportsHoverAndPointer={supportsHoverAndPointer}
                             loading={loading}
                             setLoading={setLoading}
+                            product={item}
                         />
                     </div>
                 )}
@@ -124,7 +119,8 @@ export default function CarouselProducts(props) {
                         backgroundColor: '#3b3a38',
                         transition: 'all 200ms ease-in-out',
                         scale: '0.8',
-                        top: -30
+                        top: -30,
+                        zIndex: 13,
                     }}
                 >
                     <KeyboardArrowLeftRoundedIcon

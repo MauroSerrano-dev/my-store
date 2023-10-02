@@ -51,6 +51,8 @@ export default function Home(props) {
       .then(response => response.products)
       .catch(err => console.error(err))
 
+    console.log(products)
+
     return products
   }
 

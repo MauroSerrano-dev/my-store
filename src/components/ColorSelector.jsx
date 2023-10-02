@@ -1,5 +1,4 @@
-import styles from '../styles/components/ColorSelector.module.css'
-import MyTooltip from './MyTooltip';
+import ColorButton from './ColorButton';
 
 export default function ColorSelector(props) {
     const {
@@ -11,37 +10,23 @@ export default function ColorSelector(props) {
 
     return (
         <div
-            className={styles.container}
             style={{
+                display: 'flex',
+                flexDirection: 'row',
+                gap: '0.5rem',
+                flexWrap: 'wrap',
+                maxWidth: '100%',
                 ...style
             }}
         >
             {options.map((option, i) =>
-                <MyTooltip
+                <ColorButton
                     key={i}
-                    title={option.title}
-                    arrow
-                    backgroundColor='#000000'
-                    titleColor='#ffffff'
-                    content={
-                        <button
-                            onClick={() => onChange(value.some(color => option.id === color?.id)
-                                ? value.filter(color => option.id !== color?.id)
-                                : value.concat(option),
-                                i,
-                                option
-                            )}
-                            className={styles.button}
-                            style={{
-                                backgroundColor: option.colors[0],
-                                opacity: value.some(color => option.id === color?.id) ? 1 : 0.7,
-                                outline: value.some(color => option.id === color?.id) ? '2px solid var(--primary)' : '1px solid black',
-                            }}
-                        >
-                        </button>
-                    }
-                >
-                </MyTooltip>
+                    selected={value.some(color => option.id === color?.id)}
+                    onChange={onChange}
+                    option={option}
+                    index={i}
+                />
             )}
         </div>
     )

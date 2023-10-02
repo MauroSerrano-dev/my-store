@@ -330,13 +330,8 @@ export default withRouter(props => {
                             : products.map((product, i) =>
                                 <Product
                                     key={i}
-                                    name={product.title}
-                                    price={convertDolarToCurrency(product.variants[0].price, userCurrency.code)}
-                                    currencySymbol={userCurrency.symbol}
-                                    outOfStock={false}
-                                    img={product.images[product.image_showcase_index].src}
-                                    imgHover={product.images[product.image_hover_index].src}
-                                    url={`/product/${product.id}`}
+                                    userCurrency={userCurrency}
+                                    product={product}
                                     width={`calc(${100 / itemsPerLine}% - 1rem)`}
                                     supportsHoverAndPointer={supportsHoverAndPointer}
                                     loading={loading}

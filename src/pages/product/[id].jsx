@@ -20,7 +20,6 @@ export default withRouter(props => {
         setCart,
         userCurrency,
         product,
-        setLoading,
         windowWidth,
         cl,
         sz,
@@ -34,18 +33,15 @@ export default withRouter(props => {
     const [currentSize, setCurrentSize] = useState(sz ? sz : product?.sizes[0])
     const [currentImgIndex, setCurrentImgIndex] = useState(0)
 
-    const productPrice = `${userCurrency.symbol} ${(convertDolarToCurrency(product.variants.find(vari => vari.options.includes(currentSize.id) && vari.options.includes(currentColor.id)).price, userCurrency.code) / 100).toFixed(2)}`
+    const productCurrentVariant = product.variants.find(vari => vari.options.includes(currentSize.id) && vari.options.includes(currentColor.id))
+
+    const productPrice = `${userCurrency.symbol} ${(convertDolarToCurrency(productCurrentVariant.price * (product.sold_out.percentage ? 1 - product.sold_out.percentage : 1), userCurrency.code) / 100).toFixed(2)}`
+
+    const originalPrice = `${userCurrency.symbol} ${(convertDolarToCurrency(productCurrentVariant.price, userCurrency.code) / 100).toFixed(2)}`
 
     useEffect(() => {
         setCurrentColor(cl ? cl : product?.colors[0])
         setCurrentSize(sz ? sz : product?.sizes[0])
-        setLoading(false)
-    }, [router])
-
-    useEffect(() => {
-        setCurrentColor(cl ? cl : product?.colors[0])
-        setCurrentSize(sz ? sz : product?.sizes[0])
-        setLoading(false)
     }, [router])
 
     function handleBuyNow() {
@@ -98,7 +94,8 @@ export default withRouter(props => {
             type: product.type,
             image: product.images.find(img => img.variants_id.includes(prodVariant.id) && img.color_id === currentColor.id).src,
             price: prodVariant.price,
-            title: product.title
+            title: product.title,
+            sold_out: product.sold_out,
         }
 
         const newCart = cart.some(prod => prod.id === product.id && prod.variant_id === prodVariant.id)
@@ -136,10 +133,6 @@ export default withRouter(props => {
                     <div className={styles.left}>
                         <div
                             className={styles.sliderContainer}
-                            style={{
-                                width: windowWidth > 1074 ? 600 : windowWidth > 549 ? 450 : 350,
-                                height: windowWidth > 1074 ? 600 * 10 / 9 : windowWidth > 549 ? 450 : 350 * 10 / 9,
-                            }}
                         >
                             <ShareButton
                                 link={`${process.env.NEXT_PUBLIC_DOMAIN}/product/${product.id}${currentColor.id !== product.colors[0].id && currentSize.id !== product.sizes[0].id
@@ -154,8 +147,8 @@ export default withRouter(props => {
                                 mobile={mobile}
                                 style={{
                                     position: 'absolute',
-                                    top: '3%',
-                                    right: '13%'
+                                    top: '2%',
+                                    right: '3%'
                                 }}
                             />
                             {product.colors.map((color, i) =>
@@ -163,10 +156,10 @@ export default withRouter(props => {
                                     key={i}
                                     index={currentImgIndex}
                                     onChange={(imgIndex) => setCurrentImgIndex(imgIndex)}
-                                    width={windowWidth > 1074 ? 600 : windowWidth > 549 ? 450 : 350}
+                                    width={windowWidth > 1074 ? 450 : windowWidth > 549 ? 450 : 350}
                                     images={product.images.filter(img => img.color_id === color.id)}
                                     style={{
-                                        position: 'absolute',
+                                        position: i === 0 ? 'relative' : 'absolute',
                                         zIndex: color.id === currentColor.id ? 1 : 0,
                                         opacity: color.id === currentColor.id ? 1 : 0,
                                     }}
@@ -176,15 +169,35 @@ export default withRouter(props => {
                     </div>
                     <div className={styles.right}>
                         <h2>{product.title}</h2>
-                        <p
-                            style={{
-                                fontSize: '27px',
-                                color: 'var(--primary)',
-                                fontWeight: 'bold',
-                            }}
-                        >
-                            {productPrice}
-                        </p>
+                        {product.sold_out.percentage &&
+                            <div
+                                className={styles.soldOut}
+                            >
+                                <p>
+                                    {Math.round(100 * product.sold_out.percentage)}% OFF
+                                </p>
+                            </div>
+                        }
+                        <div className={styles.prices}>
+                            <p
+                                style={{
+                                    color: 'grey',
+                                    textDecoration: 'line-through',
+                                    fontSize: '17px',
+                                }}
+                            >
+                                {originalPrice}
+                            </p>
+                            <p
+                                style={{
+                                    fontSize: '27px',
+                                    color: 'var(--primary)',
+                                    fontWeight: 'bold',
+                                }}
+                            >
+                                {productPrice}
+                            </p>
+                        </div>
                         <div>
                             <p style={{ textAlign: 'start', fontWeight: 'bold' }}>Pick a color</p>
                             <ColorSelector
