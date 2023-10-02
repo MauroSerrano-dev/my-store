@@ -323,6 +323,7 @@ export default function DataHandler(props) {
     function handleKeyDownSearch(event) {
         if (event.key === 'Enter') {
             handleClickSearch()
+            event.target.blur()
         }
     }
 
