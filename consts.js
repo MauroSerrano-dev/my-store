@@ -30,7 +30,9 @@ export const TAGS_POOL = [
     'pillows',
     'socks',
     'bed',
-    'computer'
+    'computer',
+    'zombies',
+    'halloween',
 ]
 
 export const itemsNavBar = [
