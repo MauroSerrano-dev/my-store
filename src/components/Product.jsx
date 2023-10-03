@@ -36,13 +36,13 @@ export default function Product(props) {
     const [isHovered, setIsHovered] = useState(false)
     const productRef = useRef(null)
     const bottomHoverRef = useRef(null)
-    const [productWidth, setProductWidth] = useState()
+    const [productWidth, setProductWidth] = useState() //string in px
     const [currentVariant, setCurrentVariant] = useState(product.variants[0])
     const [dragStartX, setDragStartX] = useState(null)
     const [dragStartY, setDragStartY] = useState(null)
     const [isDragging, setIsDragging] = useState(false)
 
-    const url = `/product/${product.id}${product.variants[0].id === currentVariant.id ? '' : `?cl=${product.colors.find(c => currentVariant.options.includes(c.id)).title.toLowerCase()}`}`
+    const url = `/product/${product.id}${product.variants[0].id === currentVariant.id ? '' : `?cl=${product.colors.find(c => currentVariant.color_id === c.id).title.toLowerCase()}`}`
 
     function handleMouseEnter() {
         if (supportsHoverAndPointer) {
@@ -71,10 +71,10 @@ export default function Product(props) {
         }
     }, [])
 
-    function handleChangeColor(value, index, option, event) {
+    function handleChangeColor(event, option) {
         event.stopPropagation()
         event.preventDefault()
-        setCurrentVariant(product.variants.find(vari => vari.options.includes(option.id)))
+        setCurrentVariant(product.variants.find(vari => vari.color_id === option.id))
     }
 
     function handleBottomHoverClick(event) {
@@ -163,8 +163,8 @@ export default function Product(props) {
                                     alt={product.title}
                                     style={{
                                         position: i > 0 ? 'absolute' : 'relative',
-                                        zIndex: currentVariant.options.includes(color.id) ? 3 : 2,
-                                        opacity: currentVariant.options.includes(color.id) ? 3 : 2,
+                                        zIndex: currentVariant.color_id === color.id ? 3 : 2,
+                                        opacity: currentVariant.color_id === color.id ? 3 : 2,
                                     }}
                                 />
                             )}
@@ -179,8 +179,8 @@ export default function Product(props) {
                                 alt={product.title}
                                 style={{
                                     position: i > 0 ? 'absolute' : 'relative',
-                                    zIndex: currentVariant.options.includes(color.id) ? 1 : 0,
-                                    opacity: currentVariant.options.includes(color.id) ? 1 : 0,
+                                    zIndex: currentVariant.color_id === color.id ? 1 : 0,
+                                    opacity: currentVariant.color_id === color.id ? 1 : 0,
                                 }}
                             />
                         )}
@@ -277,7 +277,7 @@ export default function Product(props) {
                                         height: `calc(${productWidth} * 0.13)`,
                                         width: `calc(${productWidth} * 0.13)`,
                                     }}
-                                    selected={currentVariant.options.includes(color.id)}
+                                    selected={currentVariant.color_id === color.id}
                                     option={color}
                                     onChange={handleChangeColor}
                                 />

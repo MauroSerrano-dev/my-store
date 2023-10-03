@@ -42,7 +42,7 @@ export default function CareInstructionsIcons(props) {
                         fill={fill}
                     />
                 </svg>
-                <label>Do not dryclean</label>
+                <div>Do not dryclean</div>
             </div>
             <div style={itemStyle}>
                 <svg width={iconSize} height={iconSize} viewBox="0 0 81 81" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -58,7 +58,7 @@ export default function CareInstructionsIcons(props) {
                         fill={fill}
                     />
                 </svg>
-                <label>Machine wash: warm<br />(max 40C or 105F)</label>
+                <div>Machine wash: warm<br />(max 40C or 105F)</div>
             </div>
             <div style={itemStyle}>
                 <svg width={iconSize} height={iconSize} viewBox="0 0 81 81" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -74,7 +74,7 @@ export default function CareInstructionsIcons(props) {
                         fill={fill}
                     />
                 </svg>
-                <label>Do not bleach</label>
+                <div>Do not bleach</div>
             </div>
             <div style={itemStyle}>
                 <svg width={iconSize} height={iconSize} viewBox="0 0 81 81" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -90,7 +90,7 @@ export default function CareInstructionsIcons(props) {
                         fill={fill}
                     />
                 </svg>
-                <label>Tumble dry:<br />low heat</label>
+                <div>Tumble dry:<br />low heat</div>
             </div>
             <div style={itemStyle}>
                 <svg width={iconSize} height={iconSize} viewBox="0 0 81 81" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -106,7 +106,7 @@ export default function CareInstructionsIcons(props) {
                         fill={fill}
                     />
                 </svg>
-                <label>Iron, steam or dry:<br />low heat</label>
+                <div>Iron, steam or dry:<br />low heat</div>
             </div>
         </div>
     )

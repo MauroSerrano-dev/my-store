@@ -145,18 +145,18 @@ export default withRouter(props => {
                                     <TextInput
                                         supportsHoverAndPointer={supportsHoverAndPointer}
                                         label={`${size.title}`}
-                                        onChange={event => {}}
-                                        value={product.variants.find(vari => vari.options.includes(size.id)).price}
+                                        onChange={event => { }}
+                                        value={product.variants.find(vari => vari.size_id === size.id).price}
                                         style={{
                                             width: '80px',
                                         }}
                                     />
                                     <Slider
-                                        value={product.variants.find(vari => vari.options.includes(size.id)).price}
-                                        min={product.variants.find(vari => vari.options.includes(size.id)).cost}
-                                        max={product.variants.find(vari => vari.options.includes(size.id)).cost * 4}
+                                        value={product.variants.find(vari => vari.size_id === size.id).price}
+                                        min={product.variants.find(vari => vari.size_id === size.id).cost}
+                                        max={product.variants.find(vari => vari.size_id === size.id).cost * 4}
                                         valueLabelDisplay="auto"
-                                        onChange={event => {}}
+                                        onChange={event => { }}
                                     />
                                 </div>
                             )}

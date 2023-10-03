@@ -40,6 +40,6 @@ export const MenuToggle = ({ toggle }) => (
                 }}
             />
         </svg>
-        <label>Menu</label>
+        <div style={{ fontSize: 10 }}>Menu</div>
     </button>
 );

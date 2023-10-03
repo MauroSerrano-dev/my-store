@@ -3,11 +3,9 @@ import MyTooltip from './MyTooltip';
 export default function ColorButton(props) {
     const {
         onChange,
-        value = [],
         selected,
         style,
         option,
-        index
     } = props
 
     return (
@@ -18,13 +16,7 @@ export default function ColorButton(props) {
             titleColor='#ffffff'
             content={
                 <button
-                    onClick={event => onChange(value.some(color => option.id === color?.id)
-                        ? value.filter(color => option.id !== color?.id)
-                        : value.concat(option),
-                        index,
-                        option,
-                        event
-                    )}
+                    onClick={event => onChange(event, option)}
                     style={{
                         borderRadius: '100%',
                         height: 40,

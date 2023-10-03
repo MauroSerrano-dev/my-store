@@ -51,23 +51,33 @@ async function createProduct(product) {
     try {
         const docSnapshot = await getDoc(productRef)
         if (docSnapshot.exists()) {
-            return { msg: `Product ID ${product.id} already exists. Cannot create product.` }
+            return {
+                status: 409, // Código de status HTTP 409 Conflict
+                msg: `Product ID ${product.id} already exists.`,
+            }
         }
 
         const now = new Date()
 
         const newProduct = {
             ...product,
-            create_at: now
+            create_at: now,
         }
-        
+
         await setDoc(productRef, newProduct)
-        return { msg: `Product ${newProduct.id} created successfully!` }
+        return {
+            status: 201, // Código de status HTTP 201 Created
+            msg: `Product ${newProduct.id} created successfully!`,
+        }
     } catch (error) {
         console.log("Error creating product:", error)
-        return null;
+        return {
+            status: 500, // Código de status HTTP 500 Internal Server Error
+            msg: "An error occurred while creating the product.",
+        }
     }
 }
+
 
 async function getProductsByCategory(category) {
     const productsCollection = collection(db, process.env.COLL_PRODUCTS);

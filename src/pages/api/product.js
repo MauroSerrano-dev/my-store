@@ -9,8 +9,11 @@ export default async function handler(req, res) {
     else if (req.method === "POST") {
         const { product } = req.body
         const result = await createProduct(product)
-        res.status(201).json({
-            msg: result.msg
+
+        res.status(result.status).json({
+            status: result.status,
+            msg: result.msg,
         })
     }
+
 }

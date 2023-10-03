@@ -23,9 +23,14 @@ export default function ColorSelector(props) {
                 <ColorButton
                     key={i}
                     selected={value.some(color => option.id === color?.id)}
-                    onChange={onChange}
+                    onChange={(event) => onChange(value.some(color => option.id === color?.id)
+                        ? value.filter(color => option.id !== color?.id)
+                        : value.concat(option),
+                        i,
+                        option,
+                        event
+                    )}
                     option={option}
-                    index={i}
                 />
             )}
         </div>

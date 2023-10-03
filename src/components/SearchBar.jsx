@@ -70,6 +70,7 @@ export default function SearchBar(props) {
                 }}
             >
                 <input
+                    name='search'
                     className={styles.input}
                     placeholder={placeholder}
                     onChange={onChange}

@@ -14,9 +14,11 @@ import ButtonIcon from '@/components/material-ui/ButtonIcon'
 import SizesSelector from '@/components/SizesSelector';
 import Chain from '@/components/svgs/Chain';
 import BrokeChain from '@/components/svgs/BrokeChain';
+import { showErrorToast, showInfoToast, showSuccessToast } from '../../../../utils/toasts';
 
 const INICIAL_PRODUCT = {
     id: '',
+    title: '',
     description: '',
     colors: [],
     sizes: [],
@@ -58,7 +60,18 @@ export default withRouter(props => {
 
     async function saveProduct() {
 
-        const variants = product.variants.filter(vari => product.colors.some(color => vari.options.includes(color.id)) && product.sizes.some(size => vari.options.includes(size.id)))
+        if (product.title === '') {
+            showInfoToast({ msg: 'Some fields missing.' })
+            return
+        }
+
+        const variants = product.variants
+            .filter(vari => product.colors.some(color => vari.options.includes(color.id)) && product.sizes.some(size => vari.options.includes(size.id)))
+            .map(vari => ({ ...vari, color_id: product.colors.find(cl => vari.options.includes(cl.id)).id, size_id: product.sizes.find(sz => vari.options.includes(sz.id)).id }))
+
+        variants.forEach(vari =>
+            delete vari.options
+        )
 
         const options = {
             method: 'POST',
@@ -80,8 +93,12 @@ export default withRouter(props => {
         }
         await fetch("/api/product", options)
             .then(response => response.json())
-            .then(response => console.log(response.msg))
-            .catch(err => console.error(err))
+            .then(response => {
+                response.status < 300
+                    ? showSuccessToast({ msg: response.msg })
+                    : showErrorToast({ msg: response.msg })
+            })
+            .catch(err => showErrorToast({ msg: err }))
     }
 
     function updateProductField(fieldName, newValue) {
@@ -93,6 +110,7 @@ export default withRouter(props => {
     }
 
     function handleChangeColors(value, i, color) {
+        console.log(value, i, color)
         setProduct(prev => {
             setColorIndex(prevIndex => value.length > prev.colors.length
                 ? value.length - 1
@@ -390,6 +408,7 @@ export default withRouter(props => {
                         </div>
                         <div className={styles.productRight}>
                             <TextInput
+                                colorText='var(--color-success)'
                                 supportsHoverAndPointer={supportsHoverAndPointer}
                                 label='ID'
                                 onChange={event => updateProductField('id', event.target.value)}
@@ -398,6 +417,7 @@ export default withRouter(props => {
                                 }}
                             />
                             <TextInput
+                                colorText='var(--color-success)'
                                 supportsHoverAndPointer={supportsHoverAndPointer}
                                 label='Title'
                                 onChange={event => updateProductField('title', event.target.value)}
@@ -406,6 +426,7 @@ export default withRouter(props => {
                                 }}
                             />
                             <TextInput
+                                colorText='var(--color-success)'
                                 supportsHoverAndPointer={supportsHoverAndPointer}
                                 label='Description'
                                 onChange={event => updateProductField('description', event.target.value)}
@@ -414,6 +435,7 @@ export default withRouter(props => {
                                 }}
                             />
                             <TextInput
+                                colorText='var(--color-success)'
                                 supportsHoverAndPointer={supportsHoverAndPointer}
                                 label='Default Printify ID'
                                 onChange={event => updateProductField('printify_id_default', event.target.value)}
@@ -423,6 +445,7 @@ export default withRouter(props => {
                             />
                             {TYPES_POOL.find(t => t.id === type).providers.map((provider, i) =>
                                 <TextInput
+                                    colorText='var(--color-success)'
                                     supportsHoverAndPointer={supportsHoverAndPointer}
                                     key={i}
                                     label={`${provider.title} Printify ID`}
@@ -504,6 +527,7 @@ export default withRouter(props => {
                                                     {sizesChained[product.colors[colorIndex].id].includes(size.id) ? <Chain /> : <BrokeChain />}
                                                 </Button>
                                                 <TextInput
+                                                    colorText='var(--color-success)'
                                                     supportsHoverAndPointer={supportsHoverAndPointer}
                                                     label={`${size.title}`}
                                                     onChange={event => handleChangePrice(event.target.value, size.id)}
@@ -545,6 +569,7 @@ export default withRouter(props => {
                                                     key={i}
                                                 >
                                                     <TextInput
+                                                        colorText='var(--color-success)'
                                                         supportsHoverAndPointer={supportsHoverAndPointer}
                                                         label={`Image ${i + 1}`}
                                                         onChange={event => updateImageField('src', event.target.value, i)}

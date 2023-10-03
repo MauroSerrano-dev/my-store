@@ -12,6 +12,8 @@ import { useCycle } from "framer-motion";
 import Menu from './Menu';
 import { motion } from 'framer-motion';
 import { CircularProgress } from '@mui/material';
+import { ToastContainer, Flip } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css';
 
 const SUB_NAVBAR_HEIGHT = 40
 const SUB_NAVBAR_HEIGHT_MOBILE = 43
@@ -525,6 +527,7 @@ export default function DataHandler(props) {
                 menuOpen={menuOpen}
                 session={session}
             />
+            <ToastContainer newestOnTop transition={Flip} style={{ color: 'white' }} />
         </motion.div>
     )
 }

@@ -33,7 +33,7 @@ export default withRouter(props => {
     const [currentSize, setCurrentSize] = useState(sz ? sz : product?.sizes[0])
     const [currentImgIndex, setCurrentImgIndex] = useState(0)
 
-    const productCurrentVariant = product.variants.find(vari => vari.options.includes(currentSize.id) && vari.options.includes(currentColor.id))
+    const productCurrentVariant = product.variants.find(vari => vari.size_id === currentSize.id && vari.color_id === currentColor.id)
 
     const productPrice = `${userCurrency.symbol} ${(convertDolarToCurrency(productCurrentVariant.price * (product.sold_out.percentage ? 1 - product.sold_out.percentage : 1), userCurrency.code) / 100).toFixed(2)}`
 
@@ -79,7 +79,7 @@ export default withRouter(props => {
     }
 
     function handleAddToCart() {
-        const prodVariant = product.variants.find(vari => vari.options.includes(currentSize.id) && vari.options.includes(currentColor.id))
+        const prodVariant = product.variants.find(vari => vari.size_id === currentSize.id && vari.color_id === currentColor.id)
 
         const productCart = {
             id: product.id,
@@ -179,15 +179,17 @@ export default withRouter(props => {
                             </div>
                         }
                         <div className={styles.prices}>
-                            <p
-                                style={{
-                                    color: 'grey',
-                                    textDecoration: 'line-through',
-                                    fontSize: '17px',
-                                }}
-                            >
-                                {originalPrice}
-                            </p>
+                            {product.sold_out.percentage &&
+                                <p
+                                    style={{
+                                        color: 'grey',
+                                        textDecoration: 'line-through',
+                                        fontSize: '17px',
+                                    }}
+                                >
+                                    {originalPrice}
+                                </p>
+                            }
                             <p
                                 style={{
                                     fontSize: '27px',

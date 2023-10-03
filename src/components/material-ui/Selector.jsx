@@ -1,5 +1,5 @@
 import { Select, FormControl, MenuItem, InputLabel } from '@mui/material';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 
 export default function Selector(props) {
     const {
@@ -19,6 +19,7 @@ export default function Selector(props) {
         onChange,
         width,
         supportsHoverAndPointer,
+        name = 'name',
     } = props
 
     const [hover, setHover] = useState(false)
@@ -43,6 +44,7 @@ export default function Selector(props) {
                 {label}
             </InputLabel>
             <Select
+                name='dasda'
                 label={label}
                 value={value}
                 MenuProps={{ disableScrollLock: true }}

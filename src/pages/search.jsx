@@ -159,6 +159,7 @@ export default withRouter(props => {
                         <h3>Categories</h3>
                         {THEMES_VALUES.map((theme, i) =>
                             <FormControlLabel
+                                name='categories'
                                 label={theme.name}
                                 key={i}
                                 sx={{
@@ -181,6 +182,7 @@ export default withRouter(props => {
                         <h3>Most Searched</h3>
                         {MOST_SEARCHED_VALUES.map((theme, i) =>
                             <FormControlLabel
+                                name='most searched'
                                 key={i}
                                 sx={{
                                     marginTop: -0.8,
@@ -283,10 +285,12 @@ export default withRouter(props => {
                         </Link>
                         <div className={styles.priceFilterInputs}>
                             <input
+                                name='min'
                                 placeholder='Min'
                                 spellCheck={false}
                             />
                             <input
+                                name='max'
                                 placeholder='Max'
                                 spellCheck={false}
                             />
@@ -304,6 +308,7 @@ export default withRouter(props => {
                             Search
                         </h1>
                         <Selector
+                            name='search'
                             label='Order By'
                             value={orderBy}
                             options={
