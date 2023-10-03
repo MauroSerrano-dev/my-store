@@ -50,17 +50,16 @@ export default function NavBar(props) {
                         />
                     </motion.div>
                     {!mobile &&
-                        <Link legacyBehavior href={'/'}>
-                            <a
-                                className='fillHeight'
-                                aria-label='Home'
-                                style={{
-                                    height: '70%',
-                                    paddingTop: '2%',
-                                }}
-                            >
-                                <Logo height='100%' />
-                            </a>
+                        <Link
+                            href={'/'}
+                            className='fillHeight'
+                            aria-label='Home'
+                            style={{
+                                height: '70%',
+                                paddingTop: '2%',
+                            }}
+                        >
+                            <Logo height='100%' />
                         </Link>
                     }
                 </div>
@@ -68,17 +67,16 @@ export default function NavBar(props) {
                     className={styles.middle}
                 >
                     {mobile
-                        ? <Link legacyBehavior href={'/'}>
-                            <a
-                                className='fillHeight'
-                                aria-label='Home'
-                                style={{
-                                    height: '70%',
-                                    paddingTop: '2%',
-                                }}
-                            >
-                                <Logo height='100%' />
-                            </a>
+                        ? <Link
+                            href={'/'}
+                            className='fillHeight'
+                            aria-label='Home'
+                            style={{
+                                height: '70%',
+                                paddingTop: '2%',
+                            }}
+                        >
+                            <Logo height='100%' />
                         </Link>
                         : <SearchBar
                             show={isScrollAtTop}
@@ -104,17 +102,13 @@ export default function NavBar(props) {
                             {itemsNavBar.map((item, i) =>
                                 <Link
                                     key={i}
-                                    legacyBehavior
                                     href={`/search?c=${item.value}`}
+                                    aria-label={item.value}
+                                    className={`noUnderline fillHeight flex center ${styles.titleLink}`}
                                 >
-                                    <a
-                                        aria-label={item.value}
-                                        className={`noUnderline fillHeight flex center ${styles.titleLink}`}
-                                    >
-                                        <p className={styles.title}>
-                                            {item.title}
-                                        </p>
-                                    </a>
+                                    <p className={styles.title}>
+                                        {item.title}
+                                    </p>
                                 </Link>
                             )}
                         </div>
@@ -142,23 +136,21 @@ export default function NavBar(props) {
                             }}
                         />
                     </div>
-                    <Link legacyBehavior href={'/wishlist'}>
-                        <a
-                            aria-label='Wishlist'
+                    <Link
+                        href={'/wishlist'}
+                    >
+                        <div
+                            className={styles.iconContainer}
                         >
-                            <div
-                                className={styles.iconContainer}
-                            >
-                                <FavoriteBorderRoundedIcon
-                                    style={{
-                                        fontSize: 'calc(var(--bar-height) * 0.36)',
-                                        color: 'var(--global-white)',
-                                        position: 'relative',
-                                        top: '1px',
-                                    }}
-                                />
-                            </div>
-                        </a>
+                            <FavoriteBorderRoundedIcon
+                                style={{
+                                    fontSize: 'calc(var(--bar-height) * 0.36)',
+                                    color: 'var(--global-white)',
+                                    position: 'relative',
+                                    top: '1px',
+                                }}
+                            />
+                        </div>
                     </Link>
                     <CartIcon
                         session={session}
@@ -176,6 +168,6 @@ export default function NavBar(props) {
                     />
                 </div>
             </div>
-        </div>
+        </div >
     )
 }

@@ -17,34 +17,30 @@ export default function EditProduct(props) {
             </header>
             <main className={styles.main}>
                 <Link
-                    legacyBehavior
-                    href={'/admin'}
+                    href='/admin'
+                    className='noUnderline'
                 >
-                    <a
-                        className='noUnderline'
+                    <Button
+                        variant='outlined'
+                        sx={{
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                        }}
                     >
-                        <Button
-                            variant='outlined'
-                            sx={{
-                                display: 'flex',
-                                alignItems: 'center',
-                                justifyContent: 'center',
+                        <KeyboardArrowLeftRoundedIcon
+                            style={{
+                                marginLeft: '-0.5rem'
+                            }}
+                        />
+                        <p
+                            style={{
+                                color: 'var(--primary)'
                             }}
                         >
-                            <KeyboardArrowLeftRoundedIcon
-                                style={{
-                                    marginLeft: '-0.5rem'
-                                }}
-                            />
-                            <p
-                                style={{
-                                    color: 'var(--primary)'
-                                }}
-                            >
-                                Voltar
-                            </p>
-                        </Button>
-                    </a>
+                            Voltar
+                        </p>
+                    </Button>
                 </Link>
                 <TextInput
                     label='Product ID'
@@ -52,17 +48,12 @@ export default function EditProduct(props) {
                     onChange={e => setProductIdInput(e.target.value)}
                 />
                 <Link
-                    legacyBehavior
                     href={`/admin/edit-product/${productIdInput}`}
+                    className='noUnderline'
                 >
-                    <a
-                        className={'noUnderline'}
-                        aria-label='Search'
-                    >
-                        <Button>
-                            Search
-                        </Button>
-                    </a>
+                    <Button>
+                        Search
+                    </Button>
                 </Link>
             </main>
         </div>

@@ -29,18 +29,16 @@ export default function AvatarMenu(props) {
       onMouseLeave={() => setOpen(false)}
     >
       {supportsHoverAndPointer
-        ? <Link legacyBehavior href={'/login'}>
-          <a
-            className={`${styles.iconContainer} flex center noUnderline`}
-            aria-label='Login'
-          >
-            <PersonOutlineOutlinedIcon
-              style={{
-                fontSize: 'calc(var(--bar-height) * 0.43)',
-                color: 'var(--global-white)'
-              }}
-            />
-          </a>
+        ? <Link
+          href={'/login'}
+          className={`${styles.iconContainer} flex center noUnderline`}
+        >
+          <PersonOutlineOutlinedIcon
+            style={{
+              fontSize: 'calc(var(--bar-height) * 0.43)',
+              color: 'var(--global-white)'
+            }}
+          />
         </Link>
         : <div
           className={`${styles.iconContainer} flex center`}
@@ -70,58 +68,54 @@ export default function AvatarMenu(props) {
             ? <div
               className={styles.session}
             >
-              <Link legacyBehavior href={`/profile/${session?.id}`}>
-                <a
-                  className='noUnderline'
-                  onClick={() => setOpen(false)}
-                >
-                  <MenuItem>
-                    <ListItemIcon>
-                      <AccountCircleRoundedIcon fontSize="medium" />
-                    </ListItemIcon>
-                    Profile
-                  </MenuItem>
-                </a>
+              <Link
+                href={`/profile/${session?.id}`}
+                className='noUnderline'
+                onClick={() => setOpen(false)}
+              >
+                <MenuItem>
+                  <ListItemIcon>
+                    <AccountCircleRoundedIcon fontSize="medium" />
+                  </ListItemIcon>
+                  Profile
+                </MenuItem>
               </Link>
               <Divider />
-              <Link legacyBehavior href={'/orders'}>
-                <a
-                  className='noUnderline'
-                  onClick={() => setOpen(false)}
-                >
-                  <MenuItem>
-                    <ListItemIcon>
-                      <ReceiptLongRoundedIcon fontSize="medium" />
-                    </ListItemIcon>
-                    My Orders
-                  </MenuItem>
-                </a>
+              <Link
+                href={'/orders'}
+                className='noUnderline'
+                onClick={() => setOpen(false)}
+              >
+                <MenuItem>
+                  <ListItemIcon>
+                    <ReceiptLongRoundedIcon fontSize="medium" />
+                  </ListItemIcon>
+                  My Orders
+                </MenuItem>
               </Link>
-              <Link legacyBehavior href={'/settings'}>
-                <a
-                  className='noUnderline'
-                  onClick={() => setOpen(false)}
-                >
-                  <MenuItem>
-                    <ListItemIcon>
-                      <Settings fontSize="medium" />
-                    </ListItemIcon>
-                    Settings
-                  </MenuItem>
-                </a>
+              <Link
+                href={'/settings'}
+                className='noUnderline'
+                onClick={() => setOpen(false)}
+              >
+                <MenuItem>
+                  <ListItemIcon>
+                    <Settings fontSize="medium" />
+                  </ListItemIcon>
+                  Settings
+                </MenuItem>
               </Link>
-              <Link legacyBehavior href={'/support'}>
-                <a
-                  className='noUnderline'
-                  onClick={() => setOpen(false)}
-                >
-                  <MenuItem>
-                    <ListItemIcon>
-                      <SupportAgentIcon fontSize="medium" />
-                    </ListItemIcon>
-                    Support
-                  </MenuItem>
-                </a>
+              <Link
+                href={'/support'}
+                className='noUnderline'
+                onClick={() => setOpen(false)}
+              >
+                <MenuItem>
+                  <ListItemIcon>
+                    <SupportAgentIcon fontSize="medium" />
+                  </ListItemIcon>
+                  Support
+                </MenuItem>
               </Link>
               <MenuItem onClick={handleLogout}>
                 <ListItemIcon>
@@ -131,7 +125,11 @@ export default function AvatarMenu(props) {
               </MenuItem>
             </div>
             : <div className={styles.noSession}>
-              <Link legacyBehavior href={'/login'}><a onClick={() => setOpen(false)} className='noUnderline fillWidth'>
+              <Link
+                href={'/login'}
+                onClick={() => setOpen(false)}
+                className='noUnderline fillWidth'
+              >
                 <Button
                   variant='contained'
                   sx={{
@@ -144,15 +142,14 @@ export default function AvatarMenu(props) {
                 >
                   Log In
                 </Button>
-              </a>
               </Link>
               <p>
-                Don't have an account yet? <Link legacyBehavior href={'/signin'}><a onClick={() => setOpen(false)} className='noUnderline'>Sign up</a></Link>
+                Don't have an account yet? <Link onClick={() => setOpen(false)} className='noUnderline' href={'/signin'}>Sign up</Link>
               </p>
             </div>
           }
         </div>
       }
-    </div >
+    </div>
   )
 }

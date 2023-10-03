@@ -108,39 +108,36 @@ export default function SearchBar(props) {
                 {showOptions &&
                     options.map((option, i) =>
                         <Link
-                            legacyBehavior href={`/product/${option.id}`}
+                            href={`/product/${option.id}`}
                             key={i}
+                            onClick={() => setTimeout(() => setOptions([]), 300)}
+                            className={`${styles.option} noUnderline`}
+                            style={{
+                                height: `${100 / options.length}%`
+                            }}
                         >
-                            <a
-                                onClick={() => setTimeout(() => setOptions([]), 300)}
-                                className={`${styles.option} noUnderline`}
-                                style={{
-                                    height: `${100 / options.length}%`
-                                }}
-                            >
-                                <motion.div
-                                    className={styles.optionMotion}
-                                    variants={{
-                                        hidden: {
-                                            opacity: 0,
-                                        },
-                                        visible: {
-                                            opacity: 1,
-                                            transition: {
-                                                duration: 0.3,
-                                                delay: 0.3 + 0.3 * i,
-                                            }
+                            <motion.div
+                                className={styles.optionMotion}
+                                variants={{
+                                    hidden: {
+                                        opacity: 0,
+                                    },
+                                    visible: {
+                                        opacity: 1,
+                                        transition: {
+                                            duration: 0.3,
+                                            delay: 0.3 + 0.3 * i,
                                         }
-                                    }}
-                                    initial='hidden'
-                                    animate='visible'
-                                >
-                                    <img
-                                        src={option.images[0].src}
-                                    />
-                                    <p>{option.title}</p>
-                                </motion.div>
-                            </a>
+                                    }
+                                }}
+                                initial='hidden'
+                                animate='visible'
+                            >
+                                <img
+                                    src={option.images[0].src}
+                                />
+                                <p>{option.title}</p>
+                            </motion.div>
                         </Link>
                     )}
             </div>

@@ -92,12 +92,11 @@ export default function Login(props) {
                                         width: '100%'
                                     }}
                                 />
-                                <Link legacyBehavior href={'/forgot-password'}>
-                                    <a
-                                        className={styles.linkCreateAccount}
-                                    >
-                                        Forgot my password
-                                    </a>
+                                <Link
+                                    href='/forgot-password'
+                                    className={styles.linkCreateAccount}
+                                >
+                                    Forgot my password
                                 </Link>
                                 <div className='fillWidth center'>
                                     <ReCAPTCHA
@@ -145,7 +144,7 @@ export default function Login(props) {
                     className={styles.joinContainer}
                     style={{
                         width: mobile ? '100%' : '34.55%',
-                        height: mobile ? 'auto' : '600px' 
+                        height: mobile ? 'auto' : '600px'
                     }}
                 >
                     <div
@@ -180,12 +179,11 @@ export default function Login(props) {
                             <li>Save your order data for next purchases.</li>
                             <li>Be the first one to know about our discounts.</li>
                         </ul>
-                        <Link legacyBehavior href={'/signin'}>
-                            <a
-                                className={styles.linkCreateAccount}
-                            >
-                                Create a Customer Account
-                            </a>
+                        <Link
+                            href='/signin'
+                            className={styles.linkCreateAccount}
+                        >
+                            Create a Customer Account
                         </Link>
                     </div>
                 </div>

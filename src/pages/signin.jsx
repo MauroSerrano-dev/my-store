@@ -133,12 +133,11 @@ export default function Signin(props) {
                             >
                                 Create an account
                             </Button>
-                            <Link legacyBehavior href={'/login'}>
-                                <a
-                                    className={styles.linkCreateAccount}
-                                >
-                                    I already have an account
-                                </a>
+                            <Link
+                                href='/login'
+                                className={styles.linkCreateAccount}
+                            >
+                                I already have an account
                             </Link>
                         </div>
                     </div>
@@ -147,7 +146,7 @@ export default function Signin(props) {
                     className={styles.joinContainer}
                     style={{
                         width: mobile ? '100%' : '34.55%',
-                        height: mobile ? 'auto' : '600px' 
+                        height: mobile ? 'auto' : '600px'
                     }}
                 >
                     <div

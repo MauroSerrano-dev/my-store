@@ -77,35 +77,31 @@ export default function CarouselLoop(props) {
             >
                 {itemsArray.map((item, i) =>
                     <Link
-                        legacyBehavior
                         href={item.url}
                         key={i}
+                        className={`${styles.item} noUnderline`}
+                        style={{
+                            left: `${(item.position) * (itemWidth + gap)}px`,
+                            width: `${itemWidth}px`,
+                            transition: item.position < items.length / 2 * (-1) || item.position > items.length * 1.5
+                                ? `all ${autorun
+                                    ? 'linear'
+                                    : 'ease-in-out'} 0ms`
+                                : `all ${autorun
+                                    ? 'linear'
+                                    : 'ease-in-out'} ${animationDuration}ms`
+                        }}
                     >
-                        <a
-                            className={`${styles.item} noUnderline`}
-                            style={{
-                                left: `${(item.position) * (itemWidth + gap)}px`,
-                                width: `${itemWidth}px`,
-                                transition: item.position < items.length / 2 * (-1) || item.position > items.length * 1.5
-                                    ? `all ${autorun
-                                        ? 'linear'
-                                        : 'ease-in-out'} 0ms`
-                                    : `all ${autorun
-                                        ? 'linear'
-                                        : 'ease-in-out'} ${animationDuration}ms`
-                            }}
-                        >
-                            <div className={styles.blackShadow}>
-                            </div>
-                            <span className={styles.itemTitle}>
-                                {item.title}
-                            </span>
-                            <img
-                                className={styles.itemImg}
-                                src={item.img}
-                                alt='category-image'
-                            />
-                        </a>
+                        <div className={styles.blackShadow}>
+                        </div>
+                        <span className={styles.itemTitle}>
+                            {item.title}
+                        </span>
+                        <img
+                            className={styles.itemImg}
+                            src={item.img}
+                            alt='category-image'
+                        />
                     </Link>
                 )}
             </div>

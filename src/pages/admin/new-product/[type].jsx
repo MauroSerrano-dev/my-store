@@ -346,34 +346,30 @@ export default withRouter(props => {
                 <div className={styles.top}>
                     <div className={styles.productOption}>
                         <Link
-                            legacyBehavior
                             href='/admin/new-product'
+                            className='noUnderline'
                         >
-                            <a
-                                className='noUnderline'
+                            <Button
+                                variant='outlined'
+                                sx={{
+                                    display: 'flex',
+                                    alignItems: 'center',
+                                    justifyContent: 'center',
+                                }}
                             >
-                                <Button
-                                    variant='outlined'
-                                    sx={{
-                                        display: 'flex',
-                                        alignItems: 'center',
-                                        justifyContent: 'center',
+                                <KeyboardArrowLeftRoundedIcon
+                                    style={{
+                                        marginLeft: '-0.5rem'
+                                    }}
+                                />
+                                <p
+                                    style={{
+                                        color: 'var(--primary)'
                                     }}
                                 >
-                                    <KeyboardArrowLeftRoundedIcon
-                                        style={{
-                                            marginLeft: '-0.5rem'
-                                        }}
-                                    />
-                                    <p
-                                        style={{
-                                            color: 'var(--primary)'
-                                        }}
-                                    >
-                                        Voltar
-                                    </p>
-                                </Button>
-                            </a>
+                                    Voltar
+                                </p>
+                            </Button>
                         </Link>
                     </div>
                 </div>

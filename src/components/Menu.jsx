@@ -108,22 +108,19 @@ export default function Menu(props) {
                         }
                         {session === null &&
                             <div>
-                                Hello! <Link legacyBehavior href={'/login'}><a onClick={handleCloseMenu} className='noUnderline'>Log in</a></Link> or <Link legacyBehavior href={'/signin'}><a onClick={handleCloseMenu} className='noUnderline'>Sign up</a></Link>
+                                Hello! <Link href={'/login'} onClick={handleCloseMenu} className='noUnderline'>Log in</Link> or <Link href={'/signin'} onClick={handleCloseMenu} className='noUnderline'>Sign up</Link>
                             </div>
                         }
                     </div>
                     {MENU_OPTIONS.map((option, i) =>
                         option.type === 'link'
                             ? <Link
-                                legacyBehavior href={option.href}
+                                href={option.href}
                                 key={i}
+                                onClick={handleCloseMenu}
+                                className={`${styles.menuItem} noUnderline`}
                             >
-                                <a
-                                    onClick={handleCloseMenu}
-                                    className={`${styles.menuItem} noUnderline`}
-                                >
-                                    {option.title}
-                                </a>
+                                {option.title}
                             </Link>
                             : <div
                                 key={i}
@@ -174,15 +171,12 @@ export default function Menu(props) {
                         {MENU_FORWARD_OPTIONS[optionMenuDelay].map((option, i) =>
                             option.type === 'link'
                                 ? <Link
-                                    legacyBehavior href={option.href}
+                                    href={option.href}
                                     key={i}
+                                    onClick={handleCloseMenu}
+                                    className={`${styles.menuItem} noUnderline`}
                                 >
-                                    <a
-                                        onClick={handleCloseMenu}
-                                        className={`${styles.menuItem} noUnderline`}
-                                    >
-                                        {option.title}
-                                    </a>
+                                    {option.title}
                                 </Link>
                                 : <div
                                     key={i}
@@ -200,6 +194,6 @@ export default function Menu(props) {
                     </motion.div>
                 }
             </div>
-        </div>
+        </div >
     )
 }

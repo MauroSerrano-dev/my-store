@@ -30,28 +30,26 @@ export default function CartIcon(props) {
             onMouseEnter={() => setOpen(true)}
             onMouseLeave={() => setOpen(false)}
         >
-            <Link legacyBehavior href={`/cart`}>
-                <a
-                    className={`${styles.iconContainer} flex center noUnderline`}
-                    aria-label='Cart'
-                >
-                    <ShoppingCartOutlinedIcon
+            <Link
+                href={`/cart`}
+                className={`${styles.iconContainer} flex center noUnderline`}
+            >
+                <ShoppingCartOutlinedIcon
+                    style={{
+                        fontSize: 'calc(var(--bar-height) * 0.36)',
+                        color: 'var(--global-white)'
+                    }}
+                />
+                {session !== undefined && cart && cart.length > 0 &&
+                    <div
+                        className={styles.cartCounter}
                         style={{
-                            fontSize: 'calc(var(--bar-height) * 0.36)',
-                            color: 'var(--global-white)'
+                            fontSize: cart.reduce((acc, product) => acc + product.quantity, 0) > 99 ? '55%' : '72%'
                         }}
-                    />
-                    {session !== undefined && cart && cart.length > 0 &&
-                        <div
-                            className={styles.cartCounter}
-                            style={{
-                                fontSize: cart.reduce((acc, product) => acc + product.quantity, 0) > 99 ? '55%' : '72%'
-                            }}
-                        >
-                            {cart.reduce((acc, product) => acc + product.quantity, 0) > 99 ? '99+' : cart.reduce((acc, product) => acc + product.quantity, 0)}
-                        </div>
-                    }
-                </a>
+                    >
+                        {cart.reduce((acc, product) => acc + product.quantity, 0) > 99 ? '99+' : cart.reduce((acc, product) => acc + product.quantity, 0)}
+                    </div>
+                }
             </Link>
             {
                 open && cart && cart.length > 0 && supportsHoverAndPointer &&
@@ -78,20 +76,21 @@ export default function CartIcon(props) {
                                 )}
                             </div>
                         </div>
-                        <Link legacyBehavior href={`/cart`}>
-                            <a className={`${styles.iconContainer} flex center noUnderline`}>
-                                <Button
-                                    onClick={() => setOpen(false)}
-                                    variant='contained'
-                                    sx={{
-                                        width: '100%',
-                                        color: '#ffffff',
-                                        fontWeight: 'bold',
-                                    }}
-                                >
-                                    Go to Cart
-                                </Button>
-                            </a>
+                        <Link
+                            href={`/cart`}
+                            className={`${styles.iconContainer} flex center noUnderline`}
+                        >
+                            <Button
+                                onClick={() => setOpen(false)}
+                                variant='contained'
+                                sx={{
+                                    width: '100%',
+                                    color: '#ffffff',
+                                    fontWeight: 'bold',
+                                }}
+                            >
+                                Go to Cart
+                            </Button>
                         </Link>
                     </div>
                 </div>

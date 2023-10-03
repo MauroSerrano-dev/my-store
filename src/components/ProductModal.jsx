@@ -55,44 +55,40 @@ export default function ProductModal(props) {
                     zIndex: 10,
                 }}
             />
-            <Link legacyBehavior href={`/product/${product.id}${product.color.id !== product.default_variant.color.id && product.size.id !== product.default_variant.size.id
+            <Link href={`/product/${product.id}${product.color.id !== product.default_variant.color.id && product.size.id !== product.default_variant.size.id
                 ? `?sz=${product.size.title.toLowerCase()}&cl=${product.color.title.replace(' ', '+').toLowerCase()}`
                 : product.size.id !== product.default_variant.size.id
                     ? `?sz=${product.size.title.toLowerCase()}`
                     : product.color.id !== product.default_variant.color.id
                         ? `?cl=${product.color.title.replace(' ', '+').toLowerCase()}`
                         : ''
-                }`}>
-                <a
-                    className={styles.imageContainer}
-                    onClick={() => setLoading(true)}
-                    style={{
-                        pointerEvents: loading ? 'none' : 'auto',
-                    }}
-                >
-                    <img
-                        className={styles.image}
-                        src={product.image}
-                    />
-                </a>
+                }`}
+                className={styles.imageContainer}
+                onClick={() => setLoading(true)}
+                style={{
+                    pointerEvents: loading ? 'none' : 'auto',
+                }}
+            >
+                <img
+                    className={styles.image}
+                    src={product.image}
+                />
             </Link>
             <div className={styles.right}>
-                <Link legacyBehavior href={`/product/${product.id}${product.color.id !== product.default_variant.color.id && product.size.id !== product.default_variant.size.id
+                <Link href={`/product/${product.id}${product.color.id !== product.default_variant.color.id && product.size.id !== product.default_variant.size.id
                     ? `?sz=${product.size.title.toLowerCase()}&cl=${product.color.title.replace(' ', '+').toLowerCase()}`
                     : product.size.id !== product.default_variant.size.id
                         ? `?sz=${product.size.title.toLowerCase()}`
                         : product.color.id !== product.default_variant.color.id
                             ? `?cl=${product.color.title.replace(' ', '+').toLowerCase()}`
                             : ''
-                    }`}>
-                    <a
-                        onClick={() => setLoading(true)}
-                        style={{
-                            pointerEvents: loading ? 'none' : 'auto',
-                        }}
-                    >
-                        <h6>{product.title}</h6>
-                    </a>
+                    }`}
+                    onClick={() => setLoading(true)}
+                    style={{
+                        pointerEvents: loading ? 'none' : 'auto',
+                    }}
+                >
+                    <h6>{product.title}</h6>
                 </Link>
                 <div className={styles.infos}>
                     <p>

@@ -101,12 +101,11 @@ export default function ForgotPassword(props) {
                             Reset Password
                         </Button>
                     </form>
-                    <Link legacyBehavior href={'/login'}>
-                        <a
-                            className={styles.linkBackToLogin}
-                        >
-                            Back to Login
-                        </a>
+                    <Link
+                        href='/login'
+                        className={styles.linkBackToLogin}
+                    >
+                        Back to Login
                     </Link>
                 </div>
                 <div

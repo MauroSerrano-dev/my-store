@@ -15,34 +15,30 @@ export default withRouter(props => {
                 <div className={styles.top}>
                     <div className={styles.productOption}>
                         <Link
-                            legacyBehavior
                             href='/admin'
+                            className='noUnderline'
                         >
-                            <a
-                                className='noUnderline'
+                            <Button
+                                variant='outlined'
+                                sx={{
+                                    display: 'flex',
+                                    alignItems: 'center',
+                                    justifyContent: 'center',
+                                }}
                             >
-                                <Button
-                                    variant='outlined'
-                                    sx={{
-                                        display: 'flex',
-                                        alignItems: 'center',
-                                        justifyContent: 'center',
+                                <KeyboardArrowLeftRoundedIcon
+                                    style={{
+                                        marginLeft: '-0.5rem'
+                                    }}
+                                />
+                                <p
+                                    style={{
+                                        color: 'var(--primary)'
                                     }}
                                 >
-                                    <KeyboardArrowLeftRoundedIcon
-                                        style={{
-                                            marginLeft: '-0.5rem'
-                                        }}
-                                    />
-                                    <p
-                                        style={{
-                                            color: 'var(--primary)'
-                                        }}
-                                    >
-                                        Voltar
-                                    </p>
-                                </Button>
-                            </a>
+                                    Voltar
+                                </p>
+                            </Button>
                         </Link>
                     </div>
                 </div>
@@ -50,25 +46,21 @@ export default withRouter(props => {
                     <h3>Create New Product</h3>
                     {TYPES_POOL.map((type, i) =>
                         <Link
-                            legacyBehavior
                             href={`/admin/new-product/${type.id}`}
                             key={i}
+                            className='noUnderline fillWidth'
                         >
-                            <a
-                                className='noUnderline fillWidth'
+                            <Button
+                                variant='outlined'
+                                sx={{
+                                    display: 'flex',
+                                    alignItems: 'center',
+                                    justifyContent: 'center',
+                                    width: '100%'
+                                }}
                             >
-                                <Button
-                                    variant='outlined'
-                                    sx={{
-                                        display: 'flex',
-                                        alignItems: 'center',
-                                        justifyContent: 'center',
-                                        width: '100%'
-                                    }}
-                                >
-                                    {type.title}
-                                </Button>
-                            </a>
+                                {type.title}
+                            </Button>
                         </Link>
                     )}
                 </div>

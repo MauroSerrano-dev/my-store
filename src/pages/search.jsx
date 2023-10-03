@@ -202,85 +202,75 @@ export default withRouter(props => {
                     </div>
                     <div className={styles.filterBlock}>
                         <h3>Price</h3>
-                        <Link legacyBehavior href={{
-                            pathname: router.pathname,
-                            query: getQueries({}, ['min', 'max'])
-                        }}>
-                            <a
-                                className={'noUnderline'}
-                                aria-label='Any Price'
-                                style={{
-                                    fontWeight: !min && !max
-                                        ? 'bold'
-                                        : 400
-                                }}
-                            >
-                                Any Price
-                            </a>
+                        <Link
+                            href={{
+                                pathname: router.pathname,
+                                query: getQueries({}, ['min', 'max'])
+                            }}
+                            className='noUnderline'
+                            style={{
+                                fontWeight: !min && !max
+                                    ? 'bold'
+                                    : 400
+                            }}
+                        >
+                            Any Price
                         </Link>
-                        <Link legacyBehavior href={{
-                            pathname: router.pathname,
-                            query: getQueries({ max: 15 }, ['min'])
-                        }}>
-                            <a
-                                className={'noUnderline'}
-                                aria-label='up to 15'
-                                style={{
-                                    fontWeight: !min && max === '15'
-                                        ? 'bold'
-                                        : 400
-                                }}
-                            >
-                                Up to $15
-                            </a>
+                        <Link
+                            href={{
+                                pathname: router.pathname,
+                                query: getQueries({ max: 15 }, ['min'])
+                            }}
+                            className='noUnderline'
+                            style={{
+                                fontWeight: !min && max === '15'
+                                    ? 'bold'
+                                    : 400
+                            }}
+                        >
+                            Up to $15
                         </Link>
-                        <Link legacyBehavior href={{
-                            pathname: router.pathname,
-                            query: getQueries({ min: '15', max: '25' })
-                        }}>
-                            <a
-                                className={'noUnderline'}
-                                aria-label='15 to 25'
-                                style={{
-                                    fontWeight: min === '15' && max === '25'
-                                        ? 'bold'
-                                        : 400
-                                }}
-                            >
-                                $15 to $25
-                            </a>
+                        <Link
+                            href={{
+                                pathname: router.pathname,
+                                query: getQueries({ min: '15', max: '25' })
+                            }}
+                            className='noUnderline'
+                            style={{
+                                fontWeight: min === '15' && max === '25'
+                                    ? 'bold'
+                                    : 400
+                            }}
+                        >
+                            $15 to $25
                         </Link>
-                        <Link legacyBehavior href={{
-                            pathname: router.pathname,
-                            query: getQueries({ min: '25', max: '40' })
-                        }}>
-                            <a
-                                className={'noUnderline'}
-                                aria-label='25 to 40'
-                                style={{
-                                    fontWeight: min === '25' && max === '40'
-                                        ? 'bold'
-                                        : 400
-                                }}
-                            >
-                                $25 to $40
-                            </a>
+                        <Link
+                            href={{
+                                pathname: router.pathname,
+                                query: getQueries({ min: '25', max: '40' })
+                            }}
+                            className='noUnderline'
+                            style={{
+                                fontWeight: min === '25' && max === '40'
+                                    ? 'bold'
+                                    : 400
+                            }}
+                        >
+                            $25 to $40
                         </Link>
-                        <Link legacyBehavior href={{
-                            pathname: router.pathname,
-                            query: getQueries({ min: '40' }, ['max'])
-                        }}>
-                            <a
-                                className={'noUnderline'}
-                                aria-label='40 and above'
-                                style={{
-                                    fontWeight: min === '40' && !max
-                                        ? 'bold'
-                                        : 400
-                                }}
-                            >
-                                $40 & Above
-                            </a>
+                        <Link
+                            href={{
+                                pathname: router.pathname,
+                                query: getQueries({ min: '40' }, ['max'])
+                            }}
+                            className='noUnderline'
+                            style={{
+                                fontWeight: min === '40' && !max
+                                    ? 'bold'
+                                    : 400
+                            }}
+                        >
+                            $40 & Above
                         </Link>
                         <div className={styles.priceFilterInputs}>
                             <input
@@ -360,8 +350,8 @@ export default withRouter(props => {
                             )}
                     </div>
                 </div>
-            </main>
+            </main >
             <Footer />
-        </div>
+        </div >
     )
 })

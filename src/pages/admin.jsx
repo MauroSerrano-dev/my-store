@@ -18,53 +18,41 @@ export default function Admin() {
                     <div className={styles.optionsBlock}>
                         <div>
                             <Link
-                                legacyBehavior
                                 href='/admin/new-product'
+                                className='noUnderline fillWidth'
                             >
-                                <a
-                                    className='noUnderline fillWidth'
+                                <button
+                                    className={styles.buttonOption}
                                 >
-                                    <button
-                                        className={styles.buttonOption}
-                                    >
-                                        <AddCircleOutlineRoundedIcon />
-                                        Add New Product
-                                    </button>
-                                </a>
+                                    <AddCircleOutlineRoundedIcon />
+                                    Add New Product
+                                </button>
                             </Link>
                         </div>
                         <div>
                             <Link
-                                legacyBehavior
                                 href='/admin/edit-product'
+                                className='noUnderline fillWidth'
                             >
-                                <a
-                                    className='noUnderline fillWidth'
+                                <button
+                                    className={styles.buttonOption}
                                 >
-                                    <button
-                                        className={styles.buttonOption}
-                                    >
-                                        <EditNoteRoundedIcon />
-                                        Edit Product
-                                    </button>
-                                </a>
+                                    <EditNoteRoundedIcon />
+                                    Edit Product
+                                </button>
                             </Link>
                         </div>
                         <div>
                             <Link
-                                legacyBehavior
                                 href='/admin/consult-product'
+                                className='noUnderline fillWidth'
                             >
-                                <a
-                                    className='noUnderline fillWidth'
+                                <button
+                                    className={styles.buttonOption}
                                 >
-                                    <button
-                                        className={styles.buttonOption}
-                                    >
-                                        <FormatListBulletedRoundedIcon />
-                                        Consult Product
-                                    </button>
-                                </a>
+                                    <FormatListBulletedRoundedIcon />
+                                    Consult Product
+                                </button>
                             </Link>
                         </div>
                     </div>

@@ -142,106 +142,105 @@ export default function Product(props) {
                 pointerEvents: loading ? 'none' : 'auto',
             }}
         >
-            <Link legacyBehavior href={url} >
-                <a
-                    onClick={() => setLoading(true)}
-                    className={`${styles.linkContainer} noUnderline`}
-                >
-                    {supportsHoverAndPointer &&
-                        <div
-                            className={styles.imgHoverContainer}
-                            style={{
-                                opacity: isHovered ? 1 : 0,
-                                zIndex: 2
-                            }}
-                        >
-                            {product.colors.map((color, i) =>
-                                <img
-                                    key={i}
-                                    src={product.images.filter(img => img.color_id === color.id)[product.image_hover_index].src}
-                                    className={styles.img}
-                                    alt={product.title}
-                                    style={{
-                                        position: i > 0 ? 'absolute' : 'relative',
-                                        zIndex: currentVariant.color_id === color.id ? 3 : 2,
-                                        opacity: currentVariant.color_id === color.id ? 3 : 2,
-                                    }}
-                                />
-                            )}
-                        </div>
-                    }
-                    <div className={styles.imgContainer}>
+            <Link
+                href={url}
+                onClick={() => setLoading(true)}
+                className={`${styles.linkContainer} noUnderline`}
+            >
+                {supportsHoverAndPointer &&
+                    <div
+                        className={styles.imgHoverContainer}
+                        style={{
+                            opacity: isHovered ? 1 : 0,
+                            zIndex: 2
+                        }}
+                    >
                         {product.colors.map((color, i) =>
                             <img
                                 key={i}
-                                src={product.images.filter(img => img.color_id === color.id)[product.image_showcase_index].src}
+                                src={product.images.filter(img => img.color_id === color.id)[product.image_hover_index].src}
                                 className={styles.img}
                                 alt={product.title}
                                 style={{
                                     position: i > 0 ? 'absolute' : 'relative',
-                                    zIndex: currentVariant.color_id === color.id ? 1 : 0,
-                                    opacity: currentVariant.color_id === color.id ? 1 : 0,
+                                    zIndex: currentVariant.color_id === color.id ? 3 : 2,
+                                    opacity: currentVariant.color_id === color.id ? 3 : 2,
                                 }}
                             />
                         )}
                     </div>
-                    <div className={styles.infos}>
-                        {product.sold_out.percentage &&
-                            <div
-                                className={styles.soldOut}
-                            >
-                                <p
-                                    style={{
-                                        fontSize: `calc(${productWidth} * 0.055)`
-                                    }}
-                                >
-                                    {Math.round(100 * product.sold_out.percentage)}% OFF
-                                </p>
-                            </div>
-                        }
-                        {outOfStock &&
-                            <div
-                                className={styles.outOfStock}
-                            >
-                                <p
-                                    style={{
-                                        fontSize: `calc(${productWidth} * 0.055)`
-                                    }}
-                                >
-                                    OUT OF STOCK
-                                </p>
-                            </div>
-                        }
-                        <p
-                            className={styles.name}
+                }
+                <div className={styles.imgContainer}>
+                    {product.colors.map((color, i) =>
+                        <img
+                            key={i}
+                            src={product.images.filter(img => img.color_id === color.id)[product.image_showcase_index].src}
+                            className={styles.img}
+                            alt={product.title}
                             style={{
-                                fontSize: `calc(${productWidth} * 0.07)`
+                                position: i > 0 ? 'absolute' : 'relative',
+                                zIndex: currentVariant.color_id === color.id ? 1 : 0,
+                                opacity: currentVariant.color_id === color.id ? 1 : 0,
                             }}
+                        />
+                    )}
+                </div>
+                <div className={styles.infos}>
+                    {product.sold_out.percentage &&
+                        <div
+                            className={styles.soldOut}
                         >
-                            {product.title}
-                        </p>
-                        <div className={styles.priceContainer}>
-                            {product.sold_out.percentage &&
-                                <p
-                                    className={styles.oldPrice}
-                                    style={{
-                                        fontSize: `calc(${productWidth} * 0.056)`
-                                    }}
-                                >
-                                    {userCurrency.symbol} {(convertDolarToCurrency(product.min_price, userCurrency.code) / 100).toFixed(2)}
-                                </p>
-                            }
                             <p
-                                className={styles.price}
                                 style={{
-                                    fontSize: `calc(${productWidth} * 0.085)`
+                                    fontSize: `calc(${productWidth} * 0.055)`
                                 }}
                             >
-                                {userCurrency.symbol} {(convertDolarToCurrency(product.min_price * (product.sold_out.percentage ? 1 - product.sold_out.percentage : 1), userCurrency.code) / 100).toFixed(2)}
+                                {Math.round(100 * product.sold_out.percentage)}% OFF
                             </p>
                         </div>
+                    }
+                    {outOfStock &&
+                        <div
+                            className={styles.outOfStock}
+                        >
+                            <p
+                                style={{
+                                    fontSize: `calc(${productWidth} * 0.055)`
+                                }}
+                            >
+                                OUT OF STOCK
+                            </p>
+                        </div>
+                    }
+                    <p
+                        className={styles.name}
+                        style={{
+                            fontSize: `calc(${productWidth} * 0.07)`
+                        }}
+                    >
+                        {product.title}
+                    </p>
+                    <div className={styles.priceContainer}>
+                        {product.sold_out.percentage &&
+                            <p
+                                className={styles.oldPrice}
+                                style={{
+                                    fontSize: `calc(${productWidth} * 0.056)`
+                                }}
+                            >
+                                {userCurrency.symbol} {(convertDolarToCurrency(product.min_price, userCurrency.code) / 100).toFixed(2)}
+                            </p>
+                        }
+                        <p
+                            className={styles.price}
+                            style={{
+                                fontSize: `calc(${productWidth} * 0.085)`
+                            }}
+                        >
+                            {userCurrency.symbol} {(convertDolarToCurrency(product.min_price * (product.sold_out.percentage ? 1 - product.sold_out.percentage : 1), userCurrency.code) / 100).toFixed(2)}
+                        </p>
                     </div>
-                </a>
+                </div>
             </Link>
             {supportsHoverAndPointer &&
                 <div
@@ -283,26 +282,25 @@ export default function Product(props) {
                                 />
                             )}
                         </div>
-                        : <Link legacyBehavior href={url} >
-                            <a
-                                onClick={() => setLoading(true)}
-                                style={{
-                                    width: '75%'
+                        : <Link
+                            href={url}
+                            onClick={() => setLoading(true)}
+                            style={{
+                                width: '75%'
+                            }}
+                        >
+                            <Button
+                                variant='contained'
+                                size='small'
+                                sx={{
+                                    color: 'var(--text-white)',
+                                    width: '100%',
+                                    fontSize: `calc(${productWidth} * 0.053)`,
+                                    fontWeight: 'bold'
                                 }}
                             >
-                                <Button
-                                    variant='contained'
-                                    size='small'
-                                    sx={{
-                                        color: 'var(--text-white)',
-                                        width: '100%',
-                                        fontSize: `calc(${productWidth} * 0.053)`,
-                                        fontWeight: 'bold'
-                                    }}
-                                >
-                                    MORE INFO
-                                </Button>
-                            </a>
+                                MORE INFO
+                            </Button>
                         </Link>
                     }
                 </div>
