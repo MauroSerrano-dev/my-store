@@ -169,7 +169,7 @@
 }
 
 .linkCreateAccount {
-    color: #1185ed;
+    color: var(--link-color);
     font-weight: bold;
     font-size: 14px;
 
@@ -195,7 +195,7 @@
     }
 
     .linkCreateAccount:hover {
-        text-decoration: underline #1185ed;
+        text-decoration: underline var(--link-color);
     }
 }
 

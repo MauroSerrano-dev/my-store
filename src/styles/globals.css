@@ -5,10 +5,13 @@
 }
 
 :root {
-  --primary: #00acb7;
-  --primaryRGB: 0, 172, 183;
-  --primary-dark: #02868e;
-  --navbar-color: #00acb7;
+  --primary: #1189C4;
+  --navbar-color: #1189C4;
+  --primary-dark: #0c5274;
+  --primaryRGB: 17, 137, 196;
+
+  --link-color: #1185ed;
+
   --text-black: #0a0a0a;
   --text-white: #f3f3f3;
   --text-color: var(--text-black);

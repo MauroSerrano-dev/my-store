@@ -5,7 +5,7 @@ import { ThemeProvider, createTheme } from '@mui/material/styles';
 import MontserratRegular from '../../public/fonts/montserrat.ttf';
 import DataHandler from '@/components/DataHandler'
 
-const primaryColor = '#00acb7'
+const primaryColor = '#1189C4'
 
 const mainTheme = createTheme({
   palette: {

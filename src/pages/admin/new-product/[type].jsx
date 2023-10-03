@@ -15,6 +15,7 @@ import SizesSelector from '@/components/SizesSelector';
 import Chain from '@/components/svgs/Chain';
 import BrokeChain from '@/components/svgs/BrokeChain';
 import { showErrorToast, showInfoToast, showSuccessToast } from '../../../../utils/toasts';
+import NoFound404 from '@/pages/404';
 
 const INICIAL_PRODUCT = {
     id: '',
@@ -30,7 +31,7 @@ const INICIAL_PRODUCT = {
 
 export default withRouter(props => {
 
-    const { router, supportsHoverAndPointer } = props;
+    const { router, supportsHoverAndPointer, session } = props;
 
     const [product, setProduct] = useState(INICIAL_PRODUCT)
     const [colorIndex, setColorIndex] = useState(0)
@@ -339,7 +340,11 @@ export default withRouter(props => {
     }
 
     return (
-        <div className={styles.container}>
+        session === undefined
+        ? <div></div>
+        : session === null || session.email !== 'mauro.serrano.dev@gmail.com'
+            ? <NoFound404 />
+            : <div className={styles.container}>
             <header>
             </header>
             <main className={styles.main}>

@@ -145,7 +145,7 @@
 }
 
 .linkCreateAccount {
-    color: #1185ed;
+    color: var(--link-color);
     font-weight: bold;
     font-size: 14px;
 
@@ -157,7 +157,7 @@
 /* Enable hover only on non-touch devices */
 @media (hover: hover) and (pointer: fine) {
     .linkCreateAccount:hover {
-        text-decoration: underline #1185ed;
+        text-decoration: underline var(--link-color);
     }
 }
 

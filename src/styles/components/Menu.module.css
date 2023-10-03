@@ -79,7 +79,7 @@
 
 .subTitle a {
     font-weight: bold;
-    color: #1185ed;
+    color: var(--link-color);
     transition: all ease-in-out 150ms;
 }
 
