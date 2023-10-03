@@ -33,7 +33,7 @@ export default withRouter(props => {
     const [currentSize, setCurrentSize] = useState(sz ? sz : product?.sizes[0])
     const [currentImgIndex, setCurrentImgIndex] = useState(0)
 
-    const productCurrentVariant = product.variants.find(vari => vari.size_id === currentSize.id && vari.color_id === currentColor.id)
+    const productCurrentVariant = product?.variants.find(vari => vari.size_id === currentSize.id && vari.color_id === currentColor.id)
 
     const productPrice = `${userCurrency.symbol} ${(convertDolarToCurrency(productCurrentVariant.price * (product.sold_out.percentage ? 1 - product.sold_out.percentage : 1), userCurrency.code) / 100).toFixed(2)}`
 

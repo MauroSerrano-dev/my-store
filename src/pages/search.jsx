@@ -6,7 +6,6 @@ import Link from 'next/link';
 import Selector from '@/components/material-ui/Selector';
 import { Checkbox, FormControlLabel } from '@mui/material';
 import Footer from '@/components/Footer';
-import { convertDolarToCurrency } from '../../consts';
 
 const THEMES_VALUES = [
     { name: 'Computer', value: 'computer' },
