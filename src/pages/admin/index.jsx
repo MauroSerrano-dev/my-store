@@ -6,13 +6,20 @@ import Link from 'next/link'
 import NoFound404 from '../404';
 
 export default function Admin(props) {
-    const { session } = props
+    const {
+        session,
+        windowWidth,
+        supportsHoverAndPointer,
+    } = props
 
     return (
         session === undefined
             ? <div></div>
             : session === null || session.email !== 'mauro.serrano.dev@gmail.com'
-                ? <NoFound404 />
+                ? <NoFound404
+                    windowWidth={windowWidth}
+                    supportsHoverAndPointer={supportsHoverAndPointer}
+                />
                 : <div className={styles.container}>
                     <header>
                     </header>
