@@ -284,7 +284,7 @@ export default function DataHandler(props) {
         handleResize()
         setTimeout(() => {
             setWebsiteVisible(true)
-        }, 3000)
+        }, 30)
 
         window.addEventListener('resize', handleResize)
 
