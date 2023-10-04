@@ -3,7 +3,11 @@ import { useEffect, useRef } from 'react';
 import lottie from 'lottie-web';
 import styles from '@/styles/404.module.css'
 
-export default function NoFound404() {
+export default function NoFound404(props) {
+
+    const {
+        message = 'Page not found!'
+    } = props
 
     const animationContainer = useRef(null)
 
@@ -34,7 +38,9 @@ export default function NoFound404() {
             >
             </div>
             <div style={{ zIndex: 1 }}>
-                <p style={{ fontWeight: 'bold', fontSize: '24px' }}>Page not found!</p>
+                <p style={{ fontWeight: 'bold', fontSize: '24px' }}>
+                    {message}
+                </p>
                 <Link
                     href="/"
                     className={styles.link}

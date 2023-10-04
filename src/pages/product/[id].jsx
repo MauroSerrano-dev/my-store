@@ -12,6 +12,7 @@ import ColorSelector from '@/components/ColorSelector'
 import SizesSelector from '@/components/SizesSelector'
 import ShareButton from '@/components/ShareButton'
 import CareInstructionsIcons from '@/components/svgs/CareInstructionsIcons'
+import NoFound404 from '../404'
 
 export default withRouter(props => {
     const {
@@ -33,13 +34,14 @@ export default withRouter(props => {
     const [currentSize, setCurrentSize] = useState(sz ? sz : product?.sizes[0])
     const [currentImgIndex, setCurrentImgIndex] = useState(0)
 
-    const productCurrentVariant = product?.variants.find(vari => vari.size_id === currentSize.id && vari.color_id === currentColor.id)
+    const productCurrentVariant = product?.variants.find(vari => vari.size_id === currentSize?.id && vari.color_id === currentColor?.id)
 
-    const productPrice = `${userCurrency.symbol} ${(convertDolarToCurrency(productCurrentVariant?.price * (product.sold_out.percentage ? 1 - product.sold_out.percentage : 1), userCurrency.code) / 100).toFixed(2)}`
+    const productPrice = product ? `${userCurrency.symbol} ${(convertDolarToCurrency(productCurrentVariant?.price * (product.sold_out.percentage ? 1 - product.sold_out.percentage : 1), userCurrency.code) / 100).toFixed(2)}` : undefined
 
-    const originalPrice = `${userCurrency.symbol} ${(convertDolarToCurrency(productCurrentVariant?.price, userCurrency.code) / 100).toFixed(2)}`
+    const originalPrice = product ? `${userCurrency.symbol} ${(convertDolarToCurrency(productCurrentVariant?.price, userCurrency.code) / 100).toFixed(2)}` : undefined
 
     useEffect(() => {
+        console.log('aaa', product, currentColor)
         setCurrentColor(cl ? cl : product?.colors[0])
         setCurrentSize(sz ? sz : product?.sizes[0])
     }, [router])
@@ -117,164 +119,165 @@ export default withRouter(props => {
     }
 
     return (
-        product &&
-        <div className={styles.container}>
-            <Head>
-                <title>{product.title}</title>
-                <meta property="og:title" content={product.title} key='og:title' />
-                <meta property="og:image:alt" content={product.title} key='og:image:alt' />
-                <meta property="og:description" content={product.description} key='og:description' />
-                <meta property="og:image" itemProp="image" content={productMetaImage} key='og:image' />
-                <meta property="og:type" content="product" key='og:type' />
-                <meta property="og:url" content={urlMeta} key='og:url' />
-            </Head>
-            <div className={styles.productContainer}>
-                <section className={`${styles.section} ${styles.one}`}>
-                    <div className={styles.left}>
-                        <div
-                            className={styles.sliderContainer}
-                        >
-                            <ShareButton
-                                link={`${process.env.NEXT_PUBLIC_DOMAIN}/product/${product.id}${currentColor.id !== product.colors[0].id && currentSize.id !== product.sizes[0].id
-                                    ? `?sz=${currentSize.title.toLowerCase()}&cl=${currentColor.title.replace(' ', '+').toLowerCase()}`
-                                    : currentSize.id !== product.sizes[0].id
-                                        ? `?sz=${currentSize.title.toLowerCase()}`
-                                        : currentColor.id !== product.colors[0].id
-                                            ? `?cl=${currentColor.title.replace(' ', '+').toLowerCase()}`
-                                            : ''
-                                    }`}
-                                wppMsg={`${product.title} (${currentColor.title})`}
-                                mobile={mobile}
-                                style={{
-                                    position: 'absolute',
-                                    top: '2%',
-                                    right: '3%'
-                                }}
-                            />
-                            {product.colors.map((color, i) =>
-                                <ImagesSlider
-                                    key={i}
-                                    index={currentImgIndex}
-                                    onChange={(imgIndex) => setCurrentImgIndex(imgIndex)}
-                                    width={windowWidth > 1074 ? 450 : windowWidth > 549 ? 450 : 350}
-                                    images={product.images.filter(img => img.color_id === color.id)}
+        product && currentColor && currentSize
+            ? <div className={styles.container}>
+                <Head>
+                    <title>{product.title}</title>
+                    <meta property="og:title" content={product.title} key='og:title' />
+                    <meta property="og:image:alt" content={product.title} key='og:image:alt' />
+                    <meta property="og:description" content={product.description} key='og:description' />
+                    <meta property="og:image" itemProp="image" content={productMetaImage} key='og:image' />
+                    <meta property="og:type" content="product" key='og:type' />
+                    <meta property="og:url" content={urlMeta} key='og:url' />
+                </Head>
+                <div className={styles.productContainer}>
+                    <section className={`${styles.section} ${styles.one}`}>
+                        <div className={styles.left}>
+                            <div
+                                className={styles.sliderContainer}
+                            >
+                                <ShareButton
+                                    link={`${process.env.NEXT_PUBLIC_DOMAIN}/product/${product.id}${currentColor.id !== product.colors[0].id && currentSize.id !== product.sizes[0].id
+                                        ? `?sz=${currentSize.title.toLowerCase()}&cl=${currentColor.title.replace(' ', '+').toLowerCase()}`
+                                        : currentSize.id !== product.sizes[0].id
+                                            ? `?sz=${currentSize.title.toLowerCase()}`
+                                            : currentColor.id !== product.colors[0].id
+                                                ? `?cl=${currentColor.title.replace(' ', '+').toLowerCase()}`
+                                                : ''
+                                        }`}
+                                    wppMsg={`${product.title} (${currentColor.title})`}
+                                    mobile={mobile}
                                     style={{
-                                        position: i === 0 ? 'relative' : 'absolute',
-                                        zIndex: color.id === currentColor.id ? 1 : 0,
-                                        opacity: color.id === currentColor.id ? 1 : 0,
+                                        position: 'absolute',
+                                        top: '2%',
+                                        right: '3%'
                                     }}
                                 />
-                            )}
-                        </div>
-                    </div>
-                    <div className={styles.right}>
-                        <h2>{product.title}</h2>
-                        {product.sold_out.percentage &&
-                            <div
-                                className={styles.soldOut}
-                            >
-                                <p>
-                                    {Math.round(100 * product.sold_out.percentage)}% OFF
-                                </p>
+                                {product.colors.map((color, i) =>
+                                    <ImagesSlider
+                                        key={i}
+                                        index={currentImgIndex}
+                                        onChange={(imgIndex) => setCurrentImgIndex(imgIndex)}
+                                        width={windowWidth > 1074 ? 450 : windowWidth > 549 ? 450 : 350}
+                                        images={product.images.filter(img => img.color_id === color.id)}
+                                        style={{
+                                            position: i === 0 ? 'relative' : 'absolute',
+                                            zIndex: color.id === currentColor.id ? 1 : 0,
+                                            opacity: color.id === currentColor.id ? 1 : 0,
+                                        }}
+                                    />
+                                )}
                             </div>
-                        }
-                        <div className={styles.prices}>
+                        </div>
+                        <div className={styles.right}>
+                            <h2>{product.title}</h2>
                             {product.sold_out.percentage &&
+                                <div
+                                    className={styles.soldOut}
+                                >
+                                    <p>
+                                        {Math.round(100 * product.sold_out.percentage)}% OFF
+                                    </p>
+                                </div>
+                            }
+                            <div className={styles.prices}>
+                                {product.sold_out.percentage &&
+                                    <p
+                                        style={{
+                                            color: 'grey',
+                                            textDecoration: 'line-through',
+                                            fontSize: '17px',
+                                        }}
+                                    >
+                                        {originalPrice}
+                                    </p>
+                                }
                                 <p
                                     style={{
-                                        color: 'grey',
-                                        textDecoration: 'line-through',
-                                        fontSize: '17px',
+                                        fontSize: '27px',
+                                        color: 'var(--primary)',
+                                        fontWeight: 'bold',
                                     }}
                                 >
-                                    {originalPrice}
+                                    {productPrice}
                                 </p>
-                            }
-                            <p
-                                style={{
-                                    fontSize: '27px',
-                                    color: 'var(--primary)',
-                                    fontWeight: 'bold',
+                            </div>
+                            <div>
+                                <p style={{ textAlign: 'start', fontWeight: 'bold' }}>Pick a color</p>
+                                <ColorSelector
+                                    options={product.colors}
+                                    value={[currentColor]}
+                                    onChange={handleColorChange}
+                                />
+                            </div>
+                            <div>
+                                <p style={{ textAlign: 'start', fontWeight: 'bold' }}>Pick a size</p>
+                                <SizesSelector
+                                    value={[currentSize]}
+                                    options={product.sizes}
+                                    onChange={handleSizeChange}
+                                />
+                            </div>
+                            <Button
+                                variant='contained'
+                                onClick={() => handleAddToCart()}
+                                sx={{
+                                    width: '100%',
+                                    height: '55px'
                                 }}
                             >
-                                {productPrice}
-                            </p>
+                                <ShoppingCartOutlinedIcon />
+                                Add to Cart
+                            </Button>
+                            <Button
+                                variant='outlined'
+                                onClick={() => handleBuyNow()}
+                                sx={{
+                                    width: '100%',
+                                    height: '55px'
+                                }}
+                            >
+                                <CreditCardOutlinedIcon />
+                                Buy Now
+                            </Button>
                         </div>
-                        <div>
-                            <p style={{ textAlign: 'start', fontWeight: 'bold' }}>Pick a color</p>
-                            <ColorSelector
-                                options={product.colors}
-                                value={[currentColor]}
-                                onChange={handleColorChange}
+                    </section>
+                    <section className={`${styles.section} ${styles.two}`}>
+                        <div className={styles.sectionTitle}>
+                            <h1 style={{ textAlign: 'start' }}>Description</h1>
+                        </div>
+                        <div className={styles.sectionBody}>
+                        </div>
+                    </section>
+                    <section className={`${styles.section} ${styles.three}`}>
+                        <div className={styles.sectionTitle}>
+                            <h1 style={{ textAlign: 'start' }}>Key features</h1>
+                        </div>
+                        <div className={styles.sectionBody}>
+                        </div>
+                    </section>
+                    <section className={`${styles.section} ${styles.four}`}>
+                        <div className={styles.sectionTitle}>
+                            <h1 style={{ textAlign: 'start' }}>Care instructions</h1>
+                        </div>
+                        <div className={styles.sectionBody}>
+                            <CareInstructionsIcons
+                                itemSize={mobile ? '33.333%' : '20%'}
+                                iconSize={50}
+                                fontSize={mobile ? 10 : 14}
                             />
                         </div>
-                        <div>
-                            <p style={{ textAlign: 'start', fontWeight: 'bold' }}>Pick a size</p>
-                            <SizesSelector
-                                value={[currentSize]}
-                                options={product.sizes}
-                                onChange={handleSizeChange}
-                            />
+                    </section>
+                    <section className={`${styles.section} ${styles.five}`}>
+                        <div className={styles.sectionTitle}>
+                            <h1 style={{ textAlign: 'start' }}>Size guide</h1>
                         </div>
-                        <Button
-                            variant='contained'
-                            onClick={() => handleAddToCart()}
-                            sx={{
-                                width: '100%',
-                                height: '55px'
-                            }}
-                        >
-                            <ShoppingCartOutlinedIcon />
-                            Add to Cart
-                        </Button>
-                        <Button
-                            variant='outlined'
-                            onClick={() => handleBuyNow()}
-                            sx={{
-                                width: '100%',
-                                height: '55px'
-                            }}
-                        >
-                            <CreditCardOutlinedIcon />
-                            Buy Now
-                        </Button>
-                    </div>
-                </section>
-                <section className={`${styles.section} ${styles.two}`}>
-                    <div className={styles.sectionTitle}>
-                        <h1 style={{ textAlign: 'start' }}>Description</h1>
-                    </div>
-                    <div className={styles.sectionBody}>
-                    </div>
-                </section>
-                <section className={`${styles.section} ${styles.three}`}>
-                    <div className={styles.sectionTitle}>
-                        <h1 style={{ textAlign: 'start' }}>Key features</h1>
-                    </div>
-                    <div className={styles.sectionBody}>
-                    </div>
-                </section>
-                <section className={`${styles.section} ${styles.four}`}>
-                    <div className={styles.sectionTitle}>
-                        <h1 style={{ textAlign: 'start' }}>Care instructions</h1>
-                    </div>
-                    <div className={styles.sectionBody}>
-                        <CareInstructionsIcons
-                            itemSize={mobile ? '33.333%' : '20%'}
-                            iconSize={50}
-                            fontSize={mobile ? 10 : 14}
-                        />
-                    </div>
-                </section>
-                <section className={`${styles.section} ${styles.five}`}>
-                    <div className={styles.sectionTitle}>
-                        <h1 style={{ textAlign: 'start' }}>Size guide</h1>
-                    </div>
-                    <div className={styles.sectionBody}>
-                    </div>
-                </section>
+                        <div className={styles.sectionBody}>
+                        </div>
+                    </section>
+                </div>
             </div>
-        </div>
+            : <NoFound404 message='Product not found!' />
     )
 })
 
