@@ -30,7 +30,6 @@ export default function NoFound404(props) {
     }, []);
 
     function handleHover() {
-        console.log('eita porra', supportsHoverAndPointer, windowWidth)
         if (supportsHoverAndPointer)
             setHoverLink(true)
     }
