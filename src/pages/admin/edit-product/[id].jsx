@@ -16,7 +16,6 @@ export default withRouter(props => {
     const {
         router,
         supportsHoverAndPointer,
-        windowWidth,
         session,
     } = props;
 
@@ -47,10 +46,7 @@ export default withRouter(props => {
         session === undefined
             ? <div></div>
             : session === null || session.email !== 'mauro.serrano.dev@gmail.com'
-                ? <NoFound404
-                    windowWidth={windowWidth}
-                    supportsHoverAndPointer={supportsHoverAndPointer}
-                />
+                ? <NoFound404 />
                 : <div className={styles.container}>
                     <header>
                     </header>

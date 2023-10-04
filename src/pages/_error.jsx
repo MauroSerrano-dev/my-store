@@ -1,5 +1,6 @@
-function Error({ statusCode }) {
+import styles from '@/styles/_error.module.css'
 
+function Error({ statusCode }) {
     return (
         <div
             className="fillWidth flex center"
@@ -15,11 +16,7 @@ function Error({ statusCode }) {
             </p>
             <Link
                 href="/"
-                style={{
-                    fontWeight: 'bold',
-                    color: 'var(--link-color)', //'#999999'
-                    transition: 'all ease-in-out 150ms',
-                }}
+                className={styles.link}
             >
                 Back to homepage
             </Link>

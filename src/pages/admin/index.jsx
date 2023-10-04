@@ -7,19 +7,14 @@ import NoFound404 from '../404';
 
 export default function Admin(props) {
     const {
-        session,
-        windowWidth,
-        supportsHoverAndPointer,
+        session
     } = props
 
     return (
         session === undefined
             ? <div></div>
             : session === null || session.email !== 'mauro.serrano.dev@gmail.com'
-                ? <NoFound404
-                    windowWidth={windowWidth}
-                    supportsHoverAndPointer={supportsHoverAndPointer}
-                />
+                ? <NoFound404 />
                 : <div className={styles.container}>
                     <header>
                     </header>

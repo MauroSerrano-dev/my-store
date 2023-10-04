@@ -8,9 +8,7 @@ import NoFound404 from '@/pages/404'
 
 export default function EditProduct(props) {
     const {
-        session,
-        windowWidth,
-        supportsHoverAndPointer,
+        session
     } = props
 
     const [productIdInput, setProductIdInput] = useState('')
@@ -21,10 +19,7 @@ export default function EditProduct(props) {
         session === undefined
             ? <div></div>
             : session === null || session.email !== 'mauro.serrano.dev@gmail.com'
-                ? <NoFound404
-                    windowWidth={windowWidth}
-                    supportsHoverAndPointer={supportsHoverAndPointer}
-                />
+                ? <NoFound404 />
                 : <div className={styles.container}>
                     <header>
                     </header>

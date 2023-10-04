@@ -1,19 +1,11 @@
 import Link from 'next/link';
 import { useEffect, useRef, useState } from 'react';
 import lottie from 'lottie-web';
+import styles from '@/styles/404.module.css'
 
-export default function NoFound404(props) {
-
-    const {
-        windowWidth,
-        supportsHoverAndPointer
-    } = props
-
-    const mobile = windowWidth < 630
+export default function NoFound404() {
 
     const animationContainer = useRef(null);
-
-    const [hoverLink, setHoverLink] = useState(false)
 
     useEffect(() => {
         const animation = lottie.loadAnimation({
@@ -29,15 +21,6 @@ export default function NoFound404(props) {
         };
     }, []);
 
-    function handleHover() {
-        if (supportsHoverAndPointer)
-            setHoverLink(true)
-    }
-
-    function handleRemoveHover() {
-        setHoverLink(false)
-    }
-
     return (
         <div
             className='flex column align-center fillWidth'
@@ -47,11 +30,9 @@ export default function NoFound404(props) {
         >
             <div
                 ref={animationContainer}
+                className={styles.animationContainer}
                 style={{
-                    width: mobile ? '93%' : 600,
-                    marginTop: '-40px',
-                    marginBottom: mobile ? '-17.5vw' : '-110px',
-                    transition: 'width ease-in-out 200ms'
+
                 }}
             >
             </div>
@@ -59,13 +40,7 @@ export default function NoFound404(props) {
                 <p style={{ fontWeight: 'bold', fontSize: '24px' }}>Page not found!</p>
                 <Link
                     href="/"
-                    onMouseEnter={handleHover}
-                    onMouseOut={handleRemoveHover}
-                    style={{
-                        fontWeight: 'bold',
-                        color: hoverLink ? '#999999' : 'var(--link-color)',
-                        transition: 'all ease-in-out 150ms',
-                    }}
+                    className={styles.link}
                 >
                     Back to homepage
                 </Link>

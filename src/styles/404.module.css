@@ -1,0 +1,27 @@
+.animationContainer {
+    width: 600;
+    margin-top: -40px;
+    margin-bottom: -110px;
+    transition: width ease-in-out 200ms;
+}
+
+.link {
+    font-weight: bold;
+    color: var(--link-color);
+    transition: all ease-in-out 150ms;
+}
+
+/* Enable hover only on non-touch devices */
+@media (hover: hover) and (pointer: fine) {
+    .link:hover {
+        color: #999999
+    }
+}
+
+/* Mobile */
+@media (max-width: 700px) {
+    .animationContainer {
+        width: 93%;
+        margin-bottom: -17.5vw;
+    }
+}
