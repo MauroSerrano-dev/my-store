@@ -94,6 +94,6 @@
     }
 
     .container:hover .cartCounter {
-        outline: 2px solid #00929c;
+        outline: 2px solid var(--primary-semi-dark);
     }
 }
