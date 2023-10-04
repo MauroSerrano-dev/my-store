@@ -9,6 +9,11 @@
     transition: all ease-in-out 150ms;
 }
 
+.errorMsg {
+    font-weight: bold;
+    font-size: 24px;
+}
+
 /* Enable hover only on non-touch devices */
 @media (hover: hover) and (pointer: fine) {
     .link:hover {
@@ -20,5 +25,9 @@
 @media (max-width: 530px) {
     .animationContainer {
         width: 93%;
+    }
+
+    .errorMsg {
+        font-size: 20px;
     }
 }

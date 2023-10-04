@@ -34,7 +34,7 @@ function Error({ statusCode }) {
             >
             </div>
             <div style={{ zIndex: 1 }}>
-                <p style={{ fontWeight: 'bold', fontSize: '24px' }}>
+                <p className={styles.errorMsg}>
                     {statusCode
                         ? `An error ${statusCode} occurred on server`
                         : 'An error occurred on the website'

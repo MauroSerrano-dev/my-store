@@ -1,7 +1,7 @@
 .animationContainer {
     width: 600px;
     margin-top: -40px;
-    margin-bottom: -110px;
+    margin-bottom: -115px;
     transition: width ease-in-out 200ms;
 }
 
@@ -22,6 +22,6 @@
 @media (max-width: 630px) {
     .animationContainer {
         width: 93%;
-        margin-bottom: -17.5vw;
+        margin-bottom: -18.5vw;
     }
 }
