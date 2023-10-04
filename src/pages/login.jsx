@@ -6,13 +6,17 @@ import { PiHandshakeLight } from "react-icons/pi";
 import ReCAPTCHA from "react-google-recaptcha";
 import { useState } from 'react';
 import { signInWithPopup, GoogleAuthProvider, signInWithRedirect } from "firebase/auth";
-import Router from 'next/router';
 import { STORE_NAME } from '../../consts';
 
 const provider = new GoogleAuthProvider();
 
 export default function Login(props) {
-    const { session, login, auth, mobile } = props
+    const {
+        login,
+        auth,
+        mobile,
+        router
+    } = props
 
     const [reCaptchaSolve, setReCaptchaSolve] = useState(false)
 
@@ -26,7 +30,7 @@ export default function Login(props) {
 
     function googleLogin() {
         signInWithPopup(auth, provider)
-            .then(result => Router.push('/'))
+            .then(result => router.push('/'))
             .catch(error => console.error(error))
     }
 

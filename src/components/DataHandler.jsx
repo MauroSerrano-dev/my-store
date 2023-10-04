@@ -7,7 +7,6 @@ import { initializeApp } from 'firebase/app';
 import { firebaseConfig } from '../../firebase.config';
 import { CART_COOKIE } from '../../consts';
 import SearchBar from './SearchBar';
-import Router from 'next/router';
 import { useCycle } from "framer-motion";
 import Menu from './Menu';
 import { motion } from 'framer-motion';
@@ -197,13 +196,13 @@ export default function DataHandler(props) {
         } catch (error) {
             console.error('Erro ao fazer login:', error);
         }
-        Router.push('/')
+        router.push('/')
     }
 
     function logout() {
         setSession(null)
         signOut(auth)
-        Router.push('/')
+        router.push('/')
     }
 
     function handleIntroductionComplete() {
@@ -325,7 +324,7 @@ export default function DataHandler(props) {
 
     function handleClickSearch() {
         const language = Cookies.get('LANG') === 'en' ? false : Cookies.get('LANG')
-        Router.push(`/search?s=${search}${language ? `&l=${language.slice(0, 2)}` : ''}`)
+        router.push(`/search?s=${search}${language ? `&l=${language.slice(0, 2)}` : ''}`)
     }
 
     function handleKeyDownSearch(event) {
