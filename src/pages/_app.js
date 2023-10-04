@@ -32,15 +32,6 @@ export default function App(props) {
   const { Component, pageProps } = props
   const router = useRouter();
 
-  useEffect(() => {
-    // Verificar se ocorreu um erro durante a renderização da página
-    console.log('aaa', pageProps.error)
-    if (pageProps.error) {
-      // Redirecionar para a página de erro personalizada
-      router.push('/_error');
-    }
-  }, [pageProps.error, router]);
-
   return (
     <div>
       <Head>
