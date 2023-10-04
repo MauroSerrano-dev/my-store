@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import { useEffect, useRef } from 'react';
 import lottie from 'lottie-web';
-import styles from '@/styles/404.module.css'
+import styles from '@/styles/_error.module.css'
 
 function Error({ statusCode }) {
 
