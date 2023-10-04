@@ -1,26 +1,52 @@
-import styles from '@/styles/_error.module.css'
-import Link from 'next/link'
+import Link from 'next/link';
+import { useEffect, useRef } from 'react';
+import lottie from 'lottie-web';
+import styles from '@/styles/404.module.css'
 
 function Error({ statusCode }) {
+
+    const animationContainer = useRef(null)
+
+    useEffect(() => {
+        const animation = lottie.loadAnimation({
+            container: animationContainer.current,
+            renderer: 'svg', // or 'canvas' or 'html'
+            loop: true,
+            autoplay: true,
+            animationData: require('../../utils/animations/animationError.json'),
+        })
+
+        return () => {
+            animation.destroy();
+        }
+    }, [])
+
     return (
         <div
-            className="fillWidth flex center column"
+            className='flex column align-center fillWidth'
             style={{
-                '--text-color': 'var(--text-white)'
+                '--text-color': 'var(--text-white)',
             }}
         >
-            <p style={{ fontWeight: 'bold', fontSize: '24px' }}>
-                {statusCode
-                    ? `An error ${statusCode} occurred on server`
-                    : 'An error occurred on the website'
-                }
-            </p>
-            <Link
-                href="/"
-                className={styles.link}
+            <div
+                ref={animationContainer}
+                className={styles.animationContainer}
             >
-                Back to homepage
-            </Link>
+            </div>
+            <div style={{ zIndex: 1 }}>
+                <p style={{ fontWeight: 'bold', fontSize: '24px' }}>
+                    {statusCode
+                        ? `An error ${statusCode} occurred on server`
+                        : 'An error occurred on the website'
+                    }
+                </p>
+                <Link
+                    href="/"
+                    className={styles.link}
+                >
+                    Back to homepage
+                </Link>
+            </div>
         </div>
     )
 }

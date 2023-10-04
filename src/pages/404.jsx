@@ -1,11 +1,11 @@
 import Link from 'next/link';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef } from 'react';
 import lottie from 'lottie-web';
 import styles from '@/styles/404.module.css'
 
 export default function NoFound404() {
 
-    const animationContainer = useRef(null);
+    const animationContainer = useRef(null)
 
     useEffect(() => {
         const animation = lottie.loadAnimation({
@@ -14,12 +14,12 @@ export default function NoFound404() {
             loop: true,
             autoplay: true,
             animationData: require('../../utils/animations/animation404.json'),
-        });
+        })
 
         return () => {
             animation.destroy();
-        };
-    }, []);
+        }
+    }, [])
 
     return (
         <div
@@ -31,9 +31,6 @@ export default function NoFound404() {
             <div
                 ref={animationContainer}
                 className={styles.animationContainer}
-                style={{
-
-                }}
             >
             </div>
             <div style={{ zIndex: 1 }}>

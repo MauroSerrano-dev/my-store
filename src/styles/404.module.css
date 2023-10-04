@@ -19,7 +19,7 @@
 }
 
 /* Mobile */
-@media (max-width: 700px) {
+@media (max-width: 530px) {
     .animationContainer {
         width: 93%;
         margin-bottom: -17.5vw;
