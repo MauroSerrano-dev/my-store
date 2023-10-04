@@ -4,6 +4,8 @@ import Script from 'next/script'
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import MontserratRegular from '../../public/fonts/montserrat.ttf';
 import DataHandler from '@/components/DataHandler'
+import { useRouter } from 'next/router';
+import { useEffect } from 'react';
 
 const primaryColor = '#1189C4'
 
@@ -28,6 +30,16 @@ const mainTheme = createTheme({
 
 export default function App(props) {
   const { Component, pageProps } = props
+  const router = useRouter();
+
+  useEffect(() => {
+    // Verificar se ocorreu um erro durante a renderização da página
+    console.log('aaa', pageProps.error)
+    if (pageProps.error) {
+      // Redirecionar para a página de erro personalizada
+      router.push('/_error');
+    }
+  }, [pageProps.error, router]);
 
   return (
     <div>
@@ -68,7 +80,7 @@ export default function App(props) {
         }
       </Head>
       <ThemeProvider theme={mainTheme}>
-        <DataHandler pageProps={pageProps} Component={Component} primaryColor={primaryColor} />
+        <DataHandler pageProps={pageProps} Component={Component} primaryColor={primaryColor} router={router} />
       </ThemeProvider>
     </div>
   )

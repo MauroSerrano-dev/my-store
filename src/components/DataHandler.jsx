@@ -7,7 +7,7 @@ import { initializeApp } from 'firebase/app';
 import { firebaseConfig } from '../../firebase.config';
 import { CART_COOKIE } from '../../consts';
 import SearchBar from './SearchBar';
-import Router, { useRouter } from 'next/router';
+import Router from 'next/router';
 import { useCycle } from "framer-motion";
 import Menu from './Menu';
 import { motion } from 'framer-motion';
@@ -20,7 +20,12 @@ const SUB_NAVBAR_HEIGHT_MOBILE = 43
 const MOBILE_LIMIT = 1075
 
 export default function DataHandler(props) {
-    const { Component, pageProps, primaryColor } = props
+    const {
+        Component,
+        pageProps,
+        primaryColor,
+        router
+    } = props
     const [cart, setCart] = useState()
     const [isScrollAtTop, setIsScrollAtTop] = useState(true)
     const [session, setSession] = useState()
@@ -34,8 +39,6 @@ export default function DataHandler(props) {
     const [supportsHoverAndPointer, setSupportsHoverAndPointer] = useState()
     const [menuOpen, switchMenu] = useCycle(false, true);
     const [loading, setLoading] = useState(false)
-
-    const router = useRouter();
 
     // Inicialize o Firebase
     const firebaseApp = initializeApp(firebaseConfig)
