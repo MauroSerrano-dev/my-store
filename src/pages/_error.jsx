@@ -1,21 +1,4 @@
-import { useState } from "react"
-
-function Error(props) {
-    const {
-        statusCode,
-        supportsHoverAndPointer
-    } = props
-
-    const [hoverLink, setHoverLink] = useState(false)
-
-    function handleHover() {
-        if (supportsHoverAndPointer)
-            setHoverLink(true)
-    }
-
-    function handleRemoveHover() {
-        setHoverLink(false)
-    }
+function Error({ statusCode }) {
 
     return (
         <div
@@ -32,11 +15,9 @@ function Error(props) {
             </p>
             <Link
                 href="/"
-                onMouseEnter={handleHover}
-                onMouseOut={handleRemoveHover}
                 style={{
                     fontWeight: 'bold',
-                    color: hoverLink ? '#999999' : 'var(--link-color)',
+                    color: 'var(--link-color)', //'#999999'
                     transition: 'all ease-in-out 150ms',
                 }}
             >
