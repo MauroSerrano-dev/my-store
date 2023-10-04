@@ -9,7 +9,7 @@ import SizesSelector from '@/components/SizesSelector';
 import { Button, Checkbox, FormControlLabel, Slider } from '@mui/material';
 import Link from 'next/link';
 import KeyboardArrowLeftRoundedIcon from '@mui/icons-material/KeyboardArrowLeftRounded';
-import NoFound404 from '@/pages/404';
+import NoFound404 from '@/pages/40a4';
 
 export default withRouter(props => {
 
