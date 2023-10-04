@@ -4,7 +4,7 @@ import Link from 'next/link'
 function Error({ statusCode }) {
     return (
         <div
-            className="fillWidth flex center"
+            className="fillWidth flex center column"
             style={{
                 '--text-color': 'var(--text-white)'
             }}
@@ -12,7 +12,7 @@ function Error({ statusCode }) {
             <p style={{ fontWeight: 'bold', fontSize: '24px' }}>
                 {statusCode
                     ? `An error ${statusCode} occurred on server`
-                    : 'An error occurred on client'
+                    : 'An error occurred on the website'
                 }
             </p>
             <Link
