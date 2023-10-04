@@ -1,6 +1,7 @@
 import {
     collection,
     doc,
+    updateDoc,
     getDoc,
     getDocs,
     orderBy,
@@ -328,6 +329,34 @@ async function getAllProductPrintifyIds() {
     };
 }
 
+async function updateProduct(product) {
+    if (!product || !product.id) {
+        return {
+            status: 400,
+            msg: "Invalid update data",
+        }
+    }
+
+    const productRef = doc(db, process.env.COLL_PRODUCTS, product.id);
+
+    try {
+        await updateDoc(productRef, {
+            ...product,
+        });
+
+        return {
+            status: 200,
+            msg: `Product ${product.id} updated successfully!`,
+        };
+    } catch (error) {
+        console.log("Error updating product:", error);
+        return {
+            status: 500,
+            msg: "An error occurred while updating the product.",
+        };
+    }
+}
+
 export {
     createProduct,
     getProductsByCategory,
@@ -335,5 +364,6 @@ export {
     getProductById,
     getAllProductPrintifyIds,
     getAllProducts,
-    getProductsByTitle
+    getProductsByTitle,
+    updateProduct,
 }

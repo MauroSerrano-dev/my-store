@@ -11,9 +11,14 @@ import PersonOutlineOutlinedIcon from '@mui/icons-material/PersonOutlineOutlined
 import styles from '@/styles/components/AvatarMenu.module.css'
 import { Button } from '@mui/material'
 import ReceiptLongRoundedIcon from '@mui/icons-material/ReceiptLongRounded';
+import AdminPanelSettingsRoundedIcon from '@mui/icons-material/AdminPanelSettingsRounded';
 
 export default function AvatarMenu(props) {
-  const { logout, session, supportsHoverAndPointer } = props
+  const {
+    logout,
+    session,
+    supportsHoverAndPointer
+  } = props
 
   const [open, setOpen] = useState(false)
 
@@ -51,9 +56,8 @@ export default function AvatarMenu(props) {
           />
         </div>
       }
-
       {
-        open &&
+        open && session !== undefined &&
         <div
           className={styles.contentContainer}
           style={{
@@ -117,6 +121,20 @@ export default function AvatarMenu(props) {
                   Support
                 </MenuItem>
               </Link>
+              {process.env.NEXT_PUBLIC_AUTHORIZED_EMAILS.includes(session.email) &&
+                <Link
+                  href={'/admin'}
+                  className='noUnderline'
+                  onClick={() => setOpen(false)}
+                >
+                  <MenuItem>
+                    <ListItemIcon>
+                      <AdminPanelSettingsRoundedIcon fontSize="medium" />
+                    </ListItemIcon>
+                    Admin
+                  </MenuItem>
+                </Link>
+              }
               <MenuItem onClick={handleLogout}>
                 <ListItemIcon>
                   <Logout fontSize="medium" />

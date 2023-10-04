@@ -43,7 +43,6 @@ export default withRouter(props => {
     const [type, setType] = useState()
     const [colorsChained, setColorsChained] = useState([])
     const [sizesChained, setSizesChained] = useState({})
-    const [currentImgIndex, setCurrentImgIndex] = useState(0)
 
     useEffect(() => {
         if (router.isReady) {
@@ -63,7 +62,7 @@ export default withRouter(props => {
         }
     }, [router])
 
-    async function saveProduct() {
+    async function createProduct() {
 
         if (product.title === '') {
             showInfoToast({ msg: 'Some fields missing.' })
@@ -405,8 +404,6 @@ export default withRouter(props => {
                                     />
                                     {images?.[product?.colors?.[colorIndex]?.id] &&
                                         <ImagesSlider
-                                            index={currentImgIndex}
-                                            onChange={(imgIndex) => setCurrentImgIndex(imgIndex)}
                                             images={images[product.colors[colorIndex].id]}
                                         />
                                     }
@@ -620,13 +617,13 @@ export default withRouter(props => {
                                     }
                                     <Button
                                         variant='contained'
-                                        onClick={() => saveProduct()}
+                                        onClick={() => createProduct()}
                                         sx={{
                                             width: '100%',
                                             color: '#ffffff',
                                         }}
                                     >
-                                        Save Product
+                                        Create Product
                                     </Button>
                                 </div>
                             </div>
