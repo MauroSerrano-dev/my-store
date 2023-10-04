@@ -1,10 +1,27 @@
+import styles from '@/styles/_error.module.css'
+import Link from 'next/link'
+
 function Error({ statusCode }) {
     return (
-        <p>
-            {statusCode
-                ? `An error ${statusCode} occurred on server`
-                : 'An error occurred on client'}
-        </p>
+        <div
+            className="fillWidth flex center"
+            style={{
+                '--text-color': 'var(--text-white)'
+            }}
+        >
+            <p style={{ fontWeight: 'bold', fontSize: '24px' }}>
+                {statusCode
+                    ? `An error ${statusCode} occurred on server`
+                    : 'An error occurred on client'
+                }
+            </p>
+            <Link
+                href="/"
+                className={styles.link}
+            >
+                Back to homepage
+            </Link>
+        </div>
     )
 }
 

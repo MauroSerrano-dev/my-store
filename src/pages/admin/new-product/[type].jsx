@@ -15,7 +15,7 @@ import SizesSelector from '@/components/SizesSelector';
 import Chain from '@/components/svgs/Chain';
 import BrokeChain from '@/components/svgs/BrokeChain';
 import { showErrorToast, showInfoToast, showSuccessToast } from '../../../../utils/toasts';
-import NoFound404 from '@/pages/40a4';
+import NoFound404 from '@/pages/404';
 
 const INICIAL_PRODUCT = {
     id: '',

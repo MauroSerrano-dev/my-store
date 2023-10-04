@@ -4,7 +4,7 @@ import { Button } from '@mui/material'
 import Link from 'next/link'
 import { useState } from 'react'
 import KeyboardArrowLeftRoundedIcon from '@mui/icons-material/KeyboardArrowLeftRounded';
-import NoFound404 from '@/pages/40a4'
+import NoFound404 from '@/pages/404'
 
 export default function EditProduct(props) {
     const {
