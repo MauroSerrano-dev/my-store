@@ -1,4 +1,4 @@
-import styles from '@/styles/admin.module.css'
+import styles from '@/styles/admin/index.module.css'
 import AddCircleOutlineRoundedIcon from '@mui/icons-material/AddCircleOutlineRounded';
 import EditNoteRoundedIcon from '@mui/icons-material/EditNoteRounded';
 import FormatListBulletedRoundedIcon from '@mui/icons-material/FormatListBulletedRounded';

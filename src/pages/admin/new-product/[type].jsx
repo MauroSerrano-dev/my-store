@@ -1,5 +1,5 @@
 import ImagesSlider from '@/components/ImagesSlider'
-import styles from '@/styles/admin/new-product.module.css'
+import styles from '@/styles/admin/new-product/type.module.css'
 import { Button, Checkbox, Slider } from '@mui/material'
 import { useEffect, useState } from 'react'
 import KeyboardArrowLeftRoundedIcon from '@mui/icons-material/KeyboardArrowLeftRounded';
@@ -43,6 +43,7 @@ export default withRouter(props => {
     const [type, setType] = useState()
     const [colorsChained, setColorsChained] = useState([])
     const [sizesChained, setSizesChained] = useState({})
+    const [disableCreateButton, setDisableCreateButton] = useState(false)
 
     useEffect(() => {
         if (router.isReady) {
@@ -63,9 +64,11 @@ export default withRouter(props => {
     }, [router])
 
     async function createProduct() {
+        setDisableCreateButton(true)
 
         if (product.title === '') {
             showInfoToast({ msg: 'Some fields missing.' })
+            setDisableCreateButton(false)
             return
         }
 
@@ -103,6 +106,8 @@ export default withRouter(props => {
                     : showErrorToast({ msg: response.msg })
             })
             .catch(err => showErrorToast({ msg: err }))
+
+        setDisableCreateButton(false)
     }
 
     function updateProductField(fieldName, newValue) {
@@ -352,34 +357,32 @@ export default withRouter(props => {
                     </header>
                     <main className={styles.main}>
                         <div className={styles.top}>
-                            <div className={styles.productOption}>
-                                <Link
-                                    href='/admin/new-product'
-                                    className='noUnderline'
+                            <Link
+                                href='/admin/new-product'
+                                className='noUnderline'
+                            >
+                                <Button
+                                    variant='outlined'
+                                    sx={{
+                                        display: 'flex',
+                                        alignItems: 'center',
+                                        justifyContent: 'center',
+                                    }}
                                 >
-                                    <Button
-                                        variant='outlined'
-                                        sx={{
-                                            display: 'flex',
-                                            alignItems: 'center',
-                                            justifyContent: 'center',
+                                    <KeyboardArrowLeftRoundedIcon
+                                        style={{
+                                            marginLeft: '-0.5rem'
+                                        }}
+                                    />
+                                    <p
+                                        style={{
+                                            color: 'var(--primary)'
                                         }}
                                     >
-                                        <KeyboardArrowLeftRoundedIcon
-                                            style={{
-                                                marginLeft: '-0.5rem'
-                                            }}
-                                        />
-                                        <p
-                                            style={{
-                                                color: 'var(--primary)'
-                                            }}
-                                        >
-                                            Voltar
-                                        </p>
-                                    </Button>
-                                </Link>
-                            </div>
+                                        Back
+                                    </p>
+                                </Button>
+                            </Link>
                         </div>
                         {type &&
                             <div className={styles.productContainer}>
@@ -617,7 +620,8 @@ export default withRouter(props => {
                                     }
                                     <Button
                                         variant='contained'
-                                        onClick={() => createProduct()}
+                                        onClick={createProduct}
+                                        disabled={disableCreateButton}
                                         sx={{
                                             width: '100%',
                                             color: '#ffffff',

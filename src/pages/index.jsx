@@ -1,5 +1,5 @@
 import { Inter } from 'next/font/google'
-import styles from '@/styles/Home.module.css'
+import styles from '@/styles/index.module.css'
 import Carousel from '@/components/CarouselLoop'
 import CarouselProducts from '@/components/CarouselProducts'
 import { useEffect, useState } from 'react'

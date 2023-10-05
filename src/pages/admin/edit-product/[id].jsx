@@ -31,6 +31,7 @@ export default withRouter(props => {
     const [colorIndex, setColorIndex] = useState(0)
     const [colorsChained, setColorsChained] = useState([])
     const [sizesChained, setSizesChained] = useState({})
+    const [disableUpdateButton, setDisableUpdateButton] = useState(false)
 
     useEffect(() => {
         if (router.isReady) {
@@ -239,11 +240,13 @@ export default withRouter(props => {
     }
 
     async function updateProduct() {
+        setDisableUpdateButton(true)
         const diff = getProductsDiff(product, inicialProduct)
         const diffKeys = Object.keys(diff)
         const fieldsDiff = diffKeys.join(', ')
         if (diffKeys.length === 0) {
             showInfoToast({ msg: 'No changes made.' })
+            setDisableUpdateButton(false)
             return
         }
 
@@ -254,17 +257,58 @@ export default withRouter(props => {
                 product: {
                     ...product,
                     min_price: product.variants.reduce((acc, vari) => acc < vari.price ? acc : vari.price, product.variants[0].price),
+                    images: product.colors.reduce((acc, color) => acc.concat(product.images.filter(img => img.color_id === color.id)), []),
                 }
             })
         }
         await fetch("/api/product", options)
             .then(response => response.json())
             .then(response => {
-                response.status < 300
-                    ? showSuccessToast({ msg: response.msg })
-                    : showErrorToast({ msg: response.msg })
+                if (response.status < 300) {
+                    setInicialProduct(product)
+                    showSuccessToast({ msg: response.msg })
+                }
+                else {
+                    showErrorToast({ msg: response.msg })
+                }
             })
             .catch(err => showErrorToast({ msg: err }))
+
+        setDisableUpdateButton(false)
+    }
+
+    function handleChangeColors(value, i, color) {
+        console.log(value, i, color)
+        setProduct(prev => {
+            setColorIndex(prevIndex => value.length > prev.colors.length
+                ? value.length - 1
+                : prevIndex >= prev.colors.length - 1
+                    ? value.length - 1
+                    : prevIndex
+            )
+            // add color
+            if (value.length > prev.colors.length) {
+                setColorsChained(prevC => prevC.concat(color.id))
+                if (Object.keys(sizesChained).map(ele => Number(ele)).some(cId => colorsChained.includes(cId)))
+                    setSizesChained(prev => ({ ...prev, [color.id]: prev[Object.keys(prev).map(ele => Number(ele)).find(cId => colorsChained.includes(cId))] }))
+                else {
+                    setSizesChained(prev => ({ ...prev, [color.id]: [] }))
+                }
+            }
+            // remove color
+            else {
+                setColorsChained(prevC => prevC.filter(ccId => ccId !== color.id))
+                setSizesChained(prevS => {
+                    delete prevS[color.id]
+                    return prevS
+                })
+            }
+            return {
+                ...prev,
+                colors: value,
+                images: prev.images.filter(img => img.color_id !== color.id)
+            }
+        })
     }
 
     return (
@@ -276,33 +320,35 @@ export default withRouter(props => {
                     <header>
                     </header>
                     <main className={styles.main}>
-                        <div>
-                            <Link
-                                href='/admin/edit-product'
-                                className='noUnderline'
-                            >
-                                <Button
-                                    variant='outlined'
-                                    sx={{
-                                        display: 'flex',
-                                        alignItems: 'center',
-                                        justifyContent: 'center',
-                                    }}
+                        <div className={styles.top}>
+                            <div className={styles.productOption}>
+                                <Link
+                                    href='/admin/edit-product'
+                                    className='flex noUnderline'
                                 >
-                                    <KeyboardArrowLeftRoundedIcon
-                                        style={{
-                                            marginLeft: '-0.5rem'
-                                        }}
-                                    />
-                                    <p
-                                        style={{
-                                            color: 'var(--primary)'
+                                    <Button
+                                        variant='outlined'
+                                        sx={{
+                                            display: 'flex',
+                                            alignItems: 'center',
+                                            justifyContent: 'center',
                                         }}
                                     >
-                                        Voltar
-                                    </p>
-                                </Button>
-                            </Link>
+                                        <KeyboardArrowLeftRoundedIcon
+                                            style={{
+                                                marginLeft: '-0.5rem'
+                                            }}
+                                        />
+                                        <p
+                                            style={{
+                                                color: 'var(--primary)'
+                                            }}
+                                        >
+                                            Back
+                                        </p>
+                                    </Button>
+                                </Link>
+                            </div>
                         </div>
                         {product &&
                             <div className={styles.productContainer}>
@@ -312,6 +358,15 @@ export default withRouter(props => {
                                         options={TYPES_POOL.find(t => t.id === product.type).sizes}
                                         onChange={() => { }}
                                     />
+                                    <ColorSelector
+                                        value={product.colors}
+                                        options={TYPES_POOL.find(t => t.id === product.type).colors}
+                                        onChange={handleChangeColors}
+                                        style={{
+                                            paddingLeft: '50px',
+                                            paddingRight: '50px',
+                                        }}
+                                    />
                                     {product.images.filter(img => img.color_id === product.colors[colorIndex].id).length > 0 &&
                                         <ImagesSlider
                                             images={product.images.filter(img => img.color_id === product.colors[colorIndex].id)}
@@ -319,6 +374,7 @@ export default withRouter(props => {
                                     }
                                 </div>
                                 <div className={styles.productRight}>
+                                    <p>Type: {product.type}</p>
                                     <TextInput
                                         label='Title'
                                         value={product.title}
@@ -327,12 +383,6 @@ export default withRouter(props => {
                                     <TextInput
                                         label='Description'
                                         value={product.description}
-                                        supportsHoverAndPointer={supportsHoverAndPointer}
-                                    />
-                                    <TextInput
-                                        label='Type'
-                                        value={product.type}
-                                        disabled
                                         supportsHoverAndPointer={supportsHoverAndPointer}
                                     />
                                     <TagsSelector
@@ -424,7 +474,7 @@ export default withRouter(props => {
                                                             colorText='var(--color-success)'
                                                             supportsHoverAndPointer={supportsHoverAndPointer}
                                                             label={`${size.title}`}
-                                                            onChange={event => handleChangePrice(Math.max(product.variants[0].cost, Number(event.target.value)), size.id)}
+                                                            onChange={event => handleChangePrice(isNaN(Number(event.target.value)) ? 0 : Math.abs(Number(event.target.value.slice(0, Math.min(event.target.value.length, 7)))), size.id)}
                                                             value={product.variants.find(vari => vari.size_id === size.id && vari.color_id === product.colors[colorIndex].id).price}
                                                             style={{
                                                                 width: 90,
@@ -443,7 +493,7 @@ export default withRouter(props => {
                                                             min={product.variants[0].cost}
                                                             max={product.variants.reduce((acc, vari) => vari.cost > acc.cost ? vari : acc, { cost: 0 }).cost * 3}
                                                             valueLabelDisplay="auto"
-                                                            onChange={event => handleChangePrice(Math.max(product.variants[0].cost, Number(event.target.value)), size.id)}
+                                                            onChange={event => handleChangePrice(event.target.value, size.id)}
                                                         />
                                                     </div>
                                                 )}
@@ -509,7 +559,8 @@ export default withRouter(props => {
                                     }
                                     <Button
                                         variant='contained'
-                                        onClick={() => updateProduct()}
+                                        onClick={updateProduct}
+                                        disabled={disableUpdateButton}
                                         sx={{
                                             width: '100%',
                                             color: '#ffffff',
@@ -527,10 +578,9 @@ export default withRouter(props => {
                         }
                         {product === undefined &&
                             <div>
-
                             </div>
                         }
-                    </main >
-                </div >
+                    </main>
+                </div>
     )
 })

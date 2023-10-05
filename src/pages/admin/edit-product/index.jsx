@@ -1,5 +1,5 @@
 import TextInput from '@/components/material-ui/TextInput'
-import styles from '@/styles/admin/edit-product.module.css'
+import styles from '@/styles/admin/edit-product/index.module.css'
 import { Button } from '@mui/material'
 import Link from 'next/link'
 import { useState } from 'react'
@@ -13,8 +13,6 @@ export default function EditProduct(props) {
 
     const [productIdInput, setProductIdInput] = useState('')
 
-
-
     return (
         session === undefined
             ? <div></div>
@@ -24,32 +22,34 @@ export default function EditProduct(props) {
                     <header>
                     </header>
                     <main className={styles.main}>
-                        <Link
-                            href='/admin'
-                            className='noUnderline'
-                        >
-                            <Button
-                                variant='outlined'
-                                sx={{
-                                    display: 'flex',
-                                    alignItems: 'center',
-                                    justifyContent: 'center',
-                                }}
+                        <div className={styles.top}>
+                            <Link
+                                href='/admin'
+                                className='noUnderline'
                             >
-                                <KeyboardArrowLeftRoundedIcon
-                                    style={{
-                                        marginLeft: '-0.5rem'
-                                    }}
-                                />
-                                <p
-                                    style={{
-                                        color: 'var(--primary)'
+                                <Button
+                                    variant='outlined'
+                                    sx={{
+                                        display: 'flex',
+                                        alignItems: 'center',
+                                        justifyContent: 'center',
                                     }}
                                 >
-                                    Voltar
-                                </p>
-                            </Button>
-                        </Link>
+                                    <KeyboardArrowLeftRoundedIcon
+                                        style={{
+                                            marginLeft: '-0.5rem'
+                                        }}
+                                    />
+                                    <p
+                                        style={{
+                                            color: 'var(--primary)'
+                                        }}
+                                    >
+                                        Back
+                                    </p>
+                                </Button>
+                            </Link>
+                        </div>
                         <TextInput
                             label='Product ID'
                             value={productIdInput}

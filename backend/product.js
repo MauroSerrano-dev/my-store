@@ -337,6 +337,13 @@ async function updateProduct(product) {
         }
     }
 
+    if (product.variants.some(vari => vari.price < product.variants[0].cost)) {
+        return {
+            status: 400,
+            msg: "Invalid product price.",
+        }
+    }
+
     const productRef = doc(db, process.env.COLL_PRODUCTS, product.id);
 
     try {
