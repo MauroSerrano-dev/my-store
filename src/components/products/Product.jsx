@@ -31,6 +31,15 @@ export default function Product(props) {
         setLoading,
         loading,
         product,
+        style,
+        customHovered,
+        goToProduct,
+        router,
+        onMouseEnter,
+        onMouseLeave,
+        onMouseUp,
+        styleLink,
+        activateOnClick,
     } = props
 
     const [isHovered, setIsHovered] = useState(false)
@@ -55,10 +64,14 @@ export default function Product(props) {
             setIsHovered(false)
     }
 
+    function handleOnClick() {
+        setLoading(true)
+        router.push(url)
+    }
+
     useEffect(() => {
         function updateProductWidth() {
             if (productRef.current) {
-                console.log('cuuuuuuuuuu', productRef.current.offsetHeight)
                 setProductWidth(`${productRef.current.offsetWidth}px`);
             }
         }
@@ -81,6 +94,9 @@ export default function Product(props) {
     function handleBottomHoverClick(event) {
         event.stopPropagation()
         event.preventDefault()
+        if (activateOnClick)
+            handleOnClick()
+
     }
 
     function handleBottomHoverMouseDown(event) {
@@ -131,7 +147,7 @@ export default function Product(props) {
             className={styles.container}
             onMouseEnter={handleMouseEnter}
             onMouseLeave={handleMouseLeave}
-            onDrag={() => console.log('is dragging')}
+            onClick={() => { if (activateOnClick) handleOnClick() }}
             variants={motionVariants}
             initial='hidden'
             animate='visible'
@@ -142,18 +158,23 @@ export default function Product(props) {
                 marginBottom: `calc(${productWidth} * 0.2)`,
                 textDecoration: 'none',
                 pointerEvents: loading ? 'none' : 'auto',
+                ...style
             }}
         >
             <Link
                 href={url}
                 onClick={() => setLoading(true)}
                 className={`${styles.linkContainer} noUnderline`}
+                onMouseUp={onMouseUp}
+                style={{
+                    ...styleLink
+                }}
             >
                 {supportsHoverAndPointer &&
                     <div
                         className={styles.imgHoverContainer}
                         style={{
-                            opacity: isHovered ? 1 : 0,
+                            opacity: (customHovered === undefined ? isHovered : customHovered) ? 1 : 0,
                             zIndex: 2,
                             pointerEvents: 'none',
                         }}
@@ -260,7 +281,7 @@ export default function Product(props) {
                     onMouseUp={product.colors.length > COLORS_LIMIT_TO_SCROLL ? handleBottomHoverMouseUp : undefined}
                     onMouseLeave={product.colors.length > COLORS_LIMIT_TO_SCROLL ? handleBottomHoverMouseLeave : undefined}
                     style={{
-                        bottom: isHovered ? '-12%' : '0',
+                        bottom: (customHovered === undefined ? isHovered : customHovered) ? '-12%' : '0',
                         justifyContent: product.colors.length > COLORS_LIMIT_TO_SCROLL ? 'flex-start' : 'center',
                     }}
                 >

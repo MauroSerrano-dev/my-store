@@ -41,7 +41,6 @@ export default withRouter(props => {
     const originalPrice = product ? `${userCurrency.symbol} ${(convertDolarToCurrency(productCurrentVariant?.price, userCurrency.code) / 100).toFixed(2)}` : undefined
 
     useEffect(() => {
-        console.log('aaa', product, currentColor)
         setCurrentColor(cl ? cl : product?.colors[0])
         setCurrentSize(sz ? sz : product?.sizes[0])
     }, [router])

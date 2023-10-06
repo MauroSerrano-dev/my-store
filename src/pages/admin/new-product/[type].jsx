@@ -119,7 +119,6 @@ export default withRouter(props => {
     }
 
     function handleChangeColors(value, i, color) {
-        console.log(value, i, color)
         setProduct(prev => {
             setColorIndex(prevIndex => value.length > prev.colors.length
                 ? value.length - 1
@@ -172,7 +171,6 @@ export default withRouter(props => {
 
     function updateImageField(fieldname, newValue, index) {
         const colorId = product.colors[colorIndex].id
-        console.log(newValue)
         setImages(prev => ({ ...prev, [colorId]: prev[colorId].map((img, i) => index === i ? { ...img, [fieldname]: newValue } : img) }))
     }
 

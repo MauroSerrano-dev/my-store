@@ -26,7 +26,8 @@ export default function Home(props) {
     supportsHoverAndPointer,
     setLoading,
     loading,
-    windowWidth
+    windowWidth,
+    router
   } = props
 
   const [productsTShirts, setProductsTShirts] = useState([])
@@ -57,8 +58,6 @@ export default function Home(props) {
       .then(response => response.json())
       .then(response => response.products)
       .catch(err => console.error(err))
-
-    console.log(products)
 
     return products
   }
@@ -156,6 +155,7 @@ export default function Home(props) {
               loading={loading}
               setLoading={setLoading}
               windowWidth={windowWidth}
+              router={router}
             />
           }
         </div>
