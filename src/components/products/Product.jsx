@@ -32,7 +32,6 @@ export default function Product(props) {
         loading,
         product,
         style,
-        styleLink,
     } = props
 
     const [isHovered, setIsHovered] = useState(false)
@@ -149,9 +148,6 @@ export default function Product(props) {
                 href={url}
                 onClick={() => setLoading(true)}
                 className={`${styles.linkContainer} noUnderline`}
-                style={{
-                    ...styleLink
-                }}
                 draggable={false}
             >
                 {supportsHoverAndPointer &&

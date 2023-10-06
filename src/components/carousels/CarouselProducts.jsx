@@ -78,10 +78,6 @@ export default function CarouselProducts(props) {
                         setLoading={setLoading}
                         style={{
                             pointerEvents: loading || isDragging ? 'none' : 'auto',
-                            cursor: 'pointer',
-                        }}
-                        styleLink={{
-                            pointerEvents: loading || isDragging ? 'none' : 'auto',
                         }}
                     />
                 )}
