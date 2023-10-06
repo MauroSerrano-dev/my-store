@@ -15,10 +15,7 @@ export default function CarouselProducts(props) {
 
     const carouselRef = useRef()
 
-    const [productHovered, setProductHovered] = useState(false)
     const [isDragging, setIsDragging] = useState(false);
-
-    const [goToProduct, setGoToProduct] = useState();
 
     function handleDragStart() {
         setIsDragging(true)
@@ -28,21 +25,6 @@ export default function CarouselProducts(props) {
         setTimeout(() => {
             setIsDragging(false)
         }, 200)
-    }
-
-
-    function handleProductHover(i) {
-        if (!isDragging)
-            setProductHovered(i)
-    }
-
-    function handleProductLeave() {
-        setProductHovered()
-    }
-
-    function handlePushRouter(i) {
-        if (!isDragging)
-            setGoToProduct(i)
     }
 
     return (

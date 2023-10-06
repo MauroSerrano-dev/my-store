@@ -129,19 +129,16 @@ export default function Home(props) {
           <h2 className={styles.carouselTitle}>
             All Products
           </h2>
-          <div className={styles.carousel}>
-            <CarouselProductsLoop
-              items={allProducts}
-              height='400px'
-              width='90%'
-              animationDuration={200}
-              itemWidth={225}
+          {allProducts.length > 0 &&
+            <CarouselProducts
+              products={allProducts}
               userCurrency={userCurrency}
               supportsHoverAndPointer={supportsHoverAndPointer}
               loading={loading}
               setLoading={setLoading}
+              windowWidth={windowWidth}
             />
-          </div>
+          }
         </div>
         <div className={styles.carouselAndTitle}>
           <h2 className={styles.carouselTitle}>
