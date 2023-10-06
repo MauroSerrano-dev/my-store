@@ -11,7 +11,6 @@ export default function CarouselProducts(props) {
         loading,
         setLoading,
         windowWidth,
-        router
     } = props
 
     const carouselRef = useRef()
@@ -57,7 +56,7 @@ export default function CarouselProducts(props) {
                 initial={{ x: 0 }}
                 drag="x"
                 dragElastic={0.25}
-                dragTransition={{ power: 0.1, timeConstant: 200 }}
+                dragTransition={{ power: supportsHoverAndPointer ? 0.07 : 0.2, timeConstant: 200 }}
                 onDragStart={handleDragStart}
                 onDragEnd={handleDragEnd}
                 whileTap={{ cursor: 'grabbing' }}

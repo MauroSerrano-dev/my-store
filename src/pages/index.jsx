@@ -155,7 +155,6 @@ export default function Home(props) {
               loading={loading}
               setLoading={setLoading}
               windowWidth={windowWidth}
-              router={router}
             />
           }
         </div>
