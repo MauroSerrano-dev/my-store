@@ -25,7 +25,7 @@ export default function Product(props) {
         responsive,
         outOfStock,
         userCurrency,
-        width = '225px',
+        width = 225,
         supportsHoverAndPointer,
         setLoading,
         loading,
@@ -147,9 +147,9 @@ export default function Product(props) {
             animate='visible'
             ref={productRef}
             style={{
-                height: responsive ? `calc(${productWidth} * 1.575)` : `calc(${productWidth} * 1.575)`,
-                width: responsive ? '100%' : width,
-                marginBottom: `calc(${productWidth} * 0.2)`,
+                height: width * 1.575,
+                width: width,
+                marginBottom: width * 0.2,
                 textDecoration: 'none',
                 pointerEvents: loading ? 'none' : 'auto',
                 ...style
@@ -212,7 +212,7 @@ export default function Product(props) {
                         >
                             <p
                                 style={{
-                                    fontSize: `calc(${productWidth} * 0.055)`
+                                    fontSize: width * 0.055
                                 }}
                             >
                                 {Math.round(100 * product.sold_out.percentage)}% OFF
@@ -225,7 +225,7 @@ export default function Product(props) {
                         >
                             <p
                                 style={{
-                                    fontSize: `calc(${productWidth} * 0.055)`
+                                    fontSize: width * 0.055
                                 }}
                             >
                                 OUT OF STOCK
@@ -235,7 +235,7 @@ export default function Product(props) {
                     <p
                         className={styles.name}
                         style={{
-                            fontSize: `calc(${productWidth} * 0.07)`
+                            fontSize: width * 0.07
                         }}
                     >
                         {product.title}
@@ -245,7 +245,7 @@ export default function Product(props) {
                             <p
                                 className={styles.oldPrice}
                                 style={{
-                                    fontSize: `calc(${productWidth} * 0.056)`
+                                    fontSize: width * 0.056
                                 }}
                             >
                                 {userCurrency.symbol} {(convertDolarToCurrency(product.min_price, userCurrency.code) / 100).toFixed(2)}
@@ -254,7 +254,7 @@ export default function Product(props) {
                         <p
                             className={styles.price}
                             style={{
-                                fontSize: `calc(${productWidth} * 0.085)`
+                                fontSize: width * 0.085
                             }}
                         >
                             {userCurrency.symbol} {(convertDolarToCurrency(product.min_price * (product.sold_out.percentage ? 1 - product.sold_out.percentage : 1), userCurrency.code) / 100).toFixed(2)}
@@ -283,9 +283,9 @@ export default function Product(props) {
                             style={{
                                 height: '100%',
                                 gap: '0.4rem',
-                                paddingBottom: `calc(${productWidth} * 0.03)`,
-                                paddingLeft: `calc(${productWidth} * 0.02)`,
-                                paddingRight: `calc(${productWidth} * 0.02)`,
+                                paddingBottom: width * 0.03,
+                                paddingLeft: width * 0.02,
+                                paddingRight: width * 0.02,
                             }}
                         >
                             {product.colors.map((color, i) =>
@@ -293,8 +293,8 @@ export default function Product(props) {
                                     key={i}
                                     index={i}
                                     style={{
-                                        height: `calc(${productWidth} * 0.13)`,
-                                        width: `calc(${productWidth} * 0.13)`,
+                                        height: width * 0.13,
+                                        width: width * 0.13,
                                     }}
                                     selected={currentVariant.color_id === color.id}
                                     option={color}
@@ -315,7 +315,7 @@ export default function Product(props) {
                                 sx={{
                                     color: 'var(--text-white)',
                                     width: '100%',
-                                    fontSize: `calc(${productWidth} * 0.053)`,
+                                    fontSize: width * 0.053,
                                     fontWeight: 'bold'
                                 }}
                             >

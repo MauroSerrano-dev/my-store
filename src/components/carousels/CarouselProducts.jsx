@@ -50,9 +50,9 @@ export default function CarouselProducts(props) {
                         <Product
                             width={windowWidth < 1075
                                 ? windowWidth < 750
-                                    ? '155px'
-                                    : '190px'
-                                : '225px'
+                                    ? 155
+                                    : 190
+                                : 225
                             }
                             key={i}
                             product={prod}
