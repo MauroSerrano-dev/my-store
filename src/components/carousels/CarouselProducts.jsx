@@ -45,7 +45,7 @@ export default function CarouselProducts(props) {
                 onDragEnd={handleDragEnd}
                 whileTap={{ cursor: 'grabbing' }}
             >
-                {false
+                {products.length > 0
                     ? products.map((prod, i) =>
                         <Product
                             width={windowWidth < 1075
