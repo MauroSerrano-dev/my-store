@@ -1,6 +1,6 @@
 import { withRouter } from 'next/router'
 import styles from '../styles/search.module.css'
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import Product from '@/components/products/Product'
 import Link from 'next/link';
 import Selector from '@/components/material-ui/Selector';
@@ -41,12 +41,15 @@ export default withRouter(props => {
     const [orderBy, setOrderBy] = useState(order)
     const [minOrMax, setMinOrMax] = useState(false)
     const [noResults, setNoResults] = useState(false)
-    const [itemsPerLine, setItemsPerLine] = useState(0)
+    const [productWidth, setProductWidth] = useState(0)
+    const [productsPerLine, setProductsPerLine] = useState(0)
+
+    const productsContainer = useRef()
 
     useEffect(() => {
         if (Object.keys(router.query).length > 0) {
             getProductsByCategory()
-                .then(products => setProducts(products))
+                .then(products => setProducts(products.concat(products).concat(products).concat(products)))
         }
         if (t) {
             setThemes(t?.split(' '))
@@ -69,19 +72,25 @@ export default withRouter(props => {
     }, [router])
 
     useEffect(() => {
-        function getItemsPerLine(width) {
-            if (width > 1250)
-                return 5
-            if (width > 1060)
-                return 4
-            if (width > 860)
-                return 3
-            else
-                return 2
-        }
-
-        const handleResize = () => {
-            setItemsPerLine(getItemsPerLine(window.innerWidth))
+        function handleResize() {
+            const containerWidth = productsContainer.current.offsetWidth
+            if (containerWidth > 900) {
+                console.log(containerWidth)
+                setProductWidth((containerWidth - 16 * 5) / 5)
+                setProductsPerLine(5)
+            }
+            else if (containerWidth > 700) {
+                setProductWidth((containerWidth - 16 * 4) / 4)
+                setProductsPerLine(4)
+            }
+            else if (containerWidth > 500) {
+                setProductWidth((containerWidth - 16 * 3) / 3)
+                setProductsPerLine(3)
+            }
+            else {
+                setProductWidth((containerWidth - 16 * 2) / 2)
+                setProductsPerLine(2)
+            }
         }
 
         handleResize()
@@ -318,7 +327,10 @@ export default withRouter(props => {
                             supportsHoverAndPointer={supportsHoverAndPointer}
                         />
                     </div>
-                    <div className={styles.productsBody}>
+                    <div
+                        className={styles.productsBody}
+                        ref={productsContainer}
+                    >
                         {noResults
                             ? <h2>No Results</h2>
                             : products.map((product, i) =>
@@ -326,7 +338,7 @@ export default withRouter(props => {
                                     key={i}
                                     userCurrency={userCurrency}
                                     product={product}
-                                    width={`calc(${100 / itemsPerLine}% - 1rem)`}
+                                    width={productWidth}
                                     supportsHoverAndPointer={supportsHoverAndPointer}
                                     loading={loading}
                                     setLoading={setLoading}
@@ -341,7 +353,7 @@ export default withRouter(props => {
                                                 y: 0,
                                                 transition: {
                                                     duration: 0.3,
-                                                    delay: 0.5 + 0.3 * Math.floor(i / itemsPerLine),
+                                                    delay: 0.2 + 0.3 * Math.floor(i / (productsPerLine)),
                                                 }
                                             }
                                         }
