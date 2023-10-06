@@ -22,7 +22,6 @@ const COLORS_LIMIT_TO_SCROLL = 6
 
 export default function Product(props) {
     const {
-        responsive,
         outOfStock,
         userCurrency,
         width = 225,
@@ -48,7 +47,6 @@ export default function Product(props) {
     const [isHovered, setIsHovered] = useState(false)
     const productRef = useRef(null)
     const bottomHoverRef = useRef(null)
-    const [productWidth, setProductWidth] = useState() //string in px
     const [currentVariant, setCurrentVariant] = useState(product.variants[0])
     const [dragStartX, setDragStartX] = useState(null)
     const [dragStartY, setDragStartY] = useState(null)
@@ -66,22 +64,6 @@ export default function Product(props) {
         if (supportsHoverAndPointer)
             setIsHovered(false)
     }
-
-    useEffect(() => {
-        function updateProductWidth() {
-            if (productRef.current) {
-                setProductWidth(`${productRef.current.offsetWidth}px`);
-            }
-        }
-
-        window.addEventListener('resize', updateProductWidth);
-
-        updateProductWidth();
-
-        return () => {
-            window.removeEventListener('resize', updateProductWidth);
-        }
-    }, [])
 
     function handleChangeColor(event, option) {
         event.stopPropagation()

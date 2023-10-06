@@ -78,7 +78,7 @@ export default function CarouselProducts(props) {
                         />
                     )
                 }
-                {true &&
+                {showSkeleton &&
                     <div
                         className={styles.inner}
                         style={{
