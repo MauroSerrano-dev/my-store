@@ -1,10 +1,10 @@
-import styles from '@/styles/components/ProductCart.module.css'
+import styles from '@/styles/components/products/ProductCart.module.css'
 import { SlClose } from "react-icons/sl";
 import { motion } from "framer-motion";
 import Link from 'next/link';
 import { Select, FormControl, MenuItem, InputLabel } from '@mui/material';
 import { useState } from 'react';
-import { convertDolarToCurrency } from '../../consts';
+import { convertDolarToCurrency } from '../../../consts';
 
 const menuStyle = {
     display: 'flex',

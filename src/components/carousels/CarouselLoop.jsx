@@ -1,24 +1,20 @@
-import styles from '@/styles/components/CarouselProducts.module.css'
+import styles from '@/styles/components/carousels/CarouselLoop.module.css'
 import { IconButton } from '@mui/material'
 import KeyboardArrowRightRoundedIcon from '@mui/icons-material/KeyboardArrowRightRounded';
 import KeyboardArrowLeftRoundedIcon from '@mui/icons-material/KeyboardArrowLeftRounded';
 import { useEffect, useState } from 'react';
-import Product from './Product';
-import { convertDolarToCurrency } from '../../consts';
+import Link from 'next/link';
 
-export default function CarouselProducts(props) {
+export default function CarouselLoop(props) {
     const {
         items,
         height,
         width,
-        loop,
+        autorun,
         animationDuration = 200,
         itemWidth = 200,
         gap = 20,
-        userCurrency,
-        supportsHoverAndPointer,
-        setLoading,
-        loading,
+        type = 'imgs',
     } = props
 
     const [itemsArray, setItemsArray] = useState(
@@ -31,7 +27,7 @@ export default function CarouselProducts(props) {
     )
 
     useEffect(() => {
-        if (loop) {
+        if (autorun) {
             setTimeout(() => {
                 handleGoRight()
             }, animationDuration)
@@ -79,35 +75,37 @@ export default function CarouselProducts(props) {
             <div
                 className={styles.itemsContainer}
             >
-
                 {itemsArray.map((item, i) =>
-                    <div
-                        className={styles.product}
+                    <Link
+                        href={item.url}
                         key={i}
+                        className={`${styles.item} noUnderline`}
                         style={{
                             left: `${(item.position) * (itemWidth + gap)}px`,
                             width: `${itemWidth}px`,
                             transition: item.position < items.length / 2 * (-1) || item.position > items.length * 1.5
-                                ? `all ${loop
+                                ? `all ${autorun
                                     ? 'linear'
                                     : 'ease-in-out'} 0ms`
-                                : `all ${loop
+                                : `all ${autorun
                                     ? 'linear'
                                     : 'ease-in-out'} ${animationDuration}ms`
                         }}
                     >
-                        <Product
-                            responsive
-                            userCurrency={userCurrency}
-                            supportsHoverAndPointer={supportsHoverAndPointer}
-                            loading={loading}
-                            setLoading={setLoading}
-                            product={item}
+                        <div className={styles.blackShadow}>
+                        </div>
+                        <span className={styles.itemTitle}>
+                            {item.title}
+                        </span>
+                        <img
+                            className={styles.itemImg}
+                            src={item.img}
+                            alt='category-image'
                         />
-                    </div>
+                    </Link>
                 )}
             </div>
-            {!loop &&
+            {!autorun &&
                 <IconButton
                     onClick={handleGoLeft}
                     color='primary'
@@ -119,8 +117,6 @@ export default function CarouselProducts(props) {
                         backgroundColor: '#3b3a38',
                         transition: 'all 200ms ease-in-out',
                         scale: '0.8',
-                        top: -30,
-                        zIndex: 13,
                     }}
                 >
                     <KeyboardArrowLeftRoundedIcon
@@ -132,7 +128,7 @@ export default function CarouselProducts(props) {
                     />
                 </IconButton>
             }
-            {!loop &&
+            {!autorun &&
                 <IconButton
                     onClick={handleGoRight}
                     color='primary'
@@ -144,7 +140,7 @@ export default function CarouselProducts(props) {
                         backgroundColor: '#3b3a38',
                         transition: 'all 200ms ease-in-out',
                         scale: '0.8',
-                        top: '-30'
+                        top: type === 'products' ? -30 : undefined
                     }}
                 >
                     <KeyboardArrowRightRoundedIcon

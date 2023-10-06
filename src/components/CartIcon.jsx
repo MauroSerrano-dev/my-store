@@ -3,7 +3,7 @@ import Link from 'next/link'
 import ShoppingCartOutlinedIcon from '@mui/icons-material/ShoppingCartOutlined';
 import styles from '@/styles/components/CartIcon.module.css'
 import { Button } from '@mui/material'
-import ProductModal from './ProductModal'
+import ProductModal from './products/ProductModal'
 
 export default function CartIcon(props) {
     const {

@@ -1,7 +1,7 @@
 import { withRouter } from 'next/router'
 import styles from '../styles/search.module.css'
 import { useEffect, useState } from 'react'
-import Product from '@/components/Product'
+import Product from '@/components/products/Product'
 import Link from 'next/link';
 import Selector from '@/components/material-ui/Selector';
 import { Checkbox, FormControlLabel } from '@mui/material';

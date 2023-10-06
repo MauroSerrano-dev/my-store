@@ -1,8 +1,8 @@
-import styles from '@/styles/components/ProductModal.module.css'
+import styles from '@/styles/components/products/ProductModal.module.css'
 import { SlClose } from "react-icons/sl";
 import { motion } from "framer-motion";
 import Link from 'next/link';
-import { convertDolarToCurrency } from '../../consts';
+import { convertDolarToCurrency } from '../../../consts';
 
 export default function ProductModal(props) {
     const {

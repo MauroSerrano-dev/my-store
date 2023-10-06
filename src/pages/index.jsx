@@ -1,12 +1,13 @@
 import { Inter } from 'next/font/google'
 import styles from '@/styles/index.module.css'
-import Carousel from '@/components/CarouselLoop'
-import CarouselProducts from '@/components/CarouselProducts'
+import Carousel from '@/components/carousels/CarouselLoop'
 import { useEffect, useState } from 'react'
-import Inventory2OutlinedIcon from '@mui/icons-material/Inventory2Outlined';
-import LocalShippingOutlinedIcon from '@mui/icons-material/LocalShippingOutlined';
+import Inventory2OutlinedIcon from '@mui/icons-material/Inventory2Outlined'
+import LocalShippingOutlinedIcon from '@mui/icons-material/LocalShippingOutlined'
 import Footer from '@/components/Footer'
 import Head from 'next/head'
+import CarouselProductsLoop from '@/components/carousels/CarouselProductsLoop'
+import CarouselProducts from '@/components/carousels/CarouselProducts'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -20,7 +21,13 @@ const categories = [
 ]
 
 export default function Home(props) {
-  const { userCurrency, supportsHoverAndPointer, setLoading, loading } = props
+  const {
+    userCurrency,
+    supportsHoverAndPointer,
+    setLoading,
+    loading,
+    windowWidth
+  } = props
 
   const [productsTShirts, setProductsTShirts] = useState([])
   const [allProducts, setAllProducts] = useState([])
@@ -124,7 +131,7 @@ export default function Home(props) {
             All Products
           </h2>
           <div className={styles.carousel}>
-            <CarouselProducts
+            <CarouselProductsLoop
               items={allProducts}
               height='400px'
               width='90%'
@@ -141,19 +148,16 @@ export default function Home(props) {
           <h2 className={styles.carouselTitle}>
             T-Shirts
           </h2>
-          <div className={styles.carousel}>
+          {productsTShirts.length > 0 &&
             <CarouselProducts
-              items={productsTShirts}
-              height='400px'
-              width='90%'
-              animationDuration={200}
-              itemWidth={225}
+              products={productsTShirts.concat(productsTShirts).concat(productsTShirts).concat(productsTShirts).concat(productsTShirts).concat(productsTShirts)}
               userCurrency={userCurrency}
               supportsHoverAndPointer={supportsHoverAndPointer}
               loading={loading}
               setLoading={setLoading}
+              windowWidth={windowWidth}
             />
-          </div>
+          }
         </div>
       </main>
       <Footer />

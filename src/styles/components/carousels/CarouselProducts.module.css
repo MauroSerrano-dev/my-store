@@ -1,0 +1,32 @@
+.container {
+    display: flex;
+    width: 100%;
+    overflow: hidden;
+}
+
+.inner {
+    display: flex;
+    justify-content: flex-start;
+    align-content: flex-start;
+    gap: 1rem;
+    cursor: grab;
+    width: auto;
+    padding-left: 3.5rem;
+    padding-right: 3.5rem;
+}
+
+/* Mobile and Tablet */
+@media (max-width: 1074.5px) {
+    .inner {
+        padding-left: 2rem;
+        padding-right: 2rem;
+    }
+}
+
+/* Mobile */
+@media (max-width: 750px) {
+    .inner {
+        padding-left: 0.7rem;
+        padding-right: 0.7rem;
+    }
+}

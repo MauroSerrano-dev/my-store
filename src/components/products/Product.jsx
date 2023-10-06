@@ -1,10 +1,10 @@
-import styles from '@/styles/components/Product.module.css'
+import styles from '@/styles/components/products/Product.module.css'
 import { useEffect, useState, useRef } from 'react'
 import { Button } from '@mui/material'
 import Link from 'next/link'
 import { motion } from "framer-motion";
-import { convertDolarToCurrency } from '../../consts';
-import ColorButton from './ColorButton';
+import { convertDolarToCurrency } from '../../../consts';
+import ColorButton from '../ColorButton';
 
 /**
  * @param {object} props - Component props.
@@ -58,6 +58,7 @@ export default function Product(props) {
     useEffect(() => {
         function updateProductWidth() {
             if (productRef.current) {
+                console.log('cuuuuuuuuuu', productRef.current.offsetHeight)
                 setProductWidth(`${productRef.current.offsetWidth}px`);
             }
         }
@@ -130,6 +131,7 @@ export default function Product(props) {
             className={styles.container}
             onMouseEnter={handleMouseEnter}
             onMouseLeave={handleMouseLeave}
+            onDrag={() => console.log('is dragging')}
             variants={motionVariants}
             initial='hidden'
             animate='visible'
@@ -152,7 +154,8 @@ export default function Product(props) {
                         className={styles.imgHoverContainer}
                         style={{
                             opacity: isHovered ? 1 : 0,
-                            zIndex: 2
+                            zIndex: 2,
+                            pointerEvents: 'none',
                         }}
                     >
                         {product.colors.map((color, i) =>
@@ -170,7 +173,12 @@ export default function Product(props) {
                         )}
                     </div>
                 }
-                <div className={styles.imgContainer}>
+                <div
+                    className={styles.imgContainer}
+                    style={{
+                        pointerEvents: 'none',
+                    }}
+                >
                     {product.colors.map((color, i) =>
                         <img
                             key={i}

@@ -1,10 +1,10 @@
-import ProductCart from '@/components/ProductCart'
+import ProductCart from '@/components/products/ProductCart'
 import styles from '@/styles/cart.module.css'
 import { Button } from '@mui/material'
 import { CART_COOKIE, convertDolarToCurrency, getCurrencyByCode, getShippingOptions } from '../../consts'
 import { useEffect, useState } from 'react'
 import Selector from '@/components/material-ui/Selector'
-import CarouselProducts from '@/components/CarouselProducts'
+import CarouselProductsLoop from '@/components/carousels/CarouselProductsLoop'
 import Cookies from 'js-cookie'
 
 export default function Cart(props) {
@@ -118,7 +118,7 @@ export default function Cart(props) {
                             <h2><b>Hmmmm....</b> it looks like your cart is empty.</h2>
                             <h2>Explore some of our <b>best products!</b></h2>
                         </div>
-                        <CarouselProducts
+                        <CarouselProductsLoop
                             items={allProducts}
                             height='400px'
                             width='90%'

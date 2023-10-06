@@ -22,7 +22,6 @@ export default function DataHandler(props) {
     const {
         Component,
         pageProps,
-        primaryColor,
         router
     } = props
     const [cart, setCart] = useState()
