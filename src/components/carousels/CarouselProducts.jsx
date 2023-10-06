@@ -45,7 +45,7 @@ export default function CarouselProducts(props) {
                 onDragEnd={handleDragEnd}
                 whileTap={{ cursor: 'grabbing' }}
             >
-                {products.length > 0
+                {false
                     ? products.map((prod, i) =>
                         <Product
                             width={windowWidth < 1075
@@ -66,7 +66,21 @@ export default function CarouselProducts(props) {
                         />
                     )
                     : [0, 1, 2, 3, 4, 5, 6, 7].map((skel, i) =>
-                        <div key={i}>
+                        <div
+                            key={i}
+                            style={{
+                                width: windowWidth < 1075
+                                    ? windowWidth < 750
+                                        ? 155
+                                        : 190
+                                    : 225,
+                                height: windowWidth < 1075
+                                    ? windowWidth < 750
+                                        ? 244.125
+                                        : 299.25
+                                    : 354.375
+                            }}
+                        >
                             <Skeleton
                                 variant="rectangular"
                                 width={
@@ -76,11 +90,12 @@ export default function CarouselProducts(props) {
                                             : 190
                                         : 225
                                 }
-                                height={windowWidth < 1075
-                                    ? windowWidth < 750
-                                        ? 172.2222
-                                        : 211.1111
-                                    : 250
+                                height={
+                                    windowWidth < 1075
+                                        ? windowWidth < 750
+                                            ? 172.2222
+                                            : 211.1111
+                                        : 250
                                 }
                                 sx={{
                                     backgroundColor: 'rgb(50, 50, 50)',
@@ -97,11 +112,12 @@ export default function CarouselProducts(props) {
                                             : 190
                                         : 225
                                 }
-                                height={windowWidth < 1075
-                                    ? windowWidth < 750
-                                        ? 15
-                                        : 20
-                                    : 25
+                                height={
+                                    windowWidth < 1075
+                                        ? windowWidth < 750
+                                            ? 15
+                                            : 20
+                                        : 25
                                 }
                                 sx={{
                                     marginTop: windowWidth < 1075
@@ -122,11 +138,12 @@ export default function CarouselProducts(props) {
                                             : 130
                                         : 140
                                 }
-                                height={windowWidth < 1075
-                                    ? windowWidth < 750
-                                        ? 10
-                                        : 12
-                                    : 15
+                                height={
+                                    windowWidth < 1075
+                                        ? windowWidth < 750
+                                            ? 10
+                                            : 12
+                                        : 15
                                 }
                                 sx={{
                                     marginTop: windowWidth < 1075
@@ -147,11 +164,12 @@ export default function CarouselProducts(props) {
                                             : 80
                                         : 90
                                 }
-                                height={windowWidth < 1075
-                                    ? windowWidth < 750
-                                        ? 14
-                                        : 16
-                                    : 20
+                                height={
+                                    windowWidth < 1075
+                                        ? windowWidth < 750
+                                            ? 14
+                                            : 16
+                                        : 20
                                 }
                                 sx={{
                                     marginTop: windowWidth < 1075
