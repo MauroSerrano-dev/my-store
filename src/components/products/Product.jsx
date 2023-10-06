@@ -32,14 +32,7 @@ export default function Product(props) {
         loading,
         product,
         style,
-        customHovered,
-        goToProduct,
-        router,
-        onMouseEnter,
-        onMouseLeave,
-        onMouseUp,
         styleLink,
-        activateOnClick,
     } = props
 
     const [isHovered, setIsHovered] = useState(false)
@@ -62,11 +55,6 @@ export default function Product(props) {
     function handleMouseLeave() {
         if (supportsHoverAndPointer)
             setIsHovered(false)
-    }
-
-    function handleOnClick() {
-        setLoading(true)
-        router.push(url)
     }
 
     useEffect(() => {
@@ -94,9 +82,6 @@ export default function Product(props) {
     function handleBottomHoverClick(event) {
         event.stopPropagation()
         event.preventDefault()
-        if (activateOnClick)
-            handleOnClick()
-
     }
 
     function handleBottomHoverMouseDown(event) {
@@ -147,7 +132,6 @@ export default function Product(props) {
             className={styles.container}
             onMouseEnter={handleMouseEnter}
             onMouseLeave={handleMouseLeave}
-            onClick={() => { if (activateOnClick) handleOnClick() }}
             variants={motionVariants}
             initial='hidden'
             animate='visible'
@@ -165,16 +149,16 @@ export default function Product(props) {
                 href={url}
                 onClick={() => setLoading(true)}
                 className={`${styles.linkContainer} noUnderline`}
-                onMouseUp={onMouseUp}
                 style={{
                     ...styleLink
                 }}
+                draggable={false}
             >
                 {supportsHoverAndPointer &&
                     <div
                         className={styles.imgHoverContainer}
                         style={{
-                            opacity: (customHovered === undefined ? isHovered : customHovered) ? 1 : 0,
+                            opacity: isHovered ? 1 : 0,
                             zIndex: 2,
                             pointerEvents: 'none',
                         }}
@@ -281,7 +265,7 @@ export default function Product(props) {
                     onMouseUp={product.colors.length > COLORS_LIMIT_TO_SCROLL ? handleBottomHoverMouseUp : undefined}
                     onMouseLeave={product.colors.length > COLORS_LIMIT_TO_SCROLL ? handleBottomHoverMouseLeave : undefined}
                     style={{
-                        bottom: (customHovered === undefined ? isHovered : customHovered) ? '-12%' : '0',
+                        bottom: isHovered ? '-12%' : '0',
                         justifyContent: product.colors.length > COLORS_LIMIT_TO_SCROLL ? 'flex-start' : 'center',
                     }}
                 >

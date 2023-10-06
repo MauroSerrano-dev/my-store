@@ -76,14 +76,12 @@ export default function CarouselProducts(props) {
                         supportsHoverAndPointer={supportsHoverAndPointer}
                         loading={loading}
                         setLoading={setLoading}
-                        router={router}
-                        activateOnClick
                         style={{
                             pointerEvents: loading || isDragging ? 'none' : 'auto',
                             cursor: 'pointer',
                         }}
                         styleLink={{
-                            pointerEvents: 'none',
+                            pointerEvents: loading || isDragging ? 'none' : 'auto',
                         }}
                     />
                 )}
