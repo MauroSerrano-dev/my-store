@@ -55,6 +55,11 @@ export default function CarouselProducts(props) {
                 whileTap={{ cursor: 'grabbing' }}
                 style={{
                     position: 'relative',
+                    height: windowWidth < 1075
+                        ? windowWidth < 750
+                            ? 275.125
+                            : 337.25
+                        : 399.375
                 }}
             >
                 {products.length > 0 &&
