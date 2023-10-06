@@ -67,8 +67,9 @@ export default function Home(props) {
   }, [])
 
   async function getProductsFromCategories() {
-    setProductsTShirts(await getProductsByTagOrType('c', 't-shirts'))
+    //tem que ser na mesma ordem que está no HTML
     setAllProducts(await getAllProducts())
+    setProductsTShirts(await getProductsByTagOrType('c', 't-shirts'))
   }
 
   return (
