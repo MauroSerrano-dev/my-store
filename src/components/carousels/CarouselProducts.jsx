@@ -76,9 +76,9 @@ export default function CarouselProducts(props) {
                                     : 225,
                                 height: windowWidth < 1075
                                     ? windowWidth < 750
-                                        ? 244.125
-                                        : 299.25
-                                    : 354.375
+                                        ? 275.125
+                                        : 337.25
+                                    : 399.375
                             }}
                         >
                             <Skeleton
