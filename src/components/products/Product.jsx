@@ -26,11 +26,22 @@ export default function Product(props) {
         outOfStock,
         userCurrency,
         width = '225px',
-        motionVariants,
         supportsHoverAndPointer,
         setLoading,
         loading,
         product,
+        motionVariants = {
+            hidden: {
+                opacity: 0,
+            },
+            visible: {
+                opacity: 1,
+                transition: {
+                    duration: 0.3,
+                    delay: 0.5,
+                }
+            }
+        },
         style,
     } = props
 
