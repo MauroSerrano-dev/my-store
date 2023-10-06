@@ -129,31 +129,27 @@ export default function Home(props) {
           <h2 className={styles.carouselTitle}>
             All Products
           </h2>
-          {allProducts.length > 0 &&
-            <CarouselProducts
-              products={allProducts}
-              userCurrency={userCurrency}
-              supportsHoverAndPointer={supportsHoverAndPointer}
-              loading={loading}
-              setLoading={setLoading}
-              windowWidth={windowWidth}
-            />
-          }
+          <CarouselProducts
+            products={allProducts}
+            userCurrency={userCurrency}
+            supportsHoverAndPointer={supportsHoverAndPointer}
+            loading={loading}
+            setLoading={setLoading}
+            windowWidth={windowWidth}
+          />
         </div>
         <div className={styles.carouselAndTitle}>
           <h2 className={styles.carouselTitle}>
             T-Shirts
           </h2>
-          {productsTShirts.length > 0 &&
-            <CarouselProducts
-              products={productsTShirts.concat(productsTShirts).concat(productsTShirts).concat(productsTShirts).concat(productsTShirts).concat(productsTShirts)}
-              userCurrency={userCurrency}
-              supportsHoverAndPointer={supportsHoverAndPointer}
-              loading={loading}
-              setLoading={setLoading}
-              windowWidth={windowWidth}
-            />
-          }
+          <CarouselProducts
+            products={productsTShirts.concat(productsTShirts).concat(productsTShirts).concat(productsTShirts).concat(productsTShirts).concat(productsTShirts)}
+            userCurrency={userCurrency}
+            supportsHoverAndPointer={supportsHoverAndPointer}
+            loading={loading}
+            setLoading={setLoading}
+            windowWidth={windowWidth}
+          />
         </div>
       </main>
       <Footer />

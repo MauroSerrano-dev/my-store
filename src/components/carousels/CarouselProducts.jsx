@@ -2,6 +2,7 @@ import { useRef, useState } from 'react';
 import { motion } from 'framer-motion';
 import Product from '../products/Product';
 import styles from '@/styles/components/carousels/CarouselProducts.module.css'
+import { Skeleton } from '@mui/material';
 
 export default function CarouselProducts(props) {
     const {
@@ -31,6 +32,7 @@ export default function CarouselProducts(props) {
         <motion.div
             className={styles.container}
             ref={carouselRef}
+            key={products.length} // prevenir bug quando faz resize
         >
             <motion.div
                 className={styles.inner}
@@ -43,25 +45,126 @@ export default function CarouselProducts(props) {
                 onDragEnd={handleDragEnd}
                 whileTap={{ cursor: 'grabbing' }}
             >
-                {products.map((prod, i) =>
-                    <Product
-                        width={windowWidth < 1075
-                            ? windowWidth < 750
-                                ? '155px'
-                                : '190px'
-                            : '225px'
-                        }
-                        key={i}
-                        product={prod}
-                        userCurrency={userCurrency}
-                        supportsHoverAndPointer={supportsHoverAndPointer}
-                        loading={loading}
-                        setLoading={setLoading}
-                        style={{
-                            pointerEvents: loading || isDragging ? 'none' : 'auto',
-                        }}
-                    />
-                )}
+                {products.length > 0
+                    ? products.map((prod, i) =>
+                        <Product
+                            width={windowWidth < 1075
+                                ? windowWidth < 750
+                                    ? '155px'
+                                    : '190px'
+                                : '225px'
+                            }
+                            key={i}
+                            product={prod}
+                            userCurrency={userCurrency}
+                            supportsHoverAndPointer={supportsHoverAndPointer}
+                            loading={loading}
+                            setLoading={setLoading}
+                            style={{
+                                pointerEvents: loading || isDragging ? 'none' : 'auto',
+                            }}
+                        />
+                    )
+                    : [0, 1, 2, 3, 4, 5, 6, 7].map((skel, i) =>
+                        <div key={i}>
+                            <Skeleton
+                                variant="rectangular"
+                                width={
+                                    windowWidth < 1075
+                                        ? windowWidth < 750
+                                            ? 155
+                                            : 190
+                                        : 225
+                                }
+                                height={windowWidth < 1075
+                                    ? windowWidth < 750
+                                        ? 172.2222
+                                        : 211.1111
+                                    : 250
+                                }
+                                sx={{
+                                    backgroundColor: 'rgb(50, 50, 50)',
+                                    borderTopRightRadius: '0.5rem',
+                                    borderTopLeftRadius: '0.5rem',
+                                }}
+                            />
+                            <Skeleton
+                                variant="rectangular"
+                                width={
+                                    windowWidth < 1075
+                                        ? windowWidth < 750
+                                            ? 155
+                                            : 190
+                                        : 225
+                                }
+                                height={windowWidth < 1075
+                                    ? windowWidth < 750
+                                        ? 15
+                                        : 20
+                                    : 25
+                                }
+                                sx={{
+                                    marginTop: windowWidth < 1075
+                                        ? windowWidth < 750
+                                            ? '7px'
+                                            : '9px'
+                                        : '10px',
+                                    backgroundColor: 'rgb(50, 50, 50)',
+                                    borderRadius: '0.5rem',
+                                }}
+                            />
+                            <Skeleton
+                                variant="rectangular"
+                                width={
+                                    windowWidth < 1075
+                                        ? windowWidth < 750
+                                            ? 100
+                                            : 130
+                                        : 140
+                                }
+                                height={windowWidth < 1075
+                                    ? windowWidth < 750
+                                        ? 10
+                                        : 12
+                                    : 15
+                                }
+                                sx={{
+                                    marginTop: windowWidth < 1075
+                                        ? windowWidth < 750
+                                            ? '7px'
+                                            : '9px'
+                                        : '10px',
+                                    backgroundColor: 'rgb(50, 50, 50)',
+                                    borderRadius: '0.5rem',
+                                }}
+                            />
+                            <Skeleton
+                                variant="rectangular"
+                                width={
+                                    windowWidth < 1075
+                                        ? windowWidth < 750
+                                            ? 60
+                                            : 80
+                                        : 90
+                                }
+                                height={windowWidth < 1075
+                                    ? windowWidth < 750
+                                        ? 14
+                                        : 16
+                                    : 20
+                                }
+                                sx={{
+                                    marginTop: windowWidth < 1075
+                                        ? windowWidth < 750
+                                            ? '7px'
+                                            : '9px'
+                                        : '10px',
+                                    backgroundColor: 'rgb(50, 50, 50)',
+                                    borderRadius: '0.5rem',
+                                }}
+                            />
+                        </div>
+                    )}
             </motion.div>
         </motion.div>
     )
