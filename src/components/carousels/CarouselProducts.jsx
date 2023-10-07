@@ -52,8 +52,8 @@ export default function CarouselProducts(props) {
                 dragTransition={{ power: supportsHoverAndPointer ? 0.07 : 0.3, timeConstant: 200 }}
                 onDragStart={handleDragStart}
                 onDragEnd={handleDragEnd}
-                whileTap={{ cursor: 'grabbing' }}
                 style={{
+                    cursor: isDragging ? 'grabbing' : 'grab',
                     position: 'relative',
                     height: windowWidth < 1075
                         ? windowWidth < 750
