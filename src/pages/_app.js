@@ -36,19 +36,21 @@ export default function App(props) {
   const router = useRouter()
 
   useEffect(() => {
-    setLoading(false)
-  }, [router])
 
-  useEffect(() => {
-    
-    function handleRouteChange() {
+    function handleRouteChangeStart() {
       setLoading(true)
     }
 
-    router.events.on("routeChangeStart", handleRouteChange);
+    function handleRouteChangeComplete() {
+      setLoading(false)
+    }
+
+    router.events.on("routeChangeStart", handleRouteChangeStart)
+    router.events.on("routeChangeComplete", handleRouteChangeComplete)
 
     return () => {
-      router.events.off("routeChangeStart", handleRouteChange);
+      router.events.off("routeChangeStart", handleRouteChangeStart)
+      router.events.off("routeChangeComplete", handleRouteChangeComplete)
     }
   }, [])
 
