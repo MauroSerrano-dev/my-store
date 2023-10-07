@@ -49,7 +49,7 @@ export default withRouter(props => {
     useEffect(() => {
         if (Object.keys(router.query).length > 0) {
             getProductsByCategory()
-                .then(products => setProducts(products.concat(products).concat(products).concat(products)))
+                .then(products => setProducts(products))
         }
         if (t) {
             setThemes(t?.split(' '))
