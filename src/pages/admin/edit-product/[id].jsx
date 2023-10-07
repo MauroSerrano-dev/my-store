@@ -15,7 +15,7 @@ import Chain from '@/components/svgs/Chain';
 import BrokeChain from '@/components/svgs/BrokeChain';
 import ButtonIcon from '@/components/material-ui/ButtonIcon';
 import ImagesSlider from '@/components/ImagesSlider';
-import { showErrorToast, showInfoToast, showSuccessToast } from '../../../../utils/toasts';
+import { showToast } from '../../../../utils/toasts';
 import { getProductsDiff } from '../../../../utils';
 
 export default withRouter(props => {
@@ -245,7 +245,7 @@ export default withRouter(props => {
         const diffKeys = Object.keys(diff)
         const fieldsDiff = diffKeys.join(', ')
         if (diffKeys.length === 0) {
-            showInfoToast({ msg: 'No changes made.' })
+            showToast({ msg: 'No changes made.' })
             setDisableUpdateButton(false)
             return
         }
@@ -266,13 +266,13 @@ export default withRouter(props => {
             .then(response => {
                 if (response.status < 300) {
                     setInicialProduct(product)
-                    showSuccessToast({ msg: response.msg })
+                    showToast({ type: 'success', msg: response.msg })
                 }
                 else {
-                    showErrorToast({ msg: response.msg })
+                    showToast({ type: 'error', msg: response.msg })
                 }
             })
-            .catch(err => showErrorToast({ msg: err }))
+            .catch(err => showToast({ msg: err }))
 
         setDisableUpdateButton(false)
     }

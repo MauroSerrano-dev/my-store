@@ -11,8 +11,6 @@ export default function ProductModal(props) {
         setCart,
         index,
         userCurrency,
-        loading,
-        setLoading,
     } = props
 
     const price = `${userCurrency.symbol} ${((convertDolarToCurrency(product.price * (product.sold_out.percentage ? 1 - product.sold_out.percentage : 1), userCurrency.code) / 100) * product.quantity).toFixed(2)}`
@@ -58,7 +56,6 @@ export default function ProductModal(props) {
             />
             <Link
                 className={styles.imageContainer}
-                onClick={() => setLoading(true)}
                 href={`/product/${product.id}${product.color.id !== product.default_variant.color.id && product.size.id !== product.default_variant.size.id
                     ? `?sz=${product.size.title.toLowerCase()}&cl=${product.color.title.replace(' ', '+').toLowerCase()}`
                     : product.size.id !== product.default_variant.size.id
@@ -67,9 +64,6 @@ export default function ProductModal(props) {
                             ? `?cl=${product.color.title.replace(' ', '+').toLowerCase()}`
                             : ''
                     }`}
-                style={{
-                    pointerEvents: loading ? 'none' : 'auto',
-                }}
             >
                 <Image
                     src={product.image}
@@ -88,10 +82,6 @@ export default function ProductModal(props) {
                             ? `?cl=${product.color.title.replace(' ', '+').toLowerCase()}`
                             : ''
                     }`}
-                    onClick={() => setLoading(true)}
-                    style={{
-                        pointerEvents: loading ? 'none' : 'auto',
-                    }}
                 >
                     <h6>{product.title}</h6>
                 </Link>

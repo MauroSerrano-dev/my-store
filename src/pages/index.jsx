@@ -24,10 +24,7 @@ export default function Home(props) {
   const {
     userCurrency,
     supportsHoverAndPointer,
-    setLoading,
-    loading,
     windowWidth,
-    router
   } = props
 
   const [productsTShirts, setProductsTShirts] = useState([])
@@ -134,8 +131,6 @@ export default function Home(props) {
             products={allProducts}
             userCurrency={userCurrency}
             supportsHoverAndPointer={supportsHoverAndPointer}
-            loading={loading}
-            setLoading={setLoading}
             windowWidth={windowWidth}
           />
         </div>
@@ -147,8 +142,6 @@ export default function Home(props) {
             products={productsTShirts.concat(productsTShirts).concat(productsTShirts).concat(productsTShirts).concat(productsTShirts).concat(productsTShirts)}
             userCurrency={userCurrency}
             supportsHoverAndPointer={supportsHoverAndPointer}
-            loading={loading}
-            setLoading={setLoading}
             windowWidth={windowWidth}
           />
         </div>

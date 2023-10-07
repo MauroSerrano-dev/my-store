@@ -9,8 +9,6 @@ export default function CarouselProducts(props) {
         products,
         userCurrency,
         supportsHoverAndPointer,
-        loading,
-        setLoading,
         windowWidth,
     } = props
 
@@ -67,11 +65,6 @@ export default function CarouselProducts(props) {
                             product={prod}
                             userCurrency={userCurrency}
                             supportsHoverAndPointer={supportsHoverAndPointer}
-                            loading={loading}
-                            setLoading={setLoading}
-                            style={{
-                                pointerEvents: loading || isDragging ? 'none' : 'auto',
-                            }}
                         />
                     )
                     : <div

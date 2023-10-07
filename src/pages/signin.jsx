@@ -5,6 +5,7 @@ import { PiHandshakeLight } from "react-icons/pi";
 import ReCAPTCHA from "react-google-recaptcha";
 import { useState } from 'react';
 import { STORE_NAME } from '../../consts';
+import { showToast } from '../../utils/toasts';
 
 export default function Signin(props) {
     const { signIn, login, mobile } = props
@@ -30,18 +31,23 @@ export default function Signin(props) {
     }
 
     function handleCreateNewUser(user) {
-        const options = {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ user: user })
-        }
+        if (reCaptchaSolve) {
+            const options = {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ user: user })
+            }
 
-        fetch('/api/user', options)
-            .then(response => response.json())
-            .then(response => {
-                login(user.email, user.password)
-            })
-            .catch(err => console.error(err))
+            fetch('/api/user', options)
+                .then(response => response.json())
+                .then(response => {
+                    login(user.email, user.password)
+                })
+                .catch(err => console.error(err))
+        }
+        else {
+            showToast({ type: 'error', msg: 'Please solve the reCAPTCHA.' })
+        }
     }
 
     return (

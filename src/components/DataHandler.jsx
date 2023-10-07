@@ -22,7 +22,8 @@ export default function DataHandler(props) {
     const {
         Component,
         pageProps,
-        router
+        router,
+        loading,
     } = props
     const [cart, setCart] = useState()
     const [isScrollAtTop, setIsScrollAtTop] = useState(true)
@@ -36,15 +37,10 @@ export default function DataHandler(props) {
     const [productOptions, setProductOptions] = useState([])
     const [supportsHoverAndPointer, setSupportsHoverAndPointer] = useState()
     const [menuOpen, switchMenu] = useCycle(false, true);
-    const [loading, setLoading] = useState(false)
 
     // Inicialize o Firebase
     const firebaseApp = initializeApp(firebaseConfig)
     const auth = getAuth(firebaseApp)
-
-    useEffect(() => {
-        setLoading(false)
-    }, [router])
 
     useEffect(() => {
         if (session !== undefined) {
@@ -377,6 +373,7 @@ export default function DataHandler(props) {
             className={styles.container}
             style={{
                 opacity: websiteVisible ? 1 : 0,
+                pointerEvents: loading ? 'none' : 'auto'
             }}
             initial='closed'
             animate={
@@ -432,8 +429,6 @@ export default function DataHandler(props) {
                     supportsHoverAndPointer={supportsHoverAndPointer}
                     menuOpen={menuOpen}
                     switchMenu={switchMenu}
-                    loading={loading}
-                    setLoading={setLoading}
                 />
                 <div
                     className={styles.subNavBar}
@@ -476,8 +471,6 @@ export default function DataHandler(props) {
                     handleChangeCurrency={handleChangeCurrency}
                     mobile={mobile}
                     supportsHoverAndPointer={supportsHoverAndPointer}
-                    loading={loading}
-                    setLoading={setLoading}
                     windowWidth={windowWidth}
                     router={router}
                 />

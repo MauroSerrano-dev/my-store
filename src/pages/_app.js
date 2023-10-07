@@ -5,7 +5,7 @@ import { ThemeProvider, createTheme } from '@mui/material/styles';
 import MontserratRegular from '../../public/fonts/montserrat.ttf';
 import DataHandler from '@/components/DataHandler'
 import { useRouter } from 'next/router';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
 const primaryColor = '#1189C4'
 
@@ -30,7 +30,27 @@ const mainTheme = createTheme({
 
 export default function App(props) {
   const { Component, pageProps } = props
-  const router = useRouter();
+
+  const [loading, setLoading] = useState(false)
+
+  const router = useRouter()
+
+  useEffect(() => {
+    setLoading(false)
+  }, [router])
+
+  useEffect(() => {
+    
+    function handleRouteChange() {
+      setLoading(true)
+    }
+
+    router.events.on("routeChangeStart", handleRouteChange);
+
+    return () => {
+      router.events.off("routeChangeStart", handleRouteChange);
+    }
+  }, [])
 
   return (
     <div>
@@ -71,7 +91,13 @@ export default function App(props) {
         }
       </Head>
       <ThemeProvider theme={mainTheme}>
-        <DataHandler pageProps={pageProps} Component={Component} primaryColor={primaryColor} router={router} />
+        <DataHandler
+          pageProps={pageProps}
+          Component={Component}
+          primaryColor={primaryColor}
+          router={router}
+          loading={loading}
+        />
       </ThemeProvider>
     </div>
   )

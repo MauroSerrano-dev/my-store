@@ -1,8 +1,26 @@
 import { toast } from 'react-toastify'
 
-export function showInfoToast(props) {
+/**
+ * Função para exibir um toast de informação.
+ *
+ * @param {object} props - Function props.
+ * @param {'info' | 'success' | 'error'} props.type - Toast type. `Default: 'info'`
+ * @param {string} props.msg - Toast message. `Default: 'This is a Toast!'`
+ * @param {number} props.time - Toast duration. `Default: 3000`
+ * @param {string} props.theme - Toast theme. `Default: 'light'`
+ * @param {boolean} props.pauseOnHover - Pause the timer when the mouse hovers over the toast. `Default: true`
+ * @param {boolean} props.closeOnClick - Remove the toast when clicked. `Default: true`
+ * @param {boolean} props.hideProgressBar - Hide progress bar. `Default: false`
+ * @param {boolean} props.draggable - Allow toast to be draggable. `Default: true`
+ * @param {number} props.progress - Set the percentage for the controlled progress bar. `Default: undefined`
+ * @param {'top-right' | 'top-center' | 'top-left' | 'bottom-right' | 'bottom-center' | 'bottom-left'} props.position - Set the position of the toast. `Default: 'top-center'`
+ */
+
+export function showToast(props = {}) {
+
     const {
-        msg = '',
+        type = 'info',
+        msg = 'This is a toast!',
         time = 3000,
         theme = 'light',
         pauseOnHover = true,
@@ -13,64 +31,43 @@ export function showInfoToast(props) {
         position = 'top-center'
     } = props
 
-    toast.info(msg, {
-        position: position,
-        autoClose: time,
-        hideProgressBar: hideProgressBar,
-        closeOnClick: closeOnClick,
-        pauseOnHover: pauseOnHover,
-        draggable: draggable,
-        progress: progress,
-        theme: theme,
-    })
-}
-
-export function showErrorToast(props) {
-    const {
-        msg = '',
-        time = 3000,
-        theme = 'light',
-        pauseOnHover = true,
-        closeOnClick = true,
-        hideProgressBar = false,
-        draggable = true,
-        progress,
-        position = 'top-center'
-    } = props
-
-    toast.error(msg, {
-        position: position,
-        autoClose: time,
-        hideProgressBar: hideProgressBar,
-        closeOnClick: closeOnClick,
-        pauseOnHover: pauseOnHover,
-        draggable: draggable,
-        progress: progress,
-        theme: theme,
-    })
-}
-
-export function showSuccessToast(props) {
-    const {
-        msg = '',
-        time = 3000,
-        theme = 'light',
-        pauseOnHover = true,
-        closeOnClick = true,
-        hideProgressBar = false,
-        draggable = true,
-        progress,
-        position = 'top-center'
-    } = props
-
-    toast.success(msg, {
-        position: position,
-        autoClose: time,
-        hideProgressBar: hideProgressBar,
-        closeOnClick: closeOnClick,
-        pauseOnHover: pauseOnHover,
-        draggable: draggable,
-        progress: progress,
-        theme: theme,
-    })
+    if (type === 'info') {
+        toast.info(msg, {
+            position: position,
+            autoClose: time,
+            hideProgressBar: hideProgressBar,
+            closeOnClick: closeOnClick,
+            pauseOnHover: pauseOnHover,
+            draggable: draggable,
+            progress: progress,
+            theme: theme,
+        })
+    }
+    else if (type === 'success') {
+        toast.success(msg, {
+            position: position,
+            autoClose: time,
+            hideProgressBar: hideProgressBar,
+            closeOnClick: closeOnClick,
+            pauseOnHover: pauseOnHover,
+            draggable: draggable,
+            progress: progress,
+            theme: theme,
+        })
+    }
+    else if (type === 'error') {
+        toast.error(msg, {
+            position: position,
+            autoClose: time,
+            hideProgressBar: hideProgressBar,
+            closeOnClick: closeOnClick,
+            pauseOnHover: pauseOnHover,
+            draggable: draggable,
+            progress: progress,
+            theme: theme,
+        })
+    }
+    else {
+        console.error('Invalid toast type')
+    }
 }

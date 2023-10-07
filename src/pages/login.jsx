@@ -7,6 +7,7 @@ import ReCAPTCHA from "react-google-recaptcha";
 import { useState } from 'react';
 import { signInWithPopup, GoogleAuthProvider, signInWithRedirect } from "firebase/auth";
 import { STORE_NAME } from '../../consts';
+import { showToast } from '../../utils/toasts';
 
 const provider = new GoogleAuthProvider();
 
@@ -37,10 +38,15 @@ export default function Login(props) {
     async function handleSubmit(event) {
         event.preventDefault()
 
-        const email = event.target.email.value
-        const password = event.target.password.value
+        if (reCaptchaSolve) {
+            const email = event.target.email.value
+            const password = event.target.password.value
 
-        login(email, password)
+            login(email, password)
+        }
+        else {
+            showToast({ type: 'error', msg: 'Please solve the reCAPTCHA.' })
+        }
     }
 
     return (

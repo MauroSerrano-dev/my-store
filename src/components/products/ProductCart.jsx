@@ -22,8 +22,6 @@ export default function ProductCart(props) {
         index,
         userCurrency,
         supportsHoverAndPointer,
-        loading,
-        setLoading,
     } = props
 
     const [hoverQuantity, setHoverQuantity] = useState(false)
@@ -86,9 +84,6 @@ export default function ProductCart(props) {
                             : ''
                     }`}
                 onClick={() => setLoading(true)}
-                style={{
-                    pointerEvents: loading ? 'none' : 'auto',
-                }}
             >
                 <Image
                     src={product.image}
@@ -108,9 +103,6 @@ export default function ProductCart(props) {
                                     : ''
                             }`}
                             onClick={() => setLoading(true)}
-                            style={{
-                                pointerEvents: loading ? 'none' : 'auto',
-                            }}
                         >
                             {product.title}
                         </Link>

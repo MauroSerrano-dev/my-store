@@ -14,7 +14,7 @@ import ButtonIcon from '@/components/material-ui/ButtonIcon'
 import SizesSelector from '@/components/SizesSelector';
 import Chain from '@/components/svgs/Chain';
 import BrokeChain from '@/components/svgs/BrokeChain';
-import { showErrorToast, showInfoToast, showSuccessToast } from '../../../../utils/toasts';
+import { showToast } from '../../../../utils/toasts';
 import NoFound404 from '@/pages/404';
 
 const INICIAL_PRODUCT = {
@@ -67,7 +67,7 @@ export default withRouter(props => {
         setDisableCreateButton(true)
 
         if (product.title === '') {
-            showInfoToast({ msg: 'Some fields missing.' })
+            showToast({ msg: 'Some fields missing.' })
             setDisableCreateButton(false)
             return
         }
@@ -102,10 +102,10 @@ export default withRouter(props => {
             .then(response => response.json())
             .then(response => {
                 response.status < 300
-                    ? showSuccessToast({ msg: response.msg })
-                    : showErrorToast({ msg: response.msg })
+                    ? showToast({ type: 'success', msg: response.msg })
+                    : showToast({ type: 'error', msg: response.msg })
             })
-            .catch(err => showErrorToast({ msg: err }))
+            .catch(err => showToast({ type: 'error', msg: err }))
 
         setDisableCreateButton(false)
     }

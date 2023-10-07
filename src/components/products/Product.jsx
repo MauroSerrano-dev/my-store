@@ -13,10 +13,8 @@ import Image from 'next/image';
  * @param {object} props.motionVariants - Component motionVariants.
  * @param {string} props.width - Component width.
  * @param {boolean} props.responsive - Responsive width.
- * @param {boolean} props.loading - Website loading.
  * @param {boolean} props.supportsHoverAndPointer - Device supportsHoverAndPointer.
  * @param {boolean} props.outOfStock - Product outOfStock.
- * @param {function} props.setLoading - Website setLoading.
  */
 
 const COLORS_LIMIT_TO_SCROLL = 6
@@ -27,8 +25,6 @@ export default function Product(props) {
         userCurrency,
         width = 225,
         supportsHoverAndPointer,
-        setLoading,
-        loading,
         product,
         motionVariants = {
             hidden: {
@@ -133,13 +129,11 @@ export default function Product(props) {
                 width: width,
                 marginBottom: width * 0.2,
                 textDecoration: 'none',
-                pointerEvents: loading ? 'none' : 'auto',
                 ...style
             }}
         >
             <Link
                 href={url}
-                onClick={() => setLoading(true)}
                 className={`${styles.linkContainer} noUnderline`}
                 draggable={false}
             >
@@ -293,7 +287,6 @@ export default function Product(props) {
                         </div>
                         : <Link
                             href={url}
-                            onClick={() => setLoading(true)}
                             style={{
                                 width: '75%'
                             }}

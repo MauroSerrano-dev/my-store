@@ -23,8 +23,6 @@ export default withRouter(props => {
     const {
         userCurrency,
         supportsHoverAndPointer,
-        loading,
-        setLoading,
         router
     } = props
     const {
@@ -340,8 +338,6 @@ export default withRouter(props => {
                                     product={product}
                                     width={productWidth}
                                     supportsHoverAndPointer={supportsHoverAndPointer}
-                                    loading={loading}
-                                    setLoading={setLoading}
                                     motionVariants={
                                         {
                                             hidden: {

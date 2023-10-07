@@ -17,8 +17,6 @@ export default function CarouselProductsLoop(props) {
         gap = 20,
         userCurrency,
         supportsHoverAndPointer,
-        setLoading,
-        loading,
     } = props
 
     const [itemsArray, setItemsArray] = useState(
@@ -100,8 +98,6 @@ export default function CarouselProductsLoop(props) {
                             responsive
                             userCurrency={userCurrency}
                             supportsHoverAndPointer={supportsHoverAndPointer}
-                            loading={loading}
-                            setLoading={setLoading}
                             product={item}
                         />
                     </div>

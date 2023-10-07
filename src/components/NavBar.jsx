@@ -31,8 +31,6 @@ export default function NavBar(props) {
         supportsHoverAndPointer,
         menuOpen,
         switchMenu,
-        setLoading,
-        loading,
     } = props
 
     return (
@@ -158,8 +156,6 @@ export default function NavBar(props) {
                         setCart={setCart}
                         userCurrency={userCurrency}
                         supportsHoverAndPointer={supportsHoverAndPointer}
-                        loading={loading}
-                        setLoading={setLoading}
                     />
                     <AvatarMenu
                         session={session}

@@ -19,7 +19,7 @@
 .imageContainer {
     position: relative;
 
-    width: calc(108px * 0.8);
+    width: calc(108px * 0.9);
     height: 108px;
 
     overflow: hidden;
