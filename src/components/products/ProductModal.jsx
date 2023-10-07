@@ -3,6 +3,7 @@ import { SlClose } from "react-icons/sl";
 import { motion } from "framer-motion";
 import Link from 'next/link';
 import { convertDolarToCurrency } from '../../../consts';
+import Image from 'next/image';
 
 export default function ProductModal(props) {
     const {
@@ -55,23 +56,27 @@ export default function ProductModal(props) {
                     zIndex: 10,
                 }}
             />
-            <Link href={`/product/${product.id}${product.color.id !== product.default_variant.color.id && product.size.id !== product.default_variant.size.id
-                ? `?sz=${product.size.title.toLowerCase()}&cl=${product.color.title.replace(' ', '+').toLowerCase()}`
-                : product.size.id !== product.default_variant.size.id
-                    ? `?sz=${product.size.title.toLowerCase()}`
-                    : product.color.id !== product.default_variant.color.id
-                        ? `?cl=${product.color.title.replace(' ', '+').toLowerCase()}`
-                        : ''
-                }`}
+            <Link
                 className={styles.imageContainer}
                 onClick={() => setLoading(true)}
+                href={`/product/${product.id}${product.color.id !== product.default_variant.color.id && product.size.id !== product.default_variant.size.id
+                    ? `?sz=${product.size.title.toLowerCase()}&cl=${product.color.title.replace(' ', '+').toLowerCase()}`
+                    : product.size.id !== product.default_variant.size.id
+                        ? `?sz=${product.size.title.toLowerCase()}`
+                        : product.color.id !== product.default_variant.color.id
+                            ? `?cl=${product.color.title.replace(' ', '+').toLowerCase()}`
+                            : ''
+                    }`}
                 style={{
                     pointerEvents: loading ? 'none' : 'auto',
                 }}
             >
-                <img
-                    className={styles.image}
+                <Image
                     src={product.image}
+                    alt={product.title}
+                    width={108 * 0.9}
+                    height={108}
+                    priority
                 />
             </Link>
             <div className={styles.right}>

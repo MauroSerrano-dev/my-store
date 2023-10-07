@@ -42,11 +42,11 @@
 .contentContainer {
     position: absolute;
     top: 30px;
-    left: -213px;
+    left: -233px;
 }
 
 .contentVisible {
-    width: 280px;
+    width: 300px;
     background-color: #ffffff;
 
     border-radius: 0.3rem;

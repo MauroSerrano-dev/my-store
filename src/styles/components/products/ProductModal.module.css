@@ -11,14 +11,16 @@
 
     --text-color: var(--text-black);
 
-    padding: 0.7rem 0;
+    padding: 11px 0;
 
     border-bottom: #ababab solid 1px;
 }
 
 .imageContainer {
-    width: 35%;
-    height: 100%;
+    position: relative;
+
+    width: calc(108px * 0.8);
+    height: 108px;
 
     overflow: hidden;
 
@@ -30,10 +32,6 @@
     border-radius: 0.3rem;
 }
 
-.image {
-    height: 100%;
-}
-
 .right {
     position: relative;
 
@@ -42,7 +40,7 @@
     justify-content: flex-start;
     align-items: flex-start;
 
-    width: 65%;
+    width: calc(100% - (108px * 0.9));
     height: 100%;
 
     padding: 0 0.5rem;

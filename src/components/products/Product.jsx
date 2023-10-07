@@ -160,7 +160,6 @@ export default function Product(props) {
                                 src={product.images.filter(img => img.color_id === color.id)[product.image_hover_index].src}
                                 width={width}
                                 height={width * 10 / 9}
-                                className={styles.img}
                                 alt={product.title}
                                 style={{
                                     position: i > 0 ? 'absolute' : 'relative',
@@ -182,10 +181,10 @@ export default function Product(props) {
                     {product.colors.map((color, i) =>
                         <Image
                             key={i}
+                            priority
                             src={product.images.filter(img => img.color_id === color.id)[product.image_showcase_index].src}
                             width={width}
                             height={width * 10 / 9}
-                            className={styles.img}
                             alt={product.title}
                             style={{
                                 position: i > 0 ? 'absolute' : 'relative',
