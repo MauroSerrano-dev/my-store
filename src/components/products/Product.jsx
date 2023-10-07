@@ -5,6 +5,7 @@ import Link from 'next/link'
 import { motion } from "framer-motion";
 import { convertDolarToCurrency } from '../../../consts';
 import ColorButton from '../ColorButton';
+import Image from 'next/image';
 
 /**
  * @param {object} props - Component props.
@@ -150,12 +151,16 @@ export default function Product(props) {
                             opacity: isHovered ? 1 : 0,
                             zIndex: 2,
                             pointerEvents: 'none',
+                            width: width,
+                            height: width * 10 / 9
                         }}
                     >
                         {product.colors.map((color, i) =>
-                            <img
+                            <Image
                                 key={i}
                                 src={product.images.filter(img => img.color_id === color.id)[product.image_hover_index].src}
+                                width={width}
+                                height={width * 10 / 9}
                                 className={styles.img}
                                 alt={product.title}
                                 style={{
@@ -171,12 +176,16 @@ export default function Product(props) {
                     className={styles.imgContainer}
                     style={{
                         pointerEvents: 'none',
+                        width: width,
+                        height: width * 10 / 9
                     }}
                 >
                     {product.colors.map((color, i) =>
-                        <img
+                        <Image
                             key={i}
                             src={product.images.filter(img => img.color_id === color.id)[product.image_showcase_index].src}
+                            width={width}
+                            height={width * 10 / 9}
                             className={styles.img}
                             alt={product.title}
                             style={{

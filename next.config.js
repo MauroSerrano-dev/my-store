@@ -1,5 +1,8 @@
 /** @type {import('next').NextConfig} */
 module.exports = {
+  images: {
+    domains: ['firebasestorage.googleapis.com'],
+  },
   reactStrictMode: false,
   webpack(config, options) {
     config.module.rules.push({
