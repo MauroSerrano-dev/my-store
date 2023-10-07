@@ -6,6 +6,8 @@ import MontserratRegular from '../../public/fonts/montserrat.ttf';
 import DataHandler from '@/components/DataHandler'
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
+import { CircularProgress } from '@mui/material';
+import { motion } from 'framer-motion';
 
 const primaryColor = '#1189C4'
 
@@ -101,6 +103,50 @@ export default function App(props) {
           loading={loading}
         />
       </ThemeProvider>
+      {loading &&
+        <motion.div
+          variants={{
+            hidden: {
+              opacity: 0,
+            },
+            visible: {
+              opacity: 1,
+              transition: {
+                duration: 0,
+                delay: 0.2,
+              }
+            }
+          }}
+          initial='hidden'
+          animate='visible'
+          style={{
+            position: 'fixed',
+            right: '4rem',
+            bottom: '4rem',
+            zIndex: 100
+          }}
+        >
+          <CircularProgress
+            variant="determinate"
+            sx={{
+              position: 'absolute',
+              color: '#525252',
+            }}
+            size={40}
+            thickness={4}
+            value={100}
+          />
+          <CircularProgress
+            disableShrink
+            size={40}
+            thickness={4}
+            sx={{
+              position: 'absolute',
+              animationDuration: '750ms',
+            }}
+          />
+        </motion.div>
+      }
     </div>
   )
 }
