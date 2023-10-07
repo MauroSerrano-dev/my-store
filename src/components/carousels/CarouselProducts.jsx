@@ -17,7 +17,6 @@ export default function CarouselProducts(props) {
     const carouselRef = useRef()
 
     const [isDragging, setIsDragging] = useState(false);
-    const [showSkeleton, setShowSkeleton] = useState(true);
 
     function handleDragStart() {
         setIsDragging(true)
@@ -28,14 +27,6 @@ export default function CarouselProducts(props) {
             setIsDragging(false)
         }, 200)
     }
-
-    useEffect(() => {
-        if (products.length > 0) {
-            setTimeout(() => {
-                setShowSkeleton(false)
-            }, 730)
-        }
-    }, [products])
 
     return (
         <motion.div
@@ -53,6 +44,7 @@ export default function CarouselProducts(props) {
                 onDragStart={handleDragStart}
                 onDragEnd={handleDragEnd}
                 style={{
+                    zIndex: 1,
                     cursor: isDragging ? 'grabbing' : 'grab',
                     position: 'relative',
                     height: windowWidth < 1075
@@ -62,8 +54,8 @@ export default function CarouselProducts(props) {
                         : 399.375
                 }}
             >
-                {products.length > 0 &&
-                    products.map((prod, i) =>
+                {products.length > 0
+                    ? products.map((prod, i) =>
                         <Product
                             width={windowWidth < 1075
                                 ? windowWidth < 750
@@ -82,9 +74,7 @@ export default function CarouselProducts(props) {
                             }}
                         />
                     )
-                }
-                {showSkeleton &&
-                    <div
+                    : <div
                         className={styles.inner}
                         style={{
                             display: 'flex',
