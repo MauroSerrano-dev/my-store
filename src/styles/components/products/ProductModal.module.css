@@ -16,6 +16,11 @@
     border-bottom: #ababab solid 1px;
 }
 
+.sizePlaceholder {
+    width: 100%;
+    height: 130px;
+}
+
 .imageContainer {
     position: relative;
 

@@ -34,101 +34,105 @@ export default function ProductModal(props) {
     }, [product])
 
     return (
-        isImageLoaded &&
-        <motion.div
-            className={styles.container}
-            variants={{
-                hidden: {
-                    opacity: 0,
-                    y: 20,
-                },
-                visible: {
-                    opacity: 1,
-                    y: 0,
-                    transition: {
-                        duration: 0.5,
-                        delay: 0.5 * index,
+        isImageLoaded
+            ? <motion.div
+                className={styles.container}
+                variants={{
+                    hidden: {
+                        opacity: 0,
+                        y: 20,
+                    },
+                    visible: {
+                        opacity: 1,
+                        y: 0,
+                        transition: {
+                            duration: 0.4,
+                            delay: 0.4 * index,
+                        }
                     }
-                }
-            }}
-            initial='hidden'
-            animate='visible'
-        >
-            <SlClose
-                onClick={() => handleDeleteCartProduct()}
-                color='#ffffff'
-                style={{
-                    fontSize: '15px',
-                    cursor: 'pointer',
-                    position: 'absolute',
-                    top: '0.7rem',
-                    right: '0.3rem',
-                    color: 'var(--global-black)',
-                    zIndex: 10,
                 }}
-            />
-            <Link
-                className={styles.imageContainer}
-                href={`/product/${product.id}${product.color.id !== product.default_variant.color.id && product.size.id !== product.default_variant.size.id
-                    ? `?sz=${product.size.title.toLowerCase()}&cl=${product.color.title.replace(' ', '+').toLowerCase()}`
-                    : product.size.id !== product.default_variant.size.id
-                        ? `?sz=${product.size.title.toLowerCase()}`
-                        : product.color.id !== product.default_variant.color.id
-                            ? `?cl=${product.color.title.replace(' ', '+').toLowerCase()}`
-                            : ''
-                    }`}
+                initial='hidden'
+                animate='visible'
             >
-                <Image
-                    src={product.image}
-                    alt={product.title}
-                    width={108 * 0.9}
-                    height={108}
+                <SlClose
+                    onClick={() => handleDeleteCartProduct()}
+                    color='#ffffff'
                     style={{
-                        width: 108,
-                        height: 'auto',
+                        fontSize: '15px',
+                        cursor: 'pointer',
+                        position: 'absolute',
+                        top: '0.7rem',
+                        right: '0.3rem',
+                        color: 'var(--global-black)',
+                        zIndex: 10,
                     }}
-                    priority
                 />
-            </Link>
-            <div className={styles.right}>
-                <Link href={`/product/${product.id}${product.color.id !== product.default_variant.color.id && product.size.id !== product.default_variant.size.id
-                    ? `?sz=${product.size.title.toLowerCase()}&cl=${product.color.title.replace(' ', '+').toLowerCase()}`
-                    : product.size.id !== product.default_variant.size.id
-                        ? `?sz=${product.size.title.toLowerCase()}`
-                        : product.color.id !== product.default_variant.color.id
-                            ? `?cl=${product.color.title.replace(' ', '+').toLowerCase()}`
-                            : ''
-                    }`}
+                <Link
+                    className={styles.imageContainer}
+                    href={`/product/${product.id}${product.color.id !== product.default_variant.color.id && product.size.id !== product.default_variant.size.id
+                        ? `?sz=${product.size.title.toLowerCase()}&cl=${product.color.title.replace(' ', '+').toLowerCase()}`
+                        : product.size.id !== product.default_variant.size.id
+                            ? `?sz=${product.size.title.toLowerCase()}`
+                            : product.color.id !== product.default_variant.color.id
+                                ? `?cl=${product.color.title.replace(' ', '+').toLowerCase()}`
+                                : ''
+                        }`}
                 >
-                    <h6>{product.title}</h6>
-                </Link>
-                <div className={styles.infos}>
-                    <p>
-                        Size: {product.size.title}
-                    </p>
-                    <p>
-                        Color: {product.color.title}
-                    </p>
-                    <p>
-                        Quantity: {product.quantity}
-                    </p>
-                </div>
-                <div className={styles.priceContainer}>
-                    <p
+                    <Image
+                        src={product.image}
+                        alt={product.title}
+                        width={108 * 0.9}
+                        height={108}
                         style={{
-                            fontWeight: 'bold',
-                            fontSize: '14px',
+                            width: 108,
+                            height: 'auto',
                         }}
+                        priority
+                    />
+                </Link>
+                <div className={styles.right}>
+                    <Link href={`/product/${product.id}${product.color.id !== product.default_variant.color.id && product.size.id !== product.default_variant.size.id
+                        ? `?sz=${product.size.title.toLowerCase()}&cl=${product.color.title.replace(' ', '+').toLowerCase()}`
+                        : product.size.id !== product.default_variant.size.id
+                            ? `?sz=${product.size.title.toLowerCase()}`
+                            : product.color.id !== product.default_variant.color.id
+                                ? `?cl=${product.color.title.replace(' ', '+').toLowerCase()}`
+                                : ''
+                        }`}
                     >
-                        {price}
-                    </p>
-                    {product.quantity > 1 &&
-                        <p style={{ fontSize: '10px', color: 'var(--text-black)' }}>
-                            {priceUnit}
+                        <h6>{product.title}</h6>
+                    </Link>
+                    <div className={styles.infos}>
+                        <p>
+                            Size: {product.size.title}
                         </p>
-                    }
+                        <p>
+                            Color: {product.color.title}
+                        </p>
+                        <p>
+                            Quantity: {product.quantity}
+                        </p>
+                    </div>
+                    <div className={styles.priceContainer}>
+                        <p
+                            style={{
+                                fontWeight: 'bold',
+                                fontSize: '14px',
+                            }}
+                        >
+                            {price}
+                        </p>
+                        {product.quantity > 1 &&
+                            <p style={{ fontSize: '10px', color: 'var(--text-black)' }}>
+                                {priceUnit}
+                            </p>
+                        }
+                    </div>
                 </div>
+            </motion.div>
+            : <div
+                className={styles.sizePlaceholder}
+            >
             </div>
-        </motion.div>
     )
 }

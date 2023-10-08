@@ -58,199 +58,203 @@ export default function ProductCart(props) {
     }, [product])
 
     return (
-        isImageLoaded &&
-        <motion.div
-            className={styles.container}
-            variants={{
-                hidden: {
-                    opacity: 0,
-                    y: 20,
-                },
-                visible: {
-                    opacity: 1,
-                    y: 0,
-                    transition: {
-                        duration: 0.5,
-                        delay: 0.5 * index,
+        isImageLoaded
+            ? <motion.div
+                className={styles.container}
+                variants={{
+                    hidden: {
+                        opacity: 0,
+                        y: 20,
+                    },
+                    visible: {
+                        opacity: 1,
+                        y: 0,
+                        transition: {
+                            duration: 0.5,
+                            delay: 0.5 * index,
+                        }
                     }
-                }
-            }}
-            initial='hidden'
-            animate='visible'
-        >
-            <button
-                onClick={() => handleDeleteCartProduct()}
-                className={`${styles.deleteButton} buttonInvisible`}
+                }}
+                initial='hidden'
+                animate='visible'
             >
-                <SlClose />
-            </button>
-            <Link
-                className={styles.imageContainer}
-                href={`/product/${product.id}${product.color.id !== product.default_variant.color.id && product.size.id !== product.default_variant.size.id
-                    ? `?sz=${product.size.title.toLowerCase()}&cl=${product.color.title.replace(' ', '+').toLowerCase()}`
-                    : product.size.id !== product.default_variant.size.id
-                        ? `?sz=${product.size.title.toLowerCase()}`
-                        : product.color.id !== product.default_variant.color.id
-                            ? `?cl=${product.color.title.replace(' ', '+').toLowerCase()}`
-                            : ''
-                    }`}
-                onClick={() => setLoading(true)}
-            >
-                <Image
-                    src={product.image}
-                    alt={product.title}
-                    layout='fill'
-                />
-            </Link>
-            <div className={styles.right}>
-                <div className={styles.rightLeft}>
-                    <div className={styles.productName}>
-                        <Link href={`/product/${product.id}${product.color.id !== product.default_variant.color.id && product.size.id !== product.default_variant.size.id
-                            ? `?sz=${product.size.title.toLowerCase()}&cl=${product.color.title.replace(' ', '+').toLowerCase()}`
-                            : product.size.id !== product.default_variant.size.id
-                                ? `?sz=${product.size.title.toLowerCase()}`
-                                : product.color.id !== product.default_variant.color.id
-                                    ? `?cl=${product.color.title.replace(' ', '+').toLowerCase()}`
-                                    : ''
-                            }`}
-                            onClick={() => setLoading(true)}
-                        >
-                            {product.title}
-                        </Link>
-                    </div>
-                    <div className={styles.bodyContainer}>
-                        <div className={styles.bodyTop}>
-                            {product.sold_out.percentage &&
-                                <div
-                                    className={styles.soldOut}
-                                >
-                                    <p>
-                                        {Math.round(100 * product.sold_out.percentage)}% OFF
-                                    </p>
-                                </div>
-                            }
+                <button
+                    onClick={() => handleDeleteCartProduct()}
+                    className={`${styles.deleteButton} buttonInvisible`}
+                >
+                    <SlClose />
+                </button>
+                <Link
+                    className={styles.imageContainer}
+                    href={`/product/${product.id}${product.color.id !== product.default_variant.color.id && product.size.id !== product.default_variant.size.id
+                        ? `?sz=${product.size.title.toLowerCase()}&cl=${product.color.title.replace(' ', '+').toLowerCase()}`
+                        : product.size.id !== product.default_variant.size.id
+                            ? `?sz=${product.size.title.toLowerCase()}`
+                            : product.color.id !== product.default_variant.color.id
+                                ? `?cl=${product.color.title.replace(' ', '+').toLowerCase()}`
+                                : ''
+                        }`}
+                    onClick={() => setLoading(true)}
+                >
+                    <Image
+                        src={product.image}
+                        alt={product.title}
+                        layout='fill'
+                    />
+                </Link>
+                <div className={styles.right}>
+                    <div className={styles.rightLeft}>
+                        <div className={styles.productName}>
+                            <Link href={`/product/${product.id}${product.color.id !== product.default_variant.color.id && product.size.id !== product.default_variant.size.id
+                                ? `?sz=${product.size.title.toLowerCase()}&cl=${product.color.title.replace(' ', '+').toLowerCase()}`
+                                : product.size.id !== product.default_variant.size.id
+                                    ? `?sz=${product.size.title.toLowerCase()}`
+                                    : product.color.id !== product.default_variant.color.id
+                                        ? `?cl=${product.color.title.replace(' ', '+').toLowerCase()}`
+                                        : ''
+                                }`}
+                                onClick={() => setLoading(true)}
+                            >
+                                {product.title}
+                            </Link>
                         </div>
-                        <div className={styles.bodyBottom}>
-                            <div className='flex column' style={{ fontSize: 13, paddingBottom: '0.7rem' }}>
-                                <p className='text-start'>Color: {product.color.title}</p>
-                                <p className='text-start'>Size: {product.size.title}</p>
+                        <div className={styles.bodyContainer}>
+                            <div className={styles.bodyTop}>
+                                {product.sold_out.percentage &&
+                                    <div
+                                        className={styles.soldOut}
+                                    >
+                                        <p>
+                                            {Math.round(100 * product.sold_out.percentage)}% OFF
+                                        </p>
+                                    </div>
+                                }
                             </div>
-                            <FormControl sx={{ minWidth: 80, height: '25%', minHeight: 40 }}>
-                                <InputLabel
-                                    sx={{
-                                        color: '#ffffff'
-                                    }}
-                                >
-                                    Quantity
-                                </InputLabel>
-                                <Select
-                                    value={product.quantity}
-                                    onChange={(event) => changeProductField('quantity', event.target.value)}
-                                    label="Quantity"
-                                    MenuProps={{ disableScrollLock: true }}
-                                    sx={{
-                                        height: '100%',
-                                        color: '#ffffff',
-                                        '.MuiOutlinedInput-notchedOutline': {
-                                            borderColor: `${focusQuantity
-                                                ? 'var(--primary)' :
-                                                hoverQuantity || !supportsHoverAndPointer
-                                                    ? '#ffffff'
-                                                    : '#ffffff90'} !important`,
-                                            transition: 'all ease-in-out 200ms'
-                                        },
-                                        '.MuiSelect-iconOutlined': {
-                                            color: 'var(--global-white)'
-                                        },
-                                        '.MuiChip-root': {
-                                            backgroundColor: '#363a3d',
-                                            '--text-color': 'var(--global-white)',
-                                        },
-                                    }}
-                                    onFocus={() => setFocusQuantity(true)}
-                                    onBlur={() => setFocusQuantity(false)}
-                                    onMouseEnter={() => setHoverQuantity(true)}
-                                    onMouseLeave={() => setHoverQuantity(false)}
-                                    onClick={() => setHoverQuantity(false)}
-                                >
-                                    <MenuItem value={1}
-                                        sx={menuStyle}
+                            <div className={styles.bodyBottom}>
+                                <div className='flex column' style={{ fontSize: 13, paddingBottom: '0.7rem' }}>
+                                    <p className='text-start'>Color: {product.color.title}</p>
+                                    <p className='text-start'>Size: {product.size.title}</p>
+                                </div>
+                                <FormControl sx={{ minWidth: 80, height: '25%', minHeight: 40 }}>
+                                    <InputLabel
+                                        sx={{
+                                            color: '#ffffff'
+                                        }}
                                     >
-                                        1
-                                    </MenuItem>
-                                    <MenuItem
-                                        value={2}
-                                        sx={menuStyle}
+                                        Quantity
+                                    </InputLabel>
+                                    <Select
+                                        value={product.quantity}
+                                        onChange={(event) => changeProductField('quantity', event.target.value)}
+                                        label="Quantity"
+                                        MenuProps={{ disableScrollLock: true }}
+                                        sx={{
+                                            height: '100%',
+                                            color: '#ffffff',
+                                            '.MuiOutlinedInput-notchedOutline': {
+                                                borderColor: `${focusQuantity
+                                                    ? 'var(--primary)' :
+                                                    hoverQuantity || !supportsHoverAndPointer
+                                                        ? '#ffffff'
+                                                        : '#ffffff90'} !important`,
+                                                transition: 'all ease-in-out 200ms'
+                                            },
+                                            '.MuiSelect-iconOutlined': {
+                                                color: 'var(--global-white)'
+                                            },
+                                            '.MuiChip-root': {
+                                                backgroundColor: '#363a3d',
+                                                '--text-color': 'var(--global-white)',
+                                            },
+                                        }}
+                                        onFocus={() => setFocusQuantity(true)}
+                                        onBlur={() => setFocusQuantity(false)}
+                                        onMouseEnter={() => setHoverQuantity(true)}
+                                        onMouseLeave={() => setHoverQuantity(false)}
+                                        onClick={() => setHoverQuantity(false)}
                                     >
-                                        2
-                                    </MenuItem>
-                                    <MenuItem
-                                        value={3}
-                                        sx={menuStyle}
-                                    >
-                                        3
-                                    </MenuItem>
-                                    <MenuItem
-                                        value={4}
-                                        sx={menuStyle}
-                                    >
-                                        4
-                                    </MenuItem>
-                                    <MenuItem
-                                        value={5}
-                                        sx={menuStyle}
-                                    >
-                                        5
-                                    </MenuItem>
-                                    <MenuItem
-                                        value={6}
-                                        sx={menuStyle}
-                                    >
-                                        6
-                                    </MenuItem>
-                                    <MenuItem
-                                        value={7}
-                                        sx={menuStyle}
-                                    >
-                                        7
-                                    </MenuItem>
-                                    <MenuItem
-                                        value={8}
-                                        sx={menuStyle}
-                                    >
-                                        8
-                                    </MenuItem>
-                                    <MenuItem
-                                        value={9}
-                                        sx={menuStyle}
-                                    >
-                                        9
-                                    </MenuItem>
-                                    <MenuItem
-                                        value={10}
-                                        sx={menuStyle}
-                                    >
-                                        10
-                                    </MenuItem>
-                                </Select>
-                            </FormControl>
+                                        <MenuItem value={1}
+                                            sx={menuStyle}
+                                        >
+                                            1
+                                        </MenuItem>
+                                        <MenuItem
+                                            value={2}
+                                            sx={menuStyle}
+                                        >
+                                            2
+                                        </MenuItem>
+                                        <MenuItem
+                                            value={3}
+                                            sx={menuStyle}
+                                        >
+                                            3
+                                        </MenuItem>
+                                        <MenuItem
+                                            value={4}
+                                            sx={menuStyle}
+                                        >
+                                            4
+                                        </MenuItem>
+                                        <MenuItem
+                                            value={5}
+                                            sx={menuStyle}
+                                        >
+                                            5
+                                        </MenuItem>
+                                        <MenuItem
+                                            value={6}
+                                            sx={menuStyle}
+                                        >
+                                            6
+                                        </MenuItem>
+                                        <MenuItem
+                                            value={7}
+                                            sx={menuStyle}
+                                        >
+                                            7
+                                        </MenuItem>
+                                        <MenuItem
+                                            value={8}
+                                            sx={menuStyle}
+                                        >
+                                            8
+                                        </MenuItem>
+                                        <MenuItem
+                                            value={9}
+                                            sx={menuStyle}
+                                        >
+                                            9
+                                        </MenuItem>
+                                        <MenuItem
+                                            value={10}
+                                            sx={menuStyle}
+                                        >
+                                            10
+                                        </MenuItem>
+                                    </Select>
+                                </FormControl>
+                            </div>
                         </div>
                     </div>
-                </div>
-                <div className={styles.rightRight}>
-                    <p>
-                        Price:
-                    </p>
-                    <h2>
-                        {price}
-                    </h2>
-                    {product.quantity > 1 &&
+                    <div className={styles.rightRight}>
                         <p>
-                            {priceUnit}
+                            Price:
                         </p>
-                    }
+                        <h2>
+                            {price}
+                        </h2>
+                        {product.quantity > 1 &&
+                            <p>
+                                {priceUnit}
+                            </p>
+                        }
+                    </div>
                 </div>
+            </motion.div>
+            : <div
+                className={styles.sizePlaceholder}
+            >
             </div>
-        </motion.div>
     )
 }
