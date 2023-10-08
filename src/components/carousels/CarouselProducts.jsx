@@ -30,7 +30,6 @@ export default function CarouselProducts(props) {
         <motion.div
             className={styles.container}
             ref={carouselRef}
-        /* TESTANDO SEM key={products.length} */ // prevenir bug quando faz resize
         >
             <motion.div
                 className={styles.inner}

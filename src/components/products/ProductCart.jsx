@@ -26,6 +26,7 @@ export default function ProductCart(props) {
 
     const [hoverQuantity, setHoverQuantity] = useState(false)
     const [focusQuantity, setFocusQuantity] = useState(false)
+    const [isImageLoaded, setIsImageLoaded] = useState(false)
 
     const price = `${userCurrency.symbol} ${((convertDolarToCurrency(product.price * (product.sold_out.percentage ? 1 - product.sold_out.percentage : 1), userCurrency.code) / 100) * product.quantity).toFixed(2)}`
 
@@ -47,7 +48,17 @@ export default function ProductCart(props) {
         )
     }
 
+    useEffect(() => {
+        const img = new window.Image()
+        img.src = product.images[0].src
+
+        img.onload = () => {
+            setIsImageLoaded(true)
+        }
+    }, [product])
+
     return (
+        isImageLoaded &&
         <motion.div
             className={styles.container}
             variants={{

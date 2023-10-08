@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import Link from 'next/link';
 import { convertDolarToCurrency } from '../../../consts';
 import Image from 'next/image';
+import { useState } from 'react';
 
 export default function ProductModal(props) {
     const {
@@ -13,6 +14,8 @@ export default function ProductModal(props) {
         userCurrency,
     } = props
 
+    const [isImageLoaded, setIsImageLoaded] = useState(false)
+
     const price = `${userCurrency.symbol} ${((convertDolarToCurrency(product.price * (product.sold_out.percentage ? 1 - product.sold_out.percentage : 1), userCurrency.code) / 100) * product.quantity).toFixed(2)}`
 
     const priceUnit = `${userCurrency.symbol} ${(convertDolarToCurrency(product.price * (product.sold_out.percentage ? 1 - product.sold_out.percentage : 1), userCurrency.code) / 100).toFixed(2)} unit`
@@ -21,7 +24,17 @@ export default function ProductModal(props) {
         setCart(prev => prev.filter(prod => prod.id !== product.id || prod.variant_id !== product.variant_id))
     }
 
+    useEffect(() => {
+        const img = new window.Image()
+        img.src = product.images[0].src
+
+        img.onload = () => {
+            setIsImageLoaded(true)
+        }
+    }, [product])
+
     return (
+        isImageLoaded &&
         <motion.div
             className={styles.container}
             variants={{

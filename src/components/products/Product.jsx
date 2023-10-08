@@ -43,7 +43,8 @@ export default function Product(props) {
     const bottomHoverRef = useRef(null)
 
     const [currentVariant, setCurrentVariant] = useState(product.variants[0])
-    const [isDraggingColors, setIsDraggingColors] = useState(false);
+    const [isDraggingColors, setIsDraggingColors] = useState(false)
+    const [isImageLoaded, setIsImageLoaded] = useState(false)
 
     const scrollColorsActive = product.colors.length > 6
 
@@ -68,7 +69,17 @@ export default function Product(props) {
         event.preventDefault()
     }
 
+    useEffect(() => {
+        const img = new window.Image()
+        img.src = product.images[0].src
+
+        img.onload = () => {
+            setIsImageLoaded(true)
+        }
+    }, [product])
+
     return (
+        isImageLoaded &&
         <motion.div
             className={styles.container}
             variants={motionVariants}
