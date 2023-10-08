@@ -4,7 +4,7 @@ import { motion } from "framer-motion";
 import Link from 'next/link';
 import { convertDolarToCurrency } from '../../../consts';
 import Image from 'next/image';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 export default function ProductModal(props) {
     const {

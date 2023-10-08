@@ -3,7 +3,7 @@ import { SlClose } from "react-icons/sl";
 import { motion } from "framer-motion";
 import Link from 'next/link';
 import { Select, FormControl, MenuItem, InputLabel } from '@mui/material';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { convertDolarToCurrency } from '../../../consts';
 import Image from 'next/image';
 
