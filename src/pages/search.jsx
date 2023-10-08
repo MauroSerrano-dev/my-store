@@ -42,7 +42,7 @@ export default withRouter(props => {
     const [productWidth, setProductWidth] = useState(0)
     const [productsPerLine, setProductsPerLine] = useState(0)
 
-    const productsContainer = useRef()
+    const productsContainer = useRef(null)
 
     useEffect(() => {
         if (Object.keys(router.query).length > 0) {

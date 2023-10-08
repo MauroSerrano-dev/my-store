@@ -362,6 +362,7 @@ export default withRouter(props => {
                                         value={product.colors}
                                         options={TYPES_POOL.find(t => t.id === product.type).colors}
                                         onChange={handleChangeColors}
+                                        supportsHoverAndPointer={supportsHoverAndPointer}
                                         style={{
                                             paddingLeft: '50px',
                                             paddingRight: '50px',
@@ -415,6 +416,7 @@ export default withRouter(props => {
                                                 value={[product.colors[colorIndex]]}
                                                 options={product.colors}
                                                 onChange={handleSelectedColor}
+                                                supportsHoverAndPointer={supportsHoverAndPointer}
                                                 style={{
                                                     paddingTop: '1rem',
                                                     paddingBottom: '1rem',

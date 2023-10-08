@@ -12,7 +12,7 @@ export default function CarouselProducts(props) {
         windowWidth,
     } = props
 
-    const carouselRef = useRef()
+    const carouselRef = useRef(null)
 
     const [isDragging, setIsDragging] = useState(false);
 
@@ -45,7 +45,6 @@ export default function CarouselProducts(props) {
                     zIndex: 1,
                     cursor: isDragging ? 'grabbing' : 'grab',
                     position: 'relative',
-                    willChange: 'transform',
                     height: windowWidth < 1075
                         ? windowWidth < 750
                             ? 275.125
@@ -66,8 +65,10 @@ export default function CarouselProducts(props) {
                             product={prod}
                             userCurrency={userCurrency}
                             supportsHoverAndPointer={supportsHoverAndPointer}
+                            isDragging={isDragging}
                             style={{
-                                pointerEvents: isDragging ? 'none' : 'auto'
+                                pointerEvents: isDragging ? 'none' : 'auto',
+                                willChange: 'transform',
                             }}
                         />
                     )

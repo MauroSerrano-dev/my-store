@@ -5,7 +5,8 @@ export default function ColorSelector(props) {
         options = [],
         onChange,
         value = [],
-        style
+        style,
+        supportsHoverAndPointer,
     } = props
 
     return (
@@ -22,6 +23,7 @@ export default function ColorSelector(props) {
             {options.map((option, i) =>
                 <ColorButton
                     key={i}
+                    supportsHoverAndPointer={supportsHoverAndPointer}
                     selected={value.some(color => option.id === color?.id)}
                     onChange={(event) => onChange(value.some(color => option.id === color?.id)
                         ? value.filter(color => option.id !== color?.id)

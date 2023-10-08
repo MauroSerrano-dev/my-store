@@ -17,14 +17,13 @@ import Image from 'next/image';
  * @param {boolean} props.outOfStock - Product outOfStock.
  */
 
-const COLORS_LIMIT_TO_SCROLL = 1
-
 export default function Product(props) {
     const {
         outOfStock,
         userCurrency,
         width = 225,
         supportsHoverAndPointer,
+        isDragging,
         product,
         motionVariants = {
             hidden: {
@@ -42,15 +41,18 @@ export default function Product(props) {
 
     const productRef = useRef(null)
     const bottomHoverRef = useRef(null)
+
     const [currentVariant, setCurrentVariant] = useState(product.variants[0])
     const [isDraggingColors, setIsDraggingColors] = useState(false);
 
+    const scrollColorsActive = product.colors.length > 6
+
     function handleDragColorsStart() {
-        setIsDragging(true)
+        setIsDraggingColors(true)
     }
 
     function handleDragColorsEnd() {
-        setIsDragging(false)
+        setIsDraggingColors(false)
     }
 
     const url = `/product/${product.id}${product.variants[0].id === currentVariant.id ? '' : `?cl=${product.colors.find(c => currentVariant.color_id === c.id).title.toLowerCase()}`}`
@@ -207,7 +209,7 @@ export default function Product(props) {
                     className={styles.bottomHover}
                     ref={bottomHoverRef}
                     style={{
-                        justifyContent: product.colors.length > COLORS_LIMIT_TO_SCROLL ? 'flex-start' : 'center',
+                        justifyContent: scrollColorsActive ? 'flex-start' : 'center',
                     }}
                 >
                     <motion.div
@@ -219,11 +221,16 @@ export default function Product(props) {
                             paddingLeft: width * 0.02,
                             paddingRight: width * 0.02,
                         }}
+                        dragConstraints={bottomHoverRef}
+                        initial={{ x: 0 }}
+                        drag={scrollColorsActive ? 'x' : false}
+                        dragElastic={0.25}
+                        dragTransition={{ power: supportsHoverAndPointer ? 0.07 : 0.3, timeConstant: 200 }}
                         onDragStart={handleDragColorsStart}
                         onDragEnd={handleDragColorsEnd}
                     >
                         {product.colors.length > 1
-                            ? product.colors.concat(product.colors).concat(product.colors).map((color, i) =>
+                            ? product.colors.map((color, i) =>
                                 <ColorButton
                                     key={i}
                                     index={i}
@@ -234,6 +241,7 @@ export default function Product(props) {
                                     selected={currentVariant.color_id === color.id}
                                     option={color}
                                     onChange={handleChangeColor}
+                                    supportsHoverAndPointer={!isDragging && !isDraggingColors && supportsHoverAndPointer}
                                 />
                             )
                             : <Link

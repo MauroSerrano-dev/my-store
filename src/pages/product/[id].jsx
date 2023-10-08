@@ -28,6 +28,7 @@ export default withRouter(props => {
         urlMeta,
         mobile,
         router,
+        supportsHoverAndPointer,
     } = props
 
     const [currentColor, setCurrentColor] = useState(cl ? cl : product?.colors[0])
@@ -207,6 +208,7 @@ export default withRouter(props => {
                                     options={product.colors}
                                     value={[currentColor]}
                                     onChange={handleColorChange}
+                                    supportsHoverAndPointer={supportsHoverAndPointer}
                                 />
                             </div>
                             <div>
