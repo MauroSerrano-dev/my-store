@@ -72,7 +72,6 @@ export default function Product(props) {
     useEffect(() => {
         const img = new window.Image()
         img.src = product.images[0].src
-        img.src = product.images[0].srcidnas.dsnauds
 
         img.onload = () => {
             setIsImageLoaded(true)
