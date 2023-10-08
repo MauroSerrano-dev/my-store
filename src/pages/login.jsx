@@ -6,7 +6,6 @@ import { PiHandshakeLight } from "react-icons/pi";
 import ReCAPTCHA from "react-google-recaptcha";
 import { useState } from 'react';
 import { signInWithPopup, GoogleAuthProvider, signInWithRedirect } from "firebase/auth";
-import { STORE_NAME } from '../../consts';
 import { showToast } from '../../utils/toasts';
 
 const provider = new GoogleAuthProvider();
@@ -168,7 +167,7 @@ export default function Login(props) {
                             Don’t have an account?
                         </h2>
                         <p>
-                            Join {STORE_NAME} community!
+                            Join {process.env.NEXT_PUBLIC_STORE_NAME} community!
                         </p>
                     </div>
                     <div

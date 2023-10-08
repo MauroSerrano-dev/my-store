@@ -1,4 +1,3 @@
-import { STORE_NAME } from "../../consts";
 import styles from '../styles/components/Footer.module.css'
 
 export default function Footer() {
@@ -59,7 +58,7 @@ export default function Footer() {
             </div>
             <div className={styles.bottom}>
                 <p>
-                    © {STORE_NAME}. All Rights Reserved
+                    © {process.env.NEXT_PUBLIC_STORE_NAME}. All Rights Reserved
                 </p>
             </div>
         </footer>

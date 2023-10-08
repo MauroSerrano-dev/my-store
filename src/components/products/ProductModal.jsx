@@ -70,6 +70,10 @@ export default function ProductModal(props) {
                     alt={product.title}
                     width={108 * 0.9}
                     height={108}
+                    style={{
+                        width: 108,
+                        height: 'auto',
+                    }}
                     priority
                 />
             </Link>

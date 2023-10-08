@@ -30,7 +30,7 @@ export default function CarouselProducts(props) {
         <motion.div
             className={styles.container}
             ref={carouselRef}
-            key={products.length} // prevenir bug quando faz resize
+        /* TESTANDO SEM key={products.length} */ // prevenir bug quando faz resize
         >
             <motion.div
                 className={styles.inner}
@@ -45,6 +45,7 @@ export default function CarouselProducts(props) {
                     zIndex: 1,
                     cursor: isDragging ? 'grabbing' : 'grab',
                     position: 'relative',
+                    willChange: 'transform',
                     height: windowWidth < 1075
                         ? windowWidth < 750
                             ? 275.125
@@ -65,6 +66,9 @@ export default function CarouselProducts(props) {
                             product={prod}
                             userCurrency={userCurrency}
                             supportsHoverAndPointer={supportsHoverAndPointer}
+                            style={{
+                                pointerEvents: isDragging ? 'none' : 'auto'
+                            }}
                         />
                     )
                     : <div

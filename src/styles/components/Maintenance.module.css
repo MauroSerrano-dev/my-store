@@ -1,8 +1,6 @@
 .animationContainer {
-    width: 600px;
-    margin-top: -40px;
-    margin-bottom: -115px;
-    transition: width ease-in-out 200ms;
+    width: 900px;
+    margin-left: -250px;
 }
 
 .link {
@@ -16,13 +14,5 @@
     .link:hover {
         color: #999999;
         text-decoration: underline #999999;
-    }
-}
-
-/* Mobile */
-@media (max-width: 630px) {
-    .animationContainer {
-        width: 93%;
-        margin-bottom: -18.5vw;
     }
 }

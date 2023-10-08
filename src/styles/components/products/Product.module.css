@@ -2,6 +2,11 @@
     display: flex;
     flex-direction: column;
     position: relative;
+    border-radius: 8px;
+
+    box-shadow: 0px 2px 4px -1px rgba(0, 0, 0, 0.2),
+        0px 4px 5px 0px rgba(0, 0, 0, 0.14),
+        0px 1px 10px 0px rgba(0, 0, 0, 0.12);
 }
 
 .linkContainer {
@@ -21,18 +26,20 @@
     height: auto;
 
     overflow: hidden;
-    border-top-left-radius: 0.5rem;
-    border-top-right-radius: 0.5rem;
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
 }
 
 .imgHoverContainer {
+    position: absolute;
+    opacity: 0;
+    width: 100%;
+    height: auto;
+
     display: flex;
     align-items: center;
     justify-content: center;
 
-    width: 100%;
-    height: auto;
-    position: absolute;
 
     overflow: hidden;
     border-top-left-radius: 0.5rem;
@@ -50,14 +57,22 @@
     background-color: #3b3a38;
     width: 100%;
     height: 30%;
-    padding: 5% 12%;
 
-    border-bottom-left-radius: 0.5rem;
-    border-bottom-right-radius: 0.5rem;
+    padding-top: 5%;
+
+    border-bottom-left-radius: 8px;
+    border-bottom-right-radius: 8px;
+
+    padding-left: 11%;
+    padding-right: 11%;
 
     z-index: 10;
 
     position: relative;
+
+    border-bottom: 1px solid transparent;
+
+    transition: all ease-in-out 200ms,
 }
 
 .name {
@@ -81,6 +96,13 @@
     height: 45%;
 }
 
+.infoBottomPadding {
+    height: 5%;
+    width: 100%;
+    border-bottom: 1px transparent solid;
+    transition: border-bottom ease-in-out 200ms;
+}
+
 .oldPrice {
     color: grey;
     text-decoration: line-through;
@@ -93,6 +115,8 @@
 }
 
 .bottomHover {
+    bottom: 0%;
+
     display: flex;
     align-items: center;
 
@@ -102,8 +126,8 @@
     bottom: 0;
     background-color: #3b3a38;
 
-    border-bottom-left-radius: 0.7rem;
-    border-bottom-right-radius: 0.7rem;
+    border-bottom-left-radius: 8px;
+    border-bottom-right-radius: 8px;
 
     overflow: auto;
     white-space: nowrap;
@@ -157,5 +181,20 @@
 @media (hover: hover) and (pointer: fine) {
     .linkContainer:hover {
         cursor: pointer;
+    }
+
+    .container:hover .imgHoverContainer {
+        opacity: 1;
+    }
+
+    .container:hover .infoBottomPadding {
+        border-bottom: 1px rgba(0, 0, 0, 0.35) solid;
+    }
+
+    .container:hover .bottomHover {
+        bottom: -12%;
+        box-shadow: 0px 2px 4px -1px rgba(0, 0, 0, 0.2),
+            0px 4px 5px 0px rgba(0, 0, 0, 0.14),
+            0px 1px 10px 0px rgba(0, 0, 0, 0.12);
     }
 }

@@ -17,7 +17,7 @@ import Image from 'next/image';
  * @param {boolean} props.outOfStock - Product outOfStock.
  */
 
-const COLORS_LIMIT_TO_SCROLL = 6
+const COLORS_LIMIT_TO_SCROLL = 1
 
 export default function Product(props) {
     const {
@@ -33,33 +33,27 @@ export default function Product(props) {
             visible: {
                 opacity: 1,
                 transition: {
-                    duration: 0.3,
+                    duration: 0.2,
                 }
             }
         },
         style,
     } = props
 
-    const [isHovered, setIsHovered] = useState(false)
     const productRef = useRef(null)
     const bottomHoverRef = useRef(null)
     const [currentVariant, setCurrentVariant] = useState(product.variants[0])
-    const [dragStartX, setDragStartX] = useState(null)
-    const [dragStartY, setDragStartY] = useState(null)
-    const [isDragging, setIsDragging] = useState(false)
+    const [isDraggingColors, setIsDraggingColors] = useState(false);
+
+    function handleDragColorsStart() {
+        setIsDragging(true)
+    }
+
+    function handleDragColorsEnd() {
+        setIsDragging(false)
+    }
 
     const url = `/product/${product.id}${product.variants[0].id === currentVariant.id ? '' : `?cl=${product.colors.find(c => currentVariant.color_id === c.id).title.toLowerCase()}`}`
-
-    function handleMouseEnter() {
-        if (supportsHoverAndPointer) {
-            setIsHovered(true)
-        }
-    }
-
-    function handleMouseLeave() {
-        if (supportsHoverAndPointer)
-            setIsHovered(false)
-    }
 
     function handleChangeColor(event, option) {
         event.stopPropagation()
@@ -72,54 +66,9 @@ export default function Product(props) {
         event.preventDefault()
     }
 
-    function handleBottomHoverMouseDown(event) {
-        const wrapper = bottomHoverRef.current;
-
-        if (!wrapper) return;
-
-        // Obtenha a posição inicial do mouse e a posição do rolagem
-        const startX = event.clientX + wrapper.scrollLeft;
-        const startY = event.clientY + wrapper.scrollTop;
-
-        // Armazene a posição inicial em estados
-        setDragStartX(startX);
-        setDragStartY(startY);
-        setIsDragging(true);
-    }
-
-    function handleBottomHoverMouseMove(event) {
-        if (!isDragging) return;
-
-        const wrapper = bottomHoverRef.current;
-
-        if (!wrapper) return;
-
-        // Calcule a distância percorrida pelo mouse
-        const deltaX = event.clientX + wrapper.scrollLeft - dragStartX;
-        const deltaY = event.clientY + wrapper.scrollTop - dragStartY;
-
-        // Aplique a rolagem com base no movimento do mouse
-        wrapper.scrollLeft -= deltaX;
-        wrapper.scrollTop -= deltaY;
-
-        // Atualize a posição inicial do mouse
-        setDragStartX(event.clientX + wrapper.scrollLeft);
-        setDragStartY(event.clientY + wrapper.scrollTop);
-    }
-
-    function handleBottomHoverMouseUp() {
-        setIsDragging(false);
-    }
-
-    function handleBottomHoverMouseLeave() {
-        setIsDragging(false);
-    }
-
     return (
         <motion.div
             className={styles.container}
-            onMouseEnter={handleMouseEnter}
-            onMouseLeave={handleMouseLeave}
             variants={motionVariants}
             initial='hidden'
             animate='visible'
@@ -141,7 +90,6 @@ export default function Product(props) {
                     <div
                         className={styles.imgHoverContainer}
                         style={{
-                            opacity: isHovered ? 1 : 0,
                             zIndex: 2,
                             pointerEvents: 'none',
                             width: width,
@@ -152,13 +100,15 @@ export default function Product(props) {
                             <Image
                                 key={i}
                                 src={product.images.filter(img => img.color_id === color.id)[product.image_hover_index].src}
-                                width={width}
-                                height={width * 10 / 9}
+                                width={900}
+                                height={1000}
                                 alt={product.title}
                                 style={{
                                     position: i > 0 ? 'absolute' : 'relative',
                                     zIndex: currentVariant.color_id === color.id ? 3 : 2,
                                     opacity: currentVariant.color_id === color.id ? 3 : 2,
+                                    width: width,
+                                    height: 'auto',
                                 }}
                             />
                         )}
@@ -177,18 +127,22 @@ export default function Product(props) {
                             key={i}
                             priority
                             src={product.images.filter(img => img.color_id === color.id)[product.image_showcase_index].src}
-                            width={width}
-                            height={width * 10 / 9}
+                            width={900}
+                            height={1000}
                             alt={product.title}
                             style={{
                                 position: i > 0 ? 'absolute' : 'relative',
                                 zIndex: currentVariant.color_id === color.id ? 1 : 0,
                                 opacity: currentVariant.color_id === color.id ? 1 : 0,
+                                width: width,
+                                height: 'auto',
                             }}
                         />
                     )}
                 </div>
-                <div className={styles.infos}>
+                <div
+                    className={styles.infos}
+                >
                     {product.sold_out.percentage &&
                         <div
                             className={styles.soldOut}
@@ -243,6 +197,8 @@ export default function Product(props) {
                             {userCurrency.symbol} {(convertDolarToCurrency(product.min_price * (product.sold_out.percentage ? 1 - product.sold_out.percentage : 1), userCurrency.code) / 100).toFixed(2)}
                         </p>
                     </div>
+                    <div className={styles.infoBottomPadding}>
+                    </div>
                 </div>
             </Link>
             {supportsHoverAndPointer &&
@@ -250,28 +206,24 @@ export default function Product(props) {
                     onClick={handleBottomHoverClick}
                     className={styles.bottomHover}
                     ref={bottomHoverRef}
-                    onMouseDown={product.colors.length > COLORS_LIMIT_TO_SCROLL ? handleBottomHoverMouseDown : undefined}
-                    onMouseMove={product.colors.length > COLORS_LIMIT_TO_SCROLL ? handleBottomHoverMouseMove : undefined}
-                    onMouseUp={product.colors.length > COLORS_LIMIT_TO_SCROLL ? handleBottomHoverMouseUp : undefined}
-                    onMouseLeave={product.colors.length > COLORS_LIMIT_TO_SCROLL ? handleBottomHoverMouseLeave : undefined}
                     style={{
-                        bottom: isHovered ? '-12%' : '0',
                         justifyContent: product.colors.length > COLORS_LIMIT_TO_SCROLL ? 'flex-start' : 'center',
                     }}
                 >
-                    {product.colors.length > 1
-                        ?
-                        <div
-                            className='flex row align-end justify-center'
-                            style={{
-                                height: '100%',
-                                gap: '0.4rem',
-                                paddingBottom: width * 0.03,
-                                paddingLeft: width * 0.02,
-                                paddingRight: width * 0.02,
-                            }}
-                        >
-                            {product.colors.map((color, i) =>
+                    <motion.div
+                        className='flex row align-end justify-center'
+                        style={{
+                            height: '100%',
+                            gap: width * 0.031,
+                            paddingBottom: width * 0.035,
+                            paddingLeft: width * 0.02,
+                            paddingRight: width * 0.02,
+                        }}
+                        onDragStart={handleDragColorsStart}
+                        onDragEnd={handleDragColorsEnd}
+                    >
+                        {product.colors.length > 1
+                            ? product.colors.concat(product.colors).concat(product.colors).map((color, i) =>
                                 <ColorButton
                                     key={i}
                                     index={i}
@@ -283,28 +235,28 @@ export default function Product(props) {
                                     option={color}
                                     onChange={handleChangeColor}
                                 />
-                            )}
-                        </div>
-                        : <Link
-                            href={url}
-                            style={{
-                                width: '75%'
-                            }}
-                        >
-                            <Button
-                                variant='contained'
-                                size='small'
-                                sx={{
-                                    color: 'var(--text-white)',
-                                    width: '100%',
-                                    fontSize: width * 0.053,
-                                    fontWeight: 'bold'
+                            )
+                            : <Link
+                                href={url}
+                                style={{
+                                    width: width * 0.7,
                                 }}
                             >
-                                MORE INFO
-                            </Button>
-                        </Link>
-                    }
+                                <Button
+                                    variant='contained'
+                                    size='small'
+                                    sx={{
+                                        color: 'var(--text-white)',
+                                        width: '100%',
+                                        fontSize: width * 0.053,
+                                        fontWeight: 'bold'
+                                    }}
+                                >
+                                    MORE INFO
+                                </Button>
+                            </Link>
+                        }
+                    </motion.div>
                 </div>
             }
         </motion.div>

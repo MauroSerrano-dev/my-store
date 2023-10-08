@@ -23,14 +23,14 @@ export default function ColorButton(props) {
                         width: 40,
                         border: 'none',
                         backgroundColor: option.colors[0],
-                        opacity: selected ? 1 : 0.7,
-                        outline: selected ? '2px solid var(--primary)' : '1px solid black',
+                        outline: selected ? '2px solid var(--primary)' : '0.5px solid rgba(0, 0, 0, 0.1)',
+                        boxShadow: '0px 0px 4px 0px rgba(0, 0, 0, 0.2), 0px 3px 6px 0px rgba(0, 0, 0, 0.14), 0px 1px 11px 0px rgba(0, 0, 0, 0.12)',
                         ...style,
                     }}
                 >
-                </button>
+                </button >
             }
         >
-        </MyTooltip>
+        </MyTooltip >
     )
 }

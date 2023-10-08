@@ -8,8 +8,11 @@ import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import { CircularProgress } from '@mui/material';
 import { motion } from 'framer-motion';
+import Maintenance from '@/components/Maintenance';
 
 const primaryColor = '#1189C4'
+
+const maintenance = false
 
 const mainTheme = createTheme({
   palette: {
@@ -97,13 +100,16 @@ export default function App(props) {
         }
       </Head>
       <ThemeProvider theme={mainTheme}>
-        <DataHandler
-          pageProps={pageProps}
-          Component={Component}
-          primaryColor={primaryColor}
-          router={router}
-          loading={loading}
-        />
+        {maintenance
+          ? <Maintenance></Maintenance>
+          : <DataHandler
+            pageProps={pageProps}
+            Component={Component}
+            primaryColor={primaryColor}
+            router={router}
+            loading={loading}
+          />
+        }
       </ThemeProvider>
       {loading &&
         <motion.div
