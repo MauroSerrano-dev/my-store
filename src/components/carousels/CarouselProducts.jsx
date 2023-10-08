@@ -14,7 +14,8 @@ export default function CarouselProducts(props) {
 
     const carouselRef = useRef(null)
 
-    const [isDragging, setIsDragging] = useState(false);
+    const [isDragging, setIsDragging] = useState(false)
+    const [showSkeleton, setShowSkeleton] = useState(true)
 
     function handleDragStart() {
         setIsDragging(true)
@@ -51,8 +52,8 @@ export default function CarouselProducts(props) {
                         : 399.375
                 }}
             >
-                {products.length > 0
-                    ? products.map((prod, i) =>
+                {products.length > 0 &&
+                    products.map((prod, i) =>
                         <Product
                             width={windowWidth < 1075
                                 ? windowWidth < 750
@@ -69,139 +70,142 @@ export default function CarouselProducts(props) {
                                 pointerEvents: isDragging ? 'none' : 'auto',
                                 willChange: 'transform',
                             }}
+                            imageLoadCallBack={() => setShowSkeleton(false)}
                         />
                     )
-                    : <div
-                        className={styles.inner}
-                        style={{
-                            display: 'flex',
-                            flexDirection: 'row',
-                            position: 'absolute',
-                            left: 0,
-                            top: 0,
-                        }}
-                    >
-                        {[0, 1, 2, 3, 4, 5, 6, 7].map((skel, i) =>
-                            <div
-                                key={i}
-                                style={{
-                                    width: windowWidth < 1075
+                }
+            </motion.div>
+            {showSkeleton &&
+                <div
+                    className={styles.inner}
+                    style={{
+                        display: 'flex',
+                        flexDirection: 'row',
+                        position: 'absolute',
+                        left: 0,
+                        top: 0,
+                    }}
+                >
+                    {[0, 1, 2, 3, 4, 5, 6, 7].map((skel, i) =>
+                        <div
+                            key={i}
+                            style={{
+                                width: windowWidth < 1075
+                                    ? windowWidth < 750
+                                        ? 155
+                                        : 190
+                                    : 225,
+                                height: windowWidth < 1075
+                                    ? windowWidth < 750
+                                        ? 275.125
+                                        : 337.25
+                                    : 399.375
+                            }}
+                        >
+                            <Skeleton
+                                variant="rectangular"
+                                width={
+                                    windowWidth < 1075
                                         ? windowWidth < 750
                                             ? 155
                                             : 190
-                                        : 225,
-                                    height: windowWidth < 1075
+                                        : 225
+                                }
+                                height={
+                                    windowWidth < 1075
                                         ? windowWidth < 750
-                                            ? 275.125
-                                            : 337.25
-                                        : 399.375
+                                            ? 172.2222
+                                            : 211.1111
+                                        : 250
+                                }
+                                sx={{
+                                    backgroundColor: 'rgb(50, 50, 50)',
+                                    borderTopRightRadius: '0.5rem',
+                                    borderTopLeftRadius: '0.5rem',
                                 }}
-                            >
-                                <Skeleton
-                                    variant="rectangular"
-                                    width={
-                                        windowWidth < 1075
-                                            ? windowWidth < 750
-                                                ? 155
-                                                : 190
-                                            : 225
-                                    }
-                                    height={
-                                        windowWidth < 1075
-                                            ? windowWidth < 750
-                                                ? 172.2222
-                                                : 211.1111
-                                            : 250
-                                    }
-                                    sx={{
-                                        backgroundColor: 'rgb(50, 50, 50)',
-                                        borderTopRightRadius: '0.5rem',
-                                        borderTopLeftRadius: '0.5rem',
-                                    }}
-                                />
-                                <Skeleton
-                                    variant="rectangular"
-                                    width={
-                                        windowWidth < 1075
-                                            ? windowWidth < 750
-                                                ? 155
-                                                : 190
-                                            : 225
-                                    }
-                                    height={
-                                        windowWidth < 1075
-                                            ? windowWidth < 750
-                                                ? 15
-                                                : 20
-                                            : 25
-                                    }
-                                    sx={{
-                                        marginTop: windowWidth < 1075
-                                            ? windowWidth < 750
-                                                ? '7px'
-                                                : '9px'
-                                            : '10px',
-                                        backgroundColor: 'rgb(50, 50, 50)',
-                                        borderRadius: '0.5rem',
-                                    }}
-                                />
-                                <Skeleton
-                                    variant="rectangular"
-                                    width={
-                                        windowWidth < 1075
-                                            ? windowWidth < 750
-                                                ? 100
-                                                : 130
-                                            : 140
-                                    }
-                                    height={
-                                        windowWidth < 1075
-                                            ? windowWidth < 750
-                                                ? 10
-                                                : 12
-                                            : 15
-                                    }
-                                    sx={{
-                                        marginTop: windowWidth < 1075
-                                            ? windowWidth < 750
-                                                ? '7px'
-                                                : '9px'
-                                            : '10px',
-                                        backgroundColor: 'rgb(50, 50, 50)',
-                                        borderRadius: '0.5rem',
-                                    }}
-                                />
-                                <Skeleton
-                                    variant="rectangular"
-                                    width={
-                                        windowWidth < 1075
-                                            ? windowWidth < 750
-                                                ? 60
-                                                : 80
-                                            : 90
-                                    }
-                                    height={
-                                        windowWidth < 1075
-                                            ? windowWidth < 750
-                                                ? 14
-                                                : 16
+                            />
+                            <Skeleton
+                                variant="rectangular"
+                                width={
+                                    windowWidth < 1075
+                                        ? windowWidth < 750
+                                            ? 155
+                                            : 190
+                                        : 225
+                                }
+                                height={
+                                    windowWidth < 1075
+                                        ? windowWidth < 750
+                                            ? 15
                                             : 20
-                                    }
-                                    sx={{
-                                        marginTop: windowWidth < 1075
-                                            ? windowWidth < 750
-                                                ? '7px'
-                                                : '9px'
-                                            : '10px',
-                                        backgroundColor: 'rgb(50, 50, 50)',
-                                        borderRadius: '0.5rem',
-                                    }}
-                                />
-                            </div>
-                        )}
-                    </div>
-                }
-            </motion.div>
+                                        : 25
+                                }
+                                sx={{
+                                    marginTop: windowWidth < 1075
+                                        ? windowWidth < 750
+                                            ? '7px'
+                                            : '9px'
+                                        : '10px',
+                                    backgroundColor: 'rgb(50, 50, 50)',
+                                    borderRadius: '0.5rem',
+                                }}
+                            />
+                            <Skeleton
+                                variant="rectangular"
+                                width={
+                                    windowWidth < 1075
+                                        ? windowWidth < 750
+                                            ? 100
+                                            : 130
+                                        : 140
+                                }
+                                height={
+                                    windowWidth < 1075
+                                        ? windowWidth < 750
+                                            ? 10
+                                            : 12
+                                        : 15
+                                }
+                                sx={{
+                                    marginTop: windowWidth < 1075
+                                        ? windowWidth < 750
+                                            ? '7px'
+                                            : '9px'
+                                        : '10px',
+                                    backgroundColor: 'rgb(50, 50, 50)',
+                                    borderRadius: '0.5rem',
+                                }}
+                            />
+                            <Skeleton
+                                variant="rectangular"
+                                width={
+                                    windowWidth < 1075
+                                        ? windowWidth < 750
+                                            ? 60
+                                            : 80
+                                        : 90
+                                }
+                                height={
+                                    windowWidth < 1075
+                                        ? windowWidth < 750
+                                            ? 14
+                                            : 16
+                                        : 20
+                                }
+                                sx={{
+                                    marginTop: windowWidth < 1075
+                                        ? windowWidth < 750
+                                            ? '7px'
+                                            : '9px'
+                                        : '10px',
+                                    backgroundColor: 'rgb(50, 50, 50)',
+                                    borderRadius: '0.5rem',
+                                }}
+                            />
+                        </div>
+                    )}
+                </div>
+            }
         </motion.div>
     )
 }

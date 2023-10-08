@@ -36,6 +36,7 @@ export default function Product(props) {
                 }
             }
         },
+        imageLoadCallBack,
         style,
     } = props
 
@@ -77,6 +78,11 @@ export default function Product(props) {
             setIsImageLoaded(true)
         }
     }, [product])
+
+    useEffect(() => {
+        if (isImageLoaded)
+            imageLoadCallBack()
+    }, [isImageLoaded])
 
     return (
         isImageLoaded &&
