@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useRef, useState } from 'react';
 import { motion } from 'framer-motion';
 import Product from '../products/Product';
 import styles from '@/styles/components/carousels/CarouselProducts.module.css'
@@ -43,8 +43,8 @@ export default function CarouselProducts(props) {
                 onDragEnd={handleDragEnd}
                 style={{
                     zIndex: 1,
-                    cursor: isDragging ? 'grabbing' : 'grab',
                     position: 'relative',
+                    cursor: isDragging ? 'grabbing' : 'grab',
                     height: windowWidth < 1075
                         ? windowWidth < 750
                             ? 275.125

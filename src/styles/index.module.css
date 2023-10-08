@@ -10,6 +10,7 @@
   flex-direction: column;
   justify-content: flex-start;
   align-items: center;
+
   padding-bottom: 2rem;
 }
 
@@ -53,6 +54,51 @@
   gap: 0.5rem;
 }
 
+.body {
+  width: 100%;
+  padding-left: 6%;
+  padding-right: 6%;
+}
+
+.categoryItem {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 200px;
+  height: 130px;
+  overflow: hidden;
+  border-radius: 0.5rem;
+}
+
+.categoryItemImg {
+  height: 100%;
+  width: 100%;
+
+  object-fit: cover;
+  object-position: center;
+
+  pointer-events: none;
+  transition: all ease-in-out 200ms;
+  z-index: -1;
+}
+
+.categoryShadow {
+  height: 100%;
+  width: 100%;
+  background-color: black;
+  position: absolute;
+  opacity: 0.4;
+}
+
+.itemTitle {
+  position: absolute;
+  color: #ffffff;
+  font-size: 20px;
+  font-weight: bold;
+  text-shadow: 0px 2px 6px rgba(0, 0, 0, 0.8);
+}
+
 .carouselAndTitle {
   display: flex;
   flex-direction: column;
@@ -67,7 +113,6 @@
 }
 
 .carouselTitle {
-  margin-left: 6%;
   --text-color: var(--text-white)
 }
 
@@ -81,7 +126,15 @@
 }
 
 /* Enable hover only on non-touch devices */
-@media (hover: hover) and (pointer: fine) {}
+@media (hover: hover) and (pointer: fine) {
+  .categoryItem:hover .categoryItemImg {
+    scale: 1.1;
+  }
+
+  .categoryItem:hover {
+    cursor: pointer;
+  }
+}
 
 @media (prefers-reduced-motion) {}
 

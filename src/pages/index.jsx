@@ -1,13 +1,13 @@
 import { Inter } from 'next/font/google'
 import styles from '@/styles/index.module.css'
-import Carousel from '@/components/carousels/CarouselLoop'
 import { useEffect, useState } from 'react'
 import Inventory2OutlinedIcon from '@mui/icons-material/Inventory2Outlined'
 import LocalShippingOutlinedIcon from '@mui/icons-material/LocalShippingOutlined'
 import Footer from '@/components/Footer'
 import Head from 'next/head'
-import CarouselProductsLoop from '@/components/carousels/CarouselProductsLoop'
 import CarouselProducts from '@/components/carousels/CarouselProducts'
+import Carousel from '@/components/carousels/Carousel'
+import Link from 'next/link'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -104,46 +104,73 @@ export default function Home(props) {
             <p>Free Shipping</p>
           </div>
         </div>
-        <div className={styles.carouselAndTitle}>
-          <h2 className={styles.carouselTitle}>
-            Find categories that fit your world
-          </h2>
-          <div
-            className={styles.carousel}
-            style={{
-              marginBottom: '2rem',
-            }}
-          >
-            <Carousel
-              items={categories}
-              height='150px'
-              width='90%'
-              animationDuration={200}
-              itemWidth={205}
+        <div
+          className={styles.body}
+        >
+          <div className={styles.carouselAndTitle}>
+            <h2 className={styles.carouselTitle}>
+              Find categories that fit your world
+            </h2>
+            <div
+              className={styles.carousel}
+              style={{
+                marginBottom: '2rem',
+              }}
+            >
+              <Carousel
+                items={
+                  categories.map(cat =>
+                    <Link
+                      className={styles.categoryItem}
+                      href={cat.url}
+                      draggable={false}
+                    >
+                      <div
+                        className={styles.categoryShadow}
+                      >
+                      </div>
+                      <span className={styles.itemTitle}>
+                        {cat.title}
+                      </span>
+                      <img
+                        src={cat.img}
+                        className={styles.categoryItemImg}
+                      />
+                    </Link>
+                  )
+                }
+                itemStyle={{
+                  height: 130
+                }}
+                skeletonStyle={{
+                  width: 200,
+                  height: 130,
+                }}
+              />
+            </div>
+          </div>
+          <div className={styles.carouselAndTitle}>
+            <h2 className={styles.carouselTitle}>
+              All Products
+            </h2>
+            <CarouselProducts
+              products={allProducts}
+              userCurrency={userCurrency}
+              supportsHoverAndPointer={supportsHoverAndPointer}
+              windowWidth={windowWidth}
             />
           </div>
-        </div>
-        <div className={styles.carouselAndTitle}>
-          <h2 className={styles.carouselTitle}>
-            All Products
-          </h2>
-          <CarouselProducts
-            products={allProducts}
-            userCurrency={userCurrency}
-            supportsHoverAndPointer={supportsHoverAndPointer}
-            windowWidth={windowWidth}
-          />
-        </div>
-        <div className={styles.carouselAndTitle}>
-          <h2 className={styles.carouselTitle}>
-            T-Shirts
-          </h2>
-          <CarouselProducts
-            products={productsTShirts.concat(productsTShirts).concat(productsTShirts).concat(productsTShirts).concat(productsTShirts).concat(productsTShirts)}
-            userCurrency={userCurrency}
-            supportsHoverAndPointer={supportsHoverAndPointer}
-            windowWidth={windowWidth}
-          />
+          <div className={styles.carouselAndTitle}>
+            <h2 className={styles.carouselTitle}>
+              T-Shirts
+            </h2>
+            <CarouselProducts
+              products={productsTShirts.concat(productsTShirts).concat(productsTShirts).concat(productsTShirts).concat(productsTShirts).concat(productsTShirts)}
+              userCurrency={userCurrency}
+              supportsHoverAndPointer={supportsHoverAndPointer}
+              windowWidth={windowWidth}
+            />
+          </div>
         </div>
       </main>
       <Footer />

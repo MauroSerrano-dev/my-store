@@ -9,6 +9,8 @@ import { useEffect, useState } from 'react';
 import { CircularProgress } from '@mui/material';
 import { motion } from 'framer-motion';
 import Maintenance from '@/components/Maintenance';
+import { ToastContainer, Flip, toast } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css';
 
 const primaryColor = '#1189C4'
 
@@ -48,6 +50,7 @@ export default function App(props) {
 
     function handleEndLoading() {
       setLoading(false)
+      toast.dismiss()
     }
 
     router.events.on("routeChangeStart", handleLoading)
@@ -111,6 +114,7 @@ export default function App(props) {
           />
         }
       </ThemeProvider>
+      <ToastContainer newestOnTop transition={Flip} style={{ color: 'white' }} />
       {loading &&
         <motion.div
           variants={{

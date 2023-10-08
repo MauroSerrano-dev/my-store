@@ -4,8 +4,8 @@ import { Button } from '@mui/material'
 import { CART_COOKIE, convertDolarToCurrency, getCurrencyByCode, getShippingOptions } from '../../consts'
 import { useEffect, useState } from 'react'
 import Selector from '@/components/material-ui/Selector'
-import CarouselProductsLoop from '@/components/carousels/CarouselProductsLoop'
 import Cookies from 'js-cookie'
+import CarouselProducts from '@/components/carousels/CarouselProducts'
 
 export default function Cart(props) {
     const {
@@ -15,6 +15,7 @@ export default function Cart(props) {
         userCurrency,
         handleChangeCurrency,
         supportsHoverAndPointer,
+        windowWidth,
     } = props
 
     const [shippingValue, setShippingValue] = useState(0)
@@ -116,14 +117,11 @@ export default function Cart(props) {
                             <h2><b>Hmmmm....</b> it looks like your cart is empty.</h2>
                             <h2>Explore some of our <b>best products!</b></h2>
                         </div>
-                        <CarouselProductsLoop
-                            items={allProducts}
-                            height='400px'
-                            width='90%'
-                            animationDuration={200}
-                            itemWidth={225}
+                        <CarouselProducts
+                            products={allProducts}
                             userCurrency={userCurrency}
                             supportsHoverAndPointer={supportsHoverAndPointer}
+                            windowWidth={windowWidth}
                         />
                     </main>
                     : <main className={styles.main}>
