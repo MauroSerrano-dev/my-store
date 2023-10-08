@@ -26,7 +26,7 @@ export default function ProductModal(props) {
 
     useEffect(() => {
         const img = new window.Image()
-        img.src = product.images[0].src
+        img.src = product.image
 
         img.onload = () => {
             setIsImageLoaded(true)
