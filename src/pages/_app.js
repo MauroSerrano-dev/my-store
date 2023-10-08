@@ -109,54 +109,64 @@ export default function App(props) {
             pageProps={pageProps}
             Component={Component}
             router={router}
-            loading={loading}
           />
         }
       </ThemeProvider>
       <ToastContainer newestOnTop transition={Flip} style={{ color: 'white' }} />
       {loading &&
-        <motion.div
-          variants={{
-            hidden: {
-              opacity: 0,
-            },
-            visible: {
-              opacity: 1,
-              transition: {
-                duration: 0,
-                delay: 0.2,
+        <div>
+          <div
+            style={{
+              position: 'fixed',
+              zIndex: 9999,
+              top: 0,
+              width: '100vw',
+              height: '100vh',
+            }}>
+          </div>
+          <motion.div
+            variants={{
+              hidden: {
+                opacity: 0,
+              },
+              visible: {
+                opacity: 1,
+                transition: {
+                  duration: 0,
+                  delay: 0.2,
+                }
               }
-            }
-          }}
-          initial='hidden'
-          animate='visible'
-          style={{
-            position: 'fixed',
-            right: '4rem',
-            bottom: '4rem',
-            zIndex: 100
-          }}
-        >
-          <CircularProgress
-            variant="determinate"
-            sx={{
-              position: 'absolute',
-              color: '#525252',
             }}
-            size={40}
-            thickness={4}
-            value={100}
-          />
-          <CircularProgress
-            disableShrink
-            size={40}
-            thickness={4}
-            sx={{
-              position: 'absolute',
-              animationDuration: '750ms',
+            initial='hidden'
+            animate='visible'
+            style={{
+              position: 'fixed',
+              right: '4rem',
+              bottom: '4rem',
+              zIndex: 10000,
             }}
-          />
-        </motion.div>
+          >
+            <CircularProgress
+              variant="determinate"
+              sx={{
+                position: 'absolute',
+                color: '#525252',
+              }}
+              size={40}
+              thickness={4}
+              value={100}
+            />
+            <CircularProgress
+              disableShrink
+              size={40}
+              thickness={4}
+              sx={{
+                position: 'absolute',
+                animationDuration: '750ms',
+              }}
+            />
+          </motion.div>
+        </div>
       }
     </div>
   )

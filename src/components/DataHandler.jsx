@@ -20,7 +20,6 @@ export default function DataHandler(props) {
         Component,
         pageProps,
         router,
-        loading,
     } = props
     const [cart, setCart] = useState()
     const [isScrollAtTop, setIsScrollAtTop] = useState(true)
@@ -370,7 +369,6 @@ export default function DataHandler(props) {
             className={styles.container}
             style={{
                 opacity: websiteVisible ? 1 : 0,
-                pointerEvents: loading ? 'none' : 'auto'
             }}
             initial='closed'
             animate={
