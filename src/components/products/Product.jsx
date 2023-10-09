@@ -15,6 +15,9 @@ import Image from 'next/image';
  * @param {boolean} props.responsive - Responsive width.
  * @param {boolean} props.supportsHoverAndPointer - Device supportsHoverAndPointer.
  * @param {boolean} props.outOfStock - Product outOfStock.
+ * @param {function} props.imageLoadCallBack - Product imageLoadCallBack.
+ * @param {object} props.style - Product style.
+ * @param {boolean} props.show - Product show.
  */
 
 export default function Product(props) {
