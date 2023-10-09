@@ -38,6 +38,7 @@ export default function Product(props) {
         },
         imageLoadCallBack,
         style,
+        show = true,
     } = props
 
     const productRef = useRef(null)
@@ -85,7 +86,7 @@ export default function Product(props) {
     }, [isImageLoaded])
 
     return (
-        isImageLoaded &&
+        show && isImageLoaded &&
         <motion.div
             className={styles.container}
             variants={motionVariants}
