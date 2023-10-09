@@ -16,7 +16,6 @@ export default function CarouselProducts(props) {
 
     const [isDragging, setIsDragging] = useState(false)
     const [showSkeleton, setShowSkeleton] = useState(true)
-    const [imgLoadCounter, setImgLoadCounter] = useState(0)
 
     function handleDragStart() {
         setIsDragging(true)
@@ -28,10 +27,8 @@ export default function CarouselProducts(props) {
         }, 200)
     }
 
-    function handleImageLoadCallBack() {
-        if (imgLoadCounter < products.length)
-            setImgLoadCounter(prev => prev + 1)
-        else
+    function handleImageLoadCallBack(index) {
+        if (index === products.length - 1)
             setShowSkeleton(false)
     }
 
@@ -78,7 +75,7 @@ export default function CarouselProducts(props) {
                                 pointerEvents: isDragging ? 'none' : 'auto',
                                 willChange: 'transform',
                             }}
-                            imageLoadCallBack={handleImageLoadCallBack}
+                            imageLoadCallBack={() => handleImageLoadCallBack(i)}
                             show={!showSkeleton}
                         />
                     )
