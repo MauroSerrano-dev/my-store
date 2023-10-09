@@ -89,7 +89,7 @@ export default function Product(props) {
     }, [isImageLoaded])
 
     return (
-        show && isImageLoaded &&
+        show &&
         <motion.div
             className={styles.container}
             variants={motionVariants}
