@@ -1,4 +1,4 @@
-import styles from '@/styles/forgot-password.module.css'
+import styles from '@/styles/pages/forgot-password.module.css'
 import { TextField } from '@mui/material'
 import Link from 'next/link'
 import { PiHandshakeLight } from "react-icons/pi";

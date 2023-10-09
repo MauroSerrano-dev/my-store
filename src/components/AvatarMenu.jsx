@@ -73,7 +73,7 @@ export default function AvatarMenu(props) {
               className={styles.session}
             >
               <Link
-                href={`/profile/${session?.id}`}
+                href={'/profile'}
                 className='noUnderline'
                 onClick={() => setOpen(false)}
               >

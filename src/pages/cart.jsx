@@ -1,5 +1,5 @@
 import ProductCart from '@/components/products/ProductCart'
-import styles from '@/styles/cart.module.css'
+import styles from '@/styles/pages/cart.module.css'
 import { Button } from '@mui/material'
 import { CART_COOKIE, convertDolarToCurrency, getCurrencyByCode, getShippingOptions } from '../../consts'
 import { useEffect, useState } from 'react'

@@ -1,11 +1,9 @@
-import { withRouter } from 'next/router'
-import styles from '../../styles/profile/id.module.css'
+import styles from '@/styles/pages/profile.module.css'
 import Head from 'next/head'
 
-export default withRouter(props => {
+export default function Profile(props) {
     const {
     } = props
-
 
     return (
         <div className={styles.container}>
@@ -15,4 +13,4 @@ export default withRouter(props => {
             </div>
         </div>
     )
-})
+}

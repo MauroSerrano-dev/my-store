@@ -1,4 +1,4 @@
-import styles from '@/styles/signin.module.css'
+import styles from '@/styles/pages/signin.module.css'
 import { Button, TextField } from '@mui/material'
 import Link from 'next/link'
 import { PiHandshakeLight } from "react-icons/pi";

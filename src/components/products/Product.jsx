@@ -84,7 +84,7 @@ export default function Product(props) {
     }, [product])
 
     useEffect(() => {
-        if (isImageLoaded)
+        if (isImageLoaded && imageLoadCallBack)
             imageLoadCallBack()
     }, [isImageLoaded])
 

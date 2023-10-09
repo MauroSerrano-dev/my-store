@@ -1,4 +1,4 @@
-import styles from '@/styles/login.module.css'
+import styles from '@/styles/pages/login.module.css'
 import { Button, TextField } from '@mui/material'
 import Link from 'next/link'
 import { FcGoogle } from "react-icons/fc";

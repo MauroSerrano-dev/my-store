@@ -1,5 +1,5 @@
 import { withRouter } from 'next/router'
-import styles from '../../styles/product/id.module.css'
+import styles from '@/styles/pages/product/id.module.css'
 import { useEffect, useState } from 'react'
 import ImagesSlider from '@/components/ImagesSlider'
 import { Button } from '@mui/material'

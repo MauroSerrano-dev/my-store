@@ -1,5 +1,5 @@
 import { withRouter } from 'next/router'
-import styles from '../styles/search.module.css'
+import styles from '@/styles/pages/search.module.css'
 import { useEffect, useRef, useState } from 'react'
 import Product from '@/components/products/Product'
 import Link from 'next/link';
