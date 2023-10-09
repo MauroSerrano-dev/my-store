@@ -84,8 +84,8 @@ export default function ProductModal(props) {
                         width={108 * 0.9}
                         height={108}
                         style={{
-                            width: 108,
-                            height: 'auto',
+                            width: 'auto',
+                            height: 108,
                         }}
                         priority
                     />
