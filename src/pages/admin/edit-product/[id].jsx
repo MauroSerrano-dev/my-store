@@ -27,6 +27,7 @@ export default withRouter(props => {
     } = props;
 
     const [product, setProduct] = useState()
+    const [images, setImages] = useState()
     const [inicialProduct, setInicialProduct] = useState({})
     const [colorIndex, setColorIndex] = useState(0)
     const [colorsChained, setColorsChained] = useState([])
@@ -57,6 +58,7 @@ export default withRouter(props => {
         setSizesChained(product.colors.reduce((acc, cl) => ({ ...acc, [cl.id]: [] }), {}))
         setInicialProduct(product)
         setProduct(product)
+        setImages(product.images.reduce((acc, image) => acc[image.color_id] === undefined ? { ...acc, [image.color_id]: product.images.filter(img => img.color_id === image.color_id) } : acc, {}))
     }
 
     function handleSelectedColor(value, i) {
@@ -241,9 +243,17 @@ export default withRouter(props => {
 
     async function updateProduct() {
         setDisableUpdateButton(true)
-        const diff = getProductsDiff(product, inicialProduct)
+
+        const newProduct = {
+            ...product,
+            min_price: product.variants.reduce((acc, vari) => acc < vari.price ? acc : vari.price, product.variants[0].price),
+            images: product.colors.reduce((acc, color) => acc.concat(images[color.id].map(img => ({ src: img.src, color_id: img.color_id, variants_id: img.variants_id }))), []),
+        }
+
+        const diff = getProductsDiff(newProduct, inicialProduct)
         const diffKeys = Object.keys(diff)
         const fieldsDiff = diffKeys.join(', ')
+
         if (diffKeys.length === 0) {
             showToast({ msg: 'No changes made.' })
             setDisableUpdateButton(false)
@@ -254,18 +264,14 @@ export default withRouter(props => {
             method: 'PUT',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
-                product: {
-                    ...product,
-                    min_price: product.variants.reduce((acc, vari) => acc < vari.price ? acc : vari.price, product.variants[0].price),
-                    images: product.colors.reduce((acc, color) => acc.concat(product.images.filter(img => img.color_id === color.id)), []),
-                }
+                product: newProduct
             })
         }
         await fetch("/api/product", options)
             .then(response => response.json())
             .then(response => {
                 if (response.status < 300) {
-                    setInicialProduct(product)
+                    setInicialProduct(newProduct)
                     showToast({ type: 'success', msg: response.msg })
                 }
                 else {
@@ -309,6 +315,11 @@ export default withRouter(props => {
                 images: prev.images.filter(img => img.color_id !== color.id)
             }
         })
+    }
+
+    function updateImageField(fieldname, newValue, index) {
+        const colorId = product.colors[colorIndex].id
+        setImages(prev => ({ ...prev, [colorId]: prev[colorId].map((img, i) => index === i ? { ...img, [fieldname]: newValue } : img) }))
     }
 
     return (
@@ -368,9 +379,9 @@ export default withRouter(props => {
                                             paddingRight: '50px',
                                         }}
                                     />
-                                    {product.images.filter(img => img.color_id === product.colors[colorIndex].id).length > 0 &&
+                                    {images?.[product?.colors?.[colorIndex]?.id] &&
                                         <ImagesSlider
-                                            images={product.images.filter(img => img.color_id === product.colors[colorIndex].id)}
+                                            images={images[product.colors[colorIndex].id]}
                                         />
                                     }
                                 </div>
@@ -502,14 +513,14 @@ export default withRouter(props => {
                                             </div>
                                             <div>
                                                 <h3>Images</h3>
-                                                {product.images.length > 0 &&
+                                                {images[product.colors[colorIndex].id].length > 0 &&
                                                     <div className='flex row justify-end' style={{ fontSize: '11px', gap: '1rem', width: '100%', paddingRight: '11%' }}>
                                                         <p>showcase</p>
                                                         <p>hover</p>
                                                     </div>
                                                 }
                                                 <div className='flex column' style={{ gap: '0.8rem' }} >
-                                                    {product.images.filter(img => img.color_id === product.colors[colorIndex].id).map((img, i) =>
+                                                    {images[product.colors[colorIndex].id].map((img, i) =>
                                                         <div
                                                             className='flex row align-center fillWidth space-between'
                                                             key={i}

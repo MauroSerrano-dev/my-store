@@ -27,8 +27,9 @@ export default function Home(props) {
     windowWidth,
   } = props
 
-  const [productsTShirts, setProductsTShirts] = useState([])
   const [allProducts, setAllProducts] = useState([])
+  const [productsTShirts, setProductsTShirts] = useState([])
+  const [productsHoodies, setProductsHoodies] = useState([])
 
   async function getProductsByTagOrType(queryName, categoryName) {
     const options = {
@@ -67,6 +68,7 @@ export default function Home(props) {
     //tem que ser na mesma ordem que está no HTML
     setAllProducts(await getAllProducts())
     setProductsTShirts(await getProductsByTagOrType('c', 't-shirts'))
+    setProductsHoodies(await getProductsByTagOrType('c', 'hoodies'))
   }
 
   return (
@@ -165,7 +167,18 @@ export default function Home(props) {
               T-Shirts
             </h2>
             <CarouselProducts
-              products={productsTShirts.concat(productsTShirts).concat(productsTShirts).concat(productsTShirts).concat(productsTShirts).concat(productsTShirts)}
+              products={productsTShirts}
+              userCurrency={userCurrency}
+              supportsHoverAndPointer={supportsHoverAndPointer}
+              windowWidth={windowWidth}
+            />
+          </div>
+          <div className={styles.carouselAndTitle}>
+            <h2 className={styles.carouselTitle}>
+              Hoodies
+            </h2>
+            <CarouselProducts
+              products={productsHoodies}
               userCurrency={userCurrency}
               supportsHoverAndPointer={supportsHoverAndPointer}
               windowWidth={windowWidth}

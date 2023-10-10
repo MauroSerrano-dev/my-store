@@ -77,6 +77,7 @@ export default function SearchBar(props) {
                     onKeyDown={onKeyDown}
                     value={value}
                     spellCheck={false}
+                    autoComplete='off'
                 />
                 <button
                     className={styles.icon}

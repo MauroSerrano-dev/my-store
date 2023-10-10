@@ -47,16 +47,16 @@ export default withRouter(props => {
 
     useEffect(() => {
         if (router.isReady) {
-            if (TYPES_POOL.some(t => t.id === router.query.type))
-                setType(router.query.type)
-            if (router.query.type === 't-shirts') {
-                const tShirtsInfos = TYPES_POOL.find(t => t.id === 't-shirts')
+            const tp = router.query.type
+            if (TYPES_POOL.some(t => t.id === tp)) {
+                setType(tp)
+                const typeInfos = TYPES_POOL.find(t => t.id === tp)
                 setProduct(prev => (
                     {
                         ...prev,
-                        sizes: tShirtsInfos.sizes,
-                        variants: tShirtsInfos.variants,
-                        tags: ['t-shirts']
+                        sizes: typeInfos.sizes,
+                        variants: typeInfos.variants,
+                        tags: [tp]
                     }
                 ))
             }
@@ -389,10 +389,6 @@ export default withRouter(props => {
                                         value={product.sizes}
                                         options={TYPES_POOL.find(t => t.id === type).sizes}
                                         onChange={handleChangeSizes}
-                                    /* style={{
-                                        paddingLeft: '50px',
-                                        paddingRight: '50px',
-                                    }} */
                                     />
                                     <ColorSelector
                                         value={product.colors}

@@ -80,6 +80,12 @@ export default withRouter(props => {
             .catch(err => console.error(err))
     }
 
+    function getMugType() {
+        return currentColor.id === 521 //white
+            ? 'mugs_white'
+            : 'mugs_color'
+    }
+
     function handleAddToCart() {
         const prodVariant = product.variants.find(vari => vari.size_id === currentSize.id && vari.color_id === currentColor.id)
 
@@ -93,7 +99,7 @@ export default withRouter(props => {
             size: currentSize,
             color: currentColor,
             desc: 'item description',
-            type: product.type,
+            type: product.type === 'mugs' ? getMugType() : product.type,
             image: product.images.find(img => img.variants_id.includes(prodVariant.id) && img.color_id === currentColor.id).src,
             price: prodVariant.price,
             title: product.title,

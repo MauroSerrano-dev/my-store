@@ -35,6 +35,7 @@ export const TAGS_POOL = [
     'music',
     'rock',
     'guitar',
+    'glitch',
 ]
 
 export const itemsNavBar = [
@@ -96,7 +97,6 @@ export const TYPES_POOL = [
                     418,
                     14
                 ],
-                quantity: 1
             },
             {
                 id: 38166,
@@ -108,7 +108,6 @@ export const TYPES_POOL = [
                     364,
                     14
                 ],
-                quantity: 1
             },
             {
                 id: 38153,
@@ -120,7 +119,6 @@ export const TYPES_POOL = [
                     424,
                     14
                 ],
-                quantity: 1
             },
             {
                 id: 38155,
@@ -132,7 +130,6 @@ export const TYPES_POOL = [
                     362,
                     14
                 ],
-                quantity: 1
             },
             {
                 id: 38156,
@@ -144,7 +141,6 @@ export const TYPES_POOL = [
                     369,
                     14
                 ],
-                quantity: 1
             },
             {
                 id: 38157,
@@ -156,7 +152,6 @@ export const TYPES_POOL = [
                     392,
                     14
                 ],
-                quantity: 1
             },
             {
                 id: 38158,
@@ -168,7 +163,6 @@ export const TYPES_POOL = [
                     511,
                     14
                 ],
-                quantity: 1
             },
             {
                 id: 38160,
@@ -180,7 +174,6 @@ export const TYPES_POOL = [
                     423,
                     14
                 ],
-                quantity: 1
             },
             {
                 id: 38161,
@@ -192,7 +185,6 @@ export const TYPES_POOL = [
                     425,
                     14
                 ],
-                quantity: 1
             },
             {
                 id: 38163,
@@ -204,7 +196,6 @@ export const TYPES_POOL = [
                     521,
                     14
                 ],
-                quantity: 1
             },
             {
                 id: 38162,
@@ -216,7 +207,6 @@ export const TYPES_POOL = [
                     358,
                     14
                 ],
-                quantity: 1
             },
             {
                 id: 38178,
@@ -228,7 +218,6 @@ export const TYPES_POOL = [
                     418,
                     15
                 ],
-                quantity: 1
             },
             {
                 id: 38180,
@@ -240,7 +229,6 @@ export const TYPES_POOL = [
                     364,
                     15
                 ],
-                quantity: 1
             },
             {
                 id: 38167,
@@ -252,7 +240,6 @@ export const TYPES_POOL = [
                     424,
                     15
                 ],
-                quantity: 1
             },
             {
                 id: 38169,
@@ -264,7 +251,6 @@ export const TYPES_POOL = [
                     362,
                     15
                 ],
-                quantity: 1
             },
             {
                 id: 38170,
@@ -276,7 +262,6 @@ export const TYPES_POOL = [
                     369,
                     15
                 ],
-                quantity: 1
             },
             {
                 id: 38171,
@@ -288,7 +273,6 @@ export const TYPES_POOL = [
                     392,
                     15
                 ],
-                quantity: 1
             },
             {
                 id: 38172,
@@ -300,7 +284,6 @@ export const TYPES_POOL = [
                     511,
                     15
                 ],
-                quantity: 1
             },
             {
                 id: 38174,
@@ -312,7 +295,6 @@ export const TYPES_POOL = [
                     423,
                     15
                 ],
-                quantity: 1
             },
             {
                 id: 38175,
@@ -324,7 +306,6 @@ export const TYPES_POOL = [
                     425,
                     15
                 ],
-                quantity: 1
             },
             {
                 id: 38177,
@@ -336,7 +317,6 @@ export const TYPES_POOL = [
                     521,
                     15
                 ],
-                quantity: 1
             },
             {
                 id: 38176,
@@ -348,7 +328,6 @@ export const TYPES_POOL = [
                     358,
                     15
                 ],
-                quantity: 1
             },
             {
                 id: 38192,
@@ -360,7 +339,6 @@ export const TYPES_POOL = [
                     418,
                     16
                 ],
-                quantity: 1
             },
             {
                 id: 38194,
@@ -372,7 +350,6 @@ export const TYPES_POOL = [
                     364,
                     16
                 ],
-                quantity: 1
             },
             {
                 id: 38181,
@@ -384,7 +361,6 @@ export const TYPES_POOL = [
                     424,
                     16
                 ],
-                quantity: 1
             },
             {
                 id: 38183,
@@ -396,7 +372,6 @@ export const TYPES_POOL = [
                     362,
                     16
                 ],
-                quantity: 1
             },
             {
                 id: 38184,
@@ -408,7 +383,6 @@ export const TYPES_POOL = [
                     369,
                     16
                 ],
-                quantity: 1
             },
             {
                 id: 38185,
@@ -420,7 +394,6 @@ export const TYPES_POOL = [
                     392,
                     16
                 ],
-                quantity: 1
             },
             {
                 id: 38186,
@@ -432,7 +405,6 @@ export const TYPES_POOL = [
                     511,
                     16
                 ],
-                quantity: 1
             },
             {
                 id: 38188,
@@ -444,7 +416,6 @@ export const TYPES_POOL = [
                     423,
                     16
                 ],
-                quantity: 1
             },
             {
                 id: 38189,
@@ -456,7 +427,6 @@ export const TYPES_POOL = [
                     425,
                     16
                 ],
-                quantity: 1
             },
             {
                 id: 38191,
@@ -468,7 +438,6 @@ export const TYPES_POOL = [
                     521,
                     16
                 ],
-                quantity: 1
             },
             {
                 id: 38190,
@@ -480,7 +449,6 @@ export const TYPES_POOL = [
                     358,
                     16
                 ],
-                quantity: 1
             },
             {
                 id: 38206,
@@ -492,7 +460,6 @@ export const TYPES_POOL = [
                     418,
                     17
                 ],
-                quantity: 1
             },
             {
                 id: 38208,
@@ -504,7 +471,6 @@ export const TYPES_POOL = [
                     364,
                     17
                 ],
-                quantity: 1
             },
             {
                 id: 38195,
@@ -516,7 +482,6 @@ export const TYPES_POOL = [
                     424,
                     17
                 ],
-                quantity: 1
             },
             {
                 id: 38197,
@@ -528,7 +493,6 @@ export const TYPES_POOL = [
                     362,
                     17
                 ],
-                quantity: 1
             },
             {
                 id: 38198,
@@ -540,7 +504,6 @@ export const TYPES_POOL = [
                     369,
                     17
                 ],
-                quantity: 1
             },
             {
                 id: 38199,
@@ -552,7 +515,6 @@ export const TYPES_POOL = [
                     392,
                     17
                 ],
-                quantity: 1
             },
             {
                 id: 38200,
@@ -564,7 +526,6 @@ export const TYPES_POOL = [
                     511,
                     17
                 ],
-                quantity: 1
             },
             {
                 id: 38202,
@@ -576,7 +537,6 @@ export const TYPES_POOL = [
                     423,
                     17
                 ],
-                quantity: 1
             },
             {
                 id: 38203,
@@ -588,7 +548,6 @@ export const TYPES_POOL = [
                     425,
                     17
                 ],
-                quantity: 1
             },
             {
                 id: 38205,
@@ -600,7 +559,6 @@ export const TYPES_POOL = [
                     521,
                     17
                 ],
-                quantity: 1
             },
             {
                 id: 38204,
@@ -612,7 +570,6 @@ export const TYPES_POOL = [
                     358,
                     17
                 ],
-                quantity: 1
             },
             {
                 id: 38220,
@@ -624,7 +581,6 @@ export const TYPES_POOL = [
                     418,
                     18
                 ],
-                quantity: 1
             },
             {
                 id: 38222,
@@ -636,7 +592,6 @@ export const TYPES_POOL = [
                     364,
                     18
                 ],
-                quantity: 1
             },
             {
                 id: 38209,
@@ -648,7 +603,6 @@ export const TYPES_POOL = [
                     424,
                     18
                 ],
-                quantity: 1
             },
             {
                 id: 38211,
@@ -660,7 +614,6 @@ export const TYPES_POOL = [
                     362,
                     18
                 ],
-                quantity: 1
             },
             {
                 id: 38212,
@@ -672,7 +625,6 @@ export const TYPES_POOL = [
                     369,
                     18
                 ],
-                quantity: 1
             },
             {
                 id: 38213,
@@ -684,7 +636,6 @@ export const TYPES_POOL = [
                     392,
                     18
                 ],
-                quantity: 1
             },
             {
                 id: 38214,
@@ -696,7 +647,6 @@ export const TYPES_POOL = [
                     511,
                     18
                 ],
-                quantity: 1
             },
             {
                 id: 38216,
@@ -708,7 +658,6 @@ export const TYPES_POOL = [
                     423,
                     18
                 ],
-                quantity: 1
             },
             {
                 id: 38217,
@@ -720,7 +669,6 @@ export const TYPES_POOL = [
                     425,
                     18
                 ],
-                quantity: 1
             },
             {
                 id: 38219,
@@ -732,7 +680,6 @@ export const TYPES_POOL = [
                     521,
                     18
                 ],
-                quantity: 1
             },
             {
                 id: 38218,
@@ -744,14 +691,26 @@ export const TYPES_POOL = [
                     358,
                     18
                 ],
-                quantity: 1
             },
         ],
     },
     {
         id: 'hoodies',
         title: 'Hoodies',
-        providers: [],
+        providers: [
+            {
+                id: 29,
+                title: 'Monster Digital',
+            },
+            {
+                id: 26,
+                title: 'Textildruck Europa',
+            },
+            {
+                id: 72,
+                title: 'Print Clever',
+            }
+        ],
         colors: [
             { id: 521, colors: ['#ffffff'], title: 'White' },
             { id: 418, colors: ['#000000'], title: 'Black' },
@@ -771,7 +730,1153 @@ export const TYPES_POOL = [
             { id: 16, title: 'L' },
             { id: 17, title: 'XL' },
             { id: 18, title: '2XL' },
-        ]
+        ],
+        variants: [
+            {
+                id: 42211,
+                cost: 2187,
+                price: 3645,
+                title: "Charcoal / S",
+                grams: 482,
+                options: [
+                    424,
+                    14
+                ],
+            },
+            {
+                id: 42212,
+                cost: 2187,
+                price: 3645,
+                title: "Charcoal / M",
+                grams: 485,
+                options: [
+                    424,
+                    15
+                ],
+            },
+            {
+                id: 42213,
+                cost: 2187,
+                price: 3645,
+                title: "Charcoal / L",
+                grams: 541,
+                options: [
+                    424,
+                    16
+                ],
+            },
+            {
+                id: 42214,
+                cost: 2187,
+                price: 3645,
+                title: "Charcoal / XL",
+                grams: 587,
+                options: [
+                    424,
+                    17
+                ],
+            },
+            {
+                id: 42215,
+                cost: 2396,
+                price: 3993,
+                title: "Charcoal / 2XL",
+                grams: 644,
+                options: [
+                    424,
+                    18
+                ],
+            },
+            {
+                id: 42216,
+                cost: 2515,
+                price: 4192,
+                title: "Charcoal / 3XL",
+                grams: 683,
+                options: [
+                    424,
+                    19
+                ],
+            },
+            {
+                id: 42217,
+                cost: 2575,
+                price: 4292,
+                title: "Charcoal / 4XL",
+                grams: 729,
+                options: [
+                    424,
+                    20
+                ],
+            },
+            {
+                id: 42218,
+                cost: 2575,
+                price: 4292,
+                title: "Charcoal / 5XL",
+                grams: 729,
+                options: [
+                    424,
+                    21
+                ],
+            },
+            {
+                id: 66363,
+                cost: 2187,
+                price: 3645,
+                title: "Heather Navy / S",
+                grams: 482,
+                options: [
+                    550,
+                    14
+                ],
+            },
+            {
+                id: 66364,
+                cost: 2187,
+                price: 3645,
+                title: "Heather Navy / M",
+                grams: 485,
+                options: [
+                    550,
+                    15
+                ],
+            },
+            {
+                id: 66365,
+                cost: 2187,
+                price: 3645,
+                title: "Heather Navy / L",
+                grams: 541,
+                options: [
+                    550,
+                    16
+                ],
+            },
+            {
+                id: 66366,
+                cost: 2187,
+                price: 3645,
+                title: "Heather Navy / XL",
+                grams: 587,
+                options: [
+                    550,
+                    17
+                ],
+            },
+            {
+                id: 66367,
+                cost: 2396,
+                price: 3993,
+                title: "Heather Navy / 2XL",
+                grams: 644,
+                options: [
+                    550,
+                    18
+                ],
+            },
+            {
+                id: 66368,
+                cost: 2515,
+                price: 4192,
+                title: "Heather Navy / 3XL",
+                grams: 683,
+                options: [
+                    550,
+                    19
+                ],
+            },
+            {
+                id: 66369,
+                cost: 2575,
+                price: 4292,
+                title: "Heather Navy / 4XL",
+                grams: 729,
+                options: [
+                    550,
+                    20
+                ],
+            },
+            {
+                id: 66370,
+                cost: 2575,
+                price: 4292,
+                title: "Heather Navy / 5XL",
+                grams: 729,
+                options: [
+                    550,
+                    21
+                ],
+            },
+            {
+                id: 42235,
+                cost: 2187,
+                price: 3645,
+                title: "Light Blue / S",
+                grams: 482,
+                options: [
+                    392,
+                    14
+                ],
+            },
+            {
+                id: 42236,
+                cost: 2187,
+                price: 3645,
+                title: "Light Blue / M",
+                grams: 485,
+                options: [
+                    392,
+                    15
+                ],
+            },
+            {
+                id: 42237,
+                cost: 2187,
+                price: 3645,
+                title: "Light Blue / L",
+                grams: 541,
+                options: [
+                    392,
+                    16
+                ],
+            },
+            {
+                id: 42238,
+                cost: 2187,
+                price: 3645,
+                title: "Light Blue / XL",
+                grams: 587,
+                options: [
+                    392,
+                    17
+                ],
+            },
+            {
+                id: 42239,
+                cost: 2396,
+                price: 3993,
+                title: "Light Blue / 2XL",
+                grams: 644,
+                options: [
+                    392,
+                    18
+                ],
+            },
+            {
+                id: 42240,
+                cost: 2515,
+                price: 4192,
+                title: "Light Blue / 3XL",
+                grams: 683,
+                options: [
+                    392,
+                    19
+                ],
+            },
+            {
+                id: 42241,
+                cost: 2575,
+                price: 4292,
+                title: "Light Blue / 4XL",
+                grams: 729,
+                options: [
+                    392,
+                    20
+                ],
+            },
+            {
+                id: 42242,
+                cost: 2575,
+                price: 4292,
+                title: "Light Blue / 5XL",
+                grams: 729,
+                options: [
+                    392,
+                    21
+                ],
+            },
+            {
+                id: 32918,
+                cost: 2187,
+                price: 3645,
+                title: "Black / S",
+                grams: 482,
+                options: [
+                    418,
+                    14
+                ],
+            },
+            {
+                id: 33425,
+                cost: 2187,
+                price: 3645,
+                title: "Military Green / S",
+                grams: 482,
+                options: [
+                    364,
+                    14
+                ],
+            },
+            {
+                id: 32878,
+                cost: 2187,
+                price: 3645,
+                title: "Dark Heather / S",
+                grams: 482,
+                options: [
+                    367,
+                    14
+                ],
+            },
+            {
+                id: 33369,
+                cost: 2187,
+                price: 3645,
+                title: "Irish Green / S",
+                grams: 482,
+                options: [
+                    369,
+                    14
+                ],
+            },
+            {
+                id: 32886,
+                cost: 2187,
+                price: 3645,
+                title: "Maroon / S",
+                grams: 482,
+                options: [
+                    395,
+                    14
+                ],
+            },
+            {
+                id: 32894,
+                cost: 2187,
+                price: 3645,
+                title: "Navy / S",
+                grams: 482,
+                options: [
+                    511,
+                    14
+                ],
+            },
+            {
+                id: 33385,
+                cost: 2187,
+                price: 3645,
+                title: "Red / S",
+                grams: 482,
+                options: [
+                    423,
+                    14
+                ],
+            },
+            {
+                id: 33393,
+                cost: 2187,
+                price: 3645,
+                title: "Royal / S",
+                grams: 482,
+                options: [
+                    425,
+                    14
+                ],
+            },
+            {
+                id: 32910,
+                cost: 2187,
+                price: 3645,
+                title: "White / S",
+                grams: 482,
+                options: [
+                    521,
+                    14
+                ],
+            },
+            {
+                id: 32902,
+                cost: 2187,
+                price: 3645,
+                title: "Sport Grey / S",
+                grams: 482,
+                options: [
+                    358,
+                    14
+                ],
+            },
+            {
+                id: 32919,
+                cost: 2187,
+                price: 3645,
+                title: "Black / M",
+                grams: 485,
+                options: [
+                    418,
+                    15
+                ],
+            },
+            {
+                id: 33426,
+                cost: 2187,
+                price: 3645,
+                title: "Military Green / M",
+                grams: 485,
+                options: [
+                    364,
+                    15
+                ],
+            },
+            {
+                id: 32879,
+                cost: 2187,
+                price: 3645,
+                title: "Dark Heather / M",
+                grams: 485,
+                options: [
+                    367,
+                    15
+                ],
+            },
+            {
+                id: 33370,
+                cost: 2187,
+                price: 3645,
+                title: "Irish Green / M",
+                grams: 485,
+                options: [
+                    369,
+                    15
+                ],
+            },
+            {
+                id: 32887,
+                cost: 2187,
+                price: 3645,
+                title: "Maroon / M",
+                grams: 485,
+                options: [
+                    395,
+                    15
+                ],
+            },
+            {
+                id: 32895,
+                cost: 2187,
+                price: 3645,
+                title: "Navy / M",
+                grams: 485,
+                options: [
+                    511,
+                    15
+                ],
+            },
+            {
+                id: 33386,
+                cost: 2187,
+                price: 3645,
+                title: "Red / M",
+                grams: 485,
+                options: [
+                    423,
+                    15
+                ],
+            },
+            {
+                id: 33394,
+                cost: 2187,
+                price: 3645,
+                title: "Royal / M",
+                grams: 485,
+                options: [
+                    425,
+                    15
+                ],
+            },
+            {
+                id: 32911,
+                cost: 2187,
+                price: 3645,
+                title: "White / M",
+                grams: 485,
+                options: [
+                    521,
+                    15
+                ],
+            },
+            {
+                id: 32903,
+                cost: 2187,
+                price: 3645,
+                title: "Sport Grey / M",
+                grams: 485,
+                options: [
+                    358,
+                    15
+                ],
+            },
+            {
+                id: 32920,
+                cost: 2187,
+                price: 3645,
+                title: "Black / L",
+                grams: 541,
+                options: [
+                    418,
+                    16
+                ],
+            },
+            {
+                id: 33427,
+                cost: 2187,
+                price: 3645,
+                title: "Military Green / L",
+                grams: 541,
+                options: [
+                    364,
+                    16
+                ],
+            },
+            {
+                id: 32880,
+                cost: 2187,
+                price: 3645,
+                title: "Dark Heather / L",
+                grams: 541,
+                options: [
+                    367,
+                    16
+                ],
+            },
+            {
+                id: 33371,
+                cost: 2187,
+                price: 3645,
+                title: "Irish Green / L",
+                grams: 541,
+                options: [
+                    369,
+                    16
+                ],
+            },
+            {
+                id: 32888,
+                cost: 2187,
+                price: 3645,
+                title: "Maroon / L",
+                grams: 541,
+                options: [
+                    395,
+                    16
+                ],
+            },
+            {
+                id: 32896,
+                cost: 2187,
+                price: 3645,
+                title: "Navy / L",
+                grams: 541,
+                options: [
+                    511,
+                    16
+                ],
+            },
+            {
+                id: 33387,
+                cost: 2187,
+                price: 3645,
+                title: "Red / L",
+                grams: 541,
+                options: [
+                    423,
+                    16
+                ],
+            },
+            {
+                id: 33395,
+                cost: 2187,
+                price: 3645,
+                title: "Royal / L",
+                grams: 541,
+                options: [
+                    425,
+                    16
+                ],
+            },
+            {
+                id: 32912,
+                cost: 2187,
+                price: 3645,
+                title: "White / L",
+                grams: 541,
+                options: [
+                    521,
+                    16
+                ],
+            },
+            {
+                id: 32904,
+                cost: 2187,
+                price: 3645,
+                title: "Sport Grey / L",
+                grams: 541,
+                options: [
+                    358,
+                    16
+                ],
+            },
+            {
+                id: 32921,
+                cost: 2187,
+                price: 3645,
+                title: "Black / XL",
+                grams: 587,
+                options: [
+                    418,
+                    17
+                ],
+            },
+            {
+                id: 33428,
+                cost: 2187,
+                price: 3645,
+                title: "Military Green / XL",
+                grams: 587,
+                options: [
+                    364,
+                    17
+                ],
+            },
+            {
+                id: 32881,
+                cost: 2187,
+                price: 3645,
+                title: "Dark Heather / XL",
+                grams: 587,
+                options: [
+                    367,
+                    17
+                ],
+            },
+            {
+                id: 33372,
+                cost: 2187,
+                price: 3645,
+                title: "Irish Green / XL",
+                grams: 587,
+                options: [
+                    369,
+                    17
+                ],
+            },
+            {
+                id: 32889,
+                cost: 2187,
+                price: 3645,
+                title: "Maroon / XL",
+                grams: 587,
+                options: [
+                    395,
+                    17
+                ],
+            },
+            {
+                id: 32897,
+                cost: 2187,
+                price: 3645,
+                title: "Navy / XL",
+                grams: 587,
+                options: [
+                    511,
+                    17
+                ],
+            },
+            {
+                id: 33388,
+                cost: 2187,
+                price: 3645,
+                title: "Red / XL",
+                grams: 587,
+                options: [
+                    423,
+                    17
+                ],
+            },
+            {
+                id: 33396,
+                cost: 2187,
+                price: 3645,
+                title: "Royal / XL",
+                grams: 587,
+                options: [
+                    425,
+                    17
+                ],
+            },
+            {
+                id: 32913,
+                cost: 2187,
+                price: 3645,
+                title: "White / XL",
+                grams: 587,
+                options: [
+                    521,
+                    17
+                ],
+            },
+            {
+                id: 32905,
+                cost: 2187,
+                price: 3645,
+                title: "Sport Grey / XL",
+                grams: 587,
+                options: [
+                    358,
+                    17
+                ],
+            },
+            {
+                id: 32922,
+                cost: 2396,
+                price: 3993,
+                title: "Black / 2XL",
+                grams: 644,
+                options: [
+                    418,
+                    18
+                ],
+            },
+            {
+                id: 33429,
+                cost: 2396,
+                price: 3993,
+                title: "Military Green / 2XL",
+                grams: 644,
+                options: [
+                    364,
+                    18
+                ],
+            },
+            {
+                id: 32882,
+                cost: 2396,
+                price: 3993,
+                title: "Dark Heather / 2XL",
+                grams: 644,
+                options: [
+                    367,
+                    18
+                ],
+            },
+            {
+                id: 33373,
+                cost: 2396,
+                price: 3993,
+                title: "Irish Green / 2XL",
+                grams: 644,
+                options: [
+                    369,
+                    18
+                ],
+            },
+            {
+                id: 32890,
+                cost: 2396,
+                price: 3993,
+                title: "Maroon / 2XL",
+                grams: 644,
+                options: [
+                    395,
+                    18
+                ],
+            },
+            {
+                id: 32898,
+                cost: 2396,
+                price: 3993,
+                title: "Navy / 2XL",
+                grams: 644,
+                options: [
+                    511,
+                    18
+                ],
+            },
+            {
+                id: 33389,
+                cost: 2396,
+                price: 3993,
+                title: "Red / 2XL",
+                grams: 644,
+                options: [
+                    423,
+                    18
+                ],
+            },
+            {
+                id: 33397,
+                cost: 2396,
+                price: 3993,
+                title: "Royal / 2XL",
+                grams: 644,
+                options: [
+                    425,
+                    18
+                ],
+            },
+            {
+                id: 32914,
+                cost: 2396,
+                price: 3993,
+                title: "White / 2XL",
+                grams: 644,
+                options: [
+                    521,
+                    18
+                ],
+            },
+            {
+                id: 32906,
+                cost: 2396,
+                price: 3993,
+                title: "Sport Grey / 2XL",
+                grams: 644,
+                options: [
+                    358,
+                    18
+                ],
+            },
+            {
+                id: 32923,
+                cost: 2515,
+                price: 4192,
+                title: "Black / 3XL",
+                grams: 683,
+                options: [
+                    418,
+                    19
+                ],
+            },
+            {
+                id: 33430,
+                cost: 2515,
+                price: 4192,
+                title: "Military Green / 3XL",
+                grams: 683,
+                options: [
+                    364,
+                    19
+                ],
+            },
+            {
+                id: 32883,
+                cost: 2515,
+                price: 4192,
+                title: "Dark Heather / 3XL",
+                grams: 683,
+                options: [
+                    367,
+                    19
+                ],
+            },
+            {
+                id: 33374,
+                cost: 2515,
+                price: 4192,
+                title: "Irish Green / 3XL",
+                grams: 683,
+                options: [
+                    369,
+                    19
+                ],
+            },
+            {
+                id: 32891,
+                cost: 2515,
+                price: 4192,
+                title: "Maroon / 3XL",
+                grams: 683,
+                options: [
+                    395,
+                    19
+                ],
+            },
+            {
+                id: 32899,
+                cost: 2515,
+                price: 4192,
+                title: "Navy / 3XL",
+                grams: 683,
+                options: [
+                    511,
+                    19
+                ],
+            },
+            {
+                id: 33390,
+                cost: 2515,
+                price: 4192,
+                title: "Red / 3XL",
+                grams: 683,
+                options: [
+                    423,
+                    19
+                ],
+            },
+            {
+                id: 33398,
+                cost: 2515,
+                price: 4192,
+                title: "Royal / 3XL",
+                grams: 683,
+                options: [
+                    425,
+                    19
+                ],
+            },
+            {
+                id: 32915,
+                cost: 2515,
+                price: 4192,
+                title: "White / 3XL",
+                grams: 683,
+                options: [
+                    521,
+                    19
+                ],
+            },
+            {
+                id: 32907,
+                cost: 2515,
+                price: 4192,
+                title: "Sport Grey / 3XL",
+                grams: 683,
+                options: [
+                    358,
+                    19
+                ],
+            },
+            {
+                id: 32924,
+                cost: 2575,
+                price: 4292,
+                title: "Black / 4XL",
+                grams: 729,
+                options: [
+                    418,
+                    20
+                ],
+            },
+            {
+                id: 33431,
+                cost: 2575,
+                price: 4292,
+                title: "Military Green / 4XL",
+                grams: 729,
+                options: [
+                    364,
+                    20
+                ],
+            },
+            {
+                id: 32884,
+                cost: 2575,
+                price: 4292,
+                title: "Dark Heather / 4XL",
+                grams: 729,
+                options: [
+                    367,
+                    20
+                ],
+            },
+            {
+                id: 33375,
+                cost: 2575,
+                price: 4292,
+                title: "Irish Green / 4XL",
+                grams: 729,
+                options: [
+                    369,
+                    20
+                ],
+            },
+            {
+                id: 32892,
+                cost: 2575,
+                price: 4292,
+                title: "Maroon / 4XL",
+                grams: 729,
+                options: [
+                    395,
+                    20
+                ],
+            },
+            {
+                id: 32900,
+                cost: 2575,
+                price: 4292,
+                title: "Navy / 4XL",
+                grams: 729,
+                options: [
+                    511,
+                    20
+                ],
+            },
+            {
+                id: 33391,
+                cost: 2575,
+                price: 4292,
+                title: "Red / 4XL",
+                grams: 729,
+                options: [
+                    423,
+                    20
+                ],
+            },
+            {
+                id: 33399,
+                cost: 2575,
+                price: 4292,
+                title: "Royal / 4XL",
+                grams: 729,
+                options: [
+                    425,
+                    20
+                ],
+            },
+            {
+                id: 32916,
+                cost: 2575,
+                price: 4292,
+                title: "White / 4XL",
+                grams: 729,
+                options: [
+                    521,
+                    20
+                ],
+            },
+            {
+                id: 32908,
+                cost: 2575,
+                price: 4292,
+                title: "Sport Grey / 4XL",
+                grams: 729,
+                options: [
+                    358,
+                    20
+                ],
+            },
+            {
+                id: 32925,
+                cost: 2575,
+                price: 4292,
+                title: "Black / 5XL",
+                grams: 729,
+                options: [
+                    418,
+                    21
+                ],
+            },
+            {
+                id: 33432,
+                cost: 2575,
+                price: 4292,
+                title: "Military Green / 5XL",
+                grams: 729,
+                options: [
+                    364,
+                    21
+                ],
+            },
+            {
+                id: 32885,
+                cost: 2575,
+                price: 4292,
+                title: "Dark Heather / 5XL",
+                grams: 729,
+                options: [
+                    367,
+                    21
+                ],
+            },
+            {
+                id: 33376,
+                cost: 2575,
+                price: 4292,
+                title: "Irish Green / 5XL",
+                grams: 729,
+                options: [
+                    369,
+                    21
+                ],
+            },
+            {
+                id: 32893,
+                cost: 2575,
+                price: 4292,
+                title: "Maroon / 5XL",
+                grams: 729,
+                options: [
+                    395,
+                    21
+                ],
+            },
+            {
+                id: 32901,
+                cost: 2575,
+                price: 4292,
+                title: "Navy / 5XL",
+                grams: 729,
+                options: [
+                    511,
+                    21
+                ],
+            },
+            {
+                id: 33392,
+                cost: 2575,
+                price: 4292,
+                title: "Red / 5XL",
+                grams: 729,
+                options: [
+                    423,
+                    21
+                ],
+            },
+            {
+                id: 33400,
+                cost: 2575,
+                price: 4292,
+                title: "Royal / 5XL",
+                grams: 729,
+                options: [
+                    425,
+                    21
+                ],
+            },
+            {
+                id: 32917,
+                cost: 2575,
+                price: 4292,
+                title: "White / 5XL",
+                grams: 729,
+                options: [
+                    521,
+                    21
+                ],
+            },
+            {
+                id: 32909,
+                cost: 2575,
+                price: 4292,
+                title: "Sport Grey / 5XL",
+                grams: 729,
+                options: [
+                    358,
+                    21
+                ],
+            }
+        ],
     },
     {
         id: 'socks',
@@ -801,6 +1906,24 @@ export function getShippingOptions(country) {
                     currency: 'usd'
                 },
                 'hoodies': {
+                    provider: {
+                        id: 29,
+                        title: 'Monster Digital',
+                    },
+                    first_item: 849,
+                    add_item: 209,
+                    currency: 'usd'
+                },
+                'mugs_white': {
+                    provider: {
+                        id: 29,
+                        title: 'Monster Digital',
+                    },
+                    first_item: 849,
+                    add_item: 209,
+                    currency: 'usd'
+                },
+                'mugs_color': {
                     provider: {
                         id: 29,
                         title: 'Monster Digital',
