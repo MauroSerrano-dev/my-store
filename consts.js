@@ -10,9 +10,25 @@ export const MENU_OPTIONS = [
 
 export const MENU_FORWARD_OPTIONS = {
     departments: [
-        { title: 'T-Shirts', type: 'link', href: '/search?c=t-shirts' },
         { title: 'Kitchen', type: 'link', href: '/search?c=kitchen' },
-        { title: 'Socks', type: 'link', href: '/search?c=socks' }
+    ],
+    products: [
+        { title: 'T-Shirts', type: 'link', href: '/search?c=t-shirts' },
+        { title: 'Hoodies', type: 'link', href: '/search?c=hoodies' },
+        { title: 'Long Sleeves', type: 'link', href: '/search?c=long+sleeves' },
+        { title: 'Socks', type: 'link', href: '/search?c=socks' },
+        { title: 'Mugs', type: 'link', href: '/search?c=mugs' },
+        { title: 'Phone Cases', type: 'link', href: '/search?c=phone+cases' },
+        { title: 'Pillows', type: 'link', href: '/search?c=pillows' },
+        { title: 'Bottles & Tumblers', type: 'link', href: '/search?c=bottles+tumblers' },
+        { title: 'Hats', type: 'link', href: '/search?c=hats' },
+        { title: 'Blankets', type: 'link', href: '/search?c=blankets' },
+        { title: 'Poster', type: 'link', href: '/search?c=poster' },
+        { title: 'Apron', type: 'link', href: '/search?c=apron' },
+        { title: 'Towels', type: 'link', href: '/search?c=towels' },
+        { title: 'Shoes', type: 'link', href: '/search?c=shoes' },
+        { title: 'Tank Tops', type: 'link', href: '/search?c=tank+tops' },
+        { title: 'Bottoms', type: 'link', href: '/search?c=bottoms' },
     ],
     collections: [
         { title: 'Music', type: 'link', href: '/search?c=music' },

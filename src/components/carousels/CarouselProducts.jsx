@@ -15,7 +15,6 @@ export default function CarouselProducts(props) {
     const carouselRef = useRef(null)
 
     const [isDragging, setIsDragging] = useState(false)
-    const [showSkeleton, setShowSkeleton] = useState(true)
 
     function handleDragStart() {
         setIsDragging(true)

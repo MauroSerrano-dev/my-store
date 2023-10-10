@@ -103,8 +103,8 @@ export default function Product(props) {
                             <Image
                                 key={i}
                                 src={product.images.filter(img => img.color_id === color.id)[product.image_hover_index].src}
-                                width={900}
-                                height={1000}
+                                width={270}
+                                height={300}
                                 alt={product.title}
                                 style={{
                                     position: i > 0 ? 'absolute' : 'relative',
@@ -130,8 +130,8 @@ export default function Product(props) {
                             key={i}
                             priority
                             src={product.images.filter(img => img.color_id === color.id)[product.image_showcase_index].src}
-                            width={900}
-                            height={1000}
+                            width={270}
+                            height={300}
                             alt={product.title}
                             style={{
                                 position: i > 0 ? 'absolute' : 'relative',
