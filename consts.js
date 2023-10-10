@@ -11,7 +11,7 @@ export const MENU_OPTIONS = [
 export const MENU_FORWARD_OPTIONS = {
     departments: [
         { title: 'T-Shirts', type: 'link', href: '/search?c=t-shirts' },
-        { title: 'Kitchen', type: 'link', href:'/search?c=kitchen' },
+        { title: 'Kitchen', type: 'link', href: '/search?c=kitchen' },
         { title: 'Socks', type: 'link', href: '/search?c=socks' }
     ],
     collections: [
@@ -32,6 +32,9 @@ export const TAGS_POOL = [
     'computer',
     'zombies',
     'halloween',
+    'music',
+    'rock',
+    'guitar',
 ]
 
 export const itemsNavBar = [
@@ -61,6 +64,26 @@ export const TYPES_POOL = [
                 id: 72,
                 title: 'Print Clever',
             }
+        ],
+        colors: [
+            { id: 521, colors: ['#ffffff'], title: 'White' },
+            { id: 418, colors: ['#000000'], title: 'Black' },
+            { id: 358, colors: ['#CACACA'], title: 'Sport Grey' },
+            { id: 362, colors: ['#31221D'], title: 'Dark Chocolate' },
+            { id: 364, colors: ['#585c3b'], title: 'Military Green' },
+            { id: 369, colors: ['#129447'], title: 'Irish Green' },
+            { id: 392, colors: ['#d6e6f7'], title: 'Light Blue' },
+            { id: 424, colors: ['#585559'], title: 'Charcoal' },
+            { id: 425, colors: ['#084f97'], title: 'Royal' },
+            { id: 511, colors: ['#1a2237'], title: 'Navy' },
+            { id: 423, colors: ['#C62A32'], title: 'Red' }
+        ],
+        sizes: [
+            { id: 14, title: 'S' },
+            { id: 15, title: 'M' },
+            { id: 16, title: 'L' },
+            { id: 17, title: 'XL' },
+            { id: 18, title: '2XL' },
         ],
         variants: [
             {
@@ -724,26 +747,6 @@ export const TYPES_POOL = [
                 quantity: 1
             },
         ],
-        colors: [
-            { id: 521, colors: ['#ffffff'], title: 'White' },
-            { id: 418, colors: ['#000000'], title: 'Black' },
-            { id: 358, colors: ['#CACACA'], title: 'Sport Grey' },
-            { id: 362, colors: ['#31221D'], title: 'Dark Chocolate' },
-            { id: 364, colors: ['#585c3b'], title: 'Military Green' },
-            { id: 369, colors: ['#129447'], title: 'Irish Green' },
-            { id: 392, colors: ['#d6e6f7'], title: 'Light Blue' },
-            { id: 424, colors: ['#585559'], title: 'Charcoal' },
-            { id: 425, colors: ['#084f97'], title: 'Royal' },
-            { id: 511, colors: ['#1a2237'], title: 'Navy' },
-            { id: 423, colors: ['#C62A32'], title: 'Red' }
-        ],
-        sizes: [
-            { id: 14, title: 'S' },
-            { id: 15, title: 'M' },
-            { id: 16, title: 'L' },
-            { id: 17, title: 'XL' },
-            { id: 18, title: '2XL' },
-        ]
     },
     {
         id: 'hoodies',

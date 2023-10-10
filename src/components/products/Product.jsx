@@ -15,9 +15,7 @@ import Image from 'next/image';
  * @param {boolean} props.responsive - Responsive width.
  * @param {boolean} props.supportsHoverAndPointer - Device supportsHoverAndPointer.
  * @param {boolean} props.outOfStock - Product outOfStock.
- * @param {function} props.imageLoadCallBack - Product imageLoadCallBack.
  * @param {object} props.style - Product style.
- * @param {boolean} props.show - Product show.
  */
 
 export default function Product(props) {
@@ -39,9 +37,7 @@ export default function Product(props) {
                 }
             }
         },
-        imageLoadCallBack,
         style,
-        show = true,
     } = props
 
     const productRef = useRef(null)
@@ -49,7 +45,6 @@ export default function Product(props) {
 
     const [currentVariant, setCurrentVariant] = useState(product.variants[0])
     const [isDraggingColors, setIsDraggingColors] = useState(false)
-    const [isImageLoaded, setIsImageLoaded] = useState(false)
 
     const scrollColorsActive = product.colors.length > 6
 
@@ -74,22 +69,7 @@ export default function Product(props) {
         event.preventDefault()
     }
 
-    useEffect(() => {
-        const img = new window.Image()
-        img.src = product.images[0].src
-
-        img.onload = () => {
-            setIsImageLoaded(true)
-        }
-    }, [product])
-
-    useEffect(() => {
-        if (isImageLoaded && imageLoadCallBack)
-            imageLoadCallBack()
-    }, [isImageLoaded])
-
     return (
-        show &&
         <motion.div
             className={styles.container}
             variants={motionVariants}
@@ -142,7 +122,7 @@ export default function Product(props) {
                     style={{
                         pointerEvents: 'none',
                         width: width,
-                        height: width * 10 / 9
+                        height: width * 10 / 9,
                     }}
                 >
                     {product.colors.map((color, i) =>

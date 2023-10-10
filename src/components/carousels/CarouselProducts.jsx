@@ -27,11 +27,6 @@ export default function CarouselProducts(props) {
         }, 200)
     }
 
-    function handleImageLoadCallBack(index) {
-        if (index === products.length - 1)
-            setShowSkeleton(false)
-    }
-
     return (
         <motion.div
             className={styles.container}
@@ -75,13 +70,11 @@ export default function CarouselProducts(props) {
                                 pointerEvents: isDragging ? 'none' : 'auto',
                                 willChange: 'transform',
                             }}
-                            imageLoadCallBack={() => handleImageLoadCallBack(i)}
-                            show={!showSkeleton}
                         />
                     )
                 }
             </motion.div>
-            {showSkeleton &&
+            {products.length === 0 &&
                 <div
                     className={styles.inner}
                     style={{

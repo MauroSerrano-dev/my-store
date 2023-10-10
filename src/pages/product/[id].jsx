@@ -204,7 +204,7 @@ export default withRouter(props => {
                                 </p>
                             </div>
                             <div>
-                                <p style={{ textAlign: 'start', fontWeight: 'bold' }}>Pick a color</p>
+                                <p style={{ textAlign: 'start', fontWeight: 'bold' }}>{product.colors.length === 1 ? 'Color' : 'Pick a color'}</p>
                                 <ColorSelector
                                     options={product.colors}
                                     value={[currentColor]}
@@ -213,7 +213,7 @@ export default withRouter(props => {
                                 />
                             </div>
                             <div>
-                                <p style={{ textAlign: 'start', fontWeight: 'bold' }}>Pick a size</p>
+                                <p style={{ textAlign: 'start', fontWeight: 'bold' }}>{product.sizes.length === 1 ? 'Size' : 'Pick a size'}</p>
                                 <SizesSelector
                                     value={[currentSize]}
                                     options={product.sizes}
