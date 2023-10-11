@@ -15,15 +15,21 @@ export default function CarouselProducts(props) {
     const carouselRef = useRef(null)
 
     const [isDragging, setIsDragging] = useState(false)
+    const [antVisualBug, setAntVisualBug] = useState(false) //você é um gênio
 
     function handleDragStart() {
         setIsDragging(true)
     }
 
     function handleDragEnd() {
+        setAntVisualBug(false)
         setTimeout(() => {
             setIsDragging(false)
         }, 200)
+    }
+
+    function handleMouseDown() {
+        setAntVisualBug(true)
     }
 
     return (
@@ -40,6 +46,8 @@ export default function CarouselProducts(props) {
                 dragTransition={{ power: supportsHoverAndPointer ? 0.07 : 0.3, timeConstant: 200 }}
                 onDragStart={handleDragStart}
                 onDragEnd={handleDragEnd}
+                onMouseDown={handleMouseDown}
+                onTouchStart={handleMouseDown}
                 style={{
                     zIndex: 1,
                     position: 'relative',

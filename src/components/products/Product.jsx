@@ -102,6 +102,7 @@ export default function Product(props) {
                         {product.colors.map((color, i) =>
                             <Image
                                 key={i}
+                                priority={i === 0}
                                 src={product.images.filter(img => img.color_id === color.id)[product.image_hover_index].src}
                                 width={270}
                                 height={300}
@@ -128,7 +129,7 @@ export default function Product(props) {
                     {product.colors.map((color, i) =>
                         <Image
                             key={i}
-                            priority
+                            priority={i === 0}
                             src={product.images.filter(img => img.color_id === color.id)[product.image_showcase_index].src}
                             width={270}
                             height={300}

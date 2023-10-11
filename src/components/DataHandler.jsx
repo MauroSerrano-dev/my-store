@@ -277,7 +277,7 @@ export default function DataHandler(props) {
         handleResize()
         setTimeout(() => {
             setWebsiteVisible(true)
-        }, 30) // com 10 estava tendo um bug de animação ao fazer refresh
+        }, 45) // com 10 estava tendo um bug de animação ao fazer refresh
 
         window.addEventListener('resize', handleResize)
 

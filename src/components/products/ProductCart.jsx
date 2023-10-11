@@ -87,7 +87,13 @@ export default function ProductCart(props) {
                 <Image
                     src={product.image}
                     alt={product.title}
-                    layout='fill'
+                    width={270}
+                    height={300}
+                    style={{
+                        width: 'auto',
+                        height: 250,
+                    }}
+                    priority
                 />
             </Link>
             <div className={styles.right}>
