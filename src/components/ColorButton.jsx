@@ -60,6 +60,24 @@ export default function ColorButton(props) {
                 onClick={event => onChange(event, color)}
                 style={buttonStyle}
             >
+                <div className='flex' style={{ height: '100%', width: '100%' }}>
+                    <div
+                        style={{
+                            height: '100%',
+                            width: '50%',
+                            backgroundColor: color.colors[0]
+                        }}
+                    >
+                    </div>
+                    <div
+                        style={{
+                            height: '100%',
+                            width: '50%',
+                            backgroundColor: color.colors[1]
+                        }}
+                    >
+                    </div>
+                </div>
             </button>
     )
 }
