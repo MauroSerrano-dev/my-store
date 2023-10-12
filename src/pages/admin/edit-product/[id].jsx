@@ -168,7 +168,7 @@ export default withRouter(props => {
 
     function handleAddNewImage() {
         const colorId = product.colors[colorIndex].id
-        setImages(prev => ({ ...prev, [colorId]: prev[colorId].concat({ src: '', variants_id: product.variants.filter(vari => vari.options.includes(colorId)).map(vari => vari.id), color_id: colorId, hover: false, showcase: false }) }))
+        setImages(prev => ({ ...prev, [colorId]: prev[colorId].concat({ src: '', variants_id: product.variants.filter(vari => vari.color_id === colorId).map(vari => vari.id), color_id: colorId, hover: false, showcase: false }) }))
     }
 
     function handleChangePrice(value, sizeId) {
@@ -323,6 +323,11 @@ export default withRouter(props => {
     function updateImageField(fieldname, newValue, index) {
         const colorId = product.colors[colorIndex].id
         setImages(prev => ({ ...prev, [colorId]: prev[colorId].map((img, i) => index === i ? { ...img, [fieldname]: newValue } : img) }))
+    }
+
+    function handleDeleteImageField(index) {
+        const colorId = product.colors[colorIndex].id
+        setImages(prev => ({ ...prev, [colorId]: prev[colorId].filter((img, i) => index !== i) }))
     }
 
     return (
