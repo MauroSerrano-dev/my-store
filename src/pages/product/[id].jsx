@@ -95,7 +95,7 @@ export default withRouter(props => {
             printify_id_default: product.printify_id_default,
             variant_id: prodVariant.id,
             default_variant: { size: product.sizes[0], color: product.colors[0] },
-            quantity: prodVariant.quantity,
+            quantity: 1,
             size: currentSize,
             color: currentColor,
             desc: 'item description',

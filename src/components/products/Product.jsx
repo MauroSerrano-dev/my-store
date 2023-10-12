@@ -222,6 +222,7 @@ export default function Product(props) {
                             paddingBottom: width * 0.035,
                             paddingLeft: width * 0.02,
                             paddingRight: width * 0.02,
+                            cursor: isDraggingColors ? 'grabbing' : 'grab',
                         }}
                         dragConstraints={bottomHoverRef}
                         initial={{ x: 0 }}
@@ -239,6 +240,7 @@ export default function Product(props) {
                                     style={{
                                         height: width * 0.13,
                                         width: width * 0.13,
+                                        pointerEvents: isDraggingColors ? 'none' : 'auto',
                                     }}
                                     selected={currentVariant.color_id === color.id}
                                     color={color}

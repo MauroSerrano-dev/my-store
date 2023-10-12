@@ -72,8 +72,8 @@ export default withRouter(props => {
             return
         }
 
-        const variants = product.variants
-            .filter(vari => product.colors.some(color => vari.options.includes(color.id)) && product.sizes.some(size => vari.options.includes(size.id)))
+        const variants = product.colors
+            .reduce((acc, cl) => acc.concat(product.variants.filter(vari => vari.options.some(cl.id))), [])
             .map(vari => ({ ...vari, color_id: product.colors.find(cl => vari.options.includes(cl.id)).id, size_id: product.sizes.find(sz => vari.options.includes(sz.id)).id }))
 
         variants.forEach(vari =>

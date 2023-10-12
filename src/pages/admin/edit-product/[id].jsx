@@ -51,14 +51,16 @@ export default withRouter(props => {
             .then(response => response.json())
             .then(response => response.product)
             .catch(err => console.error(err))
+        console.log('product', product)
+        if (product) {
+            if (product.colors.every(cl => product.variants.filter(vari => vari.color_id === cl.id).every(variColor => variColor.price === product.variants.find(vari => vari.size_id === variColor.size_id).price)))
+                setColorsChained(product.colors.map(cl => cl.id))
 
-        if (product.colors.every(cl => product.variants.filter(vari => vari.color_id === cl.id).every(variColor => variColor.price === product.variants.find(vari => vari.size_id === variColor.size_id).price)))
-            setColorsChained(product.colors.map(cl => cl.id))
-
-        setSizesChained(product.colors.reduce((acc, cl) => ({ ...acc, [cl.id]: [] }), {}))
-        setInicialProduct(product)
-        setProduct(product)
-        setImages(product.images.reduce((acc, image) => acc[image.color_id] === undefined ? { ...acc, [image.color_id]: product.images.filter(img => img.color_id === image.color_id) } : acc, {}))
+            setSizesChained(product.colors.reduce((acc, cl) => ({ ...acc, [cl.id]: [] }), {}))
+            setInicialProduct(product)
+            setProduct(product)
+            setImages(product.images.reduce((acc, image) => acc[image.color_id] === undefined ? { ...acc, [image.color_id]: product.images.filter(img => img.color_id === image.color_id) } : acc, {}))
+        }
     }
 
     function handleSelectedColor(value, i) {
@@ -246,6 +248,7 @@ export default withRouter(props => {
 
         const newProduct = {
             ...product,
+            variants: product.colors.reduce((acc, cl) => acc.concat(product.variants.filter(vari => vari.color_id === cl.id)), []),
             min_price: product.variants.reduce((acc, vari) => acc < vari.price ? acc : vari.price, product.variants[0].price),
             images: product.colors.reduce((acc, color) => acc.concat(images[color.id].map(img => ({ src: img.src, color_id: img.color_id, variants_id: img.variants_id }))), []),
         }
@@ -452,7 +455,7 @@ export default withRouter(props => {
                                             </div>
                                         </div>
                                     }
-                                    {sizesChained[product.colors[colorIndex].id] &&
+                                    {sizesChained[product.colors[colorIndex]?.id] &&
                                         <div className='flex column' style={{ gap: '1rem' }}>
                                             <div
                                                 className='flex center column fillWidth'

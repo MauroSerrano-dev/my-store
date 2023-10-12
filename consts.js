@@ -1917,26 +1917,26 @@ export const TYPES_POOL = [
         ],
         colors: [
             {
-                id: 1792,
-                title: "Green/White",
-                colors: [
-                    "#026539",
-                    "#FFFFFF"
-                ]
-            },
-            {
-                id: 1795,
-                title: "Navy/White",
-                colors: [
-                    "#1A1F35",
-                    "#FFFFFF"
-                ]
-            },
-            {
                 id: 1535,
                 title: "Asphalt/White",
                 colors: [
                     "#525455",
+                    "#FFFFFF"
+                ]
+            },
+            {
+                id: 1062,
+                title: "Black/White",
+                colors: [
+                    "#000000",
+                    "#FFFFFF"
+                ]
+            },
+            {
+                id: 1792,
+                title: "Green/White",
+                colors: [
+                    "#026539",
                     "#FFFFFF"
                 ]
             },
@@ -1957,6 +1957,14 @@ export const TYPES_POOL = [
                 ]
             },
             {
+                id: 1795,
+                title: "Navy/White",
+                colors: [
+                    "#1A1F35",
+                    "#FFFFFF"
+                ]
+            },
+            {
                 id: 1750,
                 title: "White/Black",
                 colors: [
@@ -1964,14 +1972,6 @@ export const TYPES_POOL = [
                     "#000000"
                 ]
             },
-            {
-                id: 1062,
-                title: "Black/White",
-                colors: [
-                    "#000000",
-                    "#FFFFFF"
-                ]
-            }
         ],
         sizes: [
             {
