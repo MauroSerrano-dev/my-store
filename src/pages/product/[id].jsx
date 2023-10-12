@@ -108,7 +108,7 @@ export default withRouter(props => {
 
         const newCart = cart.some(prod => prod.id === product.id && prod.variant_id === prodVariant.id)
             ? cart.map(p => p.id === product.id && p.variant_id === prodVariant.id
-                ? ({ ...p, quantity: p.quantity + prodVariant.quantity })
+                ? ({ ...p, quantity: p.quantity + 1 })
                 : p
             )
             : cart.concat(productCart)
