@@ -61,7 +61,6 @@ export default function Carousel(props) {
                             key={i}
                             style={{
                                 pointerEvents: isDragging ? 'none' : 'auto',
-                                willChange: 'transform',
                             }}
                         >
                             {item}

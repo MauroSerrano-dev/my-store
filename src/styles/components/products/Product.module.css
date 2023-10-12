@@ -183,7 +183,7 @@
         cursor: pointer;
     }
 
-    .container:hover .imgHoverContainer {
+    .linkContainer:hover .imgHoverContainer {
         opacity: 1;
     }
 
