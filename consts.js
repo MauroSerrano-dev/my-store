@@ -10,7 +10,8 @@ export const MENU_OPTIONS = [
 
 export const MENU_FORWARD_OPTIONS = {
     departments: [
-        { title: 'Kitchen', type: 'link', href: '/search?c=kitchen' },
+        { title: 'T-Shirts', type: 'link', href: '/search?c=t-shirts' },
+        { title: 'Hoodies', type: 'link', href: '/search?c=hoodies' },
     ],
     products: [
         { title: 'T-Shirts', type: 'link', href: '/search?c=t-shirts' },
