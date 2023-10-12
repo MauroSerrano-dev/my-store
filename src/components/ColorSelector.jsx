@@ -32,7 +32,7 @@ export default function ColorSelector(props) {
                         option,
                         event
                     )}
-                    option={option}
+                    color={option}
                 />
             )}
         </div>

@@ -1,5 +1,35 @@
 export const CART_COOKIE = 'CART'
 
+export const MOSTER_DIGITAL = {
+    id: 29,
+    title: 'Monster Digital',
+}
+
+export const PRINT_LOGISTIC = {
+    id: 87,
+    title: 'Print Logistic',
+}
+
+export const PRINT_CLEVER = {
+    id: 72,
+    title: 'Print Clever',
+}
+
+export const TEXTILDRUCK_EUROPA = {
+    id: 26,
+    title: 'Textildruck Europa',
+}
+
+export const PRINT_GEEK = {
+    id: 27,
+    title: 'Print Geek',
+}
+
+export const T_SHIRT_AND_SONS = {
+    id: 6,
+    title: "T Shirt and Sons"
+}
+
 export const MENU_OPTIONS = [
     { title: 'Home', type: 'link', href: '/' },
     { title: 'Departments', type: 'forward', value: 'departments' },
@@ -39,20 +69,21 @@ export const MENU_FORWARD_OPTIONS = {
 }
 
 export const TAGS_POOL = [
-    'games',
-    'hoodies',
-    't-shirts',
-    'home',
-    'pillows',
-    'socks',
     'bed',
     'computer',
-    'zombies',
-    'halloween',
-    'music',
-    'rock',
-    'guitar',
+    'games',
     'glitch',
+    'guitar',
+    'halloween',
+    'home',
+    'hoodies',
+    'music',
+    'pillows',
+    'raglan-tee',
+    'rock',
+    'socks',
+    't-shirts',
+    'zombies',
 ]
 
 export const itemsNavBar = [
@@ -70,18 +101,9 @@ export const TYPES_POOL = [
         id: 't-shirts',
         title: 'T-Shirts',
         providers: [
-            {
-                id: 29,
-                title: 'Monster Digital',
-            },
-            {
-                id: 87,
-                title: 'Print Logistic',
-            },
-            {
-                id: 72,
-                title: 'Print Clever',
-            }
+            MOSTER_DIGITAL,
+            PRINT_LOGISTIC,
+            PRINT_CLEVER
         ],
         colors: [
             { id: 521, colors: ['#ffffff'], title: 'White' },
@@ -715,18 +737,9 @@ export const TYPES_POOL = [
         id: 'hoodies',
         title: 'Hoodies',
         providers: [
-            {
-                id: 29,
-                title: 'Monster Digital',
-            },
-            {
-                id: 26,
-                title: 'Textildruck Europa',
-            },
-            {
-                id: 72,
-                title: 'Print Clever',
-            }
+            MOSTER_DIGITAL,
+            TEXTILDRUCK_EUROPA,
+            PRINT_CLEVER
         ],
         colors: [
             { id: 521, colors: ['#ffffff'], title: 'White' },
@@ -1896,6 +1909,481 @@ export const TYPES_POOL = [
         ],
     },
     {
+        id: 'raglan-tee',
+        title: 'Raglan Tees',
+        providers: [
+            PRINT_GEEK,
+            T_SHIRT_AND_SONS
+        ],
+        colors: [
+            {
+                id: 1792,
+                title: "Green/White",
+                colors: [
+                    "#026539",
+                    "#FFFFFF"
+                ]
+            },
+            {
+                id: 1795,
+                title: "Navy/White",
+                colors: [
+                    "#1A1F35",
+                    "#FFFFFF"
+                ]
+            },
+            {
+                id: 1535,
+                title: "Asphalt/White",
+                colors: [
+                    "#525455",
+                    "#FFFFFF"
+                ]
+            },
+            {
+                id: 1536,
+                title: "Red/White",
+                colors: [
+                    "#BA2326",
+                    "#FFFFFF"
+                ]
+            },
+            {
+                id: 1058,
+                title: "Royal/White",
+                colors: [
+                    "#2B4DA4",
+                    "#FFFFFF"
+                ]
+            },
+            {
+                id: 1750,
+                title: "White/Black",
+                colors: [
+                    "#FFFFFF",
+                    "#000000"
+                ]
+            },
+            {
+                id: 1062,
+                title: "Black/White",
+                colors: [
+                    "#000000",
+                    "#FFFFFF"
+                ]
+            }
+        ],
+        sizes: [
+            {
+                id: 14,
+                title: "S"
+            },
+            {
+                id: 15,
+                title: "M"
+            },
+            {
+                id: 16,
+                title: "L"
+            },
+            {
+                id: 17,
+                title: "XL"
+            },
+            {
+                id: 18,
+                title: "2XL"
+            }
+        ],
+        variants: [
+            {
+                id: 33522,
+                cost: 1782,
+                price: 2970,
+                title: "Royal/White / S",
+                grams: 110,
+                options: [
+                    1058,
+                    14
+                ],
+            },
+            {
+                id: 36255,
+                cost: 1782,
+                price: 2970,
+                title: "Asphalt/White / S",
+                grams: 110,
+                options: [
+                    1535,
+                    14
+                ],
+            },
+            {
+                id: 36256,
+                cost: 1782,
+                price: 2970,
+                title: "Red/White / S",
+                grams: 110,
+                options: [
+                    1536,
+                    14
+                ],
+            },
+            {
+                id: 33523,
+                cost: 1782,
+                price: 2970,
+                title: "Royal/White / M",
+                grams: 131,
+                options: [
+                    1058,
+                    15
+                ],
+            },
+            {
+                id: 36257,
+                cost: 1782,
+                price: 2970,
+                title: "Asphalt/White / M",
+                grams: 131,
+                options: [
+                    1535,
+                    15
+                ],
+            },
+            {
+                id: 36258,
+                cost: 1782,
+                price: 2970,
+                title: "Red/White / M",
+                grams: 131,
+                options: [
+                    1536,
+                    15
+                ],
+            },
+            {
+                id: 33524,
+                cost: 1782,
+                price: 2970,
+                title: "Royal/White / L",
+                grams: 158,
+                options: [
+                    1058,
+                    16
+                ],
+            },
+            {
+                id: 36259,
+                cost: 1782,
+                price: 2970,
+                title: "Asphalt/White / L",
+                grams: 158,
+                options: [
+                    1535,
+                    16
+                ],
+            },
+            {
+                id: 36260,
+                cost: 1782,
+                price: 2970,
+                title: "Red/White / L",
+                grams: 158,
+                options: [
+                    1536,
+                    16
+                ],
+            },
+            {
+                id: 33525,
+                cost: 1782,
+                price: 2970,
+                title: "Royal/White / XL",
+                grams: 190,
+                options: [
+                    1058,
+                    17
+                ],
+            },
+            {
+                id: 36261,
+                cost: 1782,
+                price: 2970,
+                title: "Asphalt/White / XL",
+                grams: 190,
+                options: [
+                    1535,
+                    17
+                ],
+            },
+            {
+                id: 36262,
+                cost: 1782,
+                price: 2970,
+                title: "Red/White / XL",
+                grams: 190,
+                options: [
+                    1536,
+                    17
+                ],
+            },
+            {
+                id: 33526,
+                cost: 1993,
+                price: 3322,
+                title: "Royal/White / 2XL",
+                grams: 228,
+                options: [
+                    1058,
+                    18
+                ],
+            },
+            {
+                id: 36263,
+                cost: 1993,
+                price: 3322,
+                title: "Asphalt/White / 2XL",
+                grams: 228,
+                options: [
+                    1535,
+                    18
+                ],
+            },
+            {
+                id: 36264,
+                cost: 1993,
+                price: 3322,
+                title: "Red/White / 2XL",
+                grams: 228,
+                options: [
+                    1536,
+                    18
+                ],
+            },
+            {
+                id: 39151,
+                cost: 1782,
+                price: 2970,
+                title: "White/Black / S",
+                grams: 110,
+                options: [
+                    1750,
+                    14
+                ],
+            },
+            {
+                id: 39193,
+                cost: 1782,
+                price: 2970,
+                title: "Green/White / S",
+                grams: 110,
+                options: [
+                    1792,
+                    14
+                ],
+            },
+            {
+                id: 39196,
+                cost: 1782,
+                price: 2970,
+                title: "Navy/White / S",
+                grams: 110,
+                options: [
+                    1795,
+                    14
+                ],
+            },
+            {
+                id: 39217,
+                cost: 1782,
+                price: 2970,
+                title: "Black/White / S",
+                grams: 110,
+                options: [
+                    1062,
+                    14
+                ],
+            },
+            {
+                id: 39229,
+                cost: 1782,
+                price: 2970,
+                title: "White/Black / M",
+                grams: 131,
+                options: [
+                    1750,
+                    15
+                ],
+            },
+            {
+                id: 39271,
+                cost: 1782,
+                price: 2970,
+                title: "Green/White / M",
+                grams: 131,
+                options: [
+                    1792,
+                    15
+                ],
+            },
+            {
+                id: 39274,
+                cost: 1782,
+                price: 2970,
+                title: "Navy/White / M",
+                grams: 131,
+                options: [
+                    1795,
+                    15
+                ],
+            },
+            {
+                id: 39295,
+                cost: 1782,
+                price: 2970,
+                title: "Black/White / M",
+                grams: 131,
+                options: [
+                    1062,
+                    15
+                ],
+            },
+            {
+                id: 39307,
+                cost: 1782,
+                price: 2970,
+                title: "White/Black / L",
+                grams: 158,
+                options: [
+                    1750,
+                    16
+                ],
+            },
+            {
+                id: 39349,
+                cost: 1782,
+                price: 2970,
+                title: "Green/White / L",
+                grams: 158,
+                options: [
+                    1792,
+                    16
+                ],
+            },
+            {
+                id: 39352,
+                cost: 1782,
+                price: 2970,
+                title: "Navy/White / L",
+                grams: 158,
+                options: [
+                    1795,
+                    16
+                ],
+            },
+            {
+                id: 39373,
+                cost: 1782,
+                price: 2970,
+                title: "Black/White / L",
+                grams: 158,
+                options: [
+                    1062,
+                    16
+                ],
+            },
+            {
+                id: 39385,
+                cost: 1782,
+                price: 2970,
+                title: "White/Black / XL",
+                grams: 190,
+                options: [
+                    1750,
+                    17
+                ],
+            },
+            {
+                id: 39427,
+                cost: 1782,
+                price: 2970,
+                title: "Green/White / XL",
+                grams: 190,
+                options: [
+                    1792,
+                    17
+                ],
+            },
+            {
+                id: 39430,
+                cost: 1782,
+                price: 2970,
+                title: "Navy/White / XL",
+                grams: 190,
+                options: [
+                    1795,
+                    17
+                ],
+            },
+            {
+                id: 39451,
+                cost: 1782,
+                price: 2970,
+                title: "Black/White / XL",
+                grams: 190,
+                options: [
+                    1062,
+                    17
+                ],
+            },
+            {
+                id: 39463,
+                cost: 1993,
+                price: 3322,
+                title: "White/Black / 2XL",
+                grams: 228,
+                options: [
+                    1750,
+                    18
+                ],
+            },
+            {
+                id: 39505,
+                cost: 1993,
+                price: 3322,
+                title: "Green/White / 2XL",
+                grams: 228,
+                options: [
+                    1792,
+                    18
+                ],
+            },
+            {
+                id: 39508,
+                cost: 1993,
+                price: 3322,
+                title: "Navy/White / 2XL",
+                grams: 228,
+                options: [
+                    1795,
+                    18
+                ],
+            },
+            {
+                id: 39529,
+                cost: 1993,
+                price: 3322,
+                title: "Black/White / 2XL",
+                grams: 228,
+                options: [
+                    1062,
+                    18
+                ],
+            }
+        ],
+    },
+    {
         id: 'socks',
         title: 'Socks',
         providers: [],
@@ -1914,164 +2402,158 @@ export function getShippingOptions(country) {
         case 'US':
             return {
                 't-shirts': {
-                    provider: {
-                        id: 29,
-                        title: 'Monster Digital',
-                    },
+                    provider: MOSTER_DIGITAL,
                     first_item: 475,
                     add_item: 240,
                     currency: 'usd'
                 },
                 'hoodies': {
-                    provider: {
-                        id: 29,
-                        title: 'Monster Digital',
-                    },
+                    provider: MOSTER_DIGITAL,
                     first_item: 849,
                     add_item: 209,
                     currency: 'usd'
                 },
-                'mugs_white': {
-                    provider: {
-                        id: 29,
-                        title: 'Monster Digital',
-                    },
+                'mugs-white': {
+                    provider: MOSTER_DIGITAL,
                     first_item: 849,
                     add_item: 209,
                     currency: 'usd'
                 },
-                'mugs_color': {
-                    provider: {
-                        id: 29,
-                        title: 'Monster Digital',
-                    },
+                'mugs-color': {
+                    provider: MOSTER_DIGITAL,
                     first_item: 849,
                     add_item: 209,
+                    currency: 'usd'
+                },
+                'raglan-tee': {
+                    provider: PRINT_GEEK,
+                    first_item: 849,
+                    add_item: 330,
                     currency: 'usd'
                 },
             }
         case 'CA':
             return {
                 't-shirts': {
-                    provider: {
-                        id: 29,
-                        title: 'Monster Digital',
-                    },
+                    provider: MOSTER_DIGITAL,
                     first_item: 939,
                     add_item: 439,
                     currency: 'usd'
                 },
                 'hoodies': {
-                    provider: {
-                        id: 29,
-                        title: 'Monster Digital',
-                    },
+                    provider: MOSTER_DIGITAL,
                     first_item: 1269,
                     add_item: 659,
+                    currency: 'usd'
+                },
+                'raglan-tee': {
+                    provider: PRINT_GEEK,
+                    first_item: 679,
+                    add_item: 219,
                     currency: 'usd'
                 },
             }
         case 'PL':
             return {
                 't-shirts': {
-                    provider: {
-                        id: 87,
-                        title: 'Print Logistic',
-                    },
+                    provider: PRINT_LOGISTIC,
                     first_item: 499,
                     add_item: 119,
                     currency: 'usd'
                 },
                 'hoodies': {
-                    provider: {
-                        id: 26,
-                        title: 'Textildruck Europa',
-                    },
+                    provider: TEXTILDRUCK_EUROPA,
                     first_item: 699,
                     add_item: 239,
+                    currency: 'usd'
+                },
+                'raglan-tee': {
+                    provider: T_SHIRT_AND_SONS,
+                    first_item: 749,
+                    add_item: 129,
                     currency: 'usd'
                 },
             }
         case 'EU':
             return {
                 't-shirts': {
-                    provider: {
-                        id: 87,
-                        title: 'Print Logistic',
-                    },
+                    provider: PRINT_LOGISTIC,
                     first_item: 569,
                     add_item: 199,
                     currency: 'usd'
                 },
                 'hoodies': {
-                    provider: {
-                        id: 26,
-                        title: 'Textildruck Europa',
-                    },
+                    provider: TEXTILDRUCK_EUROPA,
                     first_item: 699,
                     add_item: 239,
+                    currency: 'usd'
+                },
+                'raglan-tee': {
+                    provider: T_SHIRT_AND_SONS,
+                    first_item: 749,
+                    add_item: 129,
                     currency: 'usd'
                 },
             }
         case 'UK':
             return {
                 't-shirts': {
-                    provider: {
-                        id: 72,
-                        title: 'Print Clever',
-                    },
+                    provider: PRINT_CLEVER,
                     first_item: 429,
                     add_item: 199,
                     currency: 'usd'
                 },
                 'hoodies': {
-                    provider: {
-                        id: 72,
-                        title: 'Print Clever',
-                    },
+                    provider: PRINT_CLEVER,
                     first_item: 759,
                     add_item: 299,
+                    currency: 'usd'
+                },
+                'raglan-tee': {
+                    provider: T_SHIRT_AND_SONS,
+                    first_item: 398,
+                    add_item: 129,
                     currency: 'usd'
                 },
             }
         case 'AU':
             return {
                 't-shirts': {
-                    provider: {
-                        id: 29,
-                        title: 'Monster Digital',
-                    },
+                    provider: MOSTER_DIGITAL,
                     first_item: 1249,
                     add_item: 499,
                     currency: 'usd'
                 },
                 'hoodies': {
-                    provider: {
-                        id: 29,
-                        title: 'Monster Digital',
-                    },
+                    provider: MOSTER_DIGITAL,
                     first_item: 2199,
                     add_item: 999,
+                    currency: 'usd'
+                },
+                'raglan-tee': {
+                    provider: PRINT_GEEK,
+                    first_item: 1099,
+                    add_item: 549,
                     currency: 'usd'
                 },
             }
         default: return {
             't-shirts': {
-                provider: {
-                    id: 29,
-                    title: 'Monster Digital',
-                },
+                provider: MOSTER_DIGITAL,
                 first_item: 1000,
                 add_item: 400,
                 currency: 'usd'
             },
             'hoodies': {
-                provider: {
-                    id: 29,
-                    title: 'Monster Digital',
-                },
+                provider: MOSTER_DIGITAL,
                 first_item: 1500,
                 add_item: 1000,
+                currency: 'usd'
+            },
+            'raglan-tee': {
+                provider: PRINT_GEEK,
+                first_item: 1099,
+                add_item: 549,
                 currency: 'usd'
             },
         }

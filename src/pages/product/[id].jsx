@@ -82,8 +82,8 @@ export default withRouter(props => {
 
     function getMugType() {
         return currentColor.id === 521 //white
-            ? 'mugs_white'
-            : 'mugs_color'
+            ? 'mugs-white'
+            : 'mugs-color'
     }
 
     function handleAddToCart() {

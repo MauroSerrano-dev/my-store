@@ -241,7 +241,7 @@ export default function Product(props) {
                                         width: width * 0.13,
                                     }}
                                     selected={currentVariant.color_id === color.id}
-                                    option={color}
+                                    color={color}
                                     onChange={handleChangeColor}
                                     supportsHoverAndPointer={!isDragging && !isDraggingColors && supportsHoverAndPointer}
                                 />
