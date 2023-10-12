@@ -89,7 +89,7 @@ export default function Home(props) {
           />
         </div>
         <div className={styles.infos}>
-          <div className={styles.infosItem}>
+          {/* <div className={styles.infosItem}>
             <LocalShippingOutlinedIcon
               sx={{
                 scale: '1.3'
@@ -104,7 +104,7 @@ export default function Home(props) {
               }}
             />
             <p>Free Shipping</p>
-          </div>
+          </div> */}
         </div>
         <div
           className={styles.body}

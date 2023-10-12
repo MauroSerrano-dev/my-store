@@ -91,7 +91,7 @@ export default function ProductCart(props) {
                     height={300}
                     style={{
                         width: 'auto',
-                        height: 250,
+                        height: 'calc(var(--container-height) * 0.9)',
                     }}
                     priority
                 />
