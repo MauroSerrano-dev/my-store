@@ -1,5 +1,5 @@
 .menuContainer {
-    position: fixed;
+    position: absolute;
 
     top: 0;
 
@@ -61,7 +61,9 @@
     height: 85%;
     width: 100%;
 
-    position: relative;
+    position: absolute;
+
+    padding: 0 1rem;
 }
 
 .subTitle {
