@@ -145,11 +145,11 @@ export default withRouter(props => {
                             >
                                 <ShareButton
                                     link={`${process.env.NEXT_PUBLIC_DOMAIN}/product/${product.id}${currentColor.id !== product.colors[0].id && currentSize.id !== product.sizes[0].id
-                                        ? `?sz=${currentSize.title.toLowerCase()}&cl=${currentColor.title.replace(' ', '+').toLowerCase()}`
+                                        ? `?sz=${currentSize.title.toLowerCase()}&cl=${currentColor.title.replace('/', '+').replace(' ', '+').toLowerCase()}`
                                         : currentSize.id !== product.sizes[0].id
                                             ? `?sz=${currentSize.title.toLowerCase()}`
                                             : currentColor.id !== product.colors[0].id
-                                                ? `?cl=${currentColor.title.replace(' ', '+').toLowerCase()}`
+                                                ? `?cl=${currentColor.title.replace('/', '+').replace(' ', '+').toLowerCase()}`
                                                 : ''
                                         }`}
                                     wppMsg={`${product.title} (${currentColor.title})`}
