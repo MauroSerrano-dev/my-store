@@ -20,7 +20,9 @@ export default function ImagesSlider(props) {
 
     const [currentImgIndex, setCurrentImgIndex] = useState(0)
 
-    const [carouselAnchor, setCarouselAnchor] = useState()
+    const [carouselAnchor, setCarouselAnchor] = useState(0)
+    const [optionAnchor, setOptionAnchor] = useState(0)
+
     const [draggingOffSetTimeOut, setDraggingOffSetTimeOut] = useState()
 
     const [isDragging, setIsDragging] = useState(false)
@@ -64,6 +66,7 @@ export default function ImagesSlider(props) {
                 setCarouselAnchor(multiploMaisProximoDeXTranslate + 0.00000001) // solução temporaria
             else
                 setCarouselAnchor(multiploMaisProximoDeXTranslate)
+            ensureOptionVisible(newIndex)
             if (onChange)
                 onChange(newIndex)
             else
@@ -98,6 +101,34 @@ export default function ImagesSlider(props) {
         if (index)
             setCarouselAnchor(index * -width)
     }, [index])
+
+    function ensureOptionVisible(selectedIndex) {
+        const innerOptionsElement = innerOptionsRef.current;
+        if (innerOptionsElement) {
+            const optionElements = innerOptionsElement.children;
+            const optionElement = optionElements[selectedIndex];
+            if (optionElement) {
+                const containerRect = optionsRef.current.getBoundingClientRect()
+                const optionRect = optionElement.getBoundingClientRect()
+
+                if (optionRect.right > containerRect.right) {
+                    const computedStyle = window.getComputedStyle(innerOptionsElement)
+                    const transform = computedStyle.getPropertyValue('transform')
+                    const transformMatrix = new DOMMatrix(transform)
+                    const xTranslate = transformMatrix.m41
+                    const scrollOffset = optionRect.right - containerRect.right
+                    setOptionAnchor(-scrollOffset + xTranslate)
+                } else if (optionRect.left < containerRect.left) {
+                    const computedStyle = window.getComputedStyle(innerOptionsElement)
+                    const transform = computedStyle.getPropertyValue('transform')
+                    const transformMatrix = new DOMMatrix(transform)
+                    const xTranslate = transformMatrix.m41
+                    const scrollOffset = optionRect.left - containerRect.left
+                    setOptionAnchor(-scrollOffset + xTranslate)
+                }
+            }
+        }
+    }
 
     return (
         <div
@@ -159,6 +190,9 @@ export default function ImagesSlider(props) {
                         cursor: isDraggingOptions ? 'grabbing' : 'grab',
                     }}
                     dragConstraints={optionsRef}
+                    initial={{ x: 0 }}
+                    animate={{ x: optionAnchor }}
+                    transition={{ type: 'spring', stiffness: 120, damping: 25 }}
                     drag="x"
                     dragElastic={0.25}
                     dragTransition={{ power: supportsHoverAndPointer ? 0.07 : 0.3, timeConstant: 200 }}
