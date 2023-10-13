@@ -46,6 +46,8 @@ export default function Product(props) {
     const [currentVariant, setCurrentVariant] = useState(product.variants[0])
     const [isDraggingColors, setIsDraggingColors] = useState(false)
 
+    const [antVisualBug, setAntVisualBug] = useState(false)
+
     const scrollColorsActive = product.colors.length > 6
 
     function handleDragColorsStart() {
@@ -53,19 +55,22 @@ export default function Product(props) {
     }
 
     function handleDragColorsEnd() {
+        setAntVisualBug(false)
         setTimeout(() => {
             setIsDraggingColors(false)
         }, 200)
     }
 
-
+    function handleColorsMouseDown() {
+        setAntVisualBug(true)
+    }
 
     const url = `/product/${product.id}${product.variants[0].id === currentVariant.id ? '' : `?cl=${product.colors.find(c => currentVariant.color_id === c.id).title.toLowerCase()}`}`
 
-    function handleChangeColor(event, option) {
+    function handleMouseUpColor(event, color) {
         event.stopPropagation()
         event.preventDefault()
-        setCurrentVariant(product.variants.find(vari => vari.color_id === option.id))
+        setCurrentVariant(product.variants.find(vari => vari.color_id === color.id))
     }
 
     function handleBottomHoverClick(event) {
@@ -235,6 +240,8 @@ export default function Product(props) {
                         dragTransition={{ power: supportsHoverAndPointer ? 0.07 : 0.3, timeConstant: 200 }}
                         onDragStart={handleDragColorsStart}
                         onDragEnd={handleDragColorsEnd}
+                        onMouseDown={handleColorsMouseDown}
+                        onTouchStart={handleColorsMouseDown}
                     >
                         {product.colors.length > 1
                             ? product.colors.map((color, i) =>
@@ -247,7 +254,7 @@ export default function Product(props) {
                                     }}
                                     selected={currentVariant.color_id === color.id}
                                     color={color}
-                                    onClick={handleChangeColor}
+                                    onMouseUp={handleMouseUpColor}
                                     supportsHoverAndPointer={!isDragging && !isDraggingColors && supportsHoverAndPointer}
                                 />
                             )
