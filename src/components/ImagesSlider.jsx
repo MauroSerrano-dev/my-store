@@ -69,7 +69,6 @@ export default function ImagesSlider(props) {
     }
 
     function handleMouseDown() {
-        setCarouselAnchor(undefined)
         setAntVisualBug(true)
     }
 
