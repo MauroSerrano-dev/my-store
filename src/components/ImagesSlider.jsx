@@ -11,6 +11,7 @@ export default function ImagesSlider(props) {
         index,
         setIndex,
         supportsHoverAndPointer,
+        select = true,
     } = props
 
     const carouselRef = useRef(null)
@@ -151,7 +152,7 @@ export default function ImagesSlider(props) {
                     dragConstraints={carouselRef}
                     initial={{ x: 0 }}
                     animate={{ x: carouselAnchor }}
-                    transition={{ type: 'spring', stiffness: 120, damping: 25 }}
+                    transition={{ type: 'spring', stiffness: select ? 1000 : 1000000, damping: select ? 200 : 1000 }}
                     drag="x"
                     dragElastic={0.25}
                     dragTransition={{ power: supportsHoverAndPointer ? 0.04 : 0.25, timeConstant: 200 }}
@@ -227,6 +228,6 @@ export default function ImagesSlider(props) {
                     )}
                 </motion.div>
             </motion.div>
-        </div>
+        </div >
     )
 }
