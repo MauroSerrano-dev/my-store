@@ -59,27 +59,30 @@ export default function ColorButton(props) {
                 }
             />
             : <button
-                onClick={event => onChange(event, color)}
+                onClick={event => { if (onClick) onClick(event, color) }}
+                onMouseUp={event => { if (onMouseUp) onMouseUp(event, color) }}
                 style={buttonStyle}
             >
-                <div className='flex' style={{ height: '100%', width: '100%' }}>
-                    <div
-                        style={{
-                            height: '100%',
-                            width: '50%',
-                            backgroundColor: color.colors[0]
-                        }}
-                    >
+                {color.colors.length > 1 &&
+                    <div className='flex' style={{ height: '100%', width: '100%' }}>
+                        <div
+                            style={{
+                                height: '100%',
+                                width: '50%',
+                                backgroundColor: color.colors[0]
+                            }}
+                        >
+                        </div>
+                        <div
+                            style={{
+                                height: '100%',
+                                width: '50%',
+                                backgroundColor: color.colors[1]
+                            }}
+                        >
+                        </div>
                     </div>
-                    <div
-                        style={{
-                            height: '100%',
-                            width: '50%',
-                            backgroundColor: color.colors[1]
-                        }}
-                    >
-                    </div>
-                </div>
+                }
             </button>
     )
 }

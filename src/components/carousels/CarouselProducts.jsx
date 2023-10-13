@@ -19,10 +19,12 @@ export default function CarouselProducts(props) {
 
     function handleDragStart() {
         setIsDragging(true)
+        document.body.style.cursor = 'grabbing'
     }
 
     function handleDragEnd() {
         setAntVisualBug(false)
+        document.body.style.cursor = 'auto'
         setTimeout(() => {
             setIsDragging(false)
         }, 200)

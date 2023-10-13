@@ -162,6 +162,7 @@ export default withRouter(props => {
                                 />
                                 {product.colors.map((color, i) =>
                                     <ImagesSlider
+                                        supportsHoverAndPointer={supportsHoverAndPointer}
                                         key={i}
                                         index={currentImgIndex}
                                         onChange={(imgIndex) => setCurrentImgIndex(imgIndex)}

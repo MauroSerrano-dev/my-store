@@ -16,12 +16,11 @@
     overflow: hidden;
 }
 
-.viewImages {
+.inner {
     display: flex;
     justify-content: flex-start;
     align-items: center;
 
-    transition: transform ease-in-out 200ms;
     height: 100%;
 }
 
@@ -34,6 +33,7 @@
 
 .imgView {
     height: 100%;
+    pointer-events: none;
 }
 
 .options {
@@ -44,7 +44,7 @@
 
     width: auto;
 
-    overflow: auto;
+    overflow: hidden;
 }
 
 .imgOptionContainer {

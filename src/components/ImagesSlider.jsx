@@ -1,5 +1,6 @@
 import styles from '@/styles/components/ImagesSlider.module.css'
-import { useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
+import { motion } from 'framer-motion';
 
 export default function ImagesSlider(props) {
     const {
@@ -8,10 +9,86 @@ export default function ImagesSlider(props) {
         width = 450,
         height = width * 10 / 9,
         index,
-        onChange
+        onChange,
+        supportsHoverAndPointer,
     } = props
 
+    const carouselRef = useRef(null)
+    const optionsRef = useRef(null)
+    const innerRef = useRef(null)
+    const innerOptionsRef = useRef(null)
+
     const [currentImgIndex, setCurrentImgIndex] = useState(0)
+
+    const [carouselAnchor, setCarouselAnchor] = useState()
+    const [draggingOffSetTimeOut, setDraggingOffSetTimeOut] = useState()
+
+    const [isDragging, setIsDragging] = useState(false)
+    const [isDraggingOptions, setIsDraggingOptions] = useState(false)
+    const [antVisualBug, setAntVisualBug] = useState(false)
+    const [antVisualBugOptions, setAntVisualBugOptions] = useState(false)
+
+    function handleDragStart() {
+        setIsDragging(true)
+        document.body.style.cursor = 'grabbing'
+        clearTimeout(draggingOffSetTimeOut)
+    }
+
+    function handleDragOptionsStart() {
+        setIsDraggingOptions(true)
+        document.body.style.cursor = 'grabbing'
+    }
+
+    function handleDragEnd() {
+
+        setAntVisualBug(false)
+        document.body.style.cursor = 'auto'
+        setIsDragging(false)
+        const timeOut = setTimeout(() => {
+            const innerElement = innerRef.current
+            const computedStyle = window.getComputedStyle(innerElement)
+            const transform = computedStyle.getPropertyValue('transform')
+            const transformMatrix = new DOMMatrix(transform)
+            const xTranslate = transformMatrix.m41
+
+            const newIndex = Math.abs(Math.round(xTranslate / width))
+
+            const multiploMaisProximoDeXTranslate = newIndex * -width
+            setCarouselAnchor(multiploMaisProximoDeXTranslate)
+            if (onChange)
+                onChange(newIndex)
+            else
+                setCurrentImgIndex(newIndex)
+        }, 400)
+        setDraggingOffSetTimeOut(timeOut)
+    }
+    function handleDragOptionsEnd() {
+        setAntVisualBugOptions(false)
+        document.body.style.cursor = 'auto'
+        setIsDraggingOptions(false)
+    }
+
+    function handleMouseDown() {
+        setCarouselAnchor(undefined)
+        setAntVisualBug(true)
+    }
+
+    function handleMouseOptionsDown() {
+        setAntVisualBugOptions(true)
+    }
+
+    function handleOptionClick(i) {
+        setCarouselAnchor(-width * i)
+        if (onChange)
+            onChange(i)
+        else
+            setCurrentImgIndex(i)
+    }
+
+    useEffect(() => {
+        if (index)
+            setCarouselAnchor(index * -width)
+    }, [index])
 
     return (
         <div
@@ -20,66 +97,93 @@ export default function ImagesSlider(props) {
                 ...style,
             }}
         >
-            <div>
-
-            </div>
-            <div
+            <motion.div
                 className={styles.view}
+                ref={carouselRef}
                 style={{
                     width: width,
                     height: height,
                 }}
             >
-                <div
-                    className={styles.viewImages}
+                <motion.div
+                    className={styles.inner}
+                    ref={innerRef}
+                    dragConstraints={carouselRef}
+                    initial={{ x: 0 }}
+                    animate={{ x: carouselAnchor }}
+                    transition={{ type: 'spring', stiffness: 120, damping: 25 }}
+                    drag="x"
+                    dragElastic={0.25}
+                    dragTransition={{ power: supportsHoverAndPointer ? 0.07 : 0.3, timeConstant: 200 }}
+                    onDragStart={handleDragStart}
+                    onDragEnd={handleDragEnd}
+                    onMouseDown={handleMouseDown}
+                    onTouchStart={handleMouseDown}
                     style={{
-                        transform: `translateX(${width * (index ? index : currentImgIndex) * (-1)}px)`
+                        cursor: isDragging ? 'grabbing' : 'grab',
                     }}
                 >
                     {images.map((img, i) =>
-                        <div
-                            className={styles.imgViewContainer}
+                        <img
                             key={i}
+                            className={styles.imgView}
+                            src={img.src}
+                        />
+                    )}
+                </motion.div>
+            </motion.div>
+            <motion.div
+                className={styles.options}
+                ref={optionsRef}
+                style={{
+                    paddingTop: width * 0.025,
+                    width: width,
+                    height: height * 0.25,
+                }}
+            >
+                <motion.div
+                    ref={innerOptionsRef}
+                    className='flex'
+                    style={{
+                        height: '100%',
+                        gap: width * 0.025,
+                        cursor: isDraggingOptions ? 'grabbing' : 'grab',
+                    }}
+                    dragConstraints={optionsRef}
+                    drag="x"
+                    dragElastic={0.25}
+                    dragTransition={{ power: supportsHoverAndPointer ? 0.07 : 0.3, timeConstant: 200 }}
+                    onDragStart={handleDragOptionsStart}
+                    onDragEnd={handleDragOptionsEnd}
+                    onMouseDown={handleMouseOptionsDown}
+                    onTouchStart={handleMouseOptionsDown}
+                >
+                    {images.map((img, i) =>
+                        <div
+                            className={styles.imgOptionContainer}
+                            key={i}
+                            onClick={() => handleOptionClick(i)}
+                            style={{
+                                pointerEvents: isDraggingOptions ? 'none' : 'auto'
+                            }}
                         >
+                            <div
+                                className={styles.optionShadow}
+                                style={{
+                                    opacity: (index ? index : currentImgIndex) === i
+                                        ? 0
+                                        : undefined
+                                }}
+                            >
+                            </div>
                             <img
-                                className={styles.imgView}
+                                className={styles.imgOption}
                                 src={img.src}
                             />
                         </div>
                     )}
-                </div>
-            </div>
-            <div
-                className={styles.options}
-                style={{
-                    gap: width * 0.025,
-                    paddingTop: width * 0.025,
-                    maxWidth: '100%',
-                    height: height * 0.23,
-                }}
-            >
-                {images.map((img, i) =>
-                    <div
-                        className={styles.imgOptionContainer}
-                        key={i}
-                        onClick={() => onChange ? onChange(i) : setCurrentImgIndex(i)}
-                    >
-                        <div
-                            className={styles.optionShadow}
-                            style={{
-                                opacity: (index ? index : currentImgIndex) === i
-                                    ? 0
-                                    : undefined
-                            }}
-                        >
-                        </div>
-                        <img
-                            className={styles.imgOption}
-                            src={img.src}
-                        />
-                    </div>
-                )}
-            </div>
-        </div >
+                </motion.div>
+            </motion.div>
+        </div>
     )
 }

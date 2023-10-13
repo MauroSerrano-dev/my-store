@@ -52,10 +52,12 @@ export default function Product(props) {
 
     function handleDragColorsStart() {
         setIsDraggingColors(true)
+        document.body.style.cursor = 'grabbing'
     }
 
     function handleDragColorsEnd() {
         setAntVisualBug(false)
+        document.body.style.cursor = 'auto'
         setTimeout(() => {
             setIsDraggingColors(false)
         }, 200)
@@ -221,6 +223,8 @@ export default function Product(props) {
                     ref={bottomHoverRef}
                     style={{
                         justifyContent: scrollColorsActive ? 'flex-start' : 'center',
+                        bottom: isDraggingColors ? '-12%' : undefined,
+                        boxShadow: isDraggingColors ? '0px 2px 4px -1px rgba(0, 0, 0, 0.2), 0px 4px 5px 0px rgba(0, 0, 0, 0.14), 0px 1px 10px 0px rgba(0, 0, 0, 0.12)' : undefined,
                     }}
                 >
                     <motion.div

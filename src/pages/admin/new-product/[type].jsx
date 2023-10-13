@@ -403,6 +403,7 @@ export default withRouter(props => {
                                     {images?.[product?.colors?.[colorIndex]?.id] &&
                                         <ImagesSlider
                                             images={images[product.colors[colorIndex].id]}
+                                            supportsHoverAndPointer={supportsHoverAndPointer}
                                         />
                                     }
                                 </div>
