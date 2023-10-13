@@ -484,6 +484,7 @@ export default function DataHandler(props) {
                         switchMenu={switchMenu}
                         menuOpen={menuOpen}
                         session={session}
+                        windowWidth={windowWidth}
                     />
                 }
             </div>

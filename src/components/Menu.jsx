@@ -13,6 +13,7 @@ export default function Menu(props) {
         switchMenu,
         menuOpen,
         session,
+        windowWidth,
     } = props
     const [optionMenu, setOptionMenu] = useState()
     const [optionMenuDelay, setOptionMenuDelay] = useState()
@@ -57,10 +58,36 @@ export default function Menu(props) {
                 }}
             >
             </motion.div>
-            <div
+            <motion.div
                 className={styles.menu}
-                style={{
-                    transition: 'all ease-in-out 350ms'
+                initial='closed'
+                animate={
+                    menuOpen
+                        ? windowWidth < 420
+                            ? 'openMobile'
+                            : 'open'
+                        : 'closed'
+                }
+                variants={{
+                    closed: {
+                        left: windowWidth < 420
+                            ? '-100%'
+                            : '-350px'
+                    },
+                    open: {
+                        left: '0px',
+                        transition: {
+                            ease: 'easeInOut',
+                            duration: 0.35,
+                        },
+                    },
+                    openMobile: {
+                        left: '0px',
+                        transition: {
+                            ease: 'easeInOut',
+                            duration: 0.35,
+                        },
+                    },
                 }}
             >
                 <div className={styles.menuHead}>
@@ -202,7 +229,7 @@ export default function Menu(props) {
                         )}
                     </motion.div>
                 }
-            </div>
+            </motion.div>
         </div >
     )
 }
