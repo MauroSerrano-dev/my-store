@@ -9,7 +9,7 @@ export default function ImagesSlider(props) {
         width = 450,
         height = width * 10 / 9,
         index,
-        onChange,
+        setIndex,
         supportsHoverAndPointer,
     } = props
 
@@ -67,8 +67,8 @@ export default function ImagesSlider(props) {
             else
                 setCarouselAnchor(multiploMaisProximoDeXTranslate)
             ensureOptionVisible(newIndex)
-            if (onChange)
-                onChange(newIndex)
+            if (setIndex)
+                setIndex(newIndex)
             else
                 setCurrentImgIndex(newIndex)
             setSlideMoving(false)
@@ -91,15 +91,15 @@ export default function ImagesSlider(props) {
 
     function handleOptionClick(i) {
         setCarouselAnchor(-width * i)
-        if (onChange)
-            onChange(i)
+        if (setIndex)
+            setIndex(i)
         else
             setCurrentImgIndex(i)
     }
 
     useEffect(() => {
-        if (index)
-            setCarouselAnchor(index * -width)
+        if (index !== undefined)
+            setCarouselAnchor(-width * index)
     }, [index])
 
     function ensureOptionVisible(selectedIndex) {

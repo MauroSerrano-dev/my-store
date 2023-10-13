@@ -165,7 +165,7 @@ export default withRouter(props => {
                                         supportsHoverAndPointer={supportsHoverAndPointer}
                                         key={i}
                                         index={currentImgIndex}
-                                        onChange={(imgIndex) => setCurrentImgIndex(imgIndex)}
+                                        setIndex={index => setCurrentImgIndex(index)}
                                         width={windowWidth > 1074 ? 450 : windowWidth > 549 ? 450 : windowWidth}
                                         images={product.images.filter(img => img.color_id === color.id)}
                                         style={{
