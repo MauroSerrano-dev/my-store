@@ -24,14 +24,19 @@ export default function ImagesSlider(props) {
     const [draggingOffSetTimeOut, setDraggingOffSetTimeOut] = useState()
 
     const [isDragging, setIsDragging] = useState(false)
+    const [slideMoving, setSlideMoving] = useState(false)
     const [isDraggingOptions, setIsDraggingOptions] = useState(false)
     const [antVisualBug, setAntVisualBug] = useState(false)
     const [antVisualBugOptions, setAntVisualBugOptions] = useState(false)
 
     function handleDragStart() {
         setIsDragging(true)
+        setSlideMoving(true)
         document.body.style.cursor = 'grabbing'
-        clearTimeout(draggingOffSetTimeOut)
+        if (slideMoving) {
+            console.log('clearTime')
+            clearTimeout(draggingOffSetTimeOut)
+        }
     }
 
     function handleDragOptionsStart() {
@@ -40,10 +45,10 @@ export default function ImagesSlider(props) {
     }
 
     function handleDragEnd() {
-
         setAntVisualBug(false)
         document.body.style.cursor = 'auto'
         setIsDragging(false)
+
         const timeOut = setTimeout(() => {
             const innerElement = innerRef.current
             const computedStyle = window.getComputedStyle(innerElement)
@@ -54,11 +59,16 @@ export default function ImagesSlider(props) {
             const newIndex = Math.abs(Math.round(xTranslate / width))
 
             const multiploMaisProximoDeXTranslate = newIndex * -width
-            setCarouselAnchor(multiploMaisProximoDeXTranslate)
+
+            if (multiploMaisProximoDeXTranslate === carouselAnchor)
+                setCarouselAnchor(multiploMaisProximoDeXTranslate + 0.00000001) // solução temporaria
+            else
+                setCarouselAnchor(multiploMaisProximoDeXTranslate)
             if (onChange)
                 onChange(newIndex)
             else
                 setCurrentImgIndex(newIndex)
+            setSlideMoving(false)
         }, 200)
         setDraggingOffSetTimeOut(timeOut)
     }
