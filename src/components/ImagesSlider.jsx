@@ -154,7 +154,7 @@ export default function ImagesSlider(props) {
                     transition={{ type: 'spring', stiffness: 120, damping: 25 }}
                     drag="x"
                     dragElastic={0.25}
-                    dragTransition={{ power: supportsHoverAndPointer ? 0.04 : 0.2, timeConstant: 200 }}
+                    dragTransition={{ power: supportsHoverAndPointer ? 0.04 : 0.25, timeConstant: 200 }}
                     onDragStart={handleDragStart}
                     onDragEnd={handleDragEnd}
                     onMouseDown={handleMouseDown}
