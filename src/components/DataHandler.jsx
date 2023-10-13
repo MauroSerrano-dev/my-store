@@ -7,7 +7,6 @@ import { initializeApp } from 'firebase/app';
 import { firebaseConfig } from '../../firebase.config';
 import { CART_COOKIE } from '../../consts';
 import SearchBar from './SearchBar';
-import { useCycle } from "framer-motion";
 import Menu from './Menu';
 import { motion } from 'framer-motion';
 
@@ -32,7 +31,8 @@ export default function DataHandler(props) {
     const [search, setSearch] = useState('')
     const [productOptions, setProductOptions] = useState([])
     const [supportsHoverAndPointer, setSupportsHoverAndPointer] = useState()
-    const [menuOpen, switchMenu] = useCycle(false, true);
+    const [menuOpen, setMenuOpen] = useState(false)
+    const [showMenu, setShowMenu] = useState(false)
 
     // Inicialize o Firebase
     const firebaseApp = initializeApp(firebaseConfig)
@@ -48,6 +48,16 @@ export default function DataHandler(props) {
         if (cart)
             updateCart()
     }, [cart])
+
+    function switchMenu() {
+        setMenuOpen(prev => {
+            if (!prev)
+                setShowMenu(true)
+            else
+                setTimeout(() => setShowMenu(false), 350)
+            return !prev
+        })
+    }
 
     function getInicialCart() {
         if (session) {
@@ -469,6 +479,13 @@ export default function DataHandler(props) {
                     windowWidth={windowWidth}
                     router={router}
                 />
+                {showMenu &&
+                    <Menu
+                        switchMenu={switchMenu}
+                        menuOpen={menuOpen}
+                        session={session}
+                    />
+                }
             </div>
             {
                 showIntroduction &&
@@ -481,11 +498,6 @@ export default function DataHandler(props) {
                     </h1>
                 </div>
             }
-            <Menu
-                switchMenu={switchMenu}
-                menuOpen={menuOpen}
-                session={session}
-            />
         </motion.div>
     )
 }
