@@ -25,7 +25,7 @@ export default function ColorSelector(props) {
                     key={i}
                     supportsHoverAndPointer={supportsHoverAndPointer}
                     selected={value.some(color => option.id === color?.id)}
-                    onChange={(event) => onChange(value.some(color => option.id === color?.id)
+                    onClick={(event) => onChange(value.some(color => option.id === color?.id)
                         ? value.filter(color => option.id !== color?.id)
                         : value.concat(option),
                         i,

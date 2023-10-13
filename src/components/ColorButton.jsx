@@ -2,7 +2,7 @@ import MyTooltip from './MyTooltip';
 
 export default function ColorButton(props) {
     const {
-        onChange,
+        onClick,
         selected,
         style,
         color,
@@ -30,7 +30,7 @@ export default function ColorButton(props) {
                 titleColor='#ffffff'
                 content={
                     <button
-                        onClick={event => onChange(event, color)}
+                        onClick={event => onClick(event, color)}
                         style={buttonStyle}
                     >
                         {color.colors.length > 1 &&

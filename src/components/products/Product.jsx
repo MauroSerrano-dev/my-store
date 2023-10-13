@@ -53,12 +53,17 @@ export default function Product(props) {
     }
 
     function handleDragColorsEnd() {
-        setIsDraggingColors(false)
+        setTimeout(() => {
+            setIsDraggingColors(false)
+        }, 200)
     }
+
+
 
     const url = `/product/${product.id}${product.variants[0].id === currentVariant.id ? '' : `?cl=${product.colors.find(c => currentVariant.color_id === c.id).title.toLowerCase()}`}`
 
     function handleChangeColor(event, option) {
+        console.log('handleChangeColor')
         event.stopPropagation()
         event.preventDefault()
         setCurrentVariant(product.variants.find(vari => vari.color_id === option.id))
@@ -236,7 +241,6 @@ export default function Product(props) {
                             ? product.colors.map((color, i) =>
                                 <ColorButton
                                     key={i}
-                                    index={i}
                                     style={{
                                         height: width * 0.13,
                                         width: width * 0.13,
@@ -244,7 +248,7 @@ export default function Product(props) {
                                     }}
                                     selected={currentVariant.color_id === color.id}
                                     color={color}
-                                    onChange={handleChangeColor}
+                                    onClick={handleChangeColor}
                                     supportsHoverAndPointer={!isDragging && !isDraggingColors && supportsHoverAndPointer}
                                 />
                             )
