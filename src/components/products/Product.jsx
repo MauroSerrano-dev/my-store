@@ -63,7 +63,6 @@ export default function Product(props) {
     const url = `/product/${product.id}${product.variants[0].id === currentVariant.id ? '' : `?cl=${product.colors.find(c => currentVariant.color_id === c.id).title.toLowerCase()}`}`
 
     function handleChangeColor(event, option) {
-        console.log('handleChangeColor')
         event.stopPropagation()
         event.preventDefault()
         setCurrentVariant(product.variants.find(vari => vari.color_id === option.id))
