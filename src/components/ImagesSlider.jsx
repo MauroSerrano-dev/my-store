@@ -59,7 +59,7 @@ export default function ImagesSlider(props) {
                 onChange(newIndex)
             else
                 setCurrentImgIndex(newIndex)
-        }, 400)
+        }, 200)
         setDraggingOffSetTimeOut(timeOut)
     }
     function handleDragOptionsEnd() {
