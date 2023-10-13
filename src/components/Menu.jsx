@@ -36,18 +36,27 @@ export default function Menu(props) {
         <div
             className={styles.menuContainer}
         >
-            <div
+            <motion.div
                 className={styles.menuBackground}
                 onClick={handleCloseMenu}
                 style={{
                     backgroundColor: 'rgba(0, 0, 0, 0.5)',
                     backdropFilter: 'blur(2px)',
-                    opacity: menuOpen ? 1 : 0,
                     transition: 'opacity ease-in-out 350ms',
                     pointerEvents: menuOpen ? 'auto' : 'none',
                 }}
+                initial='hidden'
+                animate={menuOpen ? 'visible' : 'hidden'}
+                variants={{
+                    hidden: {
+                        opacity: 0,
+                    },
+                    visible: {
+                        opacity: 1,
+                    }
+                }}
             >
-            </div>
+            </motion.div>
             <div
                 className={styles.menu}
                 style={{
