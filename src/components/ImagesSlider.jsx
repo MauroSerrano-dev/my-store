@@ -77,8 +77,8 @@ export default function ImagesSlider(props) {
     }
     function handleDragOptionsEnd() {
         setAntVisualBugOptions(false)
-        document.body.style.cursor = 'auto'
         setIsDraggingOptions(false)
+        document.body.style.cursor = 'auto'
     }
 
     function handleMouseDown() {
@@ -207,7 +207,7 @@ export default function ImagesSlider(props) {
                             key={i}
                             onClick={() => handleOptionClick(i)}
                             style={{
-                                pointerEvents: isDraggingOptions ? 'none' : 'auto'
+                                pointerEvents: isDraggingOptions && supportsHoverAndPointer ? 'none' : 'auto'
                             }}
                         >
                             <div
