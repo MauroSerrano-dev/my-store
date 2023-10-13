@@ -6,6 +6,7 @@ export default function ColorSelector(props) {
         onChange,
         value = [],
         style,
+        styleButton,
         supportsHoverAndPointer,
     } = props
 
@@ -33,6 +34,9 @@ export default function ColorSelector(props) {
                         event
                     )}
                     color={option}
+                    style={{
+                        ...styleButton
+                    }}
                 />
             )}
         </div>

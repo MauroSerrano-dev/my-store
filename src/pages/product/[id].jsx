@@ -217,6 +217,10 @@ export default withRouter(props => {
                                     value={[currentColor]}
                                     onChange={handleColorChange}
                                     supportsHoverAndPointer={supportsHoverAndPointer}
+                                    styleButton={{
+                                        height: mobile ? 35 : 40,
+                                        width: mobile ? 35 : 40,
+                                    }}
                                 />
                             </div>
                             <div>

@@ -154,12 +154,17 @@
         padding-top: 1.5rem;
         width: 100%;
         max-width: 400px;
+        padding-top: 1rem;
+        padding-right: 1rem;
+        padding-bottom: 0;
+        padding-left: 1rem;
     }
 }
 
 /* Mobile */
 @media (max-width: 550px) {
-    .right {
-        max-width: 300px;
+    .productContainer {
+        padding-right: 3%;
+        padding-left: 3%;
     }
 }
