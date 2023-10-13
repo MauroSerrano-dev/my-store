@@ -206,7 +206,6 @@ export default function ImagesSlider(props) {
                             className={styles.imgOptionContainer}
                             key={i}
                             onClick={() => handleOptionClick(i)}
-                            onTouchStart={() => handleOptionClick(i)}
                             style={{
                                 pointerEvents: isDraggingOptions ? 'none' : 'auto'
                             }}

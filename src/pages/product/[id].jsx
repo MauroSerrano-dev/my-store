@@ -166,7 +166,7 @@ export default withRouter(props => {
                                         key={i}
                                         index={currentImgIndex}
                                         onChange={(imgIndex) => setCurrentImgIndex(imgIndex)}
-                                        width={windowWidth > 1074 ? 450 : windowWidth > 549 ? 450 : 350}
+                                        width={windowWidth > 1074 ? 450 : windowWidth > 549 ? 450 : windowWidth}
                                         images={product.images.filter(img => img.color_id === color.id)}
                                         style={{
                                             position: i === 0 ? 'relative' : 'absolute',
