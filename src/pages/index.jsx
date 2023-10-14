@@ -116,7 +116,9 @@ export default function Home(props) {
             <div
               className={styles.carousel}
               style={{
-                marginBottom: '2rem',
+                marginBottom: windowWidth < 420
+                  ? '0.5rem'
+                  : '2rem',
               }}
             >
               <Carousel
@@ -126,12 +128,27 @@ export default function Home(props) {
                       className={styles.categoryItem}
                       href={cat.url}
                       draggable={false}
+                      style={{
+                        width: windowWidth < 420
+                          ? 130
+                          : 200,
+                        height: windowWidth < 420
+                          ? 84.5
+                          : 130,
+                      }}
                     >
                       <div
                         className={styles.categoryShadow}
                       >
                       </div>
-                      <span className={styles.itemTitle}>
+                      <span
+                        className={styles.itemTitle}
+                        style={{
+                          fontSize: windowWidth < 420
+                            ? 17
+                            : 20,
+                        }}
+                      >
                         {cat.title}
                       </span>
                       <img
@@ -142,11 +159,17 @@ export default function Home(props) {
                   )
                 }
                 itemStyle={{
-                  height: 130
+                  height: windowWidth < 420
+                    ? 84.5
+                    : 130
                 }}
                 skeletonStyle={{
-                  width: 200,
-                  height: 130,
+                  width: windowWidth < 420
+                    ? 130
+                    : 200,
+                  height: windowWidth < 420
+                    ? 84.5
+                    : 130,
                 }}
               />
             </div>
