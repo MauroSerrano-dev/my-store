@@ -24,7 +24,7 @@ export default function Product(props) {
         userCurrency,
         width = 225,
         supportsHoverAndPointer,
-        isDragging,
+        isDragging = false,
         product,
         motionVariants = {
             hidden: {
@@ -48,7 +48,13 @@ export default function Product(props) {
 
     const [antVisualBug, setAntVisualBug] = useState(false)
 
-    const scrollColorsActive = product.colors.length > 6
+    const [hover, setHover] = useState(false)
+    const [showButtomHover, setShowButtomHover] = useState(false)
+
+    const colorButtonSize = width * 0.13
+    const colorsButtonsGap = width * 0.031
+
+    const scrollColorsActive = (colorButtonSize + colorsButtonsGap) * product.colors.length > width
 
     function handleDragColorsStart() {
         setIsDraggingColors(true)
@@ -80,12 +86,22 @@ export default function Product(props) {
         event.preventDefault()
     }
 
+    useEffect(() => {
+        if (!hover && !isDraggingColors) {
+            setTimeout(() => {
+                setShowButtomHover(false)
+            }, 200)
+        }
+        else
+            setShowButtomHover(true)
+    }, [hover, isDraggingColors])
+
     return (
         <motion.div
             className={styles.container}
-            variants={motionVariants}
             initial='hidden'
             animate='visible'
+            variants={motionVariants}
             ref={productRef}
             style={{
                 height: width * 1.575,
@@ -94,6 +110,8 @@ export default function Product(props) {
                 textDecoration: 'none',
                 ...style
             }}
+            onMouseEnter={() => setHover(true)}
+            onMouseLeave={() => setHover(false)}
         >
             <Link
                 href={url}
@@ -216,22 +234,31 @@ export default function Product(props) {
                     </div>
                 </div>
             </Link>
-            {supportsHoverAndPointer &&
-                <div
+            {supportsHoverAndPointer && showButtomHover &&
+                <motion.div
                     onClick={handleBottomHoverClick}
                     className={styles.bottomHover}
                     ref={bottomHoverRef}
+                    initial='hidden'
+                    animate={!isDragging && (hover || (isDraggingColors && scrollColorsActive)) ? 'visible' : 'hidden'}
+                    variants={{
+                        hidden: {
+                            bottom: 0,
+                        },
+                        visible: {
+                            bottom: '-12%',
+                            boxShadow: '0px 2px 4px -1px rgba(0, 0, 0, 0.2), 0px 4px 5px 0px rgba(0, 0, 0, 0.14), 0px 1px 10px 0px rgba(0, 0, 0, 0.12)'
+                        }
+                    }}
                     style={{
                         justifyContent: scrollColorsActive ? 'flex-start' : 'center',
-                        bottom: isDraggingColors ? '-12%' : undefined,
-                        boxShadow: isDraggingColors ? '0px 2px 4px -1px rgba(0, 0, 0, 0.2), 0px 4px 5px 0px rgba(0, 0, 0, 0.14), 0px 1px 10px 0px rgba(0, 0, 0, 0.12)' : undefined,
                     }}
                 >
                     <motion.div
                         className='flex row align-end justify-center'
                         style={{
                             height: '100%',
-                            gap: width * 0.031,
+                            gap: colorsButtonsGap,
                             paddingBottom: width * 0.035,
                             paddingLeft: width * 0.02,
                             paddingRight: width * 0.02,
@@ -252,8 +279,8 @@ export default function Product(props) {
                                 <ColorButton
                                     key={i}
                                     style={{
-                                        height: width * 0.13,
-                                        width: width * 0.13,
+                                        height: colorButtonSize,
+                                        width: colorButtonSize,
                                         pointerEvents: isDraggingColors ? 'none' : 'auto',
                                     }}
                                     selected={currentVariant.color_id === color.id}
@@ -264,6 +291,7 @@ export default function Product(props) {
                             )
                             : <Link
                                 href={url}
+                                draggable={false}
                                 style={{
                                     width: width * 0.7,
                                 }}
@@ -283,7 +311,7 @@ export default function Product(props) {
                             </Link>
                         }
                     </motion.div>
-                </div>
+                </motion.div>
             }
         </motion.div>
     )
