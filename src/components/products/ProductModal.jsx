@@ -67,6 +67,7 @@ export default function ProductModal(props) {
                     }`}
             >
                 <Image
+                    quality={100}
                     src={product.image}
                     alt={product.title}
                     width={108 * 0.9}

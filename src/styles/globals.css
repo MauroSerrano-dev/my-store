@@ -219,6 +219,10 @@ body::-webkit-scrollbar-track {
   user-select: none;
 }
 
+.pointer-events-none {
+  pointer-events: none;
+}
+
 .buttonInvisible {
   background-color: transparent;
   border: none;

@@ -15,20 +15,17 @@
 }
 
 .banner {
+  position: relative;
   display: flex;
-  align-items: center;
-  justify-content: center;
-
-  width: 100%;
-  height: auto;
+  align-items: flex-start;
+  justify-content: flex-start;
 
   overflow: hidden;
-}
 
-.banner img {
-  height: 44vw;
-  max-height: 450px;
-  min-height: 100px;
+  height: 380px;
+  width: 100%;
+
+  transition: all ease-in-out 200ms;
 }
 
 .infos {
@@ -70,11 +67,9 @@
 }
 
 .categoryItemImg {
+  position: relative;
   height: 100%;
   width: 100%;
-
-  object-fit: cover;
-  object-position: center;
 
   pointer-events: none;
   transition: all ease-in-out 200ms;
@@ -135,14 +130,23 @@
 
 @media (prefers-reduced-motion) {}
 
+
+/* Tablet and Smaller Desktop */
+@media (min-width: 701px) and (max-width: 1120px) {
+  .banner {
+    height: 270px;
+  }
+}
+
 /* Mobile */
 @media (max-width: 700px) {
   .carouselTitle {
     font-size: 18px;
   }
-}
 
-/* Tablet and Smaller Desktop */
-@media (min-width: 701px) and (max-width: 1120px) {}
+  .banner {
+    height: 150px;
+  }
+}
 
 @media (prefers-color-scheme: dark) {}

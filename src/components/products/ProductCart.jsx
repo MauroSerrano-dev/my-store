@@ -85,6 +85,7 @@ export default function ProductCart(props) {
                     }`}
             >
                 <Image
+                    quality={100}
                     src={product.image}
                     alt={product.title}
                     width={270}

@@ -8,16 +8,17 @@ import Head from 'next/head'
 import CarouselProducts from '@/components/carousels/CarouselProducts'
 import Carousel from '@/components/carousels/Carousel'
 import Link from 'next/link'
+import Image from 'next/image'
 
 const inter = Inter({ subsets: ['latin'] })
 
 const categories = [
-  { id: 'games', title: 'Games', url: '/search?t=games', img: 'https://media.istockphoto.com/id/1320799591/pt/vetorial/game-on-neon-game-controller-or-joystick-for-game-console-on-blue-background.jpg?s=612x612&w=0&k=20&c=B6TK6N2MRoM434nt5SXX-bVLfYVw9odAeVLBAtI3Muc=' },
-  { id: 't-shirts', title: 'T-Shirts', url: '/search?t=t-shirts', img: 'https://99designs-blog.imgix.net/blog/wp-content/uploads/2016/12/Featured.jpg?auto=format&q=60&w=1200&h=675&fit=crop&crop=faces' },
-  { id: 'home', title: 'Home', url: '/search?t=home', img: 'https://cdnm.westwing.com.br/glossary/uploads/br/2015/08/17191529/edredom-geek-para-quarto-pinterest-c-a7035.jpg' },
-  { id: 'mugs', title: 'Mugs', url: '/search?t=mugs', img: 'https://www.tasteofhome.com/wp-content/uploads/2023/04/11-Funny-Coffee-Mugs-for-a-Laugh-Each-Morning1_social_via-amazon.com_.jpg' },
-  { id: 'christmas', title: 'Christmas', url: '/search?t=christmas', img: 'https://cf.ltkcdn.net/christmas/images/orig/274931-2131x1407-christmas-ornament.jpg' },
-  { id: 'valentines', title: 'Valentines', url: '/search?t=valentines', img: 'https://www.kirsonfuller.com/wp-content/uploads/2022/02/thequint_2022-02_6edd07c4-aeb0-4241-95dc-b53bd2524634_Happy_Valentines_Day_Wishes_Quotes_Messages_love_HD_Wallpaper_915x515.jpg' },
+  { id: 'games', title: 'Games', url: '/search?t=games', img: 'https://firebasestorage.googleapis.com/v0/b/my-store-4aef7.appspot.com/o/index%2Fgames.webp?alt=media&token=8c8ed98a-46c3-4123-8907-daf7fbfe45ff&_gl=1*cgoeh2*_ga*NjQyNzA2OTM1LjE2OTE2NjI4OTU.*_ga_CW55HF8NVT*MTY5NzI3MDYxMy4yMjUuMS4xNjk3MjcwNzEwLjQ2LjAuMA..' },
+  { id: 't-shirts', title: 'T-Shirts', url: '/search?t=t-shirts', img: 'https://firebasestorage.googleapis.com/v0/b/my-store-4aef7.appspot.com/o/index%2Ft-shirts.webp?alt=media&token=3818e9b9-4efa-4148-9041-eadb93f2f05d&_gl=1*1b2d21h*_ga*NjQyNzA2OTM1LjE2OTE2NjI4OTU.*_ga_CW55HF8NVT*MTY5NzI3MDYxMy4yMjUuMS4xNjk3MjcwNzQyLjE0LjAuMA..' },
+  { id: 'home', title: 'Home', url: '/search?t=home', img: 'https://firebasestorage.googleapis.com/v0/b/my-store-4aef7.appspot.com/o/index%2Fhome.webp?alt=media&token=ff926dca-6af3-4e67-8e5e-9df841b9f244&_gl=1*giu0b1*_ga*NjQyNzA2OTM1LjE2OTE2NjI4OTU.*_ga_CW55HF8NVT*MTY5NzI3MDYxMy4yMjUuMS4xNjk3MjcwNzIwLjM2LjAuMA..' },
+  { id: 'mugs', title: 'Mugs', url: '/search?t=mugs', img: 'https://firebasestorage.googleapis.com/v0/b/my-store-4aef7.appspot.com/o/index%2Fmugs.webp?alt=media&token=10310c77-061a-497c-9f56-f885942e2d96&_gl=1*erik64*_ga*NjQyNzA2OTM1LjE2OTE2NjI4OTU.*_ga_CW55HF8NVT*MTY5NzI3MDYxMy4yMjUuMS4xNjk3MjcwNzMxLjI1LjAuMA..' },
+  { id: 'christmas', title: 'Christmas', url: '/search?t=christmas', img: 'https://firebasestorage.googleapis.com/v0/b/my-store-4aef7.appspot.com/o/index%2Fchristmas.webp?alt=media&token=ec33c800-a6c6-497b-92bc-10c8cc8cf54d&_gl=1*yys0pf*_ga*NjQyNzA2OTM1LjE2OTE2NjI4OTU.*_ga_CW55HF8NVT*MTY5NzI3MDYxMy4yMjUuMS4xNjk3MjcwNjk4LjU4LjAuMA..' },
+  { id: 'valentines', title: 'Valentines', url: '/search?t=valentines', img: 'https://firebasestorage.googleapis.com/v0/b/my-store-4aef7.appspot.com/o/index%2Fvalentines.webp?alt=media&token=1a8ba264-3494-42ae-9099-39fe5417231e&_gl=1*zb3jw7*_ga*NjQyNzA2OTM1LjE2OTE2NjI4OTU.*_ga_CW55HF8NVT*MTY5NzI3MDYxMy4yMjUuMS4xNjk3MjcwNzYxLjYwLjAuMA..' },
 ]
 
 export default function Home(props) {
@@ -82,9 +83,17 @@ export default function Home(props) {
         <meta property="og:url" content='https://my-store-sigma-nine.vercel.app' key='og:url' />
       </Head>
       <main className={styles.main}>
-        <div className={styles.banner}>
-          <img
-            src='/banner-mock.webp'
+        <div
+          className={`${styles.banner} noSelection pointer-events-none`}
+        >
+          <Image
+            quality={100}
+            priority
+            src='https://firebasestorage.googleapis.com/v0/b/my-store-4aef7.appspot.com/o/index%2Fbanner.webp?alt=media&token=f76675f7-3377-4d55-8eae-10b97b4eaaed&_gl=1*4hdy1r*_ga*NjQyNzA2OTM1LjE2OTE2NjI4OTU.*_ga_CW55HF8NVT*MTY5NzI3MzgxMS4yMjYuMS4xNjk3MjczOTQ5LjI4LjAuMA..'
+            sizes='100%'
+            fill
+            objectFit="cover"
+            objectPosition='top'
             alt='banner'
           />
         </div>
@@ -151,10 +160,18 @@ export default function Home(props) {
                       >
                         {cat.title}
                       </span>
-                      <img
-                        src={cat.img}
+                      <div
                         className={styles.categoryItemImg}
-                      />
+                      >
+                        <Image
+                          quality={100}
+                          priority
+                          src={cat.img}
+                          sizes={`${(windowWidth < 420 ? 130 : 200) * 0.8}px`}
+                          fill
+                          alt={cat.title}
+                        />
+                      </div>
                     </Link>
                   )
                 }

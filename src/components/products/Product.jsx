@@ -11,11 +11,11 @@ import Image from 'next/image';
  * @param {object} props - Component props.
  * @param {object} props.product - Product props.
  * @param {object} props.motionVariants - Component motionVariants.
+ * @param {object} props.style - Product style.
  * @param {string} props.width - Component width.
  * @param {boolean} props.responsive - Responsive width.
  * @param {boolean} props.supportsHoverAndPointer - Device supportsHoverAndPointer.
  * @param {boolean} props.outOfStock - Product outOfStock.
- * @param {object} props.style - Product style.
  */
 
 export default function Product(props) {
@@ -39,6 +39,8 @@ export default function Product(props) {
         },
         style,
     } = props
+
+    const height = width * 10 / 9
 
     const productRef = useRef(null)
     const bottomHoverRef = useRef(null)
@@ -138,23 +140,21 @@ export default function Product(props) {
                             zIndex: 2,
                             pointerEvents: 'none',
                             width: width,
-                            height: width * 10 / 9
+                            height: height
                         }}
                     >
                         {product.colors.map((color, i) =>
                             <Image
+                                quality={100}
                                 key={i}
                                 priority={i === 0}
                                 src={product.images.filter(img => img.color_id === color.id)[product.image_hover_index].src}
-                                width={270}
-                                height={300}
+                                sizes={`${height * 2 / 3}px`}
+                                fill
                                 alt={product.title}
                                 style={{
-                                    position: i > 0 ? 'absolute' : 'relative',
                                     zIndex: currentVariant.color_id === color.id ? 3 : 2,
                                     opacity: currentVariant.color_id === color.id ? 3 : 2,
-                                    width: width,
-                                    height: 'auto',
                                 }}
                             />
                         )}
@@ -165,23 +165,21 @@ export default function Product(props) {
                     style={{
                         pointerEvents: 'none',
                         width: width,
-                        height: width * 10 / 9,
+                        height: height,
                     }}
                 >
                     {product.colors.map((color, i) =>
                         <Image
+                            quality={100}
                             key={i}
                             priority={i === 0}
                             src={product.images.filter(img => img.color_id === color.id)[product.image_showcase_index].src}
-                            width={270}
-                            height={300}
+                            fill
+                            sizes={`${height * 2 / 3}px`}
                             alt={product.title}
                             style={{
-                                position: i > 0 ? 'absolute' : 'relative',
                                 zIndex: currentVariant.color_id === color.id ? 1 : 0,
                                 opacity: currentVariant.color_id === color.id ? 1 : 0,
-                                width: width,
-                                height: 'auto',
                             }}
                         />
                     )}
