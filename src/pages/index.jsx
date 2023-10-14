@@ -92,9 +92,11 @@ export default function Home(props) {
             src='https://firebasestorage.googleapis.com/v0/b/my-store-4aef7.appspot.com/o/index%2Fbanner.webp?alt=media&token=f76675f7-3377-4d55-8eae-10b97b4eaaed&_gl=1*4hdy1r*_ga*NjQyNzA2OTM1LjE2OTE2NjI4OTU.*_ga_CW55HF8NVT*MTY5NzI3MzgxMS4yMjYuMS4xNjk3MjczOTQ5LjI4LjAuMA..'
             sizes='100%'
             fill
-            objectFit="cover"
-            objectPosition='top'
             alt='banner'
+            style={{
+              objectFit: 'cover',
+              objectPosition: 'top'
+            }}
           />
         </div>
         <div className={styles.infos}>

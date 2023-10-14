@@ -192,10 +192,9 @@ export default function DataHandler(props) {
 
     async function login(email, password) {
         try {
-            const userCredential = await signInWithEmailAndPassword(auth, email, password);
-            console.log('Usuário autenticado:', userCredential.user);
+            await signInWithEmailAndPassword(auth, email, password);
         } catch (error) {
-            console.error('Erro ao fazer login:', error);
+            console.error('Error trying to login:', error);
         }
         router.push('/')
     }
