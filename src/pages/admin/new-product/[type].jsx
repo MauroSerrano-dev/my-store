@@ -66,6 +66,11 @@ export default withRouter(props => {
     async function createProduct() {
         setDisableCreateButton(true)
 
+        if (product.colors.length === 0) {
+            showToast({ msg: 'Choose at least one color.' })
+            setDisableCreateButton(false)
+            return
+        }
         if (product.title === '') {
             showToast({ msg: 'Some fields missing.' })
             setDisableCreateButton(false)
@@ -73,7 +78,7 @@ export default withRouter(props => {
         }
 
         const variants = product.colors
-            .reduce((acc, cl) => acc.concat(product.variants.filter(vari => vari.options.some(cl.id))), [])
+            .reduce((acc, cl) => acc.concat(product.variants.filter(vari => vari.options.some(op => op === cl.id))), [])
             .map(vari => ({ ...vari, color_id: product.colors.find(cl => vari.options.includes(cl.id)).id, size_id: product.sizes.find(sz => vari.options.includes(sz.id)).id }))
 
         variants.forEach(vari =>
@@ -350,7 +355,7 @@ export default withRouter(props => {
             ? <div></div>
             : session === null || session.email !== 'mauro.serrano.dev@gmail.com'
                 ? <NoFound404 />
-                : <div className={styles.container}>
+                : <div className={styles.container} onClick={() => console.log(product)}>
                     <header>
                     </header>
                     <main className={styles.main}>
