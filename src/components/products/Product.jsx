@@ -51,6 +51,8 @@ export default function Product(props) {
     const [hover, setHover] = useState(false)
     const [showButtomHover, setShowButtomHover] = useState(false)
 
+    const [closeHoverTimeout, setCloseHoverTimeout] = useState()
+
     const colorButtonSize = width * 0.13
     const colorsButtonsGap = width * 0.031
 
@@ -88,13 +90,24 @@ export default function Product(props) {
 
     useEffect(() => {
         if (!hover && !isDraggingColors) {
-            setTimeout(() => {
+            const closeHoverTimeout = setTimeout(() => {
                 setShowButtomHover(false)
             }, 200)
+            setCloseHoverTimeout(closeHoverTimeout)
         }
         else
             setShowButtomHover(true)
     }, [hover, isDraggingColors])
+
+    function handleOnMouseEnter() {
+        setHover(true)
+        if (closeHoverTimeout)
+            clearTimeout(closeHoverTimeout)
+    }
+
+    function handleOnMouseLeave() {
+        setHover(false)
+    }
 
     return (
         <motion.div
@@ -110,8 +123,8 @@ export default function Product(props) {
                 textDecoration: 'none',
                 ...style
             }}
-            onMouseEnter={() => setHover(true)}
-            onMouseLeave={() => setHover(false)}
+            onMouseEnter={handleOnMouseEnter}
+            onMouseLeave={handleOnMouseLeave}
         >
             <Link
                 href={url}
