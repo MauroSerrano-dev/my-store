@@ -402,7 +402,9 @@ export default withRouter(props => {
                                     />
                                     {images?.[product?.colors?.[colorIndex]?.id] &&
                                         <ImagesSlider
-                                            images={images[product.colors[colorIndex].id]}
+                                            images={Object.keys(images).reduce((acc, key) => acc.concat(images[key]), [])}
+                                            currentColor={product.colors[colorIndex]}
+                                            colors={product.colors}
                                             supportsHoverAndPointer={supportsHoverAndPointer}
                                         />
                                     }

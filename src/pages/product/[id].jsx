@@ -33,7 +33,6 @@ export default withRouter(props => {
 
     const [currentColor, setCurrentColor] = useState(cl ? cl : product?.colors[0])
     const [currentSize, setCurrentSize] = useState(sz ? sz : product?.sizes[0])
-    const [currentImgIndex, setCurrentImgIndex] = useState(0)
 
     const productCurrentVariant = product?.variants.find(vari => vari.size_id === currentSize?.id && vari.color_id === currentColor?.id)
 
@@ -160,22 +159,13 @@ export default withRouter(props => {
                                         right: '3%'
                                     }}
                                 />
-                                {product.colors.map((color, i) =>
-                                    <ImagesSlider
-                                        supportsHoverAndPointer={supportsHoverAndPointer}
-                                        key={i}
-                                        index={currentImgIndex}
-                                        setIndex={index => setCurrentImgIndex(index)}
-                                        width={windowWidth > 1074 ? 450 : windowWidth > 549 ? 450 : windowWidth}
-                                        images={product.images.filter(img => img.color_id === color.id)}
-                                        select={color.id === currentColor.id}
-                                        style={{
-                                            position: i === 0 ? 'relative' : 'absolute',
-                                            zIndex: color.id === currentColor.id ? 1 : 0,
-                                            opacity: color.id === currentColor.id ? 1 : 0,
-                                        }}
-                                    />
-                                )}
+                                <ImagesSlider
+                                    images={product.images}
+                                    colors={product.colors}
+                                    currentColor={currentColor}
+                                    supportsHoverAndPointer={supportsHoverAndPointer}
+                                    width={windowWidth > 1074 ? 450 : windowWidth > 549 ? 450 : windowWidth}
+                                />
                             </div>
                         </div>
                         <div className={styles.right}>

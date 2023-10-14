@@ -17,6 +17,7 @@ import ButtonIcon from '@/components/material-ui/ButtonIcon';
 import ImagesSlider from '@/components/ImagesSlider';
 import { showToast } from '../../../../utils/toasts';
 import { getProductsDiff } from '../../../../utils';
+import Head from 'next/head';
 
 export default withRouter(props => {
 
@@ -330,14 +331,25 @@ export default withRouter(props => {
         setImages(prev => ({ ...prev, [colorId]: prev[colorId].filter((img, i) => index !== i) }))
     }
 
+    useEffect(() => {
+        if (product) {
+            product.images.forEach(image => {
+                const img = new window.Image()
+                img.src = image.src
+                img.width = 250
+                img.height = 300
+            })
+        }
+    }, [product])
+
     return (
         session === undefined
             ? <div></div>
             : session === null || session.email !== 'mauro.serrano.dev@gmail.com'
                 ? <NoFound404 />
                 : <div className={styles.container}>
-                    <header>
-                    </header>
+                    <Head>
+                    </Head>
                     <main className={styles.main}>
                         <div className={styles.top}>
                             <div className={styles.productOption}>
@@ -389,7 +401,9 @@ export default withRouter(props => {
                                     />
                                     {images?.[product?.colors?.[colorIndex]?.id] &&
                                         <ImagesSlider
-                                            images={images[product.colors[colorIndex].id]}
+                                            images={Object.keys(images).reduce((acc, key) => acc.concat(images[key]), [])}
+                                            currentColor={product.colors[colorIndex]}
+                                            colors={product.colors}
                                             supportsHoverAndPointer={supportsHoverAndPointer}
                                         />
                                     }

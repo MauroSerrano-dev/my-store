@@ -8,14 +8,14 @@ export default function ImagesSlider(props) {
         style,
         width = 450,
         height = width * 10 / 9,
-        index,
-        setIndex,
         supportsHoverAndPointer,
-        select = true,
+        colors,
+        currentColor,
     } = props
 
     const carouselRef = useRef(null)
     const optionsRef = useRef(null)
+    const optionsContainerRef = useRef(null)
     const innerRef = useRef(null)
     const innerOptionsRef = useRef(null)
 
@@ -67,12 +67,9 @@ export default function ImagesSlider(props) {
                 setCarouselAnchor(multiploMaisProximoDeXTranslate + 0.00000001) // solução temporaria
             else
                 setCarouselAnchor(multiploMaisProximoDeXTranslate)
-            ensureOptionVisible(newIndex)
-            if (setIndex)
-                setIndex(newIndex)
-            else
-                setCurrentImgIndex(newIndex)
+            setCurrentImgIndex(newIndex)
             setSlideMoving(false)
+            ensureOptionVisible(newIndex)
         }, 200)
         setDraggingOffSetTimeOut(timeOut)
     }
@@ -92,26 +89,19 @@ export default function ImagesSlider(props) {
 
     function handleOptionClick(i) {
         setCarouselAnchor(-width * i)
-        if (setIndex)
-            setIndex(i)
-        else
-            setCurrentImgIndex(i)
+        setCurrentImgIndex(i)
+        ensureOptionVisible(i)
     }
-
-    useEffect(() => {
-        if (index !== undefined)
-            setCarouselAnchor(-width * index)
-    }, [index])
 
     function ensureOptionVisible(selectedIndex) {
         const innerOptionsElement = innerOptionsRef.current;
         if (innerOptionsElement) {
-            const optionElements = innerOptionsElement.children;
-            const optionElement = optionElements[selectedIndex];
+            const optionElement = optionsContainerRef.current.children[selectedIndex];
             if (optionElement) {
                 const containerRect = optionsRef.current.getBoundingClientRect()
                 const optionRect = optionElement.getBoundingClientRect()
 
+                console.log(optionRect.right, containerRect.right)
                 if (optionRect.right > containerRect.right) {
                     const computedStyle = window.getComputedStyle(innerOptionsElement)
                     const transform = computedStyle.getPropertyValue('transform')
@@ -152,7 +142,7 @@ export default function ImagesSlider(props) {
                     dragConstraints={carouselRef}
                     initial={{ x: 0 }}
                     animate={{ x: carouselAnchor }}
-                    transition={{ type: 'spring', stiffness: select ? 1000 : 1000000, damping: select ? 200 : 1000 }}
+                    transition={{ type: 'spring', stiffness: 1000, damping: 200 }}
                     drag="x"
                     dragElastic={0.25}
                     dragTransition={{ power: supportsHoverAndPointer ? 0.04 : 0.25, timeConstant: 200 }}
@@ -164,12 +154,25 @@ export default function ImagesSlider(props) {
                         cursor: isDragging ? 'grabbing' : 'grab',
                     }}
                 >
-                    {images.map((img, i) =>
-                        <img
+                    {colors.map((cl, i) =>
+                        <div
                             key={i}
-                            className={styles.imgView}
-                            src={img.src}
-                        />
+                            style={{
+                                display: 'flex',
+                                height: '100%',
+                                position: i === 0 ? 'relative' : 'absolute',
+                                zIndex: cl.id === currentColor.id ? 1 : 0,
+                                opacity: cl.id === currentColor.id ? 1 : 0,
+                            }}
+                        >
+                            {images.filter(img => img.color_id === cl.id).map((img, j) =>
+                                <img
+                                    key={j}
+                                    className={styles.imgView}
+                                    src={img.src}
+                                />
+                            )}
+                        </div>
                     )}
                 </motion.div>
             </motion.div>
@@ -187,8 +190,8 @@ export default function ImagesSlider(props) {
                     className='flex'
                     style={{
                         height: '100%',
-                        gap: width * 0.025,
                         cursor: isDraggingOptions ? 'grabbing' : 'grab',
+                        position: 'relative',
                     }}
                     dragConstraints={optionsRef}
                     initial={{ x: 0 }}
@@ -202,28 +205,43 @@ export default function ImagesSlider(props) {
                     onMouseDown={handleMouseOptionsDown}
                     onTouchStart={handleMouseOptionsDown}
                 >
-                    {images.map((img, i) =>
+                    {colors.map((cl, i) =>
                         <div
-                            className={styles.imgOptionContainer}
+                            ref={optionsContainerRef}
                             key={i}
-                            onClick={() => handleOptionClick(i)}
                             style={{
-                                pointerEvents: isDraggingOptions ? 'none' : 'auto'
+                                display: 'flex',
+                                height: '100%',
+                                gap: width * 0.025,
+                                position: i === 0 ? 'relative' : 'absolute',
+                                zIndex: cl.id === currentColor.id ? 1 : 0,
+                                opacity: cl.id === currentColor.id ? 1 : 0,
                             }}
                         >
-                            <div
-                                className={styles.optionShadow}
-                                style={{
-                                    opacity: (index ? index : currentImgIndex) === i
-                                        ? 0
-                                        : undefined
-                                }}
-                            >
-                            </div>
-                            <img
-                                className={styles.imgOption}
-                                src={img.src}
-                            />
+                            {images.filter(img => img.color_id === currentColor.id).map((img, j) =>
+                                <div
+                                    className={styles.imgOptionContainer}
+                                    key={j}
+                                    onClick={() => handleOptionClick(j)}
+                                    style={{
+                                        pointerEvents: isDraggingOptions ? 'none' : 'auto'
+                                    }}
+                                >
+                                    <div
+                                        className={styles.optionShadow}
+                                        style={{
+                                            opacity: currentImgIndex === j
+                                                ? 0
+                                                : undefined
+                                        }}
+                                    >
+                                    </div>
+                                    <img
+                                        className={styles.imgOption}
+                                        src={img.src}
+                                    />
+                                </div>
+                            )}
                         </div>
                     )}
                 </motion.div>
