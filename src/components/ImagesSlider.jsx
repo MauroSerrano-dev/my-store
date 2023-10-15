@@ -96,6 +96,7 @@ export default function ImagesSlider(props) {
 
     function handleTouchEnd() {
         setTouches(0)
+        setIsDragging(false)
         setIsPinching(false)
     }
 
