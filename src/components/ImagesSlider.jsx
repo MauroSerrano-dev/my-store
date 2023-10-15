@@ -140,14 +140,14 @@ export default function ImagesSlider(props) {
                     dragConstraints={carouselRef}
                     initial={{ x: 0 }}
                     animate={{ x: carouselAnchor }}
-                    transition={{ type: 'spring', stiffness: 1000, damping: 200 }}
+                    transition={{ type: 'spring', stiffness: 2000, damping: 400 }}
                     drag="x"
                     dragElastic={0.25}
                     dragTransition={{ power: supportsHoverAndPointer ? 0.04 : 0.25, timeConstant: 200 }}
                     onDragStart={handleDragStart}
                     onDragEnd={handleDragEnd}
-                    onMouseDown={handleMouseDown}
-                    onTouchStart={handleMouseDown}
+                    /* onMouseDown={handleMouseDown}
+                    onTouchStart={handleMouseDown} */
                     style={{
                         cursor: isDragging ? 'grabbing' : 'grab',
                     }}
