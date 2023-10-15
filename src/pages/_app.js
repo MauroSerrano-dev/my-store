@@ -35,8 +35,7 @@ const mainTheme = createTheme({
     },
   },
   typography: {
-    fontFamily: [montserrat, 'Arial', 'sans-serif',
-    ].join(','),
+    fontFamily: 'Montserrat, Arial, sans-serif',
   },
 })
 

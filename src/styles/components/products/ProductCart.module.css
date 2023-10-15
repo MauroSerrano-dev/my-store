@@ -66,11 +66,13 @@
     padding-top: 30px;
 }
 
-.rightRight h2 {
+.price {
     font-size: 21px;
+    font-weight: 600;
+    color: var(--primary);
 }
 
-.rightRight p {
+.rightP {
     font-size: 13px;
     color: #c2c2c2;
 }
@@ -175,11 +177,11 @@
         width: 64px;
     }
 
-    .rightRight h2 {
+    .price {
         font-size: 17px;
     }
 
-    .rightRight p {
+    .rightP {
         font-size: 11px;
         color: #c2c2c2;
     }

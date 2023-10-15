@@ -195,7 +195,7 @@ export default withRouter(props => {
                                     style={{
                                         fontSize: '27px',
                                         color: 'var(--primary)',
-                                        fontWeight: '700',
+                                        fontWeight: '600',
                                     }}
                                 >
                                     {productPrice}

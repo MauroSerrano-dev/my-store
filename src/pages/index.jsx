@@ -1,7 +1,5 @@
 import styles from '@/styles/pages/index.module.css'
 import { useEffect, useState } from 'react'
-import Inventory2OutlinedIcon from '@mui/icons-material/Inventory2Outlined'
-import LocalShippingOutlinedIcon from '@mui/icons-material/LocalShippingOutlined'
 import Footer from '@/components/Footer'
 import Head from 'next/head'
 import CarouselProducts from '@/components/carousels/CarouselProducts'
@@ -12,6 +10,7 @@ import Image from 'next/image'
 const categories = [
   { id: 'games', title: 'Games', url: '/search?t=games', img: 'https://firebasestorage.googleapis.com/v0/b/my-store-4aef7.appspot.com/o/index%2Fgames.webp?alt=media&token=8c8ed98a-46c3-4123-8907-daf7fbfe45ff&_gl=1*cgoeh2*_ga*NjQyNzA2OTM1LjE2OTE2NjI4OTU.*_ga_CW55HF8NVT*MTY5NzI3MDYxMy4yMjUuMS4xNjk3MjcwNzEwLjQ2LjAuMA..' },
   { id: 't-shirts', title: 'T-Shirts', url: '/search?t=t-shirts', img: 'https://firebasestorage.googleapis.com/v0/b/my-store-4aef7.appspot.com/o/index%2Ft-shirts.webp?alt=media&token=3818e9b9-4efa-4148-9041-eadb93f2f05d&_gl=1*1b2d21h*_ga*NjQyNzA2OTM1LjE2OTE2NjI4OTU.*_ga_CW55HF8NVT*MTY5NzI3MDYxMy4yMjUuMS4xNjk3MjcwNzQyLjE0LjAuMA..' },
+  { id: 'music', title: 'Music', url: '/search?t=music', img: 'https://firebasestorage.googleapis.com/v0/b/my-store-4aef7.appspot.com/o/index%2Fmusic.webp?alt=media&token=e6a0a6cd-3f03-4db5-88c8-6924ba4c1f5f&_gl=1*4fn6cj*_ga*NjQyNzA2OTM1LjE2OTE2NjI4OTU.*_ga_CW55HF8NVT*MTY5NzM1MjU4Mi4yMzQuMS4xNjk3MzUzNzI0LjUzLjAuMA..' },
   { id: 'home', title: 'Home', url: '/search?t=home', img: 'https://firebasestorage.googleapis.com/v0/b/my-store-4aef7.appspot.com/o/index%2Fhome.webp?alt=media&token=ff926dca-6af3-4e67-8e5e-9df841b9f244&_gl=1*giu0b1*_ga*NjQyNzA2OTM1LjE2OTE2NjI4OTU.*_ga_CW55HF8NVT*MTY5NzI3MDYxMy4yMjUuMS4xNjk3MjcwNzIwLjM2LjAuMA..' },
   { id: 'mugs', title: 'Mugs', url: '/search?t=mugs', img: 'https://firebasestorage.googleapis.com/v0/b/my-store-4aef7.appspot.com/o/index%2Fmugs.webp?alt=media&token=10310c77-061a-497c-9f56-f885942e2d96&_gl=1*erik64*_ga*NjQyNzA2OTM1LjE2OTE2NjI4OTU.*_ga_CW55HF8NVT*MTY5NzI3MDYxMy4yMjUuMS4xNjk3MjcwNzMxLjI1LjAuMA..' },
   { id: 'christmas', title: 'Christmas', url: '/search?t=christmas', img: 'https://firebasestorage.googleapis.com/v0/b/my-store-4aef7.appspot.com/o/index%2Fchristmas.webp?alt=media&token=ec33c800-a6c6-497b-92bc-10c8cc8cf54d&_gl=1*yys0pf*_ga*NjQyNzA2OTM1LjE2OTE2NjI4OTU.*_ga_CW55HF8NVT*MTY5NzI3MDYxMy4yMjUuMS4xNjk3MjcwNjk4LjU4LjAuMA..' },

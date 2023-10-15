@@ -232,14 +232,14 @@ export default function ProductCart(props) {
                     </div>
                 </div>
                 <div className={styles.rightRight}>
-                    <p>
+                    <p className={styles.rightP}>
                         Price:
                     </p>
-                    <h2>
+                    <p className={styles.price}>
                         {price}
-                    </h2>
+                    </p>
                     {product.quantity > 1 &&
-                        <p>
+                        <p className={styles.rightP}>
                             {priceUnit}
                         </p>
                     }
