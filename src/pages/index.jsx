@@ -79,8 +79,10 @@ export default function Home(props) {
         <meta property="og:url" content='https://my-store-sigma-nine.vercel.app' key='og:url' />
       </Head>
       <main className={styles.main}>
-        <div
-          className={`${styles.banner} noSelection pointer-events-none`}
+        <Link
+          className={`${styles.banner} noUnderline`}
+          draggable={false}
+          href='/search?t=music'
         >
           <Image
             quality={100}
@@ -94,7 +96,7 @@ export default function Home(props) {
               objectPosition: 'top'
             }}
           />
-        </div>
+        </Link>
         <div className={styles.infos}>
           {/* <div className={styles.infosItem}>
             <LocalShippingOutlinedIcon

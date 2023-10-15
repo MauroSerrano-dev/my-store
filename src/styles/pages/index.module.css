@@ -132,7 +132,7 @@
 
 
 /* Tablet and Smaller Desktop */
-@media (min-width: 701px) and (max-width: 1120px) {
+@media (max-width: 1120px) {
   .banner {
     height: 270px;
   }
@@ -145,7 +145,21 @@
   }
 
   .banner {
-    height: 150px;
+    height: 205px;
+  }
+}
+
+/* Small Mobile */
+@media (max-width: 520px) {
+  .banner {
+    height: 145px;
+  }
+}
+
+/* Really Small Mobile */
+@media (max-width: 360px) {
+  .banner {
+    height: 115px;
   }
 }
 
