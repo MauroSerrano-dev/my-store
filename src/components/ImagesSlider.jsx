@@ -37,7 +37,6 @@ export default function ImagesSlider(props) {
         setSlideMoving(true)
         document.body.style.cursor = 'grabbing'
         if (slideMoving) {
-            console.log('clearTime')
             clearTimeout(draggingOffSetTimeOut)
         }
     }
@@ -101,7 +100,6 @@ export default function ImagesSlider(props) {
                 const containerRect = optionsRef.current.getBoundingClientRect()
                 const optionRect = optionElement.getBoundingClientRect()
 
-                console.log(optionRect.right, containerRect.right)
                 if (optionRect.right > containerRect.right) {
                     const computedStyle = window.getComputedStyle(innerOptionsElement)
                     const transform = computedStyle.getPropertyValue('transform')

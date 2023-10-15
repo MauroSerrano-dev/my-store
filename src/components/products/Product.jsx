@@ -149,7 +149,6 @@ export default function Product(props) {
                             <Image
                                 quality={100}
                                 key={i}
-                                priority={i === 0}
                                 src={product.images.filter(img => img.color_id === color.id)[product.image_hover_index].src}
                                 sizes={`${height * 2 / 3}px`}
                                 fill
