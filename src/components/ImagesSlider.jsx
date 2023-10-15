@@ -157,6 +157,7 @@ export default function ImagesSlider(props) {
                 style={{
                     width: width,
                     height: height,
+                    pointerEvents: isPinching ? 'none' : 'auto',
                 }}
             >
                 <motion.div
@@ -176,7 +177,6 @@ export default function ImagesSlider(props) {
                     onTouchEnd={handleTouchEnd}
                     style={{
                         cursor: isDragging ? 'grabbing' : 'grab',
-                        pointerEvents: isPinching ? 'none' : 'auto',
                     }}
                 >
                     {colors.map((cl, i) =>
