@@ -290,7 +290,7 @@ export default function Product(props) {
                             paddingRight: width * 0.02,
                             cursor: isDraggingColors ? 'grabbing' : 'grab',
                         }}
-                        dragConstraints={bottomHoverRef}
+                        dragConstraints={bottomHoverRef.current ? bottomHoverRef : { right: 0, left: 0 }}
                         initial={{ x: 0 }}
                         drag={scrollColorsActive ? 'x' : false}
                         dragElastic={0.25}

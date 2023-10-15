@@ -32,9 +32,6 @@ export default function ImagesSlider(props) {
     const [antVisualBug, setAntVisualBug] = useState(false)
     const [antVisualBugOptions, setAntVisualBugOptions] = useState(false)
 
-    const [isPinching, setIsPinching] = useState(false)
-    const [touches, setTouches] = useState(0)
-
     function handleDragStart() {
         setIsDragging(true)
         setSlideMoving(true)
@@ -84,20 +81,6 @@ export default function ImagesSlider(props) {
 
     function handleMouseDown() {
         setAntVisualBug(true)
-    }
-
-    function handleTouchStart(event) {
-        setAntVisualBug(true)
-        setTouches(event.touches.length)
-        if (event.touches.length === 2) {
-            setIsPinching(true)
-        }
-    }
-
-    function handleTouchEnd() {
-        setTouches(0)
-        setIsDragging(false)
-        setIsPinching(false)
     }
 
     function handleMouseOptionsDown() {
@@ -151,20 +134,18 @@ export default function ImagesSlider(props) {
                 ...style,
             }}
         >
-            <h1>{touches}</h1>
             <motion.div
                 className={styles.view}
                 ref={carouselRef}
                 style={{
                     width: width,
                     height: height,
-                    pointerEvents: isPinching ? 'none' : 'auto',
                 }}
             >
                 <motion.div
                     className={styles.inner}
                     ref={innerRef}
-                    dragConstraints={carouselRef}
+                    dragConstraints={carouselRef.current ? carouselRef : { right: 0, left: 0 }}
                     initial={{ x: 0 }}
                     animate={{ x: carouselAnchor }}
                     transition={{ type: 'spring', stiffness: 2000, damping: 400 }}
@@ -174,8 +155,7 @@ export default function ImagesSlider(props) {
                     onDragStart={handleDragStart}
                     onDragEnd={handleDragEnd}
                     onMouseDown={handleMouseDown}
-                    onTouchStart={handleTouchStart}
-                    onTouchEnd={handleTouchEnd}
+                    onTouchStart={handleMouseDown}
                     style={{
                         cursor: isDragging ? 'grabbing' : 'grab',
                     }}
@@ -219,7 +199,7 @@ export default function ImagesSlider(props) {
                         cursor: isDraggingOptions ? 'grabbing' : 'grab',
                         position: 'relative',
                     }}
-                    dragConstraints={optionsRef}
+                    dragConstraints={optionsRef.current ? optionsRef : { right: 0, left: 0 }}
                     initial={{ x: 0 }}
                     animate={{ x: optionAnchor }}
                     transition={{ type: 'spring', stiffness: 120, damping: 25 }}

@@ -41,7 +41,7 @@ export default function CarouselProducts(props) {
         >
             <motion.div
                 className={styles.inner}
-                dragConstraints={carouselRef}
+                dragConstraints={carouselRef.current ? carouselRef : { right: 0, left: 0 }}
                 initial={{ x: 0 }}
                 drag="x"
                 dragElastic={0.25}
