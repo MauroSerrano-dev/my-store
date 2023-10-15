@@ -149,7 +149,6 @@ export default function Product(props) {
                                 key={i}
                                 priority={i === 0}
                                 src={product.images.filter(img => img.color_id === color.id)[product.image_hover_index].src}
-                                placeholder='blur'
                                 sizes={`${height * 2 / 3}px`}
                                 fill
                                 alt={product.title}
@@ -175,7 +174,6 @@ export default function Product(props) {
                             key={i}
                             priority={i === 0}
                             src={product.images.filter(img => img.color_id === color.id)[product.image_showcase_index].src}
-                            placeholder='blur'
                             fill
                             sizes={`${height * 2 / 3}px`}
                             alt={product.title}
