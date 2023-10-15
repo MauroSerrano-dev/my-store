@@ -62,9 +62,9 @@ export const MENU_FORWARD_OPTIONS = {
         { title: 'Bottoms', type: 'link', href: '/search?c=bottoms' },
     ],
     collections: [
-        { title: 'Music', type: 'link', href: '/search?c=music' },
+        { title: 'Music', type: 'link', href: '/search?t=music' },
         { title: 'Zombies', type: 'link', href: '/search?c=zombies' },
-        { title: 'Games', type: 'link', href: '/search?c=games' }
+        { title: 'Games', type: 'link', href: '/search?t=games' }
     ]
 }
 
