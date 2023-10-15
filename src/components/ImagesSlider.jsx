@@ -33,6 +33,7 @@ export default function ImagesSlider(props) {
     const [antVisualBugOptions, setAntVisualBugOptions] = useState(false)
 
     const [isPinching, setIsPinching] = useState(false)
+    const [touches, setTouches] = useState(0)
 
     function handleDragStart() {
         setIsDragging(true)
@@ -87,12 +88,14 @@ export default function ImagesSlider(props) {
 
     function handleTouchStart(event) {
         setAntVisualBug(true)
+        setTouches(event.touches.length)
         if (event.touches.length === 2) {
             setIsPinching(true)
         }
     }
 
     function handleTouchEnd() {
+        setTouches(0)
         setIsPinching(false)
     }
 
@@ -147,6 +150,7 @@ export default function ImagesSlider(props) {
                 ...style,
             }}
         >
+            <h1>{touches}</h1>
             <motion.div
                 className={styles.view}
                 ref={carouselRef}
