@@ -32,6 +32,8 @@ export default function ImagesSlider(props) {
     const [antVisualBug, setAntVisualBug] = useState(false)
     const [antVisualBugOptions, setAntVisualBugOptions] = useState(false)
 
+    const [isPinching, setIsPinching] = useState(false)
+
     function handleDragStart() {
         setIsDragging(true)
         setSlideMoving(true)
@@ -81,6 +83,17 @@ export default function ImagesSlider(props) {
 
     function handleMouseDown() {
         setAntVisualBug(true)
+    }
+
+    function handleTouchStart(event) {
+        setAntVisualBug(true)
+        if (event.touches.length === 2) {
+            setIsPinching(true)
+        }
+    }
+
+    function handleTouchEnd() {
+        setIsPinching(false)
     }
 
     function handleMouseOptionsDown() {
@@ -155,9 +168,11 @@ export default function ImagesSlider(props) {
                     onDragStart={handleDragStart}
                     onDragEnd={handleDragEnd}
                     onMouseDown={handleMouseDown}
-                    onTouchStart={handleMouseDown}
+                    onTouchStart={handleTouchStart}
+                    onTouchEnd={handleTouchEnd}
                     style={{
                         cursor: isDragging ? 'grabbing' : 'grab',
+                        pointerEvents: isPinching ? 'none' : 'auto',
                     }}
                 >
                     {colors.map((cl, i) =>
