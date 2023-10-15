@@ -15,6 +15,7 @@ export default function CarouselProducts(props) {
     const carouselRef = useRef(null)
 
     const [isDragging, setIsDragging] = useState(false)
+    const [isPinching, setIsPinching] = useState(false)
     const [antVisualBug, setAntVisualBug] = useState(false) //você é um gênio
 
     function handleDragStart() {
@@ -34,6 +35,17 @@ export default function CarouselProducts(props) {
         setAntVisualBug(true)
     }
 
+    function handleTouchStart(event) {
+        setAntVisualBug(true)
+        if (event.touches.length === 2) {
+            setIsPinching(true)
+        }
+    }
+
+    function handleTouchEnd() {
+        setIsPinching(false)
+    }
+
     return (
         <motion.div
             className={styles.container}
@@ -49,11 +61,13 @@ export default function CarouselProducts(props) {
                 onDragStart={handleDragStart}
                 onDragEnd={handleDragEnd}
                 onMouseDown={handleMouseDown}
-                onTouchStart={handleMouseDown}
+                onTouchStart={handleTouchStart}
+                onTouchEnd={handleTouchEnd}
                 style={{
                     zIndex: 1,
                     position: 'relative',
                     cursor: isDragging ? 'grabbing' : 'grab',
+                    pointerEvents: isPinching ? 'none' : 'auto',
                     height: windowWidth < 1075
                         ? windowWidth < 750
                             ? 275.125

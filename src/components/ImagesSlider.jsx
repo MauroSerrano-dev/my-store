@@ -1,5 +1,5 @@
 import styles from '@/styles/components/ImagesSlider.module.css'
-import { useEffect, useRef, useState } from 'react'
+import { useRef, useState } from 'react'
 import { motion } from 'framer-motion';
 
 export default function ImagesSlider(props) {
@@ -62,10 +62,11 @@ export default function ImagesSlider(props) {
 
             const multiploMaisProximoDeXTranslate = newIndex * -width
 
-            if (multiploMaisProximoDeXTranslate === carouselAnchor)
-                setCarouselAnchor(multiploMaisProximoDeXTranslate + 0.00000001) // solução temporaria
-            else
-                setCarouselAnchor(multiploMaisProximoDeXTranslate)
+            setCarouselAnchor(prev => prev === multiploMaisProximoDeXTranslate
+                ? multiploMaisProximoDeXTranslate + 0.00000001 // solução temporaria
+                : multiploMaisProximoDeXTranslate
+            )
+
             setCurrentImgIndex(newIndex)
             setSlideMoving(false)
             ensureOptionVisible(newIndex)
@@ -106,14 +107,21 @@ export default function ImagesSlider(props) {
                     const transformMatrix = new DOMMatrix(transform)
                     const xTranslate = transformMatrix.m41
                     const scrollOffset = optionRect.right - containerRect.right
-                    setOptionAnchor(-scrollOffset + xTranslate)
+                    setOptionAnchor(prev => prev === -scrollOffset + xTranslate
+                        ? -scrollOffset + xTranslate + 0.00000001 // solução temporaria
+                        : -scrollOffset + xTranslate
+                    )
                 } else if (optionRect.left < containerRect.left) {
+                    console.log(optionRect.left, containerRect.left)
                     const computedStyle = window.getComputedStyle(innerOptionsElement)
                     const transform = computedStyle.getPropertyValue('transform')
                     const transformMatrix = new DOMMatrix(transform)
                     const xTranslate = transformMatrix.m41
                     const scrollOffset = optionRect.left - containerRect.left
-                    setOptionAnchor(-scrollOffset + xTranslate)
+                    setOptionAnchor(prev => prev === -scrollOffset + xTranslate
+                        ? -scrollOffset + xTranslate + 0.00000001 // solução temporaria
+                        : -scrollOffset + xTranslate
+                    )
                 }
             }
         }
@@ -146,8 +154,8 @@ export default function ImagesSlider(props) {
                     dragTransition={{ power: supportsHoverAndPointer ? 0.04 : 0.25, timeConstant: 200 }}
                     onDragStart={handleDragStart}
                     onDragEnd={handleDragEnd}
-                    /* onMouseDown={handleMouseDown}
-                    onTouchStart={handleMouseDown} */
+                    onMouseDown={handleMouseDown}
+                    onTouchStart={handleMouseDown}
                     style={{
                         cursor: isDragging ? 'grabbing' : 'grab',
                     }}
