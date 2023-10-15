@@ -38,7 +38,7 @@ export default function NoFound404(props) {
             >
             </div>
             <div style={{ zIndex: 1 }}>
-                <p style={{ fontWeight: 'bold', fontSize: '24px' }}>
+                <p style={{ fontWeight: '700', fontSize: '24px' }}>
                     {message}
                 </p>
                 <Link

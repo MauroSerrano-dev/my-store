@@ -1,6 +1,6 @@
 import styles from '@/styles/components/products/Product.module.css'
 import { useEffect, useState, useRef } from 'react'
-import { Button } from '@mui/material'
+import { Button, Skeleton } from '@mui/material'
 import Link from 'next/link'
 import { motion } from "framer-motion";
 import { convertDolarToCurrency } from '../../../consts';
@@ -47,6 +47,8 @@ export default function Product(props) {
 
     const [currentVariant, setCurrentVariant] = useState(product.variants[0])
     const [isDraggingColors, setIsDraggingColors] = useState(false)
+
+    const [imageLoad, setImageLoad] = useState(false)
 
     const [antVisualBug, setAntVisualBug] = useState(false)
 
@@ -177,6 +179,7 @@ export default function Product(props) {
                             fill
                             sizes={`${height * 2 / 3}px`}
                             alt={product.title}
+                            onLoadingComplete={() => setImageLoad(true)}
                             style={{
                                 zIndex: currentVariant.color_id === color.id ? 1 : 0,
                                 opacity: currentVariant.color_id === color.id ? 1 : 0,
@@ -184,6 +187,19 @@ export default function Product(props) {
                         />
                     )}
                 </div>
+                {!imageLoad &&
+                    <Skeleton
+                        variant="rectangular"
+                        width={width}
+                        height={height}
+                        sx={{
+                            backgroundColor: 'rgb(50, 50, 50)',
+                            borderTopRightRadius: '0.5rem',
+                            borderTopLeftRadius: '0.5rem',
+                            position: 'absolute',
+                        }}
+                    />
+                }
                 <div
                     className={styles.infos}
                 >
@@ -314,7 +330,7 @@ export default function Product(props) {
                                         color: 'var(--text-white)',
                                         width: '100%',
                                         fontSize: width * 0.053,
-                                        fontWeight: 'bold'
+                                        fontWeight: '700'
                                     }}
                                 >
                                     MORE INFO

@@ -4,13 +4,13 @@
 }
 
 .link {
-    font-weight: bold;
+    font-weight: 700;
     color: var(--link-color);
     transition: all ease-in-out 150ms;
 }
 
 .errorMsg {
-    font-weight: bold;
+    font-weight: 700;
     font-size: 24px;
 }
 

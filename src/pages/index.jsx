@@ -1,4 +1,3 @@
-import { Inter } from 'next/font/google'
 import styles from '@/styles/pages/index.module.css'
 import { useEffect, useState } from 'react'
 import Inventory2OutlinedIcon from '@mui/icons-material/Inventory2Outlined'
@@ -9,8 +8,6 @@ import CarouselProducts from '@/components/carousels/CarouselProducts'
 import Carousel from '@/components/carousels/Carousel'
 import Link from 'next/link'
 import Image from 'next/image'
-
-const inter = Inter({ subsets: ['latin'] })
 
 const categories = [
   { id: 'games', title: 'Games', url: '/search?t=games', img: 'https://firebasestorage.googleapis.com/v0/b/my-store-4aef7.appspot.com/o/index%2Fgames.webp?alt=media&token=8c8ed98a-46c3-4123-8907-daf7fbfe45ff&_gl=1*cgoeh2*_ga*NjQyNzA2OTM1LjE2OTE2NjI4OTU.*_ga_CW55HF8NVT*MTY5NzI3MDYxMy4yMjUuMS4xNjk3MjcwNzEwLjQ2LjAuMA..' },

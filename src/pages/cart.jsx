@@ -224,7 +224,7 @@ export default function Cart(props) {
                                         </p>
                                         <p
                                             style={{
-                                                fontWeight: 'bold'
+                                                fontWeight: '700'
                                             }}
                                         >
                                             {`${userCurrency.symbol} ${ORDER_TOTAL}`}
@@ -242,7 +242,7 @@ export default function Cart(props) {
                                     sx={{
                                         width: '100%',
                                         color: 'white',
-                                        fontWeight: 'bold',
+                                        fontWeight: '700',
                                     }}
                                 >
                                     Checkout

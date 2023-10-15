@@ -217,7 +217,7 @@ export default withRouter(props => {
                             className='noUnderline'
                             style={{
                                 fontWeight: !min && !max
-                                    ? 'bold'
+                                    ? '700'
                                     : 400
                             }}
                         >
@@ -231,7 +231,7 @@ export default withRouter(props => {
                             className='noUnderline'
                             style={{
                                 fontWeight: !min && max === '15'
-                                    ? 'bold'
+                                    ? '700'
                                     : 400
                             }}
                         >
@@ -245,7 +245,7 @@ export default withRouter(props => {
                             className='noUnderline'
                             style={{
                                 fontWeight: min === '15' && max === '25'
-                                    ? 'bold'
+                                    ? '700'
                                     : 400
                             }}
                         >
@@ -259,7 +259,7 @@ export default withRouter(props => {
                             className='noUnderline'
                             style={{
                                 fontWeight: min === '25' && max === '40'
-                                    ? 'bold'
+                                    ? '700'
                                     : 400
                             }}
                         >
@@ -273,7 +273,7 @@ export default withRouter(props => {
                             className='noUnderline'
                             style={{
                                 fontWeight: min === '40' && !max
-                                    ? 'bold'
+                                    ? '700'
                                     : 400
                             }}
                         >

@@ -132,7 +132,7 @@ export default function Signin(props) {
                                     width: '100%',
                                     height: '50px',
                                     color: '#ffffff',
-                                    fontWeight: 'bold',
+                                    fontWeight: '700',
                                     fontSize: '16px',
                                 }}
                             >

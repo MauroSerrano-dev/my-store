@@ -146,7 +146,7 @@
 
 .linkCreateAccount {
     color: var(--link-color);
-    font-weight: bold;
+    font-weight: 700;
     font-size: 14px;
 
     text-decoration: underline transparent;

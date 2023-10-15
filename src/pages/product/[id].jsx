@@ -195,14 +195,14 @@ export default withRouter(props => {
                                     style={{
                                         fontSize: '27px',
                                         color: 'var(--primary)',
-                                        fontWeight: 'bold',
+                                        fontWeight: '700',
                                     }}
                                 >
                                     {productPrice}
                                 </p>
                             </div>
                             <div>
-                                <p style={{ textAlign: 'start', fontWeight: 'bold' }}>{product.colors.length === 1 ? 'Color' : 'Pick a color'}</p>
+                                <p style={{ textAlign: 'start', fontWeight: '700' }}>{product.colors.length === 1 ? 'Color' : 'Pick a color'}</p>
                                 <ColorSelector
                                     options={product.colors}
                                     value={[currentColor]}
@@ -215,7 +215,7 @@ export default withRouter(props => {
                                 />
                             </div>
                             <div>
-                                <p style={{ textAlign: 'start', fontWeight: 'bold' }}>{product.sizes.length === 1 ? 'Size' : 'Pick a size'}</p>
+                                <p style={{ textAlign: 'start', fontWeight: '700' }}>{product.sizes.length === 1 ? 'Size' : 'Pick a size'}</p>
                                 <SizesSelector
                                     value={[currentSize]}
                                     options={product.sizes}

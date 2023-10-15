@@ -34,7 +34,7 @@ export default function Maintenance() {
             >
             </div>
             <div style={{ zIndex: 1 }}>
-                <p style={{ fontWeight: 'bold', fontSize: '28px' }}>
+                <p style={{ fontWeight: '700', fontSize: '28px' }}>
                     {process.env.NEXT_PUBLIC_STORE_NAME} is under maintenance.
                 </p>
                 <p style={{ fontSize: '18px' }}>

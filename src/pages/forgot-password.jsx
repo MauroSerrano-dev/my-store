@@ -95,7 +95,7 @@ export default function ForgotPassword(props) {
                                 minWidth: '190px',
                                 height: '45px',
                                 color: '#ffffff',
-                                fontWeight: 'bold',
+                                fontWeight: '700',
                             }}
                         >
                             Reset Password

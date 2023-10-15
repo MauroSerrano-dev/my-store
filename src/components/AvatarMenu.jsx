@@ -154,7 +154,7 @@ export default function AvatarMenu(props) {
                     width: '100%',
                     height: '38px',
                     color: '#ffffff',
-                    fontWeight: 'bold',
+                    fontWeight: '700',
                     zIndex: 10,
                   }}
                 >

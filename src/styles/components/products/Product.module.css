@@ -111,7 +111,7 @@
 
 .price {
     color: var(--primary);
-    font-weight: bold;
+    font-weight: 700;
 }
 
 .bottomHover {
@@ -144,7 +144,7 @@
     background-color: #f9a11d;
 
     border-radius: 30rem;
-    font-weight: bold;
+    font-weight: 700;
     --text-color: var(--text-white);
 
     position: absolute;
@@ -163,7 +163,7 @@
     background-color: var(--sold-out-bg);
 
     border-radius: 30rem;
-    font-weight: bold;
+    font-weight: 700;
     --text-color: var(--text-white);
 
     position: absolute;

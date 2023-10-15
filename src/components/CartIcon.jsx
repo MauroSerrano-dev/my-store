@@ -82,7 +82,7 @@ export default function CartIcon(props) {
                                 sx={{
                                     width: '100%',
                                     color: '#ffffff',
-                                    fontWeight: 'bold',
+                                    fontWeight: '700',
                                 }}
                             >
                                 Go to Cart

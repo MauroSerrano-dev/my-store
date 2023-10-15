@@ -81,7 +81,7 @@
 }
 
 .subTitle a {
-    font-weight: bold;
+    font-weight: 700;
     color: var(--link-color);
     transition: all ease-in-out 150ms;
 }
@@ -97,6 +97,7 @@
     padding-top: 1rem;
 
     border-bottom: #ababab solid 1px;
+    transition: all ease-in-out 200ms;
 }
 
 .backButton {
@@ -130,15 +131,15 @@
 
     .backButton:hover {
         color: var(--global-black);
-        font-weight: bold;
+        font-weight: 600;
     }
 
     .menuItem:hover {
-        font-weight: bold;
+        font-weight: 600;
     }
 
     .menuItem:hover .forwardButton {
         color: var(--global-black);
-        font-weight: bold;
+        font-weight: 600;
     }
 }

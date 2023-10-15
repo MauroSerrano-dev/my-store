@@ -105,7 +105,7 @@ export default function ProductModal(props) {
                 <div className={styles.priceContainer}>
                     <p
                         style={{
-                            fontWeight: 'bold',
+                            fontWeight: '700',
                             fontSize: '14px',
                         }}
                     >

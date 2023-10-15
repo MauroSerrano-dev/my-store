@@ -139,7 +139,7 @@ export default function Menu(props) {
                         />
                         {session &&
                             <div>
-                                Welcome! <span style={{ color: 'var(--primary)', fontWeight: 'bold' }}>{session.name}</span>
+                                Welcome! <span style={{ color: 'var(--primary)', fontWeight: '700' }}>{session.name}</span>
                             </div>
                         }
                         {session === null &&

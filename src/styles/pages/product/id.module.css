@@ -110,7 +110,7 @@
     background-color: var(--sold-out-bg);
 
     border-radius: 30rem;
-    font-weight: bold;
+    font-weight: 700;
     --text-color: var(--text-white);
 
     font-size: 13px;

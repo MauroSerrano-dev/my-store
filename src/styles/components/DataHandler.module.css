@@ -50,7 +50,7 @@
 }
 
 .subNavBar p {
-    font-weight: bold;
+    font-weight: 700;
     text-shadow: 0px 2px 6px rgba(0, 0, 0, 0.8);
     transition: all ease-in-out 200ms;
 }

@@ -97,7 +97,7 @@
     background-color: #ffffff;
     border: none;
 
-    font-weight: bold;
+    font-weight: 700;
 
     border-radius: 0.5rem;
 
@@ -170,7 +170,7 @@
 
 .linkCreateAccount {
     color: var(--link-color);
-    font-weight: bold;
+    font-weight: 700;
     font-size: 14px;
 
     text-decoration: underline transparent;
