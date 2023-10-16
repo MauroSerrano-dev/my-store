@@ -105,9 +105,10 @@ export default function Home(props) {
             sizes='100%'
             fill
             alt='banner'
+            draggable={false}
             style={{
               objectFit: 'cover',
-              objectPosition: 'top'
+              objectPosition: 'top',
             }}
           />
           <Image
@@ -117,6 +118,7 @@ export default function Home(props) {
             sizes='100%'
             fill
             alt='banner'
+            draggable={false}
             style={{
               objectFit: 'cover',
               objectPosition: 'top',
@@ -128,12 +130,13 @@ export default function Home(props) {
             src='https://firebasestorage.googleapis.com/v0/b/my-store-4aef7.appspot.com/o/banners%2Fsound-vibes_color.webp?alt=media&token=d57f3b50-329b-4373-bdfc-89cfb91f6148&_gl=1*8cwri9*_ga*NjQyNzA2OTM1LjE2OTE2NjI4OTU.*_ga_CW55HF8NVT*MTY5NzQ1MTEzNC4yNDMuMS4xNjk3NDU0NTg4LjM1LjAuMA..'
             sizes='100%'
             fill
+            draggable={false}
             alt='banner'
             style={{
               objectFit: 'cover',
               objectPosition: 'top',
               opacity: bannerColorsOpacity,
-              transition: 'opacity ease-in-out 200ms'
+              transition: 'opacity ease-in-out 200ms',
             }}
           />
         </Link>
