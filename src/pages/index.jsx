@@ -208,7 +208,6 @@ export default function Home(props) {
                       >
                         <Image
                           quality={100}
-                          priority
                           src={cat.img}
                           sizes={`${(windowWidth < 420 ? 130 : 200) * 0.8}px`}
                           fill
