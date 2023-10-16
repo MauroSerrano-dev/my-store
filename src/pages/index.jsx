@@ -87,7 +87,7 @@ export default function Home(props) {
           <Image
             quality={100}
             priority
-            src='https://firebasestorage.googleapis.com/v0/b/my-store-4aef7.appspot.com/o/banners%2Fsound-vibes.webp?alt=media&token=21449048-89cb-427a-9d27-7c80cbe73742&_gl=1*1cd4tmv*_ga*NjQyNzA2OTM1LjE2OTE2NjI4OTU.*_ga_CW55HF8NVT*MTY5NzQwNDQ4OS4yNDEuMS4xNjk3NDA2OTAzLjQzLjAuMA..'
+            src='https://firebasestorage.googleapis.com/v0/b/my-store-4aef7.appspot.com/o/banners%2Fsound-vibes.webp?alt=media&token=77e61e4f-8291-424f-b114-cbe4b0ed5474&_gl=1*1822osn*_ga*NjQyNzA2OTM1LjE2OTE2NjI4OTU.*_ga_CW55HF8NVT*MTY5NzQ0NDI5Ny4yNDIuMS4xNjk3NDQ0OTQ5LjQ1LjAuMA..'
             sizes='100%'
             fill
             alt='banner'
