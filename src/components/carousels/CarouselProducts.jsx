@@ -36,7 +36,7 @@ export default function CarouselProducts(props) {
 
     const productWidth = windowWidth < 1075
         ? windowWidth < 750
-            ? windowWidth < 361
+            ? windowWidth < 381
                 ? 140
                 : 155
             : 190
