@@ -27,6 +27,7 @@ export default function Home(props) {
   const [allProducts, setAllProducts] = useState([])
   const [productsTShirts, setProductsTShirts] = useState([])
   const [productsHoodies, setProductsHoodies] = useState([])
+  const [bannerColorsOpacity, setBannerColorsOpacity] = useState(0)
 
   async function getProductsByTagOrType(queryName, categoryName) {
     const options = {
@@ -68,6 +69,19 @@ export default function Home(props) {
     setProductsHoodies(await getProductsByTagOrType('c', 'hoodies'))
   }
 
+  useEffect(() => {
+    if (bannerColorsOpacity === 0) {
+      setTimeout(() => {
+        setBannerColorsOpacity(1)
+      }, 2000)
+    }
+    else {
+      setTimeout(() => {
+        setBannerColorsOpacity(0)
+      }, 1500)
+    }
+  }, [bannerColorsOpacity])
+
   return (
     <div className={styles.container}>
       <Head>
@@ -87,13 +101,39 @@ export default function Home(props) {
           <Image
             quality={100}
             priority
-            src='https://firebasestorage.googleapis.com/v0/b/my-store-4aef7.appspot.com/o/banners%2Fsound-vibes.webp?alt=media&token=77e61e4f-8291-424f-b114-cbe4b0ed5474&_gl=1*1822osn*_ga*NjQyNzA2OTM1LjE2OTE2NjI4OTU.*_ga_CW55HF8NVT*MTY5NzQ0NDI5Ny4yNDIuMS4xNjk3NDQ0OTQ5LjQ1LjAuMA..'
+            src='https://firebasestorage.googleapis.com/v0/b/my-store-4aef7.appspot.com/o/banners%2Fsound-vibes_bg.webp?alt=media&token=27f3d428-7542-4c9e-9960-6c300a4bc68a&_gl=1*1lhdp2p*_ga*NjQyNzA2OTM1LjE2OTE2NjI4OTU.*_ga_CW55HF8NVT*MTY5NzQ1MTEzNC4yNDMuMS4xNjk3NDUxMTYyLjMyLjAuMA..'
             sizes='100%'
             fill
             alt='banner'
             style={{
               objectFit: 'cover',
               objectPosition: 'top'
+            }}
+          />
+          <Image
+            quality={100}
+            priority
+            src='https://firebasestorage.googleapis.com/v0/b/my-store-4aef7.appspot.com/o/banners%2Fsound-vibes_black.webp?alt=media&token=756a7de4-0b31-441d-b021-753b6dd83e10&_gl=1*z943a0*_ga*NjQyNzA2OTM1LjE2OTE2NjI4OTU.*_ga_CW55HF8NVT*MTY5NzQ1MTEzNC4yNDMuMS4xNjk3NDU0NTgwLjQzLjAuMA..'
+            sizes='100%'
+            fill
+            alt='banner'
+            style={{
+              objectFit: 'cover',
+              objectPosition: 'top',
+            }}
+          />
+          <Image
+            quality={100}
+            priority
+            src='https://firebasestorage.googleapis.com/v0/b/my-store-4aef7.appspot.com/o/banners%2Fsound-vibes_color.webp?alt=media&token=d57f3b50-329b-4373-bdfc-89cfb91f6148&_gl=1*8cwri9*_ga*NjQyNzA2OTM1LjE2OTE2NjI4OTU.*_ga_CW55HF8NVT*MTY5NzQ1MTEzNC4yNDMuMS4xNjk3NDU0NTg4LjM1LjAuMA..'
+            sizes='100%'
+            fill
+            alt='banner'
+            style={{
+              objectFit: 'cover',
+              objectPosition: 'top',
+              opacity: bannerColorsOpacity,
+              transition: 'opacity ease-in-out 200ms'
             }}
           />
         </Link>
