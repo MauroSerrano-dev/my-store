@@ -117,7 +117,7 @@ export default function Home(props) {
             src='https://firebasestorage.googleapis.com/v0/b/my-store-4aef7.appspot.com/o/banners%2Fsound-vibes_black.webp?alt=media&token=756a7de4-0b31-441d-b021-753b6dd83e10&_gl=1*z943a0*_ga*NjQyNzA2OTM1LjE2OTE2NjI4OTU.*_ga_CW55HF8NVT*MTY5NzQ1MTEzNC4yNDMuMS4xNjk3NDU0NTgwLjQzLjAuMA..'
             sizes='100%'
             fill
-            alt='banner'
+            alt='people'
             draggable={false}
             style={{
               objectFit: 'cover',
@@ -131,7 +131,7 @@ export default function Home(props) {
             sizes='100%'
             fill
             draggable={false}
-            alt='banner'
+            alt='t-shirts_colors'
             style={{
               objectFit: 'cover',
               objectPosition: 'top',

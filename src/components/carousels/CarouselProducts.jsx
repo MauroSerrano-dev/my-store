@@ -34,6 +34,14 @@ export default function CarouselProducts(props) {
         setAntVisualBug(true)
     }
 
+    const productWidth = windowWidth < 1075
+        ? windowWidth < 750
+            ? windowWidth < 361
+                ? 140
+                : 155
+            : 190
+        : 225
+
     return (
         <motion.div
             className={styles.container}
@@ -54,22 +62,13 @@ export default function CarouselProducts(props) {
                     zIndex: 1,
                     position: 'relative',
                     cursor: isDragging ? 'grabbing' : 'grab',
-                    height: windowWidth < 1075
-                        ? windowWidth < 750
-                            ? 275.125
-                            : 337.25
-                        : 399.375
+                    height: productWidth * 1.56338
                 }}
             >
                 {products.length > 0 &&
                     products.map((prod, i) =>
                         <Product
-                            width={windowWidth < 1075
-                                ? windowWidth < 750
-                                    ? 155
-                                    : 190
-                                : 225
-                            }
+                            width={productWidth}
                             key={i}
                             product={prod}
                             userCurrency={userCurrency}
@@ -98,34 +97,14 @@ export default function CarouselProducts(props) {
                         <div
                             key={i}
                             style={{
-                                width: windowWidth < 1075
-                                    ? windowWidth < 750
-                                        ? 155
-                                        : 190
-                                    : 225,
-                                height: windowWidth < 1075
-                                    ? windowWidth < 750
-                                        ? 275.125
-                                        : 337.25
-                                    : 399.375
+                                width: productWidth,
+                                height: productWidth * 1.56338
                             }}
                         >
                             <Skeleton
                                 variant="rectangular"
-                                width={
-                                    windowWidth < 1075
-                                        ? windowWidth < 750
-                                            ? 155
-                                            : 190
-                                        : 225
-                                }
-                                height={
-                                    windowWidth < 1075
-                                        ? windowWidth < 750
-                                            ? 172.2222
-                                            : 211.1111
-                                        : 250
-                                }
+                                width={productWidth}
+                                height={productWidth * 10 / 9}
                                 sx={{
                                     backgroundColor: 'rgb(50, 50, 50)',
                                     borderTopRightRadius: '0.5rem',
@@ -134,78 +113,30 @@ export default function CarouselProducts(props) {
                             />
                             <Skeleton
                                 variant="rectangular"
-                                width={
-                                    windowWidth < 1075
-                                        ? windowWidth < 750
-                                            ? 155
-                                            : 190
-                                        : 225
-                                }
-                                height={
-                                    windowWidth < 1075
-                                        ? windowWidth < 750
-                                            ? 15
-                                            : 20
-                                        : 25
-                                }
+                                width={productWidth}
+                                height={productWidth / 9}
                                 sx={{
-                                    marginTop: windowWidth < 1075
-                                        ? windowWidth < 750
-                                            ? '7px'
-                                            : '9px'
-                                        : '10px',
+                                    marginTop: productWidth * 0.005,
                                     backgroundColor: 'rgb(50, 50, 50)',
                                     borderRadius: '0.5rem',
                                 }}
                             />
                             <Skeleton
                                 variant="rectangular"
-                                width={
-                                    windowWidth < 1075
-                                        ? windowWidth < 750
-                                            ? 100
-                                            : 130
-                                        : 140
-                                }
-                                height={
-                                    windowWidth < 1075
-                                        ? windowWidth < 750
-                                            ? 10
-                                            : 12
-                                        : 15
-                                }
+                                width={productWidth * 0.7}
+                                height={productWidth * 0.09}
                                 sx={{
-                                    marginTop: windowWidth < 1075
-                                        ? windowWidth < 750
-                                            ? '7px'
-                                            : '9px'
-                                        : '10px',
+                                    marginTop: productWidth * 0.005,
                                     backgroundColor: 'rgb(50, 50, 50)',
                                     borderRadius: '0.5rem',
                                 }}
                             />
                             <Skeleton
                                 variant="rectangular"
-                                width={
-                                    windowWidth < 1075
-                                        ? windowWidth < 750
-                                            ? 60
-                                            : 80
-                                        : 90
-                                }
-                                height={
-                                    windowWidth < 1075
-                                        ? windowWidth < 750
-                                            ? 14
-                                            : 16
-                                        : 20
-                                }
+                                width={productWidth * 0.35}
+                                height={productWidth * 0.1}
                                 sx={{
-                                    marginTop: windowWidth < 1075
-                                        ? windowWidth < 750
-                                            ? '7px'
-                                            : '9px'
-                                        : '10px',
+                                    marginTop: productWidth * 0.005,
                                     backgroundColor: 'rgb(50, 50, 50)',
                                     borderRadius: '0.5rem',
                                 }}
