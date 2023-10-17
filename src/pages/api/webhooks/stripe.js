@@ -22,7 +22,7 @@ export default async function handler(req, res) {
 
             const line_items = Object.keys(items).map(key => JSON.parse(items[key]))
 
-            const orderId = await createOrder(
+            const orderResponse = await createOrder(
                 {
                     customer: {
                         ...data.customer_details,
@@ -38,6 +38,8 @@ export default async function handler(req, res) {
                     shipping_cost: data.shipping_cost,
                 }
             )
+
+            const orderId = orderResponse.orderId
 
             const options = {
                 headers: {
