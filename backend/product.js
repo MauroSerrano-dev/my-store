@@ -376,13 +376,13 @@ async function handleProductsPurchased(line_items) {
                 const productData = productDoc.data()
 
                 // Atualize o total_sales no produto
-                productData.total_sales += quantity
+                productData.cu = line_items
 
-                const variant = productData.variants.find((v) => v.id === variant_id)
+                /* const variant = productData.variants.find((v) => v.id === variant_id)
 
                 if (variant) {
                     variant.sales += quantity
-                }
+                } */
 
                 // Atualize o produto no banco de dados
                 await updateDoc(productRef, productData)
