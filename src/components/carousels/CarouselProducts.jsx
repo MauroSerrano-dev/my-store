@@ -62,7 +62,7 @@ export default function CarouselProducts(props) {
                     zIndex: 1,
                     position: 'relative',
                     cursor: isDragging ? 'grabbing' : 'grab',
-                    height: productWidth * 1.56338
+                    height: productWidth * 1.764,
                 }}
             >
                 {products.length > 0 &&
@@ -98,7 +98,7 @@ export default function CarouselProducts(props) {
                             key={i}
                             style={{
                                 width: productWidth,
-                                height: productWidth * 1.56338
+                                height: productWidth * 1.764,
                             }}
                         >
                             <Skeleton

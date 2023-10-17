@@ -175,6 +175,7 @@ export default function Cart(props) {
                                             { value: 'PL', name: 'Poland' },
                                             { value: 'UK', name: 'United Kingdom' },
                                             { value: 'US', name: 'United States' },
+                                            { value: 'PT', name: 'Portugal' },
                                         ]}
                                         width='170px'
                                         dark

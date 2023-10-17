@@ -11,38 +11,38 @@ import {
     query,
     setDoc,
     where,
-} from "firebase/firestore";
+} from "firebase/firestore"
 import { initializeApp } from 'firebase/app'
 import { firebaseConfig } from "../firebase.config"
 import Fuse from 'fuse.js'
 import { TAGS_POOL } from "../consts"
-import translate from "translate";
+import translate from "translate"
 
 initializeApp(firebaseConfig)
 
 const db = getFirestore()
 
 async function getAllProducts() {
-    const productsCollection = collection(db, process.env.COLL_PRODUCTS);
-    const querySnapshot = await getDocs(productsCollection);
+    const productsCollection = collection(db, process.env.COLL_PRODUCTS)
+    const querySnapshot = await getDocs(productsCollection)
 
-    const allProducts = [];
+    const allProducts = []
 
     querySnapshot.forEach((doc) => {
-        const productData = doc.data();
-        allProducts.push(productData);
-    });
+        const productData = doc.data()
+        allProducts.push(productData)
+    })
 
     if (allProducts.length > 0) {
         return {
             msg: `All products retrieved successfully!`,
             products: allProducts
-        };
+        }
     } else {
         return {
             msg: `No products found.`,
             products: []
-        };
+        }
     }
 }
 
@@ -81,30 +81,30 @@ async function createProduct(product) {
 
 
 async function getProductsByCategory(category) {
-    const productsCollection = collection(db, process.env.COLL_PRODUCTS);
+    const productsCollection = collection(db, process.env.COLL_PRODUCTS)
 
-    let q = query(productsCollection, where("tags", "array-contains-any", [category]));
+    let q = query(productsCollection, where("tags", "array-contains-any", [category]))
     q = query(q, orderBy("popularity"))
 
-    const querySnapshot = await getDocs(q);
+    const querySnapshot = await getDocs(q)
 
-    const productsInCategory = [];
+    const productsInCategory = []
 
     querySnapshot.forEach((doc) => {
-        const productData = doc.data();
-        productsInCategory.push(productData);
-    });
+        const productData = doc.data()
+        productsInCategory.push(productData)
+    })
 
     if (productsInCategory.length > 0) {
         return {
             msg: `Category ${category} products successfully found!`,
             products: productsInCategory
-        };
+        }
     } else {
         return {
             msg: `No products found in category ${category}.`,
             products: []
-        };
+        }
     }
 }
 
@@ -126,7 +126,7 @@ async function getProductsByTitle(s) {
         q = query(q, where('title_lower_case', "<=", searchQuery + '\uf8ff'))
 
         // Aplique a ordenação correta
-        q = query(q, orderBy('title_lower_case'));
+        q = query(q, orderBy('title_lower_case'))
 
         // Crie uma nova consulta limitada ao número de itens por página
         q = query(q, limit(5))
@@ -148,14 +148,14 @@ async function getProductsByTitle(s) {
             return {
                 msg: 'No products found matching the queries.',
                 products: []
-            };
+            }
         }
     } catch (error) {
         console.log('Error getting products.', error)
         return {
             msg: 'Error getting products.',
             products: []
-        };
+        }
     }
 }
 
@@ -235,7 +235,7 @@ async function getProductsByQueries(props) {
 
         // Filtre por preço máximo (se presente)
         if (max) {
-            q = query(q, where("min_price", "<=", parseFloat(max.concat('00'))));
+            q = query(q, where("min_price", "<=", parseFloat(max.concat('00'))))
         }
 
         const orders = new Map([
@@ -246,87 +246,87 @@ async function getProductsByQueries(props) {
         ])
 
         // Calcule a página inicial com base no número da página e no tamanho da página
-        const startAfterDoc = (parseFloat(page) - 1) * itemsPerPage;
+        const startAfterDoc = (parseFloat(page) - 1) * itemsPerPage
 
         const filterByPrice = (min || max) && order !== 'lowest-price' && order !== 'higher-price'
 
         // Aplique a ordenação correta
-        q = query(q, orderBy(orders.get(filterByPrice ? 'lowest-price' : order).value, orders.get(filterByPrice ? 'lowest-price' : order).direction));
+        q = query(q, orderBy(orders.get(filterByPrice ? 'lowest-price' : order).value, orders.get(filterByPrice ? 'lowest-price' : order).direction))
 
         // Aplique a paginação usando startAfter()
         if (startAfterDoc > 0) {
-            q = query(q, startAfter(startAfterDoc));
+            q = query(q, startAfter(startAfterDoc))
         }
 
         // Crie uma nova consulta limitada ao número de itens por página
-        q = query(q, limit(itemsPerPage));
+        q = query(q, limit(itemsPerPage))
 
-        const querySnapshot = await getDocs(q);
+        const querySnapshot = await getDocs(q)
 
-        const productsMatchingQueries = [];
+        const productsMatchingQueries = []
         querySnapshot.forEach((doc) => {
-            const productData = doc.data();
-            productsMatchingQueries.push(productData);
-        });
+            const productData = doc.data()
+            productsMatchingQueries.push(productData)
+        })
 
         if (productsMatchingQueries.length > 0) {
             return {
                 msg: 'Products matching queries found successfully!',
                 products: productsMatchingQueries
-            };
+            }
         } else {
             return {
                 msg: 'No products found matching the queries.',
                 products: []
-            };
+            }
         }
     } catch (error) {
         console.log('Error getting products.', error)
         return {
             msg: 'Error getting products.',
             products: []
-        };
+        }
     }
 }
 
 async function getProductById(id) {
-    const productRef = doc(db, process.env.COLL_PRODUCTS, id);
+    const productRef = doc(db, process.env.COLL_PRODUCTS, id)
     try {
-        const productDoc = await getDoc(productRef);
+        const productDoc = await getDoc(productRef)
 
         if (productDoc.exists()) {
-            const productData = productDoc.data();
+            const productData = productDoc.data()
             return {
                 msg: `Product with ID ${id} found!`,
                 product: productData
-            };
+            }
         } else {
             return {
                 msg: `Product with ID ${id} not found.`,
                 product: null
-            };
+            }
         }
     } catch (error) {
-        console.log("Error getting product:", error);
-        return null;
+        console.log("Error getting product:", error)
+        return null
     }
 }
 
 async function getAllProductPrintifyIds() {
-    const productsCollection = collection(db, process.env.COLL_PRODUCTS);
-    const querySnapshot = await getDocs(productsCollection);
+    const productsCollection = collection(db, process.env.COLL_PRODUCTS)
+    const querySnapshot = await getDocs(productsCollection)
 
-    const productPrintifyIds = [];
+    const productPrintifyIds = []
 
     querySnapshot.forEach((doc) => {
-        const productData = doc.data();
-        productPrintifyIds.push(productData.id_printify);
-    });
+        const productData = doc.data()
+        productPrintifyIds.push(productData.id_printify)
+    })
 
     return {
         msg: 'All product Printify IDs retrieved successfully!',
         printifyIds: productPrintifyIds
-    };
+    }
 }
 
 async function updateProduct(product) {
@@ -344,22 +344,58 @@ async function updateProduct(product) {
         }
     }
 
-    const productRef = doc(db, process.env.COLL_PRODUCTS, product.id);
+    const productRef = doc(db, process.env.COLL_PRODUCTS, product.id)
 
     try {
         await updateDoc(productRef, {
             ...product,
-        });
+        })
 
         return {
             status: 200,
             msg: `Product ${product.id} updated successfully!`,
-        };
+        }
     } catch (error) {
-        console.log("Error updating product:", error);
+        console.log("Error updating product:", error)
         return {
             status: 500,
             msg: "An error occurred while updating the product.",
+        }
+    }
+}
+
+async function handleProductsPurchased(line_items) {
+    try {
+        for (const lineItem of line_items) {
+            const { product_id, variant_id, quantity } = lineItem
+
+            const productRef = doc(db, process.env.COLL_PRODUCTS, product_id)
+            const productDoc = await getDoc(productRef)
+
+            if (productDoc.exists()) {
+                const productData = productDoc.data()
+
+                // Atualize o total_sales no produto
+                productData.total_sales += quantity
+
+                const variant = productData.variants.find((v) => v.id === variant_id)
+
+                if (variant) {
+                    variant.sales += quantity
+                }
+
+                // Atualize o produto no banco de dados
+                await updateDoc(productRef, productData)
+            }
+        }
+
+        return {
+            msg: "Products updated successfully!",
+        }
+    } catch (error) {
+        console.error("Error handling purchased products:", error)
+        return {
+            msg: "An error occurred while updating products.",
         };
     }
 }
@@ -373,4 +409,5 @@ export {
     getAllProducts,
     getProductsByTitle,
     updateProduct,
+    handleProductsPurchased
 }
