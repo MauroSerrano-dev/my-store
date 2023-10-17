@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { updateCart } from '../../../../backend/cart';
 import { updateCartSessionProducts } from '../../../../backend/cart-session';
-import { handleProductsPurchased } from '../../../../backend/product';
+import { createOrder } from '../../../../backend/orders';
 
 export default async function handler(req, res) {
     if (req.method === "POST") {
@@ -22,6 +22,23 @@ export default async function handler(req, res) {
 
             const line_items = Object.keys(items).map(key => JSON.parse(items[key]))
 
+            const orderId = await createOrder(
+                {
+                    customer: {
+                        ...data.customer_details,
+                    },
+                    shipping_details: {
+                        ...data.shipping_details
+                    },
+                    products: line_items,
+                    stripe_id: data.id,
+                    currency: data.currency,
+                    amount_total: data.amount_total,
+                    amount_subtotal: data.amount_subtotal,
+                    shipping_cost: data.shipping_cost,
+                }
+            )
+
             const options = {
                 headers: {
                     Authorization: process.env.PRINTIFY_ACCESS_TOKEN,
@@ -30,8 +47,8 @@ export default async function handler(req, res) {
             }
 
             const body_data = {
-                external_id: body.id,
-                label: body.id,
+                external_id: orderId,
+                label: `Order: ${orderId}`,
                 line_items: line_items,
                 shipping_method: 1,
                 send_shipping_notification: true,
@@ -51,13 +68,11 @@ export default async function handler(req, res) {
 
             await axios.post(base_url, body_data, options)
 
-            /* await handleProductsPurchased(line_items) */
-
             if (is_loggin)
                 await updateCart(cart_id, [])
             else
                 await updateCartSessionProducts(cart_id, [])
-            res.status(200).json({ message: `Checkout Session Complete!${JSON.stringify(line_items)}` })
+            res.status(200).json({ message: 'Checkout Session Complete!' })
         }
         else if (type === 'checkout.session.async_payment_succeeded') {
         }

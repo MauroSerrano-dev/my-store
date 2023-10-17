@@ -173,9 +173,9 @@ export default function Cart(props) {
                                             { value: 'BR', name: 'Brazil' },
                                             { value: 'DE', name: 'Germany' },
                                             { value: 'PL', name: 'Poland' },
+                                            { value: 'PT', name: 'Portugal' },
                                             { value: 'UK', name: 'United Kingdom' },
                                             { value: 'US', name: 'United States' },
-                                            { value: 'PT', name: 'Portugal' },
                                         ]}
                                         width='170px'
                                         dark

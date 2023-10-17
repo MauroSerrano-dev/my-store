@@ -364,42 +364,6 @@ async function updateProduct(product) {
     }
 }
 
-async function handleProductsPurchased(line_items) {
-    try {
-        for (const lineItem of line_items) {
-            const { product_id, variant_id, quantity } = lineItem
-
-            const productRef = doc(db, process.env.COLL_PRODUCTS, product_id)
-            const productDoc = await getDoc(productRef)
-
-            if (productDoc.exists()) {
-                const productData = productDoc.data()
-
-                // Atualize o total_sales no produto
-                productData.total_sales += quantity
-
-                const variant = productData.variants.find((v) => v.id === variant_id)
-
-                if (variant) {
-                    variant.sales += quantity
-                }
-
-                // Atualize o produto no banco de dados
-                await updateDoc(productRef, productData)
-            }
-        }
-
-        return {
-            msg: "Products updated successfully!",
-        }
-    } catch (error) {
-        console.error("Error handling purchased products:", error)
-        return {
-            msg: "An error occurred while updating products.",
-        };
-    }
-}
-
 export {
     createProduct,
     getProductsByCategory,
@@ -409,5 +373,4 @@ export {
     getAllProducts,
     getProductsByTitle,
     updateProduct,
-    handleProductsPurchased
 }
