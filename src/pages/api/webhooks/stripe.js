@@ -51,13 +51,13 @@ export default async function handler(req, res) {
 
             await axios.post(base_url, body_data, options)
 
-            await handleProductsPurchased(line_items)
+            /* await handleProductsPurchased(line_items) */
 
             if (is_loggin)
                 await updateCart(cart_id, [])
             else
                 await updateCartSessionProducts(cart_id, [])
-            res.status(200).json({ message: `Checkout Session Complete!${JSON.stringify(line_items)}` })
+            res.status(200).json({ message: 'Checkout Session Complete!' })
         }
         else if (type === 'checkout.session.async_payment_succeeded') {
         }
