@@ -13,7 +13,7 @@ const db = getFirestore()
 
 async function createOrder(order) {
     try {
-        const ordersCollection = collection(db, process.env.ORDERS)
+        const ordersCollection = collection(db, process.env.COLL_ORDERS)
 
         const newOrderRef = await addDoc(ordersCollection, {
             ...order,
