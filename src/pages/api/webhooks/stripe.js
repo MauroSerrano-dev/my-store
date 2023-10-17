@@ -57,7 +57,7 @@ export default async function handler(req, res) {
                 await updateCart(cart_id, [])
             else
                 await updateCartSessionProducts(cart_id, [])
-            res.status(200).json({ message: 'Checkout Session Complete!' })
+            res.status(200).json({ message: `Checkout Session Complete!${JSON.stringify(line_items)}` })
         }
         else if (type === 'checkout.session.async_payment_succeeded') {
         }
