@@ -112,7 +112,6 @@ export default function ImagesSlider(props) {
                         : -scrollOffset + xTranslate
                     )
                 } else if (optionRect.left < containerRect.left) {
-                    console.log(optionRect.left, containerRect.left)
                     const computedStyle = window.getComputedStyle(innerOptionsElement)
                     const transform = computedStyle.getPropertyValue('transform')
                     const transformMatrix = new DOMMatrix(transform)

@@ -36,7 +36,7 @@ export default async function handler(req, res) {
       })
     }
 
-    const line_items = cartItems.map((item) => {
+    const line_items = cartItems.map(item => {
       return {
         price_data: {
           currency: currency,
@@ -58,7 +58,8 @@ export default async function handler(req, res) {
 
     cartItems.forEach((item, i) => {
       cartMetadata[i] = JSON.stringify({
-        product_id: item.id_printify,
+        product_id: item.id,
+        product_id_printify: item.id_printify,
         variant_id: item.variant_id,
         quantity: item.quantity,
       })

@@ -73,7 +73,6 @@ export default withRouter(props => {
         function handleResize() {
             const containerWidth = productsContainer.current.offsetWidth
             if (containerWidth > 900) {
-                console.log(containerWidth)
                 setProductWidth((containerWidth - 16 * 5) / 5)
                 setProductsPerLine(5)
             }

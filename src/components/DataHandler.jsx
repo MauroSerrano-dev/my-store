@@ -254,11 +254,9 @@ export default function DataHandler(props) {
         const unsubscribe = onAuthStateChanged(auth, (authUser) => {
             if (authUser) {
                 handleLogin(authUser)
-                console.log('Usuário autenticado:', authUser);
             } else {
                 // O usuário fez logout ou não está autenticado
                 setSession(null)
-                console.log('Usuário não autenticado');
             }
         })
 

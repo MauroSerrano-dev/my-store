@@ -357,7 +357,7 @@ export default withRouter(props => {
             ? <div></div>
             : session === null || session.email !== 'mauro.serrano.dev@gmail.com'
                 ? <NoFound404 />
-                : <div className={styles.container} onClick={() => console.log(product)}>
+                : <div className={styles.container}>
                     <header>
                     </header>
                     <main className={styles.main}>

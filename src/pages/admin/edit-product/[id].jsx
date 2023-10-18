@@ -52,7 +52,6 @@ export default withRouter(props => {
             .then(response => response.json())
             .then(response => response.product)
             .catch(err => console.error(err))
-        console.log('product', product)
         if (product) {
             if (product.colors.every(cl => product.variants.filter(vari => vari.color_id === cl.id).every(variColor => variColor.price === product.variants.find(vari => vari.size_id === variColor.size_id).price)))
                 setColorsChained(product.colors.map(cl => cl.id))
@@ -288,7 +287,6 @@ export default withRouter(props => {
     }
 
     function handleChangeColors(value, i, color) {
-        console.log(value, i, color)
         setProduct(prev => {
             setColorIndex(prevIndex => value.length > prev.colors.length
                 ? value.length - 1
