@@ -36,6 +36,28 @@ async function createOrder(order) {
     }
 }
 
+async function insertNewField(order_id, field_name, value) {
+    try {
+        const orderRef = doc(db, process.env.COLL_ORDERS, order_id)
+
+        await updateDoc(orderRef, {
+            [field_name]: value,
+        })
+
+        return {
+            success: true,
+            message: `${field_name} added to order with ID: ${order_id}`,
+        }
+    } catch (error) {
+        return {
+            success: false,
+            message: `Error inserting ${field_name}`,
+            error: error,
+        }
+    }
+}
+
 export {
     createOrder,
+    insertNewField,
 }
