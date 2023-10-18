@@ -45,27 +45,25 @@ async function getUserIdByEmail(email) {
 async function getUserById(id) {
 
     try {
-        const userDocRef = doc(db, process.env.COLL_USERS, id);
+        const userDocRef = doc(db, process.env.COLL_USERS, id)
 
-        // Obtenha o documento do usuário
-        const userDoc = await getDoc(userDocRef);
+        const userDoc = await getDoc(userDocRef)
 
-        // Verifique se o documento existe e retorne os dados do usuário
         if (userDoc.exists()) {
-            return userDoc.data();
+            return userDoc.data()
         } else {
-            return null; // Retorna null se o usuário não for encontrado
+            return null
         }
     } catch (error) {
-        console.error("Erro ao obter usuário pelo ID:", error);
-        throw error;
+        console.error("Erro ao obter usuário pelo ID:", error)
+        throw error
     }
 }
 
 async function createNewUserWithCredentials(user) {
     try {
         // Verifique se o usuário com o mesmo e-mail já existe
-        const userIdExists = await getUserIdByEmail(user.email);
+        const userIdExists = await getUserIdByEmail(user.email)
 
         // Se o usuário não existir, crie um novo
         if (!userIdExists) {
@@ -111,12 +109,12 @@ async function createNewUserWithCredentials(user) {
                 id: newUserRef.id
             };
         } else {
-            console.log(`${user.email} already exists as a user.`);
-            return null;
+            console.log(`${user.email} already exists as a user.`)
+            return null
         }
     } catch (error) {
-        console.error("Error creating a new user and session:", error);
-        throw error;
+        console.error("Error creating a new user and session:", error)
+        throw error
     }
 }
 

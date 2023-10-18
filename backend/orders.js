@@ -1,6 +1,8 @@
 import {
     collection,
     addDoc,
+    doc,
+    updateDoc,
     getFirestore,
     Timestamp,
 } from "firebase/firestore"

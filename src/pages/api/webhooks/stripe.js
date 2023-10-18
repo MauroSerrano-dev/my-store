@@ -70,8 +70,8 @@ export default async function handler(req, res) {
 
             const printifyRes = await axios.post(base_url, body_data, options)
 
-            await insertNewField(orderId, 'printify_id', printifyRes.data.id)
-
+            const a = await insertNewField(orderId, 'printify_id', printifyRes.data.id)
+            console.log(a)
             if (is_loggin)
                 await updateCart(cart_id, [])
             else
