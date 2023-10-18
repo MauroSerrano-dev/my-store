@@ -2,7 +2,6 @@ import {
     collection,
     addDoc,
     getFirestore,
-    Timestamp,
 } from "firebase/firestore"
 import { initializeApp } from 'firebase/app'
 import { firebaseConfig } from "../../../../firebase.config"
@@ -25,24 +24,6 @@ async function createWeebhook(body) {
         return {
             success: false,
             message: 'Error creating webhook',
-        }
-    }
-}
-
-export async function createTest(body) {
-    try {
-        const webhooksCollection = collection(db, 'test')
-
-        await addDoc(webhooksCollection, body)
-
-        return {
-            success: true,
-            message: 'Test created!',
-        }
-    } catch (error) {
-        return {
-            success: false,
-            message: 'Error creating test',
         }
     }
 }
