@@ -2,6 +2,7 @@ import axios from 'axios';
 import { updateCart } from '../../../../backend/cart';
 import { updateCartSessionProducts } from '../../../../backend/cart-session';
 import { createOrder, insertNewFieldToOrder } from '../../../../backend/orders';
+import { handleProductsPurchased } from '../../../../backend/product';
 
 export default async function handler(req, res) {
     if (req.method === "POST") {
