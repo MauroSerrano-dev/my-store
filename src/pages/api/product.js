@@ -16,13 +16,13 @@ export default async function handler(req, res) {
         })
     }
     else if (req.method === "PUT") {
-        const { product } = req.body;
+        const { product } = req.body
 
-        const result = await updateProduct(product);
+        const result = await updateProduct(product)
 
         res.status(result.status).json({
             status: result.status,
             msg: result.msg,
-        });
+        })
     }
 }

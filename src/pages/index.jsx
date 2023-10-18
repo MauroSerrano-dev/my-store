@@ -127,7 +127,7 @@ export default function Home(props) {
           <Image
             quality={100}
             priority
-            src='https://firebasestorage.googleapis.com/v0/b/my-store-4aef7.appspot.com/o/banners%2Fsound-vibes_color.webp?alt=media&token=d57f3b50-329b-4373-bdfc-89cfb91f6148&_gl=1*8cwri9*_ga*NjQyNzA2OTM1LjE2OTE2NjI4OTU.*_ga_CW55HF8NVT*MTY5NzQ1MTEzNC4yNDMuMS4xNjk3NDU0NTg4LjM1LjAuMA..'
+            src='https://firebasestorage.googleapis.com/v0/b/my-store-4aef7.appspot.com/o/banners%2Fsound-vibes_color.webp?alt=media&token=de2c1a9f-fef1-4214-8539-593e69ac5bdc&_gl=1*1fizmog*_ga*NjQyNzA2OTM1LjE2OTE2NjI4OTU.*_ga_CW55HF8NVT*MTY5NzY0Njk3NC4yNTkuMS4xNjk3NjQ3NjU2LjUyLjAuMA..'
             sizes='100%'
             fill
             draggable={false}
