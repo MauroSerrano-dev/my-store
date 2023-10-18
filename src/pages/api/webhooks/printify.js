@@ -32,10 +32,6 @@ async function createWeebhook(body) {
     }
 }
 
-export {
-    createOrder,
-}
-
 export default async function handler(req, res) {
     if (req.method === "POST") {
         const body = req.body
