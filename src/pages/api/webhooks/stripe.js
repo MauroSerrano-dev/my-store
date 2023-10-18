@@ -52,7 +52,13 @@ export default async function handler(req, res) {
             const body_data = {
                 external_id: orderId,
                 label: `Order: ${orderId}`,
-                line_items: line_items,
+                line_items: line_items.map(lineItem => (
+                    {
+                        product_id: lineItem.id_printify,
+                        variant_id: lineItem.variant_id,
+                        quantity: lineItem.quantity,
+                    }
+                )),
                 shipping_method: 1,
                 send_shipping_notification: true,
                 address_to: {
@@ -71,7 +77,7 @@ export default async function handler(req, res) {
 
             const printifyRes = await axios.post(base_url, body_data, options)
 
-             await insertNewFieldToOrder(orderId, 'printify_id', printifyRes.data.id)
+            await insertNewFieldToOrder(orderId, 'printify_id', printifyRes.data.id)
 
             await handleProductsPurchased(line_items)
 

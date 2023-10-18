@@ -58,8 +58,8 @@ export default async function handler(req, res) {
 
     cartItems.forEach((item, i) => {
       cartMetadata[i] = JSON.stringify({
-        product_id: item.id,
-        product_id_printify: item.id_printify,
+        id: item.id,
+        id_printify: item.id_printify,
         variant_id: item.variant_id,
         quantity: item.quantity,
       })

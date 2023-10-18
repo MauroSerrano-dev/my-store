@@ -367,9 +367,9 @@ async function updateProduct(product) {
 async function handleProductsPurchased(line_items) {
     try {
         for (const lineItem of line_items) {
-            const { product_id, variant_id, quantity } = lineItem
+            const { id, variant_id, quantity } = lineItem
 
-            const productRef = doc(db, process.env.COLL_PRODUCTS, product_id)
+            const productRef = doc(db, process.env.COLL_PRODUCTS, id)
             const productDoc = await getDoc(productRef)
 
             if (productDoc.exists()) {
