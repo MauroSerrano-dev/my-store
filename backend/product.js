@@ -11,6 +11,7 @@ import {
     query,
     setDoc,
     where,
+    Timestamp,
 } from "firebase/firestore"
 import { initializeApp } from 'firebase/app'
 import { firebaseConfig } from "../firebase.config"
@@ -62,7 +63,7 @@ async function createProduct(product) {
 
         const newProduct = {
             ...product,
-            create_at: now,
+            create_at: Timestamp.now(),
         }
 
         await setDoc(productRef, newProduct)

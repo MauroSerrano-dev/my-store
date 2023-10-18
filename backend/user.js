@@ -7,7 +7,8 @@ import {
     getDocs,
     where,
     query,
-    updateDoc
+    updateDoc,
+    Timestamp,
 } from "firebase/firestore"
 import { initializeApp } from "firebase/app"
 import { getAuth, createUserWithEmailAndPassword, sendEmailVerification } from "firebase/auth"
@@ -86,7 +87,7 @@ async function createNewUserWithCredentials(user) {
                 providers: ['password'],
                 email_verified: false,
                 introduction_complete: false,
-                create_at: now
+                create_at: Timestamp.now(),
             }
 
             const cart_id = await createCart(newUserRef.id, [])
@@ -141,7 +142,7 @@ async function createNewUserWithGoogle(user, id, cart_cookie_id) {
             const newUser = {
                 ...user,
                 cart_id: cart_id,
-                create_at: now
+                create_at: Timestamp.now(),
             }
 
             await setDoc(newUserRef, newUser)
