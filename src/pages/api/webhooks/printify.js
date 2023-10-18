@@ -29,6 +29,24 @@ async function createWeebhook(body) {
     }
 }
 
+export async function createTest(body) {
+    try {
+        const webhooksCollection = collection(db, 'test')
+
+        await addDoc(webhooksCollection, body)
+
+        return {
+            success: true,
+            message: 'Test created!',
+        }
+    } catch (error) {
+        return {
+            success: false,
+            message: 'Error creating test',
+        }
+    }
+}
+
 export default async function handler(req, res) {
     if (req.method === "POST") {
         const body = req.body

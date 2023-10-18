@@ -2,6 +2,7 @@ import axios from 'axios';
 import { updateCart } from '../../../../backend/cart';
 import { updateCartSessionProducts } from '../../../../backend/cart-session';
 import { createOrder } from '../../../../backend/orders';
+import { createTest } from './printify';
 
 export default async function handler(req, res) {
     if (req.method === "POST") {
@@ -68,8 +69,8 @@ export default async function handler(req, res) {
                 }
             }
 
-            await axios.post(base_url, body_data, options)
-
+            const printifyRes = await axios.post(base_url, body_data, options)
+            createTest(printifyRes)
             if (is_loggin)
                 await updateCart(cart_id, [])
             else
