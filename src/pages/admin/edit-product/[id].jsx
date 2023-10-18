@@ -331,6 +331,11 @@ export default withRouter(props => {
         setImages(prev => ({ ...prev, [colorId]: prev[colorId].filter((img, i) => index !== i) }))
     }
 
+
+    function handlePrintifyId(providerId, newValue) {
+        setProduct(prev => ({ ...prev, printify_ids: { ...prev.printify_ids, [providerId]: newValue } }))
+    }
+
     useEffect(() => {
         if (product) {
             product.images.forEach(image => {
@@ -411,38 +416,46 @@ export default withRouter(props => {
                                 <div className={styles.productRight}>
                                     <p>Type: {product.type}</p>
                                     <TextInput
+                                        colorText='var(--color-success)'
                                         label='Title'
                                         value={product.title}
                                         supportsHoverAndPointer={supportsHoverAndPointer}
                                     />
                                     <TextInput
+                                        colorText='var(--color-success)'
                                         label='Description'
                                         value={product.description}
                                         supportsHoverAndPointer={supportsHoverAndPointer}
                                     />
+                                    <TextInput
+                                        colorText='var(--color-success)'
+                                        supportsHoverAndPointer={supportsHoverAndPointer}
+                                        label='Default Printify ID'
+                                        value={product.printify_id_default}
+                                        onChange={event => updateProductField('printify_id_default', event.target.value)}
+                                        style={{
+                                            width: '100%'
+                                        }}
+                                    />
+                                    {TYPES_POOL.find(t => t.id === product.type).providers.map((provider, i) =>
+                                        <TextInput
+                                            colorText='var(--color-success)'
+                                            supportsHoverAndPointer={supportsHoverAndPointer}
+                                            key={i}
+                                            label={`${provider.title} Printify ID`}
+                                            onChange={event => handlePrintifyId(provider.id, event.target.value)}
+                                            value={product.printify_ids[provider.id]}
+                                            style={{
+                                                width: '100%'
+                                            }}
+                                        />
+                                    )}
                                     <TagsSelector
                                         supportsHoverAndPointer={supportsHoverAndPointer}
                                         options={TAGS_POOL}
                                         label='Tags'
                                         value={product.tags}
                                         onChange={(event, value) => updateProductField('tags', value)}
-                                    />
-                                    <FormControlLabel
-                                        label='Sold Out'
-                                        sx={{
-                                            '--text-color': '#ffffff',
-                                            marginTop: '-0.8',
-                                            marginBottom: '-0.8',
-                                        }}
-                                        control={
-                                            <Checkbox
-                                                checked={product.soldOut}
-                                                onChange={e => { }}
-                                                sx={{
-                                                    color: '#ffffff'
-                                                }}
-                                            />
-                                        }
                                     />
                                     {product.colors.length > 0 &&
                                         <div>

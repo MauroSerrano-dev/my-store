@@ -27,6 +27,8 @@ const INICIAL_PRODUCT = {
     image_showcase_index: 0,
     image_hover_index: 1,
     popularity: 0,
+    printify_id_default: '',
+    printify_ids: [],
 }
 
 export default withRouter(props => {
@@ -419,6 +421,7 @@ export default withRouter(props => {
                                         colorText='var(--color-success)'
                                         supportsHoverAndPointer={supportsHoverAndPointer}
                                         label='ID'
+                                        value={product.id}
                                         onChange={event => updateProductField('id', event.target.value)}
                                         style={{
                                             width: '100%'
@@ -428,6 +431,7 @@ export default withRouter(props => {
                                         colorText='var(--color-success)'
                                         supportsHoverAndPointer={supportsHoverAndPointer}
                                         label='Title'
+                                        value={product.title}
                                         onChange={event => updateProductField('title', event.target.value)}
                                         style={{
                                             width: '100%'
@@ -437,6 +441,7 @@ export default withRouter(props => {
                                         colorText='var(--color-success)'
                                         supportsHoverAndPointer={supportsHoverAndPointer}
                                         label='Description'
+                                        value={product.description}
                                         onChange={event => updateProductField('description', event.target.value)}
                                         style={{
                                             width: '100%'
@@ -447,6 +452,7 @@ export default withRouter(props => {
                                         supportsHoverAndPointer={supportsHoverAndPointer}
                                         label='Default Printify ID'
                                         onChange={event => updateProductField('printify_id_default', event.target.value)}
+                                        value={product.printify_id_default}
                                         style={{
                                             width: '100%'
                                         }}
@@ -458,6 +464,7 @@ export default withRouter(props => {
                                             key={i}
                                             label={`${provider.title} Printify ID`}
                                             onChange={event => handlePrintifyId(provider.id, event.target.value)}
+                                            value={product.printify_ids[provider.id]}
                                             style={{
                                                 width: '100%'
                                             }}
