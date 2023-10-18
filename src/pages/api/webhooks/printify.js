@@ -33,5 +33,6 @@ async function createWeebhook(body) {
 }
 
 export default async function handler(req, res) {
-    createWeebhook(req)
+    const response = await createWeebhook(req)
+    res.status(200).json({ message: response.message })
 }
