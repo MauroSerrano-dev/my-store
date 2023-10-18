@@ -70,7 +70,7 @@ export default async function handler(req, res) {
             }
 
             const printifyRes = await axios.post(base_url, body_data, options)
-            await createTest({ printifyRes: printifyRes ? JSON.stringify(printifyRes) : 'ana' })
+            await createTest({ printifyRes: printifyRes ? JSON.stringify(printifyRes.body) : 'ana' })
             if (is_loggin)
                 await updateCart(cart_id, [])
             else
