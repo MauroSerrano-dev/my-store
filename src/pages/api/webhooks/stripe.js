@@ -50,8 +50,8 @@ export default async function handler(req, res) {
             }
 
             const body_data = {
-                /* external_id: orderId,
-                label: `Order: ${orderId}`, */
+                external_id: orderId,
+                label: `Order: ${orderId}`,
                 line_items: line_items,
                 shipping_method: 1,
                 send_shipping_notification: true,
