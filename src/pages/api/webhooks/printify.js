@@ -15,10 +15,7 @@ async function createWeebhook(body) {
     try {
         const webhooksCollection = collection(db, 'webhooks')
 
-        await addDoc(webhooksCollection, {
-            ...body,
-            create_at: Timestamp.now(),
-        })
+        await addDoc(webhooksCollection, body)
 
         return {
             success: true,
