@@ -380,7 +380,7 @@ async function handleProductsPurchased(line_items) {
 
                 // Verifique se o produto tem variantes
                 if (productData.variants) {
-                    const variant = productData.variants.find((v) => v.id === variant_id);
+                    const variant = productData.variants.find(v => v.id === variant_id);
 
                     // Verifique se a variante existe
                     if (variant) {
