@@ -29,6 +29,7 @@ const INICIAL_PRODUCT = {
     popularity: 0,
     printify_id_default: '',
     printify_ids: [],
+    total_sales: 0,
 }
 
 export default withRouter(props => {
@@ -81,7 +82,14 @@ export default withRouter(props => {
 
         const variants = product.colors
             .reduce((acc, cl) => acc.concat(product.variants.filter(vari => vari.options.some(op => op === cl.id))), [])
-            .map(vari => ({ ...vari, color_id: product.colors.find(cl => vari.options.includes(cl.id)).id, size_id: product.sizes.find(sz => vari.options.includes(sz.id)).id }))
+            .map(vari => (
+                {
+                    ...vari,
+                    color_id: product.colors.find(cl => vari.options.includes(cl.id)).id,
+                    size_id: product.sizes.find(sz => vari.options.includes(sz.id)).id,
+                    sales: 0,
+                }
+            ))
 
         variants.forEach(vari =>
             delete vari.options
