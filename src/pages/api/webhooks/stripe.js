@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { updateCart } from '../../../../backend/cart';
 import { updateCartSessionProducts } from '../../../../backend/cart-session';
-import { createOrder, insertNewField } from '../../../../backend/orders';
+import { createOrder, insertNewFieldToOrder } from '../../../../backend/orders';
 
 export default async function handler(req, res) {
     if (req.method === "POST") {
@@ -70,7 +70,9 @@ export default async function handler(req, res) {
 
             const printifyRes = await axios.post(base_url, body_data, options)
 
-            await insertNewField(orderId, 'printify_id', printifyRes.data.id)
+            await insertNewFieldToOrder(orderId, 'printify_id', printifyRes.data.id)
+
+            await handleProductsPurchased(line_items)
 
             if (is_loggin)
                 await updateCart(cart_id, [])

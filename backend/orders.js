@@ -38,7 +38,7 @@ async function createOrder(order) {
     }
 }
 
-async function insertNewField(order_id, field_name, value) {
+async function insertNewFieldToOrder(order_id, field_name, value) {
     try {
         const orderRef = doc(db, process.env.COLL_ORDERS, order_id)
 
@@ -61,5 +61,5 @@ async function insertNewField(order_id, field_name, value) {
 
 export {
     createOrder,
-    insertNewField,
+    insertNewFieldToOrder,
 }
