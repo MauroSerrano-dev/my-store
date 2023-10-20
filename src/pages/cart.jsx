@@ -20,7 +20,7 @@ export default function Cart(props) {
 
     const [shippingValue, setShippingValue] = useState(0)
     const [shippingCountry, setShippingCountry] = useState('US')
-    const [allProducts, setAllProducts] = useState([])
+    const [allProducts, setAllProducts] = useState()
 
     const ITEMS_TOTAL = (cart?.reduce((acc, product) => acc + (convertDolarToCurrency(product.price, userCurrency.code) * product.quantity), 0) / 100).toFixed(2)
 
@@ -63,7 +63,11 @@ export default function Cart(props) {
 
     async function getAllProducts() {
         const options = {
-            method: 'GET'
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                authorization: process.env.NEXT_PUBLIC_APP_TOKEN
+            },
         }
 
         const products = await fetch("/api/products", options)
@@ -89,11 +93,11 @@ export default function Cart(props) {
 
         value = cart?.reduce((acc, item, i) => {
             const result = acc + (
-                typesAlreadyIn.includes(item.type)
-                    ? country[item.type].add_item * item.quantity
-                    : country[item.type].first_item + country[item.type].add_item * (item.quantity - 1)
+                typesAlreadyIn.includes(item.type_id)
+                    ? country[item.type_id].add_item * item.quantity
+                    : country[item.type_id].first_item + country[item.type_id].add_item * (item.quantity - 1)
             )
-            typesAlreadyIn.push(item.type)
+            typesAlreadyIn.push(item.type_id)
             return result
         }
             , 0

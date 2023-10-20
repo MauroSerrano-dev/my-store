@@ -38,7 +38,7 @@ export default async function handler(req, res) {
             itemsPerPage: limit,
             userLanguage: l,
         })
-
+        
         res.status(201).json(result)
     }
 }

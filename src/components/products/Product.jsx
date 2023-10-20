@@ -60,7 +60,7 @@ export default function Product(props) {
     const colorButtonSize = width * 0.13
     const colorsButtonsGap = width * 0.031
 
-    const scrollColorsActive = (colorButtonSize + colorsButtonsGap) * product.colors.length > width
+    const scrollColorsActive = (colorButtonSize + colorsButtonsGap) * product.colors_ids.length > width
 
     function handleDragColorsStart() {
         setIsDraggingColors(true)
@@ -145,7 +145,7 @@ export default function Product(props) {
                             height: height
                         }}
                     >
-                        {product.colors.map((color_id, i) =>
+                        {product.colors_ids.map((color_id, i) =>
                             <Image
                                 quality={100}
                                 key={i}
@@ -169,7 +169,7 @@ export default function Product(props) {
                         height: height,
                     }}
                 >
-                    {product.colors.map((color_id, i) =>
+                    {product.colors_ids.map((color_id, i) =>
                         <Image
                             quality={100}
                             key={i}
@@ -299,8 +299,8 @@ export default function Product(props) {
                         onMouseDown={handleColorsMouseDown}
                         onTouchStart={handleColorsMouseDown}
                     >
-                        {product.colors.length > 1
-                            ? product.colors.map((color_id, i) =>
+                        {product.colors_ids.length > 1
+                            ? product.colors_ids.map((color_id, i) =>
                                 <ColorButton
                                     key={i}
                                     style={{

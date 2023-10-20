@@ -85,6 +85,12 @@ export default withRouter(props => {
             return
         }
 
+        const prodColors = product.colors
+        const prodSizes = product.sizes
+
+        delete product.colors
+        delete product.sizes
+
         const options = {
             method: 'POST',
             headers: {
@@ -96,12 +102,12 @@ export default withRouter(props => {
                     ...product,
                     id: product.id + '-' + type.id,
                     art: { id: product.id, color: artColor ? artColor.id : null, },
-                    type: type.id,
+                    type_id: type.id,
                     title_lower_case: product.title.toLowerCase(),
-                    colors: product.colors.map(color => color.id),
-                    sizes: product.sizes.map(size => size.id),
+                    colors_ids: prodColors.map(color => color.id),
+                    sizes_ids: prodSizes.map(size => size.id),
                     min_price: product.variants.reduce((acc, vari) => acc < vari.price ? acc : vari.price, product.variants[0].price),
-                    images: product.colors.reduce((acc, color) => acc.concat(images[color.id].map(img => ({ src: img.src, color_id: img.color_id }))), []),
+                    images: prodColors.reduce((acc, color) => acc.concat(images[color.id].map(img => ({ src: img.src, color_id: img.color_id }))), []),
                     variants: product.variants.map(vari => ({ ...vari, sales: 0 })),
                     sold_out: null,
                 }
@@ -117,6 +123,7 @@ export default withRouter(props => {
             .catch(err => showToast({ type: 'error', msg: err }))
 
         setDisableCreateButton(false)
+        router.push('/admin/new-product')
     }
 
     function updateProductField(fieldName, newValue) {

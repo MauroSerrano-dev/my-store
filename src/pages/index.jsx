@@ -24,9 +24,9 @@ export default function Home(props) {
     windowWidth,
   } = props
 
-  const [allProducts, setAllProducts] = useState([])
-  const [productsTShirts, setProductsTShirts] = useState([])
-  const [productsHoodies, setProductsHoodies] = useState([])
+  const [allProducts, setAllProducts] = useState()
+  const [productsTShirts, setProductsTShirts] = useState()
+  const [productsHoodies, setProductsHoodies] = useState()
   const [bannerColorsOpacity, setBannerColorsOpacity] = useState(0)
 
   async function getProductsByTagOrType(queryName, categoryName) {
@@ -71,8 +71,8 @@ export default function Home(props) {
   async function getProductsFromCategories() {
     //tem que ser na mesma ordem que está no HTML
     setAllProducts(await getAllProducts())
-    setProductsTShirts(await getProductsByTagOrType('p', 't-shirts'))
-    setProductsHoodies(await getProductsByTagOrType('p', 'hoodies'))
+    setProductsTShirts(await getProductsByTagOrType('p', 't-shirt'))
+    setProductsHoodies(await getProductsByTagOrType('p', 'hoodie'))
   }
 
   useEffect(() => {

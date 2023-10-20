@@ -27,9 +27,9 @@ export default function ProductCart(props) {
     const [hoverQuantity, setHoverQuantity] = useState(false)
     const [focusQuantity, setFocusQuantity] = useState(false)
 
-    const price = `${userCurrency.symbol} ${((convertDolarToCurrency(product.price * (product.sold_out.percentage ? 1 - product.sold_out.percentage : 1), userCurrency.code) / 100) * product.quantity).toFixed(2)}`
+    const price = `${userCurrency.symbol} ${((convertDolarToCurrency(product.price * (product.sold_out ? 1 - product.sold_out.percentage : 1), userCurrency.code) / 100) * product.quantity).toFixed(2)}`
 
-    const priceUnit = `${userCurrency.symbol} ${(convertDolarToCurrency(product.price * (product.sold_out.percentage ? 1 - product.sold_out.percentage : 1), userCurrency.code) / 100).toFixed(2)} unit`
+    const priceUnit = `${userCurrency.symbol} ${(convertDolarToCurrency(product.price * (product.sold_out ? 1 - product.sold_out.percentage : 1), userCurrency.code) / 100).toFixed(2)} unit`
 
     function handleDeleteCartProduct() {
         setCart(prev => prev.filter(prod => prod.id !== product.id || prod.variant_id !== product.variant_id))
@@ -114,7 +114,7 @@ export default function ProductCart(props) {
                     </div>
                     <div className={styles.bodyContainer}>
                         <div className={styles.bodyTop}>
-                            {product.sold_out.percentage &&
+                            {product.sold_out &&
                                 <div
                                     className={styles.soldOut}
                                 >

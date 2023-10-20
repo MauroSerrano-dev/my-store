@@ -233,7 +233,7 @@ async function getProductsByQueries(props) {
 
         // Filtre por color (se presente)
         if (cl) {
-            q = query(q, where("colors", "array-contains", cl))
+            q = query(q, where("colors_ids", "array-contains", cl))
         }
 
         // Filtre por tipo (se presente)

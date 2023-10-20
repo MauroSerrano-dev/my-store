@@ -65,7 +65,7 @@ export default function CarouselProducts(props) {
                     height: productWidth * 1.764,
                 }}
             >
-                {products.length > 0 &&
+                {products &&
                     products.map((prod, i) =>
                         <Product
                             width={productWidth}
@@ -82,7 +82,7 @@ export default function CarouselProducts(props) {
                     )
                 }
             </motion.div>
-            {products.length === 0 &&
+            {!products &&
                 <div
                     className={styles.inner}
                     style={{
@@ -145,6 +145,11 @@ export default function CarouselProducts(props) {
                     )}
                 </div>
             }
-        </motion.div>
+            {products?.length === 0 &&
+                <h3 style={{color: 'var(--text-white)'}}>
+                    No Products Found
+                </h3>
+            }
+        </motion.div >
     )
 }

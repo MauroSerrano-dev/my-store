@@ -31,8 +31,8 @@ export default withRouter(props => {
         supportsHoverAndPointer,
     } = props
 
-    const [currentColor, setCurrentColor] = useState(cl ? cl : COLORS_POOL.find(cl => cl.id === product?.colors[0]))
-    const [currentSize, setCurrentSize] = useState(sz ? sz : SIZES_POOL.find(sz => sz.id === product?.sizes[0]))
+    const [currentColor, setCurrentColor] = useState(cl ? cl : COLORS_POOL.find(cl => cl.id === product?.colors_ids[0]))
+    const [currentSize, setCurrentSize] = useState(sz ? sz : SIZES_POOL.find(sz => sz.id === product?.sizes_ids[0]))
 
     const productCurrentVariant = product?.variants.find(vari => vari.size_id === currentSize?.id && vari.color_id === currentColor?.id)
 
@@ -41,8 +41,8 @@ export default withRouter(props => {
     const originalPrice = product ? `${userCurrency.symbol} ${(convertDolarToCurrency(productCurrentVariant?.price, userCurrency.code) / 100).toFixed(2)}` : undefined
 
     useEffect(() => {
-        setCurrentColor(cl ? cl : COLORS_POOL.find(cl => cl.id === product?.colors[0]))
-        setCurrentSize(sz ? sz : SIZES_POOL.find(sz => sz.id === product?.sizes[0]))
+        setCurrentColor(cl ? cl : COLORS_POOL.find(cl => cl.id === product?.colors_ids[0]))
+        setCurrentSize(sz ? sz : SIZES_POOL.find(sz => sz.id === product?.sizes_ids[0]))
     }, [router])
 
     function handleBuyNow() {
@@ -82,12 +82,6 @@ export default withRouter(props => {
             .catch(err => console.error(err))
     }
 
-    function getMugType() {
-        return currentColor.id === 521 //white
-            ? 'mugs-white'
-            : 'mugs-color'
-    }
-
     function handleAddToCart() {
         const prodVariant = product.variants.find(vari => vari.size_id === currentSize.id && vari.color_id === currentColor.id)
 
@@ -96,13 +90,13 @@ export default withRouter(props => {
             printify_ids: product.printify_ids,
             printify_id_default: product.printify_id_default,
             variant_id: prodVariant.id,
-            default_variant: { size: product.sizes[0], color: product.colors[0] },
+            default_variant: { size: product.sizes_ids[0], color: product.colors_ids[0] },
             quantity: 1,
             size: currentSize,
             color: currentColor,
             desc: 'item description',
-            type: product.type === 'mugs' ? getMugType() : product.type,
-            image: product.images.find(img => img.variants_id.includes(prodVariant.id) && img.color_id === currentColor.id).src,
+            type_id: product.type_id,
+            image: product.images.filter(img => img.color_id === currentColor.id)[product.image_showcase_index].src,
             price: prodVariant.price,
             title: product.title,
             sold_out: product.sold_out,
@@ -146,11 +140,11 @@ export default withRouter(props => {
                                 className={styles.sliderContainer}
                             >
                                 <ShareButton
-                                    link={`${process.env.NEXT_PUBLIC_DOMAIN}/product/${product.id}${currentColor.id !== product.colors[0].id && currentSize.id !== product.sizes[0].id
+                                    link={`${process.env.NEXT_PUBLIC_DOMAIN}/product/${product.id}${currentColor.id !== product.colors_ids[0].id && currentSize.id !== product.sizes_ids[0].id
                                         ? `?sz=${currentSize.title.toLowerCase()}&cl=${currentColor.title.replace('/', '+').replace(' ', '+').toLowerCase()}`
-                                        : currentSize.id !== product.sizes[0].id
+                                        : currentSize.id !== product.sizes_ids[0].id
                                             ? `?sz=${currentSize.title.toLowerCase()}`
-                                            : currentColor.id !== product.colors[0].id
+                                            : currentColor.id !== product.colors_ids[0].id
                                                 ? `?cl=${currentColor.title.replace('/', '+').replace(' ', '+').toLowerCase()}`
                                                 : ''
                                         }`}
@@ -164,7 +158,7 @@ export default withRouter(props => {
                                 />
                                 <ImagesSlider
                                     images={product.images}
-                                    colors={product.colors.map(color_id => COLORS_POOL.find(color => color.id === color_id))}
+                                    colors={product.colors_ids.map(color_id => COLORS_POOL.find(color => color.id === color_id))}
                                     currentColor={currentColor}
                                     supportsHoverAndPointer={supportsHoverAndPointer}
                                     width={windowWidth > 1074 ? 450 : windowWidth > 549 ? 450 : windowWidth}
@@ -205,9 +199,9 @@ export default withRouter(props => {
                                 </p>
                             </div>
                             <div>
-                                <p style={{ textAlign: 'start', fontWeight: '700' }}>{product.colors.length === 1 ? 'Color' : 'Pick a color'}</p>
+                                <p style={{ textAlign: 'start', fontWeight: '700' }}>{product.colors_ids.length === 1 ? 'Color' : 'Pick a color'}</p>
                                 <ColorSelector
-                                    options={product.colors.map(color_id => COLORS_POOL.find(cl => cl.id === color_id))}
+                                    options={product.colors_ids.map(color_id => COLORS_POOL.find(cl => cl.id === color_id))}
                                     value={[currentColor]}
                                     onChange={handleColorChange}
                                     supportsHoverAndPointer={supportsHoverAndPointer}
@@ -218,10 +212,10 @@ export default withRouter(props => {
                                 />
                             </div>
                             <div>
-                                <p style={{ textAlign: 'start', fontWeight: '700' }}>{product.sizes.length === 1 ? 'Size' : 'Pick a size'}</p>
+                                <p style={{ textAlign: 'start', fontWeight: '700' }}>{product.sizes_ids.length === 1 ? 'Size' : 'Pick a size'}</p>
                                 <SizesSelector
                                     value={[currentSize]}
-                                    options={product.sizes.map(size_id => SIZES_POOL.find(sz => sz.id === size_id))}
+                                    options={product.sizes_ids.map(size_id => SIZES_POOL.find(sz => sz.id === size_id))}
                                     onChange={handleSizeChange}
                                 />
                             </div>

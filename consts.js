@@ -57,11 +57,11 @@ export const MENU_OPTIONS = [
 export const MENU_FORWARD_OPTIONS = {
     departments: [
         { title: 'T-Shirts', type: 'link', href: '/search?p=t-shirt' },
-        { title: 'Hoodies', type: 'link', href: '/search?p=hoodies' },
+        { title: 'Hoodies', type: 'link', href: '/search?p=hoodie' },
     ],
     products: [
         { title: 'T-Shirts', type: 'link', href: '/search?p=t-shirt' },
-        { title: 'Hoodies', type: 'link', href: '/search?p=hoodies' },
+        { title: 'Hoodies', type: 'link', href: '/search?p=hoodie' },
         { title: 'Long Sleeves', type: 'link', href: '/search?p=long+sleeves' },
         { title: 'Socks', type: 'link', href: '/search?p=socks' },
         { title: 'Mugs', type: 'link', href: '/search?p=mugs' },
@@ -103,8 +103,8 @@ export const TAGS_POOL = [
 ]
 
 export const itemsNavBar = [
-    { value: 't-shirts', title: 'T-SHIRTS' },
-    { value: 'hoodies', title: 'HOODIES' },
+    { value: 't-shirt', title: 'T-SHIRTS' },
+    { value: 'hoodie', title: 'HOODIES' },
     { value: 'mugs', title: 'MUGS' },
     { value: 'bags', title: 'BAGS' },
     { value: 'accessories', title: 'ACCESSORIES' },
@@ -1553,32 +1553,32 @@ export function getShippingOptions(country) {
     switch (EU_COUNTRIES.includes(country) ? 'EU' : country) {
         case 'US':
             return {
-                't-shirts': {
-                    provider: MOSTER_DIGITAL,
+                't-shirt': {
+                    provider_id: 29,
                     first_item: 475,
                     add_item: 240,
                     currency: 'usd'
                 },
-                'hoodies': {
-                    provider: MOSTER_DIGITAL,
+                'hoodie': {
+                    provider_id: 29,
                     first_item: 849,
                     add_item: 209,
                     currency: 'usd'
                 },
                 'mugs-white': {
-                    provider: MOSTER_DIGITAL,
+                    provider_id: 29,
                     first_item: 849,
                     add_item: 209,
                     currency: 'usd'
                 },
                 'mugs-color': {
-                    provider: MOSTER_DIGITAL,
+                    provider_id: 29,
                     first_item: 849,
                     add_item: 209,
                     currency: 'usd'
                 },
                 'raglan-tee': {
-                    provider: PRINT_GEEK,
+                    provider_id: 27,
                     first_item: 849,
                     add_item: 330,
                     currency: 'usd'
@@ -1586,20 +1586,20 @@ export function getShippingOptions(country) {
             }
         case 'CA':
             return {
-                't-shirts': {
-                    provider: MOSTER_DIGITAL,
+                't-shirt': {
+                    provider_id: 29,
                     first_item: 939,
                     add_item: 439,
                     currency: 'usd'
                 },
-                'hoodies': {
-                    provider: MOSTER_DIGITAL,
+                'hoodie': {
+                    provider_id: 29,
                     first_item: 1269,
                     add_item: 659,
                     currency: 'usd'
                 },
                 'raglan-tee': {
-                    provider: PRINT_GEEK,
+                    provider_id: 27,
                     first_item: 679,
                     add_item: 219,
                     currency: 'usd'
@@ -1607,20 +1607,20 @@ export function getShippingOptions(country) {
             }
         case 'PL':
             return {
-                't-shirts': {
-                    provider: PRINT_LOGISTIC,
+                't-shirt': {
+                    provider_id: 87,
                     first_item: 499,
                     add_item: 119,
                     currency: 'usd'
                 },
-                'hoodies': {
-                    provider: TEXTILDRUCK_EUROPA,
+                'hoodie': {
+                    provider_id: 26,
                     first_item: 699,
                     add_item: 239,
                     currency: 'usd'
                 },
                 'raglan-tee': {
-                    provider: T_SHIRT_AND_SONS,
+                    provider_id: 6,
                     first_item: 749,
                     add_item: 129,
                     currency: 'usd'
@@ -1628,20 +1628,20 @@ export function getShippingOptions(country) {
             }
         case 'EU':
             return {
-                't-shirts': {
-                    provider: PRINT_LOGISTIC,
+                't-shirt': {
+                    provider_id: 87,
                     first_item: 569,
                     add_item: 199,
                     currency: 'usd'
                 },
-                'hoodies': {
-                    provider: TEXTILDRUCK_EUROPA,
+                'hoodie': {
+                    provider_id: 26,
                     first_item: 699,
                     add_item: 239,
                     currency: 'usd'
                 },
                 'raglan-tee': {
-                    provider: T_SHIRT_AND_SONS,
+                    provider_id: 6,
                     first_item: 749,
                     add_item: 129,
                     currency: 'usd'
@@ -1649,20 +1649,20 @@ export function getShippingOptions(country) {
             }
         case 'UK':
             return {
-                't-shirts': {
-                    provider: PRINT_CLEVER,
+                't-shirt': {
+                    provider_id: 72,
                     first_item: 429,
                     add_item: 199,
                     currency: 'usd'
                 },
-                'hoodies': {
-                    provider: PRINT_CLEVER,
+                'hoodie': {
+                    provider_id: 72,
                     first_item: 759,
                     add_item: 299,
                     currency: 'usd'
                 },
                 'raglan-tee': {
-                    provider: T_SHIRT_AND_SONS,
+                    provider_id: 6,
                     first_item: 398,
                     add_item: 129,
                     currency: 'usd'
@@ -1670,40 +1670,40 @@ export function getShippingOptions(country) {
             }
         case 'AU':
             return {
-                't-shirts': {
-                    provider: MOSTER_DIGITAL,
+                't-shirt': {
+                    provider_id: 29,
                     first_item: 1249,
                     add_item: 499,
                     currency: 'usd'
                 },
-                'hoodies': {
-                    provider: MOSTER_DIGITAL,
+                'hoodie': {
+                    provider_id: 29,
                     first_item: 2199,
                     add_item: 999,
                     currency: 'usd'
                 },
                 'raglan-tee': {
-                    provider: PRINT_GEEK,
+                    provider_id: 27,
                     first_item: 1099,
                     add_item: 549,
                     currency: 'usd'
                 },
             }
         default: return {
-            't-shirts': {
-                provider: MOSTER_DIGITAL,
+            't-shirt': {
+                provider_id: 29,
                 first_item: 1000,
                 add_item: 400,
                 currency: 'usd'
             },
-            'hoodies': {
-                provider: MOSTER_DIGITAL,
+            'hoodie': {
+                provider_id: 29,
                 first_item: 1500,
                 add_item: 1000,
                 currency: 'usd'
             },
             'raglan-tee': {
-                provider: PRINT_GEEK,
+                provider_id: 27,
                 first_item: 1099,
                 add_item: 549,
                 currency: 'usd'
