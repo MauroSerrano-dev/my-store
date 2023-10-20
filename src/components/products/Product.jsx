@@ -3,7 +3,7 @@ import { useEffect, useState, useRef } from 'react'
 import { Button, Skeleton } from '@mui/material'
 import Link from 'next/link'
 import { motion } from "framer-motion";
-import { convertDolarToCurrency } from '../../../consts';
+import { COLORS_POOL, convertDolarToCurrency } from '../../../consts';
 import ColorButton from '../ColorButton';
 import Image from 'next/image';
 
@@ -79,7 +79,7 @@ export default function Product(props) {
         setAntVisualBug(true)
     }
 
-    const url = `/product/${product.id}${product.variants[0].id === currentVariant.id ? '' : `?cl=${product.colors.find(c => currentVariant.color_id === c.id).title.replace('/', '+').toLowerCase()}`}`
+    const url = `/product/${product.id}${product.variants[0].id === currentVariant.id ? '' : `?cl=${COLORS_POOL.find(color => color.id === currentVariant.color_id).title.replace('/', '+').toLowerCase()}`}`
 
     function handleMouseUpColor(event, color) {
         event.stopPropagation()
@@ -145,17 +145,17 @@ export default function Product(props) {
                             height: height
                         }}
                     >
-                        {product.colors.map((color, i) =>
+                        {product.colors.map((color_id, i) =>
                             <Image
                                 quality={100}
                                 key={i}
-                                src={product.images.filter(img => img.color_id === color.id)[product.image_hover_index].src}
+                                src={product.images.filter(img => img.color_id === color_id)[product.image_hover_index].src}
                                 sizes={`${height * 2 / 3}px`}
                                 fill
                                 alt={product.title}
                                 style={{
-                                    zIndex: currentVariant.color_id === color.id ? 3 : 2,
-                                    opacity: currentVariant.color_id === color.id ? 3 : 2,
+                                    zIndex: currentVariant.color_id === color_id ? 3 : 2,
+                                    opacity: currentVariant.color_id === color_id ? 3 : 2,
                                 }}
                             />
                         )}
@@ -169,18 +169,18 @@ export default function Product(props) {
                         height: height,
                     }}
                 >
-                    {product.colors.map((color, i) =>
+                    {product.colors.map((color_id, i) =>
                         <Image
                             quality={100}
                             key={i}
-                            src={product.images.filter(img => img.color_id === color.id)[product.image_showcase_index].src}
+                            src={product.images.filter(img => img.color_id === color_id)[product.image_showcase_index].src}
                             fill
                             sizes={`${height * 2 / 3}px`}
                             alt={product.title}
                             onLoadingComplete={() => setImageLoad(true)}
                             style={{
-                                zIndex: currentVariant.color_id === color.id ? 1 : 0,
-                                opacity: currentVariant.color_id === color.id ? 1 : 0,
+                                zIndex: currentVariant.color_id === color_id ? 1 : 0,
+                                opacity: currentVariant.color_id === color_id ? 1 : 0,
                             }}
                         />
                     )}
@@ -201,7 +201,7 @@ export default function Product(props) {
                 <div
                     className={styles.infos}
                 >
-                    {product.sold_out.percentage &&
+                    {product.sold_out &&
                         <div
                             className={styles.soldOut}
                         >
@@ -236,7 +236,7 @@ export default function Product(props) {
                         {product.title}
                     </p>
                     <div className={styles.priceContainer}>
-                        {product.sold_out.percentage &&
+                        {product.sold_out &&
                             <p
                                 className={styles.oldPrice}
                                 style={{
@@ -252,7 +252,7 @@ export default function Product(props) {
                                 fontSize: width * 0.085
                             }}
                         >
-                            {userCurrency.symbol} {(convertDolarToCurrency(product.min_price * (product.sold_out.percentage ? 1 - product.sold_out.percentage : 1), userCurrency.code) / 100).toFixed(2)}
+                            {userCurrency.symbol} {(convertDolarToCurrency(product.min_price * (product.sold_out ? 1 - product.sold_out.percentage : 1), userCurrency.code) / 100).toFixed(2)}
                         </p>
                     </div>
                     <div className={styles.infoBottomPadding}>
@@ -300,7 +300,7 @@ export default function Product(props) {
                         onTouchStart={handleColorsMouseDown}
                     >
                         {product.colors.length > 1
-                            ? product.colors.map((color, i) =>
+                            ? product.colors.map((color_id, i) =>
                                 <ColorButton
                                     key={i}
                                     style={{
@@ -308,8 +308,8 @@ export default function Product(props) {
                                         width: colorButtonSize,
                                         pointerEvents: isDraggingColors ? 'none' : 'auto',
                                     }}
-                                    selected={currentVariant.color_id === color.id}
-                                    color={color}
+                                    selected={currentVariant.color_id === color_id}
+                                    color={COLORS_POOL.find(cl => cl.id === color_id)}
                                     onMouseUp={handleMouseUpColor}
                                     supportsHoverAndPointer={!isDragging && !isDraggingColors && supportsHoverAndPointer}
                                 />

@@ -163,12 +163,14 @@ async function getProductsByTitle(s) {
 async function getProductsByQueries(props) {
     const {
         s, //search
-        t, // tags
-        c, // type
-        page = 1, // número da página
-        min, // preço mínimo
-        max, // preço máximo
-        order = 'popularity', // order
+        t, //tags
+        p, //type
+        c, //collection
+        cl, //color
+        page = 1, //número da página
+        min, //preço mínimo
+        max, //preço máximo
+        order = 'popularity',
         itemsPerPage = 60,
         userLanguage = 'en'
     } = props
@@ -224,9 +226,19 @@ async function getProductsByQueries(props) {
             q = query(q, where("tags", "array-contains-any", t.split(' ')))
         }
 
-        // Filtre por tipo (se presente)
+        // Filtre por collection (se presente)
         if (c) {
-            q = query(q, where("type", "==", c))
+            q = query(q, where("collection_id", "==", c))
+        }
+
+        // Filtre por color (se presente)
+        if (cl) {
+            q = query(q, where("colors", "array-contains", cl))
+        }
+
+        // Filtre por tipo (se presente)
+        if (p) {
+            q = query(q, where("type_id", "==", p))
         }
 
         // Filtre por preço mínimo (se presente)
@@ -330,31 +342,29 @@ async function getAllProductPrintifyIds() {
     }
 }
 
-async function updateProduct(product) {
-    if (!product || !product.id) {
+async function updateProduct(product_id, product_new_fields) {
+    if (!product_id || !product_new_fields) {
         return {
             status: 400,
             msg: "Invalid update data",
         }
     }
 
-    if (product.variants.some(vari => vari.price < product.variants[0].cost)) {
+    if (product_new_fields.variants && product_new_fields.variants.some(vari => vari.price < product_new_fields.variants[0].cost)) {
         return {
             status: 400,
             msg: "Invalid product price.",
         }
     }
 
-    const productRef = doc(db, process.env.COLL_PRODUCTS, product.id)
+    const productRef = doc(db, process.env.COLL_PRODUCTS, product_id)
 
     try {
-        await updateDoc(productRef, {
-            ...product,
-        })
+        await updateDoc(productRef, product_new_fields)
 
         return {
             status: 200,
-            msg: `Product ${product.id} updated successfully!`,
+            msg: `Product ${product_id} updated successfully!`,
         }
     } catch (error) {
         console.log("Error updating product:", error)

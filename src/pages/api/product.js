@@ -15,10 +15,10 @@ export default async function handler(req, res) {
             msg: result.msg,
         })
     }
-    else if (req.method === "PUT") {
-        const { product } = req.body
+    else if (req.method === "PATCH") {
+        const { product_id, product_new_fields } = req.body
 
-        const result = await updateProduct(product)
+        const result = await updateProduct(product_id, product_new_fields)
 
         res.status(result.status).json({
             status: result.status,

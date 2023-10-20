@@ -44,7 +44,6 @@ async function getUserIdByEmail(email) {
 }
 
 async function getUserById(id) {
-
     try {
         const userDocRef = doc(db, process.env.COLL_USERS, id)
 

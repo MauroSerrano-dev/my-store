@@ -2,25 +2,27 @@ import ImagesSlider from '@/components/ImagesSlider'
 import styles from '@/styles/admin/new-product/type.module.css'
 import { Button, Checkbox, Slider } from '@mui/material'
 import { useEffect, useState } from 'react'
-import KeyboardArrowLeftRoundedIcon from '@mui/icons-material/KeyboardArrowLeftRounded';
+import KeyboardArrowLeftRoundedIcon from '@mui/icons-material/KeyboardArrowLeftRounded'
 import { withRouter } from 'next/router'
 import Link from 'next/link'
-import { TAGS_POOL, TYPES_POOL } from '../../../../consts'
+import { COLLECTIONS, TAGS_POOL, PRODUCT_TYPES, COLORS_POOL, SIZES_POOL, PROVIDERS_POOL } from '../../../../consts'
 import ColorSelector from '@/components/ColorSelector'
 import TextInput from '@/components/material-ui/TextInput'
 import TagsSelector from '@/components/material-ui/Autocomplete'
-import ClearRoundedIcon from '@mui/icons-material/ClearRounded';
+import ClearRoundedIcon from '@mui/icons-material/ClearRounded'
 import ButtonIcon from '@/components/material-ui/ButtonIcon'
-import SizesSelector from '@/components/SizesSelector';
-import Chain from '@/components/svgs/Chain';
-import BrokeChain from '@/components/svgs/BrokeChain';
-import { showToast } from '../../../../utils/toasts';
-import NoFound404 from '@/pages/404';
+import SizesSelector from '@/components/SizesSelector'
+import Chain from '@/components/svgs/Chain'
+import BrokeChain from '@/components/svgs/BrokeChain'
+import { showToast } from '../../../../utils/toasts'
+import NoFound404 from '@/pages/404'
+import Selector from '@/components/material-ui/Selector'
 
 const INICIAL_PRODUCT = {
     id: '',
     title: '',
     description: '',
+    collection: { id: '', title: '' },
     colors: [],
     sizes: [],
     images: [],
@@ -30,6 +32,10 @@ const INICIAL_PRODUCT = {
     printify_id_default: '',
     printify_ids: [],
     total_sales: 0,
+    art: {
+        id: '',
+        color_id: '',
+    },
 }
 
 export default withRouter(props => {
@@ -38,7 +44,7 @@ export default withRouter(props => {
         router,
         session,
         supportsHoverAndPointer,
-    } = props;
+    } = props
 
     const [product, setProduct] = useState(INICIAL_PRODUCT)
     const [colorIndex, setColorIndex] = useState(0)
@@ -47,22 +53,21 @@ export default withRouter(props => {
     const [colorsChained, setColorsChained] = useState([])
     const [sizesChained, setSizesChained] = useState({})
     const [disableCreateButton, setDisableCreateButton] = useState(false)
+    const [artColor, setArtColor] = useState(null)
 
     useEffect(() => {
         if (router.isReady) {
-            const tp = router.query.type
-            if (TYPES_POOL.some(t => t.id === tp)) {
-                setType(tp)
-                const typeInfos = TYPES_POOL.find(t => t.id === tp)
-                setProduct(prev => (
-                    {
-                        ...prev,
-                        sizes: typeInfos.sizes,
-                        variants: typeInfos.variants,
-                        tags: [tp]
-                    }
-                ))
-            }
+            const type_id = router.query.type
+            const tp = PRODUCT_TYPES.find(t => t.id === type_id)
+            setProduct(prev => (
+                {
+                    ...prev,
+                    printify_ids: tp.providers.reduce((acc, prov_id) => ({ ...acc, [prov_id]: '' }), {}),
+                    tags: [tp.id],
+                    sizes: SIZES_POOL.filter(sz => tp.sizes.includes(sz.id))
+                }
+            ))
+            setType(tp)
         }
     }, [router])
 
@@ -80,36 +85,22 @@ export default withRouter(props => {
             return
         }
 
-        const variants = product.colors
-            .reduce((acc, cl) => acc.concat(product.variants.filter(vari => vari.options.some(op => op === cl.id))), [])
-            .map(vari => (
-                {
-                    ...vari,
-                    color_id: product.colors.find(cl => vari.options.includes(cl.id)).id,
-                    size_id: product.sizes.find(sz => vari.options.includes(sz.id)).id,
-                    sales: 0,
-                }
-            ))
-
-        variants.forEach(vari =>
-            delete vari.options
-        )
-
         const options = {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
                 product: {
                     ...product,
+                    id: product.id + '-' + type.id,
+                    art: { id: product.id, color: artColor ? artColor.id : null, },
+                    type: type.id,
                     title_lower_case: product.title.toLowerCase(),
-                    type: type,
-                    min_price: variants.reduce((acc, vari) => acc < vari.price ? acc : vari.price, variants[0].price),
-                    images: product.colors.reduce((acc, color) => acc.concat(images[color.id].map(img => ({ src: img.src, color_id: img.color_id, variants_id: img.variants_id }))), []),
-                    variants: variants,
-                    sold_out: {
-                        expiration_date: null,
-                        percentage: null,
-                    },
+                    colors: product.colors.map(color => color.id),
+                    sizes: product.sizes.map(size => size.id),
+                    min_price: product.variants.reduce((acc, vari) => acc < vari.price ? acc : vari.price, product.variants[0].price),
+                    images: product.colors.reduce((acc, color) => acc.concat(images[color.id].map(img => ({ src: img.src, color_id: img.color_id }))), []),
+                    variants: product.variants.map(vari => ({ ...vari, sales: 0 })),
+                    sold_out: null,
                 }
             })
         }
@@ -149,7 +140,7 @@ export default withRouter(props => {
                 else {
                     setSizesChained(prev => ({ ...prev, [color.id]: [] }))
                 }
-                setImages(prevImgs => ({ ...prevImgs, [color.id]: [{ src: '', variants_id: product.variants.filter(vari => vari.options.includes(color.id)).map(vari => vari.id), color_id: color.id, hover: false, showcase: false }] }))
+                setImages(prevImgs => ({ ...prevImgs, [color.id]: [{ src: '', color_id: color.id, hover: false, showcase: false }] }))
             }
             // remove color
             else {
@@ -166,6 +157,7 @@ export default withRouter(props => {
             return {
                 ...prev,
                 colors: value,
+                variants: type.variants.filter(vari => value.some(cl => cl.id === vari.color_id && prev.sizes.some(sz => sz.id === vari.size_id)))
             }
         })
     }
@@ -176,7 +168,7 @@ export default withRouter(props => {
 
     function handleAddNewImage() {
         const colorId = product.colors[colorIndex].id
-        setImages(prev => ({ ...prev, [colorId]: prev[colorId].concat({ src: '', variants_id: product.variants.filter(vari => vari.options.includes(colorId)).map(vari => vari.id), color_id: colorId, hover: false, showcase: false }) }))
+        setImages(prev => ({ ...prev, [colorId]: prev[colorId].concat({ src: '', color_id: colorId, hover: false, showcase: false }) }))
     }
 
     function handleDeleteImageField(index) {
@@ -190,7 +182,13 @@ export default withRouter(props => {
     }
 
     function handleChangeSizes(value) {
-        setProduct(prev => ({ ...prev, sizes: value }))
+        setProduct(prev => (
+            {
+                ...prev,
+                sizes: value,
+                variants: type.variants.filter(vari => value.some(sz => sz.id === vari.size_id && prev.colors.some(cl => cl.id === vari.color_id)))
+            }
+        ))
     }
 
     function handleChainSize(sizeId) {
@@ -220,11 +218,11 @@ export default withRouter(props => {
                     {
                         ...prev,
                         variants: prev.variants.map(vari =>
-                            vari.options.includes(sizeId) && vari.options.some(op => colorsChained.includes(op))
+                            vari.size_id === sizeId && colorsChained.includes(vari.color_id)
                                 ? {
                                     ...vari,
-                                    price: prev.variants.find(v => v.options.includes(colorId) && sizesChained[colorId].some(sId => v.options.includes(sId)))
-                                        ? prev.variants.find(v => v.options.includes(colorId) && sizesChained[colorId].some(sId => v.options.includes(sId))).price
+                                    price: prev.variants.find(v => v.color_id === colorId && sizesChained[colorId].some(sId => v.size_id === sId))
+                                        ? prev.variants.find(v => v.color_id === colorId && sizesChained[colorId].some(sId => v.size_id === sId)).price
                                         : vari.price
                                 }
                                 : vari
@@ -242,11 +240,11 @@ export default withRouter(props => {
                     {
                         ...prev,
                         variants: prev.variants.map(vari =>
-                            vari.options.includes(sizeId) && vari.options.includes(colorId)
+                            vari.size_id === sizeId && vari.color_id === colorId
                                 ? {
                                     ...vari,
-                                    price: prev.variants.find(v => v.options.includes(colorId) && sizesChained[colorId].some(sId => v.options.includes(sId)))
-                                        ? prev.variants.find(v => v.options.includes(colorId) && sizesChained[colorId].some(sId => v.options.includes(sId))).price
+                                    price: prev.variants.find(v => v.color_id === colorId && sizesChained[colorId].some(sId => v.size_id === sId))
+                                        ? prev.variants.find(v => v.color_id === colorId && sizesChained[colorId].some(sId => v.size_id === sId)).price
                                         : vari.price
                                 }
                                 : vari
@@ -274,11 +272,11 @@ export default withRouter(props => {
                 {
                     ...prev,
                     variants: prev.variants.map(vari =>
-                        vari.options.includes(colorId)
+                        vari.color_id === colorId
                             ? {
                                 ...vari,
                                 price: colorsChained.length > 0
-                                    ? prev.variants.find(v => colorsChained.some(cId => v.options.includes(cId)) && vari.options.some(ele => v.options.includes(ele))).price
+                                    ? prev.variants.find(v => colorsChained.includes(v.color_id) && vari.size_id === v.size_id).price
                                     : vari.price
                             }
                             : vari
@@ -297,7 +295,7 @@ export default withRouter(props => {
             {
                 ...prev,
                 variants: prev.variants.map(vari =>
-                    sizesChained[product.colors[colorIndex].id].some(sId => vari.options.includes(sId)) && colorsChained.some(cId => vari.options.includes(cId))
+                    sizesChained[product.colors[colorIndex].id].some(sId => vari.size_id === sId) && colorsChained.includes(vari.color_id)
                         ? { ...vari, price: Number(value) }
                         : vari
                 )
@@ -310,7 +308,7 @@ export default withRouter(props => {
             {
                 ...prev,
                 variants: prev.variants.map(vari =>
-                    colorsChained.some(cId => vari.options.includes(cId)) && vari.options.includes(sizeId)
+                    colorsChained.some(cId => vari.color_id === cId && vari.size_id === sizeId)
                         ? { ...vari, price: Number(value) }
                         : vari
                 )
@@ -323,7 +321,7 @@ export default withRouter(props => {
             {
                 ...prev,
                 variants: prev.variants.map(vari =>
-                    sizesChained[product.colors[colorIndex].id].some(sId => vari.options.includes(sId)) && vari.options.includes(colorId)
+                    sizesChained[product.colors[colorIndex].id].some(sId => vari.size_id === sId && vari.color_id === colorId)
                         ? { ...vari, price: Number(value) }
                         : vari
                 )
@@ -336,7 +334,7 @@ export default withRouter(props => {
             {
                 ...prev,
                 variants: prev.variants.map(vari =>
-                    vari.options.includes(sizeId) && vari.options.includes(colorId)
+                    vari.size_id === sizeId && vari.color_id === colorId
                         ? { ...vari, price: Number(value) }
                         : vari
                 )
@@ -402,12 +400,12 @@ export default withRouter(props => {
                                 <div className={styles.productLeft}>
                                     <SizesSelector
                                         value={product.sizes}
-                                        options={TYPES_POOL.find(t => t.id === type).sizes}
+                                        options={type.sizes.map(sz_id => SIZES_POOL.find(size => size.id === sz_id))}
                                         onChange={handleChangeSizes}
                                     />
                                     <ColorSelector
                                         value={product.colors}
-                                        options={TYPES_POOL.find(t => t.id === type).colors}
+                                        options={type.colors.map(cl_id => COLORS_POOL.find(color => color.id === cl_id))}
                                         onChange={handleChangeColors}
                                         supportsHoverAndPointer={supportsHoverAndPointer}
                                         style={{
@@ -425,16 +423,21 @@ export default withRouter(props => {
                                     }
                                 </div>
                                 <div className={styles.productRight}>
-                                    <TextInput
-                                        colorText='var(--color-success)'
-                                        supportsHoverAndPointer={supportsHoverAndPointer}
-                                        label='ID'
-                                        value={product.id}
-                                        onChange={event => updateProductField('id', event.target.value)}
-                                        style={{
-                                            width: '100%'
-                                        }}
-                                    />
+                                    <div className='flex center'>
+                                        <TextInput
+                                            colorText='var(--color-success)'
+                                            supportsHoverAndPointer={supportsHoverAndPointer}
+                                            label='ID'
+                                            value={product.id}
+                                            onChange={event => updateProductField('id', event.target.value.toLowerCase().replace(' ', '-'))}
+                                            style={{
+                                                width: '100%'
+                                            }}
+                                        />
+                                        <p style={{ whiteSpace: 'nowrap', paddingLeft: '0.5rem' }}>
+                                            {type.id}
+                                        </p>
+                                    </div>
                                     <TextInput
                                         colorText='var(--color-success)'
                                         supportsHoverAndPointer={supportsHoverAndPointer}
@@ -455,6 +458,29 @@ export default withRouter(props => {
                                             width: '100%'
                                         }}
                                     />
+                                    <Selector
+                                        label='Collection'
+                                        options={COLLECTIONS.map(coll => ({ value: coll.id, name: coll.title }))}
+                                        value={product.collection.id}
+                                        style={{
+                                            height: 56,
+                                            color: 'var(--color-success)'
+                                        }}
+                                        onChange={event => updateProductField('collection', COLLECTIONS.find(coll => coll.id === event.target.value))}
+                                        supportsHoverAndPointer={supportsHoverAndPointer}
+                                    />
+                                    <h3>
+                                        Art Color
+                                    </h3>
+                                    <ColorSelector
+                                        value={[artColor]}
+                                        options={COLORS_POOL.filter(color => color.colors.length === 1)}
+                                        onChange={(value, i, color) => setArtColor(prev => prev?.id === color.id ? null : color)}
+                                        supportsHoverAndPointer={supportsHoverAndPointer}
+                                        style={{
+                                            paddingBottom: '1rem',
+                                        }}
+                                    />
                                     <TextInput
                                         colorText='var(--color-success)'
                                         supportsHoverAndPointer={supportsHoverAndPointer}
@@ -465,7 +491,7 @@ export default withRouter(props => {
                                             width: '100%'
                                         }}
                                     />
-                                    {TYPES_POOL.find(t => t.id === type).providers.map((provider, i) =>
+                                    {type.providers.map(prov_id => PROVIDERS_POOL.find(prov => prov.id === prov_id)).map((provider, i) =>
                                         <TextInput
                                             colorText='var(--color-success)'
                                             supportsHoverAndPointer={supportsHoverAndPointer}
@@ -555,7 +581,7 @@ export default withRouter(props => {
                                                             supportsHoverAndPointer={supportsHoverAndPointer}
                                                             label={`${size.title}`}
                                                             onChange={event => handleChangePrice(event.target.value, size.id)}
-                                                            value={product.variants.find(vari => vari.options.includes(size.id) && vari.options.includes(product.colors[colorIndex].id)).price}
+                                                            value={product.variants.find(vari => vari.size_id === size.id && vari.color_id === product.colors[colorIndex].id).price}
                                                             style={{
                                                                 width: 90,
                                                             }}
@@ -569,9 +595,9 @@ export default withRouter(props => {
                                                             }}
                                                         />
                                                         <Slider
-                                                            value={product.variants.find(vari => vari.options.includes(size.id) && vari.options.includes(product.colors[colorIndex].id)).price}
-                                                            min={product.variants[0].cost}
-                                                            max={product.variants.reduce((acc, vari) => vari.cost > acc.cost ? vari : acc, { cost: 0 }).cost * 3}
+                                                            value={product.variants.find(vari => vari.size_id === size.id && vari.color_id === product.colors[colorIndex].id).price}
+                                                            min={type.variants[0].cost}
+                                                            max={type.variants.reduce((acc, vari) => vari.cost > acc.cost ? vari : acc, { cost: 0 }).cost * 3}
                                                             valueLabelDisplay="auto"
                                                             onChange={event => handleChangePrice(event.target.value, size.id)}
                                                         />

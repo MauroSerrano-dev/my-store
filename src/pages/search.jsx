@@ -2,10 +2,10 @@ import { withRouter } from 'next/router'
 import styles from '@/styles/pages/search.module.css'
 import { useEffect, useRef, useState } from 'react'
 import Product from '@/components/products/Product'
-import Link from 'next/link';
-import Selector from '@/components/material-ui/Selector';
-import { Checkbox, FormControlLabel } from '@mui/material';
-import Footer from '@/components/Footer';
+import Link from 'next/link'
+import Selector from '@/components/material-ui/Selector'
+import { Checkbox, FormControlLabel } from '@mui/material'
+import Footer from '@/components/Footer'
 
 const THEMES_VALUES = [
     { name: 'Computer', value: 'computer' },
@@ -28,6 +28,7 @@ export default withRouter(props => {
     const {
         s,
         t,
+        c,
         page = 1,
         min,
         max,

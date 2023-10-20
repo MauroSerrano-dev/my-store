@@ -20,6 +20,7 @@ export default function Selector(props) {
         width,
         supportsHoverAndPointer,
         name = 'name',
+        style,
     } = props
 
     const [hover, setHover] = useState(false)
@@ -44,25 +45,29 @@ export default function Selector(props) {
                 {label}
             </InputLabel>
             <Select
-                name='dasda'
+                name={name}
                 label={label}
                 value={value}
                 MenuProps={{ disableScrollLock: true }}
                 size='small'
                 sx={{
                     color: colorText,
+                    '.MuiSelect-select': {
+                        textAlign: 'start',
+                    },
                     '.MuiOutlinedInput-notchedOutline': {
                         borderColor: `${focus
                             ? colorBorderFocus
                             : hover || !supportsHoverAndPointer
                                 ? colorBorderHover
                                 : colorBorder} !important`,
-                        transition: 'all ease-in-out 200ms'
+                        transition: 'all ease-in-out 200ms',
                     },
                     '.MuiSelect-iconOutlined': {
                         color: colorIcon,
                         transition: 'all ease-in-out 200ms',
                     },
+                    ...style
                 }}
                 onChange={onChange}
                 onFocus={() => setFocus(true)}

@@ -8,7 +8,7 @@ import { useEffect, useState } from 'react';
 import { CircularProgress } from '@mui/material';
 import { motion } from 'framer-motion';
 import Maintenance from '@/components/Maintenance';
-import { ToastContainer, Flip, toast } from 'react-toastify'
+import { ToastContainer, Flip } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css';
 import { Montserrat } from 'next/font/google'
 
@@ -54,7 +54,6 @@ export default function App(props) {
 
     function handleEndLoading() {
       setLoading(false)
-      toast.dismiss()
     }
 
     router.events.on("routeChangeStart", handleLoading)

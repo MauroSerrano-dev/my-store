@@ -3,7 +3,7 @@ import TextInput from '@/components/material-ui/TextInput';
 import styles from '@/styles/admin/edit-product/id.module.css'
 import { withRouter } from 'next/router'
 import { useEffect, useState } from 'react';
-import { TAGS_POOL, TYPES_POOL } from '../../../../consts';
+import { COLLECTIONS, TAGS_POOL, TYPES_POOL } from '../../../../consts';
 import ColorSelector from '@/components/ColorSelector';
 import SizesSelector from '@/components/SizesSelector';
 import { Button, Checkbox, FormControlLabel, Slider } from '@mui/material';
@@ -18,6 +18,7 @@ import ImagesSlider from '@/components/ImagesSlider';
 import { showToast } from '../../../../utils/toasts';
 import { getProductsDiff } from '../../../../utils';
 import Head from 'next/head';
+import Selector from '@/components/material-ui/Selector';
 
 export default withRouter(props => {
 
@@ -255,7 +256,6 @@ export default withRouter(props => {
 
         const diff = getProductsDiff(newProduct, inicialProduct)
         const diffKeys = Object.keys(diff)
-        const fieldsDiff = diffKeys.join(', ')
 
         if (diffKeys.length === 0) {
             showToast({ msg: 'No changes made.' })
@@ -264,10 +264,11 @@ export default withRouter(props => {
         }
 
         const options = {
-            method: 'PUT',
+            method: 'PATCH',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
-                product: newProduct
+                product_id: newProduct.id,
+                product_new_fields: diffKeys.reduce((acc, diffKey) => ({ ...acc, [diffKey]: newProduct[diffKey] }), {})
             })
         }
         await fetch("/api/product", options)
@@ -276,13 +277,13 @@ export default withRouter(props => {
                 if (response.status < 300) {
                     setInicialProduct(newProduct)
                     showToast({ type: 'success', msg: response.msg })
+                    router.push('/admin/edit-product')
                 }
                 else {
                     showToast({ type: 'error', msg: response.msg })
                 }
             })
             .catch(err => showToast({ msg: err }))
-
         setDisableUpdateButton(false)
     }
 
@@ -389,12 +390,12 @@ export default withRouter(props => {
                                 <div className={styles.productLeft}>
                                     <SizesSelector
                                         value={product.sizes}
-                                        options={TYPES_POOL.find(t => t.id === product.type).sizes}
+                                        options={TYPES_POOL.find(t => t.id === product.type_id).sizes}
                                         onChange={() => { }}
                                     />
                                     <ColorSelector
                                         value={product.colors}
-                                        options={TYPES_POOL.find(t => t.id === product.type).colors}
+                                        options={TYPES_POOL.find(t => t.id === product.type_id).colors}
                                         onChange={handleChangeColors}
                                         supportsHoverAndPointer={supportsHoverAndPointer}
                                         style={{
@@ -412,17 +413,19 @@ export default withRouter(props => {
                                     }
                                 </div>
                                 <div className={styles.productRight}>
-                                    <p>Type: {product.type}</p>
+                                    <p>Type: {product.type_id}</p>
                                     <TextInput
                                         colorText='var(--color-success)'
                                         label='Title'
                                         value={product.title}
+                                        onChange={event => updateProductField('title', event.target.value)}
                                         supportsHoverAndPointer={supportsHoverAndPointer}
                                     />
                                     <TextInput
                                         colorText='var(--color-success)'
                                         label='Description'
                                         value={product.description}
+                                        onChange={event => updateProductField('description', event.target.value)}
                                         supportsHoverAndPointer={supportsHoverAndPointer}
                                     />
                                     <TextInput
@@ -435,7 +438,7 @@ export default withRouter(props => {
                                             width: '100%'
                                         }}
                                     />
-                                    {TYPES_POOL.find(t => t.id === product.type).providers.map((provider, i) =>
+                                    {TYPES_POOL.find(t => t.id === product.type_id).providers.map((provider, i) =>
                                         <TextInput
                                             colorText='var(--color-success)'
                                             supportsHoverAndPointer={supportsHoverAndPointer}
@@ -454,6 +457,16 @@ export default withRouter(props => {
                                         label='Tags'
                                         value={product.tags}
                                         onChange={(event, value) => updateProductField('tags', value)}
+                                    />
+                                    <Selector
+                                        label='Collection'
+                                        options={COLLECTIONS.map(coll => ({ value: coll.id, name: coll.title }))}
+                                        value={product.collection?.id}
+                                        style={{
+                                            height: 56,
+                                        }}
+                                        onChange={event => updateProductField('collection', COLLECTIONS.find(coll => coll.id === event.target.value))}
+                                        supportsHoverAndPointer={supportsHoverAndPointer}
                                     />
                                     {product.colors.length > 0 &&
                                         <div>

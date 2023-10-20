@@ -6,7 +6,7 @@ import { Button } from '@mui/material'
 import ShoppingCartOutlinedIcon from '@mui/icons-material/ShoppingCartOutlined';
 import CreditCardOutlinedIcon from '@mui/icons-material/CreditCardOutlined';
 import Cookies from 'js-cookie';
-import { CART_COOKIE, convertDolarToCurrency } from '../../../consts'
+import { CART_COOKIE, COLORS_POOL, SIZES_POOL, convertDolarToCurrency } from '../../../consts'
 import Head from 'next/head'
 import ColorSelector from '@/components/ColorSelector'
 import SizesSelector from '@/components/SizesSelector'
@@ -31,18 +31,18 @@ export default withRouter(props => {
         supportsHoverAndPointer,
     } = props
 
-    const [currentColor, setCurrentColor] = useState(cl ? cl : product?.colors[0])
-    const [currentSize, setCurrentSize] = useState(sz ? sz : product?.sizes[0])
+    const [currentColor, setCurrentColor] = useState(cl ? cl : COLORS_POOL.find(cl => cl.id === product?.colors[0]))
+    const [currentSize, setCurrentSize] = useState(sz ? sz : SIZES_POOL.find(sz => sz.id === product?.sizes[0]))
 
     const productCurrentVariant = product?.variants.find(vari => vari.size_id === currentSize?.id && vari.color_id === currentColor?.id)
 
-    const productPrice = product ? `${userCurrency.symbol} ${(convertDolarToCurrency(productCurrentVariant?.price * (product.sold_out.percentage ? 1 - product.sold_out.percentage : 1), userCurrency.code) / 100).toFixed(2)}` : undefined
+    const productPrice = product ? `${userCurrency.symbol} ${(convertDolarToCurrency(productCurrentVariant?.price * (product.sold_out ? 1 - product.sold_out.percentage : 1), userCurrency.code) / 100).toFixed(2)}` : undefined
 
     const originalPrice = product ? `${userCurrency.symbol} ${(convertDolarToCurrency(productCurrentVariant?.price, userCurrency.code) / 100).toFixed(2)}` : undefined
 
     useEffect(() => {
-        setCurrentColor(cl ? cl : product?.colors[0])
-        setCurrentSize(sz ? sz : product?.sizes[0])
+        setCurrentColor(cl ? cl : COLORS_POOL.find(cl => cl.id === product?.colors[0]))
+        setCurrentSize(sz ? sz : SIZES_POOL.find(sz => sz.id === product?.sizes[0]))
     }, [router])
 
     function handleBuyNow() {
@@ -161,7 +161,7 @@ export default withRouter(props => {
                                 />
                                 <ImagesSlider
                                     images={product.images}
-                                    colors={product.colors}
+                                    colors={product.colors.map(color_id => COLORS_POOL.find(color => color.id === color_id))}
                                     currentColor={currentColor}
                                     supportsHoverAndPointer={supportsHoverAndPointer}
                                     width={windowWidth > 1074 ? 450 : windowWidth > 549 ? 450 : windowWidth}
@@ -170,7 +170,7 @@ export default withRouter(props => {
                         </div>
                         <div className={styles.right}>
                             <h2>{product.title}</h2>
-                            {product.sold_out.percentage &&
+                            {product.sold_out &&
                                 <div
                                     className={styles.soldOut}
                                 >
@@ -180,7 +180,7 @@ export default withRouter(props => {
                                 </div>
                             }
                             <div className={styles.prices}>
-                                {product.sold_out.percentage &&
+                                {product.sold_out &&
                                     <p
                                         style={{
                                             color: 'grey',
@@ -204,7 +204,7 @@ export default withRouter(props => {
                             <div>
                                 <p style={{ textAlign: 'start', fontWeight: '700' }}>{product.colors.length === 1 ? 'Color' : 'Pick a color'}</p>
                                 <ColorSelector
-                                    options={product.colors}
+                                    options={product.colors.map(color_id => COLORS_POOL.find(cl => cl.id === color_id))}
                                     value={[currentColor]}
                                     onChange={handleColorChange}
                                     supportsHoverAndPointer={supportsHoverAndPointer}
@@ -218,7 +218,7 @@ export default withRouter(props => {
                                 <p style={{ textAlign: 'start', fontWeight: '700' }}>{product.sizes.length === 1 ? 'Size' : 'Pick a size'}</p>
                                 <SizesSelector
                                     value={[currentSize]}
-                                    options={product.sizes}
+                                    options={product.sizes.map(size_id => SIZES_POOL.find(sz => sz.id === size_id))}
                                     onChange={handleSizeChange}
                                 />
                             </div>
@@ -306,11 +306,11 @@ export async function getServerSideProps(context) {
             .catch(err => console.error(err))
 
         const colorQuery = cl
-            ? product.colors.find(color => color.title.replace('/', ' ').toLowerCase() === cl.toLowerCase())
+            ? COLORS_POOL.find(color => color.title.replace('/', ' ').toLowerCase() === cl.toLowerCase())
             : null
 
         const sizeQuery = sz
-            ? product.sizes.find(size => size.title.toLowerCase() === sz.toLowerCase())
+            ? SIZES_POOL.find(size => size.title.toLowerCase() === sz.toLowerCase())
             : null
 
         return {
