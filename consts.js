@@ -22,7 +22,10 @@ export const COLORS_POOL = [
     { id: 1792, colors: ["#026539", "#ffffff"], title: "Green/White" },
     { id: 1795, colors: ["#1a1f35", "#ffffff"], title: "Navy/White" },
     { id: 10001, colors: ["#e0824b"], title: "Burnt Orange" },
+    { id: 10002, colors: ["#556b93"], title: "Steel Blue" },
 ]
+
+export const ART_COLORS_ID = [10001, 10002, 423]
 
 export const SIZES_POOL = [
     { id: 14, title: 'S' },

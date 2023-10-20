@@ -5,7 +5,7 @@ import { useEffect, useState } from 'react'
 import KeyboardArrowLeftRoundedIcon from '@mui/icons-material/KeyboardArrowLeftRounded'
 import { withRouter } from 'next/router'
 import Link from 'next/link'
-import { COLLECTIONS, TAGS_POOL, PRODUCT_TYPES, COLORS_POOL, SIZES_POOL, PROVIDERS_POOL } from '../../../../consts'
+import { COLLECTIONS, TAGS_POOL, PRODUCT_TYPES, COLORS_POOL, SIZES_POOL, PROVIDERS_POOL, ART_COLORS_ID } from '../../../../consts'
 import ColorSelector from '@/components/ColorSelector'
 import TextInput from '@/components/material-ui/TextInput'
 import TagsSelector from '@/components/material-ui/Autocomplete'
@@ -85,11 +85,10 @@ export default withRouter(props => {
             return
         }
 
-        const prodColors = product.colors
-        const prodSizes = product.sizes
+        const product_copy = { ...product }
 
-        delete product.colors
-        delete product.sizes
+        delete product_copy.colors
+        delete product_copy.sizes
 
         const options = {
             method: 'POST',
@@ -99,15 +98,15 @@ export default withRouter(props => {
             },
             body: JSON.stringify({
                 product: {
-                    ...product,
+                    ...product_copy,
                     id: product.id + '-' + type.id,
                     art: { id: product.id, color: artColor ? artColor.id : null, },
                     type_id: type.id,
                     title_lower_case: product.title.toLowerCase(),
-                    colors_ids: prodColors.map(color => color.id),
-                    sizes_ids: prodSizes.map(size => size.id),
+                    colors_ids: product.colors.map(color => color.id),
+                    sizes_ids: product.sizes.map(size => size.id),
                     min_price: product.variants.reduce((acc, vari) => acc < vari.price ? acc : vari.price, product.variants[0].price),
-                    images: prodColors.reduce((acc, color) => acc.concat(images[color.id].map(img => ({ src: img.src, color_id: img.color_id }))), []),
+                    images: product.colors.reduce((acc, color) => acc.concat(images[color.id].map(img => ({ src: img.src, color_id: img.color_id }))), []),
                     variants: product.variants.map(vari => ({ ...vari, sales: 0 })),
                     sold_out: null,
                 }
@@ -484,7 +483,7 @@ export default withRouter(props => {
                                     </h3>
                                     <ColorSelector
                                         value={[artColor]}
-                                        options={COLORS_POOL.filter(color => color.colors.length === 1)}
+                                        options={ART_COLORS_ID.map(color_id => COLORS_POOL.find(cl => cl.id === color_id))}
                                         onChange={(value, i, color) => setArtColor(prev => prev?.id === color.id ? null : color)}
                                         supportsHoverAndPointer={supportsHoverAndPointer}
                                         style={{
