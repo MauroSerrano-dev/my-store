@@ -91,7 +91,10 @@ export default function DataHandler(props) {
     function putCart() {
         const options = {
             method: 'PATCH',
-            headers: { 'Content-Type': 'application/json' },
+            headers: {
+                'Content-Type': 'application/json',
+                authorization: process.env.NEXT_PUBLIC_APP_TOKEN
+            },
             body: JSON.stringify({
                 cartId: session.cart_id,
                 cart: cart,
@@ -103,7 +106,10 @@ export default function DataHandler(props) {
     function putCartSession(cartId) {
         const options = {
             method: 'PATCH',
-            headers: { 'Content-Type': 'application/json' },
+            headers: {
+                'Content-Type': 'application/json',
+                authorization: process.env.NEXT_PUBLIC_APP_TOKEN
+            },
             body: JSON.stringify({
                 cartId: cartId,
                 cart: cart,
@@ -115,7 +121,10 @@ export default function DataHandler(props) {
     function postNewCart(cart) {
         const options = {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
+            headers: {
+                'Content-Type': 'application/json',
+                authorization: process.env.NEXT_PUBLIC_APP_TOKEN
+            },
             body: JSON.stringify({
                 cart: cart
             })
@@ -132,6 +141,7 @@ export default function DataHandler(props) {
             headers: {
                 'Content-Type': 'application/json',
                 cart_id: session.cart_id,
+                authorization: process.env.NEXT_PUBLIC_APP_TOKEN
             },
         }
         fetch("/api/cart", options)
@@ -146,6 +156,7 @@ export default function DataHandler(props) {
             headers: {
                 'Content-Type': 'application/json',
                 cart_id: cart_id,
+                authorization: process.env.NEXT_PUBLIC_APP_TOKEN
             },
         }
         fetch("/api/cart-session", options)
@@ -162,7 +173,10 @@ export default function DataHandler(props) {
     function handleLogin(authUser) {
         const options = {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
+            headers: {
+                'Content-Type': 'application/json',
+                authorization: process.env.NEXT_PUBLIC_APP_TOKEN
+            },
             body: JSON.stringify({
                 uid: authUser.uid,
                 new_user: {
@@ -209,7 +223,10 @@ export default function DataHandler(props) {
         setShowIntroduction(false)
         const options = {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
+            headers: {
+                'Content-Type': 'application/json',
+                authorization: process.env.NEXT_PUBLIC_APP_TOKEN
+            },
             body: JSON.stringify({
                 id: session.id,
             })
@@ -336,6 +353,8 @@ export default function DataHandler(props) {
         const options = {
             method: 'GET',
             headers: {
+                'Content-Type': 'application/json',
+                authorization: process.env.NEXT_PUBLIC_APP_TOKEN,
                 s: s,
             }
         }

@@ -33,7 +33,10 @@ export default function Signin(props) {
         if (reCaptchaSolve) {
             const options = {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
+                headers: {
+                    'Content-Type': 'application/json',
+                    authorization: process.env.NEXT_PUBLIC_APP_TOKEN,
+                },
                 body: JSON.stringify({ user: user })
             }
 

@@ -106,6 +106,8 @@ export default withRouter(props => {
         const options = {
             method: 'GET',
             headers: {
+                'Content-Type': 'application/json',
+                authorization: process.env.NEXT_PUBLIC_APP_TOKEN,
                 ...router.query,
             }
         }

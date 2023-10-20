@@ -3,13 +3,13 @@ import { createTypeOfProduct, getProductType } from "../../../backend/product-ty
 import { TYPES_POOL } from "../../../consts";
 
 export default async function handler(req, res) {
-    const { authorization, type_id } = req.headers
+    const { authorization } = req.headers
 
     if (!authorization)
-        return res.status(401).json({ error: "Token de autenticação não fornecido." });
+        return res.status(401).json({ error: "Authentication token not provided." })
 
     if (!isTokenValid(authorization, process.env.APP_SECRET_KEY))
-        return res.status(401).json({ error: "Token de autenticação inválido." })
+        return res.status(401).json({ error: "Invalid authentication token." })
 
     if (req.method === "GET") {
         const response = await getProductType(type_id)

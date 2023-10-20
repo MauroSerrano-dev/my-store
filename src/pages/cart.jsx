@@ -31,7 +31,10 @@ export default function Cart(props) {
     function handleCheckout(cart) {
         const options = {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
+            headers: {
+                'Content-Type': 'application/json',
+                authorization: process.env.NEXT_PUBLIC_APP_TOKEN
+            },
             body: JSON.stringify({
                 cartItems: cart.map(item => (
                     {

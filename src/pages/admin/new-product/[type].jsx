@@ -87,7 +87,10 @@ export default withRouter(props => {
 
         const options = {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
+            headers: {
+                'Content-Type': 'application/json',
+                authorization: process.env.NEXT_PUBLIC_APP_TOKEN,
+            },
             body: JSON.stringify({
                 product: {
                     ...product,

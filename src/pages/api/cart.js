@@ -1,8 +1,15 @@
+import { isTokenValid } from "../../../auth";
 import { createCart, getCartById, updateCart } from "../../../backend/cart";
 
 export default async function handler(req, res) {
     const { userId, cart, cartId } = req.body
-    const { cart_id } = req.headers
+    const { cart_id, authorization } = req.headers
+
+    if (!authorization)
+        return res.status(401).json({ error: "Authentication token not provided." })
+
+    if (!isTokenValid(authorization, process.env.APP_SECRET_KEY))
+        return res.status(401).json({ error: "Invalid authentication token." })
 
     if (req.method === "GET") {
         const cart = await getCartById(cart_id)

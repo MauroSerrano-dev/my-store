@@ -46,6 +46,8 @@ export default withRouter(props => {
         const options = {
             method: 'GET',
             headers: {
+                'Content-Type': 'application/json',
+                authorization: process.env.NEXT_PUBLIC_APP_TOKEN,
                 id: id,
             }
         }
@@ -265,7 +267,10 @@ export default withRouter(props => {
 
         const options = {
             method: 'PATCH',
-            headers: { 'Content-Type': 'application/json' },
+            headers: {
+                'Content-Type': 'application/json',
+                authorization: process.env.NEXT_PUBLIC_APP_TOKEN,
+            },
             body: JSON.stringify({
                 product_id: newProduct.id,
                 product_new_fields: diffKeys.reduce((acc, diffKey) => ({ ...acc, [diffKey]: newProduct[diffKey] }), {})

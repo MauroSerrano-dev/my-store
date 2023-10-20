@@ -48,7 +48,10 @@ export default withRouter(props => {
     function handleBuyNow() {
         const options = {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
+            headers: {
+                'Content-Type': 'application/json',
+                authorization: process.env.NEXT_PUBLIC_APP_TOKEN,
+            },
             body: JSON.stringify({
                 userId: 'userId',
                 cartItems: [
@@ -297,6 +300,8 @@ export async function getServerSideProps(context) {
         const options = {
             method: 'GET',
             headers: {
+                'Content-Type': 'application/json',
+                authorization: process.env.NEXT_PUBLIC_APP_TOKEN,
                 id: id,
             }
         }

@@ -33,6 +33,8 @@ export default function Home(props) {
     const options = {
       method: 'GET',
       headers: {
+        'Content-Type': 'application/json',
+        authorization: process.env.NEXT_PUBLIC_APP_TOKEN,
         [queryName]: categoryName
       }
     }
@@ -47,7 +49,11 @@ export default function Home(props) {
 
   async function getAllProducts() {
     const options = {
-      method: 'GET'
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        authorization: process.env.NEXT_PUBLIC_APP_TOKEN,
+      }
     }
 
     const products = await fetch("/api/products", options)
