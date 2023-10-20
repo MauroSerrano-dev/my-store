@@ -5,10 +5,10 @@ import { useEffect, useState } from 'react'
 import KeyboardArrowLeftRoundedIcon from '@mui/icons-material/KeyboardArrowLeftRounded'
 import { withRouter } from 'next/router'
 import Link from 'next/link'
-import { COLLECTIONS, TAGS_POOL, PRODUCT_TYPES, COLORS_POOL, SIZES_POOL, PROVIDERS_POOL, ART_COLORS_ID } from '../../../../consts'
+import { COLLECTIONS, TAGS_POOL, PRODUCT_TYPES, COLORS_POOL, SIZES_POOL, PROVIDERS_POOL, ART_COLORS } from '../../../../consts'
 import ColorSelector from '@/components/ColorSelector'
 import TextInput from '@/components/material-ui/TextInput'
-import TagsSelector from '@/components/material-ui/Autocomplete'
+import TagsSelector from '@/components/material-ui/TagsSelector'
 import ClearRoundedIcon from '@mui/icons-material/ClearRounded'
 import ButtonIcon from '@/components/material-ui/ButtonIcon'
 import SizesSelector from '@/components/SizesSelector'
@@ -22,10 +22,13 @@ const INICIAL_PRODUCT = {
     id: '',
     title: '',
     description: '',
-    collection: { id: '', title: '' },
+    collection_id: '',
     colors: [],
     sizes: [],
     images: [],
+    tags: [],
+    theme_id: '',
+    variants: [],
     image_showcase_index: 0,
     image_hover_index: 1,
     popularity: 0,
@@ -100,11 +103,11 @@ export default withRouter(props => {
                 product: {
                     ...product_copy,
                     id: product.id + '-' + type.id,
-                    art: { id: product.id, color: artColor ? artColor.id : null, },
+                    art: { id: product.id, color_id: artColor ? artColor.id : null, },
                     type_id: type.id,
                     title_lower_case: product.title.toLowerCase(),
                     colors_ids: product.colors.map(color => color.id),
-                    sizes_ids: product.sizes.map(size => size.id),
+                    sizes_ids: SIZES_POOL.map(size => size.id).filter(sz_id => product.sizes.some(sz => sz.id === sz_id)),
                     min_price: product.variants.reduce((acc, vari) => acc < vari.price ? acc : vari.price, product.variants[0].price),
                     images: product.colors.reduce((acc, color) => acc.concat(images[color.id].map(img => ({ src: img.src, color_id: img.color_id }))), []),
                     variants: product.variants.map(vari => ({ ...vari, sales: 0 })),
@@ -372,7 +375,7 @@ export default withRouter(props => {
             ? <div></div>
             : session === null || session.email !== 'mauro.serrano.dev@gmail.com'
                 ? <NoFound404 />
-                : <div className={styles.container}>
+                : <div className={styles.container} onClick={() => console.log(product)}>
                     <header>
                     </header>
                     <main className={styles.main}>
@@ -414,7 +417,7 @@ export default withRouter(props => {
                                     />
                                     <ColorSelector
                                         value={product.colors}
-                                        options={type.colors.map(cl_id => COLORS_POOL.find(color => color.id === cl_id))}
+                                        options={type.colors.map(cl_id => COLORS_POOL[cl_id])}
                                         onChange={handleChangeColors}
                                         supportsHoverAndPointer={supportsHoverAndPointer}
                                         style={{
@@ -470,12 +473,12 @@ export default withRouter(props => {
                                     <Selector
                                         label='Collection'
                                         options={COLLECTIONS.map(coll => ({ value: coll.id, name: coll.title }))}
-                                        value={product.collection.id}
+                                        value={product.collection_id}
                                         style={{
                                             height: 56,
                                             color: 'var(--color-success)'
                                         }}
-                                        onChange={event => updateProductField('collection', COLLECTIONS.find(coll => coll.id === event.target.value))}
+                                        onChange={event => updateProductField('collection_id', event.target.value)}
                                         supportsHoverAndPointer={supportsHoverAndPointer}
                                     />
                                     <h3>
@@ -483,7 +486,7 @@ export default withRouter(props => {
                                     </h3>
                                     <ColorSelector
                                         value={[artColor]}
-                                        options={ART_COLORS_ID.map(color_id => COLORS_POOL.find(cl => cl.id === color_id))}
+                                        options={ART_COLORS}
                                         onChange={(value, i, color) => setArtColor(prev => prev?.id === color.id ? null : color)}
                                         supportsHoverAndPointer={supportsHoverAndPointer}
                                         style={{
@@ -513,6 +516,17 @@ export default withRouter(props => {
                                             }}
                                         />
                                     )}
+                                    <Selector
+                                        label='Theme ID'
+                                        options={TAGS_POOL}
+                                        value={product.theme_id}
+                                        style={{
+                                            height: 56,
+                                            color: 'var(--color-success)'
+                                        }}
+                                        onChange={event => updateProductField('theme_id', event.target.value)}
+                                        supportsHoverAndPointer={supportsHoverAndPointer}
+                                    />
                                     <TagsSelector
                                         supportsHoverAndPointer={supportsHoverAndPointer}
                                         options={TAGS_POOL}
@@ -687,6 +701,6 @@ export default withRouter(props => {
                             </div>
                         }
                     </main>
-                </div>
+                </ div>
     )
 })

@@ -50,19 +50,28 @@ export default function EditProduct(props) {
                                 </Button>
                             </Link>
                         </div>
-                        <TextInput
-                            label='Product ID'
-                            value={productIdInput}
-                            onChange={e => setProductIdInput(e.target.value)}
-                        />
-                        <Link
-                            href={`/admin/edit-product/${productIdInput}`}
-                            className='noUnderline'
+                        <div
+                            className={styles.body}
                         >
-                            <Button>
-                                Search
-                            </Button>
-                        </Link>
+                            <TextInput
+                                label='Product ID'
+                                value={productIdInput}
+                                onChange={e => setProductIdInput(e.target.value)}
+                                style={{
+                                    width: '30%'
+                                }}
+                            />
+                            <Link
+                                href={`/admin/edit-product/${productIdInput}`}
+                                className='noUnderline'
+                            >
+                                <Button
+                                    variant='outlined'
+                                >
+                                    Search
+                                </Button>
+                            </Link>
+                        </div>
                     </main>
                 </div>
     )

@@ -80,7 +80,6 @@ async function createProduct(product) {
     }
 }
 
-
 async function getProductsByCategory(category) {
     const productsCollection = collection(db, process.env.COLL_PRODUCTS)
 
@@ -110,7 +109,6 @@ async function getProductsByCategory(category) {
 }
 
 async function getProductsByTitle(s) {
-
     try {
         if (s === '') {
             return {
@@ -164,9 +162,10 @@ async function getProductsByQueries(props) {
     const {
         s, //search
         t, //tags
+        h, //theme
         p, //type
         c, //collection
-        cl, //color
+        cl, //product color
         page = 1, //número da página
         min, //preço mínimo
         max, //preço máximo
@@ -221,32 +220,37 @@ async function getProductsByQueries(props) {
             ))
         }
 
-        // Filtre por tag (se presente)
+        // Filtre by tag (se presente)
         if (t) {
             q = query(q, where("tags", "array-contains-any", t.split(' ')))
         }
 
-        // Filtre por collection (se presente)
+        // Filtre by theme (se presente)
+        if (h) {
+            q = query(q, where("theme_id", "==", h))
+        }
+
+        // Filtre by collection (se presente)
         if (c) {
             q = query(q, where("collection_id", "==", c))
         }
 
-        // Filtre por color (se presente)
+        // Filtre by color (se presente)
         if (cl) {
             q = query(q, where("colors_ids", "array-contains", cl))
         }
 
-        // Filtre por tipo (se presente)
+        // Filtre by type (se presente)
         if (p) {
             q = query(q, where("type_id", "==", p))
         }
 
-        // Filtre por preço mínimo (se presente)
+        // Filtre by max price (se presente)
         if (min) {
             q = query(q, where("min_price", ">=", parseFloat(min.concat('00'))))
         }
 
-        // Filtre por preço máximo (se presente)
+        // Filtre by min price (se presente)
         if (max) {
             q = query(q, where("min_price", "<=", parseFloat(max.concat('00'))))
         }
@@ -310,18 +314,25 @@ async function getProductById(id) {
         if (productDoc.exists()) {
             const productData = productDoc.data()
             return {
-                msg: `Product with ID ${id} found!`,
+                status: 200,
+                message: `Product with ID ${id} found!`,
                 product: productData
             }
         } else {
             return {
-                msg: `Product with ID ${id} not found.`,
+                status: 204,
+                message: `Product with ID ${id} not found.`,
                 product: null
             }
         }
     } catch (error) {
         console.log("Error getting product:", error)
-        return null
+        return {
+            status: 400,
+            message: `Product with ID ${id} not found.`,
+            product: null,
+            error: error
+        }
     }
 }
 

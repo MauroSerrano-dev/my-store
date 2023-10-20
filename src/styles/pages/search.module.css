@@ -99,3 +99,11 @@
 
     flex-wrap: wrap;
 }
+
+.colorsContainer {
+    display: flex;
+    flex-direction: row;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+    max-width: 100%;
+}

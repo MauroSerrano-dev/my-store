@@ -13,7 +13,7 @@ export default async function handler(req, res) {
     if (req.method === "GET") {
         const { id } = req.headers
         const result = await getProductById(id)
-        res.status(200).json(result)
+        res.status(result.status).json(result)
     }
     else if (req.method === "POST") {
         const { product } = req.body

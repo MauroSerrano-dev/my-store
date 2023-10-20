@@ -1,12 +1,12 @@
-import TagsSelector from '@/components/material-ui/Autocomplete';
+import TagsSelector from '@/components/material-ui/TagsSelector';
 import TextInput from '@/components/material-ui/TextInput';
 import styles from '@/styles/admin/edit-product/id.module.css'
 import { withRouter } from 'next/router'
 import { useEffect, useState } from 'react';
-import { COLLECTIONS, TAGS_POOL, TYPES_POOL } from '../../../../consts';
+import { COLLECTIONS, TAGS_POOL, PRODUCT_TYPES, COLORS_POOL, SIZES_POOL, PROVIDERS_POOL } from '../../../../consts';
 import ColorSelector from '@/components/ColorSelector';
 import SizesSelector from '@/components/SizesSelector';
-import { Button, Checkbox, FormControlLabel, Slider } from '@mui/material';
+import { Button, Checkbox, Slider } from '@mui/material';
 import Link from 'next/link';
 import KeyboardArrowLeftRoundedIcon from '@mui/icons-material/KeyboardArrowLeftRounded';
 import NoFound404 from '@/pages/404';
@@ -36,6 +36,10 @@ export default withRouter(props => {
     const [sizesChained, setSizesChained] = useState({})
     const [disableUpdateButton, setDisableUpdateButton] = useState(false)
 
+    const TYPE = PRODUCT_TYPES.find(type => type.id === product?.type_id)
+    const COLORS = product?.colors_ids.map(cl_id => cl_id === COLORS_POOL.find(color => color.id === cl_id))
+    const SIZES = product?.sizes_ids.map(sz_id => sz_id === SIZES_POOL.find(size => size.id === sz_id))
+
     useEffect(() => {
         if (router.isReady) {
             getProductById(router.query.id)
@@ -56,10 +60,10 @@ export default withRouter(props => {
             .then(response => response.product)
             .catch(err => console.error(err))
         if (product) {
-            if (product.colors.every(cl => product.variants.filter(vari => vari.color_id === cl.id).every(variColor => variColor.price === product.variants.find(vari => vari.size_id === variColor.size_id).price)))
-                setColorsChained(product.colors.map(cl => cl.id))
+            if (product.colors_ids.every(cl => product.variants.filter(vari => vari.color_id === cl).every(variColor => variColor.price === product.variants.find(vari => vari.size_id === variColor.size_id).price)))
+                setColorsChained(product.colors_ids)
 
-            setSizesChained(product.colors.reduce((acc, cl) => ({ ...acc, [cl.id]: [] }), {}))
+            setSizesChained(product.colors_ids.reduce((acc, cl) => ({ ...acc, [cl]: [] }), {}))
             setInicialProduct(product)
             setProduct(product)
             setImages(product.images.reduce((acc, image) => acc[image.color_id] === undefined ? { ...acc, [image.color_id]: product.images.filter(img => img.color_id === image.color_id) } : acc, {}))
@@ -251,7 +255,7 @@ export default withRouter(props => {
 
         const newProduct = {
             ...product,
-            variants: product.colors.reduce((acc, cl) => acc.concat(product.variants.filter(vari => vari.color_id === cl.id)), []),
+            variants: product.variants.map(vari => ({ ...vari, sales: 0 })),
             min_price: product.variants.reduce((acc, vari) => acc < vari.price ? acc : vari.price, product.variants[0].price),
             images: product.colors.reduce((acc, color) => acc.concat(images[color.id].map(img => ({ src: img.src, color_id: img.color_id, variants_id: img.variants_id }))), []),
         }
@@ -351,6 +355,16 @@ export default withRouter(props => {
         }
     }, [product])
 
+    function handleChangeSizes(value) {
+        setProduct(prev => (
+            {
+                ...prev,
+                sizes: value,
+                variants: TYPE.variants.filter(vari => value.some(sz => sz.id === vari.size_id && prev.colors.some(cl => cl.id === vari.color_id)))
+            }
+        ))
+    }
+
     return (
         session === undefined
             ? <div></div>
@@ -395,12 +409,12 @@ export default withRouter(props => {
                                 <div className={styles.productLeft}>
                                     <SizesSelector
                                         value={product.sizes}
-                                        options={TYPES_POOL.find(t => t.id === product.type_id).sizes}
-                                        onChange={() => { }}
+                                        options={TYPE.sizes.map(sz_id => SIZES_POOL.find(size => size.id === sz_id))}
+                                        onChange={handleChangeSizes}
                                     />
                                     <ColorSelector
-                                        value={product.colors}
-                                        options={TYPES_POOL.find(t => t.id === product.type_id).colors}
+                                        value={COLORS}
+                                        options={TYPE.colors.map(cl_id => COLORS_POOL.find(color => color.id === cl_id))}
                                         onChange={handleChangeColors}
                                         supportsHoverAndPointer={supportsHoverAndPointer}
                                         style={{
@@ -411,8 +425,8 @@ export default withRouter(props => {
                                     {images?.[product?.colors?.[colorIndex]?.id] &&
                                         <ImagesSlider
                                             images={Object.keys(images).reduce((acc, key) => acc.concat(images[key]), [])}
-                                            currentColor={product.colors[colorIndex]}
-                                            colors={product.colors}
+                                            currentColor={COLORS_POOL.find(color => color.id === product.colors_ids[colorIndex])}
+                                            colors={COLORS}
                                             supportsHoverAndPointer={supportsHoverAndPointer}
                                         />
                                     }
@@ -443,7 +457,7 @@ export default withRouter(props => {
                                             width: '100%'
                                         }}
                                     />
-                                    {TYPES_POOL.find(t => t.id === product.type_id).providers.map((provider, i) =>
+                                    {TYPE.providers.map(prov_id => PROVIDERS_POOL.find(prov => prov.id === prov_id)).map((provider, i) =>
                                         <TextInput
                                             colorText='var(--color-success)'
                                             supportsHoverAndPointer={supportsHoverAndPointer}
@@ -473,11 +487,11 @@ export default withRouter(props => {
                                         onChange={event => updateProductField('collection', COLLECTIONS.find(coll => coll.id === event.target.value))}
                                         supportsHoverAndPointer={supportsHoverAndPointer}
                                     />
-                                    {product.colors.length > 0 &&
+                                    {product.colors_ids.length > 0 &&
                                         <div>
                                             <ColorSelector
-                                                value={[product.colors[colorIndex]]}
-                                                options={product.colors}
+                                                value={[COLORS_POOL.find(color => color.id === product.colors_ids[colorIndex])]}
+                                                options={product.colors_ids.map(cl_id => COLORS_POOL.find(color => color.id === cl_id))}
                                                 onChange={handleSelectedColor}
                                                 supportsHoverAndPointer={supportsHoverAndPointer}
                                                 style={{
@@ -486,11 +500,11 @@ export default withRouter(props => {
                                                 }}
                                             />
                                             <div className='flex' style={{ gap: '0.5rem' }}>
-                                                {product.colors.map((color, i) =>
+                                                {product.colors_ids.map((color_id, i) =>
                                                     <Button
                                                         key={i}
-                                                        variant={colorsChained.includes(color.id) ? 'contained' : 'outlined'}
-                                                        onClick={() => handleChainColor(color.id)}
+                                                        variant={colorsChained.includes(color_id) ? 'contained' : 'outlined'}
+                                                        onClick={() => handleChainColor(color_id)}
                                                         sx={{
                                                             minWidth: 40,
                                                             width: 40,
@@ -498,13 +512,13 @@ export default withRouter(props => {
                                                             padding: 0,
                                                         }}
                                                     >
-                                                        {colorsChained.includes(color.id) ? <Chain iconSize={25} /> : <BrokeChain iconSize={25} />}
+                                                        {colorsChained.includes(color_id) ? <Chain iconSize={25} /> : <BrokeChain iconSize={25} />}
                                                     </Button>
                                                 )}
                                             </div>
                                         </div>
                                     }
-                                    {sizesChained[product.colors[colorIndex]?.id] &&
+                                    {sizesChained[product.colors_ids[colorIndex]] &&
                                         <div className='flex column' style={{ gap: '1rem' }}>
                                             <div
                                                 className='flex center column fillWidth'
@@ -513,9 +527,9 @@ export default withRouter(props => {
                                                 }}
                                             >
                                                 <h3>
-                                                    {product.colors[colorIndex].title} Price (USD)
+                                                    {COLORS_POOL.find(color => color.id === product.colors_ids[colorIndex]).title} Price (USD)
                                                 </h3>
-                                                {product.sizes.map((size, i) =>
+                                                {product.sizes_ids.map((size, i) =>
                                                     <div
                                                         className='flex center fillWidth'
                                                         style={{
@@ -524,7 +538,7 @@ export default withRouter(props => {
                                                         key={i}
                                                     >
                                                         <Button
-                                                            variant={sizesChained[product.colors[colorIndex].id].includes(size.id) ? 'contained' : 'outlined'}
+                                                            variant={sizesChained[product.colors_ids[colorIndex]].includes(size.id) ? 'contained' : 'outlined'}
                                                             onClick={() => handleChainSize(size.id)}
                                                             sx={{
                                                                 minWidth: 45,
@@ -533,14 +547,14 @@ export default withRouter(props => {
                                                                 padding: 0,
                                                             }}
                                                         >
-                                                            {sizesChained[product.colors[colorIndex].id].includes(size.id) ? <Chain /> : <BrokeChain />}
+                                                            {sizesChained[product.colors_ids[colorIndex]].includes(size.id) ? <Chain /> : <BrokeChain />}
                                                         </Button>
                                                         <TextInput
                                                             colorText='var(--color-success)'
                                                             supportsHoverAndPointer={supportsHoverAndPointer}
                                                             label={`${size.title}`}
                                                             onChange={event => handleChangePrice(isNaN(Number(event.target.value)) ? 0 : Math.abs(Number(event.target.value.slice(0, Math.min(event.target.value.length, 7)))), size.id)}
-                                                            value={product.variants.find(vari => vari.size_id === size.id && vari.color_id === product.colors[colorIndex].id).price}
+                                                            value={product.variants.find(vari => vari.size_id === size && vari.color_id === product.colors_ids[colorIndex]).price}
                                                             style={{
                                                                 width: 90,
                                                             }}
@@ -554,25 +568,25 @@ export default withRouter(props => {
                                                             }}
                                                         />
                                                         <Slider
-                                                            value={product.variants.find(vari => vari.size_id === size.id && vari.color_id === product.colors[colorIndex].id).price}
+                                                            value={product.variants.find(vari => vari.size_id === size && vari.color_id === product.colors_ids[colorIndex]).price}
                                                             min={product.variants[0].cost}
                                                             max={product.variants.reduce((acc, vari) => vari.cost > acc.cost ? vari : acc, { cost: 0 }).cost * 3}
                                                             valueLabelDisplay="auto"
-                                                            onChange={event => handleChangePrice(event.target.value, size.id)}
+                                                            onChange={event => handleChangePrice(event.target.value, size)}
                                                         />
                                                     </div>
                                                 )}
                                             </div>
                                             <div>
                                                 <h3>Images</h3>
-                                                {images[product.colors[colorIndex].id].length > 0 &&
+                                                {images[product.colors_ids[colorIndex]].length > 0 &&
                                                     <div className='flex row justify-end' style={{ fontSize: '11px', gap: '1rem', width: '100%', paddingRight: '11%' }}>
                                                         <p>showcase</p>
                                                         <p>hover</p>
                                                     </div>
                                                 }
                                                 <div className='flex column' style={{ gap: '0.8rem' }} >
-                                                    {images[product.colors[colorIndex].id].map((img, i) =>
+                                                    {images[product.colors_ids[colorIndex]].map((img, i) =>
                                                         <div
                                                             className='flex row align-center fillWidth space-between'
                                                             key={i}

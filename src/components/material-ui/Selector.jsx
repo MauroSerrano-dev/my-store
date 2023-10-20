@@ -79,13 +79,13 @@ export default function Selector(props) {
                 {
                     options.map((option, i) =>
                         <MenuItem
-                            value={option.value}
+                            value={option.value || option}
                             key={i}
                             sx={{
                                 ...styleOption
                             }}
                         >
-                            {option.name}
+                            {option.name || option}
                         </MenuItem>
                     )
                 }

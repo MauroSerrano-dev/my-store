@@ -3,7 +3,7 @@ import { useEffect, useState, useRef } from 'react'
 import { Button, Skeleton } from '@mui/material'
 import Link from 'next/link'
 import { motion } from "framer-motion";
-import { COLORS_POOL, convertDolarToCurrency } from '../../../consts';
+import { COLORS_POOL, PRODUCT_TYPES, convertDolarToCurrency } from '../../../consts';
 import ColorButton from '../ColorButton';
 import Image from 'next/image';
 
@@ -26,6 +26,7 @@ export default function Product(props) {
         supportsHoverAndPointer,
         isDragging = false,
         product,
+        inicialColorId,
         motionVariants = {
             hidden: {
                 opacity: 0,
@@ -45,7 +46,7 @@ export default function Product(props) {
     const productRef = useRef(null)
     const bottomHoverRef = useRef(null)
 
-    const [currentVariant, setCurrentVariant] = useState(product.variants[0])
+    const [currentVariant, setCurrentVariant] = useState(inicialColorId ? product.variants.find(vari => vari.color_id === inicialColorId) : product.variants[0])
     const [isDraggingColors, setIsDraggingColors] = useState(false)
 
     const [imageLoad, setImageLoad] = useState(false)
@@ -79,7 +80,7 @@ export default function Product(props) {
         setAntVisualBug(true)
     }
 
-    const url = `/product/${product.id}${product.variants[0].id === currentVariant.id ? '' : `?cl=${COLORS_POOL.find(color => color.id === currentVariant.color_id).title.replace('/', '+').toLowerCase()}`}`
+    const URL = `/product/${product.id}${product.variants[0].id === currentVariant.id ? '' : `?cl=${COLORS_POOL[currentVariant.color_id].title.replace('/', '+').toLowerCase()}`}`
 
     function handleMouseUpColor(event, color) {
         event.stopPropagation()
@@ -131,7 +132,7 @@ export default function Product(props) {
             onMouseLeave={handleOnMouseLeave}
         >
             <Link
-                href={url}
+                href={URL}
                 className={`${styles.linkContainer} noUnderline`}
                 draggable={false}
             >
@@ -171,6 +172,7 @@ export default function Product(props) {
                 >
                     {product.colors_ids.map((color_id, i) =>
                         <Image
+                            priority
                             quality={100}
                             key={i}
                             src={product.images.filter(img => img.color_id === color_id)[product.image_showcase_index].src}
@@ -201,19 +203,27 @@ export default function Product(props) {
                 <div
                     className={styles.infos}
                 >
-                    {product.sold_out &&
-                        <div
-                            className={styles.soldOut}
+                    <div
+                        className={styles.tagContainer}
+                        style={{
+                            fontSize: width * 0.055,
+                            backgroundColor: product.sold_out
+                                ? 'var(--sold-out-bg)'
+                                : PRODUCT_TYPES.find(type => type.id === product.type_id).color || 'var(--primary)',
+                        }}
+                    >
+                        <p
+                            style={{
+                                fontSize: width * 0.055
+                            }}
                         >
-                            <p
-                                style={{
-                                    fontSize: width * 0.055
-                                }}
-                            >
-                                {Math.round(100 * product.sold_out.percentage)}% OFF
-                            </p>
-                        </div>
-                    }
+                            {
+                                product.sold_out
+                                    ? PRODUCT_TYPES.find(type => type.id === product.type_id).title + ' ' + Math.round(100 * product.sold_out.percentage) + '% OFF'
+                                    : PRODUCT_TYPES.find(type => type.id === product.type_id).title
+                            }
+                        </p>
+                    </div>
                     {outOfStock &&
                         <div
                             className={styles.outOfStock}
@@ -259,7 +269,8 @@ export default function Product(props) {
                     </div>
                 </div>
             </Link>
-            {supportsHoverAndPointer && showButtomHover &&
+            {
+                supportsHoverAndPointer && showButtomHover &&
                 <motion.div
                     onClick={handleBottomHoverClick}
                     className={styles.bottomHover}
@@ -309,13 +320,13 @@ export default function Product(props) {
                                         pointerEvents: isDraggingColors ? 'none' : 'auto',
                                     }}
                                     selected={currentVariant.color_id === color_id}
-                                    color={COLORS_POOL.find(cl => cl.id === color_id)}
+                                    color={COLORS_POOL[color_id]}
                                     onMouseUp={handleMouseUpColor}
                                     supportsHoverAndPointer={!isDragging && !isDraggingColors && supportsHoverAndPointer}
                                 />
                             )
                             : <Link
-                                href={url}
+                                href={URL}
                                 draggable={false}
                                 style={{
                                     width: width * 0.7,
@@ -338,6 +349,6 @@ export default function Product(props) {
                     </motion.div>
                 </motion.div>
             }
-        </motion.div>
+        </motion.div >
     )
 }

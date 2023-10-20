@@ -1,31 +1,48 @@
 export const CART_COOKIE = 'CART'
 
-export const COLORS_POOL = [
-    { id: 358, colors: ['#cacaca'], title: 'Sport Grey' },
-    { id: 362, colors: ['#31221d'], title: 'Dark Chocolate' },
-    { id: 364, colors: ['#585c3b'], title: 'Military Green' },
-    { id: 367, colors: ['#454545'], title: 'Dark Heather' },
-    { id: 369, colors: ['#129447'], title: 'Irish Green' },
-    { id: 392, colors: ['#d6e6f7'], title: 'Light Blue' },
-    { id: 395, colors: ['#642838'], title: 'Maroon' },
-    { id: 418, colors: ['#000000'], title: 'Black' },
-    { id: 423, colors: ['#c62A32'], title: 'Red' },
-    { id: 424, colors: ['#585559'], title: 'Charcoal' },
-    { id: 425, colors: ['#084f97'], title: 'Royal' },
-    { id: 511, colors: ['#1a2237'], title: 'Navy' },
-    { id: 521, colors: ['#ffffff'], title: 'White' },
-    { id: 1058, colors: ["#2b4da4", "#ffffff"], title: "Royal/White" },
-    { id: 1062, colors: ["#000000", "#ffffff"], title: "Black/White" },
-    { id: 1535, colors: ["#525455", "#ffffff"], title: "Asphalt/White" },
-    { id: 1536, colors: ["#bA2326", "#ffffff"], title: "Scarlet/White" },
-    { id: 1750, colors: ["#ffffff", "#000000"], title: "White/Black" },
-    { id: 1792, colors: ["#026539", "#ffffff"], title: "Green/White" },
-    { id: 1795, colors: ["#1a1f35", "#ffffff"], title: "Navy/White" },
-    { id: 10001, colors: ["#e0824b"], title: "Burnt Orange" },
-    { id: 10002, colors: ["#556b93"], title: "Steel Blue" },
+export const COLORS_POOL = {
+    358: { id: 358, colors: ['#cacaca'], title: 'Sport Grey' },
+    362: { id: 362, colors: ['#31221d'], title: 'Dark Chocolate' },
+    364: { id: 364, colors: ['#585c3b'], title: 'Military Green' },
+    367: { id: 367, colors: ['#454545'], title: 'Dark Heather' },
+    369: { id: 369, colors: ['#129447'], title: 'Irish Green' },
+    392: { id: 392, colors: ['#d6e6f7'], title: 'Light Blue' },
+    395: { id: 395, colors: ['#642838'], title: 'Maroon' },
+    418: { id: 418, colors: ['#000000'], title: 'Black' },
+    423: { id: 423, colors: ['#c62A32'], title: 'Red' },
+    424: { id: 424, colors: ['#585559'], title: 'Charcoal' },
+    425: { id: 425, colors: ['#084f97'], title: 'Royal' },
+    511: { id: 511, colors: ['#1a2237'], title: 'Navy' },
+    521: { id: 521, colors: ['#ffffff'], title: 'White' },
+    1058: { id: 1058, colors: ["#2b4da4", "#ffffff"], title: "Royal/White" },
+    1062: { id: 1062, colors: ["#000000", "#ffffff"], title: "Black/White" },
+    1535: { id: 1535, colors: ["#525455", "#ffffff"], title: "Asphalt/White" },
+    1536: { id: 1536, colors: ["#bA2326", "#ffffff"], title: "Scarlet/White" },
+    1750: { id: 1750, colors: ["#ffffff", "#000000"], title: "White/Black" },
+    1792: { id: 1792, colors: ["#026539", "#ffffff"], title: "Green/White" },
+    1795: { id: 1795, colors: ["#1a1f35", "#ffffff"], title: "Navy/White" },
+    10001: { id: 10001, colors: ["#e0824b"], title: "Burnt Orange" },
+    10002: { id: 10002, colors: ["#556b93"], title: "Steel Blue" },
+}
+
+export const SEARCH_PRODUCTS_COLORS = [
+    COLORS_POOL[418],
+    COLORS_POOL[521],
+    COLORS_POOL[511],
+    COLORS_POOL[358],
+    COLORS_POOL[424],
+    COLORS_POOL[362],
+    COLORS_POOL[423],
 ]
 
-export const ART_COLORS_ID = [10001, 10002, 423]
+export const ART_COLORS =
+    [
+        COLORS_POOL[418],
+        COLORS_POOL[521],
+        COLORS_POOL[10001],
+        COLORS_POOL[10002],
+        COLORS_POOL[423]
+    ]
 
 export const SIZES_POOL = [
     { id: 14, title: 'S' },
@@ -45,8 +62,8 @@ export const PROVIDERS_POOL = [
 ]
 
 export const COLLECTIONS = [
-    { id: 'sound-vibes', title: 'Sound Vibes' },
-    { id: 'gamer-life', title: 'Gamer Life' },
+    { id: 'sound-vibes', title: 'Sound Vibes', color: '#252c5e' },
+    { id: 'gamer-life', title: 'Gamer Life', color: null },
 ]
 
 export const MENU_OPTIONS = [
@@ -81,9 +98,9 @@ export const MENU_FORWARD_OPTIONS = {
         { title: 'Bottoms', type: 'link', href: '/search?p=bottoms' },
     ],
     collections: [
-        { title: 'Music', type: 'link', href: '/search?t=music' },
+        { title: 'Music', type: 'link', href: '/search?h=music' },
         { title: 'Zombies', type: 'link', href: '/search?p=zombies' },
-        { title: 'Games', type: 'link', href: '/search?t=games' }
+        { title: 'Games', type: 'link', href: '/search?h=games' }
     ]
 }
 
@@ -119,6 +136,7 @@ export const PRODUCT_TYPES = [
     {
         id: 't-shirt',
         title: 'T-Shirt',
+        color: '#1189C4',
         providers: [29, 87, 72],
         colors: [521, 418, 358, 362, 364, 369, 392, 424, 425, 511, 423],
         sizes: [14, 15, 16, 17, 18],
@@ -623,6 +641,7 @@ export const PRODUCT_TYPES = [
     {
         id: 'hoodie',
         title: 'Hoodie',
+        color: '#026539',
         providers: [29, 26, 72],
         colors: [521, 418, 358, 395, 364, 369, 367, 392, 425, 511, 423],
         sizes: [14, 15, 16, 17, 18],
@@ -1217,6 +1236,7 @@ export const PRODUCT_TYPES = [
     {
         id: 'raglan-tee',
         title: 'Raglan Tee',
+        color: '#e0824b',
         providers: [27, 6],
         colors: [1535, 1062, 1792, 1536, 1058, 1795, 1750],
         sizes: [14, 15, 16, 17, 18],

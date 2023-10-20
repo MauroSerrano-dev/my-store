@@ -6,6 +6,8 @@ import Link from 'next/link'
 import Selector from '@/components/material-ui/Selector'
 import { Checkbox, FormControlLabel } from '@mui/material'
 import Footer from '@/components/Footer'
+import { COLORS_POOL, SEARCH_PRODUCTS_COLORS } from '../../consts'
+import ColorButton from '@/components/ColorButton'
 
 const THEMES_VALUES = [
     { name: 'Computer', value: 'computer' },
@@ -33,6 +35,7 @@ export default withRouter(props => {
         min,
         max,
         order = 'popularity',
+        cl,
     } = props.router.query
 
     const [products, setProducts] = useState([])
@@ -157,6 +160,10 @@ export default withRouter(props => {
                     : { ...router.query, [queryName]: themes.filter(theme => theme !== value).join(' ') }
             })
         }
+    }
+
+    function handleChangeProductColor() {
+
     }
 
     return (
@@ -297,6 +304,26 @@ export default withRouter(props => {
                             </button>
                         </div>
                     </div>
+                    <div className={styles.filterBlock}>
+                        <h3>Product Color</h3>
+                        <div className={styles.colorsContainer}>
+                            {SEARCH_PRODUCTS_COLORS.map((color, i) =>
+                                <Link
+                                    href={{
+                                        pathname: router.pathname,
+                                        query: getQueries({ cl: color.title.toLowerCase() })
+                                    }}
+                                    key={i}
+                                >
+                                    <ColorButton
+                                        selected={cl === color.title.toLowerCase()}
+                                        color={color}
+                                        supportsHoverAndPointer={supportsHoverAndPointer}
+                                    />
+                                </Link>
+                            )}
+                        </div>
+                    </div>
                 </div>
                 <div
                     className={styles.products}
@@ -333,13 +360,14 @@ export default withRouter(props => {
                     >
                         {noResults
                             ? <h2>No Results</h2>
-                            : products.map((product, i) =>
+                            : products?.map((product, i) =>
                                 <Product
                                     key={i}
                                     userCurrency={userCurrency}
                                     product={product}
                                     width={productWidth}
                                     supportsHoverAndPointer={supportsHoverAndPointer}
+                                    inicialColorId={cl ? SEARCH_PRODUCTS_COLORS.find(color => color.title.toLowerCase() === cl).id : null}
                                     motionVariants={
                                         {
                                             hidden: {

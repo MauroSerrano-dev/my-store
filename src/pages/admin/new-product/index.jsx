@@ -63,7 +63,7 @@ export default withRouter(props => {
                                             display: 'flex',
                                             alignItems: 'center',
                                             justifyContent: 'center',
-                                            width: '100%'
+                                            width: '100%',
                                         }}
                                     >
                                         {type.title}
