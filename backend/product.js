@@ -162,7 +162,7 @@ async function getProductsByQueries(props) {
             const translationPromises = []
 
             inicialTags.forEach(word => {
-                const translation = translate(word, { from: user_language, to: "en" })
+                const translation = translate(word, { from: user_language, to: "en", engine: "google" })
                 translationPromises.push(translation)
             })
 
