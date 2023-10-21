@@ -12,6 +12,7 @@ import {
     setDoc,
     where,
     Timestamp,
+    startAt,
 } from "firebase/firestore"
 import { initializeApp } from 'firebase/app'
 import { firebaseConfig } from "../firebase.config"
@@ -80,34 +81,6 @@ async function createProduct(product) {
     }
 }
 
-async function getProductsByCategory(category) {
-    const productsCollection = collection(db, process.env.COLL_PRODUCTS)
-
-    let q = query(productsCollection, where("tags", "array-contains-any", [category]))
-    q = query(q, orderBy("popularity"))
-
-    const querySnapshot = await getDocs(q)
-
-    const productsInCategory = []
-
-    querySnapshot.forEach((doc) => {
-        const productData = doc.data()
-        productsInCategory.push(productData)
-    })
-
-    if (productsInCategory.length > 0) {
-        return {
-            msg: `Category ${category} products successfully found!`,
-            products: productsInCategory
-        }
-    } else {
-        return {
-            msg: `No products found in category ${category}.`,
-            products: []
-        }
-    }
-}
-
 async function getProductsByTitle(s) {
     try {
         if (s === '') {
@@ -170,8 +143,8 @@ async function getProductsByQueries(props) {
         min, //preço mínimo
         max, //preço máximo
         order = 'popularity',
-        itemsPerPage = 60,
-        userLanguage = 'en'
+        prods_limit = 60,
+        user_language = 'en'
     } = props
 
     try {
@@ -189,7 +162,7 @@ async function getProductsByQueries(props) {
             const translationPromises = []
 
             inicialTags.forEach(word => {
-                const translation = translate(word, { from: userLanguage, to: "en" })
+                const translation = translate(word, { from: user_language, to: "en" })
                 translationPromises.push(translation)
             })
 
@@ -220,24 +193,9 @@ async function getProductsByQueries(props) {
             ))
         }
 
-        // Filtre by tag (se presente)
-        if (t) {
-            q = query(q, where("tags", "array-contains-any", t.split(' ')))
-        }
-
-        // Filtre by theme (se presente)
-        if (h) {
-            q = query(q, where("theme_id", "==", h))
-        }
-
         // Filtre by collection (se presente)
         if (c) {
             q = query(q, where("collection_id", "==", c))
-        }
-
-        // Filtre by color (se presente)
-        if (cl) {
-            q = query(q, where("colors_ids", "array-contains", cl))
         }
 
         // Filtre by type (se presente)
@@ -262,46 +220,44 @@ async function getProductsByQueries(props) {
             ['higher-price', { value: 'min_price', direction: 'desc' }],
         ])
 
-        // Calcule a página inicial com base no número da página e no tamanho da página
-        const startAfterDoc = (parseFloat(page) - 1) * itemsPerPage
-
         const filterByPrice = (min || max) && order !== 'lowest-price' && order !== 'higher-price'
 
         // Aplique a ordenação correta
         q = query(q, orderBy(orders.get(filterByPrice ? 'lowest-price' : order).value, orders.get(filterByPrice ? 'lowest-price' : order).direction))
 
-        // Aplique a paginação usando startAfter()
-        if (startAfterDoc > 0) {
-            q = query(q, startAfter(startAfterDoc))
-        }
-
-        // Crie uma nova consulta limitada ao número de itens por página
-        q = query(q, limit(itemsPerPage))
-
         const querySnapshot = await getDocs(q)
 
-        const productsMatchingQueries = []
-        querySnapshot.forEach((doc) => {
-            const productData = doc.data()
-            productsMatchingQueries.push(productData)
-        })
+        let products = querySnapshot.docs.map(doc => doc.data())
 
-        if (productsMatchingQueries.length > 0) {
+        // Filtre by product color (se presente)
+        if (cl) {
+            products = products.filter(prod => prod.variants.some(vari => vari.color_id === cl))
+        }
+
+        // Filtre by themes (se presente)
+        if (h) {
+            products = products.filter(prod => prod.themes.some(theme => h.includes(theme)))
+        }
+
+        if (products.length > 0) {
             return {
-                msg: 'Products matching queries found successfully!',
-                products: productsMatchingQueries
+                status: 200,
+                message: 'Products matching queries found successfully!',
+                products: products.slice((Number(page) - 1) * Number(prods_limit), Number(page) * Number(prods_limit))
             }
         } else {
             return {
-                msg: 'No products found matching the queries.',
+                status: 204,
+                message: 'No products found matching the queries.',
                 products: []
             }
         }
     } catch (error) {
         console.log('Error getting products.', error)
         return {
-            msg: 'Error getting products.',
-            products: []
+            status: 500,
+            message: 'Error getting products.',
+            products: null
         }
     }
 }
@@ -423,13 +379,12 @@ async function handleProductsPurchased(line_items) {
         console.error("Error handling purchased products:", error)
         return {
             msg: "An error occurred while updating products.",
-        };
+        }
     }
 }
 
 export {
     createProduct,
-    getProductsByCategory,
     getProductsByQueries,
     getProductById,
     getAllProductPrintifyIds,
