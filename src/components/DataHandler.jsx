@@ -139,7 +139,6 @@ export default function DataHandler(props) {
         const options = {
             method: 'GET',
             headers: {
-                'Content-Type': 'application/json',
                 cart_id: session.cart_id,
                 authorization: process.env.NEXT_PUBLIC_APP_TOKEN
             },
@@ -154,7 +153,6 @@ export default function DataHandler(props) {
         const options = {
             method: 'GET',
             headers: {
-                'Content-Type': 'application/json',
                 cart_id: cart_id,
                 authorization: process.env.NEXT_PUBLIC_APP_TOKEN
             },
@@ -360,7 +358,10 @@ export default function DataHandler(props) {
 
         const products = await fetch("/api/products-by-title", options)
             .then(response => response.json())
-            .then(response => response.products)
+            .then(response => {
+                console.log(response)
+                return response.products
+            })
             .catch(err => console.error(err))
 
         setProductOptions(products)

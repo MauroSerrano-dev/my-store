@@ -294,7 +294,6 @@ export async function getServerSideProps(context) {
         const options = {
             method: 'GET',
             headers: {
-                'Content-Type': 'application/json',
                 authorization: process.env.NEXT_PUBLIC_APP_TOKEN,
                 id: id,
             }
