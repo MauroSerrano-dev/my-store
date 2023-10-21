@@ -243,11 +243,12 @@ async function getProductsByQueries(props) {
             return {
                 status: 200,
                 message: 'Products matching queries found successfully!',
-                products: products.slice((Number(page) - 1) * Number(prods_limit), Number(page) * Number(prods_limit))
+                products: products.slice((Number(page) - 1) * Number(prods_limit), Number(page) * Number(prods_limit)),
+                last_page: Math.ceil(products.length / Number(prods_limit))
             }
         } else {
             return {
-                status: 204,
+                status: 200,
                 message: 'No products found matching the queries.',
                 products: []
             }
@@ -257,7 +258,8 @@ async function getProductsByQueries(props) {
         return {
             status: 500,
             message: 'Error getting products.',
-            products: null
+            products: null,
+            error: error,
         }
     }
 }
@@ -276,7 +278,7 @@ async function getProductById(id) {
             }
         } else {
             return {
-                status: 204,
+                status: 200,
                 message: `Product with ID ${id} not found.`,
                 product: null
             }

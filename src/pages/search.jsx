@@ -38,11 +38,10 @@ export default withRouter(props => {
         cl,
     } = props.router.query
 
-    const [products, setProducts] = useState([])
+    const [products, setProducts] = useState()
     const [themes, setThemes] = useState([])
     const [orderBy, setOrderBy] = useState(order)
     const [minOrMax, setMinOrMax] = useState(false)
-    const [noResults, setNoResults] = useState(false)
     const [productWidth, setProductWidth] = useState(0)
     const [productsPerLine, setProductsPerLine] = useState(0)
 
@@ -104,7 +103,7 @@ export default withRouter(props => {
     }, [])
 
     function getProductsByCategory() {
-        setProducts([])
+        setProducts()
 
         const options = {
             method: 'GET',
@@ -117,10 +116,7 @@ export default withRouter(props => {
 
         const products = fetch("/api/products-by-queries", options)
             .then(response => response.json())
-            .then(response => {
-                setNoResults(response.products.length === 0)
-                return response.products
-            })
+            .then(response => response.products)
             .catch(err => console.error(err))
 
         return products
@@ -358,34 +354,36 @@ export default withRouter(props => {
                         className={styles.productsBody}
                         ref={productsContainer}
                     >
-                        {noResults
-                            ? <h2>No Results</h2>
-                            : products?.map((product, i) =>
-                                <Product
-                                    key={i}
-                                    userCurrency={userCurrency}
-                                    product={product}
-                                    width={productWidth}
-                                    supportsHoverAndPointer={supportsHoverAndPointer}
-                                    inicialColorId={cl ? SEARCH_PRODUCTS_COLORS.find(color => color.title.toLowerCase() === cl).id : null}
-                                    motionVariants={
-                                        {
-                                            hidden: {
-                                                opacity: 0,
-                                                y: 20,
-                                            },
-                                            visible: {
-                                                opacity: 1,
-                                                y: 0,
-                                                transition: {
-                                                    duration: 0.3,
-                                                    delay: 0.3 * Math.floor(i / (productsPerLine)),
+                        {!products
+                            ? <div></div>
+                            : products.length === 0
+                                ? <h2>No Results</h2>
+                                : products.map((product, i) =>
+                                    <Product
+                                        key={i}
+                                        userCurrency={userCurrency}
+                                        product={product}
+                                        width={productWidth}
+                                        supportsHoverAndPointer={supportsHoverAndPointer}
+                                        inicialColorId={cl ? SEARCH_PRODUCTS_COLORS.find(color => color.title.toLowerCase() === cl).id : null}
+                                        motionVariants={
+                                            {
+                                                hidden: {
+                                                    opacity: 0,
+                                                    y: 20,
+                                                },
+                                                visible: {
+                                                    opacity: 1,
+                                                    y: 0,
+                                                    transition: {
+                                                        duration: 0.3,
+                                                        delay: 0.3 * Math.floor(i / (productsPerLine)),
+                                                    }
                                                 }
                                             }
                                         }
-                                    }
-                                />
-                            )}
+                                    />
+                                )}
                     </div>
                 </div>
             </main >

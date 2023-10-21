@@ -31,7 +31,7 @@ export default withRouter(props => {
         supportsHoverAndPointer,
     } = props
 
-    const [currentColor, setCurrentColor] = useState(cl ? cl : COLORS_POOL.find(cl => cl.id === product?.colors_ids[0]))
+    const [currentColor, setCurrentColor] = useState(cl ? cl : COLORS_POOL[product?.colors_ids[0]])
     const [currentSize, setCurrentSize] = useState(sz ? sz : SIZES_POOL.find(sz => sz.id === product?.sizes_ids[0]))
 
     const productCurrentVariant = product?.variants.find(vari => vari.size_id === currentSize?.id && vari.color_id === currentColor?.id)
@@ -41,7 +41,7 @@ export default withRouter(props => {
     const originalPrice = product ? `${userCurrency.symbol} ${(convertDolarToCurrency(productCurrentVariant?.price, userCurrency.code) / 100).toFixed(2)}` : undefined
 
     useEffect(() => {
-        setCurrentColor(cl ? cl : COLORS_POOL.find(cl => cl.id === product?.colors_ids[0]))
+        setCurrentColor(cl ? cl : COLORS_POOL[product?.colors_ids[0]])
         setCurrentSize(sz ? sz : SIZES_POOL.find(sz => sz.id === product?.sizes_ids[0]))
     }, [router])
 
@@ -158,7 +158,7 @@ export default withRouter(props => {
                                 />
                                 <ImagesSlider
                                     images={product.images}
-                                    colors={product.colors_ids.map(color_id => COLORS_POOL.find(color => color.id === color_id))}
+                                    colors={product.colors_ids.map(color_id => COLORS_POOL[color_id])}
                                     currentColor={currentColor}
                                     supportsHoverAndPointer={supportsHoverAndPointer}
                                     width={windowWidth > 1074 ? 450 : windowWidth > 549 ? 450 : windowWidth}
@@ -201,7 +201,7 @@ export default withRouter(props => {
                             <div>
                                 <p style={{ textAlign: 'start', fontWeight: '700' }}>{product.colors_ids.length === 1 ? 'Color' : 'Pick a color'}</p>
                                 <ColorSelector
-                                    options={product.colors_ids.map(color_id => COLORS_POOL.find(cl => cl.id === color_id))}
+                                    options={product.colors_ids.map(color_id => COLORS_POOL[color_id])}
                                     value={[currentColor]}
                                     onChange={handleColorChange}
                                     supportsHoverAndPointer={supportsHoverAndPointer}
