@@ -140,7 +140,7 @@ export default withRouter(props => {
                                 className={styles.sliderContainer}
                             >
                                 <ShareButton
-                                    link={`${process.env.NEXT_PUBLIC_DOMAIN}/product/${product.id}${currentColor.id !== product.colors_ids[0].id && currentSize.id !== product.sizes_ids[0].id
+                                    link={`${process.env.NEXT_PUBLIC_URL}/product/${product.id}${currentColor.id !== product.colors_ids[0].id && currentSize.id !== product.sizes_ids[0].id
                                         ? `?sz=${currentSize.title.toLowerCase()}&cl=${currentColor.title.replace('/', '+').replace(' ', '+').toLowerCase()}`
                                         : currentSize.id !== product.sizes_ids[0].id
                                             ? `?sz=${currentSize.title.toLowerCase()}`
@@ -282,14 +282,13 @@ export default withRouter(props => {
     )
 })
 
-export const config = {
+/* export const config = {
     runtime: 'experimental-edge'
-}
+} */
 
 export async function getServerSideProps(context) {
 
     const { id, cl, sz } = context.query;
-
     try {
         const options = {
             method: 'GET',
@@ -298,10 +297,11 @@ export async function getServerSideProps(context) {
                 id: id,
             }
         }
-        const product = await fetch(`${process.env.NEXT_PUBLIC_DOMAIN}/api/product`, options)
+        const product = await fetch(`${process.env.NEXT_PUBLIC_URL_FULL}/api/product`, options)
             .then(response => response.json())
             .then(response => response.product)
             .catch(err => console.error(err))
+
 
         const colorQuery = cl
             ? COLORS_POOL.find(color => color.title.replace('/', ' ').toLowerCase() === cl.toLowerCase())
@@ -316,7 +316,7 @@ export async function getServerSideProps(context) {
                 product: product,
                 cl: colorQuery === undefined ? null : colorQuery,
                 sz: sizeQuery === undefined ? null : sizeQuery,
-                urlMeta: `${process.env.NEXT_PUBLIC_URL_FULL}`.concat(context.resolvedUrl),
+                urlMeta: `${process.env.NEXT_PUBLIC_URL_FULL}${context.resolvedUrl}`,
                 productMetaImage: colorQuery
                     ? product.images.filter(img => img.color_id === colorQuery.id)[product.image_showcase_index].src
                     : product.images[product.image_showcase_index].src
