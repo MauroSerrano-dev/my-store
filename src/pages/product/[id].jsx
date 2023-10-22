@@ -25,7 +25,6 @@ export default withRouter(props => {
         cl,
         sz,
         productMetaImage,
-        urlMeta,
         mobile,
         router,
         supportsHoverAndPointer,
@@ -131,7 +130,6 @@ export default withRouter(props => {
                     <meta property="og:description" content={product.description} key='og:description' />
                     <meta property="og:image" itemProp="image" content={productMetaImage} key='og:image' />
                     <meta property="og:type" content="product" key='og:type' />
-                    <meta property="og:url" content={urlMeta} key='og:url' />
                 </Head>
                 <div className={styles.productContainer}>
                     <section className={`${styles.section} ${styles.one}`}>
@@ -316,7 +314,6 @@ export async function getServerSideProps(context) {
                 product: product,
                 cl: colorQuery === undefined ? null : colorQuery,
                 sz: sizeQuery === undefined ? null : sizeQuery,
-                urlMeta: `${process.env.NEXT_PUBLIC_DOMAIN}`.concat(context.resolvedUrl),
                 productMetaImage: colorQuery
                     ? product.images.filter(img => img.color_id === colorQuery.id)[product.image_showcase_index].src
                     : product.images[product.image_showcase_index].src
