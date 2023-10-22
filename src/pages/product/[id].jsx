@@ -140,7 +140,7 @@ export default withRouter(props => {
                                 className={styles.sliderContainer}
                             >
                                 <ShareButton
-                                    link={`${process.env.NEXT_PUBLIC_URL}/product/${product.id}${currentColor.id !== product.colors_ids[0].id && currentSize.id !== product.sizes_ids[0].id
+                                    link={`${process.env.NEXT_PUBLIC_URL_FULL}/product/${product.id}${currentColor.id !== product.colors_ids[0].id && currentSize.id !== product.sizes_ids[0].id
                                         ? `?sz=${currentSize.title.toLowerCase()}&cl=${currentColor.title.replace('/', '+').replace(' ', '+').toLowerCase()}`
                                         : currentSize.id !== product.sizes_ids[0].id
                                             ? `?sz=${currentSize.title.toLowerCase()}`
