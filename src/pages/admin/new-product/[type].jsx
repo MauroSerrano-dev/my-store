@@ -5,7 +5,7 @@ import { useEffect, useState } from 'react'
 import KeyboardArrowLeftRoundedIcon from '@mui/icons-material/KeyboardArrowLeftRounded'
 import { withRouter } from 'next/router'
 import Link from 'next/link'
-import { COLLECTIONS, TAGS_POOL, PRODUCT_TYPES, COLORS_POOL, SIZES_POOL, PROVIDERS_POOL, ART_COLORS } from '../../../../consts'
+import { COLLECTIONS, TAGS_POOL, PRODUCT_TYPES, COLORS_POOL, SIZES_POOL, PROVIDERS_POOL, SEARCH_COLORS } from '../../../../consts'
 import ColorSelector from '@/components/ColorSelector'
 import TextInput from '@/components/material-ui/TextInput'
 import TagsSelector from '@/components/material-ui/TagsSelector'
@@ -743,7 +743,7 @@ export default withRouter(props => {
                                             </div>
                                             <ColorSelector
                                                 value={[COLORS_POOL[product.variants.find(vari => vari.color_id === product.colors[colorIndex].id).art.color_id]]}
-                                                options={ART_COLORS}
+                                                options={SEARCH_COLORS.map(cl => cl.color_display)}
                                                 onChange={handleArtColor}
                                                 supportsHoverAndPointer={supportsHoverAndPointer}
                                                 style={{

@@ -219,12 +219,12 @@ async function getProductsByQueries(props) {
 
         // Filtre by product color (se presente)
         if (cl) {
-            products = products.filter(prod => prod.variants.some(vari => vari.color_id === cl))
+            products = products.filter(prod => prod.variants.some(vari => cl.colors.find(cl => cl.id === vari.color_id)))
         }
 
         // Filtre by product color (se presente)
         if (ac) {
-            products = products.filter(prod => prod.variants.some(vari => vari.art.color_id === ac))
+            products = products.filter(prod => prod.variants.some(vari => ac.colors.find(cl => cl.id === vari.art.color_id)))
         }
 
         // Filtre by themes (se presente)

@@ -6,7 +6,7 @@ import Link from 'next/link'
 import Selector from '@/components/material-ui/Selector'
 import { Checkbox, FormControlLabel } from '@mui/material'
 import Footer from '@/components/Footer'
-import { ART_COLORS, COLORS_POOL, SEARCH_PRODUCTS_COLORS } from '../../consts'
+import { SEARCH_COLORS } from '../../consts'
 import ColorButton from '@/components/ColorButton'
 
 const THEMES_VALUES = [
@@ -30,6 +30,7 @@ export default withRouter(props => {
     const {
         s,
         t,
+        h,
         c,
         page = 1,
         min,
@@ -53,8 +54,8 @@ export default withRouter(props => {
             getProductsByCategory()
                 .then(products => setProducts(products))
         }
-        if (t) {
-            setThemes(t?.split(' '))
+        if (h) {
+            setThemes(h?.split(' '))
         }
         else {
             setThemes([])
@@ -176,7 +177,7 @@ export default withRouter(props => {
                                 control={
                                     <Checkbox
                                         checked={themes.includes(theme.value)}
-                                        onChange={e => handleCheckBox(e.target.checked, 't', theme.value)}
+                                        onChange={e => handleCheckBox(e.target.checked, 'h', theme.value)}
                                         sx={{
                                             color: '#ffffff'
                                         }}
@@ -198,7 +199,7 @@ export default withRouter(props => {
                                 control={
                                     <Checkbox
                                         checked={themes.includes(theme.value)}
-                                        onChange={e => handleCheckBox(e.target.checked, 't', theme.value)}
+                                        onChange={e => handleCheckBox(e.target.checked, 'h', theme.value)}
                                         sx={{
                                             color: '#ffffff'
                                         }}
@@ -299,18 +300,20 @@ export default withRouter(props => {
                     <div className={styles.filterBlock}>
                         <h3>Product Color</h3>
                         <div className={styles.colorsContainer}>
-                            {SEARCH_PRODUCTS_COLORS.map((color, i) =>
+                            {SEARCH_COLORS.map((color, i) =>
                                 <Link
                                     scroll={false}
                                     href={{
                                         pathname: router.pathname,
-                                        query: getQueries({ cl: color.title.toLowerCase() })
+                                        query: color.color_display.title.toLowerCase() === cl
+                                            ? getQueries({}, ['cl'])
+                                            : getQueries({ cl: color.color_display.title.toLowerCase() })
                                     }}
                                     key={i}
                                 >
                                     <ColorButton
-                                        selected={cl === color.title.toLowerCase()}
-                                        color={color}
+                                        selected={cl === color.color_display.title.toLowerCase()}
+                                        color={{ title: color.color_display.title, colors: color.color_display.colors }}
                                         supportsHoverAndPointer={supportsHoverAndPointer}
                                     />
                                 </Link>
@@ -320,18 +323,20 @@ export default withRouter(props => {
                     <div className={styles.filterBlock}>
                         <h3>Art Color</h3>
                         <div className={styles.colorsContainer}>
-                            {ART_COLORS.map((color, i) =>
+                            {SEARCH_COLORS.map((color, i) =>
                                 <Link
                                     scroll={false}
                                     href={{
                                         pathname: router.pathname,
-                                        query: getQueries({ ac: color.title.toLowerCase() })
+                                        query: color.color_display.title.toLowerCase() === ac
+                                            ? getQueries({}, ['ac'])
+                                            : getQueries({ ac: color.color_display.title.toLowerCase() })
                                     }}
                                     key={i}
                                 >
                                     <ColorButton
-                                        selected={ac === color.title.toLowerCase()}
-                                        color={color}
+                                        selected={ac === color.color_display.title.toLowerCase()}
+                                        color={{ title: color.color_display.title, colors: color.color_display.colors }}
                                         supportsHoverAndPointer={supportsHoverAndPointer}
                                     />
                                 </Link>
@@ -385,11 +390,11 @@ export default withRouter(props => {
                                         supportsHoverAndPointer={supportsHoverAndPointer}
                                         inicialColorId={product.variants.find(vari => {
                                             if (cl && ac)
-                                                return COLORS_POOL[vari.color_id].title.toLowerCase() === cl && COLORS_POOL[vari.art.color_id].title.toLowerCase() === ac
+                                                return SEARCH_COLORS.find(color => color.color_display.title.toLowerCase() === cl)?.colors.find(clr => clr.id === vari.color_id) && SEARCH_COLORS.find(color => color.color_display.title.toLowerCase() === ac)?.colors.find(clr => clr.id === vari.art.color_id)
                                             if (cl)
-                                                return COLORS_POOL[vari.color_id].title.toLowerCase() === cl
+                                                return SEARCH_COLORS.find(color => color.color_display.title.toLowerCase() === cl)?.colors.find(clr => clr.id === vari.color_id)
                                             if (ac)
-                                                return COLORS_POOL[vari.art.color_id].title.toLowerCase() === ac
+                                                return SEARCH_COLORS.find(color => color.color_display.title.toLowerCase() === ac)?.colors.find(clr => clr.id === vari.art.color_id)
                                             return null
                                         })?.color_id || null
                                         }
