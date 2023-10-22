@@ -268,7 +268,7 @@ export default function Product(props) {
                     <div
                         className={styles.infoBottomPadding}
                         style={{
-                            width: `${Math.min(product.colors_ids.length * 18, 100)}%`,
+                            width: product.colors_ids.length <= 1 ? '75%' : `${Math.min(product.colors_ids.length * 18, 100)}%`,
                             borderBottom: !isDragging && (hover || (isDraggingColors && scrollColorsActive))
                                 ? '1px rgba(0, 0, 0, 0.35) solid'
                                 : '1px transparent solid',

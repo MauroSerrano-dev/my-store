@@ -42,7 +42,7 @@ export const SEARCH_COLORS = [
     { id: 5, color_display: COLORS_POOL[6], colors: [COLORS_POOL[511], COLORS_POOL[1795], COLORS_POOL[6]] },
     { id: 6, color_display: COLORS_POOL[2], colors: [COLORS_POOL[2], COLORS_POOL[364], COLORS_POOL[369], COLORS_POOL[1792]] },
     { id: 7, color_display: COLORS_POOL[1], colors: [COLORS_POOL[1]] },
-    { id: 8, color_display: COLORS_POOL[9], title: 'Red', colors: [COLORS_POOL[9], COLORS_POOL[423], COLORS_POOL[1536]] },
+    { id: 8, color_display: COLORS_POOL[9], colors: [COLORS_POOL[9], COLORS_POOL[423], COLORS_POOL[1536]] },
     { id: 9, color_display: COLORS_POOL[10], colors: [COLORS_POOL[9], COLORS_POOL[362]] },
 ]
 
