@@ -266,7 +266,7 @@ export default function Product(props) {
                         </p>
                     </div>
                     {
-                        supportsHoverAndPointer && showButtomHover &&
+                        supportsHoverAndPointer &&
                         <div
                             className={styles.infoBottomPadding}
                             style={{
