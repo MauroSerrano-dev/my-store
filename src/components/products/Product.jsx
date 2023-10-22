@@ -265,7 +265,12 @@ export default function Product(props) {
                             {userCurrency.symbol} {(convertDolarToCurrency(product.min_price * (product.sold_out ? 1 - product.sold_out.percentage : 1), userCurrency.code) / 100).toFixed(2)}
                         </p>
                     </div>
-                    <div className={styles.infoBottomPadding}>
+                    <div
+                        className={styles.infoBottomPadding}
+                        style={{
+                            width: `${Math.min(product.colors_ids.length * 18, 100)}%`
+                        }}
+                    >
                     </div>
                 </div>
             </Link>
