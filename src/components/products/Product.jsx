@@ -265,19 +265,22 @@ export default function Product(props) {
                             {userCurrency.symbol} {(convertDolarToCurrency(product.min_price * (product.sold_out ? 1 - product.sold_out.percentage : 1), userCurrency.code) / 100).toFixed(2)}
                         </p>
                     </div>
-                    <div
-                        className={styles.infoBottomPadding}
-                        style={{
-                            width: product.colors_ids.length <= 1 ? '75%' : `${Math.min(product.colors_ids.length * 18, 100)}%`,
-                            borderBottom: !isDragging && (hover || (isDraggingColors && scrollColorsActive))
-                                ? '1px rgba(0, 0, 0, 0.35) solid'
-                                : '1px transparent solid',
-                            boxShadow: !isDragging && (hover || (isDraggingColors && scrollColorsActive))
-                                ? '0px 0.5px 3px 0.2px rgba(0, 0, 0, 0.2), 0px 1px 3px 0.5px rgba(0, 0, 0, 0.14), 0px 2px 3px 1px rgba(0, 0, 0, 0.12)'
-                                : 'none'
-                        }}
-                    >
-                    </div>
+                    {
+                        supportsHoverAndPointer && showButtomHover &&
+                        <div
+                            className={styles.infoBottomPadding}
+                            style={{
+                                width: product.colors_ids.length <= 1 ? '75%' : `${Math.min(product.colors_ids.length * 18, 100)}%`,
+                                borderBottom: !isDragging && (hover || (isDraggingColors && scrollColorsActive))
+                                    ? '1px rgba(0, 0, 0, 0.35) solid'
+                                    : '1px transparent solid',
+                                boxShadow: !isDragging && (hover || (isDraggingColors && scrollColorsActive))
+                                    ? '0px 0.5px 3px 0.2px rgba(0, 0, 0, 0.2), 0px 1px 3px 0.5px rgba(0, 0, 0, 0.14), 0px 2px 3px 1px rgba(0, 0, 0, 0.12)'
+                                    : 'none'
+                            }}
+                        >
+                        </div>
+                    }
                 </div>
             </Link>
             {
