@@ -8,6 +8,7 @@ import { Checkbox, FormControlLabel } from '@mui/material'
 import Footer from '@/components/Footer'
 import { SEARCH_COLORS } from '../../consts'
 import ColorButton from '@/components/ColorButton'
+import Tag from '@/components/material-ui/Tag'
 
 const THEMES_VALUES = [
     { name: 'Computer', value: 'computer' },
@@ -35,43 +36,22 @@ export default withRouter(props => {
         page = 1,
         min,
         max,
-        order = 'popularity',
+        order = min || max ? 'lowest-price' : 'popularity',
         cl,
         ac,
     } = props.router.query
 
     const [products, setProducts] = useState()
-    const [themes, setThemes] = useState([])
-    const [orderBy, setOrderBy] = useState(order)
-    const [minOrMax, setMinOrMax] = useState(false)
     const [productWidth, setProductWidth] = useState(0)
     const [productsPerLine, setProductsPerLine] = useState(0)
 
     const productsContainer = useRef(null)
 
+    const themes = h?.split(' ') || []
+
     useEffect(() => {
-        if (Object.keys(router.query).length > 0) {
-            getProductsByCategory()
-                .then(products => setProducts(products))
-        }
-        if (h) {
-            setThemes(h?.split(' '))
-        }
-        else {
-            setThemes([])
-        }
-        if ((min || max) && order !== 'lowest-price' && order !== 'higher-price') {
-            setOrderBy('lowest-price')
-        }
-        else {
-            setOrderBy(order)
-        }
-        if (!min && !max) {
-            setMinOrMax(false)
-        }
-        else {
-            setMinOrMax(true)
-        }
+        if (router.isReady)
+            getProductsByQuery().then(products => setProducts(products))
     }, [router])
 
     useEffect(() => {
@@ -104,7 +84,7 @@ export default withRouter(props => {
         }
     }, [])
 
-    function getProductsByCategory() {
+    function getProductsByQuery() {
         setProducts()
 
         const options = {
@@ -157,6 +137,15 @@ export default withRouter(props => {
                     : { ...router.query, [queryName]: themes.filter(theme => theme !== value).join(' ') }
             })
         }
+    }
+
+    function handleDeleteTag(queryName, value) {
+        router.push({
+            pathname: router.pathname,
+            query: router.query[queryName].split(' ').length === 1
+                ? getQueries({}, [queryName])
+                : { ...router.query, [queryName]: router.query[queryName].split(' ').filter(queryValue => queryValue !== value).join(' ') }
+        })
     }
 
     return (
@@ -348,36 +337,49 @@ export default withRouter(props => {
                     className={styles.products}
                 >
                     <div className={styles.productsHead}>
-                        <h1>
-                            Search
-                        </h1>
-                        <Selector
-                            name='search'
-                            label='Order By'
-                            value={orderBy}
-                            options={
-                                minOrMax
-                                    ? [
-                                        { value: 'lowest-price', name: 'Lowest Price' },
-                                        { value: 'higher-price', name: 'Higher Price' },
-                                    ]
-                                    : [
-                                        { value: 'popularity', name: 'Popularity' },
-                                        { value: 'newest', name: 'Newest' },
-                                        { value: 'lowest-price', name: 'Lowest Price' },
-                                        { value: 'higher-price', name: 'Higher Price' },
-                                    ]
-                            }
-                            width='170px'
-                            onChange={(event) => handleChangeOrder(event.target.value)}
-                            supportsHoverAndPointer={supportsHoverAndPointer}
-                        />
+                        <div className='flex row center' style={{ gap: '1rem' }}>
+                            <h1>
+                                Filter
+                            </h1>
+                            <div className='flex row center' style={{ gap: '0.5rem' }}>
+                                {Object.keys(router.query).map(key => router.query[key].split(' ').map((value, i) =>
+                                    <Tag
+                                        key={i}
+                                        label={key === 'max' || key === 'min' ? `${key}: ${value}` : value}
+                                        onDelete={() => handleDeleteTag(key, value)}
+                                    />
+                                ))}
+                            </div>
+                        </div>
+                        {router.isReady &&
+                            <Selector
+                                name='search'
+                                label='Order By'
+                                value={order}
+                                options={
+                                    min || max
+                                        ? [
+                                            { value: 'lowest-price', name: 'Lowest Price' },
+                                            { value: 'higher-price', name: 'Higher Price' },
+                                        ]
+                                        : [
+                                            { value: 'popularity', name: 'Popularity' },
+                                            { value: 'newest', name: 'Newest' },
+                                            { value: 'lowest-price', name: 'Lowest Price' },
+                                            { value: 'higher-price', name: 'Higher Price' },
+                                        ]
+                                }
+                                width='170px'
+                                onChange={(event) => handleChangeOrder(event.target.value)}
+                                supportsHoverAndPointer={supportsHoverAndPointer}
+                            />
+                        }
                     </div>
                     <div
                         className={styles.productsBody}
                         ref={productsContainer}
                     >
-                        {!products
+                        {!products || !router.isReady
                             ? <div></div>
                             : products.length === 0
                                 ? <h2>No Results</h2>
@@ -388,15 +390,16 @@ export default withRouter(props => {
                                         product={product}
                                         width={productWidth}
                                         supportsHoverAndPointer={supportsHoverAndPointer}
-                                        inicialColorId={product.variants.find(vari => {
-                                            if (cl && ac)
-                                                return SEARCH_COLORS.find(color => color.color_display.title.toLowerCase() === cl)?.colors.find(clr => clr.id === vari.color_id) && SEARCH_COLORS.find(color => color.color_display.title.toLowerCase() === ac)?.colors.find(clr => clr.id === vari.art.color_id)
-                                            if (cl)
-                                                return SEARCH_COLORS.find(color => color.color_display.title.toLowerCase() === cl)?.colors.find(clr => clr.id === vari.color_id)
-                                            if (ac)
-                                                return SEARCH_COLORS.find(color => color.color_display.title.toLowerCase() === ac)?.colors.find(clr => clr.id === vari.art.color_id)
-                                            return null
-                                        })?.color_id || null
+                                        inicialColorId={
+                                            product.variants.find(vari => {
+                                                if (cl && ac)
+                                                    return SEARCH_COLORS.find(color => color.color_display.title.toLowerCase() === cl)?.colors.find(clr => clr.id === vari.color_id) && SEARCH_COLORS.find(color => color.color_display.title.toLowerCase() === ac)?.colors.find(clr => clr.id === vari.art.color_id)
+                                                if (cl)
+                                                    return SEARCH_COLORS.find(color => color.color_display.title.toLowerCase() === cl)?.colors.find(clr => clr.id === vari.color_id)
+                                                if (ac)
+                                                    return SEARCH_COLORS.find(color => color.color_display.title.toLowerCase() === ac)?.colors.find(clr => clr.id === vari.art.color_id)
+                                                return null
+                                            })?.color_id || null
                                         }
                                         motionVariants={
                                             {
