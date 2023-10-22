@@ -6,13 +6,11 @@ import {
     getDocs,
     orderBy,
     limit,
-    startAfter,
     getFirestore,
     query,
     setDoc,
     where,
     Timestamp,
-    startAt,
 } from "firebase/firestore"
 import { initializeApp } from 'firebase/app'
 import { firebaseConfig } from "../firebase.config"
@@ -105,11 +103,7 @@ async function getProductsByTitle(s) {
 
         const querySnapshot = await getDocs(q)
 
-        const productsMatchingQueries = []
-        querySnapshot.forEach((doc) => {
-            const productData = doc.data()
-            productsMatchingQueries.push(productData)
-        })
+        const productsMatchingQueries = querySnapshot.docs.map(doc => doc.data())
 
         if (productsMatchingQueries.length > 0) {
             return {
@@ -139,6 +133,7 @@ async function getProductsByQueries(props) {
         p, //type
         c, //collection
         cl, //product color
+        ac, //art color
         page = 1, //número da página
         min, //preço mínimo
         max, //preço máximo
@@ -178,13 +173,6 @@ async function getProductsByQueries(props) {
             })
                 .filter(tag => tag !== '')
                 .reduce((acc, tag) => acc.includes(tag) ? acc : acc.concat(tag), [])
-
-            if (tags.length === 0) {
-                return {
-                    msg: 'No products found matching the queries.',
-                    products: []
-                }
-            }
 
             q = query(q, where(
                 'tags',
@@ -232,6 +220,11 @@ async function getProductsByQueries(props) {
         // Filtre by product color (se presente)
         if (cl) {
             products = products.filter(prod => prod.variants.some(vari => vari.color_id === cl))
+        }
+
+        // Filtre by product color (se presente)
+        if (ac) {
+            products = products.filter(prod => prod.variants.some(vari => vari.art.color_id === ac))
         }
 
         // Filtre by themes (se presente)

@@ -27,18 +27,13 @@ const INICIAL_PRODUCT = {
     sizes: [],
     images: [],
     tags: [],
-    theme_id: '',
+    themes: [],
     variants: [],
     image_showcase_index: 0,
     image_hover_index: 1,
     popularity: 0,
-    printify_id_default: '',
     printify_ids: [],
     total_sales: 0,
-    art: {
-        id: '',
-        color_id: '',
-    },
 }
 
 export default withRouter(props => {
@@ -56,7 +51,8 @@ export default withRouter(props => {
     const [colorsChained, setColorsChained] = useState([])
     const [sizesChained, setSizesChained] = useState({})
     const [disableCreateButton, setDisableCreateButton] = useState(false)
-    const [artColor, setArtColor] = useState(null)
+    const [artIdChained, setArtIdChained] = useState(true)
+    const [artColorChained, setArtColorChained] = useState(true)
 
     useEffect(() => {
         if (router.isReady) {
@@ -66,7 +62,6 @@ export default withRouter(props => {
                 {
                     ...prev,
                     printify_ids: tp.providers.reduce((acc, prov_id) => ({ ...acc, [prov_id]: '' }), {}),
-                    tags: [tp.id],
                     sizes: SIZES_POOL.filter(sz => tp.sizes.includes(sz.id))
                 }
             ))
@@ -103,7 +98,6 @@ export default withRouter(props => {
                 product: {
                     ...product_copy,
                     id: product.id + '-' + type.id,
-                    art: { id: product.id, color_id: artColor ? artColor.id : null, },
                     type_id: type.id,
                     title_lower_case: product.title.toLowerCase(),
                     colors_ids: product.colors.map(color => color.id),
@@ -136,7 +130,7 @@ export default withRouter(props => {
         setProduct(prev => ({ ...prev, printify_ids: { ...prev.printify_ids, [providerId]: newValue } }))
     }
 
-    function handleChangeColors(value, i, color) {
+    function handleChangeVariants(value, i, color) {
         setProduct(prev => {
             setColorIndex(prevIndex => value.length > prev.colors.length
                 ? value.length - 1
@@ -152,7 +146,7 @@ export default withRouter(props => {
                 else {
                     setSizesChained(prev => ({ ...prev, [color.id]: [] }))
                 }
-                setImages(prevImgs => ({ ...prevImgs, [color.id]: [{ src: '', color_id: color.id, hover: false, showcase: false }] }))
+                setImages(prevImgs => ({ ...prevImgs, [color.id]: [{ src: '', color_id: color.id }, { src: '', color_id: color.id }, { src: '', color_id: color.id }, { src: '', color_id: color.id }] }))
             }
             // remove color
             else {
@@ -169,7 +163,9 @@ export default withRouter(props => {
             return {
                 ...prev,
                 colors: value,
-                variants: type.variants.filter(vari => value.some(cl => cl.id === vari.color_id && prev.sizes.some(sz => sz.id === vari.size_id)))
+                variants: type.variants
+                    .filter(vari => value.some(cl => cl.id === vari.color_id && prev.sizes.some(sz => sz.id === vari.size_id)))
+                    .map(vari => ({ ...vari, art: { id: prev.id, color_id: null } }))
             }
         })
     }
@@ -370,12 +366,70 @@ export default withRouter(props => {
         return colorsChained.includes(product.colors[colorIndex].id)
     }
 
+    function handleArtColor(value, i, color) {
+        if (artColorChained)
+            setProduct(prev => (
+                {
+                    ...prev,
+                    variants: prev.variants.map(vari => ({ ...vari, art: { ...vari.art, color_id: color.id === vari.art.color_id ? null : color.id } }))
+                }
+            ))
+        else
+            setProduct(prev => (
+                {
+                    ...prev,
+                    variants: prev.variants.map(vari => vari.color_id === prev.colors[colorIndex].id
+                        ? { ...vari, art: { ...vari.art, color_id: color.id === vari.art.color_id ? null : color.id } }
+                        : vari
+                    )
+                }
+            ))
+    }
+
+    function handleArtId(event) {
+        setProduct(prev => (
+            {
+                ...prev,
+                variants: prev.variants.map(vari => vari.color_id === prev.colors[colorIndex].id
+                    ? { ...vari, art: { ...vari.art, id: event.target.value } }
+                    : vari
+                )
+            }
+        ))
+    }
+
+    function handleChainArtId() {
+        setArtIdChained(prev => {
+            if (!prev) //connecting
+                setProduct(prod => ({ ...prod, variants: prod.variants.map(vari => ({ ...vari, art: { ...vari.art, id: prod.id } })) }))
+            else //disconnecting
+                setProduct(prod => ({ ...prod, variants: prod.variants.map(vari => ({ ...vari, art: { ...vari.art, id: null } })) }))
+            return !prev
+        })
+    }
+
+    function handleChainArtColor() {
+        setArtColorChained(prev => {
+            if (!prev) //connecting
+                setProduct(prod => ({ ...prod, variants: prod.variants.map(vari => ({ ...vari, art: { ...vari.art, color_id: prod.variants[0].art.color_id } })) }))
+            return !prev
+        })
+    }
+
+    function handleChangeId(event) {
+        const value = event.target.value.toLowerCase().replace(' ', '-')
+        if (artIdChained)
+            setProduct(prev => ({ ...prev, id: value, variants: prev.variants.map(vari => ({ ...vari, art: { ...vari.art, id: value } })) }))
+        else
+            setProduct(prev => ({ ...prev, id: value }))
+    }
+
     return (
         session === undefined
             ? <div></div>
             : session === null || session.email !== 'mauro.serrano.dev@gmail.com'
                 ? <NoFound404 />
-                : <div className={styles.container} onClick={() => console.log(product)}>
+                : <div className={styles.container}>
                     <header>
                     </header>
                     <main className={styles.main}>
@@ -408,40 +462,15 @@ export default withRouter(props => {
                             </Link>
                         </div>
                         {type &&
-                            <div className={styles.productContainer}>
-                                <div className={styles.productLeft}>
-                                    <SizesSelector
-                                        value={product.sizes}
-                                        options={type.sizes.map(sz_id => SIZES_POOL.find(size => size.id === sz_id))}
-                                        onChange={handleChangeSizes}
-                                    />
-                                    <ColorSelector
-                                        value={product.colors}
-                                        options={type.colors.map(cl_id => COLORS_POOL[cl_id])}
-                                        onChange={handleChangeColors}
-                                        supportsHoverAndPointer={supportsHoverAndPointer}
-                                        style={{
-                                            paddingLeft: '50px',
-                                            paddingRight: '50px',
-                                        }}
-                                    />
-                                    {images?.[product?.colors?.[colorIndex]?.id] &&
-                                        <ImagesSlider
-                                            images={Object.keys(images).reduce((acc, key) => acc.concat(images[key]), [])}
-                                            currentColor={product.colors[colorIndex]}
-                                            colors={product.colors}
-                                            supportsHoverAndPointer={supportsHoverAndPointer}
-                                        />
-                                    }
-                                </div>
-                                <div className={styles.productRight}>
-                                    <div className='flex center'>
+                            <div className={styles.sectionsContainer}>
+                                <section className={styles.section}>
+                                    <div className='flex center fillWidth'>
                                         <TextInput
                                             colorText='var(--color-success)'
                                             supportsHoverAndPointer={supportsHoverAndPointer}
                                             label='ID'
                                             value={product.id}
-                                            onChange={event => updateProductField('id', event.target.value.toLowerCase().replace(' ', '-'))}
+                                            onChange={handleChangeId}
                                             style={{
                                                 width: '100%'
                                             }}
@@ -450,246 +479,319 @@ export default withRouter(props => {
                                             {type.id}
                                         </p>
                                     </div>
-                                    <TextInput
-                                        colorText='var(--color-success)'
-                                        supportsHoverAndPointer={supportsHoverAndPointer}
-                                        label='Title'
-                                        value={product.title}
-                                        onChange={event => updateProductField('title', event.target.value)}
-                                        style={{
-                                            width: '100%'
-                                        }}
-                                    />
-                                    <TextInput
-                                        colorText='var(--color-success)'
-                                        supportsHoverAndPointer={supportsHoverAndPointer}
-                                        label='Description'
-                                        value={product.description}
-                                        onChange={event => updateProductField('description', event.target.value)}
-                                        style={{
-                                            width: '100%'
-                                        }}
-                                    />
-                                    <Selector
-                                        label='Collection'
-                                        options={COLLECTIONS.map(coll => ({ value: coll.id, name: coll.title }))}
-                                        value={product.collection_id}
-                                        style={{
-                                            height: 56,
-                                            color: 'var(--color-success)'
-                                        }}
-                                        onChange={event => updateProductField('collection_id', event.target.value)}
-                                        supportsHoverAndPointer={supportsHoverAndPointer}
-                                    />
-                                    <h3>
-                                        Art Color
-                                    </h3>
-                                    <ColorSelector
-                                        value={[artColor]}
-                                        options={ART_COLORS}
-                                        onChange={(value, i, color) => setArtColor(prev => prev?.id === color.id ? null : color)}
-                                        supportsHoverAndPointer={supportsHoverAndPointer}
-                                        style={{
-                                            paddingBottom: '1rem',
-                                        }}
-                                    />
-                                    <TextInput
-                                        colorText='var(--color-success)'
-                                        supportsHoverAndPointer={supportsHoverAndPointer}
-                                        label='Default Printify ID'
-                                        onChange={event => updateProductField('printify_id_default', event.target.value)}
-                                        value={product.printify_id_default}
-                                        style={{
-                                            width: '100%'
-                                        }}
-                                    />
-                                    {type.providers.map(prov_id => PROVIDERS_POOL.find(prov => prov.id === prov_id)).map((provider, i) =>
+                                </section>
+                                <section className={styles.section}>
+                                    <div className={styles.sectionLeft}>
                                         <TextInput
                                             colorText='var(--color-success)'
                                             supportsHoverAndPointer={supportsHoverAndPointer}
-                                            key={i}
-                                            label={`${provider.title} Printify ID`}
-                                            onChange={event => handlePrintifyId(provider.id, event.target.value)}
-                                            value={product.printify_ids[provider.id]}
+                                            label='Title'
+                                            value={product.title}
+                                            onChange={event => updateProductField('title', event.target.value)}
                                             style={{
                                                 width: '100%'
                                             }}
                                         />
-                                    )}
-                                    <Selector
-                                        label='Theme ID'
-                                        options={TAGS_POOL}
-                                        value={product.theme_id}
-                                        style={{
-                                            height: 56,
-                                            color: 'var(--color-success)'
-                                        }}
-                                        onChange={event => updateProductField('theme_id', event.target.value)}
+                                        <TextInput
+                                            colorText='var(--color-success)'
+                                            supportsHoverAndPointer={supportsHoverAndPointer}
+                                            label='Description'
+                                            value={product.description}
+                                            onChange={event => updateProductField('description', event.target.value)}
+                                            style={{
+                                                width: '100%'
+                                            }}
+                                        />
+                                        <Selector
+                                            label='Collection'
+                                            options={COLLECTIONS.map(coll => ({ value: coll.id, name: coll.title }))}
+                                            value={product.collection_id}
+                                            style={{
+                                                height: 56,
+                                                color: 'var(--color-success)'
+                                            }}
+                                            onChange={event => updateProductField('collection_id', event.target.value)}
+                                            supportsHoverAndPointer={supportsHoverAndPointer}
+                                        />
+                                        <TagsSelector
+                                            supportsHoverAndPointer={supportsHoverAndPointer}
+                                            options={TAGS_POOL}
+                                            label='Themes'
+                                            value={product.themes}
+                                            onChange={(event, value) => updateProductField('themes', value)}
+                                            style={{
+                                                width: '100%'
+                                            }}
+                                        />
+                                    </div>
+                                    <div className={styles.sectionRight}>
+                                        {type.providers.map(prov_id => PROVIDERS_POOL.find(prov => prov.id === prov_id)).map((provider, i) =>
+                                            <TextInput
+                                                key={i}
+                                                colorText='var(--color-success)'
+                                                supportsHoverAndPointer={supportsHoverAndPointer}
+                                                label={`${provider.title} Printify ID`}
+                                                onChange={event => handlePrintifyId(provider.id, event.target.value)}
+                                                value={product.printify_ids[provider.id]}
+                                                style={{
+                                                    width: '100%'
+                                                }}
+                                            />
+                                        )}
+                                        <TagsSelector
+                                            supportsHoverAndPointer={supportsHoverAndPointer}
+                                            options={TAGS_POOL}
+                                            label='Tags'
+                                            value={product.tags}
+                                            onChange={(event, value) => updateProductField('tags', value)}
+                                            style={{
+                                                width: '100%'
+                                            }}
+                                        />
+                                    </div>
+                                </section>
+                                <section className={`${styles.section} ${styles.two}`}>
+                                    <h3>
+                                        {type.title} Colors Pool
+                                    </h3>
+                                    <ColorSelector
+                                        value={product.colors}
+                                        options={type.colors.map(cl_id => COLORS_POOL[cl_id])}
+                                        onChange={handleChangeVariants}
                                         supportsHoverAndPointer={supportsHoverAndPointer}
-                                    />
-                                    <TagsSelector
-                                        supportsHoverAndPointer={supportsHoverAndPointer}
-                                        options={TAGS_POOL}
-                                        label='Tags'
-                                        value={product.tags}
-                                        onChange={(event, value) => updateProductField('tags', value)}
                                         style={{
-                                            width: '100%'
+                                            paddingLeft: '50px',
+                                            paddingRight: '50px',
                                         }}
                                     />
-                                    {product.colors.length > 0 &&
-                                        <div>
+                                    <SizesSelector
+                                        value={product.sizes}
+                                        options={type.sizes.map(sz_id => SIZES_POOL.find(size => size.id === sz_id))}
+                                        onChange={handleChangeSizes}
+                                    />
+                                </section>
+                                {product.colors.length > 0 &&
+                                    <section className={styles.section}>
+                                        <div className={styles.sectionLeft}>
+                                            <div>
+                                                <h3>
+                                                    Product Colors
+                                                </h3>
+                                                <ColorSelector
+                                                    value={[product.colors[colorIndex]]}
+                                                    options={product.colors}
+                                                    onChange={handleSelectedColor}
+                                                    supportsHoverAndPointer={supportsHoverAndPointer}
+                                                    style={{
+                                                        paddingBottom: '1rem',
+                                                    }}
+                                                />
+                                                <div className='flex' style={{ gap: '0.5rem' }}>
+                                                    {product.colors.map((color, i) =>
+                                                        <Button
+                                                            key={i}
+                                                            variant={colorsChained.includes(color.id) ? 'contained' : 'outlined'}
+                                                            onClick={() => handleChainColor(color.id)}
+                                                            sx={{
+                                                                minWidth: 40,
+                                                                width: 40,
+                                                                height: 40,
+                                                                padding: 0,
+                                                            }}
+                                                        >
+                                                            {colorsChained.includes(color.id) ? <Chain iconSize={25} /> : <BrokeChain iconSize={25} />}
+                                                        </Button>
+                                                    )}
+                                                </div>
+                                                {images?.[product?.colors?.[colorIndex]?.id] &&
+                                                    <div className='flex column' style={{ gap: '1rem' }}>
+                                                        <div>
+                                                            <h3>Images</h3>
+                                                            {images[product.colors[colorIndex].id].length > 0 &&
+                                                                <div className='flex row justify-end' style={{ fontSize: '11px', gap: '1rem', width: '100%', paddingRight: '11%' }}>
+                                                                    <p>showcase</p>
+                                                                    <p>hover</p>
+                                                                </div>
+                                                            }
+                                                            <div className='flex column' style={{ gap: '0.8rem' }} >
+                                                                {images[product.colors[colorIndex].id].map((img, i) =>
+                                                                    <div
+                                                                        className='flex row align-center fillWidth space-between'
+                                                                        key={i}
+                                                                    >
+                                                                        <TextInput
+                                                                            colorText='var(--color-success)'
+                                                                            supportsHoverAndPointer={supportsHoverAndPointer}
+                                                                            label={`Image ${i + 1}`}
+                                                                            onChange={event => updateImageField('src', event.target.value, i)}
+                                                                            style={{
+                                                                                width: '70%'
+                                                                            }}
+                                                                            value={img.src}
+                                                                        />
+                                                                        <Checkbox
+                                                                            checked={i === product.image_showcase_index}
+                                                                            onChange={event => updateProductField('image_showcase_index', event.target.checked ? i : -1)}
+                                                                            sx={{
+                                                                                color: '#ffffff'
+                                                                            }}
+                                                                        />
+                                                                        <Checkbox
+                                                                            checked={i === product.image_hover_index}
+                                                                            onChange={event => updateProductField('image_hover_index', event.target.checked ? i : -1)}
+                                                                            sx={{
+                                                                                color: '#ffffff'
+                                                                            }}
+                                                                        />
+                                                                        <ButtonIcon
+                                                                            supportsHoverAndPointer={supportsHoverAndPointer}
+                                                                            icon={<ClearRoundedIcon />}
+                                                                            onClick={() => handleDeleteImageField(i)}
+                                                                        />
+                                                                    </div>
+                                                                )}
+                                                                <Button
+                                                                    variant='outlined'
+                                                                    onClick={handleAddNewImage}
+                                                                    sx={{
+                                                                        width: '100%',
+                                                                        marginBottom: '1rem'
+                                                                    }}
+                                                                >
+                                                                    Add New Image
+                                                                </Button>
+                                                            </div>
+                                                        </div>
+                                                        <div
+                                                            className='flex center column fillWidth'
+                                                            style={{
+                                                                gap: '1rem'
+                                                            }}
+                                                        >
+                                                            <h3>
+                                                                {product.colors[colorIndex].title} Price (USD)
+                                                            </h3>
+                                                            {product.sizes.map((size, i) =>
+                                                                <div
+                                                                    className='flex center fillWidth'
+                                                                    style={{
+                                                                        gap: '1rem'
+                                                                    }}
+                                                                    key={i}
+                                                                >
+                                                                    <Button
+                                                                        variant={sizesChained[product.colors[colorIndex].id].includes(size.id) ? 'contained' : 'outlined'}
+                                                                        onClick={() => handleChainSize(size.id)}
+                                                                        sx={{
+                                                                            minWidth: 45,
+                                                                            width: 45,
+                                                                            height: 45,
+                                                                            padding: 0,
+                                                                        }}
+                                                                    >
+                                                                        {sizesChained[product.colors[colorIndex].id].includes(size.id) ? <Chain /> : <BrokeChain />}
+                                                                    </Button>
+                                                                    <TextInput
+                                                                        colorText='var(--color-success)'
+                                                                        supportsHoverAndPointer={supportsHoverAndPointer}
+                                                                        label={`${size.title}`}
+                                                                        onChange={event => handleChangePrice(event.target.value, size.id)}
+                                                                        value={product.variants.find(vari => vari.size_id === size.id && vari.color_id === product.colors[colorIndex].id).price}
+                                                                        style={{
+                                                                            width: 90,
+                                                                        }}
+                                                                        styleInput={{
+                                                                            display: 'flex',
+                                                                            justifyContent: 'center',
+                                                                            alignItems: 'center',
+                                                                            textAlign: 'center',
+                                                                            padding: 0,
+                                                                            height: 45,
+                                                                        }}
+                                                                    />
+                                                                    <Slider
+                                                                        value={product.variants.find(vari => vari.size_id === size.id && vari.color_id === product.colors[colorIndex].id).price}
+                                                                        min={type.variants[0].cost}
+                                                                        max={type.variants.reduce((acc, vari) => vari.cost > acc.cost ? vari : acc, { cost: 0 }).cost * 3}
+                                                                        valueLabelDisplay="auto"
+                                                                        onChange={event => handleChangePrice(event.target.value, size.id)}
+                                                                    />
+                                                                </div>
+                                                            )}
+                                                        </div>
+                                                    </div>
+                                                }
+                                            </div>
+                                        </div>
+                                        <div className={styles.sectionRight}>
+                                            <div className='flex row center' style={{ gap: '1rem' }}>
+                                                <Button
+                                                    variant={artColorChained ? 'contained' : 'outlined'}
+                                                    onClick={handleChainArtColor}
+                                                    sx={{
+                                                        minWidth: 27,
+                                                        width: 27,
+                                                        height: 27,
+                                                        padding: 0,
+                                                    }}
+                                                >
+                                                    {artColorChained ? <Chain iconSize={20} /> : <BrokeChain iconSize={20} />}
+                                                </Button>
+                                                <h3>
+                                                    Art Color
+                                                </h3>
+                                            </div>
                                             <ColorSelector
-                                                value={[product.colors[colorIndex]]}
-                                                options={product.colors}
-                                                onChange={handleSelectedColor}
+                                                value={[COLORS_POOL[product.variants.find(vari => vari.color_id === product.colors[colorIndex].id).art.color_id]]}
+                                                options={ART_COLORS}
+                                                onChange={handleArtColor}
                                                 supportsHoverAndPointer={supportsHoverAndPointer}
                                                 style={{
-                                                    paddingTop: '1rem',
                                                     paddingBottom: '1rem',
                                                 }}
                                             />
-                                            <div className='flex' style={{ gap: '0.5rem' }}>
-                                                {product.colors.map((color, i) =>
-                                                    <Button
-                                                        key={i}
-                                                        variant={colorsChained.includes(color.id) ? 'contained' : 'outlined'}
-                                                        onClick={() => handleChainColor(color.id)}
-                                                        sx={{
-                                                            minWidth: 40,
-                                                            width: 40,
-                                                            height: 40,
-                                                            padding: 0,
-                                                        }}
-                                                    >
-                                                        {colorsChained.includes(color.id) ? <Chain iconSize={25} /> : <BrokeChain iconSize={25} />}
-                                                    </Button>
-                                                )}
+                                            <div className='flex row center' style={{ gap: '1rem' }}>
+                                                <Button
+                                                    variant={artIdChained ? 'contained' : 'outlined'}
+                                                    onClick={handleChainArtId}
+                                                    sx={{
+                                                        minWidth: 56,
+                                                        width: 56,
+                                                        height: 56,
+                                                        padding: 0,
+                                                    }}
+                                                >
+                                                    {artIdChained ? <Chain /> : <BrokeChain />}
+                                                </Button>
+                                                <TextInput
+                                                    disabled={artIdChained}
+                                                    colorText='var(--color-success)'
+                                                    supportsHoverAndPointer={supportsHoverAndPointer}
+                                                    label='Art ID'
+                                                    value={product.variants.find(vari => vari.color_id === product.colors[colorIndex].id).art.id || ''}
+                                                    onChange={handleArtId}
+                                                    style={{
+                                                        width: '100%'
+                                                    }}
+                                                />
                                             </div>
+                                            {images?.[product?.colors?.[colorIndex]?.id] &&
+                                                <ImagesSlider
+                                                    images={Object.keys(images).reduce((acc, key) => acc.concat(images[key]), [])}
+                                                    currentColor={product.colors[colorIndex]}
+                                                    colors={product.colors}
+                                                    supportsHoverAndPointer={supportsHoverAndPointer}
+                                                />
+                                            }
                                         </div>
-                                    }
-                                    {images?.[product?.colors?.[colorIndex]?.id] &&
-                                        <div className='flex column' style={{ gap: '1rem' }}>
-                                            <div
-                                                className='flex center column fillWidth'
-                                                style={{
-                                                    gap: '1rem'
-                                                }}
-                                            >
-                                                <h3>
-                                                    {product.colors[colorIndex].title} Price (USD)
-                                                </h3>
-                                                {product.sizes.map((size, i) =>
-                                                    <div
-                                                        className='flex center fillWidth'
-                                                        style={{
-                                                            gap: '1rem'
-                                                        }}
-                                                        key={i}
-                                                    >
-                                                        <Button
-                                                            variant={sizesChained[product.colors[colorIndex].id].includes(size.id) ? 'contained' : 'outlined'}
-                                                            onClick={() => handleChainSize(size.id)}
-                                                            sx={{
-                                                                minWidth: 45,
-                                                                width: 45,
-                                                                height: 45,
-                                                                padding: 0,
-                                                            }}
-                                                        >
-                                                            {sizesChained[product.colors[colorIndex].id].includes(size.id) ? <Chain /> : <BrokeChain />}
-                                                        </Button>
-                                                        <TextInput
-                                                            colorText='var(--color-success)'
-                                                            supportsHoverAndPointer={supportsHoverAndPointer}
-                                                            label={`${size.title}`}
-                                                            onChange={event => handleChangePrice(event.target.value, size.id)}
-                                                            value={product.variants.find(vari => vari.size_id === size.id && vari.color_id === product.colors[colorIndex].id).price}
-                                                            style={{
-                                                                width: 90,
-                                                            }}
-                                                            styleInput={{
-                                                                display: 'flex',
-                                                                justifyContent: 'center',
-                                                                alignItems: 'center',
-                                                                textAlign: 'center',
-                                                                padding: 0,
-                                                                height: 45,
-                                                            }}
-                                                        />
-                                                        <Slider
-                                                            value={product.variants.find(vari => vari.size_id === size.id && vari.color_id === product.colors[colorIndex].id).price}
-                                                            min={type.variants[0].cost}
-                                                            max={type.variants.reduce((acc, vari) => vari.cost > acc.cost ? vari : acc, { cost: 0 }).cost * 3}
-                                                            valueLabelDisplay="auto"
-                                                            onChange={event => handleChangePrice(event.target.value, size.id)}
-                                                        />
-                                                    </div>
-                                                )}
-                                            </div>
-                                            <div>
-                                                <h3>Images</h3>
-                                                {images[product.colors[colorIndex].id].length > 0 &&
-                                                    <div className='flex row justify-end' style={{ fontSize: '11px', gap: '1rem', width: '100%', paddingRight: '11%' }}>
-                                                        <p>showcase</p>
-                                                        <p>hover</p>
-                                                    </div>
-                                                }
-                                                <div className='flex column' style={{ gap: '0.8rem' }} >
-                                                    {images[product.colors[colorIndex].id].map((img, i) =>
-                                                        <div
-                                                            className='flex row align-center fillWidth space-between'
-                                                            key={i}
-                                                        >
-                                                            <TextInput
-                                                                colorText='var(--color-success)'
-                                                                supportsHoverAndPointer={supportsHoverAndPointer}
-                                                                label={`Image ${i + 1}`}
-                                                                onChange={event => updateImageField('src', event.target.value, i)}
-                                                                style={{
-                                                                    width: '70%'
-                                                                }}
-                                                                value={img.src}
-                                                            />
-                                                            <Checkbox
-                                                                checked={i === product.image_showcase_index}
-                                                                onChange={event => updateProductField('image_showcase_index', event.target.checked ? i : -1)}
-                                                                sx={{
-                                                                    color: '#ffffff'
-                                                                }}
-                                                            />
-                                                            <Checkbox
-                                                                checked={i === product.image_hover_index}
-                                                                onChange={event => updateProductField('image_hover_index', event.target.checked ? i : -1)}
-                                                                sx={{
-                                                                    color: '#ffffff'
-                                                                }}
-                                                            />
-                                                            <ButtonIcon
-                                                                supportsHoverAndPointer={supportsHoverAndPointer}
-                                                                icon={<ClearRoundedIcon />}
-                                                                onClick={() => handleDeleteImageField(i)}
-                                                            />
-                                                        </div>
-                                                    )}
-                                                    <Button
-                                                        variant='outlined'
-                                                        onClick={handleAddNewImage}
-                                                        sx={{
-                                                            width: '100%',
-                                                            marginBottom: '1rem'
-                                                        }}
-                                                    >
-                                                        Add New Image
-                                                    </Button>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    }
+                                    </section>
+                                }
+                                <section className={styles.section}>
                                     <Button
                                         variant='contained'
                                         onClick={createProduct}
                                         disabled={disableCreateButton}
+                                        size='large'
                                         sx={{
                                             width: '100%',
                                             color: '#ffffff',
@@ -697,7 +799,7 @@ export default withRouter(props => {
                                     >
                                         Create Product
                                     </Button>
-                                </div>
+                                </section>
                             </div>
                         }
                     </main>

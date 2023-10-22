@@ -11,7 +11,7 @@ export const COLORS_POOL = {
     418: { id: 418, colors: ['#000000'], title: 'Black' },
     423: { id: 423, colors: ['#c62A32'], title: 'Red' },
     424: { id: 424, colors: ['#585559'], title: 'Charcoal' },
-    425: { id: 425, colors: ['#084f97'], title: 'Royal' },
+    425: { id: 425, colors: ['#084f97'], title: 'Blue' },
     511: { id: 511, colors: ['#1a2237'], title: 'Navy' },
     521: { id: 521, colors: ['#ffffff'], title: 'White' },
     1058: { id: 1058, colors: ["#2b4da4", "#ffffff"], title: "Royal/White" },
@@ -21,8 +21,9 @@ export const COLORS_POOL = {
     1750: { id: 1750, colors: ["#ffffff", "#000000"], title: "White/Black" },
     1792: { id: 1792, colors: ["#026539", "#ffffff"], title: "Green/White" },
     1795: { id: 1795, colors: ["#1a1f35", "#ffffff"], title: "Navy/White" },
-    10001: { id: 10001, colors: ["#e0824b"], title: "Burnt Orange" },
-    10002: { id: 10002, colors: ["#556b93"], title: "Steel Blue" },
+    10001: { id: 10001, colors: ["#e0824b"], title: "Orange" },
+    10002: { id: 10002, colors: ["#026539"], title: "Green" },
+    10003: { id: 10003, colors: ["#525455"], title: "Grey" },
 }
 
 export const SEARCH_PRODUCTS_COLORS = [
@@ -41,8 +42,11 @@ export const ART_COLORS =
         COLORS_POOL[418],
         COLORS_POOL[521],
         COLORS_POOL[10001],
+        COLORS_POOL[423],
+        COLORS_POOL[425],
         COLORS_POOL[10002],
-        COLORS_POOL[423]
+        COLORS_POOL[511],
+        COLORS_POOL[10003],
     ]
 
 export const SIZES_POOL = [

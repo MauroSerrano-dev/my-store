@@ -6,7 +6,7 @@ import Link from 'next/link'
 import Selector from '@/components/material-ui/Selector'
 import { Checkbox, FormControlLabel } from '@mui/material'
 import Footer from '@/components/Footer'
-import { COLORS_POOL, SEARCH_PRODUCTS_COLORS } from '../../consts'
+import { ART_COLORS, COLORS_POOL, SEARCH_PRODUCTS_COLORS } from '../../consts'
 import ColorButton from '@/components/ColorButton'
 
 const THEMES_VALUES = [
@@ -36,6 +36,7 @@ export default withRouter(props => {
         max,
         order = 'popularity',
         cl,
+        ac,
     } = props.router.query
 
     const [products, setProducts] = useState()
@@ -155,10 +156,6 @@ export default withRouter(props => {
                     : { ...router.query, [queryName]: themes.filter(theme => theme !== value).join(' ') }
             })
         }
-    }
-
-    function handleChangeProductColor() {
-
     }
 
     return (
@@ -304,6 +301,7 @@ export default withRouter(props => {
                         <div className={styles.colorsContainer}>
                             {SEARCH_PRODUCTS_COLORS.map((color, i) =>
                                 <Link
+                                    scroll={false}
                                     href={{
                                         pathname: router.pathname,
                                         query: getQueries({ cl: color.title.toLowerCase() })
@@ -312,6 +310,27 @@ export default withRouter(props => {
                                 >
                                     <ColorButton
                                         selected={cl === color.title.toLowerCase()}
+                                        color={color}
+                                        supportsHoverAndPointer={supportsHoverAndPointer}
+                                    />
+                                </Link>
+                            )}
+                        </div>
+                    </div>
+                    <div className={styles.filterBlock}>
+                        <h3>Art Color</h3>
+                        <div className={styles.colorsContainer}>
+                            {ART_COLORS.map((color, i) =>
+                                <Link
+                                    scroll={false}
+                                    href={{
+                                        pathname: router.pathname,
+                                        query: getQueries({ ac: color.title.toLowerCase() })
+                                    }}
+                                    key={i}
+                                >
+                                    <ColorButton
+                                        selected={ac === color.title.toLowerCase()}
                                         color={color}
                                         supportsHoverAndPointer={supportsHoverAndPointer}
                                     />
@@ -364,7 +383,16 @@ export default withRouter(props => {
                                         product={product}
                                         width={productWidth}
                                         supportsHoverAndPointer={supportsHoverAndPointer}
-                                        inicialColorId={cl ? SEARCH_PRODUCTS_COLORS.find(color => color.title.toLowerCase() === cl).id : null}
+                                        inicialColorId={product.variants.find(vari => {
+                                            if (cl && ac)
+                                                return COLORS_POOL[vari.color_id].title.toLowerCase() === cl && COLORS_POOL[vari.art.color_id].title.toLowerCase() === ac
+                                            if (cl)
+                                                return COLORS_POOL[vari.color_id].title.toLowerCase() === cl
+                                            if (ac)
+                                                return COLORS_POOL[vari.art.color_id].title.toLowerCase() === ac
+                                            return null
+                                        })?.color_id || null
+                                        }
                                         motionVariants={
                                             {
                                                 hidden: {

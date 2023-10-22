@@ -88,7 +88,7 @@ export default withRouter(props => {
         const productCart = {
             id: product.id,
             printify_ids: product.printify_ids,
-            printify_id_default: product.printify_id_default,
+            printify_default_provider_id: product.printify_default_provider_id,
             variant_id: prodVariant.id,
             default_variant: { size: product.sizes_ids[0], color: product.colors_ids[0] },
             quantity: 1,
