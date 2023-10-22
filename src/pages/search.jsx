@@ -9,6 +9,7 @@ import Footer from '@/components/Footer'
 import { SEARCH_COLORS } from '../../consts'
 import ColorButton from '@/components/ColorButton'
 import Tag from '@/components/material-ui/Tag'
+import CircleIcon from '@mui/icons-material/Circle';
 
 const THEMES_VALUES = [
     { name: 'Computer', value: 'computer' },
@@ -345,7 +346,15 @@ export default withRouter(props => {
                                 {Object.keys(router.query).map(key => router.query[key].split(' ').map((value, i) =>
                                     <Tag
                                         key={i}
-                                        label={key === 'max' || key === 'min' ? `${key}: ${value}` : value}
+                                        label={
+                                            key === 'max' || key === 'min'
+                                                ? <span>{key}: {value}</span>
+                                                : key === 'cl'
+                                                    ? <span className='flex row center' style={{ gap: '0.2rem' }}>product color: {value} <CircleIcon style={{ color: SEARCH_COLORS.find(cl => cl.color_display.title.toLowerCase() === value).color_display.colors[0] }} /></span>
+                                                    : key === 'ac'
+                                                        ? <span className='flex row center' style={{ gap: '0.2rem' }}>art color: {value} <CircleIcon style={{ color: SEARCH_COLORS.find(cl => cl.color_display.title.toLowerCase() === value).color_display.colors[0] }} /></span>
+                                                        : value
+                                        }
                                         onDelete={() => handleDeleteTag(key, value)}
                                     />
                                 ))}
