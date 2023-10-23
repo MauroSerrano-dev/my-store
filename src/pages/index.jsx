@@ -92,9 +92,8 @@ export default function Home(props) {
         <meta property="og:title" content='Main' key='og:title' />
         <meta property="og:image:alt" content='Main' key='og:image:alt' />
         <meta property="og:description" content="Main description" key='og:description' />
-        <meta property="og:image" itemProp="image" content='https://my-store-sigma-nine.vercel.app/logos/circle-black.png' key='og:image' />
         <meta property="og:type" content="website" key='og:type' />
-        <meta property="og:url" content='https://my-store-sigma-nine.vercel.app' key='og:url' />
+        <meta property="og:url" content='https://mrfstyles.com' key='og:url' />
       </Head>
       <main className={styles.main}>
         <Link

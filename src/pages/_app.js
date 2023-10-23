@@ -79,6 +79,8 @@ export default function App(props) {
 
         <meta property="fb:app_id" content={process.env.NEXT_PUBLIC_FACEBOOK_APP_ID} />
 
+        <meta property="og:image" itemProp="image" content='https://mrfstyles.com/logos/circle-black.png' key='og:image' />
+
         <link rel="icon" href="/logo.ico" key='icon' />
 
         <Script src="https://js.stripe.com/v3/" async></Script>
