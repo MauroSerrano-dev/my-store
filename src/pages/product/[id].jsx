@@ -141,11 +141,11 @@ export default withRouter(props => {
                             >
                                 <ShareButton
                                     link={`${process.env.NEXT_PUBLIC_URL}/product/${product.id}${currentColor.id !== product.colors_ids[0].id && currentSize.id !== product.sizes_ids[0].id
-                                        ? `?sz=${currentSize.title.toLowerCase()}&cl=${currentColor.title.replace('/', '+').replace(' ', '+').toLowerCase()}`
+                                        ? `?sz=${currentSize.title.toLowerCase()}&cl=${currentColor.id_string}`
                                         : currentSize.id !== product.sizes_ids[0].id
                                             ? `?sz=${currentSize.title.toLowerCase()}`
                                             : currentColor.id !== product.colors_ids[0].id
-                                                ? `?cl=${currentColor.title.replace('/', '+').replace(' ', '+').toLowerCase()}`
+                                                ? `?cl=${currentColor.id_string}`
                                                 : ''
                                         }`}
                                     wppMsg={`${product.title} (${currentColor.title})`}
@@ -282,14 +282,14 @@ export default withRouter(props => {
     )
 })
 
-export const config = {
+/* export const config = {
     runtime: 'experimental-edge'
-}
+} */
 
 export async function getServerSideProps(context) {
 
     const { id, cl, sz } = context.query;
-    console.log(id, cl, sz)
+
     try {
         const options = {
             method: 'GET',
