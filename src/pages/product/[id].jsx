@@ -282,13 +282,14 @@ export default withRouter(props => {
     )
 })
 
-/* export const config = {
+export const config = {
     runtime: 'experimental-edge'
-} */
+}
 
 export async function getServerSideProps(context) {
 
     const { id, cl, sz } = context.query;
+    console.log(id, cl, sz)
     try {
         const options = {
             method: 'GET',
@@ -302,9 +303,8 @@ export async function getServerSideProps(context) {
             .then(response => response.product)
             .catch(err => console.error(err))
 
-
         const colorQuery = cl
-            ? COLORS_POOL.find(color => color.title.replace('/', ' ').toLowerCase() === cl.toLowerCase())
+            ? Object.values(COLORS_POOL).find(color => color.id_string.replace('/', '-') === cl.toLowerCase())
             : null
 
         const sizeQuery = sz
