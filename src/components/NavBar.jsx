@@ -100,7 +100,7 @@ export default function NavBar(props) {
                             {itemsNavBar.map((item, i) =>
                                 <Link
                                     key={i}
-                                    href={`/search?p=${item.value}`}
+                                    href={`/search?v=${item.value}`}
                                     aria-label={item.value}
                                     className={`noUnderline fillHeight flex center ${styles.titleLink}`}
                                 >

@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from 'react'
 import Product from '@/components/products/Product'
 import Link from 'next/link'
 import Selector from '@/components/material-ui/Selector'
-import { Checkbox, FormControlLabel } from '@mui/material'
+import { Checkbox, FormControlLabel, Pagination, PaginationItem } from '@mui/material'
 import Footer from '@/components/Footer'
 import { SEARCH_COLORS } from '../../consts'
 import ColorButton from '@/components/ColorButton'
@@ -23,12 +23,20 @@ const MOST_SEARCHED_VALUES = [
     { name: 'For Couples', value: 'for-couples' },
 ]
 
-const QUERIES_TITLES = {
-    h: 'theme',
-    min: 'min',
-    max: 'max',
-    order: 'order by',
-    c: 'collection',
+const QUERIES = {
+    h: { title: 'category', show: true, showTitle: true, isFilter: true },
+    min: { title: 'min', show: true, showTitle: true, isFilter: true },
+    max: { title: 'max', show: true, showTitle: true, isFilter: true },
+    order: { title: 'order by', show: true, showTitle: true, isFilter: false },
+    c: { title: 'collection', show: true, showTitle: true, isFilter: true },
+    t: { title: 'tags', show: true, showTitle: false, isFilter: true },
+    v: { title: 'type', show: true, showTitle: true, isFilter: true },
+    cl: { title: 'product color', show: true, showTitle: false, isFilter: true },
+    ac: { title: 'art color', show: true, showTitle: false, isFilter: true },
+    p: { title: 'page', show: false, showTitle: false, isFilter: false },
+    s: { title: 'search', show: false, showTitle: false, isFilter: true },
+    l: { title: 'language', show: false, showTitle: false, isFilter: false },
+    limit: { title: 'limit', show: false, showTitle: false, isFilter: false },
 }
 
 export default withRouter(props => {
@@ -42,17 +50,18 @@ export default withRouter(props => {
         t,
         h,
         c,
-        page = 1,
         min,
         max,
         order = min || max ? 'lowest-price' : 'popularity',
         cl,
         ac,
+        p = 1,
     } = props.router.query
 
     const [products, setProducts] = useState()
     const [productWidth, setProductWidth] = useState(0)
     const [productsPerLine, setProductsPerLine] = useState(0)
+    const [lastPage, setLastPage] = useState()
 
     const productsContainer = useRef(null)
 
@@ -61,7 +70,7 @@ export default withRouter(props => {
 
     useEffect(() => {
         if (router.isReady)
-            getProductsByQuery().then(products => setProducts(products))
+            getProductsByQuery()
     }, [router])
 
     useEffect(() => {
@@ -105,12 +114,13 @@ export default withRouter(props => {
             }
         }
 
-        const products = fetch("/api/products-by-queries", options)
+        fetch("/api/products-by-queries", options)
             .then(response => response.json())
-            .then(response => response.products)
+            .then(response => {
+                setProducts(response.products)
+                setLastPage(response.last_page)
+            })
             .catch(err => console.error(err))
-
-        return products
     }
 
     function getQueries(newQueries, deleteQueries) {
@@ -171,6 +181,10 @@ export default withRouter(props => {
                 ? getQueries({}, [queryName])
                 : { ...router.query, [queryName]: router.query[queryName].split(' ').filter(queryValue => queryValue !== value).join(' ') }
         })
+    }
+
+    function handleChangePage(event) {
+        console.log(event.target.value)
     }
 
     return (
@@ -364,15 +378,15 @@ export default withRouter(props => {
                     <div className={styles.productsHead}>
                         <div className='flex row center' style={{ gap: '1rem' }}>
                             <h1>
-                                {Object.keys(router.query).length === 0 ? 'All Products' : 'Filter'}
+                                {Object.keys(router.query).filter(key => QUERIES[key].isFilter).length === 0 ? 'All Products' : 'Filter'}
                             </h1>
                             <div className='flex row center' style={{ gap: '0.5rem' }}>
-                                {Object.keys(router.query).map(key => router.query[key].split(' ').map((value, i) =>
+                                {Object.keys(router.query).filter(key => QUERIES[key]?.show).map(key => router.query[key].split(' ').map((value, i) =>
                                     <Tag
                                         key={i}
                                         label={
-                                            QUERIES_TITLES[key]
-                                                ? <span>{QUERIES_TITLES[key]}: {value}</span>
+                                            QUERIES[key].showTitle
+                                                ? <span>{QUERIES[key].title}: {value}</span>
                                                 : key === 'cl'
                                                     ? <span className='flex row center' style={{ gap: '0.2rem' }}>product: {value} <CircleIcon style={{ color: SEARCH_COLORS.find(cl => cl.color_display.title.toLowerCase() === value).color_display.colors[0] }} /></span>
                                                     : key === 'ac'
@@ -384,29 +398,28 @@ export default withRouter(props => {
                                 ))}
                             </div>
                         </div>
-                        {router.isReady && products &&
-                            <Selector
-                                name='order'
-                                label='Order By'
-                                value={order}
-                                options={
-                                    min || max
-                                        ? [
-                                            { value: 'lowest-price', name: 'Lowest Price' },
-                                            { value: 'higher-price', name: 'Higher Price' },
-                                        ]
-                                        : [
-                                            { value: 'popularity', name: 'Popularity' },
-                                            { value: 'newest', name: 'Newest' },
-                                            { value: 'lowest-price', name: 'Lowest Price' },
-                                            { value: 'higher-price', name: 'Higher Price' },
-                                        ]
-                                }
-                                width='170px'
-                                onChange={(event) => handleChangeOrder(event.target.value)}
-                                supportsHoverAndPointer={supportsHoverAndPointer}
-                            />
-                        }
+                        <Selector
+                            name='order'
+                            label='Order By'
+                            value={order}
+                            colorText={router.isReady ? '#ffffff' : 'transparent'}
+                            options={
+                                min || max
+                                    ? [
+                                        { value: 'lowest-price', name: 'Lowest Price' },
+                                        { value: 'higher-price', name: 'Higher Price' },
+                                    ]
+                                    : [
+                                        { value: 'popularity', name: 'Popularity' },
+                                        { value: 'newest', name: 'Newest' },
+                                        { value: 'lowest-price', name: 'Lowest Price' },
+                                        { value: 'higher-price', name: 'Higher Price' },
+                                    ]
+                            }
+                            width='170px'
+                            onChange={(event) => handleChangeOrder(event.target.value)}
+                            supportsHoverAndPointer={supportsHoverAndPointer}
+                        />
                     </div>
                     <div
                         className={styles.productsBody}
@@ -453,8 +466,28 @@ export default withRouter(props => {
                                     />
                                 )}
                     </div>
+                    <Pagination
+                        sx={{
+                        }}
+                        size='large'
+                        count={lastPage}
+                        color="primary"
+                        page={Number(p)}
+                        renderItem={(item) => (
+                            <PaginationItem
+                                className='noUnderline'
+                                component={Link}
+                                scroll={false}
+                                href={{
+                                    pathname: router.pathname,
+                                    query: item.page === 1 ? getQueries({}, ['p']) : getQueries({ p: item.page })
+                                }}
+                                {...item}
+                            />
+                        )}
+                    />
                 </div>
-            </main >
+            </main>
             <Footer />
         </div >
     )

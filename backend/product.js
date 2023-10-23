@@ -130,11 +130,11 @@ async function getProductsByQueries(props) {
         s, //search
         t, //tags
         h, //theme
-        p, //type
+        v, //type
         c, //collection
         cl, //product color
         ac, //art color
-        page = 1, //número da página
+        p = 1, //número da página
         min, //preço mínimo
         max, //preço máximo
         order = 'popularity',
@@ -159,8 +159,8 @@ async function getProductsByQueries(props) {
         }
 
         // Filtre by type (se presente)
-        if (p) {
-            q = query(q, where("type_id", "==", p))
+        if (v) {
+            q = query(q, where("type_id", "==", v))
         }
 
         // Filtre by max price (se presente)
@@ -241,14 +241,15 @@ async function getProductsByQueries(props) {
             return {
                 status: 200,
                 message: 'Products matching queries found successfully!',
-                products: products.slice((Number(page) - 1) * Number(prods_limit), Number(page) * Number(prods_limit)),
+                products: products.slice((Number(p) - 1) * Number(prods_limit), Number(p) * Number(prods_limit)),
                 last_page: Math.ceil(products.length / Number(prods_limit))
             }
         } else {
             return {
                 status: 200,
                 message: 'No products found matching the queries.',
-                products: []
+                products: [],
+                last_page: 1,
             }
         }
     } catch (error) {
