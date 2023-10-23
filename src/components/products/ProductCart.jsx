@@ -76,11 +76,11 @@ export default function ProductCart(props) {
             <Link
                 className={styles.imageContainer}
                 href={`/product/${product.id}${product.color.id !== product.default_variant.color.id && product.size.id !== product.default_variant.size.id
-                    ? `?sz=${product.size.title.toLowerCase()}&cl=${product.color.title.replace('/', '+').replace(' ', '+').toLowerCase()}`
+                    ? `?sz=${product.size.title.toLowerCase()}&cl=${product.color.string_id}`
                     : product.size.id !== product.default_variant.size.id
                         ? `?sz=${product.size.title.toLowerCase()}`
                         : product.color.id !== product.default_variant.color.id
-                            ? `?cl=${product.color.title.replace('/', '+').replace(' ', '+').toLowerCase()}`
+                            ? `?cl=${product.color.string_id}`
                             : ''
                     }`}
             >
@@ -101,11 +101,11 @@ export default function ProductCart(props) {
                 <div className={styles.rightLeft}>
                     <div className={styles.productName}>
                         <Link href={`/product/${product.id}${product.color.id !== product.default_variant.color.id && product.size.id !== product.default_variant.size.id
-                            ? `?sz=${product.size.title.toLowerCase()}&cl=${product.color.title.replace('/', '+').replace(' ', '+').toLowerCase()}`
+                            ? `?sz=${product.size.title.toLowerCase()}&cl=${product.color.id_string}`
                             : product.size.id !== product.default_variant.size.id
                                 ? `?sz=${product.size.title.toLowerCase()}`
                                 : product.color.id !== product.default_variant.color.id
-                                    ? `?cl=${product.color.title.replace('/', '+').replace(' ', '+').toLowerCase()}`
+                                    ? `?cl=${product.color.id_string}`
                                     : ''
                             }`}
                         >

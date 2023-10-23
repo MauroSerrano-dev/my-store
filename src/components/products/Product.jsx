@@ -80,7 +80,7 @@ export default function Product(props) {
         setAntVisualBug(true)
     }
 
-    const URL = `/product/${product.id}${product.variants[0].id === currentVariant.id ? '' : `?cl=${COLORS_POOL[currentVariant.color_id].title.replace('/', '+').toLowerCase()}`}`
+    const URL = `/product/${product.id}${product.variants[0].id === currentVariant.id ? '' : `?cl=${COLORS_POOL[currentVariant.color_id].id_string}`}`
 
     function handleMouseUpColor(event, color) {
         event.stopPropagation()
