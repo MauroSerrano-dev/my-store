@@ -10,6 +10,7 @@ import { SEARCH_COLORS } from '../../consts'
 import ColorButton from '@/components/ColorButton'
 import Tag from '@/components/material-ui/Tag'
 import CircleIcon from '@mui/icons-material/Circle';
+import ProductSkeleton from '@/components/products/ProductSkeleton'
 
 const THEMES_VALUES = [
     { name: 'Computer', value: 'computer' },
@@ -55,7 +56,8 @@ export default withRouter(props => {
         order = min || max ? 'lowest-price' : 'popularity',
         cl,
         ac,
-        p = 1,
+        p = '1',
+        limit = '60'
     } = props.router.query
 
     const [products, setProducts] = useState()
@@ -181,10 +183,6 @@ export default withRouter(props => {
                 ? getQueries({}, [queryName])
                 : { ...router.query, [queryName]: router.query[queryName].split(' ').filter(queryValue => queryValue !== value).join(' ') }
         })
-    }
-
-    function handleChangePage(event) {
-        console.log(event.target.value)
     }
 
     return (
@@ -402,7 +400,6 @@ export default withRouter(props => {
                             name='order'
                             label='Order By'
                             value={order}
-                            colorText={router.isReady ? '#ffffff' : 'transparent'}
                             options={
                                 min || max
                                     ? [
@@ -426,7 +423,12 @@ export default withRouter(props => {
                         ref={productsContainer}
                     >
                         {!products || !router.isReady
-                            ? <div></div>
+                            ? Array(Number(limit)).fill(null).map((ske, i) =>
+                                <ProductSkeleton
+                                    key={i}
+                                    productWidth={productWidth}
+                                />
+                            )
                             : products.length === 0
                                 ? <h2>No Results</h2>
                                 : products.map((product, i) =>
@@ -447,45 +449,29 @@ export default withRouter(props => {
                                                 return null
                                             })?.color_id || null
                                         }
-                                        motionVariants={
-                                            {
-                                                hidden: {
-                                                    opacity: 0,
-                                                    y: 20,
-                                                },
-                                                visible: {
-                                                    opacity: 1,
-                                                    y: 0,
-                                                    transition: {
-                                                        duration: 0.3,
-                                                        delay: 0.3 * Math.floor(i / (productsPerLine)),
-                                                    }
-                                                }
-                                            }
-                                        }
                                     />
-                                )}
+                                )
+                        }
                     </div>
-                    <Pagination
-                        sx={{
-                        }}
-                        size='large'
-                        count={lastPage}
-                        color="primary"
-                        page={Number(p)}
-                        renderItem={(item) => (
-                            <PaginationItem
-                                className='noUnderline'
-                                component={Link}
-                                scroll={false}
-                                href={{
-                                    pathname: router.pathname,
-                                    query: item.page === 1 ? getQueries({}, ['p']) : getQueries({ p: item.page })
-                                }}
-                                {...item}
-                            />
-                        )}
-                    />
+                    {productWidth > 0 &&
+                        <Pagination
+                            size='large'
+                            count={lastPage}
+                            color="primary"
+                            page={Number(p)}
+                            renderItem={(item) => (
+                                <PaginationItem
+                                    className={`${styles.pageButton} noUnderline`}
+                                    component={Link}
+                                    href={{
+                                        pathname: router.pathname,
+                                        query: item.page === 1 ? getQueries({}, ['p']) : getQueries({ p: item.page })
+                                    }}
+                                    {...item}
+                                />
+                            )}
+                        />
+                    }
                 </div>
             </main>
             <Footer />

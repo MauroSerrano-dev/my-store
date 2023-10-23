@@ -134,11 +134,11 @@ async function getProductsByQueries(props) {
         c, //collection
         cl, //product color
         ac, //art color
-        p = 1, //número da página
+        p = '1', //número da página
         min, //preço mínimo
         max, //preço máximo
         order = 'popularity',
-        prods_limit = 60,
+        prods_limit = '60',
         user_language = 'en'
     } = props
 
