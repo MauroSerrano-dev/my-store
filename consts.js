@@ -109,6 +109,8 @@ export const MENU_FORWARD_OPTIONS = {
 export const TAGS_POOL = [
     'bed',
     'computer',
+    'couples',
+    'funny',
     'games',
     'glitch',
     'guitar',
@@ -119,8 +121,6 @@ export const TAGS_POOL = [
     'pillow',
     'raglan-tee',
     'rock',
-    'socks',
-    't-shirt',
     'zombies',
 ]
 

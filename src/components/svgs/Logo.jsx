@@ -31,7 +31,7 @@ export default function Logo(props) {
                     </path>
                 </g>
                 <g
-                    transform="matrix(0.9, 0, 0, 0.9, 43, 80)"
+                    transform="matrix(0.9, 0, 0, 0.9, 41, 77)"
                     fill={fill}
                 >
                     <path

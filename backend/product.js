@@ -148,37 +148,9 @@ async function getProductsByQueries(props) {
 
         let q = query(productsCollection)
 
-        // Filtre por search (se presente)
-        if (s) {
-            const inicialTags = s.split(' ')
-
-            let searchArr = inicialTags
-
-            const translationPromises = []
-
-            inicialTags.forEach(word => {
-                const translation = translate(word, { from: user_language, to: "en", engine: "google" })
-                translationPromises.push(translation)
-            })
-
-            searchArr = inicialTags.concat(await Promise.all(translationPromises))
-
-            const fuse = new Fuse(TAGS_POOL)
-
-            const tags = searchArr.map(tag => {
-                const fuseRes = fuse.search(tag)
-                return fuseRes.length > 0
-                    ? fuseRes[0].item
-                    : ''
-            })
-                .filter(tag => tag !== '')
-                .reduce((acc, tag) => acc.includes(tag) ? acc : acc.concat(tag), [])
-
-            q = query(q, where(
-                'tags',
-                "array-contains-any",
-                tags
-            ))
+        // Filtre by themes (se presente)
+        if (h) {
+            q = query(q, where("themes", "array-contains", h))
         }
 
         // Filtre by collection (se presente)
@@ -227,9 +199,44 @@ async function getProductsByQueries(props) {
             products = products.filter(prod => prod.variants.some(vari => ac.colors.find(cl => cl.id === vari.art.color_id)))
         }
 
-        // Filtre by themes (se presente)
-        if (h) {
-            products = products.filter(prod => prod.themes.some(theme => h.includes(theme)))
+        // Filtre by search (se presente)
+        if (s) {
+            const inicialTags = s.split(' ')
+
+            let searchArr = inicialTags
+
+            const translationPromises = []
+
+            inicialTags.forEach(word => {
+                const translation = translate(word, { from: user_language, to: "en", engine: "google" })
+                translationPromises.push(translation)
+            })
+
+            searchArr = inicialTags.concat(await Promise.all(translationPromises))
+
+            const fuse = new Fuse(TAGS_POOL, { threshold: 0.4 })
+
+            const tags = inicialTags.concat(searchArr.map(tag => {
+                const fuseRes = fuse.search(tag)
+                return fuseRes.length > 0
+                    ? fuseRes[0].item
+                    : ''
+            }))
+                .filter(tag => tag !== '')
+                .reduce((acc, tag) => acc.includes(tag) ? acc : acc.concat(tag), [])
+
+            console.log(tags, tags.includes(products[2].title.toLowerCase()))
+
+            products = products.filter(prod =>
+                prod.tags.some(tag => tags.includes(tag))
+                || prod.themes.some(theme => tags.includes(theme))
+                || tags.some(tag => prod.title.toLowerCase().includes(tag))
+            )
+        }
+
+        // Filtre by tag (se presente)
+        if (t) {
+            products = products.filter(prod => prod.tags.some(tag => t.includes(tag)))
         }
 
         if (products.length > 0) {

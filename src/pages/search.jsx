@@ -23,6 +23,13 @@ const MOST_SEARCHED_VALUES = [
     { name: 'For Couples', value: 'for-couples' },
 ]
 
+const QUERIES_TITLES = {
+    h: 'theme',
+    min: 'min',
+    max: 'max',
+    order: 'order by'
+}
+
 export default withRouter(props => {
     const {
         userCurrency,
@@ -49,6 +56,7 @@ export default withRouter(props => {
     const productsContainer = useRef(null)
 
     const themes = h?.split(' ') || []
+    const tags = t?.split(' ') || []
 
     useEffect(() => {
         if (router.isReady)
@@ -123,19 +131,34 @@ export default withRouter(props => {
         })
     }
 
-    function handleCheckBox(checked, queryName, value) {
+    function handleThemesSelect(checked, value) {
         if (checked) {
             router.push({
                 pathname: router.pathname,
-                query: { ...router.query, [queryName]: themes.concat(value).join(' ') }
+                query: { ...router.query, 'h': value }
             })
         }
         else {
             router.push({
                 pathname: router.pathname,
-                query: themes.length === 1
-                    ? getQueries({}, [queryName])
-                    : { ...router.query, [queryName]: themes.filter(theme => theme !== value).join(' ') }
+                query: getQueries({}, 'h')
+            })
+        }
+    }
+
+    function handleTagsSelect(checked, value) {
+        if (checked) {
+            router.push({
+                pathname: router.pathname,
+                query: { ...router.query, 't': tags.concat(value).join(' ') }
+            })
+        }
+        else {
+            router.push({
+                pathname: router.pathname,
+                query: tags.length === 1
+                    ? getQueries({}, 't')
+                    : { ...router.query, 't': tags.filter(theme => theme !== value).join(' ') }
             })
         }
     }
@@ -161,13 +184,13 @@ export default withRouter(props => {
                                 label={theme.name}
                                 key={i}
                                 sx={{
-                                    marginTop: '-0.8',
-                                    marginBottom: '-0.8',
+                                    marginTop: -0.6,
+                                    marginBottom: -0.6,
                                 }}
                                 control={
                                     <Checkbox
                                         checked={themes.includes(theme.value)}
-                                        onChange={e => handleCheckBox(e.target.checked, 'h', theme.value)}
+                                        onChange={e => handleThemesSelect(e.target.checked, theme.value)}
                                         sx={{
                                             color: '#ffffff'
                                         }}
@@ -178,24 +201,24 @@ export default withRouter(props => {
                     </div>
                     <div className={styles.filterBlock}>
                         <h3>Most Searched</h3>
-                        {MOST_SEARCHED_VALUES.map((theme, i) =>
+                        {MOST_SEARCHED_VALUES.map((tag, i) =>
                             <FormControlLabel
                                 name='most searched'
                                 key={i}
                                 sx={{
-                                    marginTop: -0.8,
-                                    marginBottom: -0.8,
+                                    marginTop: -0.6,
+                                    marginBottom: -0.6,
                                 }}
                                 control={
                                     <Checkbox
-                                        checked={themes.includes(theme.value)}
-                                        onChange={e => handleCheckBox(e.target.checked, 'h', theme.value)}
+                                        checked={tags.includes(tag.value)}
+                                        onChange={e => handleTagsSelect(e.target.checked, tag.value)}
                                         sx={{
                                             color: '#ffffff'
                                         }}
                                     />
                                 }
-                                label={theme.name}
+                                label={tag.name}
                             />
                         )}
                     </div>
@@ -227,7 +250,7 @@ export default withRouter(props => {
                                     : 400
                             }}
                         >
-                            Up to $15
+                            Up to {userCurrency.symbol}15
                         </Link>
                         <Link
                             href={{
@@ -241,7 +264,7 @@ export default withRouter(props => {
                                     : 400
                             }}
                         >
-                            $15 to $25
+                            {userCurrency.symbol}15 to {userCurrency.symbol}25
                         </Link>
                         <Link
                             href={{
@@ -255,7 +278,7 @@ export default withRouter(props => {
                                     : 400
                             }}
                         >
-                            $25 to $40
+                            {userCurrency.symbol}25 to {userCurrency.symbol}40
                         </Link>
                         <Link
                             href={{
@@ -269,7 +292,7 @@ export default withRouter(props => {
                                     : 400
                             }}
                         >
-                            $40 & Above
+                            {userCurrency.symbol}40 & Above
                         </Link>
                         <div className={styles.priceFilterInputs}>
                             <input
@@ -347,12 +370,12 @@ export default withRouter(props => {
                                     <Tag
                                         key={i}
                                         label={
-                                            key === 'max' || key === 'min'
-                                                ? <span>{key}: {value}</span>
+                                            QUERIES_TITLES[key]
+                                                ? <span>{QUERIES_TITLES[key]}: {value}</span>
                                                 : key === 'cl'
-                                                    ? <span className='flex row center' style={{ gap: '0.2rem' }}>product color: {value} <CircleIcon style={{ color: SEARCH_COLORS.find(cl => cl.color_display.title.toLowerCase() === value).color_display.colors[0] }} /></span>
+                                                    ? <span className='flex row center' style={{ gap: '0.2rem' }}>product: {value} <CircleIcon style={{ color: SEARCH_COLORS.find(cl => cl.color_display.title.toLowerCase() === value).color_display.colors[0] }} /></span>
                                                     : key === 'ac'
-                                                        ? <span className='flex row center' style={{ gap: '0.2rem' }}>art color: {value} <CircleIcon style={{ color: SEARCH_COLORS.find(cl => cl.color_display.title.toLowerCase() === value).color_display.colors[0] }} /></span>
+                                                        ? <span className='flex row center' style={{ gap: '0.2rem' }}>art: {value} <CircleIcon style={{ color: SEARCH_COLORS.find(cl => cl.color_display.title.toLowerCase() === value).color_display.colors[0] }} /></span>
                                                         : value
                                         }
                                         onDelete={() => handleDeleteTag(key, value)}
