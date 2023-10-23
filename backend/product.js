@@ -150,7 +150,7 @@ async function getProductsByQueries(props) {
 
         // Filtre by themes (se presente)
         if (h) {
-            q = query(q, where("themes", "array-contains", h))
+            q = query(q, where("themes", "array-contains-any", h.split(' ')))
         }
 
         // Filtre by collection (se presente)
@@ -224,8 +224,6 @@ async function getProductsByQueries(props) {
             }))
                 .filter(tag => tag !== '')
                 .reduce((acc, tag) => acc.includes(tag) ? acc : acc.concat(tag), [])
-
-            console.log(tags, tags.includes(products[2].title.toLowerCase()))
 
             products = products.filter(prod =>
                 prod.tags.some(tag => tags.includes(tag))

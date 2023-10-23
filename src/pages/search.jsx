@@ -27,7 +27,8 @@ const QUERIES_TITLES = {
     h: 'theme',
     min: 'min',
     max: 'max',
-    order: 'order by'
+    order: 'order by',
+    c: 'collection',
 }
 
 export default withRouter(props => {
@@ -363,7 +364,7 @@ export default withRouter(props => {
                     <div className={styles.productsHead}>
                         <div className='flex row center' style={{ gap: '1rem' }}>
                             <h1>
-                                Filter
+                                {Object.keys(router.query).length === 0 ? 'All Products' : 'Filter'}
                             </h1>
                             <div className='flex row center' style={{ gap: '0.5rem' }}>
                                 {Object.keys(router.query).map(key => router.query[key].split(' ').map((value, i) =>
@@ -383,9 +384,9 @@ export default withRouter(props => {
                                 ))}
                             </div>
                         </div>
-                        {router.isReady &&
+                        {router.isReady && products &&
                             <Selector
-                                name='search'
+                                name='order'
                                 label='Order By'
                                 value={order}
                                 options={
