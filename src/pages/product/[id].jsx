@@ -318,7 +318,7 @@ export async function getServerSideProps(context) {
                 sz: sizeQuery === undefined ? null : sizeQuery,
                 urlMeta: `${process.env.NEXT_PUBLIC_URL}${context.resolvedUrl}`,
                 productMetaImage: colorQuery
-                    ? product.images.filter(img => img.color_id === colorQuery.id)[product.image_showcase_index].src
+                    ? product.images.filter(img => img.color_id === colorQuery.id)[product.image_hover_index].src
                     : product.images[product.image_showcase_index].src
             },
         }
