@@ -120,6 +120,9 @@
     top: 0;
 
     z-index: 100;
+
+    pointer-events: auto;
+    touch-action: none;
 }
 
 .filtersBackground {
