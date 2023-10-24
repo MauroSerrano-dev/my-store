@@ -15,8 +15,6 @@ export default function Footer() {
         { alt: 'union-pay', img: '/payments/union-pay.webp' },
     ]
 
-    const now = Date.now()
-
     return (
         <footer
             className={styles.container}
@@ -127,7 +125,7 @@ export default function Footer() {
             </div>
             <div className={styles.bottom}>
                 <p>
-                    Copyright © {now.getFullYear()}, {process.env.NEXT_PUBLIC_STORE_NAME}. All Rights Reserved.
+                    Copyright © {new Date().getFullYear()}, {process.env.NEXT_PUBLIC_STORE_NAME}. All Rights Reserved.
                 </p>
             </div>
         </footer>
