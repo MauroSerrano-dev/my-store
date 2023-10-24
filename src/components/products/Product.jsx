@@ -124,7 +124,7 @@ export default function Product(props) {
             style={{
                 height: width * 1.575,
                 width: width,
-                marginBottom: width * 0.2,
+                marginBottom: supportsHoverAndPointer ? width * 0.2 : 0,
                 textDecoration: 'none',
                 ...style
             }}

@@ -1,13 +1,16 @@
 import { Skeleton } from '@mui/material'
 
 export default function ProductSkeleton(props) {
-    const { productWidth } = props
+    const {
+        productWidth,
+        supportsHoverAndPointer,
+    } = props
 
     return (
         <div
             style={{
                 width: productWidth,
-                height: (productWidth * 1.575) + (productWidth * 0.2) - 0.01,
+                height: (productWidth * 1.575) + (supportsHoverAndPointer ? productWidth * 0.2 : 0) - 0.01,
             }}
         >
             <Skeleton

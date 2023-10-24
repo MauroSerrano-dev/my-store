@@ -12,7 +12,7 @@ import Tag from '@/components/material-ui/Tag'
 import CircleIcon from '@mui/icons-material/Circle';
 import ProductSkeleton from '@/components/products/ProductSkeleton'
 import KeyboardArrowDownRoundedIcon from '@mui/icons-material/KeyboardArrowDownRounded';
-import { motion } from 'framer-motion';
+import MenuFilter from '@/components/MenuFilter'
 
 const THEMES_VALUES = [
     { name: 'Computer', value: 'computer' },
@@ -199,6 +199,13 @@ export default withRouter(props => {
                 ? getQueries({}, [queryName])
                 : { ...router.query, [queryName]: router.query[queryName].split(' ').filter(queryValue => queryValue !== value).join(' ') }
         })
+    }
+
+    function handleCloseFilter() {
+        setFiltersOpen(false)
+        setTimeout(() =>
+            setFiltersOpenDelay(false)
+            , 350)
     }
 
     return (
@@ -402,8 +409,12 @@ export default withRouter(props => {
                                 ? <button
                                     className='flex center buttonInvisible'
                                     onClick={() => {
-                                        setFiltersOpen(true)
-                                        setFiltersOpenDelay(true)
+                                        if (filtersOpen)
+                                            handleCloseFilter()
+                                        else {
+                                            setFiltersOpen(true)
+                                            setFiltersOpenDelay(true)
+                                        }
                                     }}
                                     style={{
                                         outline: 'none',
@@ -465,12 +476,16 @@ export default withRouter(props => {
                     <div
                         className={styles.productsBody}
                         ref={productsContainer}
+                        style={{
+                            rowGap: supportsHoverAndPointer ? 8 : 16,
+                        }}
                     >
                         {!products || !router.isReady
                             ? Array(Number(limit)).fill(null).map((ske, i) =>
                                 <ProductSkeleton
                                     key={i}
                                     productWidth={productWidth}
+                                    supportsHoverAndPointer={supportsHoverAndPointer}
                                 />
                             )
                             : products.length === 0
@@ -519,46 +534,11 @@ export default withRouter(props => {
                     }
                 </div>
             </main>
-            {mobile && filtersOpenDelay &&
-                <motion.div
-                    className={styles.filtersContainer}
-                    onClick={() => {
-                        setFiltersOpen(false)
-                        setTimeout(() =>
-                            setFiltersOpenDelay(false)
-                            , 350)
-                    }}
-                >
-                    <motion.div
-                        className={styles.filtersBackground}
-                        initial='hidden'
-                        animate={filtersOpen ? 'visible' : 'hidden'}
-                        variants={{
-                            hidden: {
-                                opacity: 0,
-                            },
-                            visible: {
-                                opacity: 1,
-                            }
-                        }}
-                    >
-                    </motion.div>
-                    <motion.div
-                        className={styles.filtersBody}
-                        initial='hidden'
-                        animate={filtersOpen ? 'visible' : 'hidden'}
-                        variants={{
-                            hidden: {
-                                bottom: '-100%'
-                            },
-                            visible: {
-                                bottom: '-35%'
-                            }
-                        }}
-                    >
-                    </motion.div>
-                </motion.div>
-            }
+            <MenuFilter
+                show={mobile && filtersOpenDelay}
+                open={filtersOpen}
+                onClose={handleCloseFilter}
+            />
             {productWidth &&
                 <Footer />
             }

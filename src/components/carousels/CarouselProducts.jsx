@@ -98,6 +98,7 @@ export default function CarouselProducts(props) {
                         <ProductSkeleton
                             key={i}
                             productWidth={productWidth}
+                            supportsHoverAndPointer={supportsHoverAndPointer}
                         />
                     )}
                 </div>
