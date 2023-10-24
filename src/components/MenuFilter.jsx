@@ -1,13 +1,14 @@
 import styles from '../styles/components/MenuFilter.module.css'
 import { motion } from "framer-motion";
+import Link from 'next/link';
 import { useEffect } from 'react';
 import { SlClose } from "react-icons/sl";
 
 export default function MenuFilter(props) {
     const {
-        show = true,
+        show = false,
         open = false,
-        onClose
+        onClose,
     } = props
 
     useEffect(() => {
@@ -95,6 +96,11 @@ export default function MenuFilter(props) {
                         />
                     </button>
                 </div>
+                <Link
+                    href='/search?order=lowest-price&cl=grey'
+                >
+                    test
+                </Link>
             </motion.div>
         </motion.div>
     )

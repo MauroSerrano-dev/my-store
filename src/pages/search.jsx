@@ -60,7 +60,7 @@ export default withRouter(props => {
         cl,
         ac,
         p = '1',
-        limit = '60'
+        limit = '60',
     } = props.router.query
 
     const mobile = windowWidth <= 700
@@ -157,7 +157,7 @@ export default withRouter(props => {
             query: newOrder === 'popularity'
                 ? getQueries({}, ['order'])
                 : getQueries({ order: newOrder })
-        })
+        }, undefined, { scroll: false })
     }
 
     function handleThemesSelect(checked, value) {
@@ -165,13 +165,13 @@ export default withRouter(props => {
             router.push({
                 pathname: router.pathname,
                 query: { ...router.query, 'h': value }
-            })
+            }, undefined, { scroll: false })
         }
         else {
             router.push({
                 pathname: router.pathname,
                 query: getQueries({}, 'h')
-            })
+            }, undefined, { scroll: false })
         }
     }
 
@@ -180,7 +180,7 @@ export default withRouter(props => {
             router.push({
                 pathname: router.pathname,
                 query: { ...router.query, 't': tags.concat(value).join(' ') }
-            })
+            }, undefined, { scroll: false })
         }
         else {
             router.push({
@@ -188,7 +188,7 @@ export default withRouter(props => {
                 query: tags.length === 1
                     ? getQueries({}, 't')
                     : { ...router.query, 't': tags.filter(theme => theme !== value).join(' ') }
-            })
+            }, undefined, { scroll: false })
         }
     }
 
@@ -198,7 +198,7 @@ export default withRouter(props => {
             query: router.query[queryName].split(' ').length === 1
                 ? getQueries({}, [queryName])
                 : { ...router.query, [queryName]: router.query[queryName].split(' ').filter(queryValue => queryValue !== value).join(' ') }
-        })
+        }, undefined, { scroll: false })
     }
 
     function handleCloseFilter() {
@@ -206,6 +206,11 @@ export default withRouter(props => {
         setTimeout(() =>
             setFiltersOpenDelay(false)
             , 350)
+    }
+
+    function handleOpenFilter() {
+        setFiltersOpen(true)
+        setFiltersOpenDelay(true)
     }
 
     return (
@@ -266,6 +271,7 @@ export default withRouter(props => {
                                     pathname: router.pathname,
                                     query: getQueries({}, ['min', 'max'])
                                 }}
+                                scroll={false}
                                 className='noUnderline'
                                 style={{
                                     fontWeight: !min && !max
@@ -280,6 +286,7 @@ export default withRouter(props => {
                                     pathname: router.pathname,
                                     query: getQueries({ max: 15 }, ['min'])
                                 }}
+                                scroll={false}
                                 className='noUnderline'
                                 style={{
                                     fontWeight: !min && max === '15'
@@ -294,6 +301,7 @@ export default withRouter(props => {
                                     pathname: router.pathname,
                                     query: getQueries({ min: '15', max: '25' })
                                 }}
+                                scroll={false}
                                 className='noUnderline'
                                 style={{
                                     fontWeight: min === '15' && max === '25'
@@ -308,6 +316,7 @@ export default withRouter(props => {
                                     pathname: router.pathname,
                                     query: getQueries({ min: '25', max: '40' })
                                 }}
+                                scroll={false}
                                 className='noUnderline'
                                 style={{
                                     fontWeight: min === '25' && max === '40'
@@ -322,6 +331,7 @@ export default withRouter(props => {
                                     pathname: router.pathname,
                                     query: getQueries({ min: '40' }, ['max'])
                                 }}
+                                scroll={false}
                                 className='noUnderline'
                                 style={{
                                     fontWeight: min === '40' && !max
