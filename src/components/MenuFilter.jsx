@@ -1,7 +1,7 @@
 import styles from '../styles/components/MenuFilter.module.css'
 import { motion } from "framer-motion";
 import Link from 'next/link';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { SlClose } from "react-icons/sl";
 
 export default function MenuFilter(props) {
@@ -10,6 +10,8 @@ export default function MenuFilter(props) {
         open = false,
         onClose,
     } = props
+
+    const [searchFocus, setSearchFocus] = useState(false)
 
     useEffect(() => {
         if (open) {
@@ -55,7 +57,7 @@ export default function MenuFilter(props) {
                         bottom: '-100%'
                     },
                     visible: {
-                        bottom: '-35%'
+                        bottom: searchFocus ? '0%' : '-35%'
                     }
                 }}
             >
@@ -73,6 +75,8 @@ export default function MenuFilter(props) {
                         }}
                     >
                         <input
+                            onFocus={() => setSearchFocus(true)}
+                            onBlur={() => setSearchFocus(false)}
                             style={{
                                 width: '100%'
                             }}
