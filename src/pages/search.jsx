@@ -11,6 +11,8 @@ import ColorButton from '@/components/ColorButton'
 import Tag from '@/components/material-ui/Tag'
 import CircleIcon from '@mui/icons-material/Circle';
 import ProductSkeleton from '@/components/products/ProductSkeleton'
+import KeyboardArrowDownRoundedIcon from '@mui/icons-material/KeyboardArrowDownRounded';
+import { motion } from 'framer-motion';
 
 const THEMES_VALUES = [
     { name: 'Computer', value: 'computer' },
@@ -67,6 +69,8 @@ export default withRouter(props => {
     const [productWidth, setProductWidth] = useState(0)
     const [productsPerLine, setProductsPerLine] = useState(0)
     const [lastPage, setLastPage] = useState()
+    const [filtersOpen, setFiltersOpen] = useState(false)
+    const [filtersOpenDelay, setFiltersOpenDelay] = useState(false)
 
     const productsContainer = useRef(null)
 
@@ -81,6 +85,12 @@ export default withRouter(props => {
     useEffect(() => {
         function handleResize() {
             const containerWidth = productsContainer.current.offsetWidth
+
+            if (!mobile) {
+                setFiltersOpen(false)
+                setFiltersOpenDelay(false)
+            }
+
             if (containerWidth > 900) {
                 setProductWidth((containerWidth - 16 * 5) / 5)
                 setProductsPerLine(5)
@@ -388,13 +398,28 @@ export default withRouter(props => {
                         className={styles.productsHead}
                     >
                         <div className='flex row center' style={{ gap: '1rem' }}>
-                            <h1
-                                style={{
-                                    fontSize: mobile ? 20 : 27
-                                }}
-                            >
-                                {Object.keys(router.query).filter(key => QUERIES[key].isFilter).length === 0 ? 'All Products' : 'Filter'}
-                            </h1>
+                            {mobile
+                                ? <button
+                                    className='flex center buttonInvisible'
+                                    onClick={() => {
+                                        setFiltersOpen(true)
+                                        setFiltersOpenDelay(true)
+                                    }}
+                                    style={{
+                                        outline: 'none',
+                                        fontSize: 20,
+                                    }}
+                                >
+                                    Filters <KeyboardArrowDownRoundedIcon style={{ transform: filtersOpen ? 'rotateZ(-180deg)' : 'none', transition: 'ease-in-out 200ms transform' }} />
+                                </button>
+                                : <h1
+                                    style={{
+                                        fontSize: mobile ? 20 : 27
+                                    }}
+                                >
+                                    {Object.keys(router.query).filter(key => QUERIES[key].isFilter).length === 0 ? 'All Products' : Object.keys(router.query).filter(key => QUERIES[key].isFilter).length === 1 ? 'Filter' : 'Filters'}
+                                </h1>
+                            }
                             {!mobile &&
                                 < div className='flex row center' style={{ gap: '0.5rem' }}>
                                     {Object.keys(router.query).filter(key => QUERIES[key]?.show).map(key => router.query[key].split(' ').map((value, i) =>
@@ -492,7 +517,47 @@ export default withRouter(props => {
                         />
                     }
                 </div>
-            </main >
+            </main>
+            {mobile && filtersOpenDelay &&
+                <motion.div
+                    className={styles.filtersContainer}
+                    onClick={() => {
+                        setFiltersOpen(false)
+                        setTimeout(() =>
+                            setFiltersOpenDelay(false)
+                            , 350)
+                    }}
+                >
+                    <motion.div
+                        className={styles.filtersBackground}
+                        initial='hidden'
+                        animate={filtersOpen ? 'visible' : 'hidden'}
+                        variants={{
+                            hidden: {
+                                opacity: 0,
+                            },
+                            visible: {
+                                opacity: 1,
+                            }
+                        }}
+                    >
+                    </motion.div>
+                    <motion.div
+                        className={styles.filtersBody}
+                        initial='hidden'
+                        animate={filtersOpen ? 'visible' : 'hidden'}
+                        variants={{
+                            hidden: {
+                                bottom: '-100%'
+                            },
+                            visible: {
+                                bottom: '-35%'
+                            }
+                        }}
+                    >
+                    </motion.div>
+                </motion.div>
+            }
             {productWidth &&
                 <Footer />
             }

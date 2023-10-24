@@ -171,12 +171,10 @@
     --text-color: var(--text-white);
 
     position: absolute;
-    height: 17%;
 
     padding-left: 5%;
     padding-right: 5%;
 
-    top: -8.5%;
     left: 50%;
 
     transform: translateX(-50%);

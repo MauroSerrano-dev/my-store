@@ -94,6 +94,7 @@ export default function Product(props) {
     }
 
     useEffect(() => {
+        console.log(width)
         if (!hover && !isDraggingColors) {
             const closeHoverTimeout = setTimeout(() => {
                 setShowButtomHover(false)
@@ -206,17 +207,15 @@ export default function Product(props) {
                     <div
                         className={styles.tagContainer}
                         style={{
-                            fontSize: width * 0.055,
+                            fontSize: width < 150 ? width * 0.07 : width * 0.055,
+                            height: width < 150 ? '20%' : '17%',
+                            top: width < 150 ? '-10%' : '-8.5%',
                             backgroundColor: product.sold_out
                                 ? 'var(--sold-out-bg)'
                                 : PRODUCT_TYPES.find(type => type.id === product.type_id).color || 'var(--primary)',
                         }}
                     >
-                        <p
-                            style={{
-                                fontSize: width * 0.055
-                            }}
-                        >
+                        <p>
                             {
                                 product.sold_out
                                     ? PRODUCT_TYPES.find(type => type.id === product.type_id).title + ' ' + Math.round(100 * product.sold_out.percentage) + '% OFF'

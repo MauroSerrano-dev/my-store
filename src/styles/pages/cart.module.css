@@ -182,3 +182,11 @@
         height: calc(100% - 75px - 90px);
     }
 }
+
+/* Mobile */
+@media (max-width: 700px) {
+    .emptyTitle {
+        padding-top: 1rem;
+        font-size: 10px;
+    }
+}
