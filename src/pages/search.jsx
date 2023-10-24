@@ -348,15 +348,15 @@ export default withRouter(props => {
                                         scroll={false}
                                         href={{
                                             pathname: router.pathname,
-                                            query: color.color_display.title.toLowerCase() === cl
+                                            query: color.color_display.id_string === cl
                                                 ? getQueries({}, ['cl'])
-                                                : getQueries({ cl: color.color_display.title.toLowerCase() })
+                                                : getQueries({ cl: color.color_display.id_string })
                                         }}
                                         key={i}
                                     >
                                         <ColorButton
-                                            selected={cl === color.color_display.title.toLowerCase()}
-                                            color={{ title: color.color_display.title, colors: color.color_display.colors }}
+                                            selected={cl === color.color_display.id_string}
+                                            color={{ title: color.color_display.title, colors: [color.color_display.color] }}
                                             supportsHoverAndPointer={supportsHoverAndPointer}
                                         />
                                     </Link>
@@ -379,7 +379,7 @@ export default withRouter(props => {
                                     >
                                         <ColorButton
                                             selected={ac === color.color_display.title.toLowerCase()}
-                                            color={{ title: color.color_display.title, colors: color.color_display.colors }}
+                                            color={{ title: color.color_display.title, colors: [color.color_display.color] }}
                                             supportsHoverAndPointer={supportsHoverAndPointer}
                                         />
                                     </Link>
@@ -429,9 +429,9 @@ export default withRouter(props => {
                                                 QUERIES[key].showTitle
                                                     ? <span>{QUERIES[key].title}: {value}</span>
                                                     : key === 'cl'
-                                                        ? <span className='flex row center' style={{ gap: '0.2rem' }}>product: {value} <CircleIcon style={{ color: SEARCH_COLORS.find(cl => cl.color_display.title.toLowerCase() === value).color_display.colors[0] }} /></span>
+                                                        ? <span className='flex row center' style={{ gap: '0.2rem' }}>product: {value} <CircleIcon style={{ color: SEARCH_COLORS.find(cl => cl.color_display.id_string === value).color_display.color }} /></span>
                                                         : key === 'ac'
-                                                            ? <span className='flex row center' style={{ gap: '0.2rem' }}>art: {value} <CircleIcon style={{ color: SEARCH_COLORS.find(cl => cl.color_display.title.toLowerCase() === value).color_display.colors[0] }} /></span>
+                                                            ? <span className='flex row center' style={{ gap: '0.2rem' }}>art: {value} <CircleIcon style={{ color: SEARCH_COLORS.find(cl => cl.color_display.id_string === value).color_display.color }} /></span>
                                                             : value
                                             }
                                             onDelete={() => handleDeleteTag(key, value)}
@@ -485,11 +485,11 @@ export default withRouter(props => {
                                         inicialColorId={
                                             product.variants.find(vari => {
                                                 if (cl && ac)
-                                                    return SEARCH_COLORS.find(color => color.color_display.title.toLowerCase() === cl)?.colors.find(clr => clr.id === vari.color_id) && SEARCH_COLORS.find(color => color.color_display.title.toLowerCase() === ac)?.colors.find(clr => clr.id === vari.art.color_id)
+                                                    return SEARCH_COLORS.find(color => color.color_display.id_string === cl)?.colors.find(clr => clr.id === vari.color_id) && SEARCH_COLORS.find(color => color.color_display.id_string === ac)?.colors.find(clr => clr.id === vari.art.color_id)
                                                 if (cl)
-                                                    return SEARCH_COLORS.find(color => color.color_display.title.toLowerCase() === cl)?.colors.find(clr => clr.id === vari.color_id)
+                                                    return SEARCH_COLORS.find(color => color.color_display.id_string === cl)?.colors.find(clr => clr.id === vari.color_id)
                                                 if (ac)
-                                                    return SEARCH_COLORS.find(color => color.color_display.title.toLowerCase() === ac)?.colors.find(clr => clr.id === vari.art.color_id)
+                                                    return SEARCH_COLORS.find(color => color.color_display.id_string === ac)?.colors.find(clr => clr.id === vari.art.color_id)
                                                 return null
                                             })?.color_id || null
                                         }

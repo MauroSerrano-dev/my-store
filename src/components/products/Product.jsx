@@ -94,7 +94,6 @@ export default function Product(props) {
     }
 
     useEffect(() => {
-        console.log(width)
         if (!hover && !isDraggingColors) {
             const closeHoverTimeout = setTimeout(() => {
                 setShowButtomHover(false)
