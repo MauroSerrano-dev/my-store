@@ -89,11 +89,7 @@ export const MENU_FORWARD_OPTIONS = {
         { title: 'Tank Tops', type: 'link', href: '/search?v=tank+tops' },
         { title: 'Bottoms', type: 'link', href: '/search?v=bottoms' },
     ],
-    collections: [
-        { title: 'Music', type: 'link', href: '/search?h=music' },
-        { title: 'Zombies', type: 'link', href: '/search?v=zombies' },
-        { title: 'Games', type: 'link', href: '/search?h=games' }
-    ]
+    collections: COLLECTIONS.map(coll => ({ ...coll, type: 'link', href: `/search?c=${coll.id}` }))
 }
 
 export const TAGS_POOL = [
