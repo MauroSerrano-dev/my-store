@@ -28,10 +28,10 @@ const QUERIES = {
     h: { title: 'category', show: true, showTitle: true, isFilter: true },
     min: { title: 'min', show: true, showTitle: true, isFilter: true },
     max: { title: 'max', show: true, showTitle: true, isFilter: true },
-    order: { title: 'order by', show: true, showTitle: true, isFilter: false },
+    order: { title: 'order by', show: false, showTitle: false, isFilter: false },
     c: { title: 'collection', show: true, showTitle: true, isFilter: true },
     t: { title: 'tags', show: true, showTitle: false, isFilter: true },
-    v: { title: 'type', show: true, showTitle: true, isFilter: true },
+    v: { title: 'type', show: true, showTitle: false, isFilter: true },
     cl: { title: 'product color', show: true, showTitle: false, isFilter: true },
     ac: { title: 'art color', show: true, showTitle: false, isFilter: true },
     p: { title: 'page', show: false, showTitle: false, isFilter: false },
@@ -44,7 +44,8 @@ export default withRouter(props => {
     const {
         userCurrency,
         supportsHoverAndPointer,
-        router
+        router,
+        windowWidth,
     } = props
     const {
         s,
@@ -59,6 +60,8 @@ export default withRouter(props => {
         p = '1',
         limit = '60'
     } = props.router.query
+
+    const mobile = windowWidth <= 700
 
     const [products, setProducts] = useState()
     const [productWidth, setProductWidth] = useState(0)
@@ -96,14 +99,16 @@ export default withRouter(props => {
             }
         }
 
-        handleResize()
+        if (windowWidth) {
+            handleResize()
+        }
 
         window.addEventListener('resize', handleResize)
 
         return () => {
             window.removeEventListener('resize', handleResize)
         }
-    }, [])
+    }, [windowWidth])
 
     function getProductsByQuery() {
         setProducts()
@@ -112,6 +117,7 @@ export default withRouter(props => {
             method: 'GET',
             headers: {
                 authorization: process.env.NEXT_PUBLIC_APP_TOKEN,
+                limit: limit,
                 ...router.query,
             }
         }
@@ -188,213 +194,226 @@ export default withRouter(props => {
     return (
         <div className='fillWidth'>
             <main className={styles.main}>
-                <div className={styles.menuFilters}>
-                    <div className={styles.filterBlock}>
-                        <h3>Categories</h3>
-                        {THEMES_VALUES.map((theme, i) =>
-                            <FormControlLabel
-                                name='categories'
-                                label={theme.name}
-                                key={i}
-                                sx={{
-                                    marginTop: -0.6,
-                                    marginBottom: -0.6,
-                                }}
-                                control={
-                                    <Checkbox
-                                        checked={themes.includes(theme.value)}
-                                        onChange={e => handleThemesSelect(e.target.checked, theme.value)}
-                                        sx={{
-                                            color: '#ffffff'
-                                        }}
-                                    />
-                                }
-                            />
-                        )}
-                    </div>
-                    <div className={styles.filterBlock}>
-                        <h3>Most Searched</h3>
-                        {MOST_SEARCHED_VALUES.map((tag, i) =>
-                            <FormControlLabel
-                                name='most searched'
-                                key={i}
-                                sx={{
-                                    marginTop: -0.6,
-                                    marginBottom: -0.6,
-                                }}
-                                control={
-                                    <Checkbox
-                                        checked={tags.includes(tag.value)}
-                                        onChange={e => handleTagsSelect(e.target.checked, tag.value)}
-                                        sx={{
-                                            color: '#ffffff'
-                                        }}
-                                    />
-                                }
-                                label={tag.name}
-                            />
-                        )}
-                    </div>
-                    <div className={styles.filterBlock}>
-                        <h3>Price</h3>
-                        <Link
-                            href={{
-                                pathname: router.pathname,
-                                query: getQueries({}, ['min', 'max'])
-                            }}
-                            className='noUnderline'
-                            style={{
-                                fontWeight: !min && !max
-                                    ? '700'
-                                    : 400
-                            }}
-                        >
-                            Any Price
-                        </Link>
-                        <Link
-                            href={{
-                                pathname: router.pathname,
-                                query: getQueries({ max: 15 }, ['min'])
-                            }}
-                            className='noUnderline'
-                            style={{
-                                fontWeight: !min && max === '15'
-                                    ? '700'
-                                    : 400
-                            }}
-                        >
-                            Up to {userCurrency.symbol}15
-                        </Link>
-                        <Link
-                            href={{
-                                pathname: router.pathname,
-                                query: getQueries({ min: '15', max: '25' })
-                            }}
-                            className='noUnderline'
-                            style={{
-                                fontWeight: min === '15' && max === '25'
-                                    ? '700'
-                                    : 400
-                            }}
-                        >
-                            {userCurrency.symbol}15 to {userCurrency.symbol}25
-                        </Link>
-                        <Link
-                            href={{
-                                pathname: router.pathname,
-                                query: getQueries({ min: '25', max: '40' })
-                            }}
-                            className='noUnderline'
-                            style={{
-                                fontWeight: min === '25' && max === '40'
-                                    ? '700'
-                                    : 400
-                            }}
-                        >
-                            {userCurrency.symbol}25 to {userCurrency.symbol}40
-                        </Link>
-                        <Link
-                            href={{
-                                pathname: router.pathname,
-                                query: getQueries({ min: '40' }, ['max'])
-                            }}
-                            className='noUnderline'
-                            style={{
-                                fontWeight: min === '40' && !max
-                                    ? '700'
-                                    : 400
-                            }}
-                        >
-                            {userCurrency.symbol}40 & Above
-                        </Link>
-                        <div className={styles.priceFilterInputs}>
-                            <input
-                                name='min'
-                                placeholder='Min'
-                                spellCheck={false}
-                            />
-                            <input
-                                name='max'
-                                placeholder='Max'
-                                spellCheck={false}
-                            />
-                            <button>
-                                Go
-                            </button>
-                        </div>
-                    </div>
-                    <div className={styles.filterBlock}>
-                        <h3>Product Color</h3>
-                        <div className={styles.colorsContainer}>
-                            {SEARCH_COLORS.map((color, i) =>
-                                <Link
-                                    scroll={false}
-                                    href={{
-                                        pathname: router.pathname,
-                                        query: color.color_display.title.toLowerCase() === cl
-                                            ? getQueries({}, ['cl'])
-                                            : getQueries({ cl: color.color_display.title.toLowerCase() })
-                                    }}
+                {!mobile &&
+                    <div className={styles.menuFilters}>
+                        <div className={styles.filterBlock}>
+                            <h3>Categories</h3>
+                            {THEMES_VALUES.map((theme, i) =>
+                                <FormControlLabel
+                                    name='categories'
+                                    label={theme.name}
                                     key={i}
-                                >
-                                    <ColorButton
-                                        selected={cl === color.color_display.title.toLowerCase()}
-                                        color={{ title: color.color_display.title, colors: color.color_display.colors }}
-                                        supportsHoverAndPointer={supportsHoverAndPointer}
-                                    />
-                                </Link>
+                                    sx={{
+                                        marginTop: -0.6,
+                                        marginBottom: -0.6,
+                                    }}
+                                    control={
+                                        <Checkbox
+                                            checked={themes.includes(theme.value)}
+                                            onChange={e => handleThemesSelect(e.target.checked, theme.value)}
+                                            sx={{
+                                                color: '#ffffff'
+                                            }}
+                                        />
+                                    }
+                                />
                             )}
                         </div>
-                    </div>
-                    <div className={styles.filterBlock}>
-                        <h3>Art Color</h3>
-                        <div className={styles.colorsContainer}>
-                            {SEARCH_COLORS.map((color, i) =>
-                                <Link
-                                    scroll={false}
-                                    href={{
-                                        pathname: router.pathname,
-                                        query: color.color_display.title.toLowerCase() === ac
-                                            ? getQueries({}, ['ac'])
-                                            : getQueries({ ac: color.color_display.title.toLowerCase() })
-                                    }}
+                        <div className={styles.filterBlock}>
+                            <h3>Most Searched</h3>
+                            {MOST_SEARCHED_VALUES.map((tag, i) =>
+                                <FormControlLabel
+                                    name='most searched'
                                     key={i}
-                                >
-                                    <ColorButton
-                                        selected={ac === color.color_display.title.toLowerCase()}
-                                        color={{ title: color.color_display.title, colors: color.color_display.colors }}
-                                        supportsHoverAndPointer={supportsHoverAndPointer}
-                                    />
-                                </Link>
+                                    sx={{
+                                        marginTop: -0.6,
+                                        marginBottom: -0.6,
+                                    }}
+                                    control={
+                                        <Checkbox
+                                            checked={tags.includes(tag.value)}
+                                            onChange={e => handleTagsSelect(e.target.checked, tag.value)}
+                                            sx={{
+                                                color: '#ffffff'
+                                            }}
+                                        />
+                                    }
+                                    label={tag.name}
+                                />
                             )}
                         </div>
+                        <div className={styles.filterBlock}>
+                            <h3>Price</h3>
+                            <Link
+                                href={{
+                                    pathname: router.pathname,
+                                    query: getQueries({}, ['min', 'max'])
+                                }}
+                                className='noUnderline'
+                                style={{
+                                    fontWeight: !min && !max
+                                        ? '700'
+                                        : 400
+                                }}
+                            >
+                                Any Price
+                            </Link>
+                            <Link
+                                href={{
+                                    pathname: router.pathname,
+                                    query: getQueries({ max: 15 }, ['min'])
+                                }}
+                                className='noUnderline'
+                                style={{
+                                    fontWeight: !min && max === '15'
+                                        ? '700'
+                                        : 400
+                                }}
+                            >
+                                Up to {userCurrency.symbol}15
+                            </Link>
+                            <Link
+                                href={{
+                                    pathname: router.pathname,
+                                    query: getQueries({ min: '15', max: '25' })
+                                }}
+                                className='noUnderline'
+                                style={{
+                                    fontWeight: min === '15' && max === '25'
+                                        ? '700'
+                                        : 400
+                                }}
+                            >
+                                {userCurrency.symbol}15 to {userCurrency.symbol}25
+                            </Link>
+                            <Link
+                                href={{
+                                    pathname: router.pathname,
+                                    query: getQueries({ min: '25', max: '40' })
+                                }}
+                                className='noUnderline'
+                                style={{
+                                    fontWeight: min === '25' && max === '40'
+                                        ? '700'
+                                        : 400
+                                }}
+                            >
+                                {userCurrency.symbol}25 to {userCurrency.symbol}40
+                            </Link>
+                            <Link
+                                href={{
+                                    pathname: router.pathname,
+                                    query: getQueries({ min: '40' }, ['max'])
+                                }}
+                                className='noUnderline'
+                                style={{
+                                    fontWeight: min === '40' && !max
+                                        ? '700'
+                                        : 400
+                                }}
+                            >
+                                {userCurrency.symbol}40 & Above
+                            </Link>
+                            <div className={styles.priceFilterInputs}>
+                                <input
+                                    name='min'
+                                    placeholder='Min'
+                                    spellCheck={false}
+                                />
+                                <input
+                                    name='max'
+                                    placeholder='Max'
+                                    spellCheck={false}
+                                />
+                                <button>
+                                    Go
+                                </button>
+                            </div>
+                        </div>
+                        <div className={styles.filterBlock}>
+                            <h3>Product Color</h3>
+                            <div className={styles.colorsContainer}>
+                                {SEARCH_COLORS.map((color, i) =>
+                                    <Link
+                                        scroll={false}
+                                        href={{
+                                            pathname: router.pathname,
+                                            query: color.color_display.title.toLowerCase() === cl
+                                                ? getQueries({}, ['cl'])
+                                                : getQueries({ cl: color.color_display.title.toLowerCase() })
+                                        }}
+                                        key={i}
+                                    >
+                                        <ColorButton
+                                            selected={cl === color.color_display.title.toLowerCase()}
+                                            color={{ title: color.color_display.title, colors: color.color_display.colors }}
+                                            supportsHoverAndPointer={supportsHoverAndPointer}
+                                        />
+                                    </Link>
+                                )}
+                            </div>
+                        </div>
+                        <div className={styles.filterBlock}>
+                            <h3>Art Color</h3>
+                            <div className={styles.colorsContainer}>
+                                {SEARCH_COLORS.map((color, i) =>
+                                    <Link
+                                        scroll={false}
+                                        href={{
+                                            pathname: router.pathname,
+                                            query: color.color_display.title.toLowerCase() === ac
+                                                ? getQueries({}, ['ac'])
+                                                : getQueries({ ac: color.color_display.title.toLowerCase() })
+                                        }}
+                                        key={i}
+                                    >
+                                        <ColorButton
+                                            selected={ac === color.color_display.title.toLowerCase()}
+                                            color={{ title: color.color_display.title, colors: color.color_display.colors }}
+                                            supportsHoverAndPointer={supportsHoverAndPointer}
+                                        />
+                                    </Link>
+                                )}
+                            </div>
+                        </div>
                     </div>
-                </div>
+                }
                 <div
                     className={styles.products}
+                    style={{
+                        width: mobile ? '100%' : 'calc(100% - 300px)',
+                    }}
                 >
-                    <div className={styles.productsHead}>
+                    <div
+                        className={styles.productsHead}
+                    >
                         <div className='flex row center' style={{ gap: '1rem' }}>
-                            <h1>
+                            <h1
+                                style={{
+                                    fontSize: mobile ? 20 : 27
+                                }}
+                            >
                                 {Object.keys(router.query).filter(key => QUERIES[key].isFilter).length === 0 ? 'All Products' : 'Filter'}
                             </h1>
-                            <div className='flex row center' style={{ gap: '0.5rem' }}>
-                                {Object.keys(router.query).filter(key => QUERIES[key]?.show).map(key => router.query[key].split(' ').map((value, i) =>
-                                    <Tag
-                                        key={i}
-                                        label={
-                                            QUERIES[key].showTitle
-                                                ? <span>{QUERIES[key].title}: {value}</span>
-                                                : key === 'cl'
-                                                    ? <span className='flex row center' style={{ gap: '0.2rem' }}>product: {value} <CircleIcon style={{ color: SEARCH_COLORS.find(cl => cl.color_display.title.toLowerCase() === value).color_display.colors[0] }} /></span>
-                                                    : key === 'ac'
-                                                        ? <span className='flex row center' style={{ gap: '0.2rem' }}>art: {value} <CircleIcon style={{ color: SEARCH_COLORS.find(cl => cl.color_display.title.toLowerCase() === value).color_display.colors[0] }} /></span>
-                                                        : value
-                                        }
-                                        onDelete={() => handleDeleteTag(key, value)}
-                                    />
-                                ))}
-                            </div>
+                            {!mobile &&
+                                < div className='flex row center' style={{ gap: '0.5rem' }}>
+                                    {Object.keys(router.query).filter(key => QUERIES[key]?.show).map(key => router.query[key].split(' ').map((value, i) =>
+                                        <Tag
+                                            key={i}
+                                            label={
+                                                QUERIES[key].showTitle
+                                                    ? <span>{QUERIES[key].title}: {value}</span>
+                                                    : key === 'cl'
+                                                        ? <span className='flex row center' style={{ gap: '0.2rem' }}>product: {value} <CircleIcon style={{ color: SEARCH_COLORS.find(cl => cl.color_display.title.toLowerCase() === value).color_display.colors[0] }} /></span>
+                                                        : key === 'ac'
+                                                            ? <span className='flex row center' style={{ gap: '0.2rem' }}>art: {value} <CircleIcon style={{ color: SEARCH_COLORS.find(cl => cl.color_display.title.toLowerCase() === value).color_display.colors[0] }} /></span>
+                                                            : value
+                                            }
+                                            onDelete={() => handleDeleteTag(key, value)}
+                                        />
+                                    ))}
+                                </div>
+                            }
                         </div>
                         <Selector
                             name='order'
@@ -455,7 +474,7 @@ export default withRouter(props => {
                     </div>
                     {productWidth > 0 &&
                         <Pagination
-                            size='large'
+                            size={mobile ? 'small' : 'large'}
                             count={lastPage}
                             color="primary"
                             page={Number(p)}
@@ -473,8 +492,10 @@ export default withRouter(props => {
                         />
                     }
                 </div>
-            </main>
-            <Footer />
-        </div >
+            </main >
+            {productWidth &&
+                <Footer />
+            }
+        </div>
     )
 })

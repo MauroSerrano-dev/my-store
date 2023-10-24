@@ -22,26 +22,57 @@ initializeApp(firebaseConfig)
 
 const db = getFirestore()
 
-async function getAllProducts() {
-    const productsCollection = collection(db, process.env.COLL_PRODUCTS)
-    const querySnapshot = await getDocs(productsCollection)
-
-    const allProducts = []
-
-    querySnapshot.forEach((doc) => {
-        const productData = doc.data()
-        allProducts.push(productData)
-    })
-
-    if (allProducts.length > 0) {
-        return {
-            msg: `All products retrieved successfully!`,
-            products: allProducts
+async function getAllProducts(props) {
+    const {
+        order = 'popularity',
+        prods_limit = '60',
+        p = '1',
+    } = props
+        || {
+            order: 'popularity',
+            prods_limit: '60',
+            p: '1',
         }
-    } else {
+    try {
+        const productsCollection = collection(db, process.env.COLL_PRODUCTS)
+
+        let q = query(productsCollection)
+
+        const orders = new Map([
+            ['popularity', { value: 'popularity', direction: 'desc' }],
+            ['newest', { value: 'create_at', direction: 'desc' }],
+            ['lowest-price', { value: 'min_price', direction: 'asc' }],
+            ['higher-price', { value: 'min_price', direction: 'desc' }],
+        ])
+
+        q = query(q, orderBy(orders.get(order).value, orders.get(order).direction))
+
+        const querySnapshot = await getDocs(q)
+
+        const allProducts = querySnapshot.docs.map(doc => doc.data())
+
+        if (allProducts.length > 0) {
+            return {
+                status: 200,
+                message: 'All products retrieved successfully!',
+                products: allProducts.slice((Number(p) - 1) * Number(prods_limit), Number(p) * Number(prods_limit)),
+                last_page: Math.ceil(allProducts.length / Number(prods_limit))
+            }
+        } else {
+            return {
+                status: 200,
+                message: 'No products found.',
+                products: [],
+                last_page: 1,
+            }
+        }
+    } catch (error) {
+        console.log('Error all getting products.', error)
         return {
-            msg: `No products found.`,
-            products: []
+            status: 500,
+            message: 'Error getting all products.',
+            products: null,
+            error: error,
         }
     }
 }

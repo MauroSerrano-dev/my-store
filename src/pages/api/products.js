@@ -14,9 +14,9 @@ export default async function handler(req, res) {
 
         const result = await getAllProducts()
 
-        res.status(200).json({
+        res.status(result.status).json({
             products: result.products,
-            msg: result.msg
+            message: result.message
         })
     }
 }

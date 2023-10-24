@@ -1,5 +1,5 @@
 import { isTokenValid } from "../../../auth";
-import { getProductsByQueries } from "../../../backend/product";
+import { getAllProducts, getProductsByQueries } from "../../../backend/product";
 import { SEARCH_COLORS } from "../../../consts";
 
 export default async function handler(req, res) {
@@ -28,21 +28,32 @@ export default async function handler(req, res) {
             l,
         } = req.headers
 
-        const response = await getProductsByQueries({
-            s: s,
-            t: t,
-            h: h,
-            v: v,
-            c: c,
-            cl: SEARCH_COLORS.find(color => color.color_display.title.toLowerCase() === cl),
-            ac: SEARCH_COLORS.find(color => color.color_display.title.toLowerCase() === ac),
-            p: p,
-            min: min,
-            max: max,
-            order: order,
-            prods_limit: limit,
-            user_language: l,
-        })
+        let response
+
+        if (!s && !t && !h && !v && !c && !cl && !ac && !min && !max) {
+            response = await getAllProducts({
+                order: order,
+                prods_limit: limit,
+                p: p
+            })
+        }
+        else {
+            response = await getProductsByQueries({
+                s: s,
+                t: t,
+                h: h,
+                v: v,
+                c: c,
+                cl: SEARCH_COLORS.find(color => color.color_display.title.toLowerCase() === cl),
+                ac: SEARCH_COLORS.find(color => color.color_display.title.toLowerCase() === ac),
+                p: p,
+                min: min,
+                max: max,
+                order: order,
+                prods_limit: limit,
+                user_language: l,
+            })
+        }
 
         res.status(response.status).json(response)
     }

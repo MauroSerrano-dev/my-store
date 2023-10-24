@@ -7,7 +7,7 @@ export default function ProductSkeleton(props) {
         <div
             style={{
                 width: productWidth,
-                height: (productWidth * 1.575) + (productWidth * 0.2),
+                height: (productWidth * 1.575) + (productWidth * 0.2) - 0.01,
             }}
         >
             <Skeleton

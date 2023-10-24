@@ -66,12 +66,10 @@
     justify-content: flex-start;
     align-items: center;
 
-    width: calc(100% - 300px);
-
     flex-wrap: wrap;
     overflow: hidden;
 
-    padding-left: 0.5rem;
+    padding-left: 12px;
 }
 
 .productsHead {
@@ -80,7 +78,8 @@
     justify-content: space-between;
     align-items: center;
 
-    padding-right: 2rem;
+    padding-right: 18px;
+    padding-left: 6px;
 
     width: 100%;
     height: 5rem;
@@ -109,12 +108,12 @@
 }
 
 .pageButton {
-    color: var(--text-white);
+    color: var(--text-white) !important;
 }
 
 /* Enable hover only on non-touch devices */
 @media (hover: hover) and (pointer: fine) {
     .pageButton:hover {
-        background-color: rgba(255, 255, 255, 0.1);
+        background-color: rgba(255, 255, 255, 0.1) !important;
     }
 }
