@@ -85,6 +85,7 @@ export default function ProductCart(props) {
                     }`}
             >
                 <Image
+                    priority
                     quality={100}
                     src={product.image}
                     alt={product.title}
@@ -94,7 +95,6 @@ export default function ProductCart(props) {
                         width: 'auto',
                         height: 'calc(var(--container-height) * 0.9)',
                     }}
-                    priority
                 />
             </Link>
             <div className={styles.right}>

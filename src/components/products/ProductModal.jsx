@@ -67,6 +67,7 @@ export default function ProductModal(props) {
                     }`}
             >
                 <Image
+                    priority
                     quality={100}
                     src={product.image}
                     alt={product.title}
@@ -76,7 +77,6 @@ export default function ProductModal(props) {
                         width: 'auto',
                         height: 108,
                     }}
-                    priority
                 />
             </Link>
             <div className={styles.right}>
