@@ -127,7 +127,7 @@ export default function Footer() {
             </div>
             <div className={styles.bottom}>
                 <p>
-                    Copyright © {now.getFullYear()}, {process.env.NEXT_PUBLIC_STORE_NAME}. All Rights Reserved
+                    Copyright © {now.getFullYear()}, {process.env.NEXT_PUBLIC_STORE_NAME}. All Rights Reserved.
                 </p>
             </div>
         </footer>
