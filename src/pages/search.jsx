@@ -371,14 +371,14 @@ export default withRouter(props => {
                                         scroll={false}
                                         href={{
                                             pathname: router.pathname,
-                                            query: color.color_display.title.toLowerCase() === ac
+                                            query: color.color_display.id_string === ac
                                                 ? getQueries({}, ['ac'])
-                                                : getQueries({ ac: color.color_display.title.toLowerCase() })
+                                                : getQueries({ ac: color.color_display.id_string })
                                         }}
                                         key={i}
                                     >
                                         <ColorButton
-                                            selected={ac === color.color_display.title.toLowerCase()}
+                                            selected={ac === color.color_display.id_string}
                                             color={{ title: color.color_display.title, colors: [color.color_display.color] }}
                                             supportsHoverAndPointer={supportsHoverAndPointer}
                                         />
@@ -482,16 +482,17 @@ export default withRouter(props => {
                                         product={product}
                                         width={productWidth}
                                         supportsHoverAndPointer={supportsHoverAndPointer}
-                                        inicialColorId={
+                                        inicialVariantId={
                                             product.variants.find(vari => {
                                                 if (cl && ac)
-                                                    return SEARCH_COLORS.find(color => color.color_display.id_string === cl)?.colors.find(clr => clr.id === vari.color_id) && SEARCH_COLORS.find(color => color.color_display.id_string === ac)?.colors.find(clr => clr.id === vari.art.color_id)
+                                                    return SEARCH_COLORS.find(scolor => scolor.color_display.id_string === cl)?.colors.some(color => color.id === vari.color_id) && SEARCH_COLORS.find(scolor => scolor.color_display.id_string === ac)?.id === vari.art.color_id
                                                 if (cl)
-                                                    return SEARCH_COLORS.find(color => color.color_display.id_string === cl)?.colors.find(clr => clr.id === vari.color_id)
-                                                if (ac)
-                                                    return SEARCH_COLORS.find(color => color.color_display.id_string === ac)?.colors.find(clr => clr.id === vari.art.color_id)
+                                                    return SEARCH_COLORS.find(scolor => scolor.color_display.id_string === cl)?.colors.some(color => color.id === vari.color_id)
+                                                if (ac) {
+                                                    return SEARCH_COLORS.find(scolor => scolor.color_display.id_string === ac)?.id === vari.art.color_id
+                                                }
                                                 return null
-                                            })?.color_id || null
+                                            })?.id || null
                                         }
                                     />
                                 )

@@ -26,7 +26,7 @@ export default function Product(props) {
         supportsHoverAndPointer,
         isDragging = false,
         product,
-        inicialColorId,
+        inicialVariantId,
         motionVariants = {
             hidden: {
                 opacity: 0,
@@ -46,7 +46,7 @@ export default function Product(props) {
     const productRef = useRef(null)
     const bottomHoverRef = useRef(null)
 
-    const [currentVariant, setCurrentVariant] = useState(inicialColorId ? product.variants.find(vari => vari.color_id === inicialColorId) : product.variants[0])
+    const [currentVariant, setCurrentVariant] = useState(inicialVariantId ? product.variants.find(vari => vari.id === inicialVariantId) : product.variants[0])
     const [isDraggingColors, setIsDraggingColors] = useState(false)
 
     const [imageLoad, setImageLoad] = useState(false)

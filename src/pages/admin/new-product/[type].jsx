@@ -742,8 +742,8 @@ export default withRouter(props => {
                                                 </h3>
                                             </div>
                                             <ColorSelector
-                                                value={[COLORS_POOL[product.variants.find(vari => vari.color_id === product.colors[colorIndex].id).art.color_id]]}
-                                                options={SEARCH_COLORS.map(cl => cl.color_display)}
+                                                value={[SEARCH_COLORS.map(cl => ({ id: cl.id, colors: [cl.color_display.color] })).find(scl => scl.id === product.variants.find(vari => vari.color_id === product.colors[colorIndex].id).art.color_id)]}
+                                                options={SEARCH_COLORS.map(cl => ({ id: cl.id, colors: [cl.color_display.color] }))}
                                                 onChange={handleArtColor}
                                                 supportsHoverAndPointer={supportsHoverAndPointer}
                                                 style={{

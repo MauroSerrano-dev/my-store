@@ -1,8 +1,6 @@
 export const CART_COOKIE = 'CART'
 
 export const COLORS_POOL = {
-    1: { id: 1, id_string: 'burnt-orange', colors: ['#e0824b'], title: 'Burnt Orange' },
-    2: { id: 2, id_string: 'brown', colors: ['#31221d'], title: 'Brown' },
     358: { id: 358, id_string: 'sport-grey', colors: ['#cacaca'], title: 'Sport Grey' },
     362: { id: 362, id_string: 'dark-chocolate', colors: ['#31221d'], title: 'Dark Chocolate' },
     364: { id: 364, id_string: 'military-green', colors: ['#585c3b'], title: 'Military Green' },
@@ -26,16 +24,16 @@ export const COLORS_POOL = {
 }
 
 export const SEARCH_COLORS = [
-    { id: 1, color_display: { color: '#000000', title: 'Black', id_string: 'black' }, colors: [COLORS_POOL[418], COLORS_POOL[1062]] },
+    { id: 1, color_display: { color: '#000000', title: 'Black', id_string: 'black' }, colors: [COLORS_POOL[418], COLORS_POOL[1750]] },
+    { id: 2, color_display: { color: '#ffffff', title: 'White', id_string: 'white' }, colors: [COLORS_POOL[521], COLORS_POOL[1062]] },
     { id: 3, color_display: { color: '#525455', title: 'Grey', id_string: 'grey' }, colors: [COLORS_POOL[367], COLORS_POOL[424], COLORS_POOL[1535]] },
-    { id: 3, color_display: { color: '#cacaca', title: 'Light Grey', id_string: 'light-grey' }, colors: [COLORS_POOL[358]] },
-    { id: 2, color_display: { color: '#ffffff', title: 'White', id_string: 'white' }, colors: [COLORS_POOL[521]] },
-    { id: 4, color_display: { color: '#2b4da4', title: 'Blue', id_string: 'blue' }, colors: [COLORS_POOL[425], COLORS_POOL[1058]] },
-    { id: 5, color_display: { color: '#1a1f35', title: 'Navy', id_string: 'navy' }, colors: [COLORS_POOL[511], COLORS_POOL[1795]] },
-    { id: 6, color_display: { color: '#026539', title: 'Green', id_string: 'green' }, colors: [COLORS_POOL[364], COLORS_POOL[369], COLORS_POOL[1792]] },
-    { id: 7, color_display: { color: '#e0824b', title: 'Orange', id_string: 'orange' }, colors: [COLORS_POOL[1]] },
-    { id: 8, color_display: { color: '#c62A32', title: 'Red', id_string: 'red' }, colors: [COLORS_POOL[423], COLORS_POOL[1536]] },
-    { id: 9, color_display: { color: '#31221d', title: 'Brown', id_string: 'brown' }, colors: [COLORS_POOL[2]] },
+    { id: 4, color_display: { color: '#cacaca', title: 'Light Grey', id_string: 'light-grey' }, colors: [COLORS_POOL[358]] },
+    { id: 5, color_display: { color: '#2b4da4', title: 'Blue', id_string: 'blue' }, colors: [COLORS_POOL[425], COLORS_POOL[1058], COLORS_POOL[392]] },
+    { id: 6, color_display: { color: '#1a1f35', title: 'Navy', id_string: 'navy' }, colors: [COLORS_POOL[511], COLORS_POOL[1795]] },
+    { id: 7, color_display: { color: '#026539', title: 'Green', id_string: 'green' }, colors: [COLORS_POOL[364], COLORS_POOL[369], COLORS_POOL[1792]] },
+    { id: 8, color_display: { color: '#e0824b', title: 'Orange', id_string: 'orange' }, colors: [] },
+    { id: 9, color_display: { color: '#c62A32', title: 'Red', id_string: 'red' }, colors: [COLORS_POOL[423], COLORS_POOL[1536], COLORS_POOL[395]] },
+    { id: 10, color_display: { color: '#31221d', title: 'Brown', id_string: 'brown' }, colors: [COLORS_POOL[362]] },
 ]
 
 export const SIZES_POOL = [
