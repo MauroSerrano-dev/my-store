@@ -487,7 +487,13 @@ export default withRouter(props => {
                                         { value: 'higher-price', name: 'Higher Price' },
                                     ]
                             }
-                            width='170px'
+                            width={mobile ? '130px' : '170px'}
+                            style={{
+                                fontSize: mobile ? '13px' : '16px'
+                            }}
+                            styleLabel={{
+                                fontSize: mobile ? '13px' : '16px'
+                            }}
                             onChange={(event) => handleChangeOrder(event.target.value)}
                             supportsHoverAndPointer={supportsHoverAndPointer}
                         />
@@ -567,6 +573,7 @@ export default withRouter(props => {
                 getQueries={getQueries}
                 router={router}
                 handleTagsSelect={handleTagsSelect}
+                handleThemesSelect={handleThemesSelect}
                 supportsHoverAndPointer={supportsHoverAndPointer}
             />
             {productWidth &&

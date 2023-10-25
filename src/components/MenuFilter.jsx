@@ -14,6 +14,7 @@ export default function MenuFilter(props) {
         getQueries,
         router,
         handleTagsSelect,
+        handleThemesSelect,
         supportsHoverAndPointer,
     } = props
 
@@ -125,10 +126,7 @@ export default function MenuFilter(props) {
                                 style={{
                                     backgroundColor: h?.includes(cat.id) ? 'red' : 'black'
                                 }}
-                                onClick={() => router.push({
-                                    pathname: router.pathname,
-                                    query: getQueries({ h: cat.id })
-                                })}
+                                onClick={() => handleThemesSelect(!h?.includes(cat.id), cat.id)}
                                 key={i}
                             >
                                 {cat.title}

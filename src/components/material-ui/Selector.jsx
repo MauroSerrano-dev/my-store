@@ -21,6 +21,7 @@ export default function Selector(props) {
         supportsHoverAndPointer,
         name = 'name',
         style,
+        styleLabel,
     } = props
 
     const [hover, setHover] = useState(false)
@@ -39,7 +40,8 @@ export default function Selector(props) {
                         : hover || !supportsHoverAndPointer
                             ? colorLabelHover
                             : colorLabel} !important`,
-                    transition: 'all ease-in-out 200ms'
+                    transition: 'all ease-in-out 200ms',
+                    ...styleLabel
                 }}
             >
                 {label}
