@@ -32,4 +32,36 @@
     border-top-left-radius: 0.7rem;
 
     background-color: #ffffff;
+
+    padding-left: 20px;
+    padding-right: 20px;
+}
+
+.section {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.options {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    gap: 5px;
+}
+
+.option {
+    padding: 4px 10px;
+    border-radius: 13px;
+    outline: none;
+    border: none;
+    color: white;
+}
+
+.colorsContainer {
+    display: flex;
+    flex-direction: row;
+    gap: 0.3rem;
+    flex-wrap: wrap;
+    max-width: 100%;
 }

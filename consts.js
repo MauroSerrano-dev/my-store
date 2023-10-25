@@ -1,5 +1,26 @@
 export const CART_COOKIE = 'CART'
 
+export const SEARCH_FILTERS = {
+    categories: {
+        id: 'categories',
+        title: 'Categories',
+        options: [
+            { id: 'computer', title: 'Computer' },
+            { id: 'games', title: 'Games' },
+            { id: 'music', title: 'Music' },
+        ]
+    },
+    'most-searched': {
+        id: 'most-searched',
+        title: 'Most Searched',
+        options: [
+            { id: 'funny', title: 'Funny' },
+            { id: 'birthday', title: 'Birthday' },
+            { id: 'for-couples', title: 'For Couples' },
+        ]
+    }
+}
+
 export const COLORS_POOL = {
     358: { id: 358, id_string: 'sport-grey', colors: ['#cacaca'], title: 'Sport Grey' },
     362: { id: 362, id_string: 'dark-chocolate', colors: ['#31221d'], title: 'Dark Chocolate' },

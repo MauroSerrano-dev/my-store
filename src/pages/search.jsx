@@ -6,25 +6,14 @@ import Link from 'next/link'
 import Selector from '@/components/material-ui/Selector'
 import { Checkbox, FormControlLabel, Pagination, PaginationItem } from '@mui/material'
 import Footer from '@/components/Footer'
-import { SEARCH_COLORS } from '../../consts'
+import { SEARCH_COLORS, SEARCH_FILTERS } from '../../consts'
 import ColorButton from '@/components/ColorButton'
 import Tag from '@/components/material-ui/Tag'
 import CircleIcon from '@mui/icons-material/Circle';
 import ProductSkeleton from '@/components/products/ProductSkeleton'
 import KeyboardArrowDownRoundedIcon from '@mui/icons-material/KeyboardArrowDownRounded';
 import MenuFilter from '@/components/MenuFilter'
-
-const THEMES_VALUES = [
-    { name: 'Computer', value: 'computer' },
-    { name: 'Games', value: 'games' },
-    { name: 'Music', value: 'music' },
-]
-
-const MOST_SEARCHED_VALUES = [
-    { name: 'Funny', value: 'funny' },
-    { name: 'Birthday', value: 'birthday' },
-    { name: 'For Couples', value: 'for-couples' },
-]
+import lottie from 'lottie-web';
 
 const QUERIES = {
     h: { title: 'category', show: true, showTitle: true, isFilter: true },
@@ -49,6 +38,7 @@ export default withRouter(props => {
         router,
         windowWidth,
     } = props
+
     const {
         s,
         t,
@@ -176,6 +166,7 @@ export default withRouter(props => {
     }
 
     function handleTagsSelect(checked, value) {
+        console.log('oi')
         if (checked) {
             router.push({
                 pathname: router.pathname,
@@ -213,17 +204,37 @@ export default withRouter(props => {
         setFiltersOpenDelay(true)
     }
 
+    const animationContainer = useRef(null)
+
+    useEffect(() => {
+        let animation
+        if (animationContainer.current) {
+            animation = lottie.loadAnimation({
+                container: animationContainer.current,
+                renderer: 'svg',
+                loop: true,
+                autoplay: true,
+                animationData: require('../../utils/animations/animationNoProducts.json'),
+            })
+        }
+
+        return () => {
+            if (animation)
+                animation.destroy();
+        }
+    }, [products])
+
     return (
         <div className='fillWidth'>
             <main className={styles.main}>
                 {!mobile &&
                     <div className={styles.menuFilters}>
                         <div className={styles.filterBlock}>
-                            <h3>Categories</h3>
-                            {THEMES_VALUES.map((theme, i) =>
+                            <h3>{SEARCH_FILTERS.categories.title}</h3>
+                            {SEARCH_FILTERS.categories.options.map((theme, i) =>
                                 <FormControlLabel
-                                    name='categories'
-                                    label={theme.name}
+                                    name={theme.title}
+                                    label={theme.title}
                                     key={i}
                                     sx={{
                                         marginTop: -0.6,
@@ -231,8 +242,8 @@ export default withRouter(props => {
                                     }}
                                     control={
                                         <Checkbox
-                                            checked={themes.includes(theme.value)}
-                                            onChange={e => handleThemesSelect(e.target.checked, theme.value)}
+                                            checked={themes.includes(theme.id)}
+                                            onChange={e => handleThemesSelect(e.target.checked, theme.id)}
                                             sx={{
                                                 color: '#ffffff'
                                             }}
@@ -242,10 +253,10 @@ export default withRouter(props => {
                             )}
                         </div>
                         <div className={styles.filterBlock}>
-                            <h3>Most Searched</h3>
-                            {MOST_SEARCHED_VALUES.map((tag, i) =>
+                            <h3>{SEARCH_FILTERS['most-searched'].title}</h3>
+                            {SEARCH_FILTERS['most-searched'].options.map((tag, i) =>
                                 <FormControlLabel
-                                    name='most searched'
+                                    name={tag.title}
                                     key={i}
                                     sx={{
                                         marginTop: -0.6,
@@ -253,14 +264,14 @@ export default withRouter(props => {
                                     }}
                                     control={
                                         <Checkbox
-                                            checked={tags.includes(tag.value)}
-                                            onChange={e => handleTagsSelect(e.target.checked, tag.value)}
+                                            checked={tags.includes(tag.id)}
+                                            onChange={e => handleTagsSelect(e.target.checked, tag.id)}
                                             sx={{
                                                 color: '#ffffff'
                                             }}
                                         />
                                     }
-                                    label={tag.name}
+                                    label={tag.title}
                                 />
                             )}
                         </div>
@@ -421,10 +432,8 @@ export default withRouter(props => {
                                     onClick={() => {
                                         if (filtersOpen)
                                             handleCloseFilter()
-                                        else {
-                                            setFiltersOpen(true)
-                                            setFiltersOpenDelay(true)
-                                        }
+                                        else
+                                            handleOpenFilter()
                                     }}
                                     style={{
                                         outline: 'none',
@@ -499,7 +508,14 @@ export default withRouter(props => {
                                 />
                             )
                             : products.length === 0
-                                ? <h2>No Results</h2>
+                                ? <div className='flex column center fillWidth'>
+                                    <div
+                                        ref={animationContainer}
+                                        className={styles.animationContainer}
+                                    >
+                                    </div>
+                                    <h2>No Products Found</h2>
+                                </div>
                                 : products.map((product, i) =>
                                     <Product
                                         key={i}
@@ -523,7 +539,7 @@ export default withRouter(props => {
                                 )
                         }
                     </div>
-                    {productWidth > 0 &&
+                    {productWidth > 0 && products?.length !== 0 &&
                         <Pagination
                             size={mobile ? 'small' : 'large'}
                             count={lastPage}
@@ -548,6 +564,10 @@ export default withRouter(props => {
                 show={mobile && filtersOpenDelay}
                 open={filtersOpen}
                 onClose={handleCloseFilter}
+                getQueries={getQueries}
+                router={router}
+                handleTagsSelect={handleTagsSelect}
+                supportsHoverAndPointer={supportsHoverAndPointer}
             />
             {productWidth &&
                 <Footer />

@@ -14,7 +14,7 @@ export default function NoFound404(props) {
     useEffect(() => {
         const animation = lottie.loadAnimation({
             container: animationContainer.current,
-            renderer: 'svg', // or 'canvas' or 'html'
+            renderer: 'svg',
             loop: true,
             autoplay: true,
             animationData: require('../../utils/animations/animation404.json'),

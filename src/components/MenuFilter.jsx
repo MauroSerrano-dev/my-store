@@ -3,13 +3,33 @@ import { motion } from "framer-motion";
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
 import { SlClose } from "react-icons/sl";
+import { SEARCH_COLORS, SEARCH_FILTERS } from '../../consts';
+import ColorButton from './ColorButton';
 
 export default function MenuFilter(props) {
     const {
         show = false,
         open = false,
         onClose,
+        getQueries,
+        router,
+        handleTagsSelect,
+        supportsHoverAndPointer,
     } = props
+
+    const {
+        s,
+        t,
+        h,
+        c,
+        min,
+        max,
+        order = min || max ? 'lowest-price' : 'popularity',
+        cl,
+        ac,
+        p = '1',
+        limit = '60',
+    } = props.router.query
 
     const [searchFocus, setSearchFocus] = useState(false)
 
@@ -70,7 +90,6 @@ export default function MenuFilter(props) {
                     <div
                         style={{
                             width: '100%',
-                            paddingLeft: 20,
                             paddingRight: 20,
                         }}
                     >
@@ -84,9 +103,6 @@ export default function MenuFilter(props) {
                     </div>
                     <button
                         className='flex center buttonInvisible'
-                        style={{
-                            paddingRight: 20
-                        }}
                     >
                         <SlClose
                             onClick={onClose}
@@ -100,11 +116,89 @@ export default function MenuFilter(props) {
                         />
                     </button>
                 </div>
-                <Link
-                    href='/search?order=lowest-price&cl=grey'
-                >
-                    test
-                </Link>
+                <div className={styles.section}>
+                    <h3>{SEARCH_FILTERS.categories.title}</h3>
+                    <div className={styles.options}>
+                        {SEARCH_FILTERS.categories.options.map((cat, i) =>
+                            <button
+                                className={styles.option}
+                                style={{
+                                    backgroundColor: h?.includes(cat.id) ? 'red' : 'black'
+                                }}
+                                onClick={() => router.push({
+                                    pathname: router.pathname,
+                                    query: getQueries({ h: cat.id })
+                                })}
+                                key={i}
+                            >
+                                {cat.title}
+                            </button>
+                        )}
+                    </div>
+                </div>
+                <div className={styles.section}>
+                    <h3>{SEARCH_FILTERS['most-searched'].title}</h3>
+                    <div className={styles.options}>
+                        {SEARCH_FILTERS['most-searched'].options.map((cat, i) =>
+                            <button
+                                className={styles.option}
+                                style={{
+                                    backgroundColor: t?.includes(cat.id) ? 'red' : 'black'
+                                }}
+                                onClick={() => handleTagsSelect(!t?.includes(cat.id), cat.id)}
+                                key={i}
+                            >
+                                {cat.title}
+                            </button>
+                        )}
+                    </div>
+                </div>
+                <div className={styles.section}>
+                    <h3>Product Color</h3>
+                    <div className={styles.colorsContainer}>
+                        {SEARCH_COLORS.map((color, i) =>
+                            <Link
+                                scroll={false}
+                                href={{
+                                    pathname: router.pathname,
+                                    query: color.color_display.id_string === cl
+                                        ? getQueries({}, ['cl'])
+                                        : getQueries({ cl: color.color_display.id_string })
+                                }}
+                                key={i}
+                            >
+                                <ColorButton
+                                    selected={cl === color.color_display.id_string}
+                                    color={{ title: color.color_display.title, colors: [color.color_display.color] }}
+                                    supportsHoverAndPointer={supportsHoverAndPointer}
+                                />
+                            </Link>
+                        )}
+                    </div>
+                </div>
+                <div className={styles.section}>
+                    <h3>Product Color</h3>
+                    <div className={styles.colorsContainer}>
+                        {SEARCH_COLORS.map((color, i) =>
+                            <Link
+                                scroll={false}
+                                href={{
+                                    pathname: router.pathname,
+                                    query: color.color_display.id_string === ac
+                                        ? getQueries({}, ['ac'])
+                                        : getQueries({ ac: color.color_display.id_string })
+                                }}
+                                key={i}
+                            >
+                                <ColorButton
+                                    selected={ac === color.color_display.id_string}
+                                    color={{ title: color.color_display.title, colors: [color.color_display.color] }}
+                                    supportsHoverAndPointer={supportsHoverAndPointer}
+                                />
+                            </Link>
+                        )}
+                    </div>
+                </div>
             </motion.div>
         </motion.div>
     )
