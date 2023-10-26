@@ -49,6 +49,7 @@ export default withRouter(props => {
         order = min || max ? 'lowest-price' : 'popularity',
         cl,
         ac,
+        v,
         p = '1',
         limit = '60',
     } = props.router.query
@@ -165,20 +166,21 @@ export default withRouter(props => {
         }
     }
 
-    function handleTagsSelect(checked, value) {
-        console.log('oi')
+    function handleMultiSelection(queryKey, values, checked, value) {
+        const query = values?.split(' ') || []
+
         if (checked) {
             router.push({
                 pathname: router.pathname,
-                query: { ...router.query, 't': tags.concat(value).join(' ') }
+                query: { ...router.query, [queryKey]: query.concat(value).join(' ') }
             }, undefined, { scroll: false })
         }
         else {
             router.push({
                 pathname: router.pathname,
-                query: tags.length === 1
-                    ? getQueries({}, 't')
-                    : { ...router.query, 't': tags.filter(theme => theme !== value).join(' ') }
+                query: query.length === 1
+                    ? getQueries({}, [queryKey])
+                    : { ...router.query, [queryKey]: query.filter(theme => theme !== value).join(' ') }
             }, undefined, { scroll: false })
         }
     }
@@ -264,8 +266,8 @@ export default withRouter(props => {
                                     }}
                                     control={
                                         <Checkbox
-                                            checked={tags.includes(tag.id)}
-                                            onChange={e => handleTagsSelect(e.target.checked, tag.id)}
+                                            checked={(t?.split(' ') || []).includes(tag.id)}
+                                            onChange={e => handleMultiSelection('t', t, e.target.checked, tag.id)}
                                             sx={{
                                                 color: '#ffffff'
                                             }}
@@ -506,7 +508,7 @@ export default withRouter(props => {
                         }}
                     >
                         {!products || !router.isReady
-                            ? Array(Number(limit)).fill(null).map((ske, i) =>
+                            ? Array(20).fill(null).map((ske, i) =>
                                 <ProductSkeleton
                                     key={i}
                                     productWidth={productWidth}
@@ -572,7 +574,7 @@ export default withRouter(props => {
                 onClose={handleCloseFilter}
                 getQueries={getQueries}
                 router={router}
-                handleTagsSelect={handleTagsSelect}
+                handleMultiSelection={handleMultiSelection}
                 handleThemesSelect={handleThemesSelect}
                 supportsHoverAndPointer={supportsHoverAndPointer}
             />

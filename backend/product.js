@@ -189,11 +189,6 @@ async function getProductsByQueries(props) {
             q = query(q, where("collection_id", "==", c))
         }
 
-        // Filtre by type (se presente)
-        if (v) {
-            q = query(q, where("type_id", "==", v))
-        }
-
         // Filtre by max price (se presente)
         if (min) {
             q = query(q, where("min_price", ">=", parseFloat(min.concat('00'))))
@@ -219,6 +214,11 @@ async function getProductsByQueries(props) {
         const querySnapshot = await getDocs(q)
 
         let products = querySnapshot.docs.map(doc => doc.data())
+
+        // Filtre by type (se presente)
+        if (v) {
+            products = products.filter(prod => v.includes(prod.type_id))
+        }
 
         // Filtre by product color (se presente)
         if (cl) {

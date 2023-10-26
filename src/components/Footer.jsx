@@ -113,10 +113,6 @@ export default function Footer() {
                                     quality={100}
                                     alt={method.alt}
                                     sizes='100%'
-                                    style={{
-                                        objectFit: 'cover',
-                                        objectPosition: 'top',
-                                    }}
                                 />
                             </div>
                         )}

@@ -81,18 +81,18 @@ export const COLLECTIONS = [
 
 export const MENU_OPTIONS = [
     { title: 'Home', type: 'link', href: '/' },
-    { title: 'Departments', type: 'forward', value: 'departments' },
+    { title: 'Products', type: 'forward', value: 'products' },
     { title: 'Collections', type: 'forward', value: 'collections' },
     { title: 'Support', type: 'link', href: '/support' },
     { title: 'About us', type: 'link', href: '/about-us' },
 ]
 
 export const MENU_FORWARD_OPTIONS = {
-    departments: [
+    products: [
         { title: 'T-Shirts', type: 'link', href: '/search?v=t-shirt' },
         { title: 'Hoodies', type: 'link', href: '/search?v=hoodie' },
     ],
-    products: [
+    possibleProducts: [
         { title: 'T-Shirts', type: 'link', href: '/search?v=t-shirt' },
         { title: 'Hoodies', type: 'link', href: '/search?v=hoodie' },
         { title: 'Long Sleeves', type: 'link', href: '/search?v=long+sleeves' },
