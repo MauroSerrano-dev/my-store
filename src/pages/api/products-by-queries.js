@@ -1,6 +1,6 @@
 import { isTokenValid } from "../../../auth";
 import { getAllProducts, getProductsByQueries } from "../../../backend/product";
-import { SEARCH_COLORS } from "../../../consts";
+import { SEARCH_PRODUCT_COLORS, SEARCH_ART_COLORS } from "../../../consts";
 
 export default async function handler(req, res) {
     const { authorization } = req.headers
@@ -44,8 +44,8 @@ export default async function handler(req, res) {
                 h: h,
                 v: v,
                 c: c,
-                cl: SEARCH_COLORS.find(color => color.color_display.id_string === cl),
-                ac: SEARCH_COLORS.find(color => color.color_display.id_string === ac),
+                cl: SEARCH_PRODUCT_COLORS.find(color => color.color_display.id_string === cl),
+                ac: SEARCH_ART_COLORS.find(color => color.color_display.id_string === ac),
                 p: p,
                 min: min,
                 max: max,

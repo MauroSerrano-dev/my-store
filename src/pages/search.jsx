@@ -6,7 +6,7 @@ import Link from 'next/link'
 import Selector from '@/components/material-ui/Selector'
 import { Checkbox, FormControlLabel, Pagination, PaginationItem } from '@mui/material'
 import Footer from '@/components/Footer'
-import { SEARCH_COLORS, SEARCH_FILTERS } from '../../consts'
+import { SEARCH_PRODUCT_COLORS, SEARCH_ART_COLORS, SEARCH_FILTERS } from '../../consts'
 import ColorButton from '@/components/ColorButton'
 import Tag from '@/components/material-ui/Tag'
 import CircleIcon from '@mui/icons-material/Circle';
@@ -373,7 +373,7 @@ export default withRouter(props => {
                         <div className={styles.filterBlock}>
                             <h3>Product Color</h3>
                             <div className={styles.colorsContainer}>
-                                {SEARCH_COLORS.map((color, i) =>
+                                {SEARCH_PRODUCT_COLORS.map((color, i) =>
                                     <Link
                                         scroll={false}
                                         href={{
@@ -396,7 +396,7 @@ export default withRouter(props => {
                         <div className={styles.filterBlock}>
                             <h3>Art Color</h3>
                             <div className={styles.colorsContainer}>
-                                {SEARCH_COLORS.map((color, i) =>
+                                {SEARCH_ART_COLORS.map((color, i) =>
                                     <Link
                                         scroll={false}
                                         href={{
@@ -461,9 +461,9 @@ export default withRouter(props => {
                                                 QUERIES[key].showTitle
                                                     ? <span>{QUERIES[key].title}: {value}</span>
                                                     : key === 'cl'
-                                                        ? <span className='flex row center' style={{ gap: '0.2rem' }}>product: {value} <CircleIcon style={{ color: SEARCH_COLORS.find(cl => cl.color_display.id_string === value).color_display.color }} /></span>
+                                                        ? <span className='flex row center' style={{ gap: '0.2rem' }}>product: {value} <CircleIcon style={{ color: SEARCH_PRODUCT_COLORS.find(cl => cl.color_display.id_string === value).color_display.color }} /></span>
                                                         : key === 'ac'
-                                                            ? <span className='flex row center' style={{ gap: '0.2rem' }}>art: {value} <CircleIcon style={{ color: SEARCH_COLORS.find(cl => cl.color_display.id_string === value).color_display.color }} /></span>
+                                                            ? <span className='flex row center' style={{ gap: '0.2rem' }}>art: {value} <CircleIcon style={{ color: SEARCH_ART_COLORS.find(cl => cl.color_display.id_string === value).color_display.color }} /></span>
                                                             : value
                                             }
                                             onDelete={() => handleDeleteTag(key, value)}
@@ -534,11 +534,11 @@ export default withRouter(props => {
                                         inicialVariantId={
                                             product.variants.find(vari => {
                                                 if (cl && ac)
-                                                    return SEARCH_COLORS.find(scolor => scolor.color_display.id_string === cl)?.colors.some(color => color.id === vari.color_id) && SEARCH_COLORS.find(scolor => scolor.color_display.id_string === ac)?.id === vari.art.color_id
+                                                    return SEARCH_PRODUCT_COLORS.find(scolor => scolor.color_display.id_string === cl)?.colors.some(color => color.id === vari.color_id) && SEARCH_ART_COLORS.find(scolor => scolor.color_display.id_string === ac)?.id === vari.art.color_id
                                                 if (cl)
-                                                    return SEARCH_COLORS.find(scolor => scolor.color_display.id_string === cl)?.colors.some(color => color.id === vari.color_id)
+                                                    return SEARCH_PRODUCT_COLORS.find(scolor => scolor.color_display.id_string === cl)?.colors.some(color => color.id === vari.color_id)
                                                 if (ac) {
-                                                    return SEARCH_COLORS.find(scolor => scolor.color_display.id_string === ac)?.id === vari.art.color_id
+                                                    return SEARCH_ART_COLORS.find(scolor => scolor.color_display.id_string === ac)?.id === vari.art.color_id
                                                 }
                                                 return null
                                             })?.id || null
