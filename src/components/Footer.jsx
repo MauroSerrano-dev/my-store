@@ -2,6 +2,7 @@ import Image from 'next/image'
 import styles from '../styles/components/Footer.module.css'
 import { BsShieldLockFill } from "react-icons/bs";
 import Link from 'next/link';
+import SocialButtons from './SocialButtons';
 
 export default function Footer() {
 
@@ -56,6 +57,7 @@ export default function Footer() {
                     </div>
                 </div>
                 <div className={styles.right}>
+                    <SocialButtons />
                     <div
                         className={styles.stripeContainer}
                     >

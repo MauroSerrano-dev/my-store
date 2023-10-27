@@ -35,7 +35,7 @@ export default function AvatarMenu(props) {
     >
       {supportsHoverAndPointer
         ? <Link
-          href={'/login'}
+          href={session ? '/profile' : '/login'}
           className={`${styles.iconContainer} flex center noUnderline`}
         >
           <PersonOutlineOutlinedIcon
