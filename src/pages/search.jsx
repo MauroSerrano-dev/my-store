@@ -51,7 +51,7 @@ export default withRouter(props => {
         ac,
         v,
         p = '1',
-        limit = '60',
+        limit = '1',
     } = props.router.query
 
     const mobile = windowWidth <= 700
@@ -556,7 +556,7 @@ export default withRouter(props => {
                             renderItem={(item) => (
                                 <PaginationItem
                                     className={`${styles.pageButton} noUnderline`}
-                                    component={Link}
+                                    component={item.page === Number(p || 1) || item.page === 0 || item.page === lastPage + 1 ? null : Link}
                                     href={{
                                         pathname: router.pathname,
                                         query: item.page === 1 ? getQueries({}, ['p']) : getQueries({ p: item.page })

@@ -87,10 +87,7 @@ export default function MenuFilter(props) {
             >
                 <div className={styles.inner}>
                     <div
-                        className='flex center row'
-                        style={{
-                            paddingTop: 10,
-                        }}
+                        className={styles.topBody}
                     >
                         <div
                             style={{
@@ -145,7 +142,7 @@ export default function MenuFilter(props) {
                                 <button
                                     className={styles.option}
                                     style={{
-                                        backgroundColor: h?.includes(cat.id) ? 'red' : 'black'
+                                        backgroundColor: h?.includes(cat.id) ? 'var(--primary)' : 'var(--filter-tag-color)'
                                     }}
                                     onClick={() => handleThemesSelect(!h?.includes(cat.id), cat.id)}
                                     key={i}
@@ -162,7 +159,7 @@ export default function MenuFilter(props) {
                                 <button
                                     className={styles.option}
                                     style={{
-                                        backgroundColor: t?.includes(cat.id) ? 'red' : 'black'
+                                        backgroundColor: t?.includes(cat.id) ? 'var(--primary)' : 'var(--filter-tag-color)'
                                     }}
                                     onClick={() => handleMultiSelection('t', t, !t?.includes(cat.id), cat.id)}
                                     key={i}
