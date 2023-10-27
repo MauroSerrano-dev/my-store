@@ -51,7 +51,7 @@ export default withRouter(props => {
         ac,
         v,
         p = '1',
-        limit = '1',
+        limit = '60',
     } = props.router.query
 
     const mobile = windowWidth <= 700
