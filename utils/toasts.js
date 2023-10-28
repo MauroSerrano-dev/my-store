@@ -8,7 +8,7 @@ import { toast } from 'react-toastify'
  * @param {string} props.msg - Toast message. `Default: 'This is a Toast!'`
  * @param {number} props.time - Toast duration. `Default: 3000`
  * @param {string} props.theme - Toast theme. `Default: 'light'`
- * @param {boolean} props.pauseOnHover - Pause the timer when the mouse hovers over the toast. `Default: true`
+ * @param {boolean} props.pauseOnHover - Pause the timer when the mouse hovers over the toast. `Default: false`
  * @param {boolean} props.closeOnClick - Remove the toast when clicked. `Default: true`
  * @param {boolean} props.hideProgressBar - Hide progress bar. `Default: false`
  * @param {boolean} props.draggable - Allow toast to be draggable. `Default: true`
@@ -23,7 +23,7 @@ export function showToast(props = {}) {
         msg = 'This is a toast!',
         time = 3000,
         theme = 'light',
-        pauseOnHover = true,
+        pauseOnHover = false,
         closeOnClick = true,
         hideProgressBar = false,
         draggable = true,
