@@ -4,7 +4,7 @@ import Link from 'next/link'
 import { FcGoogle } from "react-icons/fc";
 import { PiHandshakeLight } from "react-icons/pi";
 import ReCAPTCHA from "react-google-recaptcha";
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { signInWithPopup, GoogleAuthProvider, signInWithRedirect } from "firebase/auth";
 import { showToast } from '../../utils/toasts';
 
