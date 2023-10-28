@@ -19,8 +19,10 @@ const categories = [
 ]
 
 const DEFAULT_PRODUCTS_TAGS = [
-  { id: 't-shirt', title: 'T-Shirt', query: 'v' },
-  { id: 'hoodie', title: 'Hoddie', query: 'v' },
+  'music',
+  'raglan-tee',
+  't-shirt',
+  'hoodie',
 ]
 
 export default function Home(props) {
@@ -35,17 +37,31 @@ export default function Home(props) {
 
   const [productsOne, setProductsOne] = useState()
   const [productsTwo, setProductsTwo] = useState()
+  const [productsThree, setProductsThree] = useState()
+  const [productsFour, setProductsFour] = useState()
+  const [productsFive, setProductsFive] = useState()
+  const [productsSix, setProductsSix] = useState()
+  const [productsSeven, setProductsSeven] = useState()
+  const [productsEight, setProductsEight] = useState()
   const setStates = [
     { value: productsOne, set: setProductsOne },
     { value: productsTwo, set: setProductsTwo },
+    { value: productsThree, set: setProductsThree },
+    { value: productsFour, set: setProductsFour },
+    { value: productsFive, set: setProductsFive },
+    { value: productsSix, set: setProductsSix },
+    { value: productsSeven, set: setProductsSeven },
+    { value: productsEight, set: setProductsEight },
   ]
 
-  async function getProductsByTagOrType(queryName, categoryName) {
+  async function getProductsByTagOrType(tag) {
+    const { query, id } = tag
+    console.log(tag)
     const options = {
       method: 'GET',
       headers: {
         authorization: process.env.NEXT_PUBLIC_APP_TOKEN,
-        [queryName]: categoryName
+        [query]: id
       }
     }
 
@@ -64,8 +80,8 @@ export default function Home(props) {
 
   async function getProductsFromCategories() {
     //tem que ser na mesma ordem que está no HTML
-    setStates.forEach(async (state, i) => {
-      state.set(await getProductsByTagOrType((USER_CUSTOMIZE_HOME_PAGE.find(tag => tag.id === session?.home_page_tags[i]) || DEFAULT_PRODUCTS_TAGS[i]).query, (USER_CUSTOMIZE_HOME_PAGE.find(tag => tag.id === session?.home_page_tags[i]) || DEFAULT_PRODUCTS_TAGS[i]).id))
+    (session?.home_page_tags || DEFAULT_PRODUCTS_TAGS).forEach(async (tag, i) => {
+      setStates[i].set(await getProductsByTagOrType(USER_CUSTOMIZE_HOME_PAGE.find(ele => ele.id === tag)))
     })
   }
 
@@ -237,6 +253,7 @@ export default function Home(props) {
             </div>
           </div>
           {setStates.map((state, i) =>
+            (session?.home_page_tags || DEFAULT_PRODUCTS_TAGS)[i] &&
             <div
               className={styles.carouselAndTitle}
               key={i}
@@ -244,7 +261,7 @@ export default function Home(props) {
               <h2 className={styles.carouselTitle}>
                 {session === undefined
                   ? ''
-                  : (USER_CUSTOMIZE_HOME_PAGE.find(tag => tag.id === session?.home_page_tags[i]) || DEFAULT_PRODUCTS_TAGS[i]).title
+                  : USER_CUSTOMIZE_HOME_PAGE.find(ele => ele.id === (session?.home_page_tags || DEFAULT_PRODUCTS_TAGS)[i])?.title
                 }
               </h2>
               <CarouselProducts
