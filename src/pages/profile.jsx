@@ -35,7 +35,7 @@ export default function Profile(props) {
                         <div className={styles.field}>
                             <h3>Customize your Home Page</h3>
                             <p style={{ textAlign: 'start' }}>Pick <b>{TAGS_MIN_LIMIT} to {TAGS_MAX_LIMIT} keywords.</b> You'll see bestsellers from chosen keywords on your Home Page</p>
-                            <p>Chosen: <b style={{ color: 'var(--primary)' }}>{changes.home_page_tags.length || session.home_page_tags.length}/{TAGS_MAX_LIMIT}</b></p>
+                            <p>Chosen: <b style={{ color: 'var(--primary)' }}>{changes.home_page_tags?.length || session.home_page_tags.length}/{TAGS_MAX_LIMIT}</b></p>
                             <TagsSelector
                                 supportsHoverAndPointer={supportsHoverAndPointer}
                                 options={USER_CUSTOMIZE_HOME_PAGE.map(theme => theme.id)}
