@@ -105,7 +105,9 @@
 }
 
 .carouselTitle {
-  --text-color: var(--text-white)
+  --text-color: var(--text-white);
+  height: 36px;
+  text-shadow: 0px 2px 6px rgba(0, 0, 0, 0.8);
 }
 
 .carousel {
@@ -142,6 +144,7 @@
 @media (max-width: 700px) {
   .carouselTitle {
     font-size: 17px;
+    height: 25.5px;
   }
 
   .banner {

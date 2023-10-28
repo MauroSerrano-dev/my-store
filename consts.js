@@ -127,20 +127,23 @@ export const MENU_FORWARD_OPTIONS = {
 
 export const TAGS_POOL = [
     'bed',
-    'computer',
     'couples',
     'funny',
-    'games',
     'glitch',
     'guitar',
-    'halloween',
-    'home',
     'hoodie',
-    'music',
     'pillow',
     'raglan-tee',
     'rock',
-    'zombies',
+]
+
+export const THEMES_POOL = [
+    { id: 'computer', title: 'Computer' },
+    { id: 'games', title: 'Games' },
+    { id: 'halloween', title: 'Halloween' },
+    { id: 'home', title: 'Home' },
+    { id: 'music', title: 'Music' },
+    { id: 'zombies', title: 'Zombies' },
 ]
 
 export const itemsNavBar = [
@@ -1590,6 +1593,8 @@ export const PRODUCT_TYPES = [
         providers: [],
     },
 ]
+
+export const USER_CUSTOMIZE_HOME_PAGE = THEMES_POOL.map(theme => ({ ...theme, query: 'h' })).concat(PRODUCT_TYPES.map(type => ({ id: type.id, title: type.title, query: 'v' }))).sort((a, b) => b.id < a.id ? 1 : -1)
 
 export const EU_COUNTRIES = ['DE', 'BV', 'GE', 'SM', 'GI', 'GG', 'AT', 'HU', 'MD', 'HR', 'BE', 'IM', 'GR', 'IT', 'BY', 'GL', 'GP', 'LU', 'VA', 'JE', 'SK', 'BG', 'MK', 'PT', 'RE', 'FR', 'RO', 'TR', 'SI', 'XK', 'CZ', 'RS', 'ES', 'MC', 'ME', 'UA', 'AL', 'AM', 'CY', 'AX', 'AD', 'FO', 'BA', 'NL', 'MT']
 

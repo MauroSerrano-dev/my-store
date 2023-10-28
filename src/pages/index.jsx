@@ -6,6 +6,7 @@ import CarouselProducts from '@/components/carousels/CarouselProducts'
 import Carousel from '@/components/carousels/Carousel'
 import Link from 'next/link'
 import Image from 'next/image'
+import { USER_CUSTOMIZE_HOME_PAGE } from '../../consts'
 
 const categories = [
   { id: 'games', title: 'Games', url: '/search?h=games', img: 'https://firebasestorage.googleapis.com/v0/b/my-store-4aef7.appspot.com/o/index%2Fgames.webp?alt=media&token=c28521d0-8fd8-45b7-9c80-60feffab7f60&_gl=1*fshtki*_ga*NjQyNzA2OTM1LjE2OTE2NjI4OTU.*_ga_CW55HF8NVT*MTY5NzM2NTMyMy4yMzYuMS4xNjk3MzY1Mzk3LjUxLjAuMA..' },
@@ -17,17 +18,27 @@ const categories = [
   { id: 'valentines', title: 'Valentines', url: '/search?t=valentines', img: 'https://firebasestorage.googleapis.com/v0/b/my-store-4aef7.appspot.com/o/index%2Fvalentines.webp?alt=media&token=1a8ba264-3494-42ae-9099-39fe5417231e&_gl=1*zb3jw7*_ga*NjQyNzA2OTM1LjE2OTE2NjI4OTU.*_ga_CW55HF8NVT*MTY5NzI3MDYxMy4yMjUuMS4xNjk3MjcwNzYxLjYwLjAuMA..' },
 ]
 
+const DEFAULT_PRODUCTS_TAGS = [
+  { id: 't-shirt', title: 'T-Shirt', query: 'v' },
+  { id: 'hoodie', title: 'Hoddie', query: 'v' },
+]
+
 export default function Home(props) {
   const {
     userCurrency,
     supportsHoverAndPointer,
     windowWidth,
+    session,
   } = props
 
-  const [allProducts, setAllProducts] = useState()
-  const [productsTShirts, setProductsTShirts] = useState()
-  const [productsHoodies, setProductsHoodies] = useState()
   const [bannerColorsOpacity, setBannerColorsOpacity] = useState(0)
+
+  const [productsOne, setProductsOne] = useState()
+  const [productsTwo, setProductsTwo] = useState()
+  const setStates = [
+    { value: productsOne, set: setProductsOne },
+    { value: productsTwo, set: setProductsTwo },
+  ]
 
   async function getProductsByTagOrType(queryName, categoryName) {
     const options = {
@@ -46,31 +57,16 @@ export default function Home(props) {
     return products
   }
 
-  async function getAllProducts() {
-    const options = {
-      method: 'GET',
-      headers: {
-        authorization: process.env.NEXT_PUBLIC_APP_TOKEN,
-      }
-    }
-
-    const products = await fetch("/api/products", options)
-      .then(response => response.json())
-      .then(response => response.products)
-      .catch(err => console.error(err))
-
-    return products
-  }
-
   useEffect(() => {
-    getProductsFromCategories()
-  }, [])
+    if (session !== undefined)
+      getProductsFromCategories()
+  }, [session])
 
   async function getProductsFromCategories() {
     //tem que ser na mesma ordem que está no HTML
-    setAllProducts(await getAllProducts())
-    setProductsTShirts(await getProductsByTagOrType('v', 't-shirt'))
-    setProductsHoodies(await getProductsByTagOrType('v', 'hoodie'))
+    setStates.forEach(async (state, i) => {
+      state.set(await getProductsByTagOrType((USER_CUSTOMIZE_HOME_PAGE.find(tag => tag.id === session?.home_page_tags[i]) || DEFAULT_PRODUCTS_TAGS[i]).query, (USER_CUSTOMIZE_HOME_PAGE.find(tag => tag.id === session?.home_page_tags[i]) || DEFAULT_PRODUCTS_TAGS[i]).id))
+    })
   }
 
   useEffect(() => {
@@ -240,39 +236,25 @@ export default function Home(props) {
               />
             </div>
           </div>
-          <div className={styles.carouselAndTitle}>
-            <h2 className={styles.carouselTitle}>
-              All Products
-            </h2>
-            <CarouselProducts
-              products={allProducts}
-              userCurrency={userCurrency}
-              supportsHoverAndPointer={supportsHoverAndPointer}
-              windowWidth={windowWidth}
-            />
-          </div>
-          <div className={styles.carouselAndTitle}>
-            <h2 className={styles.carouselTitle}>
-              T-Shirts
-            </h2>
-            <CarouselProducts
-              products={productsTShirts}
-              userCurrency={userCurrency}
-              supportsHoverAndPointer={supportsHoverAndPointer}
-              windowWidth={windowWidth}
-            />
-          </div>
-          <div className={styles.carouselAndTitle}>
-            <h2 className={styles.carouselTitle}>
-              Hoodies
-            </h2>
-            <CarouselProducts
-              products={productsHoodies}
-              userCurrency={userCurrency}
-              supportsHoverAndPointer={supportsHoverAndPointer}
-              windowWidth={windowWidth}
-            />
-          </div>
+          {setStates.map((state, i) =>
+            <div
+              className={styles.carouselAndTitle}
+              key={i}
+            >
+              <h2 className={styles.carouselTitle}>
+                {session === undefined
+                  ? ''
+                  : (USER_CUSTOMIZE_HOME_PAGE.find(tag => tag.id === session?.home_page_tags[i]) || DEFAULT_PRODUCTS_TAGS[i]).title
+                }
+              </h2>
+              <CarouselProducts
+                products={state.value}
+                userCurrency={userCurrency}
+                supportsHoverAndPointer={supportsHoverAndPointer}
+                windowWidth={windowWidth}
+              />
+            </div>
+          )}
         </div>
       </main>
       <Footer />

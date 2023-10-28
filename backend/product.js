@@ -15,7 +15,7 @@ import {
 import { initializeApp } from 'firebase/app'
 import { firebaseConfig } from "../firebase.config"
 import Fuse from 'fuse.js'
-import { TAGS_POOL } from "../consts"
+import { PRODUCT_TYPES, TAGS_POOL, THEMES_POOL } from "../consts"
 import translate from "translate"
 
 initializeApp(firebaseConfig)
@@ -245,7 +245,7 @@ async function getProductsByQueries(props) {
 
             searchArr = inicialTags.concat(await Promise.all(translationPromises))
 
-            const fuse = new Fuse(TAGS_POOL, { threshold: 0.4 })
+            const fuse = new Fuse(TAGS_POOL.concat(THEMES_POOL.map(theme => theme.id).concat(PRODUCT_TYPES.map(type => type.id))), { threshold: 0.4 })
 
             const tags = inicialTags.concat(searchArr.map(tag => {
                 const fuseRes = fuse.search(tag)

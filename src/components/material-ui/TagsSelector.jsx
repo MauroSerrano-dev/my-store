@@ -20,6 +20,7 @@ export default function TagsSelector(props) {
         colorDeleteHover = dark ? 'rgba(0, 0, 0, 0.8)' : 'rgba(255, 255, 255, 0.8)',
         onChange,
         style,
+        sx,
         variant = 'outlined',
         autoComplete = 'off',
         placeholder,
@@ -36,6 +37,7 @@ export default function TagsSelector(props) {
             onChange={onChange}
             value={value}
             sx={{
+                ...sx,
                 '.MuiAutocomplete-tag': {
                     backgroundColor: colorTagBg,
                     '--text-color': colorTagText,

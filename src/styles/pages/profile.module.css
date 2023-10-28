@@ -1,0 +1,35 @@
+.container {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+
+    width: 100%;
+
+    padding-top: 2rem;
+
+    --text-color: var(--text-white);
+}
+
+.userContainer {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+
+    width: 90%;
+    max-width: 400px;
+
+    gap: 1rem;
+}
+
+.field {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+
+    width: 100%;
+
+    gap: 1rem;
+}

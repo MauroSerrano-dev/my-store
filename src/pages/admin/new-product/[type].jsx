@@ -5,7 +5,7 @@ import { useEffect, useState } from 'react'
 import KeyboardArrowLeftRoundedIcon from '@mui/icons-material/KeyboardArrowLeftRounded'
 import { withRouter } from 'next/router'
 import Link from 'next/link'
-import { COLLECTIONS, TAGS_POOL, PRODUCT_TYPES, COLORS_POOL, SIZES_POOL, PROVIDERS_POOL, SEARCH_ART_COLORS } from '../../../../consts'
+import { COLLECTIONS, TAGS_POOL, THEMES_POOL, PRODUCT_TYPES, COLORS_POOL, SIZES_POOL, PROVIDERS_POOL, SEARCH_ART_COLORS } from '../../../../consts'
 import ColorSelector from '@/components/ColorSelector'
 import TextInput from '@/components/material-ui/TextInput'
 import TagsSelector from '@/components/material-ui/TagsSelector'
@@ -515,7 +515,7 @@ export default withRouter(props => {
                                         />
                                         <TagsSelector
                                             supportsHoverAndPointer={supportsHoverAndPointer}
-                                            options={TAGS_POOL}
+                                            options={THEMES_POOL}
                                             label='Themes'
                                             value={product.themes}
                                             onChange={(event, value) => updateProductField('themes', value)}
