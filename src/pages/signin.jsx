@@ -3,14 +3,24 @@ import { Button, TextField } from '@mui/material'
 import Link from 'next/link'
 import { PiHandshakeLight } from "react-icons/pi";
 import ReCAPTCHA from "react-google-recaptcha";
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { showToast } from '../../utils/toasts';
 
 export default function Signin(props) {
-    const { signIn, login, mobile } = props
+    const {
+        login,
+        mobile,
+        session,
+        router
+    } = props
 
     const [reCaptchaSolve, setReCaptchaSolve] = useState(false)
     const [newUser, setNewUser] = useState({})
+
+    useEffect(() => {
+        if (session)
+            router.push('/profile')
+    }, [session])
 
     function handleReCaptchaSuccess() {
         setReCaptchaSolve(true)
@@ -53,6 +63,7 @@ export default function Signin(props) {
     }
 
     return (
+        session === null &&
         <div className={styles.container}>
             <header>
             </header>

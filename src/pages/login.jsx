@@ -15,10 +15,16 @@ export default function Login(props) {
         login,
         auth,
         mobile,
-        router
+        router,
+        session,
     } = props
 
     const [reCaptchaSolve, setReCaptchaSolve] = useState(false)
+
+    useEffect(() => {
+        if (session)
+            router.push('/profile')
+    }, [session])
 
     function handleReCaptchaSuccess() {
         setReCaptchaSolve(true)
@@ -49,6 +55,7 @@ export default function Login(props) {
     }
 
     return (
+        session === null &&
         <div className={styles.container}>
             <header>
             </header>
