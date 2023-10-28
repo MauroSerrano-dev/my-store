@@ -1,5 +1,5 @@
 import { isTokenValid } from "../../../auth";
-import { createNewUserWithCredentials } from "../../../backend/user"
+import { createNewUserWithCredentials, updateUser } from "../../../backend/user"
 
 export default async function handler(req, res) {
     const { authorization } = req.headers
@@ -14,5 +14,10 @@ export default async function handler(req, res) {
         const { user } = req.body
         const userData = await createNewUserWithCredentials(user)
         res.status(201).json({ user: userData })
+    }
+    else if (req.method === "PATCH") {
+        const { user_id, changes } = req.body
+        const response = await updateUser(user_id, changes)
+        res.status(response.status).json(response)
     }
 }

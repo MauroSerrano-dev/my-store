@@ -56,7 +56,6 @@ export default function Home(props) {
 
   async function getProductsByTagOrType(tag) {
     const { query, id } = tag
-    console.log(tag)
     const options = {
       method: 'GET',
       headers: {

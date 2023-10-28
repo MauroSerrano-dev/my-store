@@ -121,12 +121,14 @@ export default function Cart(props) {
                             <h2><b>Hmmmm....</b> it looks like your cart is empty.</h2>
                             <h2>Explore some of our <b>best products!</b></h2>
                         </div>
-                        <CarouselProducts
-                            products={allProducts}
-                            userCurrency={userCurrency}
-                            supportsHoverAndPointer={supportsHoverAndPointer}
-                            windowWidth={windowWidth}
-                        />
+                        <div className='fillWidth'>
+                            <CarouselProducts
+                                products={allProducts}
+                                userCurrency={userCurrency}
+                                supportsHoverAndPointer={supportsHoverAndPointer}
+                                windowWidth={windowWidth}
+                            />
+                        </div>
                     </main>
                     : <main className={styles.main}>
                         <div

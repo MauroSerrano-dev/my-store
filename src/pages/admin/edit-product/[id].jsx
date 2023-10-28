@@ -16,7 +16,7 @@ import BrokeChain from '@/components/svgs/BrokeChain';
 import ButtonIcon from '@/components/material-ui/ButtonIcon';
 import ImagesSlider from '@/components/ImagesSlider';
 import { showToast } from '../../../../utils/toasts';
-import { getProductsDiff } from '../../../../utils';
+import { getObjectsDiff } from '../../../../utils';
 import Head from 'next/head';
 import Selector from '@/components/material-ui/Selector';
 
@@ -259,7 +259,7 @@ export default withRouter(props => {
             images: product.colors.reduce((acc, color) => acc.concat(images[color.id].map(img => ({ src: img.src, color_id: img.color_id, variants_id: img.variants_id }))), []),
         }
 
-        const diff = getProductsDiff(newProduct, inicialProduct)
+        const diff = getObjectsDiff(newProduct, inicialProduct)
         const diffKeys = Object.keys(diff)
 
         if (diffKeys.length === 0) {

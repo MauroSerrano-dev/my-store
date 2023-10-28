@@ -260,13 +260,8 @@ export default function DataHandler(props) {
         }
     }, [mobile])
 
-    useEffect(() => {
-        if (Cookies.get('CURR'))
-            setUserCurrency(JSON.parse(Cookies.get('CURR')))
-        else
-            Cookies.set('CURR', JSON.stringify(userCurrency))
-
-        const unsubscribe = onAuthStateChanged(auth, (authUser) => {
+    function updateSession() {
+        onAuthStateChanged(auth, (authUser) => {
             if (authUser) {
                 handleLogin(authUser)
             } else {
@@ -274,6 +269,15 @@ export default function DataHandler(props) {
                 setSession(null)
             }
         })
+    }
+
+    useEffect(() => {
+        if (Cookies.get('CURR'))
+            setUserCurrency(JSON.parse(Cookies.get('CURR')))
+        else
+            Cookies.set('CURR', JSON.stringify(userCurrency))
+
+        updateSession()
 
         const handleLanguageChange = () => {
             Cookies.set('LANG', (navigator.language || navigator.userLanguage))
@@ -285,7 +289,6 @@ export default function DataHandler(props) {
 
         // Remova o ouvinte quando o componente for desmontado
         return () => {
-            unsubscribe()
             window.removeEventListener("languagechange", handleLanguageChange);
         }
     }, [])
@@ -483,6 +486,7 @@ export default function DataHandler(props) {
                     setCart={setCart}
                     session={session}
                     login={login}
+                    updateSession={updateSession}
                     logout={logout}
                     auth={auth}
                     userCurrency={userCurrency}

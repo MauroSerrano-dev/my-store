@@ -203,27 +203,56 @@ async function removeEmailVerifiedField(userId) {
 
 async function updateField(userId, fieldName, value) {
     try {
-        const userRef = doc(db, process.env.COLL_USERS, userId);
-        const userDoc = await getDoc(userRef);
+        const userRef = doc(db, process.env.COLL_USERS, userId)
+        const userDoc = await getDoc(userRef)
 
         if (userDoc.exists()) {
-            const userData = userDoc.data();
+            const userData = userDoc.data()
 
-            userData[fieldName] = value;
+            userData[fieldName] = value
 
-            await updateDoc(userRef, userData);
+            await updateDoc(userRef, userData)
 
-            console.log(`User ${userId} field ${fieldName} updated successfully!`);
+            console.log(`User ${userId} field ${fieldName} updated successfully!`)
 
-            const updatedUserDoc = await getDoc(userRef);
+            const updatedUserDoc = await getDoc(userRef)
 
             return updatedUserDoc.data()
         } else {
-            console.log(`User with id ${userId} not found.`);
+            console.log(`User with id ${userId} not found.`)
         }
     } catch (error) {
-        console.error(`Error updating field ${fieldName} for user ${userId}.`, error);
-        throw error;
+        console.error(`Error updating field ${fieldName} for user ${userId}.`, error)
+        throw error
+    }
+}
+
+async function updateUser(userId, changes) {
+    try {
+        const userRef = doc(db, process.env.COLL_USERS, userId)
+        const userDoc = await getDoc(userRef)
+
+        if (userDoc.exists()) {
+            const userData = userDoc.data()
+
+            await updateDoc(userRef, { ...userData, ...changes })
+
+            return {
+                status: 200,
+                message: 'User updated successfully!',
+            }
+        } else {
+            return {
+                status: 404,
+                message: 'User not found.',
+            }
+        }
+    } catch (error) {
+        return {
+            status: 500,
+            message: 'Error updating user.',
+            error: error,
+        }
     }
 }
 
@@ -234,4 +263,5 @@ export {
     checkUserExistsByEmail,
     getUserById,
     updateField,
+    updateUser,
 }
