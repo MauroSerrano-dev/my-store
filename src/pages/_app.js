@@ -117,7 +117,7 @@ export default function App(props) {
           />
         }
       </ThemeProvider>
-      <ToastContainer newestOnTop transition={Flip} style={{ color: 'white' }} />
+      <ToastContainer newestOnTop transition={Flip} style={{ color: 'white' }} pauseOnFocusLoss={false} />
       {loading &&
         <div>
           <div

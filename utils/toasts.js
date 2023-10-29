@@ -17,7 +17,6 @@ import { toast } from 'react-toastify'
  */
 
 export function showToast(props = {}) {
-
     const {
         type = 'info',
         msg = 'This is a toast!',

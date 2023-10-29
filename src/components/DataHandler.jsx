@@ -180,7 +180,7 @@ export default function DataHandler(props) {
                 new_user: {
                     email: authUser.email,
                     name: authUser.displayName,
-                    prodiders: authUser.providerData.map(provider => provider.providerId),
+                    providers: authUser.providerData.map(provider => provider.providerId),
                     email_verified: authUser.emailVerified,
                     introduction_complete: false,
                 },
