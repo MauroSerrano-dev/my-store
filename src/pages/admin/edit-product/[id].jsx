@@ -30,18 +30,18 @@ export default withRouter(props => {
 
     const [product, setProduct] = useState()
     const [images, setImages] = useState()
-    const [inicialProduct, setInicialProduct] = useState({})
+    const [inicialProduct, setInicialProduct] = useState()
     const [colorIndex, setColorIndex] = useState(0)
     const [colorsChained, setColorsChained] = useState([])
     const [sizesChained, setSizesChained] = useState({})
     const [disableUpdateButton, setDisableUpdateButton] = useState(false)
     const [artColorChained, setArtColorChained] = useState()
     const [artIdChained, setArtIdChained] = useState()
+    const [fieldChanged, setFieldChanged] = useState({})
 
     const TYPE = PRODUCT_TYPES.find(type => type.id === product?.type_id)
     const COLORS = product?.colors_ids.map(cl_id => COLORS_POOL[cl_id])
     const SIZES = product?.sizes_ids.map(sz_id => SIZES_POOL.find(size => size.id === sz_id))
-    const INICIAL_PRODUCT = product ? { ...product } : undefined
 
     useEffect(() => {
         if (router.isReady) {
@@ -50,11 +50,11 @@ export default withRouter(props => {
     }, [router])
 
     useEffect(() => {
-        if (INICIAL_PRODUCT) {
-            setArtColorChained(INICIAL_PRODUCT?.variants.every(vari => vari.art.color_id === INICIAL_PRODUCT.variants[0].art.color_id))
-            setArtIdChained(INICIAL_PRODUCT?.variants.every(vari => vari.art.id === INICIAL_PRODUCT.variants[0].art.id))
+        if (inicialProduct) {
+            setArtColorChained(inicialProduct?.variants.every(vari => vari.art.color_id === inicialProduct.variants[0].art.color_id))
+            setArtIdChained(inicialProduct?.variants.every(vari => vari.art.id === inicialProduct.variants[0].art.id))
         }
-    }, [INICIAL_PRODUCT])
+    }, [inicialProduct])
 
     async function getProductById(id) {
         const options = {
@@ -256,6 +256,7 @@ export default withRouter(props => {
     }
 
     function updateProductField(fieldName, newValue) {
+        setFieldChanged(prev => ({ ...prev, [fieldName]: true }))
         setProduct(prev => ({ ...prev, [fieldName]: newValue }))
     }
 
@@ -264,13 +265,13 @@ export default withRouter(props => {
 
         const newProduct = {
             ...product,
-            variants: product.variants.map(vari => ({ ...vari, sales: 0 })),
             min_price: product.variants.reduce((acc, vari) => acc < vari.price ? acc : vari.price, product.variants[0].price),
-            images: product.colors.reduce((acc, color) => acc.concat(images[color.id].map(img => ({ src: img.src, color_id: img.color_id, variants_id: img.variants_id }))), []),
+            images: product.colors_ids.reduce((acc, color_id) => acc.concat(images[color_id].map(img => ({ src: img.src, color_id: img.color_id }))), []),
         }
 
         const diff = getObjectsDiff(newProduct, inicialProduct)
         const diffKeys = Object.keys(diff)
+        console.log(newProduct, diff)
 
         if (diffKeys.length === 0) {
             showToast({ msg: 'No changes made.' })
@@ -471,17 +472,17 @@ export default withRouter(props => {
                                 <section className={styles.section}>
                                     <div className={styles.sectionLeft}>
                                         <TextInput
-                                            colorText='var(--color-success)'
                                             label='Title'
                                             value={product.title}
                                             onChange={event => updateProductField('title', event.target.value)}
+                                            colorText={fieldChanged['title'] ? 'var(--color-success)' : 'var(--text-color)'}
                                             supportsHoverAndPointer={supportsHoverAndPointer}
                                         />
                                         <TextInput
-                                            colorText='var(--color-success)'
                                             label='Description'
                                             value={product.description}
                                             onChange={event => updateProductField('description', event.target.value)}
+                                            colorText={fieldChanged['description'] ? 'var(--color-success)' : 'var(--text-color)'}
                                             supportsHoverAndPointer={supportsHoverAndPointer}
                                         />
                                         <Selector
@@ -492,6 +493,7 @@ export default withRouter(props => {
                                                 height: 56,
                                             }}
                                             onChange={event => updateProductField('collection', COLLECTIONS.find(coll => coll.id === event.target.value))}
+                                            colorText={fieldChanged['collection'] ? 'var(--color-success)' : 'var(--text-color)'}
                                             supportsHoverAndPointer={supportsHoverAndPointer}
                                         />
                                         <TagsSelector
@@ -508,7 +510,6 @@ export default withRouter(props => {
                                     <div className={styles.sectionRight}>
                                         {TYPE.providers.map(prov_id => PROVIDERS_POOL.find(prov => prov.id === prov_id)).map((provider, i) =>
                                             <TextInput
-                                                colorText='var(--color-success)'
                                                 supportsHoverAndPointer={supportsHoverAndPointer}
                                                 key={i}
                                                 label={`${provider.title} Printify ID`}
@@ -613,7 +614,6 @@ export default withRouter(props => {
                                                                 {sizesChained[product.colors_ids[colorIndex]].includes(size.id) ? <Chain /> : <BrokeChain />}
                                                             </Button>
                                                             <TextInput
-                                                                colorText='var(--color-success)'
                                                                 supportsHoverAndPointer={supportsHoverAndPointer}
                                                                 label={`${size.title}`}
                                                                 onChange={event => handleChangePrice(isNaN(Number(event.target.value)) ? 0 : Math.abs(Number(event.target.value.slice(0, Math.min(event.target.value.length, 7)))), size.id)}
@@ -655,7 +655,6 @@ export default withRouter(props => {
                                                                 key={i}
                                                             >
                                                                 <TextInput
-                                                                    colorText='var(--color-success)'
                                                                     supportsHoverAndPointer={supportsHoverAndPointer}
                                                                     label={`Image ${i + 1}`}
                                                                     onChange={event => updateImageField('src', event.target.value, i)}
@@ -742,7 +741,6 @@ export default withRouter(props => {
                                             </Button>
                                             <TextInput
                                                 disabled={artIdChained}
-                                                colorText='var(--color-success)'
                                                 supportsHoverAndPointer={supportsHoverAndPointer}
                                                 label='Art ID'
                                                 value={product.variants.find(vari => vari.color_id === product.colors_ids[colorIndex]).art.id || ''}
