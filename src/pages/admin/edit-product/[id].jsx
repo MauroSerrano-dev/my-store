@@ -701,14 +701,6 @@ export default withRouter(props => {
                                         }
                                     </div>
                                     <div className={styles.sectionRight}>
-                                        {images?.[product?.colors?.[colorIndex]?.id] &&
-                                            <ImagesSlider
-                                                images={Object.keys(images).reduce((acc, key) => acc.concat(images[key]), [])}
-                                                currentColor={COLORS_POOL[product.colors_ids[colorIndex]]}
-                                                colors={COLORS}
-                                                supportsHoverAndPointer={supportsHoverAndPointer}
-                                            />
-                                        }
                                         <div className='flex row center' style={{ gap: '1rem' }}>
                                             <Button
                                                 variant={artColorChained ? 'contained' : 'outlined'}
@@ -760,6 +752,14 @@ export default withRouter(props => {
                                                 }}
                                             />
                                         </div>
+                                        {images?.[product?.colors_ids?.[colorIndex]] &&
+                                            <ImagesSlider
+                                                images={Object.keys(images).reduce((acc, key) => acc.concat(images[key]), [])}
+                                                currentColor={COLORS_POOL[product.colors_ids[colorIndex]]}
+                                                colors={COLORS}
+                                                supportsHoverAndPointer={supportsHoverAndPointer}
+                                            />
+                                        }
                                     </div>
                                 </section>
                                 <Button
