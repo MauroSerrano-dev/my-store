@@ -81,7 +81,7 @@ export default function App(props) {
 
         <meta property="og:image" itemProp="image" content='https://mrfstyles.com/logos/circle-black.jpg' key='og:image' />
 
-        <link rel="icon" href="/logo.ico" key='icon' />
+        <link rel="icon" href="/logo.ico" key='icon' type="image/x-icon" />
 
         <Script src="https://js.stripe.com/v3/" async></Script>
         {process.env.NODE_ENV === 'production' &&
