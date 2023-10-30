@@ -5,7 +5,7 @@ import Cookies from 'js-cookie';
 import { getAuth, onAuthStateChanged, signOut, signInWithEmailAndPassword } from "firebase/auth";
 import { initializeApp } from 'firebase/app';
 import { firebaseConfig } from '../../firebase.config';
-import { CART_COOKIE } from '../../consts';
+import { CART_COOKIE, DEFAULT_PRODUCTS_TAGS } from '../../consts';
 import SearchBar from './SearchBar';
 import Menu from './Menu';
 import { motion } from 'framer-motion';
@@ -169,6 +169,11 @@ export default function DataHandler(props) {
     }
 
     function handleLogin(authUser) {
+        const fullName = authUser.displayName.split(' ')
+
+        const firstName = fullName.length <= 1 ? null : fullName.slice(0, fullName.length - 1).join(' ')
+        const lastName = fullName.length <= 1 ? authUser.displayName : fullName[fullName.length - 1]
+
         const options = {
             method: 'POST',
             headers: {
@@ -179,10 +184,12 @@ export default function DataHandler(props) {
                 uid: authUser.uid,
                 new_user: {
                     email: authUser.email,
-                    name: authUser.displayName,
+                    first_name: firstName,
+                    last_name: lastName,
                     providers: authUser.providerData.map(provider => provider.providerId),
                     email_verified: authUser.emailVerified,
                     introduction_complete: false,
+                    home_page_tags: DEFAULT_PRODUCTS_TAGS,
                 },
                 cart_cookie_id: Cookies.get(CART_COOKIE),
                 providers: authUser.providerData.map(provider => provider.providerId)

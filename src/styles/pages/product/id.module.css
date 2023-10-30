@@ -60,6 +60,7 @@
 
 .sectionBody {
     width: calc(100% - 280px);
+    padding-top: 0.5rem;
 }
 
 .left {

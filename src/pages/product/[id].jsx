@@ -199,7 +199,9 @@ export default withRouter(props => {
                                 </p>
                             </div>
                             <div>
-                                <p style={{ textAlign: 'start', fontWeight: '700' }}>{product.colors_ids.length === 1 ? 'Color' : 'Pick a color'}</p>
+                                <p style={{ textAlign: 'start', fontWeight: '700' }}>
+                                    {product.colors_ids.length === 1 ? 'Color' : 'Pick a color'}
+                                </p>
                                 <ColorSelector
                                     options={product.colors_ids.map(color_id => COLORS_POOL[color_id])}
                                     value={[currentColor]}
@@ -212,7 +214,9 @@ export default withRouter(props => {
                                 />
                             </div>
                             <div>
-                                <p style={{ textAlign: 'start', fontWeight: '700' }}>{product.sizes_ids.length === 1 ? 'Size' : 'Pick a size'}</p>
+                                <p style={{ textAlign: 'start', fontWeight: '700' }}>
+                                    {product.sizes_ids.length === 1 ? 'Size' : 'Pick a size'}
+                                </p>
                                 <SizesSelector
                                     value={[currentSize]}
                                     options={product.sizes_ids.map(size_id => SIZES_POOL.find(sz => sz.id === size_id))}
@@ -245,21 +249,30 @@ export default withRouter(props => {
                     </section>
                     <section className={`${styles.section} ${styles.two}`}>
                         <div className={styles.sectionTitle}>
-                            <h1 style={{ textAlign: 'start' }}>Description</h1>
+                            <h1 style={{ textAlign: 'start' }}>
+                                Description
+                            </h1>
                         </div>
                         <div className={styles.sectionBody}>
+                            <p style={{ textAlign: 'start' }}>
+                                {product.description}
+                            </p>
                         </div>
                     </section>
                     <section className={`${styles.section} ${styles.three}`}>
                         <div className={styles.sectionTitle}>
-                            <h1 style={{ textAlign: 'start' }}>Key features</h1>
+                            <h1 style={{ textAlign: 'start' }}>
+                                Key features
+                            </h1>
                         </div>
                         <div className={styles.sectionBody}>
                         </div>
                     </section>
                     <section className={`${styles.section} ${styles.four}`}>
                         <div className={styles.sectionTitle}>
-                            <h1 style={{ textAlign: 'start' }}>Care instructions</h1>
+                            <h1 style={{ textAlign: 'start' }}>
+                                Care instructions
+                            </h1>
                         </div>
                         <div className={styles.sectionBody}>
                             <CareInstructionsIcons
@@ -271,7 +284,9 @@ export default withRouter(props => {
                     </section>
                     <section className={`${styles.section} ${styles.five}`}>
                         <div className={styles.sectionTitle}>
-                            <h1 style={{ textAlign: 'start' }}>Size guide</h1>
+                            <h1 style={{ textAlign: 'start' }}>
+                                Size guide
+                            </h1>
                         </div>
                         <div className={styles.sectionBody}>
                         </div>
@@ -282,9 +297,9 @@ export default withRouter(props => {
     )
 })
 
-export const config = {
+/* export const config = {
     runtime: 'experimental-edge'
-}
+} */
 
 export async function getServerSideProps(context) {
 

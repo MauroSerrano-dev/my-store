@@ -15,6 +15,7 @@ import { getAuth, createUserWithEmailAndPassword, sendEmailVerification } from "
 import { firebaseConfig } from "../firebase.config"
 import { createCart } from "./cart"
 import { getCartSessionById, deleteCartSession } from "./cart-session"
+import { DEFAULT_PRODUCTS_TAGS } from "../consts"
 
 initializeApp(firebaseConfig)
 
@@ -86,6 +87,7 @@ async function createNewUserWithCredentials(user) {
                 providers: ['password'],
                 email_verified: false,
                 introduction_complete: false,
+                home_page_tags: DEFAULT_PRODUCTS_TAGS,
                 create_at: Timestamp.now(),
             }
 

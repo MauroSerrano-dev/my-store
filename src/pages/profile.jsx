@@ -22,9 +22,10 @@ export default function Profile(props) {
     const starterUser = session ? { ...session } : undefined
 
     const [user, setUser] = useState()
-    const [saving, setSaving] = useState(false)
+    const [disableSaveButton, setDisableSaveButton] = useState(true)
 
     function handleChanges(fieldName, value) {
+        setDisableSaveButton(false)
         setUser(prev => ({ ...prev, [fieldName]: value }))
     }
 
@@ -39,7 +40,7 @@ export default function Profile(props) {
             showToast({ msg: 'No changes made.' })
         }
         else {
-            setSaving(true)
+            setDisableSaveButton(true)
             const options = {
                 method: 'PATCH',
                 headers: {
@@ -61,11 +62,11 @@ export default function Profile(props) {
                     else {
                         showToast({ type: 'error', msg: response.message })
                     }
-                    setSaving(false)
+                    setDisableSaveButton(false)
                 })
                 .catch(err => {
                     console.error(err)
-                    setSaving(false)
+                    setDisableSaveButton(false)
                 })
         }
     }
@@ -85,18 +86,27 @@ export default function Profile(props) {
                     </Head>
                     <main className={styles.userContainer}>
                         <div className={styles.fieldsHead}>
-                            <p style={{ fontSize: 23, textAlign: 'start' }}>Welcome <b style={{ color: 'var(--primary)' }}>{session.name}!</b></p>
+                            <p style={{ fontSize: 23, textAlign: 'start' }}>Welcome <b style={{ color: 'var(--primary)' }}>{session.first_name ? session.first_name + ' ' + session.last_name : session.last_name}!</b></p>
                         </div>
                         <div className={styles.fieldsBody}>
                             <div className={styles.left}>
                                 <TextInput
-                                    label='Name'
-                                    defaultValue={user.name}
+                                    label='First Name'
+                                    defaultValue={user.first_name || ''}
                                     style={{
                                         width: '100%'
                                     }}
                                     supportsHoverAndPointer={supportsHoverAndPointer}
-                                    onChange={event => handleChanges('name', event.target.value)}
+                                    onChange={event => handleChanges('first_name', event.target.value)}
+                                />
+                                <TextInput
+                                    label='Last Name'
+                                    defaultValue={user.last_name}
+                                    style={{
+                                        width: '100%'
+                                    }}
+                                    supportsHoverAndPointer={supportsHoverAndPointer}
+                                    onChange={event => handleChanges('last_name', event.target.value)}
                                 />
                                 <TextInput
                                     label='E-mail'
@@ -136,8 +146,8 @@ export default function Profile(props) {
                         <Button
                             variant='contained'
                             color='success'
-                            disabled={saving}
-                            className={`${styles.saveButton} ${saving ? styles.saveDisabled : ''}`}
+                            disabled={disableSaveButton}
+                            className={`${styles.saveButton} ${disableSaveButton ? styles.saveDisabled : ''}`}
                             onClick={handleUpdateUser}
                         >
                             Save

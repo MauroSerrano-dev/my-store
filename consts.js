@@ -1,5 +1,12 @@
 export const CART_COOKIE = 'CART'
 
+export const DEFAULT_PRODUCTS_TAGS = [
+    'music',
+    'raglan-tee',
+    't-shirt',
+    'hoodie',
+]
+
 export const SEARCH_FILTERS = {
     categories: {
         id: 'categories',

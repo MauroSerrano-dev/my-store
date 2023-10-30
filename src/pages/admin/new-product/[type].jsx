@@ -515,7 +515,7 @@ export default withRouter(props => {
                                         />
                                         <TagsSelector
                                             supportsHoverAndPointer={supportsHoverAndPointer}
-                                            options={THEMES_POOL}
+                                            options={THEMES_POOL.map(theme => theme.id)}
                                             label='Themes'
                                             value={product.themes}
                                             onChange={(event, value) => updateProductField('themes', value)}
@@ -786,20 +786,18 @@ export default withRouter(props => {
                                         </div>
                                     </section>
                                 }
-                                <section className={styles.section}>
-                                    <Button
-                                        variant='contained'
-                                        onClick={createProduct}
-                                        disabled={disableCreateButton}
-                                        size='large'
-                                        sx={{
-                                            width: '100%',
-                                            color: '#ffffff',
-                                        }}
-                                    >
-                                        Create Product
-                                    </Button>
-                                </section>
+                                <Button
+                                    variant='contained'
+                                    onClick={createProduct}
+                                    disabled={disableCreateButton}
+                                    size='large'
+                                    sx={{
+                                        width: '100%',
+                                        color: '#ffffff',
+                                    }}
+                                >
+                                    Create Product
+                                </Button>
                             </div>
                         }
                     </main>
