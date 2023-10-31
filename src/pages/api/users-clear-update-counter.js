@@ -1,15 +1,17 @@
-import { NextResponse } from 'next/server';
+import { isTokenValid } from "../../../auth"
+import { clearUpdateCounter } from "../../../backend/user"
 
-export default function handler(request) {
-    const authHeader = request.headers.authorization;
-    if (authHeader !== `Bearer ${process.env.CRON_SECRET}`) {
-        return NextResponse.json(
-            { success: false },
-            {
-                status: 401,
-            },
-        );
+export default async function handler(req, res) {
+    const { authorization } = req.headers.authorization
+
+    if (!authorization) {
+        console.error("Authentication token not provided.")
+        return res.status(401).json({ error: "Authentication token not provided." })
     }
 
-    return NextResponse.json({ success: true });
+    if (!isTokenValid(authorization, process.env.CRON_SECRET))
+        return res.status(401).json({ error: "Invalid authentication token." })
+
+    const response = await clearUpdateCounter()
+    res.status(response.status).json(response)
 }
