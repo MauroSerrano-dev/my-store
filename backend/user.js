@@ -260,11 +260,11 @@ async function updateUser(userId, changes) {
 
 async function clearUpdateCounter() {
     try {
-        const usersCollection = collection(db, process.env.COLL_USERS);
-        const usersQuery = query(usersCollection);
-        const userDocs = await getDocs(usersQuery);
+        const usersCollection = collection(db, process.env.COLL_USERS)
+        const usersQuery = query(usersCollection)
+        const userDocs = await getDocs(usersQuery)
 
-        const updatePromises = [];
+        const updatePromises = []
 
         userDocs.forEach((userDoc) => {
             const userData = userDoc.data()

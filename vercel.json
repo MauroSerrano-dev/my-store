@@ -2,7 +2,7 @@
     "crons": [
         {
             "path": "/api/users-clear-update-counter",
-            "schedule": "1 * * * *"
+            "schedule": "* * * * *"
         }
     ]
 }
