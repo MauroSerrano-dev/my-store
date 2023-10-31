@@ -34,14 +34,14 @@ export default function Maintenance() {
             >
             </div>
             <div style={{ zIndex: 1 }}>
-                <p style={{ fontWeight: '700', fontSize: '28px' }}>
+                <p className={styles.title}>
                     {process.env.NEXT_PUBLIC_STORE_NAME} is under maintenance.
                 </p>
-                <p style={{ fontSize: '18px' }}>
+                <p className={styles.subTitle}>
                     Please come back later.
                 </p>
             </div>
-            <p style={{ position: 'fixed', bottom: 30 }}>
+            <p className={styles.bottomMessage}>
                 If you need support, contact us in <Link href={`mailto:${process.env.NEXT_PUBLIC_SUPPORT_EMAIL}`} className={styles.link}>{process.env.NEXT_PUBLIC_SUPPORT_EMAIL}</Link>
             </p>
         </div>

@@ -1,5 +1,6 @@
 .animationContainer {
-    width: 900px;
+    position: relative;
+    height: 510px;
     margin-left: -250px;
 }
 
@@ -9,10 +10,60 @@
     transition: all ease-in-out 150ms;
 }
 
+.bottomMessage {
+    position: fixed;
+    bottom: 30px;
+}
+
+.title {
+    font-weight: 700;
+    font-size: 28px;
+}
+
+.subTitle {
+    font-size: 18px;
+}
+
 /* Enable hover only on non-touch devices */
 @media (hover: hover) and (pointer: fine) {
     .link:hover {
         color: #999999;
         text-decoration: underline #999999;
+    }
+}
+
+/* Big Mobile */
+@media (max-width: 800px) {
+    .animationContainer {
+        height: 450px;
+        left: 35px;
+    }
+}
+
+/* Mobile */
+@media (max-width: 630px) {
+    .animationContainer {
+        height: 300px;
+        left: 55px;
+    }
+
+    .bottomMessage {
+        font-size: 15px;
+    }
+
+    .title {
+        font-size: 20px;
+    }
+
+    .subTitle {
+        font-size: 15px;
+    }
+}
+
+/* Small Mobile */
+@media (max-width: 400px) {
+    .animationContainer {
+        height: 250px;
+        left: 75px;
     }
 }
