@@ -1,4 +1,4 @@
-import { clearUpdateCounter } from "../../../backend/user"
+import { clearUpdateCounter } from "../../../../backend/user"
 
 export default async function handler(req, res) {
     const { authorization } = req.headers

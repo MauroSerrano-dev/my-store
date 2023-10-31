@@ -1,7 +1,7 @@
 {
     "crons": [
         {
-            "path": "/api/users-clear-update-counter",
+            "path": "/api/crons/daily",
             "schedule": "31 19 * * *"
         }
     ]
