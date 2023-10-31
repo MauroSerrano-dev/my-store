@@ -1,3 +1,4 @@
+import { isTokenValid } from "../../../auth"
 import { clearUpdateCounter } from "../../../backend/user"
 
 export default async function handler(req, res) {
@@ -6,7 +7,7 @@ export default async function handler(req, res) {
     if (!authorization)
         return res.status(401).json({ error: "Authentication token not provided." })
 
-    if (authorization != process.env.CRON_SECRET)
+    if (!isTokenValid(authorization, process.env.CRON_SECRET))
         return res.status(401).json({ error: "Invalid authentication token." })
 
     const response = await clearUpdateCounter()
