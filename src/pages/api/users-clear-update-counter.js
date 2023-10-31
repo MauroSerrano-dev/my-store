@@ -1,4 +1,3 @@
-import { isTokenValid } from "../../../auth"
 import { clearUpdateCounter } from "../../../backend/user"
 
 export default async function handler(req, res) {
