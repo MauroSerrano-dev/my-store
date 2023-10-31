@@ -2,7 +2,6 @@ import { useState } from 'react'
 import MenuItem from '@mui/material/MenuItem'
 import ListItemIcon from '@mui/material/ListItemIcon'
 import Divider from '@mui/material/Divider'
-import Settings from '@mui/icons-material/Settings'
 import Logout from '@mui/icons-material/Logout'
 import SupportAgentIcon from '@mui/icons-material/SupportAgent'
 import AccountCircleRoundedIcon from '@mui/icons-material/AccountCircleRounded';
@@ -95,18 +94,6 @@ export default function AvatarMenu(props) {
                     <ReceiptLongRoundedIcon fontSize="medium" />
                   </ListItemIcon>
                   My Orders
-                </MenuItem>
-              </Link>
-              <Link
-                href={'/settings'}
-                className='noUnderline'
-                onClick={() => setOpen(false)}
-              >
-                <MenuItem>
-                  <ListItemIcon>
-                    <Settings fontSize="medium" />
-                  </ListItemIcon>
-                  Settings
                 </MenuItem>
               </Link>
               <Link

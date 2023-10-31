@@ -258,6 +258,41 @@ async function updateUser(userId, changes) {
     }
 }
 
+async function clearUpdateCounter() {
+    try {
+        const usersCollection = collection(db, process.env.COLL_USERS);
+        const usersQuery = query(usersCollection);
+        const userDocs = await getDocs(usersQuery);
+
+        const updatePromises = [];
+
+        userDocs.forEach((userDoc) => {
+            const userData = userDoc.data()
+            userData.update_counter = 0
+
+            const userRef = doc(db, process.env.COLL_USERS, userDoc.id)
+
+            updatePromises.push(setDoc(userRef, userData))
+        })
+
+        await Promise.all(updatePromises)
+
+        console.log("The 'update_counter' field for all users has been set to zero successfully.")
+
+        return {
+            status: 200,
+            message: "The 'update_counter' field for all users has been set to zero successfully.",
+        }
+    } catch (error) {
+        console.error("Error clearing the 'update_counter' field for all users:", error)
+        return {
+            status: 500,
+            message: "Error clearing the 'update_counter' field for all users.",
+            error: error,
+        }
+    }
+}
+
 export {
     createNewUserWithCredentials,
     createNewUserWithGoogle,
@@ -266,4 +301,5 @@ export {
     getUserById,
     updateField,
     updateUser,
+    clearUpdateCounter,
 }
