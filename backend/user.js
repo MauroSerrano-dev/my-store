@@ -268,7 +268,7 @@ async function clearUpdateCounter() {
 
         userDocs.forEach((userDoc) => {
             const userData = userDoc.data()
-            userData.update_counter = 0
+            userData.update_counter = Timestamp.now()
 
             const userRef = doc(db, process.env.COLL_USERS, userDoc.id)
 
