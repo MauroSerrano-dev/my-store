@@ -10,8 +10,6 @@ export default async function handler(req, res) {
     if (!isTokenValid(authorization, process.env.APP_SECRET_KEY))
         return res.status(401).json({ error: "Invalid authentication token." })
 
-    if (req.method === "POST") {
-        const response = await clearUpdateCounter()
-        res.status(response.status).json(response)
-    }
+    const response = await clearUpdateCounter()
+    res.status(response.status).json(response)
 }
