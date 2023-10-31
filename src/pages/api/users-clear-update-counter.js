@@ -12,6 +12,7 @@ export default async function handler(req, res) {
     if (!isTokenValid(authorization, process.env.CRON_SECRET))
         return res.status(401).json({ error: "Invalid authentication token." })
 
-    const response = await clearUpdateCounter() */
-    res.status(response.status).json(response)
+    const response = await clearUpdateCounter()
+    res.status(response.status).json(response) */
+    res.status(200).json({})
 }
