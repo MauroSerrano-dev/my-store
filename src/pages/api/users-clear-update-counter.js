@@ -1,8 +1,7 @@
-import { isTokenValid } from "../../../auth";
 import { clearUpdateCounter } from "../../../backend/user"
 
 export default async function handler(req, res) {
-    const { authorization } = req.headers.split('Bearer ').at(1)
+    const { authorization } = req.headers.authorization.split('Bearer ').at(1)
 
     if (!authorization)
         return res.status(401).json({ error: "Authentication token not provided." })
