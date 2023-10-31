@@ -9,7 +9,7 @@ export default async function handler(req, res) {
         return res.status(401).json({ error: "Authentication token not provided." })
     }
 
-    if (!isTokenValid(authorization, process.env.CRON_SECRET)) {
+    if (authorization !== `Bearer ${process.env.CRON_SECRET}`) {
         console.error("Invalid authentication token.")
         return res.status(401).json({ error: "Invalid authentication token." })
     }

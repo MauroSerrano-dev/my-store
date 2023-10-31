@@ -258,7 +258,7 @@ async function updateUser(userId, changes) {
     }
 }
 
-async function clearUpdateCounter(authorization) {
+async function clearUpdateCounter() {
     try {
         const usersCollection = collection(db, process.env.COLL_USERS)
         const usersQuery = query(usersCollection)
@@ -268,7 +268,7 @@ async function clearUpdateCounter(authorization) {
 
         userDocs.forEach((userDoc) => {
             const userData = userDoc.data()
-            userData.update_counter = authorization//Timestamp.now()
+            userData.update_counter = Timestamp.now()
 
             const userRef = doc(db, process.env.COLL_USERS, userDoc.id)
 

@@ -3,7 +3,7 @@ const jwt = require("jsonwebtoken")
 // Função para verificar e decodificar um token JWT
 export function isTokenValid(token, secretKey) {
     try {
-        const decoded = jwt.verify(token.slice(7, token.length), secretKey);
+        const decoded = jwt.verify(token.split('Bearer ')[1], secretKey);
 
         // Verifique a data de expiração se existir
         const now = Math.floor(Date.now() / 1000);
@@ -13,7 +13,7 @@ export function isTokenValid(token, secretKey) {
 
         return true
     } catch (error) {
-        console.error('Erro na verificação do token:', error);
+        console.error('Token verification error:', error);
         return false
     }
 }
