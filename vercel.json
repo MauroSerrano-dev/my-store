@@ -2,10 +2,6 @@
     "crons": [
         {
             "path": "/api/users-clear-update-counter",
-            "headers": {
-                "tu": "ta"
-            },
-            "tu": "ta",
             "schedule": "31 19 * * *"
         }
     ]
