@@ -5,6 +5,9 @@ import {
     updateDoc,
     getFirestore,
     Timestamp,
+    query,
+    where,
+    getDocs,
 } from "firebase/firestore"
 import { initializeApp } from 'firebase/app'
 import { firebaseConfig } from "../firebase.config"
@@ -25,13 +28,13 @@ async function createOrder(order) {
         const orderId = newOrderRef.id;
 
         return {
-            success: true,
+            status: 200,
             message: `Order created with ID: ${orderId}`,
             orderId: orderId,
         }
     } catch (error) {
         return {
-            success: false,
+            status: 500,
             message: 'Error creating order',
             error: error,
         }
@@ -47,19 +50,59 @@ async function insertNewFieldToOrder(order_id, field_name, value) {
         })
 
         return {
-            success: true,
+            status: 200,
             message: `${field_name} added to order with ID: ${order_id}`,
         }
     } catch (error) {
         return {
-            success: false,
+            status: 500,
             message: `Error inserting ${field_name}`,
             error: error,
         }
     }
 }
 
+async function getOrdersByUserId(userId, startDate, endDate) {
+    try {
+        const ordersCollection = collection(db, process.env.COLL_ORDERS);
+        let q = query(
+            ordersCollection,
+            where("user_id", "==", userId)
+        );
+
+        if (startDate) {
+            q = query(q, where("create_at", ">=", startDate));
+        }
+
+        if (endDate) {
+            q = query(q, where("create_at", "<=", endDate));
+        }
+
+        const querySnapshot = await getDocs(q);
+
+        const orders = [];
+
+        querySnapshot.forEach((doc) => {
+            const orderData = doc.data();
+            orders.push(orderData);
+        });
+
+        return {
+            status: 200,
+            message: "Orders retrieved successfully",
+            orders: orders,
+        };
+    } catch (error) {
+        return {
+            status: 500,
+            message: "Error retrieving orders",
+            error: error,
+        };
+    }
+}
+
 export {
     createOrder,
     insertNewFieldToOrder,
+    getOrdersByUserId,
 }

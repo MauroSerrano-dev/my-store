@@ -400,6 +400,7 @@ export default function DataHandler(props) {
     return (
         <motion.div
             className={styles.container}
+            onClick={() => console.log(session)}
             style={{
                 opacity: websiteVisible ? 1 : 0,
             }}
