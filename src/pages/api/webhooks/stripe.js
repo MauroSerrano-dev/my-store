@@ -6,7 +6,7 @@ const { v4: uuidv4 } = require('uuid')
 const stripe = require('stripe')(process.env.STRIPE_PUBLIC_KEY)
 
 export default async function handler(req, res) {
-    const sig = request.headers['stripe-signature']
+    const sig = req.headers['stripe-signature']
 
     let event
 
