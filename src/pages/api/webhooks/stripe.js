@@ -80,6 +80,7 @@ export default async function handler(req, res) {
                     id: orderId,
                     user_id: user_id,
                     printify_id: printifyRes.data.id,
+                    status: 'sending-to-production',
                     customer: {
                         email: data.customer_details.email,
                         name: data.customer_details.name,
