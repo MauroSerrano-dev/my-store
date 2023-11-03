@@ -12,7 +12,7 @@ export default async function handler(req, res) {
     const sig = req.headers['stripe-signature']
 
     try {
-        stripe.webhooks.constructEvent(req.rawBody, sig, process.env.STRIPE_WEBHOOK_SECRET)
+        stripe.webhooks.constructEvent(JSON.stringify(req.body), sig, process.env.STRIPE_WEBHOOK_SECRET)
     }
     catch (error) {
         return res.status(401).json({ error: `Invalid authentication. ${error}` })
