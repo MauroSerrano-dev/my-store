@@ -11,9 +11,10 @@ const stripe = Stripe(process.env.STRIPE_SECRET_KEY);
 
 export default async function handler(req, res) {
     const sig = req.headers['stripe-signature']
-    const rawBody = await getRawBody(req)
 
     try {
+        const body = req.body
+        const rawBody = body.toString()
         stripe.webhooks.constructEvent(rawBody, sig, process.env.STRIPE_WEBHOOK_SECRET)
     }
     catch (error) {
@@ -22,8 +23,8 @@ export default async function handler(req, res) {
 
     try {
         if (req.method === "POST") {
-            const type = rawBody.type
-            const data = rawBody.data.object
+            const type = req.body.type
+            const data = req.body.data.object
 
             if (type === 'checkout.session.completed') {
                 const base_url = `https://api.printify.com/v1/shops/${process.env.PRINTIFY_SHOP_ID}/orders.json`
@@ -117,8 +118,8 @@ export default async function handler(req, res) {
     }
 }
 
-export const config = {
+/* export const config = {
     api: {
         bodyParser: false,
     },
-}
+} */
