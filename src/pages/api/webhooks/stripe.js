@@ -80,7 +80,8 @@ export default async function handler(req, res) {
                     amount_total: data.amount_total,
                     amount_subtotal: data.amount_subtotal,
                     sig: sig,
-                    authorization: authorization
+                    authorization: authorization,
+                    headers: req.headers
                 }
             )
 
