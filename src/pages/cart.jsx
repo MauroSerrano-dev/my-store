@@ -44,7 +44,7 @@ export default function Cart(props) {
                     }
                 )),
                 cancel_url: window.location.href,
-                success_url: window.location.href,
+                success_url: session ? `${process.env.NEXT_PUBLIC_URL}/orders` : process.env.NEXT_PUBLIC_URL,
                 customer: session,
                 shippingValue: convertDolarToCurrency(shippingValue, userCurrency.code),
                 shippingCountry: shippingCountry,

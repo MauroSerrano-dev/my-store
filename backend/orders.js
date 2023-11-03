@@ -19,21 +19,22 @@ const db = getFirestore()
 
 async function createOrder(order) {
     try {
-        const ordersCollection = collection(db, process.env.COLL_ORDERS, order.id)
+        const orderRef = doc(db, process.env.COLL_ORDERS, order.id)
+
+        await setDoc(
+            orderRef,
+            {
+                ...order,
+                create_at: Timestamp.now(),
+            }
+        )
 
         await handleProductsPurchased(order.products)
 
-        const newOrderRef = await addDoc(ordersCollection, {
-            ...order,
-            create_at: Timestamp.now(),
-        })
-
-        const orderId = newOrderRef.id;
-
         return {
             status: 200,
-            message: `Order created with ID: ${orderId}`,
-            orderId: orderId,
+            message: `Order created with ID: ${order.id}`,
+            orderId: order.id,
         }
     } catch (error) {
         return {
