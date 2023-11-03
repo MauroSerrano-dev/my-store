@@ -2,7 +2,7 @@ import axios from 'axios';
 import { updateCart } from '../../../../backend/cart';
 import { updateCartSessionProducts } from '../../../../backend/cart-session';
 import { createOrder, insertNewFieldToOrder } from '../../../../backend/orders';
-import { handleProductsPurchased } from '../../../../backend/product';
+const { v4: uuidv4 } = require('uuid');
 
 export default async function handler(req, res) {
     if (req.method === "POST") {
@@ -23,24 +23,7 @@ export default async function handler(req, res) {
 
             const line_items = Object.keys(items).map(key => JSON.parse(items[key]))
 
-            const orderResponse = await createOrder(
-                {
-                    customer: {
-                        ...data.customer_details,
-                    },
-                    shipping_details: {
-                        ...data.shipping_details
-                    },
-                    products: line_items,
-                    stripe_id: data.id,
-                    currency: data.currency,
-                    amount_total: data.amount_total,
-                    amount_subtotal: data.amount_subtotal,
-                    shipping_cost: data.shipping_cost,
-                }
-            )
-
-            const orderId = orderResponse.orderId
+            const orderId = uuidv4()
 
             const options = {
                 headers: {
@@ -77,9 +60,24 @@ export default async function handler(req, res) {
 
             const printifyRes = await axios.post(base_url, body_data, options)
 
-            await insertNewFieldToOrder(orderId, 'printify_id', printifyRes.data.id)
-
-            await handleProductsPurchased(line_items)
+            await createOrder(
+                {
+                    id: orderId,
+                    printify_id: printifyRes.data.id,
+                    customer: {
+                        ...data.customer_details,
+                    },
+                    shipping_details: {
+                        ...data.shipping_details
+                    },
+                    products: line_items,
+                    stripe_id: data.id,
+                    currency: data.currency,
+                    amount_total: data.amount_total,
+                    amount_subtotal: data.amount_subtotal,
+                    shipping_cost: data.shipping_cost,
+                }
+            )
 
             if (is_loggin)
                 await updateCart(cart_id, [])

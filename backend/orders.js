@@ -11,6 +11,7 @@ import {
 } from "firebase/firestore"
 import { initializeApp } from 'firebase/app'
 import { firebaseConfig } from "../firebase.config"
+import { handleProductsPurchased } from "./product"
 
 initializeApp(firebaseConfig)
 
@@ -18,7 +19,9 @@ const db = getFirestore()
 
 async function createOrder(order) {
     try {
-        const ordersCollection = collection(db, process.env.COLL_ORDERS)
+        const ordersCollection = collection(db, process.env.COLL_ORDERS, order.id)
+
+        await handleProductsPurchased(order.products)
 
         const newOrderRef = await addDoc(ordersCollection, {
             ...order,
