@@ -75,8 +75,6 @@ export default async function handler(req, res) {
       })
     })
 
-    console.log('cuuuuuuuu', customer?.id || null)
-
     const session = await stripe.checkout.sessions.create({
       /* discounts: [
         { coupon: '7Taroh9C' }
@@ -120,7 +118,7 @@ export default async function handler(req, res) {
       /* customer: customer.id, */
       success_url: success_url,
       cancel_url: cancel_url,
-      customer_email: customer ? customer.email : undefined
+      customer_email: customer?.email
     })
 
     // res.redirect(303, session.url)

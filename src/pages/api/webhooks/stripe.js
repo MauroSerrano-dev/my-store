@@ -80,7 +80,13 @@ export default async function handler(req, res) {
                     id: orderId,
                     user_id: user_id,
                     printify_id: printifyRes.data.id,
-                    customer: data.customer_details,
+                    customer: {
+                        email: data.customer_details.email,
+                        name: data.customer_details.name,
+                        phone: data.customer_details.phone,
+                        tax_exempt: data.customer_details.tax_exempt,
+                        tax_ids: data.customer_details.tax_ids,
+                    },
                     shipping_details: {
                         shipping_cost: data.shipping_cost,
                         ...data.shipping_details,
