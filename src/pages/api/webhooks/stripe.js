@@ -30,8 +30,8 @@ export default async function handler(req, res) {
 
             const metadata = data.metadata
 
-            const cart_id = metadata.cart_id
-            const user_id = metadata.user_id
+            const cart_id = metadata.cart_id === '' ? null : metadata.cart_id
+            const user_id = metadata.user_id === '' ? null : metadata.user_id
 
             delete metadata.cart_id
             delete metadata.user_id

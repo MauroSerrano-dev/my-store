@@ -75,13 +75,15 @@ export default async function handler(req, res) {
       })
     })
 
+    console.log('cuuuuuuuu', customer?.id || null)
+
     const session = await stripe.checkout.sessions.create({
       /* discounts: [
         { coupon: '7Taroh9C' }
       ], */
       metadata: {
-        cart_id: cart_id || null,
-        user_id: customer?.id || null,
+        cart_id: cart_id || '',
+        user_id: customer?.id || '',
         ...cartMetadata
       },
       payment_method_types: ["card"],
