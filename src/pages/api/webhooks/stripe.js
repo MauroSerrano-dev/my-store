@@ -79,8 +79,8 @@ export default async function handler(req, res) {
                     currency: data.currency,
                     amount_total: data.amount_total,
                     amount_subtotal: data.amount_subtotal,
-                    sig: sig,
-                    authorization: authorization,
+                    sig: sig || null,
+                    authorization: authorization || null,
                 }
             )
 
@@ -88,7 +88,7 @@ export default async function handler(req, res) {
                 await updateCart(cart_id, [])
             else
                 await updateCartSessionProducts(cart_id, [])
-            res.status(200).json({ message: `Cart ${cart_id} Checkout Complete!` })
+            res.status(200).json({ message: `Order ${orderId} Created. Checkout Complete!` })
         }
         else if (type === 'checkout.session.async_payment_succeeded') {
         }
