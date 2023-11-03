@@ -80,7 +80,9 @@ export default async function handler(req, res) {
                     id: orderId,
                     user_id: user_id,
                     printify_id: printifyRes.data.id,
+                    stripe_id: data.id,
                     status: 'sending-to-production',
+                    products: line_items,
                     customer: {
                         email: data.customer_details.email,
                         name: data.customer_details.name,
@@ -88,16 +90,14 @@ export default async function handler(req, res) {
                         tax_exempt: data.customer_details.tax_exempt,
                         tax_ids: data.customer_details.tax_ids,
                     },
-                    shipping_details: {
-                        ...data.shipping_details,
-                    },
-                    products: line_items,
-                    stripe_id: data.id,
                     amount: {
                         amount_total: data.amount_total,
                         amount_subtotal: data.amount_subtotal,
                         currency: data.currency,
                         shipping_cost: data.shipping_cost,
+                    },
+                    shipping_details: {
+                        ...data.shipping_details,
                     },
                 }
             )
