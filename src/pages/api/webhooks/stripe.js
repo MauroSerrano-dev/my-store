@@ -3,6 +3,7 @@ import { updateCart } from '../../../../backend/cart'
 import { updateCartSessionProducts } from '../../../../backend/cart-session'
 import { createOrder } from '../../../../backend/orders'
 const { v4: uuidv4 } = require('uuid')
+import getRawBody from 'raw-body'
 
 const Stripe = require("stripe")
 
@@ -12,10 +13,10 @@ export default async function handler(req, res) {
     const sig = req.headers['stripe-signature']
 
     try {
-        stripe.webhooks.constructEvent(JSON.stringify(req.body), sig, process.env.STRIPE_WEBHOOK_SECRET)
+        stripe.webhooks.constructEvent(getRawBody(req.body), sig, process.env.STRIPE_WEBHOOK_SECRET)
     }
     catch (error) {
-        return res.status(401).json({ error: `Invalid authentication. ${sig} ${JSON.stringify(req.body)} ${error}` })
+        return res.status(401).json({ error: `Invalid authentication. ${error}` })
     }
 
     try {
