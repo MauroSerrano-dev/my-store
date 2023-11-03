@@ -80,7 +80,7 @@ export default async function handler(req, res) {
         { coupon: '7Taroh9C' }
       ], */
       metadata: {
-        cart_id: JSON.stringify(cart_id),
+        cart_id: cart_id || null,
         user_id: customer?.id || null,
         ...cartMetadata
       },

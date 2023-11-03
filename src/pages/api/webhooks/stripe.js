@@ -28,15 +28,15 @@ export default async function handler(req, res) {
         if (type === 'checkout.session.completed') {
             const base_url = `https://api.printify.com/v1/shops/${process.env.PRINTIFY_SHOP_ID}/orders.json`
 
-            const items = data.metadata
+            const metadata = data.metadata
 
-            const cart_id = JSON.parse(items.cart_id)
-            const user_id = JSON.parse(items.user_id)
+            const cart_id = metadata.cart_id
+            const user_id = metadata.user_id
 
-            delete items.cart_id
-            delete items.user_id
+            delete metadata.cart_id
+            delete metadata.user_id
 
-            const line_items = Object.keys(items).map(key => JSON.parse(items[key]))
+            const line_items = Object.keys(metadata).map(key => JSON.parse(metadata[key]))
 
             const orderId = uuidv4()
 
