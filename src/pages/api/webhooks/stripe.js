@@ -3,13 +3,16 @@ import { updateCart } from '../../../../backend/cart'
 import { updateCartSessionProducts } from '../../../../backend/cart-session'
 import { createOrder } from '../../../../backend/orders'
 const { v4: uuidv4 } = require('uuid')
-const stripe = require('stripe')(process.env.STRIPE_PUBLIC_KEY)
+
+const Stripe = require("stripe")
+
+const stripe = Stripe(process.env.STRIPE_SECRET_KEY);
 
 export default async function handler(req, res) {
     const sig = req.headers['stripe-signature']
 
     try {
-        stripe.webhooks.constructEvent(req.rawBody, sig, process.env.STRIPE_WEBHOOK_SECRET)
+        stripe.webhooks.constructEvent(req.body, sig, process.env.STRIPE_WEBHOOK_SECRET)
     }
     catch (error) {
         return res.status(401).json({ error: "Invalid authentication." })
