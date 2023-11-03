@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { updateCart } from '../../../../backend/cart';
 import { updateCartSessionProducts } from '../../../../backend/cart-session';
-import { createOrder, insertNewFieldToOrder } from '../../../../backend/orders';
+import { createOrder } from '../../../../backend/orders';
 const { v4: uuidv4 } = require('uuid');
 
 export default async function handler(req, res) {
