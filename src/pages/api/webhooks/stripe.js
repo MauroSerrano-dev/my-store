@@ -3,18 +3,17 @@ import { updateCart } from '../../../../backend/cart'
 import { updateCartSessionProducts } from '../../../../backend/cart-session'
 import { createOrder } from '../../../../backend/orders'
 const { v4: uuidv4 } = require('uuid')
+const stripe = require('stripe')(process.env.STRIPE_PUBLIC_KEY)
 
 export default async function handler(req, res) {
     const sig = req.headers['stripe-signature']
 
-    /* let event;
-
     try {
-        stripe.webhooks.constructEvent(request.body, sig, endpointSecret);
+        stripe.webhooks.constructEvent(req.body, sig, process.env.STRIPE_WEBHOOK_SECRET);
     }
-    catch (err) {
-        return res.status(401).send(`Webhook Error: ${err.message}`);
-    } */
+    catch (error) {
+        return res.status(401).send(`Stripe Webhook Error: ${error}`);
+    }
 
     if (req.method === "POST") {
         const body = req.body
@@ -87,8 +86,6 @@ export default async function handler(req, res) {
                     currency: data.currency,
                     amount_total: data.amount_total,
                     amount_subtotal: data.amount_subtotal,
-                    sig: sig || null,
-                    headers: req.headers || null,
                 }
             )
 
@@ -96,6 +93,7 @@ export default async function handler(req, res) {
                 await updateCart(cart_id, [])
             else
                 await updateCartSessionProducts(cart_id, [])
+
             res.status(200).json({ message: `Order ${orderId} Created. Checkout Complete!` })
         }
         else if (type === 'checkout.session.async_payment_succeeded') {
