@@ -6,7 +6,6 @@ const { v4: uuidv4 } = require('uuid')
 import getRawBody from 'raw-body'
 
 const Stripe = require("stripe")
-
 const stripe = Stripe(process.env.STRIPE_SECRET_KEY);
 
 export default async function handler(req, res) {
@@ -79,10 +78,9 @@ export default async function handler(req, res) {
             await createOrder(
                 {
                     id: orderId,
+                    user_id: user_id,
                     printify_id: printifyRes.data.id,
-                    customer: {
-                        ...data.customer_details,
-                    },
+                    customer: data.customer_details,
                     shipping_details: {
                         shipping_cost: data.shipping_cost,
                         ...data.shipping_details,
