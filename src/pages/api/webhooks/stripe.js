@@ -6,7 +6,15 @@ const { v4: uuidv4 } = require('uuid')
 
 export default async function handler(req, res) {
     const sig = req.headers['stripe-signature']
-    const authorization = req.headers.authorization
+
+    /* let event;
+
+    try {
+        stripe.webhooks.constructEvent(request.body, sig, endpointSecret);
+    }
+    catch (err) {
+        return res.status(401).send(`Webhook Error: ${err.message}`);
+    } */
 
     if (req.method === "POST") {
         const body = req.body
@@ -80,7 +88,7 @@ export default async function handler(req, res) {
                     amount_total: data.amount_total,
                     amount_subtotal: data.amount_subtotal,
                     sig: sig || null,
-                    authorization: authorization || null,
+                    headers: req.headers || null,
                 }
             )
 
