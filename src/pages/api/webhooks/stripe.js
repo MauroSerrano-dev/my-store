@@ -32,10 +32,10 @@ export default async function handler(req, res) {
             const items = data.metadata
 
             const cart_id = JSON.parse(items.cart_id)
-            const is_loggin = JSON.parse(items.is_loggin)
+            const user_id = JSON.parse(items.user_id)
 
             delete items.cart_id
-            delete items.is_loggin
+            delete items.user_id
 
             const line_items = Object.keys(items).map(key => JSON.parse(items[key]))
 
@@ -95,7 +95,7 @@ export default async function handler(req, res) {
                 }
             )
 
-            if (is_loggin)
+            if (user_id)
                 await updateCart(cart_id, [])
             else
                 await updateCartSessionProducts(cart_id, [])

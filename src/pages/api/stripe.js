@@ -35,7 +35,7 @@ export default async function handler(req, res) {
       // The customer doesn't exist, create a new one
       if (existingCustomer.data.length === 0) {
         await stripe.customers.create({
-          name: customer.name,
+          name: `${customer.first_name} ${customer.last_name}`,
           email: customer.email,
         })
       }
@@ -81,7 +81,7 @@ export default async function handler(req, res) {
       ], */
       metadata: {
         cart_id: JSON.stringify(cart_id),
-        is_loggin: JSON.stringify(!!customer),
+        user_id: customer?.id || null,
         ...cartMetadata
       },
       payment_method_types: ["card"],
