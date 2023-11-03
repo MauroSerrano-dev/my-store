@@ -4,13 +4,13 @@ export default async function handler(req, res) {
     const { authorization } = req.headers
 
     if (!authorization) {
-        console.error("Authentication token not provided.")
-        return res.status(401).json({ error: "Authentication token not provided." })
+        console.error("Invalid authentication.")
+        return res.status(401).json({ error: "Invalid authentication." })
     }
 
     if (authorization !== `Bearer ${process.env.CRON_SECRET}`) {
-        console.error("Invalid authentication token.")
-        return res.status(401).json({ error: "Invalid authentication token." })
+        console.error("Invalid authentication.")
+        return res.status(401).json({ error: "Invalid authentication." })
     }
 
     const response = await clearUpdateCounter()

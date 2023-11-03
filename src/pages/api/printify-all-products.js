@@ -5,10 +5,10 @@ export default async function handler(req, res) {
     const { authorization } = req.headers
 
     if (!authorization)
-        return res.status(401).json({ error: "Authentication token not provided." })
+        return res.status(401).json({ error: "Invalid authentication." })
 
     if (!isTokenValid(authorization, process.env.APP_SECRET_KEY))
-        return res.status(401).json({ error: "Invalid authentication token." })
+        return res.status(401).json({ error: "Invalid authentication." })
 
     if (req.method === 'GET') {
         const base_url = `https://api.printify.com/v1/shops/${process.env.PRINTIFY_SHOP_ID}/products.json`

@@ -1,10 +1,22 @@
-import axios from 'axios';
-import { updateCart } from '../../../../backend/cart';
-import { updateCartSessionProducts } from '../../../../backend/cart-session';
-import { createOrder } from '../../../../backend/orders';
-const { v4: uuidv4 } = require('uuid');
+import axios from 'axios'
+import { updateCart } from '../../../../backend/cart'
+import { updateCartSessionProducts } from '../../../../backend/cart-session'
+import { createOrder } from '../../../../backend/orders'
+const { v4: uuidv4 } = require('uuid')
+const stripe = require('stripe')(process.env.STRIPE_PUBLIC_KEY)
 
 export default async function handler(req, res) {
+    const sig = request.headers['stripe-signature']
+
+    let event
+
+    try {
+        event = stripe.webhooks.constructEvent(req.body, sig, process.env.STRIPE_WEBHOOK_SECRET);
+    }
+    catch (err) {
+        return res.status(401).json({ error: "Invalid authentication." })
+    }
+
     if (req.method === "POST") {
         const body = req.body
         const type = body.type
@@ -68,14 +80,14 @@ export default async function handler(req, res) {
                         ...data.customer_details,
                     },
                     shipping_details: {
-                        ...data.shipping_details
+                        shipping_cost: data.shipping_cost,
+                        ...data.shipping_details,
                     },
                     products: line_items,
                     stripe_id: data.id,
                     currency: data.currency,
                     amount_total: data.amount_total,
                     amount_subtotal: data.amount_subtotal,
-                    shipping_cost: data.shipping_cost,
                 }
             )
 
