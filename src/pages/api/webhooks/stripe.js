@@ -118,8 +118,8 @@ export default async function handler(req, res) {
     }
 }
 
-/* export const config = {
+export const config = {
     api: {
-        bodyParse: false,
+        bodyParser: false,
     },
-} */
+}
