@@ -89,14 +89,16 @@ export default async function handler(req, res) {
                         tax_ids: data.customer_details.tax_ids,
                     },
                     shipping_details: {
-                        shipping_cost: data.shipping_cost,
                         ...data.shipping_details,
                     },
                     products: line_items,
                     stripe_id: data.id,
-                    currency: data.currency,
-                    amount_total: data.amount_total,
-                    amount_subtotal: data.amount_subtotal,
+                    amount: {
+                        amount_total: data.amount_total,
+                        amount_subtotal: data.amount_subtotal,
+                        currency: data.currency,
+                        shipping_cost: data.shipping_cost,
+                    },
                 }
             )
 
