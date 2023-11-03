@@ -15,7 +15,7 @@ export default async function handler(req, res) {
         stripe.webhooks.constructEvent(req.body, sig, process.env.STRIPE_WEBHOOK_SECRET)
     }
     catch (error) {
-        return res.status(401).json({ error: "Invalid authentication." })
+        return res.status(401).json({ error: `Invalid authentication. ${error}` })
     }
 
     try {
