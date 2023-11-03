@@ -119,15 +119,15 @@ export default async function handler(req, res) {
       success_url: success_url,
       cancel_url: cancel_url,
       customer_email: customer ? customer.email : undefined
-    });
+    })
 
-    // res.redirect(303, session.url);
-    res.send({ url: session.url });
+    // res.redirect(303, session.url)
+    res.send({ url: session.url })
   }
 }
 
 /* const createOrder = async (customer, data) => {
-  const Items = JSON.parse(customer.metadata.cart);
+  const Items = JSON.parse(customer.metadata.cart)
 
   const products = Items.map((item) => {
     return {
