@@ -77,6 +77,58 @@ async function getAllProducts(props) {
     }
 }
 
+async function getCartProductsInfo(cartProducts) {
+    try {
+        if (cartProducts.length === 0) {
+            return {
+                status: 200,
+                message: 'No products found for the provided Cart.',
+                products: [],
+            }
+        }
+        const productsCollection = collection(db, process.env.COLL_PRODUCTS);
+
+        const q = query(productsCollection, where('id', 'in', cartProducts.map(prod => prod.id)));
+
+        const querySnapshot = await getDocs(q);
+
+        const products = querySnapshot.docs.map((doc) => doc.data());
+
+        const productsOneVariant = products.map((prod, i) => {
+            const variant = prod.variants.find(vari => vari.id === cartProducts[i].variant_id)
+            //se alterar o squema tem que alterar no arquivo pages/product/[i].jsx
+            return {
+                id: prod.id,
+                type_id: prod.type_id,
+                title: prod.title,
+                description: prod.description,
+                variant: variant,
+                quantity: cartProducts[i].quantity,
+                default_variant: {
+                    color_id: prod.variants[0].color_id,
+                    size_id: prod.variants[0].size_id,
+                },
+                image: prod.images.filter(img => img.color_id === variant.color_id)[prod.image_showcase_index],
+            }
+
+        })
+
+        return {
+            status: 200,
+            message: 'Products retrieved successfully Cart Products Info!',
+            products: productsOneVariant,
+        }
+    } catch (error) {
+        console.log('Error getting Cart Products Info:', error);
+        return {
+            status: 500,
+            message: 'Error getting Cart Products Info.',
+            products: null,
+            error: error,
+        };
+    }
+}
+
 async function createProduct(product) {
     const productRef = doc(db, process.env.COLL_PRODUCTS, product.id)
 
@@ -424,4 +476,5 @@ export {
     getProductsByTitle,
     updateProduct,
     handleProductsPurchased,
+    getCartProductsInfo,
 }

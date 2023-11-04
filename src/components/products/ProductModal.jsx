@@ -2,9 +2,8 @@ import styles from '@/styles/components/products/ProductModal.module.css'
 import { SlClose } from "react-icons/sl";
 import { motion } from "framer-motion";
 import Link from 'next/link';
-import { convertDolarToCurrency } from '../../../consts';
+import { convertDolarToCurrency, SIZES_POOL, COLORS_POOL } from '../../../consts';
 import Image from 'next/image';
-import { useEffect, useState } from 'react';
 
 export default function ProductModal(props) {
     const {
@@ -14,12 +13,20 @@ export default function ProductModal(props) {
         userCurrency,
     } = props
 
-    const price = `${userCurrency.symbol} ${((convertDolarToCurrency(product.price * (product.sold_out ? 1 - product.sold_out.percentage : 1), userCurrency.code) / 100) * product.quantity).toFixed(2)}`
+    const price = `${userCurrency.symbol} ${((convertDolarToCurrency(product.variant.price * (product.sold_out ? 1 - product.sold_out.percentage : 1), userCurrency.code) / 100) * product.quantity).toFixed(2)}`
 
-    const priceUnit = `${userCurrency.symbol} ${(convertDolarToCurrency(product.price * (product.sold_out ? 1 - product.sold_out.percentage : 1), userCurrency.code) / 100).toFixed(2)} unit`
+    const priceUnit = `${userCurrency.symbol} ${(convertDolarToCurrency(product.variant.price * (product.sold_out ? 1 - product.sold_out.percentage : 1), userCurrency.code) / 100).toFixed(2)} unit`
+
+    const COLOR = COLORS_POOL[product.variant.color_id]
+    const SIZE = SIZES_POOL.find(sz => sz.id === product.variant.size_id)
 
     function handleDeleteCartProduct() {
-        setCart(prev => prev.filter(prod => prod.id !== product.id || prod.variant_id !== product.variant_id))
+        setCart(prev => (
+            {
+                ...prev,
+                products: prev.products.filter(prod => prod.id !== product.id || prod.variant_id !== product.variant_id)
+            }
+        ))
     }
 
     return (
@@ -57,19 +64,19 @@ export default function ProductModal(props) {
             />
             <Link
                 className={styles.imageContainer}
-                href={`/product/${product.id}${product.color.id !== product.default_variant.color.id && product.size.id !== product.default_variant.size.id
-                    ? `?sz=${product.size.title.toLowerCase()}&cl=${product.color.id_string}`
-                    : product.size.id !== product.default_variant.size.id
-                        ? `?sz=${product.size.title.toLowerCase()}`
-                        : product.color.id !== product.default_variant.color.id
-                            ? `?cl=${product.color.id_string}`
+                href={`/product/${product.id}${COLOR.id !== product.default_variant.color_id && SIZE.id !== product.default_variant.size_id
+                    ? `?sz=${SIZE.title.toLowerCase()}&cl=${COLOR.id_string}`
+                    : SIZE.id !== product.default_variant.size_id
+                        ? `?sz=${SIZE.title.toLowerCase()}`
+                        : COLOR.id !== product.default_variant.color_id
+                            ? `?cl=${COLOR.id_string}`
                             : ''
                     }`}
             >
                 <Image
                     priority
                     quality={100}
-                    src={product.image}
+                    src={product.image.src}
                     alt={product.title}
                     width={108 * 0.9}
                     height={108}
@@ -80,26 +87,27 @@ export default function ProductModal(props) {
                 />
             </Link>
             <div className={styles.right}>
-                <Link href={`/product/${product.id}${product.color.id !== product.default_variant.color.id && product.size.id !== product.default_variant.size.id
-                    ? `?sz=${product.size.title.toLowerCase()}&cl=${product.color.id_string}`
-                    : product.size.id !== product.default_variant.size.id
-                        ? `?sz=${product.size.title.toLowerCase()}`
-                        : product.color.id !== product.default_variant.color.id
-                            ? `?cl=${product.color.id_string}`
-                            : ''
-                    }`}
+                <Link
+                    href={`/product/${product.id}${COLOR.id !== product.default_variant.color_id && SIZE.id !== product.default_variant.size_id
+                        ? `?sz=${SIZE.title.toLowerCase()}&cl=${COLOR.id_string}`
+                        : SIZE.id !== product.default_variant.size_id
+                            ? `?sz=${SIZE.title.toLowerCase()}`
+                            : COLOR.id !== product.default_variant.color_id
+                                ? `?cl=${COLOR.id_string}`
+                                : ''
+                        }`}
                 >
                     <h6>{product.title}</h6>
                 </Link>
                 <div className={styles.infos}>
                     <p>
-                        Size: {product.size.title}
+                        Size: <span style={{ fontWeight: 500 }}>{SIZE.title}</span>
                     </p>
                     <p>
-                        Color: {product.color.title}
+                        Color: <span style={{ fontWeight: 500 }}>{COLOR.title}</span>
                     </p>
                     <p>
-                        Quantity: {product.quantity}
+                        Quantity: <span style={{ fontWeight: 500 }}>{product.quantity}</span>
                     </p>
                 </div>
                 <div className={styles.priceContainer}>

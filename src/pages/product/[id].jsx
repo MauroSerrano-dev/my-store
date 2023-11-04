@@ -85,31 +85,32 @@ export default withRouter(props => {
     function handleAddToCart() {
         const prodVariant = product.variants.find(vari => vari.size_id === currentSize.id && vari.color_id === currentColor.id)
 
+        //se alterar o squema tem que alterar no arquivo backend/product.js
         const productCart = {
             id: product.id,
-            printify_ids: product.printify_ids,
-            printify_default_provider_id: product.printify_default_provider_id,
-            variant_id: prodVariant.id,
-            default_variant: { size: product.sizes_ids[0], color: product.colors_ids[0] },
-            quantity: 1,
-            size: currentSize,
-            color: currentColor,
-            desc: 'item description',
             type_id: product.type_id,
-            image: product.images.filter(img => img.color_id === currentColor.id)[product.image_showcase_index].src,
-            price: prodVariant.price,
             title: product.title,
-            sold_out: product.sold_out,
+            description: product.description,
+            variant: prodVariant,
+            quantity: 1,
+            default_variant: {
+                color_id: product.variants[0].color_id,
+                size_id: product.variants[0].size_id,
+            },
+            image: product.images.filter(img => img.color_id === prodVariant.color_id)[product.image_showcase_index],
         }
 
-        const newCart = cart.some(prod => prod.id === product.id && prod.variant_id === prodVariant.id)
-            ? cart.map(p => p.id === product.id && p.variant_id === prodVariant.id
-                ? ({ ...p, quantity: p.quantity + 1 })
-                : p
-            )
-            : cart.concat(productCart)
-
-        setCart(newCart)
+        setCart(prev => (
+            {
+                ...prev,
+                products: prev.products.some(prod => prod.id === product.id && prod.variant_id === prodVariant.id)
+                    ? prev.products.map(p => p.id === product.id && p.variant_id === prodVariant.id
+                        ? ({ ...p, quantity: p.quantity + 1 })
+                        : p
+                    )
+                    : prev.products.concat(productCart)
+            }
+        ))
     }
 
     function handleColorChange(arr, index, color) {

@@ -4,7 +4,7 @@ import { motion } from "framer-motion";
 import Link from 'next/link';
 import { Select, FormControl, MenuItem, InputLabel } from '@mui/material';
 import { useState } from 'react';
-import { convertDolarToCurrency } from '../../../consts';
+import { convertDolarToCurrency, SIZES_POOL, COLORS_POOL } from '../../../consts';
 import Image from 'next/image';
 
 const menuStyle = {
@@ -27,24 +27,30 @@ export default function ProductCart(props) {
     const [hoverQuantity, setHoverQuantity] = useState(false)
     const [focusQuantity, setFocusQuantity] = useState(false)
 
-    const price = `${userCurrency.symbol} ${((convertDolarToCurrency(product.price * (product.sold_out ? 1 - product.sold_out.percentage : 1), userCurrency.code) / 100) * product.quantity).toFixed(2)}`
+    const COLOR = COLORS_POOL[product.variant.color_id]
+    const SIZE = SIZES_POOL.find(sz => sz.id === product.variant.size_id)
 
-    const priceUnit = `${userCurrency.symbol} ${(convertDolarToCurrency(product.price * (product.sold_out ? 1 - product.sold_out.percentage : 1), userCurrency.code) / 100).toFixed(2)} unit`
+    const price = `${userCurrency.symbol} ${((convertDolarToCurrency(product.variant.price * (product.sold_out ? 1 - product.sold_out.percentage : 1), userCurrency.code) / 100) * product.quantity).toFixed(2)}`
+
+    const priceUnit = `${userCurrency.symbol} ${(convertDolarToCurrency(product.variant.price * (product.sold_out ? 1 - product.sold_out.percentage : 1), userCurrency.code) / 100).toFixed(2)} unit`
 
     function handleDeleteCartProduct() {
-        setCart(prev => prev.filter(prod => prod.id !== product.id || prod.variant_id !== product.variant_id))
+        setCart(prev => ({ ...prev, products: prev.products.filter(prod => prod.id !== product.id || prod.variant_id !== product.variant_id) }))
     }
 
     function changeProductField(field, newValue) {
-        setCart(prev =>
-            prev.map(prod => prod.id === product.id && prod.variant_id === product.variant_id
-                ? {
-                    ...prod,
-                    [field]: newValue
-                }
-                : prod
-            )
-        )
+        setCart(prev => (
+            {
+                ...prev,
+                products: prev.map(prod => prod.id === product.id && prod.variant_id === product.variant_id
+                    ? {
+                        ...prod,
+                        [field]: newValue
+                    }
+                    : prod
+                )
+            }
+        ))
     }
 
     return (
@@ -75,19 +81,19 @@ export default function ProductCart(props) {
             </button>
             <Link
                 className={styles.imageContainer}
-                href={`/product/${product.id}${product.color.id !== product.default_variant.color.id && product.size.id !== product.default_variant.size.id
-                    ? `?sz=${product.size.title.toLowerCase()}&cl=${product.color.string_id}`
-                    : product.size.id !== product.default_variant.size.id
-                        ? `?sz=${product.size.title.toLowerCase()}`
-                        : product.color.id !== product.default_variant.color.id
-                            ? `?cl=${product.color.string_id}`
+                href={`/product/${product.id}${COLOR.id !== product.default_variant.color_id && SIZE.id !== product.default_variant.size_id
+                    ? `?sz=${SIZE.title.toLowerCase()}&cl=${COLOR.id_string}`
+                    : SIZE.id !== product.default_variant.size_id
+                        ? `?sz=${SIZE.title.toLowerCase()}`
+                        : COLOR.id !== product.default_variant.color_id
+                            ? `?cl=${COLOR.id_string}`
                             : ''
                     }`}
             >
                 <Image
                     priority
                     quality={100}
-                    src={product.image}
+                    src={product.image.src}
                     alt={product.title}
                     width={270}
                     height={300}
@@ -100,12 +106,12 @@ export default function ProductCart(props) {
             <div className={styles.right}>
                 <div className={styles.rightLeft}>
                     <div className={styles.productName}>
-                        <Link href={`/product/${product.id}${product.color.id !== product.default_variant.color.id && product.size.id !== product.default_variant.size.id
-                            ? `?sz=${product.size.title.toLowerCase()}&cl=${product.color.id_string}`
-                            : product.size.id !== product.default_variant.size.id
-                                ? `?sz=${product.size.title.toLowerCase()}`
-                                : product.color.id !== product.default_variant.color.id
-                                    ? `?cl=${product.color.id_string}`
+                        <Link href={`/product/${product.id}${COLOR.id !== product.default_variant.color_id && SIZE.id !== product.default_variant.size_id
+                            ? `?sz=${SIZE.title.toLowerCase()}&cl=${COLOR.id_string}`
+                            : SIZE.id !== product.default_variant.size_id
+                                ? `?sz=${SIZE.title.toLowerCase()}`
+                                : COLOR.id !== product.default_variant.color_id
+                                    ? `?cl=${COLOR.id_string}`
                                     : ''
                             }`}
                         >
@@ -126,8 +132,8 @@ export default function ProductCart(props) {
                         </div>
                         <div className={styles.bodyBottom}>
                             <div className='flex column' style={{ fontSize: 13, paddingBottom: '0.7rem' }}>
-                                <p className='text-start'>Color: {product.color.title}</p>
-                                <p className='text-start'>Size: {product.size.title}</p>
+                                <p className='text-start'>Color: <span style={{ fontWeight: 600 }}>{COLOR.title}</span></p>
+                                <p className='text-start'>Size: <span style={{ fontWeight: 600 }}>{SIZE.title}</span></p>
                             </div>
                             <FormControl sx={{ minWidth: 80, height: '25%', minHeight: 40 }}>
                                 <InputLabel

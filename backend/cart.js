@@ -15,7 +15,7 @@ async function getCartById(id) {
         const cartDoc = await getDoc(cartRef)
 
         if (cartDoc.exists()) {
-            return cartDoc.data().products
+            return cartDoc.data()
         } else {
             console.log("Cart not found")
             return null

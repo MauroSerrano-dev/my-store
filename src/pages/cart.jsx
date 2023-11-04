@@ -22,11 +22,19 @@ export default function Cart(props) {
     const [shippingCountry, setShippingCountry] = useState('US')
     const [allProducts, setAllProducts] = useState()
 
-    const ITEMS_TOTAL = (cart?.reduce((acc, product) => acc + (convertDolarToCurrency(product.price, userCurrency.code) * product.quantity), 0) / 100).toFixed(2)
+    const ITEMS_TOTAL = (cart?.products.reduce((acc, product) => acc + (convertDolarToCurrency(product.variant.price, userCurrency.code) * product.quantity), 0) / 100).toFixed(2)
 
     const SHIPPING_CONVERTED = convertDolarToCurrency(shippingValue, userCurrency.code)
 
-    const ORDER_TOTAL = ((SHIPPING_CONVERTED + cart?.reduce((acc, product) => acc + (convertDolarToCurrency(product.price, userCurrency.code) * product.quantity), 0)) / 100).toFixed(2)
+    const ORDER_TOTAL = ((SHIPPING_CONVERTED + cart?.products.reduce((acc, product) => acc + (convertDolarToCurrency(product.variant.price, userCurrency.code) * product.quantity), 0)) / 100).toFixed(2)
+
+    useEffect(() => {
+        getShippingValue()
+    }, [cart, shippingCountry])
+
+    useEffect(() => {
+        getAllProducts()
+    }, [])
 
     function handleCheckout(cart) {
         const options = {
@@ -36,7 +44,7 @@ export default function Cart(props) {
                 authorization: process.env.NEXT_PUBLIC_APP_TOKEN
             },
             body: JSON.stringify({
-                cartItems: cart.map(item => (
+                cartItems: cart.products.map(item => (
                     {
                         ...item,
                         id_printify: item.printify_ids[getShippingOptions(shippingCountry)[item.type_id].provider_id],
@@ -67,7 +75,7 @@ export default function Cart(props) {
             },
         }
 
-        const products = await fetch("/api/products", options)
+        const products = await fetch("/api/products/all-products", options)
             .then(response => response.json())
             .then(response => response.products)
             .catch(err => console.error(err))
@@ -75,20 +83,12 @@ export default function Cart(props) {
         setAllProducts(products)
     }
 
-    useEffect(() => {
-        getShippingValue()
-    }, [cart, shippingCountry])
-
-    useEffect(() => {
-        getAllProducts()
-    }, [])
-
     function getShippingValue() {
         const country = getShippingOptions(shippingCountry)
         let value = 0
         let typesAlreadyIn = []
 
-        value = cart?.reduce((acc, item, i) => {
+        value = cart?.products.reduce((acc, item, i) => {
             const result = acc + (
                 typesAlreadyIn.includes(item.type_id)
                     ? country[item.type_id].add_item * item.quantity
@@ -113,7 +113,7 @@ export default function Cart(props) {
             </header>
             {!cart
                 ? <div></div>
-                : cart.length === 0
+                : cart.products.length === 0
                     ? <main
                         className={`${styles.main} ${styles.mainEmpty}`}
                     >
@@ -142,7 +142,7 @@ export default function Cart(props) {
                             <div
                                 className={styles.productsBody}
                             >
-                                {cart.map((product, i) =>
+                                {cart.products.map((product, i) =>
                                     <ProductCart
                                         session={session}
                                         setCart={setCart}

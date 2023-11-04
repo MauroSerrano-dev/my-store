@@ -1,5 +1,5 @@
-import { isTokenValid } from "../../../auth";
-import { getAllProducts } from "../../../backend/product";
+import { isTokenValid } from "../../../../auth";
+import { getAllProducts } from "../../../../backend/product";
 
 export default async function handler(req, res) {
     const { authorization } = req.headers
@@ -11,7 +11,6 @@ export default async function handler(req, res) {
         return res.status(401).json({ error: "Invalid authentication." })
 
     if (req.method === "GET") {
-
         const result = await getAllProducts()
 
         res.status(result.status).json({

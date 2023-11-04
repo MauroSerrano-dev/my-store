@@ -76,19 +76,19 @@ export default function DataHandler(props) {
 
     function updateCart() {
         if (session)
-            putCart()
+            patchCart()
         else {
             const cart_id = Cookies.get(CART_COOKIE)
             if (cart_id) {
-                putCartSession(cart_id)
+                patchCartSession(cart_id)
             }
             else {
-                postNewCart(cart)
+                postNewCart()
             }
         }
     }
 
-    function putCart() {
+    function patchCart() {
         const options = {
             method: 'PATCH',
             headers: {
@@ -97,13 +97,13 @@ export default function DataHandler(props) {
             },
             body: JSON.stringify({
                 cartId: session.cart_id,
-                cart: cart,
+                cartProducts: cart.products.map(prod => ({ id: prod.id, variant_id: prod.variant.id, quantity: prod.quantity })),
             })
         }
         fetch("/api/cart", options)
     }
 
-    function putCartSession(cartId) {
+    function patchCartSession(cartId) {
         const options = {
             method: 'PATCH',
             headers: {
@@ -112,13 +112,13 @@ export default function DataHandler(props) {
             },
             body: JSON.stringify({
                 cartId: cartId,
-                cart: cart,
+                cartProducts: cart.products.map(prod => ({ id: prod.id, variant_id: prod.variant.id, quantity: prod.quantity })),
             })
         }
         fetch("/api/cart-session", options)
     }
 
-    function postNewCart(cart) {
+    function postNewCart() {
         const options = {
             method: 'POST',
             headers: {
@@ -126,7 +126,7 @@ export default function DataHandler(props) {
                 authorization: process.env.NEXT_PUBLIC_APP_TOKEN
             },
             body: JSON.stringify({
-                cart: cart
+                cartProducts: cart.products.map(prod => ({ id: prod.id, variant_id: prod.variant.id, quantity: prod.quantity }))
             })
         }
         fetch("/api/cart-session", options)
@@ -145,7 +145,7 @@ export default function DataHandler(props) {
         }
         fetch("/api/cart", options)
             .then(response => response.json())
-            .then(response => setCart(response.cart))
+            .then(response => setCart(response))
             .catch(err => console.error(err))
     }
 
@@ -159,7 +159,7 @@ export default function DataHandler(props) {
         }
         fetch("/api/cart-session", options)
             .then(response => response.json())
-            .then(response => setCart(response.cart))
+            .then(response => setCart(response))
             .catch(err => console.error(err))
     }
 
@@ -400,7 +400,6 @@ export default function DataHandler(props) {
     return (
         <motion.div
             className={styles.container}
-            onClick={() => console.log(session)}
             style={{
                 opacity: websiteVisible ? 1 : 0,
             }}

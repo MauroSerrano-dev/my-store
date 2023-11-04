@@ -18,7 +18,7 @@ export default function CartIcon(props) {
 
     useEffect(() => {
         // Em caso de deletar ultimo elemento do cart
-        if (cart && cart.length === 0)
+        if (cart && cart.products.length === 0)
             setOpen(false)
     }, [cart])
 
@@ -38,19 +38,19 @@ export default function CartIcon(props) {
                         color: 'var(--global-white)'
                     }}
                 />
-                {session !== undefined && cart && cart.length > 0 &&
+                {session !== undefined && cart && cart.products.length > 0 &&
                     <div
                         className={styles.cartCounter}
                         style={{
-                            fontSize: cart.reduce((acc, product) => acc + product.quantity, 0) > 99 ? '55%' : '72%'
+                            fontSize: cart.products.reduce((acc, product) => acc + product.quantity, 0) > 99 ? '55%' : '72%'
                         }}
                     >
-                        {cart.reduce((acc, product) => acc + product.quantity, 0) > 99 ? '99+' : cart.reduce((acc, product) => acc + product.quantity, 0)}
+                        {cart.products.reduce((acc, product) => acc + product.quantity, 0) > 99 ? '99+' : cart.products.reduce((acc, product) => acc + product.quantity, 0)}
                     </div>
                 }
             </Link>
             {
-                open && cart && cart.length > 0 && supportsHoverAndPointer &&
+                open && cart && cart.products.length > 0 && supportsHoverAndPointer &&
                 <div
                     className={styles.contentContainer}
                 >
@@ -59,7 +59,7 @@ export default function CartIcon(props) {
                     <div className={styles.contentVisible}>
                         <div className={styles.productsScroll}>
                             <div className={styles.products}>
-                                {cart.map((product, i) =>
+                                {cart.products.map((product, i) =>
                                     <ProductModal
                                         product={product}
                                         key={i}
