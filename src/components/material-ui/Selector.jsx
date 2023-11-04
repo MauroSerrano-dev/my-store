@@ -3,7 +3,7 @@ import { useState } from 'react';
 
 export default function Selector(props) {
     const {
-        label = 'Label',
+        label,
         options = [],
         value = '',
         dark,

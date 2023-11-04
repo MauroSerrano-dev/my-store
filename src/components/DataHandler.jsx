@@ -400,7 +400,6 @@ export default function DataHandler(props) {
     return (
         <motion.div
             className={styles.container}
-            onClick={() => console.log(cart)}
             style={{
                 opacity: websiteVisible ? 1 : 0,
             }}

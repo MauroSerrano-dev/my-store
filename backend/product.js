@@ -96,16 +96,15 @@ async function getCartProductsInfo(cartProducts) {
 
         const productsOneVariant = cartProducts.map((prod, i) => {
             const product = products.find(p => p.id === prod.id)
-            const variant = product.variants.find(vari => vari.id === cartProducts[i].variant_id)
+            const variant = product.variants.find(vari => vari.id === prod.variant_id)
             //se alterar o squema tem que alterar no arquivo pages/product/[i].jsx
             return {
-                id: product.id,
+                ...prod,
                 type_id: product.type_id,
                 title: product.title,
                 description: product.description,
                 printify_ids: product.printify_ids,
                 variant: variant,
-                quantity: cartProducts[i].quantity,
                 default_variant: {
                     color_id: product.variants[0].color_id,
                     size_id: product.variants[0].size_id,
