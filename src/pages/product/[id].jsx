@@ -91,6 +91,7 @@ export default withRouter(props => {
             type_id: product.type_id,
             title: product.title,
             description: product.description,
+            printify_ids: product.printify_ids,
             variant: prodVariant,
             quantity: 1,
             default_variant: {

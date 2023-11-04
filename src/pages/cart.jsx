@@ -44,11 +44,11 @@ export default function Cart(props) {
                 authorization: process.env.NEXT_PUBLIC_APP_TOKEN
             },
             body: JSON.stringify({
-                cartItems: cart.products.map(item => (
+                cartItems: cart.products.map(prod => (
                     {
-                        ...item,
-                        id_printify: item.printify_ids[getShippingOptions(shippingCountry)[item.type_id].provider_id],
-                        price: convertDolarToCurrency(item.price, userCurrency.code),
+                        ...prod,
+                        id_printify: prod.printify_ids[getShippingOptions(shippingCountry)[prod.type_id].provider_id],
+                        price: convertDolarToCurrency(prod.variant.price, userCurrency.code),
                     }
                 )),
                 cancel_url: window.location.href,

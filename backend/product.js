@@ -102,6 +102,7 @@ async function getCartProductsInfo(cartProducts) {
                 type_id: prod.type_id,
                 title: prod.title,
                 description: prod.description,
+                printify_ids: prod.printify_ids,
                 variant: variant,
                 quantity: cartProducts[i].quantity,
                 default_variant: {
