@@ -2,8 +2,8 @@ import axios from 'axios'
 import { updateCart } from '../../../../backend/cart'
 import { updateCartSessionProducts } from '../../../../backend/cart-session'
 import { createOrder } from '../../../../backend/orders'
-const { v4: uuidv4 } = require('uuid')
 import getRawBody from 'raw-body'
+const { v4: uuidv4 } = require('uuid')
 
 const Stripe = require("stripe")
 const stripe = Stripe(process.env.STRIPE_SECRET_KEY)
@@ -110,11 +110,13 @@ export default async function handler(req, res) {
             res.status(200).json({ message: `Order ${orderId} Created. Checkout Complete!` })
         }
         else if (type === 'checkout.session.async_payment_succeeded') {
+            res.status(200).json({ message: 'Checkout Async Payment Succeeded!' })
         }
         else if (type === 'checkout.session.async_payment_failed') {
+            res.status(200).json({ message: 'Checkout Payment Failed!' })
         }
         else if (type === 'checkout.session.expired') {
-            res.status(200).json({ message: 'Checkout Session Expired!' })
+            res.status(200).json({ message: 'Checkout Async Session Expired!' })
         }
         else {
             res.status(200).json({ message: 'Outros eventos!' })
