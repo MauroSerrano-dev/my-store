@@ -13,17 +13,17 @@ export default async function handler(req, res) {
 
     let event
 
-    try {
-        const rawBody = await getRawBody(req)
-        event = stripe.webhooks.constructEvent(rawBody, sig, process.env.STRIPE_WEBHOOK_SECRET)
-    }
-    catch (error) {
-        return res.status(401).json({ error: 'Invalid authentication.' })
-    }
+    /*    try {
+           const rawBody = await getRawBody(req)
+           event = stripe.webhooks.constructEvent(rawBody, sig, process.env.STRIPE_WEBHOOK_SECRET)
+       }
+       catch (error) {
+           return res.status(401).json({ error: 'Invalid authentication.' })
+       } */
 
     try {
-        const type = event.type
-        const data = event.data.object
+        const type = req.body.type
+        const data = req.body.data.object
 
         if (type === 'checkout.session.completed') {
             const base_url = `https://api.printify.com/v1/shops/${process.env.PRINTIFY_SHOP_ID}/orders.json`
@@ -124,8 +124,8 @@ export default async function handler(req, res) {
     }
 }
 
-export const config = {
+/* export const config = {
     api: {
         bodyParser: false,
     },
-}
+} */

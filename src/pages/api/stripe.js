@@ -70,7 +70,7 @@ export default async function handler(req, res) {
       cartMetadata[i] = JSON.stringify({
         id: item.id,
         id_printify: item.id_printify,
-        variant_id: item.variant_id,
+        variant_id: item.variant.id,
         quantity: item.quantity,
         price: item.price,
         status: 'sending-to-production',
