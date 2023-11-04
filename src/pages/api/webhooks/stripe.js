@@ -13,13 +13,13 @@ export default async function handler(req, res) {
 
     let event
 
-    /*    try {
+       try {
            const rawBody = await getRawBody(req)
            event = stripe.webhooks.constructEvent(rawBody, sig, process.env.STRIPE_WEBHOOK_SECRET)
        }
        catch (error) {
            return res.status(401).json({ error: 'Invalid authentication.' })
-       } */
+       }
 
     try {
         const type = req.body.type

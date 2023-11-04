@@ -19,7 +19,7 @@ const montserrat = Montserrat({
 
 const primaryColor = '#1189C4'
 
-const maintenance = false
+const maintenance = true
 
 const mainTheme = createTheme({
   palette: {
