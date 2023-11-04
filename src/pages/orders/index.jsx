@@ -2,6 +2,7 @@ import styles from '@/styles/pages/orders/index.module.css'
 import Footer from '@/components/Footer'
 import Head from 'next/head'
 import { useEffect, useState } from 'react'
+import ProductOrder from '@/components/products/ProductOrder'
 
 export default function Orders(props) {
     const {
@@ -43,25 +44,13 @@ export default function Orders(props) {
             </Head>
             <main>
                 {orders?.map((order, i) =>
-                    <div
+                    <ProductOrder
+                        order={order}
                         key={i}
-                    >
-                        <h3>
-                            {order.amount.amount_total}
-                        </h3>
-                        {order.products.map((product, j) =>
-                            <div
-                                key={j}
-                            >
-                                <h3>
-                                    {product.id}
-                                </h3>
-                            </div>
-                        )}
-                    </div>
+                        index={i}
+                    />
                 )}
             </main>
-            <Footer />
         </div>
     )
 }

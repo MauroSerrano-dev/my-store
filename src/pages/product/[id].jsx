@@ -104,8 +104,8 @@ export default withRouter(props => {
         setCart(prev => (
             {
                 ...prev,
-                products: prev.products.some(prod => prod.id === product.id && prod.variant_id === prodVariant.id)
-                    ? prev.products.map(p => p.id === product.id && p.variant_id === prodVariant.id
+                products: prev.products.some(prod => prod.id === product.id && prod.variant.id === prodVariant.id)
+                    ? prev.products.map(p => p.id === product.id && p.variant.id === prodVariant.id
                         ? ({ ...p, quantity: p.quantity + 1 })
                         : p
                     )

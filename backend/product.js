@@ -94,22 +94,23 @@ async function getCartProductsInfo(cartProducts) {
 
         const products = querySnapshot.docs.map((doc) => doc.data());
 
-        const productsOneVariant = products.map((prod, i) => {
-            const variant = prod.variants.find(vari => vari.id === cartProducts[i].variant_id)
+        const productsOneVariant = cartProducts.map((prod, i) => {
+            const product = products.find(p => p.id === prod.id)
+            const variant = product.variants.find(vari => vari.id === cartProducts[i].variant_id)
             //se alterar o squema tem que alterar no arquivo pages/product/[i].jsx
             return {
-                id: prod.id,
-                type_id: prod.type_id,
-                title: prod.title,
-                description: prod.description,
-                printify_ids: prod.printify_ids,
+                id: product.id,
+                type_id: product.type_id,
+                title: product.title,
+                description: product.description,
+                printify_ids: product.printify_ids,
                 variant: variant,
                 quantity: cartProducts[i].quantity,
                 default_variant: {
-                    color_id: prod.variants[0].color_id,
-                    size_id: prod.variants[0].size_id,
+                    color_id: product.variants[0].color_id,
+                    size_id: product.variants[0].size_id,
                 },
-                image: prod.images.filter(img => img.color_id === variant.color_id)[prod.image_showcase_index],
+                image: product.images.filter(img => img.color_id === variant.color_id)[product.image_showcase_index],
             }
 
         })

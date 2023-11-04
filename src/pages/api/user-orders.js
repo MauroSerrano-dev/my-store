@@ -1,5 +1,6 @@
 import { isTokenValid } from "../../../auth";
 import { getOrdersByUserId } from "../../../backend/orders";
+import { getCartProductsInfo } from "../../../backend/product";
 
 export default async function handler(req, res) {
     const { authorization, user_id, start_date, end_date } = req.headers
@@ -11,7 +12,9 @@ export default async function handler(req, res) {
         return res.status(401).json({ error: "Invalid authentication." })
 
     if (req.method === "GET") {
-        const result = await getOrdersByUserId(user_id, start_date, end_date)
-        res.status(result.status).json(result)
+        const response = await getOrdersByUserId(user_id, start_date, end_date)
+        const productsInfoRes = await getCartProductsInfo(response.orders.reduce((acc, order) => [...acc, ...order.products], []))
+
+        res.status(response.status).json({ ...response, orders: response.orders.map((order, i) => ({ ...order, products: order.products.map(() => productsInfoRes.products.shift()) })) })
     }
 }

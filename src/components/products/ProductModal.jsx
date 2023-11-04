@@ -24,7 +24,7 @@ export default function ProductModal(props) {
         setCart(prev => (
             {
                 ...prev,
-                products: prev.products.filter(prod => prod.id !== product.id || prod.variant_id !== product.variant_id)
+                products: prev.products.filter(prod => prod.id !== product.id || prod.variant.id !== product.variant.id)
             }
         ))
     }

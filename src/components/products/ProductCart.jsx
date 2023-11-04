@@ -35,14 +35,14 @@ export default function ProductCart(props) {
     const priceUnit = `${userCurrency.symbol} ${(convertDolarToCurrency(product.variant.price * (product.sold_out ? 1 - product.sold_out.percentage : 1), userCurrency.code) / 100).toFixed(2)} unit`
 
     function handleDeleteCartProduct() {
-        setCart(prev => ({ ...prev, products: prev.products.filter(prod => prod.id !== product.id || prod.variant_id !== product.variant_id) }))
+        setCart(prev => ({ ...prev, products: prev.products.filter(prod => prod.id !== product.id || prod.variant.id !== product.variant.id) }))
     }
 
     function changeProductField(field, newValue) {
         setCart(prev => (
             {
                 ...prev,
-                products: prev.map(prod => prod.id === product.id && prod.variant_id === product.variant_id
+                products: prev.products.map(prod => prod.id === product.id && prod.variant.id === product.variant.id
                     ? {
                         ...prod,
                         [field]: newValue
