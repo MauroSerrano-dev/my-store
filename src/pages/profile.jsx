@@ -153,6 +153,6 @@ export default function Profile(props) {
                             Save
                         </Button>
                     </main>
-                </div >
+                </div>
     )
 }

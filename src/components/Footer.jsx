@@ -45,14 +45,14 @@ export default function Footer() {
                     <div className={styles.column}>
                         <h3 className="text-start">About us</h3>
                         <div>
-                            <a>
+                            <Link href='/privacy-policy'>
                                 Privacy policy
-                            </a>
+                            </Link>
                         </div>
                         <div>
-                            <a>
+                            <Link href='/terms-of-use'>
                                 Terms of use
-                            </a>
+                            </Link>
                         </div>
                     </div>
                 </div>

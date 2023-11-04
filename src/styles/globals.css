@@ -69,6 +69,10 @@ li {
   line-height: 1.5;
 }
 
+li {
+  list-style-position: inside;
+}
+
 div {
   text-align: center;
   --toastify-text-color-dark: var(--global-white);
