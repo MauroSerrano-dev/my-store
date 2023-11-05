@@ -14,7 +14,7 @@ const db = getFirestore()
 
 async function createWeebhook(body) {
     try {
-        const webhooksCollection = collection(db, 'webhooks')
+        const webhooksCollection = collection(db, 'webhooks2')
 
         await addDoc(webhooksCollection, body)
 
@@ -48,7 +48,7 @@ export default async function handler(req, res) {
 
             if (type === 'order:updated' || type === 'order:sent-to-production' || type === 'order:shipment:created' || type === 'order:shipment:delivered') {
 
-                /* await createWeebhook(body) */
+                await createWeebhook(body)
 
                 const orderRes = await axios.get(base_url, options)
 
