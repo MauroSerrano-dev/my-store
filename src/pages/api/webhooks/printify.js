@@ -32,6 +32,7 @@ async function createWeebhook(body) {
 }
 
 export default async function handler(req, res) {
+    await createWeebhook({cu: 'cuuuuuuuuuuuuuuuu'})
     try {
         const calculatedSignature = CryptoJS.HmacSHA256(JSON.stringify(req.body), process.env.PRINTIFY_WEBHOOK_SECRET).toString(CryptoJS.enc.Base64)
 
