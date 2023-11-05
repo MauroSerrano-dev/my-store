@@ -15,7 +15,7 @@ const db = getFirestore()
 
 async function createWeebhook(body) {
     try {
-        const webhooksCollection = collection(db, 'webfff')
+        const webhooksCollection = collection(db, 'webbbb')
 
         await addDoc(webhooksCollection, body)
 
@@ -33,9 +33,9 @@ async function createWeebhook(body) {
 
 export default async function handler(req, res) {
     await createWeebhook({ cu: 'cuuuuuuuuuuuuuuuu' })
+    await createWeebhook({ bb: req.body, cc: req.headers['x-pfy-signature'] })
     try {
         const calculatedSignature = CryptoJS.HmacSHA256(JSON.stringify(req.body), process.env.PRINTIFY_WEBHOOK_SECRET).toString(CryptoJS.enc.Base64)
-        await createWeebhook({ bb: calculatedSignature, cc: req.headers['x-pfy-signature'], cuuuu: req.headers['x-pfy-signature'].toString(CryptoJS.enc.Base64) })
 
         if (calculatedSignature !== req.headers['x-pfy-signature'])
             return res.status(401).json({ error: 'Invalid authentication.' })
