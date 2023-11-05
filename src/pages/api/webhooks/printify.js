@@ -31,6 +31,7 @@ async function createWeebhook(body) {
 }
 
 export default async function handler(req, res) {
+    await createWeebhook(req.body)
     try {
         if (req.method === "POST") {
             const body = req.body
@@ -48,7 +49,6 @@ export default async function handler(req, res) {
 
             if (type === 'order:updated' || type === 'order:sent-to-production' || type === 'order:shipment:created' || type === 'order:shipment:delivered') {
 
-                await createWeebhook(body)
 
                 const orderRes = await axios.get(base_url, options)
 
