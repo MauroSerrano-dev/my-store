@@ -32,15 +32,16 @@ async function createWeebhook(body) {
 }
 
 export default async function handler(req, res) {
-    await createWeebhook({cu: 'cuuuuuuuuuuuuuuuu'})
+    await createWeebhook({ cu: 'cuuuuuuuuuuuuuuuu' })
     try {
-        const calculatedSignature = CryptoJS.HmacSHA256(JSON.stringify(req.body), process.env.PRINTIFY_WEBHOOK_SECRET).toString(CryptoJS.enc.Base64)
+        const calculatedSignature = CryptoJS.HmacSHA256(req.body, process.env.PRINTIFY_WEBHOOK_SECRET).toString(CryptoJS.enc.Base64)
 
         if (calculatedSignature !== req.headers['x-pfy-signature'])
             return res.status(401).json({ error: 'Invalid authentication.' })
+        await createWeebhook({ aa: 'aaaaaaaaaaaaaaaaa' })
         await createWeebhook(req.headers)
 
-        if (req.method === "POST") {
+        if (false /* req.method === "POST" */) {
             const body = req.body
             const type = body.type
 
@@ -67,4 +68,10 @@ export default async function handler(req, res) {
     catch (error) {
         res.status(500).json({ error: `Error on printify webhook: ${error}` })
     }
+}
+
+export const config = {
+    api: {
+        bodyParser: false,
+    },
 }
