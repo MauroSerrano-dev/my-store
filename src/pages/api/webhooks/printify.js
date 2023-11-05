@@ -5,6 +5,8 @@ import {
 } from "firebase/firestore"
 import { initializeApp } from 'firebase/app'
 import { firebaseConfig } from "../../../../firebase.config"
+import axios from 'axios'
+import { updateProductFields } from "../../../../backend/orders"
 
 initializeApp(firebaseConfig)
 
@@ -29,9 +31,36 @@ async function createWeebhook(body) {
 }
 
 export default async function handler(req, res) {
-    if (req.method === "POST") {
-        const body = req.body
-        const response = await createWeebhook(body)
-        res.status(200).json({ message: response.message })
+    try {
+        if (req.method === "POST") {
+            const body = req.body
+            const type = req.type
+
+            const orderId = body.resource.id
+
+            const base_url = `https://api.printify.com/v1/shops/${process.env.PRINTIFY_SHOP_ID}/orders/${orderId}.json`
+
+            const options = {
+                headers: {
+                    Authorization: process.env.PRINTIFY_ACCESS_TOKEN,
+                },
+            }
+
+            if (type === 'order:updated' || type === 'order:sent-to-production' || type === 'order:shipment:created' || type === 'order:shipment:delivered') {
+
+                /* await createWeebhook(body) */
+
+                const orderBody = await axios.get(base_url, options)
+
+                orderBody.line_items.forEach(prod => {
+                    updateProductFields(orderId, prod.id, prod.variant_id, { status: prod.status, authorization: req.headers.authorization })
+                })
+
+                res.status(200).json({ message: 'Order status updated!' })
+            }
+        }
+    }
+    catch (error) {
+        res.status(500).json({ error: `Error on printify webhook: ${error}` })
     }
 }

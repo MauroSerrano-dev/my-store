@@ -8,6 +8,7 @@ import {
     query,
     where,
     getDocs,
+    getDoc,
 } from "firebase/firestore"
 import { initializeApp } from 'firebase/app'
 import { firebaseConfig } from "../firebase.config"
@@ -40,27 +41,6 @@ async function createOrder(order) {
         return {
             status: 500,
             message: 'Error creating order',
-            error: error,
-        }
-    }
-}
-
-async function insertNewFieldToOrder(order_id, field_name, value) {
-    try {
-        const orderRef = doc(db, process.env.COLL_ORDERS, order_id)
-
-        await updateDoc(orderRef, {
-            [field_name]: value,
-        })
-
-        return {
-            status: 200,
-            message: `${field_name} added to order with ID: ${order_id}`,
-        }
-    } catch (error) {
-        return {
-            status: 500,
-            message: `Error inserting ${field_name}`,
             error: error,
         }
     }
@@ -109,8 +89,44 @@ async function getOrdersByUserId(userId, startDate, endDate) {
     }
 }
 
+async function updateProductFields(order_id, id_printify, variant_id, newFields) {
+    try {
+        const orderRef = doc(db, process.env.COLL_ORDERS, order_id)
+        const orderDoc = await getDoc(orderRef)
+
+        if (orderDoc.exists()) {
+            const orderData = orderDoc.data()
+
+            const updatedProducts = orderData.products.map(product =>
+                product.id_printify === id_printify && product.variant_id === variant_id
+                    ? { ...product, ...newFields }
+                    : product
+            )
+
+            await updateDoc(orderRef, { products: updatedProducts })
+
+            return {
+                status: 200,
+                message: "Product status updated successfully",
+            }
+        } else {
+            return {
+                status: 404,
+                message: `Order with ID ${order_id} not found`,
+            }
+        }
+    } catch (error) {
+        console.error(error);
+        return {
+            status: 500,
+            message: "Error updating product status",
+            error: error,
+        }
+    }
+}
+
 export {
     createOrder,
-    insertNewFieldToOrder,
     getOrdersByUserId,
+    updateProductFields,
 }
