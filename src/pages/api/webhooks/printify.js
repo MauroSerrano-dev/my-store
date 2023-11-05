@@ -8,6 +8,7 @@ import { firebaseConfig } from "../../../../firebase.config"
 import axios from 'axios'
 import { updateProductStatus } from "../../../../backend/orders"
 const CryptoJS = require('crypto-js');
+import getRawBody from 'raw-body'
 
 initializeApp(firebaseConfig)
 
@@ -15,7 +16,7 @@ const db = getFirestore()
 
 async function createWeebhook(body) {
     try {
-        const webhooksCollection = collection(db, 'webbbb')
+        const webhooksCollection = collection(db, 'abcde')
 
         await addDoc(webhooksCollection, body)
 
@@ -32,15 +33,14 @@ async function createWeebhook(body) {
 }
 
 export default async function handler(req, res) {
-    await createWeebhook({ cu: 'cuuuuuuuuuuuuuuuu' })
-    await createWeebhook({ bb: req.body, cc: req.headers['x-pfy-signature'] })
     try {
-        const calculatedSignature = CryptoJS.HmacSHA256(JSON.stringify(req.body), process.env.PRINTIFY_WEBHOOK_SECRET).toString(CryptoJS.enc.Base64)
+        const calculatedSignature = CryptoJS.HmacSHA256(JSON.stringify(req.body), process.env.PRINTIFY_WEBHOOK_SECRET).toString(CryptoJS.enc.Hex)
 
-        if (calculatedSignature !== req.headers['x-pfy-signature'])
+        const providedSignatureWithoutPrefix = req.headers['x-pfy-signature'].replace('sha256=', '');
+
+        await createWeebhook({ a: calculatedSignature, b: providedSignatureWithoutPrefix })
+        if (calculatedSignature !== providedSignatureWithoutPrefix)
             return res.status(401).json({ error: 'Invalid authentication.' })
-        await createWeebhook({ aa: 'aaaaaaaaaaaaaaaaa' })
-        await createWeebhook(req.headers)
 
         /*         if (req.method === "POST") {
                     const body = req.body
@@ -70,3 +70,9 @@ export default async function handler(req, res) {
         res.status(500).json({ error: `Error on printify webhook: ${error}` })
     }
 }
+
+/* export const config = {
+    api: {
+        bodyParser: false,
+    },
+} */
