@@ -31,12 +31,14 @@ export default async function handler(req, res) {
             await updateProductStatus(orderPrintifyId, orderRes.data.line_items)
 
             if (true)
-                await updateOrderField(orderPrintifyId, 'shipments', {
-                    "carrier": "SPRING",
-                    "number": "LR011653238NL",
-                    "url": "https://mailingtechnology.com/tracking/?tn=LR011653238NL",
-                    "delivered_at": "2023-11-02 10:54:00+00:00"
-                })
+                await updateOrderField(orderPrintifyId, 'shipments', [
+                    {
+                        "carrier": "SPRING",
+                        "number": "LR011653238NL",
+                        "url": "https://mailingtechnology.com/tracking/?tn=LR011653238NL",
+                        "delivered_at": "2023-11-02 10:54:00+00:00"
+                    }
+                ])
 
             res.status(200).json({ message: 'Order status updated!' })
         }
