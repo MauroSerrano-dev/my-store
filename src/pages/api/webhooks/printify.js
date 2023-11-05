@@ -6,7 +6,7 @@ import {
 import { initializeApp } from 'firebase/app'
 import { firebaseConfig } from "../../../../firebase.config"
 import axios from 'axios'
-import { updateProductFields } from "../../../../backend/orders"
+import { updateProductStatus } from "../../../../backend/orders"
 
 initializeApp(firebaseConfig)
 
@@ -34,7 +34,7 @@ export default async function handler(req, res) {
     try {
         if (req.method === "POST") {
             const body = req.body
-            const type = req.type
+            const type = body.type
 
             const orderId = body.resource.id
 
@@ -50,11 +50,9 @@ export default async function handler(req, res) {
 
                 /* await createWeebhook(body) */
 
-                const orderBody = await axios.get(base_url, options)
+                const orderRes = await axios.get(base_url, options)
 
-                orderBody.line_items.forEach(prod => {
-                    updateProductFields(orderId, prod.id, prod.variant_id, { status: prod.status, authorization: req.headers.authorization })
-                })
+                await updateProductStatus(orderId, orderRes.data.line_items, { authorization: req.headers.authorization || null })
 
                 res.status(200).json({ message: 'Order status updated!' })
             }

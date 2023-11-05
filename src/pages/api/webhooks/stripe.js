@@ -78,8 +78,8 @@ export default async function handler(req, res) {
             await createOrder(
                 {
                     id: orderId,
+                    id_printify: printifyRes.data.id,
                     user_id: user_id,
-                    printify_id: printifyRes.data.id,
                     stripe_id: data.id,
                     status: 'sending-to-production',
                     products: line_items,

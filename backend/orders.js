@@ -89,21 +89,27 @@ async function getOrdersByUserId(userId, startDate, endDate) {
     }
 }
 
-async function updateProductFields(order_id, id_printify, variant_id, newFields) {
+async function updateProductStatus(order_id_printify, products, auth) {
     try {
-        const orderRef = doc(db, process.env.COLL_ORDERS, order_id)
-        const orderDoc = await getDoc(orderRef)
+        const ordersCollection = collection(db, process.env.COLL_ORDERS)
 
-        if (orderDoc.exists()) {
+        const q = query(ordersCollection, where("id_printify", "==", order_id_printify))
+        const querySnapshot = await getDocs(q)
+
+        if (!querySnapshot.empty) {
+
+            const orderDoc = querySnapshot.docs[0]
+
             const orderData = orderDoc.data()
+            const updatedProducts = orderData.products.map(product => (
+                {
+                    ...product,
+                    status: products.find(prod => prod.product_id === product.id_printify && prod.variant_id === product.variant_id)?.status || null,
+                    ...auth,
+                }
+            ))
 
-            const updatedProducts = orderData.products.map(product =>
-                product.id_printify === id_printify && product.variant_id === variant_id
-                    ? { ...product, ...newFields }
-                    : product
-            )
-
-            await updateDoc(orderRef, { products: updatedProducts })
+            await updateDoc(orderDoc.ref, { products: updatedProducts })
 
             return {
                 status: 200,
@@ -112,7 +118,7 @@ async function updateProductFields(order_id, id_printify, variant_id, newFields)
         } else {
             return {
                 status: 404,
-                message: `Order with ID ${order_id} not found`,
+                message: `Order with ID ${order_id_printify} not found`,
             }
         }
     } catch (error) {
@@ -128,5 +134,5 @@ async function updateProductFields(order_id, id_printify, variant_id, newFields)
 export {
     createOrder,
     getOrdersByUserId,
-    updateProductFields,
+    updateProductStatus,
 }
