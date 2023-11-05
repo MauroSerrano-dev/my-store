@@ -89,13 +89,27 @@ export default function Order(props) {
                             Problem with order
                         </Button>
                         {!order.products.every(prod => prod.status === 'shipment-delivered') && !order.products.every(prod => prod.status === 'canceled') &&
-                            <Button
-                                variant='outlined'
-                                size='small'
-                                disabled={!order.shipments}
-                            >
-                                Track Product
-                            </Button>
+                            (
+                                order.shipments
+                                    ? <Link
+                                        href={order.shipments[0].url}
+                                        target='_blank'
+                                    >
+                                        <Button
+                                            variant='outlined'
+                                            size='small'
+                                        >
+                                            Track Product
+                                        </Button>
+                                    </Link>
+                                    : <Button
+                                        variant='outlined'
+                                        size='small'
+                                        disabled={true}
+                                    >
+                                        Track Product
+                                    </Button>
+                            )
                         }
                     </div>
                 </div>
@@ -106,37 +120,40 @@ export default function Order(props) {
                         className={styles.product}
                         key={j}
                     >
-                        <Stepper
-                            connector={<QontoConnector />}
-                        >
-                            {(product.status === 'shipment-delivery-attempt' ? STEPS_ATTEMPT : STEPS).map((step, i) => (
-                                <Step
-                                    key={step.id}
-                                    completed={i <= (product.status === 'shipment-delivery-attempt' ? STEPS_ATTEMPT : STEPS).findIndex(step => step.id === product.status)}
-                                    sx={{
-                                        '.MuiSvgIcon-root': {
-                                            color: i <= (product.status === 'shipment-delivery-attempt' ? STEPS_ATTEMPT : STEPS).findIndex(step => step.id === product.status) ? 'var(--primary)' : '#999999',
-                                        },
-                                        '.MuiStepIcon-text': {
-                                            fill: i <= (product.status === 'shipment-delivery-attempt' ? STEPS_ATTEMPT : STEPS).findIndex(step => step.id === product.status) ? 'var(--primary)' : 'var(--background-color)',
-                                            fontWeight: 600,
-                                        },
-                                    }}
-                                >
-                                    <StepLabel
+                        {product.status === 'canceled'
+                            ? <p style={{ color: 'var(--color-error)', fontSize: 17 }}>Canceled</p>
+                            : <Stepper
+                                connector={<QontoConnector />}
+                            >
+                                {(product.status === 'shipment-delivery-attempt' ? STEPS_ATTEMPT : STEPS).map((step, i) => (
+                                    <Step
+                                        key={step.id}
+                                        completed={i <= (product.status === 'shipment-delivery-attempt' ? STEPS_ATTEMPT : STEPS).findIndex(step => step.id === product.status)}
                                         sx={{
-                                            '.MuiStepLabel-label': {
-                                                cursor: 'default',
-                                                color: i <= (product.status === 'shipment-delivery-attempt' ? STEPS_ATTEMPT : STEPS).findIndex(step => step.id === product.status) ? 'var(--primary) !important' : '#999999',
-                                                fontWeight: i <= (product.status === 'shipment-delivery-attempt' ? STEPS_ATTEMPT : STEPS).findIndex(step => step.id === product.status) ? 600 : 400,
-                                            }
+                                            '.MuiSvgIcon-root': {
+                                                color: i <= (product.status === 'shipment-delivery-attempt' ? STEPS_ATTEMPT : STEPS).findIndex(step => step.id === product.status) ? 'var(--primary)' : '#999999',
+                                            },
+                                            '.MuiStepIcon-text': {
+                                                fill: i <= (product.status === 'shipment-delivery-attempt' ? STEPS_ATTEMPT : STEPS).findIndex(step => step.id === product.status) ? 'var(--primary)' : 'var(--background-color)',
+                                                fontWeight: 600,
+                                            },
                                         }}
                                     >
-                                        {step.title}
-                                    </StepLabel>
-                                </Step>
-                            ))}
-                        </Stepper>
+                                        <StepLabel
+                                            sx={{
+                                                '.MuiStepLabel-label': {
+                                                    cursor: 'default',
+                                                    color: i <= (product.status === 'shipment-delivery-attempt' ? STEPS_ATTEMPT : STEPS).findIndex(step => step.id === product.status) ? 'var(--primary) !important' : '#999999',
+                                                    fontWeight: i <= (product.status === 'shipment-delivery-attempt' ? STEPS_ATTEMPT : STEPS).findIndex(step => step.id === product.status) ? 600 : 400,
+                                                }
+                                            }}
+                                        >
+                                            {step.title}
+                                        </StepLabel>
+                                    </Step>
+                                ))}
+                            </Stepper>
+                        }
                         <div className={styles.productInfos}>
                             <div className={styles.productInfosLeft}>
                                 <Link

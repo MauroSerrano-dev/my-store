@@ -12,6 +12,7 @@
   --text-white: #f3f3f3;
   --text-color: var(--text-black);
   --color-success: #52b963;
+  --color-error: #bA2326;
 
   --global-white: #f3f3f3;
   --global-black: #080808;

@@ -1,5 +1,5 @@
 .container {
-    border: 1px white solid;
+    border: 1px #777777 solid;
     border-radius: 8px;
 
     overflow: hidden;
@@ -45,7 +45,7 @@
 
     gap: 1rem;
 
-    border-top: 1px solid white;
+    border-top: 1px solid #777777;
     padding: 1rem;
 }
 
