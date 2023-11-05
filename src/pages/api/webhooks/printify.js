@@ -31,7 +31,7 @@ async function createWeebhook(body) {
 }
 
 export default async function handler(req, res) {
-    await createWeebhook({ caraca: JSON.stringify(req.body))
+    await createWeebhook({ caraca: JSON.stringify(req.body) })
     res.status(200).json({ message: 'Order status updated!' })
     /*     try {
             if (req.method === "POST") {
