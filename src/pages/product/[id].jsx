@@ -83,35 +83,37 @@ export default withRouter(props => {
     }
 
     function handleAddToCart() {
-        const prodVariant = product.variants.find(vari => vari.size_id === currentSize.id && vari.color_id === currentColor.id)
+        if (cart) {
+            const prodVariant = product.variants.find(vari => vari.size_id === currentSize.id && vari.color_id === currentColor.id)
 
-        //se alterar o squema tem que alterar no arquivo backend/product.js
-        const productCart = {
-            id: product.id,
-            type_id: product.type_id,
-            title: product.title,
-            description: product.description,
-            printify_ids: product.printify_ids,
-            variant: prodVariant,
-            quantity: 1,
-            default_variant: {
-                color_id: product.variants[0].color_id,
-                size_id: product.variants[0].size_id,
-            },
-            image: product.images.filter(img => img.color_id === prodVariant.color_id)[product.image_showcase_index],
-        }
-
-        setCart(prev => (
-            {
-                ...prev,
-                products: prev.products.some(prod => prod.id === product.id && prod.variant.id === prodVariant.id)
-                    ? prev.products.map(p => p.id === product.id && p.variant.id === prodVariant.id
-                        ? ({ ...p, quantity: p.quantity + 1 })
-                        : p
-                    )
-                    : prev.products.concat(productCart)
+            //se alterar o squema tem que alterar no arquivo backend/product.js
+            const productCart = {
+                id: product.id,
+                type_id: product.type_id,
+                title: product.title,
+                description: product.description,
+                printify_ids: product.printify_ids,
+                variant: prodVariant,
+                quantity: 1,
+                default_variant: {
+                    color_id: product.variants[0].color_id,
+                    size_id: product.variants[0].size_id,
+                },
+                image: product.images.filter(img => img.color_id === prodVariant.color_id)[product.image_showcase_index],
             }
-        ))
+
+            setCart(prev => (
+                {
+                    ...prev,
+                    products: prev.products.some(prod => prod.id === product.id && prod.variant.id === prodVariant.id)
+                        ? prev.products.map(p => p.id === product.id && p.variant.id === prodVariant.id
+                            ? ({ ...p, quantity: p.quantity + 1 })
+                            : p
+                        )
+                        : prev.products.concat(productCart)
+                }
+            ))
+        }
     }
 
     function handleColorChange(arr, index, color) {
