@@ -31,7 +31,7 @@ async function createWeebhook(body) {
 }
 
 export default async function handler(req, res) {
-    await createWeebhook({ vai: 'tomar' })
+    await createWeebhook(req.body)
     res.status(200).json({ message: 'Order status updated!' })
     /*     try {
             if (req.method === "POST") {
