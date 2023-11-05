@@ -81,12 +81,23 @@ export default function Order(props) {
                     <p style={{ fontSize: 12, textAlign: 'start' }}>
                         ORDER #{order.id}
                     </p>
-                    <Button
-                        variant='outlined'
-                        size='small'
-                    >
-                        Problem with order
-                    </Button>
+                    <div className='flex center row' style={{ gap: '0.5rem' }}>
+                        <Button
+                            variant='outlined'
+                            size='small'
+                        >
+                            Problem with order
+                        </Button>
+                        {!order.products.every(prod => prod.status === 'shipment-delivered') && !order.products.every(prod => prod.status === 'canceled') &&
+                            <Button
+                                variant='outlined'
+                                size='small'
+                                disabled={!order.shipments}
+                            >
+                                Track Product
+                            </Button>
+                        }
+                    </div>
                 </div>
             </div>
             <div className={styles.body}>
@@ -178,16 +189,11 @@ export default function Order(props) {
                                 </Link>
                             </div>
                             <div className={styles.productInfosRight}>
-                                <Button
-                                    variant='outlined'
-                                >
-                                    Track Product
-                                </Button>
                             </div>
                         </div>
                     </div>
                 )}
             </div>
-        </motion.div>
+        </motion.div >
     )
 }
