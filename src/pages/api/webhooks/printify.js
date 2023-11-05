@@ -31,7 +31,7 @@ async function createWeebhook(body) {
 }
 
 export default async function handler(req, res) {
-    await createWeebhook(req.body)
+    await createWeebhook(req.headers)
     try {
         if (req.method === "POST") {
             const body = req.body
