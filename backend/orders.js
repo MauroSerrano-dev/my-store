@@ -8,11 +8,12 @@ import {
     query,
     where,
     getDocs,
+    orderBy,
 } from "firebase/firestore"
 import { initializeApp } from 'firebase/app'
 import { firebaseConfig } from "../firebase.config"
 import { handleProductsPurchased } from "./product"
-import { STEPS, STEPS_ATTEMPT } from "../consts"
+import { ALLOWED_WEBHOOK_STATUS } from "../consts"
 
 initializeApp(firebaseConfig)
 
@@ -64,14 +65,11 @@ async function getOrdersByUserId(userId, startDate, endDate) {
             q = query(q, where("create_at", "<=", end))
         }
 
+        q = query(q, orderBy("create_at", "desc"))
+
         const querySnapshot = await getDocs(q)
 
-        const orders = []
-
-        querySnapshot.forEach((doc) => {
-            const orderData = doc.data()
-            orders.push(orderData)
-        });
+        const orders = querySnapshot.docs.map(doc => doc.data())
 
         return {
             status: 200,
@@ -104,7 +102,7 @@ async function updateProductStatus(order_id_printify, printify_products) {
             const updatedProducts = orderData.products.map(product => (
                 {
                     ...product,
-                    status: STEPS.concat(STEPS_ATTEMPT).some(step => step.id === printify_products.find(prod => prod.product_id === product.id_printify && prod.variant_id === product.variant_id)?.status)
+                    status: ALLOWED_WEBHOOK_STATUS.some(step => step.id === printify_products.find(prod => prod.product_id === product.id_printify && prod.variant_id === product.variant_id)?.status)
                         ? printify_products.find(prod => prod.product_id === product.id_printify && prod.variant_id === product.variant_id)?.status || null
                         : product.status
                 }

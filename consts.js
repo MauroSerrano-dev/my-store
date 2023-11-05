@@ -5,7 +5,6 @@ export const STEPS = [
     { id: 'in-production', title: 'In Production' },
     { id: 'shipment-in-transit', title: 'Shipment in Transit' },
     { id: 'shipment-delivered', title: 'Delivered' },
-    { id: 'canceled', title: 'Canceled' },
 ]
 
 export const STEPS_ATTEMPT = [
@@ -15,6 +14,8 @@ export const STEPS_ATTEMPT = [
     { id: 'shipment-delivery-attempt', title: 'Shipment Delivery Attempt' },
     { id: 'shipment-delivered', title: 'Delivered' },
 ]
+
+export const ALLOWED_WEBHOOK_STATUS = STEPS.concat(STEPS_ATTEMPT).concat({ id: 'canceled', title: 'Canceled' })
 
 export const DEFAULT_PRODUCTS_TAGS = [
     'music',

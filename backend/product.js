@@ -142,8 +142,6 @@ async function createProduct(product) {
             }
         }
 
-        const now = new Date()
-
         const newProduct = {
             ...product,
             create_at: Timestamp.now(),
