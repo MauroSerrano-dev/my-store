@@ -14,7 +14,7 @@ const db = getFirestore()
 
 async function createWeebhook(body) {
     try {
-        const webhooksCollection = collection(db, 'webhooks2')
+        const webhooksCollection = collection(db, 'webfff')
 
         await addDoc(webhooksCollection, body)
 
