@@ -41,7 +41,7 @@ export default async function handler(req, res) {
         await createWeebhook({ aa: 'aaaaaaaaaaaaaaaaa' })
         await createWeebhook(req.headers)
 
-        if (false /* req.method === "POST" */) {
+/*         if (req.method === "POST") {
             const body = req.body
             const type = body.type
 
@@ -63,7 +63,7 @@ export default async function handler(req, res) {
 
                 res.status(200).json({ message: 'Order status updated!' })
             }
-        }
+        } */
     }
     catch (error) {
         res.status(500).json({ error: `Error on printify webhook: ${error}` })
