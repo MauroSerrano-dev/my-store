@@ -32,12 +32,12 @@ async function createWeebhook(body) {
 }
 
 export default async function handler(req, res) {
-    await createWeebhook(req.headers)
     try {
-        const calculatedSignature = CryptoJS.HmacSHA256(req.body, process.env.PRINTIFY_WEBHOOK_SECRET).toString(CryptoJS.enc.Base64)
+        const calculatedSignature = CryptoJS.HmacSHA256(JSON.stringify(req.body), process.env.PRINTIFY_WEBHOOK_SECRET).toString(CryptoJS.enc.Base64)
 
         if (calculatedSignature !== req.headers['x-pfy-signature'])
             return res.status(401).json({ error: 'Invalid authentication.' })
+        await createWeebhook(req.headers)
 
         if (req.method === "POST") {
             const body = req.body
