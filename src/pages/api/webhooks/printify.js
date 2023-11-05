@@ -7,6 +7,7 @@ import { initializeApp } from 'firebase/app'
 import { firebaseConfig } from "../../../../firebase.config"
 import axios from 'axios'
 import { updateProductStatus } from "../../../../backend/orders"
+const CryptoJS = require('crypto-js');
 
 initializeApp(firebaseConfig)
 
@@ -33,6 +34,11 @@ async function createWeebhook(body) {
 export default async function handler(req, res) {
     await createWeebhook(req.headers)
     try {
+        const calculatedSignature = CryptoJS.HmacSHA256(req.body, process.env.PRINTIFY_WEBHOOK_SECRET).toString(CryptoJS.enc.Base64)
+
+        if (calculatedSignature !== req.headers['x-pfy-signature'])
+            return res.status(401).json({ error: 'Invalid authentication.' })
+
         if (req.method === "POST") {
             const body = req.body
             const type = body.type
