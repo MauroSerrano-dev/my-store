@@ -8,11 +8,11 @@ import {
     query,
     where,
     getDocs,
-    getDoc,
 } from "firebase/firestore"
 import { initializeApp } from 'firebase/app'
 import { firebaseConfig } from "../firebase.config"
 import { handleProductsPurchased } from "./product"
+import { STEPS, STEPS_ATTEMPT } from "../consts"
 
 initializeApp(firebaseConfig)
 
@@ -66,11 +66,11 @@ async function getOrdersByUserId(userId, startDate, endDate) {
 
         const querySnapshot = await getDocs(q)
 
-        const orders = [];
+        const orders = []
 
         querySnapshot.forEach((doc) => {
-            const orderData = doc.data();
-            orders.push(orderData);
+            const orderData = doc.data()
+            orders.push(orderData)
         });
 
         return {
@@ -89,7 +89,7 @@ async function getOrdersByUserId(userId, startDate, endDate) {
     }
 }
 
-async function updateProductStatus(order_id_printify, products, auth) {
+async function updateProductStatus(order_id_printify, printify_products) {
     try {
         const ordersCollection = collection(db, process.env.COLL_ORDERS)
 
@@ -104,8 +104,9 @@ async function updateProductStatus(order_id_printify, products, auth) {
             const updatedProducts = orderData.products.map(product => (
                 {
                     ...product,
-                    status: products.find(prod => prod.product_id === product.id_printify && prod.variant_id === product.variant_id)?.status || null,
-                    ...auth,
+                    status: STEPS.concat(STEPS_ATTEMPT).some(step => step.id === printify_products.find(prod => prod.product_id === product.id_printify && prod.variant_id === product.variant_id)?.status)
+                        ? printify_products.find(prod => prod.product_id === product.id_printify && prod.variant_id === product.variant_id)?.status || null
+                        : product.status
                 }
             ))
 

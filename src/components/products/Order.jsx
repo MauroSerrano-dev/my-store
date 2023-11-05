@@ -5,23 +5,8 @@ import Image from 'next/image';
 import { Button, Step, StepLabel, Stepper } from '@mui/material';
 import styled from '@emotion/styled';
 import StepConnector, { stepConnectorClasses } from '@mui/material/StepConnector';
-import { PRODUCT_TYPES, getCurrencyByCode, SIZES_POOL, COLORS_POOL } from '../../../consts';
+import { PRODUCT_TYPES, getCurrencyByCode, SIZES_POOL, COLORS_POOL, STEPS_ATTEMPT, STEPS } from '../../../consts';
 import { format } from 'date-fns';
-
-const STEPS = [
-    { id: 'sending-to-production', title: 'Sending to Production' },
-    { id: 'in-production', title: 'In Production' },
-    { id: 'shipment-in-transit', title: 'Shipment in Transit' },
-    { id: 'shipment-delivered', title: 'Delivered' },
-]
-
-const STEPS_ATTEMPT = [
-    { id: 'sending-to-production', title: 'Sending to Production' },
-    { id: 'in-production', title: 'In Production' },
-    { id: 'shipment-in-transit', title: 'Shipment in Transit' },
-    { id: 'shipment-delivery-attempt', title: 'Shipment Delivery Attempt' },
-    { id: 'shipment-delivered', title: 'Delivered' },
-]
 
 export default function Order(props) {
     const {
