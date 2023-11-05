@@ -96,6 +96,12 @@ export default function Order(props) {
                     <p style={{ fontSize: 12, textAlign: 'start' }}>
                         ORDER #{order.id}
                     </p>
+                    <Button
+                        variant='outlined'
+                        size='small'
+                    >
+                        Problem with order
+                    </Button>
                 </div>
             </div>
             <div className={styles.body}>
@@ -189,13 +195,13 @@ export default function Order(props) {
                                 <Button
                                     variant='outlined'
                                 >
-                                    Track Order
+                                    Track Product
                                 </Button>
                             </div>
                         </div>
                     </div>
                 )}
             </div>
-        </motion.div >
+        </motion.div>
     )
 }

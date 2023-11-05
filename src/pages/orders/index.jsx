@@ -1,5 +1,4 @@
 import styles from '@/styles/pages/orders/index.module.css'
-import Footer from '@/components/Footer'
 import Head from 'next/head'
 import { useEffect, useState } from 'react'
 import Order from '@/components/products/Order'
@@ -18,8 +17,20 @@ export default function Orders(props) {
     const YEAR_DIFF = NOW.getFullYear() - userCreateAt.getFullYear()
 
     const [orders, setOrders] = useState()
-    const [dateRange, setDateRange] = useState(String(NOW.getFullYear()))
+    const [dateSelected, setDateSelected] = useState(NOW.getFullYear())
     const [datesRange, setDatesRange] = useState()
+
+    useEffect(() => {
+        if (session) {
+            setDatesRange(Array(1 + YEAR_DIFF).fill(null).map((ele, i) => ({ value: NOW.getFullYear() - i, name: String(NOW.getFullYear() - i) })))
+            getUserOrders()
+        }
+    }, [session])
+
+    useEffect(() => {
+        if (session)
+            getUserOrders()
+    }, [dateSelected])
 
     function getUserOrders() {
         const options = {
@@ -27,6 +38,8 @@ export default function Orders(props) {
             headers: {
                 authorization: process.env.NEXT_PUBLIC_APP_TOKEN,
                 user_id: session.id,
+                start_date: new Date(dateSelected, 0).getTime(),
+                end_date: new Date(dateSelected + 1, 0).getTime(),
             }
         }
 
@@ -39,12 +52,9 @@ export default function Orders(props) {
             .catch(err => console.error(err))
     }
 
-    useEffect(() => {
-        if (session) {
-            getUserOrders()
-            setDatesRange(Array(1 + YEAR_DIFF).fill(null).map((ele, i) => ({ value: String(NOW.getFullYear() - i), name: String(NOW.getFullYear() - i) })))
-        }
-    }, [session])
+    function handleSelectYear(event) {
+        setDateSelected(event.target.value)
+    }
 
     return (
         <div className={styles.container}>
@@ -56,10 +66,10 @@ export default function Orders(props) {
                     <div className={styles.top}>
                         <p><b>{orders?.length} {orders?.length > 1 ? 'orders' : 'order'}</b> placed in</p>
                         <Selector
-                            value={dateRange}
+                            value={dateSelected}
                             options={datesRange}
                             width='100px'
-                            onChange={(event) => { }}
+                            onChange={handleSelectYear}
                             supportsHoverAndPointer={supportsHoverAndPointer}
                             style={{
                                 height: 27,

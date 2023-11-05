@@ -75,14 +75,16 @@ async function getOrdersByUserId(userId, startDate, endDate) {
         );
 
         if (startDate) {
-            q = query(q, where("create_at", ">=", startDate));
+            const start = new Date(Number(startDate))
+            q = query(q, where("create_at", ">=", start))
         }
 
         if (endDate) {
-            q = query(q, where("create_at", "<=", endDate));
+            const end = new Date(Number(endDate))
+            q = query(q, where("create_at", "<=", end))
         }
 
-        const querySnapshot = await getDocs(q);
+        const querySnapshot = await getDocs(q)
 
         const orders = [];
 
@@ -97,9 +99,11 @@ async function getOrdersByUserId(userId, startDate, endDate) {
             orders: orders,
         };
     } catch (error) {
+        console.error(error)
         return {
             status: 500,
             message: "Error retrieving orders",
+            orders: [],
             error: error,
         };
     }
