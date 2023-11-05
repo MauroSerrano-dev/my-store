@@ -130,8 +130,41 @@ async function updateProductStatus(order_id_printify, printify_products) {
     }
 }
 
+async function updateOrderField(order_id_printify, field_name, value) {
+    try {
+        const ordersCollection = collection(db, process.env.COLL_ORDERS)
+
+        const q = query(ordersCollection, where("id_printify", "==", order_id_printify))
+        const querySnapshot = await getDocs(q)
+
+        if (!querySnapshot.empty) {
+            const orderDoc = querySnapshot.docs[0]
+
+            await updateDoc(orderDoc.ref, { [field_name]: value })
+
+            return {
+                status: 200,
+                message: "Product status updated successfully",
+            }
+        } else {
+            return {
+                status: 404,
+                message: `Order with ID ${order_id_printify} not found`,
+            }
+        }
+    } catch (error) {
+        console.error(error);
+        return {
+            status: 500,
+            message: "Error updating product status",
+            error: error,
+        }
+    }
+}
+
 export {
     createOrder,
     getOrdersByUserId,
     updateProductStatus,
+    updateOrderField
 }

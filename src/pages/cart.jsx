@@ -36,7 +36,7 @@ export default function Cart(props) {
         getAllProducts()
     }, [])
 
-    function handleCheckout(cart) {
+    function handleCheckout() {
         const options = {
             method: 'POST',
             headers: {
@@ -245,7 +245,7 @@ export default function Cart(props) {
                                 <Button
                                     variant='contained'
                                     size='large'
-                                    onClick={() => handleCheckout(cart)}
+                                    onClick={() => handleCheckout()}
                                     sx={{
                                         width: '100%',
                                         color: 'white',

@@ -1,35 +1,6 @@
-import {
-    collection,
-    addDoc,
-    getFirestore,
-} from "firebase/firestore"
-import { initializeApp } from 'firebase/app'
-import { firebaseConfig } from "../../../../firebase.config"
 import axios from 'axios'
-import { updateProductStatus } from "../../../../backend/orders"
+import { updateProductStatus, updateOrderField } from "../../../../backend/orders"
 const CryptoJS = require('crypto-js')
-
-initializeApp(firebaseConfig)
-
-const db = getFirestore()
-
-async function createWeebhook(body) {
-    try {
-        const webhooksCollection = collection(db, 'abcde')
-
-        await addDoc(webhooksCollection, body)
-
-        return {
-            success: true,
-            message: 'Webhook created!',
-        }
-    } catch (error) {
-        return {
-            success: false,
-            message: 'Error creating webhook',
-        }
-    }
-}
 
 export default async function handler(req, res) {
     try {
@@ -43,9 +14,9 @@ export default async function handler(req, res) {
         const body = req.body
         const type = body.type
 
-        const orderId = body.resource.id
+        const orderPrintifyId = body.resource.id
 
-        const base_url = `https://api.printify.com/v1/shops/${process.env.PRINTIFY_SHOP_ID}/orders/${orderId}.json`
+        const base_url = `https://api.printify.com/v1/shops/${process.env.PRINTIFY_SHOP_ID}/orders/${orderPrintifyId}.json`
 
         const options = {
             headers: {
@@ -57,7 +28,15 @@ export default async function handler(req, res) {
 
             const orderRes = await axios.get(base_url, options)
 
-            await updateProductStatus(orderId, orderRes.data.line_items)
+            await updateProductStatus(orderPrintifyId, orderRes.data.line_items)
+
+            if (true)
+                await updateOrderField(orderPrintifyId, 'shipments', {
+                    "carrier": "SPRING",
+                    "number": "LR011653238NL",
+                    "url": "https://mailingtechnology.com/tracking/?tn=LR011653238NL",
+                    "delivered_at": "2023-11-02 10:54:00+00:00"
+                })
 
             res.status(200).json({ message: 'Order status updated!' })
         }

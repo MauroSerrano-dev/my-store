@@ -1,4 +1,5 @@
 import { isTokenValid } from "../../../auth";
+import { STEPS } from "../../../consts";
 
 const Stripe = require("stripe");
 
@@ -73,7 +74,7 @@ export default async function handler(req, res) {
         variant_id: item.variant.id,
         quantity: item.quantity,
         price: item.price,
-        status: 'sending-to-production',
+        status: STEPS[0].id,
       })
     })
 

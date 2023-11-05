@@ -81,7 +81,6 @@ export default async function handler(req, res) {
                     id_printify: printifyRes.data.id,
                     user_id: user_id,
                     stripe_id: data.id,
-                    status: 'sending-to-production',
                     products: line_items,
                     customer: {
                         email: data.customer_details.email,

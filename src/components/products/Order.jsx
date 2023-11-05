@@ -148,6 +148,7 @@ export default function Order(props) {
                                     }}
                                 >
                                     <Image
+                                        priority
                                         quality={100}
                                         src={product.image.src}
                                         sizes={'100px'}
