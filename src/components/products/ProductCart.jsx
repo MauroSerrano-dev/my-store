@@ -65,8 +65,8 @@ export default function ProductCart(props) {
                     opacity: 1,
                     y: 0,
                     transition: {
-                        duration: 0.5,
-                        delay: 0.5 * index,
+                        duration: 0.3,
+                        delay: 0.3 * index,
                     }
                 }
             }}

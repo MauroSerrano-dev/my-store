@@ -41,8 +41,8 @@ export default function ProductModal(props) {
                     opacity: 1,
                     y: 0,
                     transition: {
-                        duration: 0.4,
-                        delay: 0.4 * index,
+                        duration: 0.3,
+                        delay: 0.3 * index,
                     }
                 }
             }}
