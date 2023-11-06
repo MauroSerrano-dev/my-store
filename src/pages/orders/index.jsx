@@ -3,6 +3,8 @@ import Head from 'next/head'
 import { useEffect, useState } from 'react'
 import Order from '@/components/products/Order'
 import Selector from '@/components/material-ui/Selector'
+import { motion } from "framer-motion";
+import { CircularProgress } from '@mui/material'
 
 export default function Orders(props) {
     const {
@@ -19,6 +21,7 @@ export default function Orders(props) {
     const [orders, setOrders] = useState()
     const [dateSelected, setDateSelected] = useState(NOW.getFullYear())
     const [datesRange, setDatesRange] = useState()
+    const [loadingBlock, setLoadingBlock] = useState(true)
 
     useEffect(() => {
         if (session) {
@@ -31,6 +34,10 @@ export default function Orders(props) {
         if (session)
             getUserOrders()
     }, [dateSelected])
+
+    useEffect(() => {
+        setLoadingBlock(false)
+    }, [])
 
     function getUserOrders() {
         const options = {
@@ -60,9 +67,8 @@ export default function Orders(props) {
         <div className={styles.container}>
             <Head>
             </Head>
-            {!orders
-                ? <main></main>
-                : <main className={styles.main}>
+            {orders
+                ? <main className={styles.main}>
                     <div className={styles.top}>
                         <p><b>{orders?.length} {orders?.length > 1 ? 'orders' : 'order'}</b> placed in</p>
                         <Selector
@@ -88,6 +94,49 @@ export default function Orders(props) {
                         )}
                     </div>
                 </main>
+                : loadingBlock
+                    ? <main></main>
+                    : <main className={styles.main} style={{ alignItems: 'center', paddingTop: '2rem' }}>
+                        <motion.div
+                            variants={{
+                                hidden: {
+                                    opacity: 0,
+                                },
+                                visible: {
+                                    opacity: 1,
+                                    transition: {
+                                        duration: 0,
+                                        delay: 0.2,
+                                    }
+                                }
+                            }}
+                            initial='hidden'
+                            animate='visible'
+                            style={{
+                                /* zIndex: 10000, */
+                            }}
+                        >
+                            <CircularProgress
+                                variant="determinate"
+                                sx={{
+                                    position: 'absolute',
+                                    color: '#525252',
+                                }}
+                                size={60}
+                                thickness={4}
+                                value={100}
+                            />
+                            <CircularProgress
+                                disableShrink
+                                size={60}
+                                thickness={4}
+                                sx={{
+                                    position: 'absolute',
+                                    animationDuration: '750ms',
+                                }}
+                            />
+                        </motion.div>
+                    </main>
             }
         </div>
     )
