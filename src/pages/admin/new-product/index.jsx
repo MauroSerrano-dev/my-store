@@ -66,7 +66,7 @@ export default withRouter(props => {
                                             width: '100%',
                                         }}
                                     >
-                                        {type.title}
+                                        {type.id}
                                     </Button>
                                 </Link>
                             )}

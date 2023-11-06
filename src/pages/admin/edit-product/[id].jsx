@@ -508,7 +508,7 @@ export default withRouter(props => {
                                         />
                                     </div>
                                     <div className={styles.sectionRight}>
-                                        {TYPE.providers.map(prov_id => PROVIDERS_POOL.find(prov => prov.id === prov_id)).map((provider, i) =>
+                                        {TYPE.providers.map(prov_id => PROVIDERS_POOL[prov_id]).map((provider, i) =>
                                             <TextInput
                                                 supportsHoverAndPointer={supportsHoverAndPointer}
                                                 key={i}

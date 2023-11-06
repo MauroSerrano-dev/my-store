@@ -83,10 +83,10 @@ export default function Order(props) {
                     </p>
                     <div className='flex center row' style={{ gap: '0.5rem' }}>
                         <Button
-                            variant='outlined'
                             size='small'
+                            color='primary'
                         >
-                            Problem with order
+                            Report Problem
                         </Button>
                         {!order.products.every(prod => prod.status === 'shipment-delivered') && !order.products.every(prod => prod.status === 'canceled') &&
                             (
@@ -96,14 +96,12 @@ export default function Order(props) {
                                         target='_blank'
                                     >
                                         <Button
-                                            variant='outlined'
                                             size='small'
                                         >
                                             Track Product
                                         </Button>
                                     </Link>
                                     : <Button
-                                        variant='outlined'
                                         size='small'
                                         disabled={true}
                                     >
@@ -120,9 +118,8 @@ export default function Order(props) {
                         className={styles.product}
                         key={j}
                     >
-                        {product.status === 'canceled'
-                            ? <p style={{ color: 'var(--color-error)', fontSize: 17 }}>Canceled</p>
-                            : <Stepper
+                        {product.status !== 'canceled' &&
+                            <Stepper
                                 connector={<QontoConnector />}
                             >
                                 {(product.status === 'shipment-delivery-attempt' ? STEPS_ATTEMPT : STEPS).map((step, i) => (
@@ -188,22 +185,34 @@ export default function Order(props) {
                                         }}
                                     />
                                 </Link>
-                                <Link
-                                    href={`/product/${product.id}${product.variant.color_id !== product.default_variant.color_id && product.variant.size_id !== product.default_variant.size_id
-                                        ? `?sz=${SIZES_POOL.find(sz => sz.id === product.variant.size_id).title.toLowerCase()}&cl=${COLORS_POOL[product.variant.color_id].id_string}`
-                                        : product.variant.size_id !== product.default_variant.size_id
-                                            ? `?sz=${SIZES_POOL.find(sz => sz.id === product.variant.size_id).title.toLowerCase()}`
-                                            : product.variant.color_id !== product.default_variant.color_id
-                                                ? `?cl=${COLORS_POOL[product.variant.color_id].id_string}`
-                                                : ''
-                                        }`
+                                <div>
+                                    <Link
+                                        href={`/product/${product.id}${product.variant.color_id !== product.default_variant.color_id && product.variant.size_id !== product.default_variant.size_id
+                                            ? `?sz=${SIZES_POOL.find(sz => sz.id === product.variant.size_id).title.toLowerCase()}&cl=${COLORS_POOL[product.variant.color_id].id_string}`
+                                            : product.variant.size_id !== product.default_variant.size_id
+                                                ? `?sz=${SIZES_POOL.find(sz => sz.id === product.variant.size_id).title.toLowerCase()}`
+                                                : product.variant.color_id !== product.default_variant.color_id
+                                                    ? `?cl=${COLORS_POOL[product.variant.color_id].id_string}`
+                                                    : ''
+                                            }`
+                                        }
+                                        style={{
+                                            fontWeight: 600
+                                        }}
+                                    >
+                                        {product.title} ({PRODUCT_TYPES.find(type => type.id === product.type_id).title})
+                                    </Link>
+                                    {product.status === 'canceled' &&
+                                        <p
+                                            style={{
+                                                color: 'var(--color-error)',
+                                                fontSize: 17,
+                                                textAlign: 'start',
+                                            }}>
+                                            Canceled
+                                        </p>
                                     }
-                                    style={{
-                                        fontWeight: 600
-                                    }}
-                                >
-                                    {product.title} ({PRODUCT_TYPES.find(type => type.id === product.type_id).title})
-                                </Link>
+                                </div>
                             </div>
                             <div className={styles.productInfosRight}>
                             </div>

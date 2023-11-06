@@ -47,7 +47,7 @@ export default function Cart(props) {
                 cartItems: cart.products.map(prod => (
                     {
                         ...prod,
-                        id_printify: prod.printify_ids[getShippingOptions(shippingCountry)[prod.type_id].provider_id],
+                        id_printify: prod.printify_ids[getShippingOptions(prod.type_id, shippingCountry).provider_id],
                         price: convertDolarToCurrency(prod.variant.price, userCurrency.code),
                     }
                 )),
@@ -84,15 +84,15 @@ export default function Cart(props) {
     }
 
     function getShippingValue() {
-        const country = getShippingOptions(shippingCountry)
         let value = 0
         let typesAlreadyIn = []
 
-        value = cart?.products.reduce((acc, item, i) => {
+        value = cart?.products.reduce((acc, item) => {
+            const values = getShippingOptions(item.type_id, shippingCountry)
             const result = acc + (
                 typesAlreadyIn.includes(item.type_id)
-                    ? country[item.type_id].add_item * item.quantity
-                    : country[item.type_id].first_item + country[item.type_id].add_item * (item.quantity - 1)
+                    ? values.add_item * item.quantity
+                    : values.first_item + values.add_item * (item.quantity - 1)
             )
             typesAlreadyIn.push(item.type_id)
             return result

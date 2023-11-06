@@ -212,7 +212,7 @@ async function getProductsByQueries(props) {
         s, //search
         t, //tags
         h, //theme
-        v, //type
+        v, //family
         c, //collection
         cl, //product color
         ac, //art color
@@ -268,7 +268,7 @@ async function getProductsByQueries(props) {
 
         // Filtre by type (se presente)
         if (v) {
-            products = products.filter(prod => v.includes(prod.type_id))
+            products = products.filter(prod => v.includes(prod.family_id))
         }
 
         // Filtre by product color (se presente)

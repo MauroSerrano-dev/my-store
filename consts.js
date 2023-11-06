@@ -19,9 +19,9 @@ export const ALLOWED_WEBHOOK_STATUS = STEPS.concat(STEPS_ATTEMPT).concat({ id: '
 
 export const DEFAULT_PRODUCTS_TAGS = [
     'music',
-    'raglan-tee',
-    't-shirt',
-    'hoodie',
+    'raglan-tees',
+    't-shirts',
+    'hoodies',
 ]
 
 export const SEARCH_FILTERS = {
@@ -66,6 +66,11 @@ export const COLORS_POOL = {
     1750: { id: 1750, id_string: 'white-black', colors: ['#ffffff', '#000000'], title: 'White/Black' },
     1792: { id: 1792, id_string: 'green-white', colors: ['#026539', '#ffffff'], title: 'Green/White' },
     1795: { id: 1795, id_string: 'navy-white', colors: ['#1a1f35', '#ffffff'], title: 'Navy/White' },
+    2620: { id: 2620, id_string: 'white-m', colors: ['#ffffff'], title: 'White' },
+    2621: { id: 2621, id_string: 'black-m', colors: ['#000000'], title: 'Black' },
+    2662: { id: 2662, id_string: 'blue-m', colors: ['#313da6'], title: 'Blue' },
+    2663: { id: 2663, id_string: 'red-m', colors: ['#cd3f3a'], title: 'Red' },
+    2665: { id: 2665, id_string: 'pink-m', colors: ['#daa2a6'], title: 'Pink' },
 }
 
 export const SEARCH_PRODUCT_COLORS = [
@@ -99,16 +104,19 @@ export const SIZES_POOL = [
     { id: 16, title: 'L' },
     { id: 17, title: 'XL' },
     { id: 18, title: '2XL' },
+    { id: 1189, title: '11oz' },
 ]
 
-export const PROVIDERS_POOL = [
-    { id: 29, title: 'Monster Digital' },
-    { id: 87, title: 'Print Logistic' },
-    { id: 72, title: 'Print Clever' },
-    { id: 26, title: 'Textildruck Europa' },
-    { id: 27, title: 'Print Geek' },
-    { id: 6, title: 'T Shirt and Sons' },
-]
+export const PROVIDERS_POOL = {
+    1: { id: 1, title: 'SPOKE Custom Products' },
+    6: { id: 6, title: 'T Shirt and Sons' },
+    26: { id: 26, title: 'Textildruck Europa' },
+    27: { id: 27, title: 'Print Geek' },
+    28: { id: 28, title: 'District Photo' },
+    29: { id: 29, title: 'Monster Digital' },
+    72: { id: 72, title: 'Print Clever' },
+    87: { id: 87, title: 'Print Logistic' },
+}
 
 export const COLLECTIONS = [
     { id: 'sound-vibes', title: 'Sound Vibes', color: '#252c5e' },
@@ -125,12 +133,12 @@ export const MENU_OPTIONS = [
 
 export const MENU_FORWARD_OPTIONS = {
     products: [
-        { title: 'T-Shirts', type: 'link', href: '/search?v=t-shirt' },
-        { title: 'Hoodies', type: 'link', href: '/search?v=hoodie' },
+        { title: 'T-Shirts', type: 'link', href: '/search?v=t-shirts' },
+        { title: 'Hoodies', type: 'link', href: '/search?v=hoodies' },
     ],
     possibleProducts: [
-        { title: 'T-Shirts', type: 'link', href: '/search?v=t-shirt' },
-        { title: 'Hoodies', type: 'link', href: '/search?v=hoodie' },
+        { title: 'T-Shirts', type: 'link', href: '/search?v=t-shirts' },
+        { title: 'Hoodies', type: 'link', href: '/search?v=hoodies' },
         { title: 'Long Sleeves', type: 'link', href: '/search?v=long+sleeves' },
         { title: 'Socks', type: 'link', href: '/search?v=socks' },
         { title: 'Mugs', type: 'link', href: '/search?v=mugs' },
@@ -171,8 +179,8 @@ export const THEMES_POOL = [
 ]
 
 export const itemsNavBar = [
-    { value: 't-shirt', title: 'T-SHIRTS' },
-    { value: 'hoodie', title: 'HOODIES' },
+    { value: 't-shirts', title: 'T-SHIRTS' },
+    { value: 'hoodies', title: 'HOODIES' },
     { value: 'mugs', title: 'MUGS' },
     { value: 'bags', title: 'BAGS' },
     { value: 'accessories', title: 'ACCESSORIES' },
@@ -180,9 +188,17 @@ export const itemsNavBar = [
     { value: 'socks', title: 'SOCKS' },
 ]
 
+export const PRODUCTS_FAMILY = {
+    't-shirts': { id: 't-shirts', title: 'T-Shirts', color: '#1189C4' },
+    'hoodies': { id: 'hoodies', title: 'Hoodies', color: '#026539' },
+    'raglan-tees': { id: 'raglan-tees', title: 'Raglan Tees', color: '#e0824b' },
+    'mugs': { id: 'mugs', title: 'Mugs', color: '#bA2326' },
+}
+
 export const PRODUCT_TYPES = [
     {
         id: 't-shirt',
+        family_id: 't-shirts',
         title: 'T-Shirt',
         color: '#1189C4',
         providers: [29, 87, 72],
@@ -688,6 +704,7 @@ export const PRODUCT_TYPES = [
     },
     {
         id: 'hoodie',
+        family_id: 'hoodies',
         title: 'Hoodie',
         color: '#026539',
         providers: [29, 26, 72],
@@ -1283,6 +1300,7 @@ export const PRODUCT_TYPES = [
     },
     {
         id: 'raglan-tee',
+        family_id: 'raglan-tees',
         title: 'Raglan Tee',
         color: '#e0824b',
         providers: [27, 6],
@@ -1607,183 +1625,376 @@ export const PRODUCT_TYPES = [
         ],
     },
     {
-        id: 'socks',
-        title: 'Socks',
-        providers: [],
+        id: 'mug',
+        family_id: 'mugs',
+        title: 'Mug',
+        color: '#bA2326',
+        providers: [1, 87],
+        sizes: [1189],
+        colors: [2620],
+        variants: [
+            {
+                id: 79661,
+                cost: 527,
+                price: 878,
+                title: '11oz / White',
+                grams: 340,
+                color_id: 2620,
+                size_id: 1189,
+            }
+        ]
     },
     {
-        id: 'pillows',
-        title: 'Pillows',
-        providers: [],
+        id: 'mug-c',
+        family_id: 'mugs',
+        title: 'Mug',
+        color: '#bA2326',
+        providers: [28, 87],
+        sizes: [1189],
+        colors: [2621, 2662, 2663, 2665],
+        variants: [
+            {
+                id: 72180,
+                cost: 552,
+                price: 920,
+                title: 'Black / 11oz',
+                grams: 390,
+                color_id: 2621,
+                size_id: 1189,
+            },
+            {
+                id: 72181,
+                cost: 552,
+                price: 920,
+                title: 'Blue / 11oz',
+                grams: 390,
+                color_id: 2662,
+                size_id: 1189,
+            },
+            {
+                id: 72183,
+                cost: 552,
+                price: 920,
+                title: 'Pink / 11oz',
+                grams: 390,
+                color_id: 2665,
+                size_id: 1189,
+            },
+            {
+                id: 72184,
+                cost: 552,
+                price: 920,
+                title: 'Red / 11oz',
+                grams: 390,
+                color_id: 2663,
+                size_id: 1189,
+            }
+        ]
     },
 ]
 
-export const USER_CUSTOMIZE_HOME_PAGE = THEMES_POOL.map(theme => ({ ...theme, query: 'h' })).concat(PRODUCT_TYPES.map(type => ({ id: type.id, title: type.title, query: 'v' }))).sort((a, b) => b.id < a.id ? 1 : -1)
+export function getShippingOptions(product_type, country) {
+    const EU_COUNTRIES = ['PL', 'DE', 'BV', 'GE', 'SM', 'GI', 'GG', 'AT', 'HU', 'MD', 'HR', 'BE', 'IM', 'GR', 'IT', 'BY', 'GL', 'GP', 'LU', 'VA', 'JE', 'SK', 'BG', 'MK', 'PT', 'RE', 'FR', 'RO', 'TR', 'SI', 'XK', 'CZ', 'RS', 'ES', 'MC', 'ME', 'UA', 'AL', 'AM', 'CY', 'AX', 'AD', 'FO', 'BA', 'NL', 'MT']
 
-export const EU_COUNTRIES = ['DE', 'BV', 'GE', 'SM', 'GI', 'GG', 'AT', 'HU', 'MD', 'HR', 'BE', 'IM', 'GR', 'IT', 'BY', 'GL', 'GP', 'LU', 'VA', 'JE', 'SK', 'BG', 'MK', 'PT', 'RE', 'FR', 'RO', 'TR', 'SI', 'XK', 'CZ', 'RS', 'ES', 'MC', 'ME', 'UA', 'AL', 'AM', 'CY', 'AX', 'AD', 'FO', 'BA', 'NL', 'MT']
+    const EU_NORTH_COUNTRIES = ['LV', 'LT', 'NO', 'FI', 'SE', 'EE', 'IS', 'DK', 'CH', 'LI']
 
-export function getShippingOptions(country) {
-    switch (EU_COUNTRIES.includes(country) ? 'EU' : country) {
-        case 'US':
+    const countryCode = EU_COUNTRIES.includes(country)
+        ? 'EU'
+        : EU_NORTH_COUNTRIES.includes(country)
+            ? 'EUN'
+            : country
+
+    if (product_type === 't-shirt') {
+        if (countryCode === 'US') {
             return {
-                't-shirt': {
-                    provider_id: 29,
-                    first_item: 475,
-                    add_item: 240,
-                    currency: 'usd'
-                },
-                'hoodie': {
-                    provider_id: 29,
-                    first_item: 849,
-                    add_item: 209,
-                    currency: 'usd'
-                },
-                'mugs-white': {
-                    provider_id: 29,
-                    first_item: 849,
-                    add_item: 209,
-                    currency: 'usd'
-                },
-                'mugs-color': {
-                    provider_id: 29,
-                    first_item: 849,
-                    add_item: 209,
-                    currency: 'usd'
-                },
-                'raglan-tee': {
-                    provider_id: 27,
-                    first_item: 849,
-                    add_item: 330,
-                    currency: 'usd'
-                },
-            }
-        case 'CA':
-            return {
-                't-shirt': {
-                    provider_id: 29,
-                    first_item: 939,
-                    add_item: 439,
-                    currency: 'usd'
-                },
-                'hoodie': {
-                    provider_id: 29,
-                    first_item: 1269,
-                    add_item: 659,
-                    currency: 'usd'
-                },
-                'raglan-tee': {
-                    provider_id: 27,
-                    first_item: 679,
-                    add_item: 219,
-                    currency: 'usd'
-                },
-            }
-        case 'PL':
-            return {
-                't-shirt': {
-                    provider_id: 87,
-                    first_item: 499,
-                    add_item: 119,
-                    currency: 'usd'
-                },
-                'hoodie': {
-                    provider_id: 26,
-                    first_item: 699,
-                    add_item: 239,
-                    currency: 'usd'
-                },
-                'raglan-tee': {
-                    provider_id: 6,
-                    first_item: 749,
-                    add_item: 129,
-                    currency: 'usd'
-                },
-            }
-        case 'EU':
-            return {
-                't-shirt': {
-                    provider_id: 87,
-                    first_item: 569,
-                    add_item: 199,
-                    currency: 'usd'
-                },
-                'hoodie': {
-                    provider_id: 26,
-                    first_item: 699,
-                    add_item: 239,
-                    currency: 'usd'
-                },
-                'raglan-tee': {
-                    provider_id: 6,
-                    first_item: 749,
-                    add_item: 129,
-                    currency: 'usd'
-                },
-            }
-        case 'UK':
-            return {
-                't-shirt': {
-                    provider_id: 72,
-                    first_item: 429,
-                    add_item: 199,
-                    currency: 'usd'
-                },
-                'hoodie': {
-                    provider_id: 72,
-                    first_item: 759,
-                    add_item: 299,
-                    currency: 'usd'
-                },
-                'raglan-tee': {
-                    provider_id: 6,
-                    first_item: 398,
-                    add_item: 129,
-                    currency: 'usd'
-                },
-            }
-        case 'AU':
-            return {
-                't-shirt': {
-                    provider_id: 29,
-                    first_item: 1249,
-                    add_item: 499,
-                    currency: 'usd'
-                },
-                'hoodie': {
-                    provider_id: 29,
-                    first_item: 2199,
-                    add_item: 999,
-                    currency: 'usd'
-                },
-                'raglan-tee': {
-                    provider_id: 27,
-                    first_item: 1099,
-                    add_item: 549,
-                    currency: 'usd'
-                },
-            }
-        default: return {
-            't-shirt': {
                 provider_id: 29,
-                first_item: 1000,
+                first_item: 475,
+                add_item: 240,
+                currency: 'usd'
+            }
+        }
+        if (countryCode === 'CA') {
+            return {
+                provider_id: 29,
+                first_item: 939,
+                add_item: 439,
+                currency: 'usd'
+            }
+        }
+        if (countryCode === 'PL') {
+            return {
+                provider_id: 87,
+                first_item: 499,
+                add_item: 119,
+                currency: 'usd'
+            }
+        }
+        if (countryCode === 'UK') {
+            return {
+                provider_id: 72,
+                first_item: 429,
+                add_item: 199,
+                currency: 'usd'
+            }
+        }
+        if (countryCode === 'AU') {
+            return {
+                provider_id: 29,
+                first_item: 1249,
+                add_item: 499,
+                currency: 'usd'
+            }
+        }
+        if (countryCode === 'EU') {
+            return {
+                provider_id: 87,
+                first_item: 569,
+                add_item: 199,
+                currency: 'usd'
+            }
+        }
+        return {
+            provider_id: 29,
+            first_item: 1000,
+            add_item: 400,
+            currency: 'usd'
+        }
+    }
+    if (product_type === 'hoodie') {
+        if (countryCode === 'US') {
+            return {
+                provider_id: 29,
+                first_item: 849,
+                add_item: 209,
+                currency: 'usd'
+            }
+        }
+        if (countryCode === 'CA') {
+            return {
+                provider_id: 29,
+                first_item: 1269,
+                add_item: 659,
+                currency: 'usd'
+            }
+        }
+        if (countryCode === 'PL') {
+            return {
+                provider_id: 26,
+                first_item: 699,
+                add_item: 239,
+                currency: 'usd'
+            }
+        }
+        if (countryCode === 'UK') {
+            return {
+                provider_id: 72,
+                first_item: 759,
+                add_item: 299,
+                currency: 'usd'
+            }
+        }
+        if (countryCode === 'AU') {
+            return {
+                provider_id: 29,
+                first_item: 2199,
+                add_item: 999,
+                currency: 'usd'
+            }
+        }
+        if (countryCode === 'EU') {
+            return {
+                provider_id: 26,
+                first_item: 699,
+                add_item: 239,
+                currency: 'usd'
+            }
+        }
+        return {
+            provider_id: 29,
+            first_item: 1500,
+            add_item: 1000,
+            currency: 'usd'
+        }
+    }
+    if (product_type === 'raglan-tee') {
+        if (countryCode === 'US') {
+            return {
+                provider_id: 27,
+                first_item: 849,
+                add_item: 330,
+                currency: 'usd'
+            }
+        }
+        if (countryCode === 'CA') {
+            return {
+                provider_id: 27,
+                first_item: 679,
+                add_item: 219,
+                currency: 'usd'
+            }
+        }
+        if (countryCode === 'PL') {
+            return {
+                provider_id: 6,
+                first_item: 749,
+                add_item: 129,
+                currency: 'usd'
+            }
+        }
+        if (countryCode === 'UK') {
+            return {
+                provider_id: 6,
+                first_item: 398,
+                add_item: 129,
+                currency: 'usd'
+            }
+        }
+        if (countryCode === 'EU') {
+            return {
+                provider_id: 6,
+                first_item: 749,
+                add_item: 129,
+                currency: 'usd'
+            }
+        }
+        return {
+            provider_id: 27,
+            first_item: 1099,
+            add_item: 549,
+            currency: 'usd'
+        }
+    }
+    if (product_type === 'mug') {
+        if (countryCode === 'US') {
+            return {
+                provider_id: 1,
+                first_item: 639,
                 add_item: 400,
                 currency: 'usd'
-            },
-            'hoodie': {
-                provider_id: 29,
-                first_item: 1500,
-                add_item: 1000,
+            }
+        }
+        if (countryCode === 'CA') {
+            return {
+                provider_id: 1,
+                first_item: 1489,
+                add_item: 609,
                 currency: 'usd'
-            },
-            'raglan-tee': {
-                provider_id: 27,
-                first_item: 1099,
-                add_item: 549,
+            }
+        }
+        if (countryCode === 'PL') {
+            return {
+                provider_id: 87,
+                first_item: 659,
+                add_item: 199,
                 currency: 'usd'
-            },
+            }
+        }
+        if (countryCode === 'UK') {
+            return {
+                provider_id: 87,
+                first_item: 729,
+                add_item: 169,
+                currency: 'usd'
+            }
+        }
+        if (countryCode === 'IE') {
+            return {
+                provider_id: 87,
+                first_item: 729,
+                add_item: 169,
+                currency: 'usd'
+            }
+        }
+        if (countryCode === 'EU') {
+            return {
+                provider_id: 87,
+                first_item: 699,
+                add_item: 179,
+                currency: 'usd'
+            }
+        }
+        if (countryCode === 'EUN') {
+            return {
+                provider_id: 87,
+                first_item: 1029,
+                add_item: 199,
+                currency: 'usd'
+            }
+        }
+        return {
+            provider_id: 87,
+            first_item: 1359,
+            add_item: 699,
+            currency: 'usd'
+        }
+    }
+    if (product_type === 'mug-c') {
+        if (countryCode === 'US') {
+            return {
+                provider_id: 28,
+                first_item: 639,
+                add_item: 359,
+                currency: 'usd'
+            }
+        }
+        if (countryCode === 'CA') {
+            return {
+                provider_id: 28,
+                first_item: 1149,
+                add_item: 599,
+                currency: 'usd'
+            }
+        }
+        if (countryCode === 'PL') {
+            return {
+                provider_id: 87,
+                first_item: 659,
+                add_item: 199,
+                currency: 'usd'
+            }
+        }
+        if (countryCode === 'UK') {
+            return {
+                provider_id: 87,
+                first_item: 729,
+                add_item: 169,
+                currency: 'usd'
+            }
+        }
+        if (countryCode === 'IE') {
+            return {
+                provider_id: 87,
+                first_item: 729,
+                add_item: 169,
+                currency: 'usd'
+            }
+        }
+        if (countryCode === 'EU') {
+            return {
+                provider_id: 87,
+                first_item: 699,
+                add_item: 179,
+                currency: 'usd'
+            }
+        }
+        if (countryCode === 'EUN') {
+            return {
+                provider_id: 87,
+                first_item: 1029,
+                add_item: 199,
+                currency: 'usd'
+            }
+        }
+        return {
+            provider_id: 87,
+            first_item: 1359,
+            add_item: 699,
+            currency: 'usd'
         }
     }
 }
+
+export const USER_CUSTOMIZE_HOME_PAGE = THEMES_POOL.map(theme => ({ ...theme, query: 'h' })).concat(Object.keys(PRODUCTS_FAMILY).map(id => ({ id: id, title: PRODUCTS_FAMILY[id].title, query: 'v' }))).sort((a, b) => b.id < a.id ? 1 : -1)
 
 export function convertDolarToCurrency(value, currency) {
     if (currency === 'usd')

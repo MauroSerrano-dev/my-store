@@ -22,3 +22,14 @@ export function getObjectsDiff(obj1, obj2) {
 
     return differentFields;
 }
+
+export function hasRepeatedItems(arr) {
+    const values = new Set()
+    for (const item of arr) {
+        if (values.has(item)) {
+            return true
+        }
+        values.add(item)
+    }
+    return false
+}

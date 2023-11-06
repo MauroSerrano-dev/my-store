@@ -62,11 +62,9 @@ export default function Profile(props) {
                     else {
                         showToast({ type: 'error', msg: response.message })
                     }
-                    setDisableSaveButton(false)
                 })
                 .catch(err => {
                     console.error(err)
-                    setDisableSaveButton(false)
                 })
         }
     }

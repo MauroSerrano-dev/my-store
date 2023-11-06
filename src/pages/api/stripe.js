@@ -100,7 +100,7 @@ export default async function handler(req, res) {
               currency: currency,
             },
             display_name: "Standart",
-            delivery_estimate: {
+            /* delivery_estimate: {
               minimum: {
                 unit: "business_day",
                 value: 5,
@@ -109,7 +109,7 @@ export default async function handler(req, res) {
                 unit: "business_day",
                 value: 7,
               },
-            },
+            }, */
           },
         },
       ],

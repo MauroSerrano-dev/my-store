@@ -29,6 +29,8 @@
     align-items: center;
 
     gap: 2rem;
+
+    --text-color: #e0e0e0;
 }
 
 .headRight {

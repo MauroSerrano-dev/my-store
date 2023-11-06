@@ -82,6 +82,11 @@ export default function Orders(props) {
                                 fontSize: 14,
                                 width: 85
                             }}
+                            styleOption={{
+                                height: 27,
+                                fontSize: 14,
+                                width: 85
+                            }}
                         />
                     </div>
                     <div className={styles.ordersContainer}>

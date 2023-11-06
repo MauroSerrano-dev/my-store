@@ -17,6 +17,7 @@ import BrokeChain from '@/components/svgs/BrokeChain'
 import { showToast } from '../../../../utils/toasts'
 import NoFound404 from '@/pages/404'
 import Selector from '@/components/material-ui/Selector'
+import { hasRepeatedItems } from '../../../../utils'
 
 const INICIAL_PRODUCT = {
     id: '',
@@ -58,14 +59,16 @@ export default withRouter(props => {
         if (router.isReady) {
             const type_id = router.query.type
             const tp = PRODUCT_TYPES.find(t => t.id === type_id)
-            setProduct(prev => (
-                {
-                    ...prev,
-                    printify_ids: tp.providers.reduce((acc, prov_id) => ({ ...acc, [prov_id]: '' }), {}),
-                    sizes: SIZES_POOL.filter(sz => tp.sizes.includes(sz.id))
-                }
-            ))
-            setType(tp)
+            if (tp) {
+                setProduct(prev => (
+                    {
+                        ...prev,
+                        printify_ids: tp.providers.reduce((acc, prov_id) => ({ ...acc, [prov_id]: '' }), {}),
+                        sizes: SIZES_POOL.filter(sz => tp.sizes.includes(sz.id))
+                    }
+                ))
+                setType(tp)
+            }
         }
     }, [router])
 
@@ -73,12 +76,17 @@ export default withRouter(props => {
         setDisableCreateButton(true)
 
         if (product.colors.length === 0) {
-            showToast({ msg: 'Choose at least one color.' })
+            showToast({ msg: 'Choose at least one color.', type: 'error' })
             setDisableCreateButton(false)
             return
         }
         if (product.title === '') {
-            showToast({ msg: 'Some fields missing.' })
+            showToast({ msg: 'Some fields missing.', type: 'error' })
+            setDisableCreateButton(false)
+            return
+        }
+        if (hasRepeatedItems(Object.values(product.printify_ids))) {
+            showToast({ msg: 'Printify ids must be unique.', type: 'error' })
             setDisableCreateButton(false)
             return
         }
@@ -99,6 +107,7 @@ export default withRouter(props => {
                     ...product_copy,
                     id: product.id + '-' + type.id,
                     type_id: type.id,
+                    family_id: type.family_id,
                     title_lower_case: product.title.toLowerCase(),
                     colors_ids: product.colors.map(color => color.id),
                     sizes_ids: SIZES_POOL.map(size => size.id).filter(sz_id => product.sizes.some(sz => sz.id === sz_id)),
@@ -476,7 +485,7 @@ export default withRouter(props => {
                                             }}
                                         />
                                         <p style={{ whiteSpace: 'nowrap', paddingLeft: '0.5rem' }}>
-                                            {type.id}
+                                            -{type.id}
                                         </p>
                                     </div>
                                 </section>
@@ -525,7 +534,7 @@ export default withRouter(props => {
                                         />
                                     </div>
                                     <div className={styles.sectionRight}>
-                                        {type.providers.map(prov_id => PROVIDERS_POOL.find(prov => prov.id === prov_id)).map((provider, i) =>
+                                        {type.providers.map(prov_id => PROVIDERS_POOL[prov_id]).map((provider, i) =>
                                             <TextInput
                                                 key={i}
                                                 colorText='var(--color-success)'
