@@ -238,8 +238,10 @@ export default function DataHandler(props) {
         if (currencies) {
             if (Cookies.get('CURR'))
                 setUserCurrency(currencies?.[Cookies.get('CURR')])
-            else
-                Cookies.set('CURR', 'usd') //talvez mudar para moeda da região
+            else {
+                setUserCurrency({ code: 'usd', rate: 1, symbol: '$' }) //talvez mudar para moeda da região
+                Cookies.set('CURR', 'usd')
+            }
         }
     }, [currencies])
 
