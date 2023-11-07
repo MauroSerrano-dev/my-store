@@ -13,6 +13,6 @@ export default async function handler(req, res) {
         return res.status(401).json({ error: "Invalid authentication." })
     }
 
-    const response = await clearUpdateCounter()
-    res.status(response.status).json(response)
+    /* const response = await clearUpdateCounter() */
+    res.status(200).json({})
 }

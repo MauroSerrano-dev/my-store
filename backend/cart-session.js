@@ -72,14 +72,14 @@ async function createCartSession(products, id = null) {
     }
 }
 
-async function updateCartSessionProducts(cartId, cart) {
+async function updateCartSessionProducts(cartId, cartProducts) {
     const userRef = doc(db, process.env.COLL_CARTS_SESSION, cartId)
     const cartDoc = await getDoc(userRef);
 
     try {
         const cartData = cartDoc.data()
 
-        cartData.products = cart
+        cartData.products = cartProducts
 
         await updateDoc(userRef, cartData)
 
