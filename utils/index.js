@@ -33,3 +33,12 @@ export function hasRepeatedItems(arr) {
     }
     return false
 }
+export function mergeProducts(prods1, prods2) {
+    return prods1.map(p => {
+        const exist = prods2.find(prod => prod.id === p.id && prod.variant_id === p.variant_id)
+        if (exist)
+            return { ...p, quantity: p.quantity + exist.quantity }
+        else
+            return p
+    }).concat(prods2.filter(prod => !prods1.some(p => p.id === prod.id && p.variant_id === prod.variant_id)))
+}

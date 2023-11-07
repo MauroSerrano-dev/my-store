@@ -16,6 +16,7 @@ import { firebaseConfig } from "../firebase.config"
 import { createCart } from "./cart"
 import { getCartSessionById, deleteCartSession } from "./cart-session"
 import { DEFAULT_PRODUCTS_TAGS } from "../consts"
+const { v4: uuidv4 } = require('uuid')
 
 initializeApp(firebaseConfig)
 
@@ -88,8 +89,8 @@ async function createNewUserWithCredentials(user) {
                 home_page_tags: DEFAULT_PRODUCTS_TAGS,
                 create_at: Timestamp.now(),
             }
-
-            const cart_id = await createCart(newUserRef.id, [])
+            const cart_id = uuidv4()
+            await createCart(newUserRef.id, cart_id, [])
             // Set the document for the new user
             await setDoc(newUserRef, { ...newUser, cart_id: cart_id })
 
@@ -134,7 +135,8 @@ async function createNewUserWithGoogle(user, id, cart_cookie_id) {
             const cartSession = await getCartSessionById(cart_cookie_id)
             await deleteCartSession(cart_cookie_id)
 
-            const cart_id = await createCart(newUserRef.id, cartSession ? cartSession.products : [])
+            const cart_id = uuidv4()
+            await createCart(newUserRef.id, cart_id, cartSession ? cartSession.products : [])
 
             const newUser = {
                 ...user,

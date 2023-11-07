@@ -16,6 +16,8 @@ export default function Cart(props) {
         handleChangeCurrency,
         supportsHoverAndPointer,
         windowWidth,
+        setLoading,
+        getInicialCart
     } = props
 
     const [shippingValue, setShippingValue] = useState(0)
@@ -34,6 +36,7 @@ export default function Cart(props) {
 
     useEffect(() => {
         getAllProducts()
+        getInicialCart()
     }, [])
 
     function handleCheckout() {
@@ -154,6 +157,7 @@ export default function Cart(props) {
                                         index={i}
                                         userCurrency={userCurrency}
                                         supportsHoverAndPointer={supportsHoverAndPointer}
+                                        setLoading={setLoading}
                                     />
                                 )}
                             </div>

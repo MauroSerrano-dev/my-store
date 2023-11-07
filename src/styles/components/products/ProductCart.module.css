@@ -42,7 +42,7 @@
 
 .rightLeft {
     height: 100%;
-    width: calc(100% - 80px);
+    width: 100%;
 
     display: flex;
     flex-direction: column;
@@ -54,6 +54,8 @@
 
 .rightRight {
     position: relative;
+    
+    white-space: nowrap;
 
     display: flex;
     flex-direction: column;
@@ -61,7 +63,6 @@
     align-items: flex-start;
 
     height: 100%;
-    width: 80px;
 
     padding-top: 30px;
 }

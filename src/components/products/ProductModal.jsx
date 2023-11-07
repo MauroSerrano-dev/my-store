@@ -2,8 +2,10 @@ import styles from '@/styles/components/products/ProductModal.module.css'
 import { SlClose } from "react-icons/sl";
 import { motion } from "framer-motion";
 import Link from 'next/link';
-import { convertDolarToCurrency, SIZES_POOL, COLORS_POOL } from '../../../consts';
+import { convertDolarToCurrency, SIZES_POOL, COLORS_POOL, CART_COOKIE } from '../../../consts';
 import Image from 'next/image';
+import Cookies from 'js-cookie';
+import { useState } from 'react';
 
 export default function ProductModal(props) {
     const {
@@ -11,6 +13,7 @@ export default function ProductModal(props) {
         setCart,
         index,
         userCurrency,
+        session,
     } = props
 
     const price = `${userCurrency.symbol} ${((convertDolarToCurrency(product.variant.price * (product.sold_out ? 1 - product.sold_out.percentage : 1), userCurrency.code) / 100) * product.quantity).toFixed(2)}`
@@ -20,13 +23,38 @@ export default function ProductModal(props) {
     const COLOR = COLORS_POOL[product.variant.color_id]
     const SIZE = SIZES_POOL.find(sz => sz.id === product.variant.size_id)
 
+    const [deleting, setDeleting] = useState(false)
+
     function handleDeleteCartProduct() {
-        setCart(prev => (
-            {
-                ...prev,
-                products: prev.products.filter(prod => prod.id !== product.id || prod.variant.id !== product.variant.id)
-            }
-        ))
+        setDeleting(true)
+
+        const options = {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                authorization: process.env.NEXT_PUBLIC_APP_TOKEN
+            },
+            body: JSON.stringify({
+                cartId: session ? session.cart_id : Cookies.get(CART_COOKIE),
+                product: { id: product.id, variant_id: product.variant.id }
+            }),
+        }
+
+        if (session) {
+            options.headers.user_id = session.id
+        }
+
+        fetch("/api/carts/delete-cart-product", options)
+            .then(response => response.json())
+            .then(response => {
+                setDeleting(false)
+                setCart(response.cart)
+            })
+            .catch(err => {
+                setDeleting(false)
+                setLoading(false)
+                console.error(err)
+            })
     }
 
     return (
@@ -126,6 +154,20 @@ export default function ProductModal(props) {
                     }
                 </div>
             </div>
+            {
+                deleting &&
+                < div
+                    style={{
+                        position: 'absolute',
+                        left: 0,
+                        top: 0,
+                        backgroundColor: 'rgba(255, 255, 255, 0.2)',
+                        width: '100%',
+                        height: '100%',
+                    }}
+                >
+                </div>
+            }
         </motion.div>
     )
 }

@@ -9,6 +9,7 @@ import { CART_COOKIE, DEFAULT_PRODUCTS_TAGS } from '../../consts';
 import SearchBar from './SearchBar';
 import Menu from './Menu';
 import { motion } from 'framer-motion';
+import { v4 as uuidv4 } from 'uuid';
 
 const SUB_NAVBAR_HEIGHT = 40
 const SUB_NAVBAR_HEIGHT_MOBILE = 43
@@ -19,6 +20,7 @@ export default function DataHandler(props) {
         Component,
         pageProps,
         router,
+        setLoading,
     } = props
     const [cart, setCart] = useState()
     const [isScrollAtTop, setIsScrollAtTop] = useState(true)
@@ -39,14 +41,13 @@ export default function DataHandler(props) {
     const auth = getAuth(firebaseApp)
 
     useEffect(() => {
-        if (session !== undefined) {
-            getInicialCart()
-        }
+        getInicialCart()
     }, [session])
 
     useEffect(() => {
-        if (cart)
-            updateCart()
+        if (cart !== undefined) {
+            setLoading(false)
+        }
     }, [cart])
 
     function switchMenu() {
@@ -60,107 +61,44 @@ export default function DataHandler(props) {
     }
 
     function getInicialCart() {
-        if (session) {
-            getUserCart()
-        }
-        else {
-            const cart_id = Cookies.get(CART_COOKIE)
-            if (cart_id) {
-                getUserCartSession(cart_id)
+        if (session !== undefined) {
+            if (session) {
+                getCartFromApi(session.cart_id)
             }
             else {
-                setCart({ products: [] })
+                const cart_id = Cookies.get(CART_COOKIE)
+                if (cart_id) {
+                    getCartFromApi(cart_id)
+                }
+                else {
+                    const new_cart_id = uuidv4()
+                    getCartFromApi(new_cart_id)
+                    Cookies.set(CART_COOKIE, new_cart_id)
+                }
             }
         }
     }
 
-    function updateCart() {
-        if (session)
-            patchCart()
-        else {
-            const cart_id = Cookies.get(CART_COOKIE)
-            if (cart_id) {
-                patchCartSession(cart_id)
-            }
-            else {
-                postNewCart()
-            }
-        }
-    }
-
-    function patchCart() {
-        const options = {
-            method: 'PATCH',
-            headers: {
-                'Content-Type': 'application/json',
-                authorization: process.env.NEXT_PUBLIC_APP_TOKEN
-            },
-            body: JSON.stringify({
-                cartId: session.cart_id,
-                cartProducts: cart.products.map(prod => ({ id: prod.id, variant_id: prod.variant.id, quantity: prod.quantity })),
-            })
-        }
-        fetch("/api/cart", options)
-    }
-
-    function patchCartSession(cartId) {
-        const options = {
-            method: 'PATCH',
-            headers: {
-                'Content-Type': 'application/json',
-                authorization: process.env.NEXT_PUBLIC_APP_TOKEN
-            },
-            body: JSON.stringify({
-                cartId: cartId,
-                cartProducts: cart.products.map(prod => ({ id: prod.id, variant_id: prod.variant.id, quantity: prod.quantity })),
-            })
-        }
-        fetch("/api/cart-session", options)
-    }
-
-    function postNewCart() {
-        const options = {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                authorization: process.env.NEXT_PUBLIC_APP_TOKEN
-            },
-            body: JSON.stringify({
-                cartProducts: cart.products.map(prod => ({ id: prod.id, variant_id: prod.variant.id, quantity: prod.quantity }))
-            })
-        }
-        fetch("/api/cart-session", options)
-            .then(response => response.json())
-            .then(response => Cookies.set(CART_COOKIE, response.cart_id))
-            .catch(err => console.error(err))
-    }
-
-    function getUserCart() {
-        const options = {
-            method: 'GET',
-            headers: {
-                cart_id: session.cart_id,
-                authorization: process.env.NEXT_PUBLIC_APP_TOKEN
-            },
-        }
-        fetch("/api/cart", options)
-            .then(response => response.json())
-            .then(response => setCart(response))
-            .catch(err => console.error(err))
-    }
-
-    function getUserCartSession(cart_id) {
+    function getCartFromApi(cart_id) {
         const options = {
             method: 'GET',
             headers: {
                 cart_id: cart_id,
-                authorization: process.env.NEXT_PUBLIC_APP_TOKEN
+                authorization: process.env.NEXT_PUBLIC_APP_TOKEN,
             },
         }
-        fetch("/api/cart-session", options)
+
+        if (session) {
+            options.headers.user_id = session.id
+        }
+
+        fetch("/api/carts/cart", options)
             .then(response => response.json())
             .then(response => setCart(response))
-            .catch(err => console.error(err))
+            .catch(err => {
+                setLoading(false)
+                console.error(err)
+            })
     }
 
     function handleChangeCurrency(newCurrency) {
@@ -499,6 +437,8 @@ export default function DataHandler(props) {
                     supportsHoverAndPointer={supportsHoverAndPointer}
                     windowWidth={windowWidth}
                     router={router}
+                    setLoading={setLoading}
+                    getInicialCart={getInicialCart}
                 />
                 {showMenu &&
                     <Menu

@@ -56,6 +56,8 @@ export default function App(props) {
 
   useEffect(() => {
 
+    handleLoading()
+
     function handleLoading() {
       setLoading(true)
     }
@@ -122,10 +124,16 @@ export default function App(props) {
             pageProps={pageProps}
             Component={Component}
             router={router}
+            setLoading={setLoading}
           />
         }
       </ThemeProvider>
-      <ToastContainer newestOnTop transition={Flip} style={{ color: 'white' }} pauseOnFocusLoss={false} />
+      <ToastContainer
+        newestOnTop
+        transition={Flip}
+        style={{ color: 'white' }}
+        pauseOnFocusLoss={false}
+      />
       {loading &&
         <div>
           <div

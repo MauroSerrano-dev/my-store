@@ -5,7 +5,6 @@ import ImagesSlider from '@/components/ImagesSlider'
 import { Button } from '@mui/material'
 import ShoppingCartOutlinedIcon from '@mui/icons-material/ShoppingCartOutlined';
 import CreditCardOutlinedIcon from '@mui/icons-material/CreditCardOutlined';
-import Cookies from 'js-cookie';
 import { CART_COOKIE, COLORS_POOL, SIZES_POOL, convertDolarToCurrency } from '../../../consts'
 import Head from 'next/head'
 import ColorSelector from '@/components/ColorSelector'
@@ -13,6 +12,7 @@ import SizesSelector from '@/components/SizesSelector'
 import ShareButton from '@/components/ShareButton'
 import CareInstructionsIcons from '@/components/svgs/CareInstructionsIcons'
 import NoFound404 from '../404'
+import Cookies from 'js-cookie';
 
 export default withRouter(props => {
     const {
@@ -29,6 +29,7 @@ export default withRouter(props => {
         mobile,
         router,
         supportsHoverAndPointer,
+        setLoading,
     } = props
 
     const [currentColor, setCurrentColor] = useState(cl ? cl : COLORS_POOL[product?.colors_ids[0]])
@@ -84,6 +85,7 @@ export default withRouter(props => {
 
     function handleAddToCart() {
         if (cart) {
+            setLoading(true)
             const prodVariant = product.variants.find(vari => vari.size_id === currentSize.id && vari.color_id === currentColor.id)
 
             //se alterar o squema tem que alterar no arquivo backend/product.js
@@ -102,7 +104,7 @@ export default withRouter(props => {
                 image: product.images.filter(img => img.color_id === prodVariant.color_id)[product.image_showcase_index],
             }
 
-            setCart(prev => (
+            /* setCart(prev => (
                 {
                     ...prev,
                     products: prev.products.some(prod => prod.id === product.id && prod.variant.id === prodVariant.id)
@@ -112,7 +114,31 @@ export default withRouter(props => {
                         )
                         : prev.products.concat(productCart)
                 }
-            ))
+            )) */
+
+            const options = {
+                method: 'PATCH',
+                headers: {
+                    'Content-Type': 'application/json',
+                    authorization: process.env.NEXT_PUBLIC_APP_TOKEN
+                },
+                body: JSON.stringify({
+                    cartId: session ? session.cart_id : Cookies.get(CART_COOKIE),
+                    cartProducts: [{ id: productCart.id, variant_id: productCart.variant.id, quantity: productCart.quantity }]
+                }),
+            }
+
+            if (session) {
+                options.headers.user_id = session.id
+            }
+            
+            fetch("/api/carts/cart-products", options)
+                .then(response => response.json())
+                .then(response => setCart(response.cart))
+                .catch(err => {
+                    setLoading(false)
+                    console.error(err)
+                })
         }
     }
 
@@ -301,9 +327,9 @@ export default withRouter(props => {
     )
 })
 
-export const config = {
+/* export const config = {
     runtime: 'experimental-edge'
-}
+} */
 
 export async function getServerSideProps(context) {
 

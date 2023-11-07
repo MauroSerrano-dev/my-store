@@ -1,23 +1,24 @@
 import { arrayUnion, collection, doc, addDoc, getDoc, getDocs, getFirestore, query, setDoc, updateDoc, where, deleteDoc, Timestamp } from "firebase/firestore";
 import { initializeApp } from 'firebase/app'
 import { firebaseConfig } from "../firebase.config"
+import { mergeProducts } from "../utils";
 
 initializeApp(firebaseConfig)
 
 const db = getFirestore()
 
 async function getCartSessionById(id) {
-    const cartRef = doc(db, process.env.COLL_CARTS_SESSION, id)
-
     try {
+        const cartRef = doc(db, process.env.COLL_CARTS_SESSION, id)
+
         const cartDoc = await getDoc(cartRef)
 
         if (cartDoc.exists()) {
             return cartDoc.data()
         } else {
-            console.log("Cart Session not found")
-            await createCartSession([], id)
-            return await getCartSessionById(id)
+            console.log("Cart Session not found. We create new one.")
+            const newCartId = await createCartSession(id, [])
+            return getCartSessionById(newCartId)
         }
     } catch (error) {
         console.error("Error getting Cart Session by ID:", error)
@@ -43,36 +44,36 @@ async function deleteCartSession(id) {
     }
 }
 
-async function createCartSession(products, id = null) {
-    const cartsRef = id ? doc(db, process.env.COLL_CARTS_SESSION, id) : collection(db, process.env.COLL_CARTS_SESSION);
-
+async function createCartSession(cartId, products) {
     try {
-        if (id) {
-            // Usando o ID personalizado
-            await setDoc(cartsRef, {
-                products: products,
-                created_at: Timestamp.now(),
-            });
-        } else {
-            // O Firestore gera automaticamente um ID
-            const newCartDocRef = await addDoc(cartsRef, {
-                products: products,
-                created_at: Timestamp.now(),
-            });
+        const cartRef = doc(db, process.env.COLL_CARTS_SESSION, cartId)
 
-            console.log(`Cart Session created with ID: ${newCartDocRef.id}`);
-            return newCartDocRef.id;
+        const docSnapshot = await getDoc(cartRef)
+
+        if (docSnapshot.exists()) {
+            return {
+                status: 409,
+                message: `Cart Session ID ${cartId} already exists.`,
+            }
         }
 
-        console.log(`Cart Session created with ID: ${id}`);
-        return id;
+        const newCartSession = {
+            id: cartId,
+            products: products,
+            created_at: Timestamp.now(),
+        }
+
+        await setDoc(cartRef, newCartSession)
+
+        console.log(`Cart Session created with ID: ${cartId}`);
+        return cartId;
     } catch (error) {
         console.error("Error creating Cart Session:", error);
         return null;
     }
 }
 
-async function updateCartSessionProducts(cartId, cartProducts) {
+async function setCartSessionProducts(cartId, cartProducts) {
     const userRef = doc(db, process.env.COLL_CARTS_SESSION, cartId)
     const cartDoc = await getDoc(userRef);
 
@@ -83,15 +84,70 @@ async function updateCartSessionProducts(cartId, cartProducts) {
 
         await updateDoc(userRef, cartData)
 
-        console.log(`Cart Session ${cartId} updated successfully!`)
+        console.log(`Cart Session ${cartId} setted successfully!`)
     } catch (error) {
-        console.error(`Error updating Cart Session ${cartId}:`, error)
+        console.error(`Error setting Cart Session ${cartId}:`, error)
+    }
+}
+
+async function addProductsToCartSession(cartId, cartNewProducts) {
+    const userRef = doc(db, process.env.COLL_CARTS_SESSION, cartId)
+    const cartDoc = await getDoc(userRef)
+
+    try {
+        const cartData = cartDoc.data()
+
+        cartData.products = mergeProducts(cartData.products, cartNewProducts)
+
+        await updateDoc(userRef, cartData)
+
+        return {
+            status: 200,
+            message: `Cart Session ${cartId} updated successfully!`,
+            cart: cartData,
+        }
+    } catch (error) {
+        return {
+            status: 500,
+            message: `Error updating Cart Session ${cartId}: ${error}`,
+            cart: null,
+            error: error,
+        }
+    }
+}
+
+async function deleteProductFromCartSession(cartId, product) {
+    const userRef = doc(db, process.env.COLL_CARTS_SESSION, cartId)
+    const cartDoc = await getDoc(userRef)
+
+    try {
+        const cartData = cartDoc.data()
+
+        cartData.products = cartData.products.filter(prod => prod.id !== product.id || prod.variant_id !== product.variant_id)
+
+        await updateDoc(userRef, cartData)
+
+        return {
+            status: 200,
+            message: `Cart Session ${cartId} updated successfully!`,
+            cart: cartData,
+        }
+    } catch (error) {
+        console.error(`Error Deleting Product from Cart Session ${cartId}: ${error}`)
+        return {
+            status: 500,
+            message: `Error Deleting Product from Cart Session ${cartId}: ${error}`,
+            cart: null,
+            error: error,
+        }
     }
 }
 
 export {
     createCartSession,
-    updateCartSessionProducts,
+    setCartSessionProducts,
     getCartSessionById,
     deleteCartSession,
+    addProductsToCartSession,
+    deleteProductFromCartSession
 }

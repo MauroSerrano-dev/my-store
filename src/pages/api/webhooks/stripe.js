@@ -1,6 +1,6 @@
 import axios from 'axios'
-import { updateCart } from '../../../../backend/cart'
-import { updateCartSessionProducts } from '../../../../backend/cart-session'
+import { setCartProducts } from '../../../../backend/cart'
+import { setCartSessionProducts } from '../../../../backend/cart-session'
 import { createOrder } from '../../../../backend/orders'
 import getRawBody from 'raw-body'
 const { v4: uuidv4 } = require('uuid')
@@ -102,9 +102,9 @@ export default async function handler(req, res) {
             )
 
             if (user_id)
-                await updateCart(cart_id, [])
+                await setCartProducts(cart_id, [])
             else
-                await updateCartSessionProducts(cart_id, [])
+                await setCartSessionProducts(cart_id, [])
 
             res.status(200).json({ message: `Order ${orderId} Created. Checkout Complete!` })
         }

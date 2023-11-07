@@ -2,19 +2,10 @@ import styles from '@/styles/components/products/ProductCart.module.css'
 import { SlClose } from "react-icons/sl";
 import { motion } from "framer-motion";
 import Link from 'next/link';
-import { Select, FormControl, MenuItem, InputLabel } from '@mui/material';
-import { useState } from 'react';
 import { convertDolarToCurrency, SIZES_POOL, COLORS_POOL } from '../../../consts';
 import Image from 'next/image';
 import Selector from '../material-ui/Selector';
-
-const menuStyle = {
-    display: 'flex',
-    flexDirection: 'column',
-    justifyContent: 'center',
-    alignItems: 'center',
-    width: '80px'
-}
+import { useState } from 'react';
 
 export default function ProductCart(props) {
     const {
@@ -22,7 +13,9 @@ export default function ProductCart(props) {
         setCart,
         index,
         userCurrency,
+        session,
         supportsHoverAndPointer,
+        setLoading,
     } = props
 
     const COLOR = COLORS_POOL[product.variant.color_id]
@@ -32,23 +25,72 @@ export default function ProductCart(props) {
 
     const priceUnit = `${userCurrency.symbol} ${(convertDolarToCurrency(product.variant.price * (product.sold_out ? 1 - product.sold_out.percentage : 1), userCurrency.code) / 100).toFixed(2)} unit`
 
+    const [deleting, setDeleting] = useState(false)
+
     function handleDeleteCartProduct() {
-        setCart(prev => ({ ...prev, products: prev.products.filter(prod => prod.id !== product.id || prod.variant.id !== product.variant.id) }))
+        setLoading(true)
+        setDeleting(true)
+        const options = {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                authorization: process.env.NEXT_PUBLIC_APP_TOKEN
+            },
+            body: JSON.stringify({
+                cartId: session ? session.cart_id : Cookies.get(CART_COOKIE),
+                product: { id: product.id, variant_id: product.variant.id }
+            }),
+        }
+
+        if (session) {
+            options.headers.user_id = session.id
+        }
+
+        fetch("/api/carts/delete-cart-product", options)
+            .then(response => response.json())
+            .then(response => {
+                setDeleting(false)
+                setCart(response.cart)
+            })
+            .catch(err => {
+                setDeleting(false)
+                setLoading(false)
+                console.error(err)
+            })
     }
 
-    function changeProductField(field, newValue) {
-        setCart(prev => (
-            {
-                ...prev,
-                products: prev.products.map(prod => prod.id === product.id && prod.variant.id === product.variant.id
-                    ? {
-                        ...prod,
-                        [field]: newValue
-                    }
-                    : prod
-                )
-            }
-        ))
+    function handleChangeQuantity(event) {
+        setLoading(true)
+        setDeleting(true)
+        
+        const options = {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+                authorization: process.env.NEXT_PUBLIC_APP_TOKEN
+            },
+            body: JSON.stringify({
+                cartId: session ? session.cart_id : Cookies.get(CART_COOKIE),
+                product: { id: product.id, variant_id: product.variant.id },
+                newQuantity: event.target.value
+            }),
+        }
+
+        if (session) {
+            options.headers.user_id = session.id
+        }
+
+        fetch("/api/carts/cart-product-quantity", options)
+            .then(response => response.json())
+            .then(response => {
+                setDeleting(false)
+                setCart(response.cart)
+            })
+            .catch(err => {
+                setDeleting(false)
+                setLoading(false)
+                console.error(err)
+            })
     }
 
     return (
@@ -136,20 +178,20 @@ export default function ProductCart(props) {
                             <Selector
                                 value={product.quantity}
                                 label="Quantity"
-                                onChange={(event) => changeProductField('quantity', event.target.value)}
+                                onChange={handleChangeQuantity}
                                 onClick={() => setHoverQuantity(false)}
                                 style={{
                                     height: 30,
                                     fontSize: 16,
-                                    width: 70
+                                    width: 78
                                 }}
                                 styleOption={{
                                     height: 30,
                                     fontSize: 16,
-                                    width: 70
+                                    width: 78
                                 }}
                                 styleLabel={{
-                                    fontSize: 14,
+                                    fontSize: 16,
                                 }}
                                 options={[
                                     { value: 1, name: '1' },
@@ -181,6 +223,20 @@ export default function ProductCart(props) {
                     }
                 </div>
             </div>
-        </motion.div>
+            {
+                deleting &&
+                < div
+                    style={{
+                        position: 'absolute',
+                        left: 0,
+                        top: 0,
+                        backgroundColor: 'rgba(255, 255, 255, 0.2)',
+                        width: '100%',
+                        height: '100%',
+                    }}
+                >
+                </div>
+            }
+        </motion.div >
     )
 }

@@ -1,7 +1,8 @@
-import { collection, doc, addDoc, getDoc, getFirestore, updateDoc, Timestamp, getDocs, query, where } from "firebase/firestore";
+import { collection, doc, addDoc, getDoc, getFirestore, updateDoc, Timestamp, getDocs, query, where, setDoc } from "firebase/firestore";
 import { initializeApp } from 'firebase/app'
 import { firebaseConfig } from "../firebase.config"
 import { deleteCartSession, getCartSessionById } from "./cart-session";
+import { mergeProducts } from "../utils";
 
 initializeApp(firebaseConfig)
 
@@ -25,7 +26,7 @@ async function getCartById(id) {
     }
 }
 
-async function getCartByUserId(userId) {
+async function getCartIdByUserId(userId) {
     try {
         const cartCollection = collection(db, process.env.COLL_CARTS)
 
@@ -39,51 +40,62 @@ async function getCartByUserId(userId) {
         if (querySnapshot.empty) {
             return {
                 status: 200,
-                message: "Cart not found",
-                cart: null,
+                message: "Cart ID not found",
+                cart_id: null,
             }
         }
 
         const cartDoc = querySnapshot.docs[0]
-        const cart = { id: cartDoc.id, data: cartDoc.data() }
 
         return {
             status: 200,
-            message: "Cart retrieved successfully",
-            cart: cart,
+            message: "Cart ID retrieved successfully",
+            cart_id: cartDoc.id,
         }
     } catch (error) {
         console.error(error);
         return {
             status: 500,
-            message: "Error retrieving cart",
-            cart: null,
+            message: "Error retrieving cart ID",
+            cart_id: null,
             error: error,
         }
     }
 }
 
-async function createCart(userId, products) {
-    const cartRef = collection(db, process.env.COLL_CARTS)
-
+async function createCart(userId, cartId, products) {
     try {
-        const newCartDocRef = await addDoc(cartRef, {
+        const cartRef = doc(db, process.env.COLL_CARTS, cartId)
+
+        const docSnapshot = await getDoc(cartRef)
+
+        if (docSnapshot.exists()) {
+            return {
+                status: 409,
+                message: `Cart ID ${cartId} already exists.`,
+            }
+        }
+
+        const newCart = {
+            id: cartId,
             user_id: userId,
             products: products,
             created_at: Timestamp.now(),
-        })
+        }
 
-        console.log(`Cart created with ID: ${newCartDocRef.id}`)
-        return newCartDocRef.id
+        await setDoc(cartRef, newCart)
+
+        console.log(`Cart created with ID: ${cartId}`)
+        return cartId
     } catch (error) {
         console.error("Error creating cart:", error)
         return null
     }
 }
 
-async function updateCart(cartId, cartProducts) {
+async function setCartProducts(cartId, cartProducts) {
     const cartRef = doc(db, process.env.COLL_CARTS, cartId)
-    const cartDoc = await getDoc(cartRef);
+    const cartDoc = await getDoc(cartRef)
 
     try {
         const cartData = cartDoc.data()
@@ -91,33 +103,109 @@ async function updateCart(cartId, cartProducts) {
 
         await updateDoc(cartRef, cartData)
 
-        console.log(`Cart ${cartId} updated successfully!`)
+        console.log(`Cart ${cartId} setted successfully!`)
     } catch (error) {
-        console.error(`Error updating cart ${cartId}:`, error)
+        console.error(`Error setting cart ${cartId}:`, error)
+    }
+}
+
+async function addProductsToCart(cartId, cartNewProducts) {
+    const cartRef = doc(db, process.env.COLL_CARTS, cartId)
+    const cartDoc = await getDoc(cartRef)
+
+    try {
+        const cartData = cartDoc.data()
+
+        cartData.products = mergeProducts(cartData.products, cartNewProducts)
+
+        await updateDoc(cartRef, cartData)
+
+        return {
+            status: 200,
+            message: `Cart ${cartId} updated successfully!`,
+            cart: cartData,
+        }
+    } catch (error) {
+        console.error(`Error updating Cart ${cartId}:`, error)
+        return {
+            status: 500,
+            message: `Error updating Cart ${cartId}: ${error}`,
+            cart: null,
+            error: error,
+        }
+    }
+}
+
+async function deleteProductFromCart(cartId, product) {
+    const userRef = doc(db, process.env.COLL_CARTS, cartId)
+    const cartDoc = await getDoc(userRef)
+
+    try {
+        const cartData = cartDoc.data()
+
+        cartData.products = cartData.products.filter(prod => prod.id !== product.id || prod.variant_id !== product.variant_id)
+
+        await updateDoc(userRef, cartData)
+
+        return {
+            status: 200,
+            message: `Cart ${cartId} updated successfully!`,
+            cart: cartData,
+        }
+    } catch (error) {
+        console.error(`Error Deleting Product from Cart ${cartId}: ${error}`)
+        return {
+            status: 500,
+            message: `Error Deleting Product from Cart ${cartId}: ${error}`,
+            cart: null,
+            error: error,
+        }
+    }
+}
+
+async function changeProductField(collectionName, cartId, product, fieldName, newValue) {
+    try {
+        const userRef = doc(db, collectionName, cartId)
+        const cartDoc = await getDoc(userRef)
+
+        const cartData = cartDoc.data()
+
+        cartData.products = cartData.products.map(prod =>
+            prod.id === product.id && prod.variant_id === product.variant_id
+                ? { ...prod, [fieldName]: newValue }
+                : prod
+        )
+
+        await updateDoc(userRef, cartData)
+
+        return {
+            status: 200,
+            message: `Product field ${fieldName} in Cart ${cartId} updated successfully!`,
+            cart: cartData,
+        }
+    } catch (error) {
+        console.error(`Error in changeProductField: ${error}`)
+        return {
+            status: 500,
+            message: `Error in changeProductField: ${error}`,
+            cart: null,
+            error: error,
+        }
     }
 }
 
 async function mergeCarts(userId, cart_cookie_id) {
     try {
-        const userCartRes = await getCartByUserId(userId)
-        const userCartId = userCartRes?.cart?.id
-        const userCart = userCartRes?.cart?.data
+        const userCartRes = await getCartIdByUserId(userId)
+        const userCartId = userCartRes?.id
 
-        if (userCartRes) {
+        if (userCartId) {
             const cartSession = await getCartSessionById(cart_cookie_id)
 
             if (cartSession) {
                 await deleteCartSession(cart_cookie_id)
 
-                const mergedProducts = userCart.products.map(p => {
-                    const exist = cartSession.products.find(prod => prod.id === p.id && prod.variant_id === p.variant_id)
-                    if (exist)
-                        return { ...p, quantity: p.quantity + exist.quantity }
-                    else
-                        return p
-                }).concat(cartSession.products.filter(prod => !userCart.products.some(p => p.id === prod.id && p.variant_id === prod.variant_id)))
-
-                await updateCart(userCartId, mergedProducts)
+                await addProductsToCart(userCartId, cartSession.products)
 
                 console.log(`Cart Session ${cart_cookie_id} merged with cart ${userCartId} successfully.`)
             } else {
@@ -132,11 +220,13 @@ async function mergeCarts(userId, cart_cookie_id) {
     }
 }
 
-
 export {
     createCart,
-    updateCart,
+    setCartProducts,
     getCartById,
-    getCartByUserId,
+    getCartIdByUserId,
     mergeCarts,
+    addProductsToCart,
+    deleteProductFromCart,
+    changeProductField,
 }
