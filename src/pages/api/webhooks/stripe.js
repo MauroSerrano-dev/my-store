@@ -125,6 +125,8 @@ export default async function handler(req, res) {
     }
 }
 
+export const maxDuration = 300;
+
 export const config = {
     api: {
         bodyParser: false,
