@@ -307,7 +307,7 @@ export default withRouter(props => {
                                         : 400
                                 }}
                             >
-                                Up to {userCurrency.symbol}15
+                                Up to {userCurrency?.symbol}15
                             </Link>
                             <Link
                                 href={{
@@ -322,7 +322,7 @@ export default withRouter(props => {
                                         : 400
                                 }}
                             >
-                                {userCurrency.symbol}15 to {userCurrency.symbol}25
+                                {userCurrency?.symbol}15 to {userCurrency?.symbol}25
                             </Link>
                             <Link
                                 href={{
@@ -337,7 +337,7 @@ export default withRouter(props => {
                                         : 400
                                 }}
                             >
-                                {userCurrency.symbol}25 to {userCurrency.symbol}40
+                                {userCurrency?.symbol}25 to {userCurrency?.symbol}40
                             </Link>
                             <Link
                                 href={{
@@ -352,7 +352,7 @@ export default withRouter(props => {
                                         : 400
                                 }}
                             >
-                                {userCurrency.symbol}40 & Above
+                                {userCurrency?.symbol}40 & Above
                             </Link>
                             <div className={styles.priceFilterInputs}>
                                 <input

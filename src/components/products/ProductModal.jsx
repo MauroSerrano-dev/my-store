@@ -16,9 +16,9 @@ export default function ProductModal(props) {
         session,
     } = props
 
-    const price = `${userCurrency.symbol} ${(((product.variant.price * (product.sold_out ? 1 - product.sold_out.percentage : 1) * userCurrency?.rate) / 100) * product.quantity).toFixed(2)}`
+    const price = `${userCurrency?.symbol} ${(((product.variant.price * (product.sold_out ? 1 - product.sold_out.percentage : 1) * userCurrency?.rate) / 100) * product.quantity).toFixed(2)}`
 
-    const priceUnit = `${userCurrency.symbol} ${((product.variant.price * (product.sold_out ? 1 - product.sold_out.percentage : 1) * userCurrency?.rate) / 100).toFixed(2)} unit`
+    const priceUnit = `${userCurrency?.symbol} ${((product.variant.price * (product.sold_out ? 1 - product.sold_out.percentage : 1) * userCurrency?.rate) / 100).toFixed(2)} unit`
 
     const COLOR = COLORS_POOL[product.variant.color_id]
     const SIZE = SIZES_POOL.find(sz => sz.id === product.variant.size_id)

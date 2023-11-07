@@ -37,9 +37,9 @@ export default withRouter(props => {
 
     const productCurrentVariant = product?.variants.find(vari => vari.size_id === currentSize?.id && vari.color_id === currentColor?.id)
 
-    const productPrice = product ? `${userCurrency.symbol} ${((productCurrentVariant?.price * (product.sold_out ? 1 - product.sold_out.percentage : 1) * userCurrency?.code.rate) / 100).toFixed(2)}` : undefined
+    const productPrice = product ? `${userCurrency?.symbol} ${((productCurrentVariant?.price * (product.sold_out ? 1 - product.sold_out.percentage : 1) * userCurrency?.code.rate) / 100).toFixed(2)}` : undefined
 
-    const originalPrice = product ? `${userCurrency.symbol} ${((productCurrentVariant?.price * userCurrency?.rate) / 100).toFixed(2)}` : undefined
+    const originalPrice = product ? `${userCurrency?.symbol} ${((productCurrentVariant?.price * userCurrency?.rate) / 100).toFixed(2)}` : undefined
 
     useEffect(() => {
         setCurrentColor(cl ? cl : COLORS_POOL[product?.colors_ids[0]])

@@ -216,7 +216,7 @@ export default function Cart(props) {
                                         Items Total:
                                     </p>
                                     <p>
-                                        {`${userCurrency.symbol} ${ITEMS_TOTAL}`}
+                                        {`${userCurrency?.symbol} ${ITEMS_TOTAL}`}
                                     </p>
                                 </div>
                                 <div className={styles.detailsItem}>
@@ -224,7 +224,7 @@ export default function Cart(props) {
                                         Shipping & Taxes:
                                     </p>
                                     <p>
-                                        {`${userCurrency.symbol} ${(SHIPPING_CONVERTED / 100).toFixed(2)}`}
+                                        {`${userCurrency?.symbol} ${(SHIPPING_CONVERTED / 100).toFixed(2)}`}
                                     </p>
                                 </div>
                                 <div className={styles.orderTotalContainer}>
@@ -237,7 +237,7 @@ export default function Cart(props) {
                                                 fontWeight: '700'
                                             }}
                                         >
-                                            {`${userCurrency.symbol} ${ORDER_TOTAL}`}
+                                            {`${userCurrency?.symbol} ${ORDER_TOTAL}`}
                                         </p>
                                     </div>
                                 </div>
