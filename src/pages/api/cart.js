@@ -14,6 +14,7 @@ export default async function handler(req, res) {
 
     if (req.method === "GET") {
         const cart = await getCartById(cart_id)
+        
         const prodResponse = await getCartProductsInfo(cart.products)
 
         res.status(200).json(

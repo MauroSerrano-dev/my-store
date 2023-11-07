@@ -77,8 +77,6 @@ async function createNewUserWithCredentials(user) {
             // Add the new user to the collection with password encryption
             const newUserRef = doc(usersCollection, authenticatedUser.uid)
 
-            const now = new Date()
-
             const newUser = {
                 email: user.email,
                 first_name: user.first_name,
@@ -133,12 +131,10 @@ async function createNewUserWithGoogle(user, id, cart_cookie_id) {
             // Add the new user to the collection with password encryption
             const newUserRef = doc(usersCollection, id)
 
-            const cartProducts = await getCartSessionById(cart_cookie_id)
+            const cartSession = await getCartSessionById(cart_cookie_id)
             await deleteCartSession(cart_cookie_id)
 
-            const cart_id = await createCart(newUserRef.id, cartProducts ? cartProducts : [])
-
-            const now = new Date()
+            const cart_id = await createCart(newUserRef.id, cartSession ? cartSession.products : [])
 
             const newUser = {
                 ...user,

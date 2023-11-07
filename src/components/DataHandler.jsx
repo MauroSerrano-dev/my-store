@@ -69,7 +69,7 @@ export default function DataHandler(props) {
                 getUserCartSession(cart_id)
             }
             else {
-                setCart([])
+                setCart({ products: [] })
             }
         }
     }

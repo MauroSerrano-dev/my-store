@@ -426,7 +426,7 @@ export default withRouter(props => {
     }
 
     function handleChangeId(event) {
-        const value = event.target.value.toLowerCase().replace(' ', '-')
+        const value = event.target.value.toLowerCase().replaceAll(' ', '-')
         if (artIdChained)
             setProduct(prev => ({ ...prev, id: value, variants: prev.variants.map(vari => ({ ...vari, art: { ...vari.art, id: value } })) }))
         else

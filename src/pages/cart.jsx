@@ -44,13 +44,15 @@ export default function Cart(props) {
                 authorization: process.env.NEXT_PUBLIC_APP_TOKEN
             },
             body: JSON.stringify({
-                cartItems: cart.products.map(prod => (
-                    {
+                cartItems: cart.products.map(prod => {
+                    const providerId = getShippingOptions(prod.type_id, shippingCountry).provider_id
+                    return {
                         ...prod,
-                        id_printify: prod.printify_ids[getShippingOptions(prod.type_id, shippingCountry).provider_id],
+                        id_printify: prod.printify_ids[providerId],
+                        variant_id: typeof prod.variant.id_printify === 'number' ? prod.variant.id_printify : prod.variant.id_printify[providerId],
                         price: convertDolarToCurrency(prod.variant.price, userCurrency.code),
                     }
-                )),
+                }),
                 cancel_url: window.location.href,
                 success_url: session ? `${process.env.NEXT_PUBLIC_URL}/orders` : process.env.NEXT_PUBLIC_URL,
                 customer: session,

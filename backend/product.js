@@ -94,7 +94,7 @@ async function getCartProductsInfo(cartProducts) {
 
         const products = querySnapshot.docs.map((doc) => doc.data());
 
-        const productsOneVariant = cartProducts.map((prod, i) => {
+        const productsOneVariant = cartProducts.map(prod => {
             const product = products.find(p => p.id === prod.id)
             const variant = product.variants.find(vari => vari.id === prod.variant_id)
             //se alterar o squema tem que alterar no arquivo pages/product/[i].jsx

@@ -206,7 +206,8 @@ export const PRODUCT_TYPES = [
         sizes: [14, 15, 16, 17, 18],
         variants: [
             {
-                id: 38164,
+                id: "black-s",
+                id_printify: 38164,
                 cost: 959,
                 price: 1598,
                 title: "Black / S",
@@ -215,7 +216,8 @@ export const PRODUCT_TYPES = [
                 size_id: 14,
             },
             {
-                id: 38166,
+                id: "military-green-s",
+                id_printify: 38166,
                 cost: 959,
                 price: 1598,
                 title: "Military Green / S",
@@ -224,7 +226,8 @@ export const PRODUCT_TYPES = [
                 size_id: 14,
             },
             {
-                id: 38153,
+                id: "charcoal-s",
+                id_printify: 38153,
                 cost: 959,
                 price: 1598,
                 title: "Charcoal / S",
@@ -233,7 +236,8 @@ export const PRODUCT_TYPES = [
                 size_id: 14,
             },
             {
-                id: 38155,
+                id: "dark-chocolate-s",
+                id_printify: 38155,
                 cost: 959,
                 price: 1598,
                 title: "Dark Chocolate / S",
@@ -242,7 +246,8 @@ export const PRODUCT_TYPES = [
                 size_id: 14,
             },
             {
-                id: 38156,
+                id: "irish-green-s",
+                id_printify: 38156,
                 cost: 959,
                 price: 1598,
                 title: "Irish Green / S",
@@ -251,7 +256,8 @@ export const PRODUCT_TYPES = [
                 size_id: 14,
             },
             {
-                id: 38157,
+                id: "light-blue-s",
+                id_printify: 38157,
                 cost: 959,
                 price: 1598,
                 title: "Light Blue / S",
@@ -260,7 +266,8 @@ export const PRODUCT_TYPES = [
                 size_id: 14,
             },
             {
-                id: 38158,
+                id: "navy-s",
+                id_printify: 38158,
                 cost: 959,
                 price: 1598,
                 title: "Navy / S",
@@ -269,7 +276,8 @@ export const PRODUCT_TYPES = [
                 size_id: 14,
             },
             {
-                id: 38160,
+                id: "red-s",
+                id_printify: 38160,
                 cost: 959,
                 price: 1598,
                 title: "Red / S",
@@ -278,7 +286,8 @@ export const PRODUCT_TYPES = [
                 size_id: 14,
             },
             {
-                id: 38161,
+                id: "royal-s",
+                id_printify: 38161,
                 cost: 959,
                 price: 1598,
                 title: "Royal / S",
@@ -287,7 +296,8 @@ export const PRODUCT_TYPES = [
                 size_id: 14,
             },
             {
-                id: 38163,
+                id: "white-s",
+                id_printify: 38163,
                 cost: 959,
                 price: 1598,
                 title: "White / S",
@@ -296,7 +306,8 @@ export const PRODUCT_TYPES = [
                 size_id: 14,
             },
             {
-                id: 38162,
+                id: "sport-grey-s",
+                id_printify: 38162,
                 cost: 959,
                 price: 1598,
                 title: "Sport Grey / S",
@@ -305,7 +316,8 @@ export const PRODUCT_TYPES = [
                 size_id: 14,
             },
             {
-                id: 38178,
+                id: "black-m",
+                id_printify: 38178,
                 cost: 959,
                 price: 1598,
                 title: "Black / M",
@@ -314,7 +326,8 @@ export const PRODUCT_TYPES = [
                 size_id: 15,
             },
             {
-                id: 38180,
+                id: "military-green-m",
+                id_printify: 38180,
                 cost: 959,
                 price: 1598,
                 title: "Military Green / M",
@@ -323,7 +336,8 @@ export const PRODUCT_TYPES = [
                 size_id: 15,
             },
             {
-                id: 38167,
+                id: "charcoal-m",
+                id_printify: 38167,
                 cost: 959,
                 price: 1598,
                 title: "Charcoal / M",
@@ -332,7 +346,8 @@ export const PRODUCT_TYPES = [
                 size_id: 15,
             },
             {
-                id: 38169,
+                id: "dark-chocolate-m",
+                id_printify: 38169,
                 cost: 959,
                 price: 1598,
                 title: "Dark Chocolate / M",
@@ -341,7 +356,8 @@ export const PRODUCT_TYPES = [
                 size_id: 15,
             },
             {
-                id: 38170,
+                id: "irish-green-m",
+                id_printify: 38170,
                 cost: 959,
                 price: 1598,
                 title: "Irish Green / M",
@@ -350,7 +366,8 @@ export const PRODUCT_TYPES = [
                 size_id: 15,
             },
             {
-                id: 38171,
+                id: "light-blue-m",
+                id_printify: 38171,
                 cost: 959,
                 price: 1598,
                 title: "Light Blue / M",
@@ -359,7 +376,8 @@ export const PRODUCT_TYPES = [
                 size_id: 15,
             },
             {
-                id: 38172,
+                id: "navy-m",
+                id_printify: 38172,
                 cost: 959,
                 price: 1598,
                 title: "Navy / M",
@@ -368,7 +386,8 @@ export const PRODUCT_TYPES = [
                 size_id: 15,
             },
             {
-                id: 38174,
+                id: "red-m",
+                id_printify: 38174,
                 cost: 959,
                 price: 1598,
                 title: "Red / M",
@@ -377,7 +396,8 @@ export const PRODUCT_TYPES = [
                 size_id: 15,
             },
             {
-                id: 38175,
+                id: "royal-m",
+                id_printify: 38175,
                 cost: 959,
                 price: 1598,
                 title: "Royal / M",
@@ -386,7 +406,8 @@ export const PRODUCT_TYPES = [
                 size_id: 15,
             },
             {
-                id: 38177,
+                id: "white-m",
+                id_printify: 38177,
                 cost: 959,
                 price: 1598,
                 title: "White / M",
@@ -395,7 +416,8 @@ export const PRODUCT_TYPES = [
                 size_id: 15,
             },
             {
-                id: 38176,
+                id: "sport-grey-m",
+                id_printify: 38176,
                 cost: 959,
                 price: 1598,
                 title: "Sport Grey / M",
@@ -404,7 +426,8 @@ export const PRODUCT_TYPES = [
                 size_id: 15,
             },
             {
-                id: 38192,
+                id: "black-l",
+                id_printify: 38192,
                 cost: 959,
                 price: 1598,
                 title: "Black / L",
@@ -413,7 +436,8 @@ export const PRODUCT_TYPES = [
                 size_id: 16,
             },
             {
-                id: 38194,
+                id: "military-green-l",
+                id_printify: 38194,
                 cost: 959,
                 price: 1598,
                 title: "Military Green / L",
@@ -422,7 +446,8 @@ export const PRODUCT_TYPES = [
                 size_id: 16,
             },
             {
-                id: 38181,
+                id: "charcoal-l",
+                id_printify: 38181,
                 cost: 959,
                 price: 1598,
                 title: "Charcoal / L",
@@ -431,7 +456,8 @@ export const PRODUCT_TYPES = [
                 size_id: 16,
             },
             {
-                id: 38183,
+                id: "dark-chocolate-l",
+                id_printify: 38183,
                 cost: 959,
                 price: 1598,
                 title: "Dark Chocolate / L",
@@ -440,7 +466,8 @@ export const PRODUCT_TYPES = [
                 size_id: 16,
             },
             {
-                id: 38184,
+                id: "irish-green-l",
+                id_printify: 38184,
                 cost: 959,
                 price: 1598,
                 title: "Irish Green / L",
@@ -449,7 +476,8 @@ export const PRODUCT_TYPES = [
                 size_id: 16,
             },
             {
-                id: 38185,
+                id: "light-blue-l",
+                id_printify: 38185,
                 cost: 959,
                 price: 1598,
                 title: "Light Blue / L",
@@ -458,7 +486,8 @@ export const PRODUCT_TYPES = [
                 size_id: 16,
             },
             {
-                id: 38186,
+                id: "navy-l",
+                id_printify: 38186,
                 cost: 959,
                 price: 1598,
                 title: "Navy / L",
@@ -467,7 +496,8 @@ export const PRODUCT_TYPES = [
                 size_id: 16,
             },
             {
-                id: 38188,
+                id: "red-l",
+                id_printify: 38188,
                 cost: 959,
                 price: 1598,
                 title: "Red / L",
@@ -476,7 +506,8 @@ export const PRODUCT_TYPES = [
                 size_id: 16,
             },
             {
-                id: 38189,
+                id: "royal-l",
+                id_printify: 38189,
                 cost: 959,
                 price: 1598,
                 title: "Royal / L",
@@ -485,7 +516,8 @@ export const PRODUCT_TYPES = [
                 size_id: 16,
             },
             {
-                id: 38191,
+                id: "white-l",
+                id_printify: 38191,
                 cost: 959,
                 price: 1598,
                 title: "White / L",
@@ -494,7 +526,8 @@ export const PRODUCT_TYPES = [
                 size_id: 16,
             },
             {
-                id: 38190,
+                id: "sport-grey-l",
+                id_printify: 38190,
                 cost: 959,
                 price: 1598,
                 title: "Sport Grey / L",
@@ -503,7 +536,8 @@ export const PRODUCT_TYPES = [
                 size_id: 16,
             },
             {
-                id: 38206,
+                id: "black-xl",
+                id_printify: 38206,
                 cost: 959,
                 price: 1598,
                 title: "Black / XL",
@@ -512,7 +546,8 @@ export const PRODUCT_TYPES = [
                 size_id: 17,
             },
             {
-                id: 38208,
+                id: "military-green-xl",
+                id_printify: 38208,
                 cost: 959,
                 price: 1598,
                 title: "Military Green / XL",
@@ -521,7 +556,8 @@ export const PRODUCT_TYPES = [
                 size_id: 17,
             },
             {
-                id: 38195,
+                id: "charcoal-xl",
+                id_printify: 38195,
                 cost: 959,
                 price: 1598,
                 title: "Charcoal / XL",
@@ -530,7 +566,8 @@ export const PRODUCT_TYPES = [
                 size_id: 17,
             },
             {
-                id: 38197,
+                id: "dark-chocolate-xl",
+                id_printify: 38197,
                 cost: 959,
                 price: 1598,
                 title: "Dark Chocolate / XL",
@@ -539,7 +576,8 @@ export const PRODUCT_TYPES = [
                 size_id: 17,
             },
             {
-                id: 38198,
+                id: "irish-green-xl",
+                id_printify: 38198,
                 cost: 959,
                 price: 1598,
                 title: "Irish Green / XL",
@@ -548,7 +586,8 @@ export const PRODUCT_TYPES = [
                 size_id: 17,
             },
             {
-                id: 38199,
+                id: "light-blue-xl",
+                id_printify: 38199,
                 cost: 959,
                 price: 1598,
                 title: "Light Blue / XL",
@@ -557,7 +596,8 @@ export const PRODUCT_TYPES = [
                 size_id: 17,
             },
             {
-                id: 38200,
+                id: "navy-xl",
+                id_printify: 38200,
                 cost: 959,
                 price: 1598,
                 title: "Navy / XL",
@@ -566,7 +606,8 @@ export const PRODUCT_TYPES = [
                 size_id: 17,
             },
             {
-                id: 38202,
+                id: "red-xl",
+                id_printify: 38202,
                 cost: 959,
                 price: 1598,
                 title: "Red / XL",
@@ -575,7 +616,8 @@ export const PRODUCT_TYPES = [
                 size_id: 17,
             },
             {
-                id: 38203,
+                id: "royal-xl",
+                id_printify: 38203,
                 cost: 959,
                 price: 1598,
                 title: "Royal / XL",
@@ -584,7 +626,8 @@ export const PRODUCT_TYPES = [
                 size_id: 17,
             },
             {
-                id: 38205,
+                id: "white-xl",
+                id_printify: 38205,
                 cost: 959,
                 price: 1598,
                 title: "White / XL",
@@ -593,7 +636,8 @@ export const PRODUCT_TYPES = [
                 size_id: 17,
             },
             {
-                id: 38204,
+                id: "sport-grey-xl",
+                id_printify: 38204,
                 cost: 959,
                 price: 1598,
                 title: "Sport Grey / XL",
@@ -602,7 +646,8 @@ export const PRODUCT_TYPES = [
                 size_id: 17,
             },
             {
-                id: 38220,
+                id: "black-2xl",
+                id_printify: 38220,
                 cost: 1096,
                 price: 1827,
                 title: "Black / 2XL",
@@ -611,7 +656,8 @@ export const PRODUCT_TYPES = [
                 size_id: 18,
             },
             {
-                id: 38222,
+                id: "military-green-2xl",
+                id_printify: 38222,
                 cost: 1096,
                 price: 1827,
                 title: "Military Green / 2XL",
@@ -620,7 +666,8 @@ export const PRODUCT_TYPES = [
                 size_id: 18,
             },
             {
-                id: 38209,
+                id: "charcoal-2xl",
+                id_printify: 38209,
                 cost: 1096,
                 price: 1827,
                 title: "Charcoal / 2XL",
@@ -629,7 +676,8 @@ export const PRODUCT_TYPES = [
                 size_id: 18,
             },
             {
-                id: 38211,
+                id: "dark-chocolate-2xl",
+                id_printify: 38211,
                 cost: 1096,
                 price: 1827,
                 title: "Dark Chocolate / 2XL",
@@ -638,7 +686,8 @@ export const PRODUCT_TYPES = [
                 size_id: 18,
             },
             {
-                id: 38212,
+                id: "irish-green-2xl",
+                id_printify: 38212,
                 cost: 1096,
                 price: 1827,
                 title: "Irish Green / 2XL",
@@ -647,7 +696,8 @@ export const PRODUCT_TYPES = [
                 size_id: 18,
             },
             {
-                id: 38213,
+                id: "light-blue-2xl",
+                id_printify: 38213,
                 cost: 1096,
                 price: 1827,
                 title: "Light Blue / 2XL",
@@ -656,7 +706,8 @@ export const PRODUCT_TYPES = [
                 size_id: 18,
             },
             {
-                id: 38214,
+                id: "navy-2xl",
+                id_printify: 38214,
                 cost: 1096,
                 price: 1827,
                 title: "Navy / 2XL",
@@ -665,7 +716,8 @@ export const PRODUCT_TYPES = [
                 size_id: 18,
             },
             {
-                id: 38216,
+                id: "red-2xl",
+                id_printify: 38216,
                 cost: 1096,
                 price: 1827,
                 title: "Red / 2XL",
@@ -674,7 +726,8 @@ export const PRODUCT_TYPES = [
                 size_id: 18,
             },
             {
-                id: 38217,
+                id: "royal-2xl",
+                id_printify: 38217,
                 cost: 1096,
                 price: 1827,
                 title: "Royal / 2XL",
@@ -683,7 +736,8 @@ export const PRODUCT_TYPES = [
                 size_id: 18,
             },
             {
-                id: 38219,
+                id: "white-2xl",
+                id_printify: 38219,
                 cost: 1096,
                 price: 1827,
                 title: "White / 2XL",
@@ -692,7 +746,8 @@ export const PRODUCT_TYPES = [
                 size_id: 18,
             },
             {
-                id: 38218,
+                id: "sport-grey-2xl",
+                id_printify: 38218,
                 cost: 1096,
                 price: 1827,
                 title: "Sport Grey / 2XL",
@@ -712,7 +767,8 @@ export const PRODUCT_TYPES = [
         sizes: [14, 15, 16, 17, 18],
         variants: [
             {
-                id: 42211,
+                id: "charcoal-s",
+                id_printify: 42211,
                 cost: 2187,
                 price: 3645,
                 title: "Charcoal / S",
@@ -721,7 +777,8 @@ export const PRODUCT_TYPES = [
                 size_id: 14,
             },
             {
-                id: 42212,
+                id: "charcoal-m",
+                id_printify: 42212,
                 cost: 2187,
                 price: 3645,
                 title: "Charcoal / M",
@@ -730,7 +787,8 @@ export const PRODUCT_TYPES = [
                 size_id: 15,
             },
             {
-                id: 42213,
+                id: "charcoal-l",
+                id_printify: 42213,
                 cost: 2187,
                 price: 3645,
                 title: "Charcoal / L",
@@ -739,7 +797,8 @@ export const PRODUCT_TYPES = [
                 size_id: 16,
             },
             {
-                id: 42214,
+                id: "charcoal-xl",
+                id_printify: 42214,
                 cost: 2187,
                 price: 3645,
                 title: "Charcoal / XL",
@@ -748,7 +807,8 @@ export const PRODUCT_TYPES = [
                 size_id: 17,
             },
             {
-                id: 42215,
+                id: "charcoal-2xl",
+                id_printify: 42215,
                 cost: 2396,
                 price: 3993,
                 title: "Charcoal / 2XL",
@@ -757,7 +817,8 @@ export const PRODUCT_TYPES = [
                 size_id: 18,
             },
             {
-                id: 66363,
+                id: "heather-navy-s",
+                id_printify: 66363,
                 cost: 2187,
                 price: 3645,
                 title: "Heather Navy / S",
@@ -766,7 +827,8 @@ export const PRODUCT_TYPES = [
                 size_id: 14,
             },
             {
-                id: 66364,
+                id: "heather-navy-m",
+                id_printify: 66364,
                 cost: 2187,
                 price: 3645,
                 title: "Heather Navy / M",
@@ -775,7 +837,8 @@ export const PRODUCT_TYPES = [
                 size_id: 15,
             },
             {
-                id: 66365,
+                id: "heather-navy-l",
+                id_printify: 66365,
                 cost: 2187,
                 price: 3645,
                 title: "Heather Navy / L",
@@ -784,7 +847,8 @@ export const PRODUCT_TYPES = [
                 size_id: 16,
             },
             {
-                id: 66366,
+                id: "heather-navy-xl",
+                id_printify: 66366,
                 cost: 2187,
                 price: 3645,
                 title: "Heather Navy / XL",
@@ -793,7 +857,8 @@ export const PRODUCT_TYPES = [
                 size_id: 17,
             },
             {
-                id: 66367,
+                id: "heather-navy-2xl",
+                id_printify: 66367,
                 cost: 2396,
                 price: 3993,
                 title: "Heather Navy / 2XL",
@@ -802,7 +867,8 @@ export const PRODUCT_TYPES = [
                 size_id: 18,
             },
             {
-                id: 42235,
+                id: "light-blue-s",
+                id_printify: 42235,
                 cost: 2187,
                 price: 3645,
                 title: "Light Blue / S",
@@ -811,7 +877,8 @@ export const PRODUCT_TYPES = [
                 size_id: 14,
             },
             {
-                id: 42236,
+                id: "light-blue-m",
+                id_printify: 42236,
                 cost: 2187,
                 price: 3645,
                 title: "Light Blue / M",
@@ -820,7 +887,8 @@ export const PRODUCT_TYPES = [
                 size_id: 15,
             },
             {
-                id: 42237,
+                id: "light-blue-l",
+                id_printify: 42237,
                 cost: 2187,
                 price: 3645,
                 title: "Light Blue / L",
@@ -829,7 +897,8 @@ export const PRODUCT_TYPES = [
                 size_id: 16,
             },
             {
-                id: 42238,
+                id: "light-blue-xl",
+                id_printify: 42238,
                 cost: 2187,
                 price: 3645,
                 title: "Light Blue / XL",
@@ -838,7 +907,8 @@ export const PRODUCT_TYPES = [
                 size_id: 17,
             },
             {
-                id: 42239,
+                id: "light-blue-2xl",
+                id_printify: 42239,
                 cost: 2396,
                 price: 3993,
                 title: "Light Blue / 2XL",
@@ -847,7 +917,8 @@ export const PRODUCT_TYPES = [
                 size_id: 18,
             },
             {
-                id: 32918,
+                id: "black-s",
+                id_printify: 32918,
                 cost: 2187,
                 price: 3645,
                 title: "Black / S",
@@ -856,7 +927,8 @@ export const PRODUCT_TYPES = [
                 size_id: 14,
             },
             {
-                id: 33425,
+                id: "military-green-s",
+                id_printify: 33425,
                 cost: 2187,
                 price: 3645,
                 title: "Military Green / S",
@@ -865,7 +937,8 @@ export const PRODUCT_TYPES = [
                 size_id: 14,
             },
             {
-                id: 32878,
+                id: "dark-heather-s",
+                id_printify: 32878,
                 cost: 2187,
                 price: 3645,
                 title: "Dark Heather / S",
@@ -874,7 +947,8 @@ export const PRODUCT_TYPES = [
                 size_id: 14,
             },
             {
-                id: 33369,
+                id: "irish-green-s",
+                id_printify: 33369,
                 cost: 2187,
                 price: 3645,
                 title: "Irish Green / S",
@@ -883,7 +957,8 @@ export const PRODUCT_TYPES = [
                 size_id: 14,
             },
             {
-                id: 32886,
+                id: "maroon-s",
+                id_printify: 32886,
                 cost: 2187,
                 price: 3645,
                 title: "Maroon / S",
@@ -892,7 +967,8 @@ export const PRODUCT_TYPES = [
                 size_id: 14,
             },
             {
-                id: 32894,
+                id: "navy-s",
+                id_printify: 32894,
                 cost: 2187,
                 price: 3645,
                 title: "Navy / S",
@@ -901,7 +977,8 @@ export const PRODUCT_TYPES = [
                 size_id: 14,
             },
             {
-                id: 33385,
+                id: "red-s",
+                id_printify: 33385,
                 cost: 2187,
                 price: 3645,
                 title: "Red / S",
@@ -910,7 +987,8 @@ export const PRODUCT_TYPES = [
                 size_id: 14,
             },
             {
-                id: 33393,
+                id: "royal-s",
+                id_printify: 33393,
                 cost: 2187,
                 price: 3645,
                 title: "Royal / S",
@@ -919,7 +997,8 @@ export const PRODUCT_TYPES = [
                 size_id: 14,
             },
             {
-                id: 32910,
+                id: "white-s",
+                id_printify: 32910,
                 cost: 2187,
                 price: 3645,
                 title: "White / S",
@@ -928,7 +1007,8 @@ export const PRODUCT_TYPES = [
                 size_id: 14,
             },
             {
-                id: 32902,
+                id: "sport-grey-s",
+                id_printify: 32902,
                 cost: 2187,
                 price: 3645,
                 title: "Sport Grey / S",
@@ -937,7 +1017,8 @@ export const PRODUCT_TYPES = [
                 size_id: 14,
             },
             {
-                id: 32919,
+                id: "black-m",
+                id_printify: 32919,
                 cost: 2187,
                 price: 3645,
                 title: "Black / M",
@@ -946,7 +1027,8 @@ export const PRODUCT_TYPES = [
                 size_id: 15,
             },
             {
-                id: 33426,
+                id: "military-green-m",
+                id_printify: 33426,
                 cost: 2187,
                 price: 3645,
                 title: "Military Green / M",
@@ -955,7 +1037,8 @@ export const PRODUCT_TYPES = [
                 size_id: 15,
             },
             {
-                id: 32879,
+                id: "dark-Heather-m",
+                id_printify: 32879,
                 cost: 2187,
                 price: 3645,
                 title: "Dark Heather / M",
@@ -964,7 +1047,8 @@ export const PRODUCT_TYPES = [
                 size_id: 15,
             },
             {
-                id: 33370,
+                id: "irish-green-m",
+                id_printify: 33370,
                 cost: 2187,
                 price: 3645,
                 title: "Irish Green / M",
@@ -973,7 +1057,8 @@ export const PRODUCT_TYPES = [
                 size_id: 15,
             },
             {
-                id: 32887,
+                id: "maroon-m",
+                id_printify: 32887,
                 cost: 2187,
                 price: 3645,
                 title: "Maroon / M",
@@ -982,7 +1067,8 @@ export const PRODUCT_TYPES = [
                 size_id: 15,
             },
             {
-                id: 32895,
+                id: "navy-m",
+                id_printify: 32895,
                 cost: 2187,
                 price: 3645,
                 title: "Navy / M",
@@ -991,7 +1077,8 @@ export const PRODUCT_TYPES = [
                 size_id: 15,
             },
             {
-                id: 33386,
+                id: "red-m",
+                id_printify: 33386,
                 cost: 2187,
                 price: 3645,
                 title: "Red / M",
@@ -1000,7 +1087,8 @@ export const PRODUCT_TYPES = [
                 size_id: 15,
             },
             {
-                id: 33394,
+                id: "royal-m",
+                id_printify: 33394,
                 cost: 2187,
                 price: 3645,
                 title: "Royal / M",
@@ -1009,7 +1097,8 @@ export const PRODUCT_TYPES = [
                 size_id: 15,
             },
             {
-                id: 32911,
+                id: "white-m",
+                id_printify: 32911,
                 cost: 2187,
                 price: 3645,
                 title: "White / M",
@@ -1018,7 +1107,8 @@ export const PRODUCT_TYPES = [
                 size_id: 15,
             },
             {
-                id: 32903,
+                id: "sport-grey-m",
+                id_printify: 32903,
                 cost: 2187,
                 price: 3645,
                 title: "Sport Grey / M",
@@ -1027,7 +1117,8 @@ export const PRODUCT_TYPES = [
                 size_id: 15,
             },
             {
-                id: 32920,
+                id: "black-l",
+                id_printify: 32920,
                 cost: 2187,
                 price: 3645,
                 title: "Black / L",
@@ -1036,7 +1127,8 @@ export const PRODUCT_TYPES = [
                 size_id: 16,
             },
             {
-                id: 33427,
+                id: "military-green-l",
+                id_printify: 33427,
                 cost: 2187,
                 price: 3645,
                 title: "Military Green / L",
@@ -1045,7 +1137,8 @@ export const PRODUCT_TYPES = [
                 size_id: 16,
             },
             {
-                id: 32880,
+                id: "dark-heather-l",
+                id_printify: 32880,
                 cost: 2187,
                 price: 3645,
                 title: "Dark Heather / L",
@@ -1054,7 +1147,8 @@ export const PRODUCT_TYPES = [
                 size_id: 16,
             },
             {
-                id: 33371,
+                id: "irish-green-l",
+                id_printify: 33371,
                 cost: 2187,
                 price: 3645,
                 title: "Irish Green / L",
@@ -1063,7 +1157,8 @@ export const PRODUCT_TYPES = [
                 size_id: 16,
             },
             {
-                id: 32888,
+                id: "maroon-l",
+                id_printify: 32888,
                 cost: 2187,
                 price: 3645,
                 title: "Maroon / L",
@@ -1072,7 +1167,8 @@ export const PRODUCT_TYPES = [
                 size_id: 16,
             },
             {
-                id: 32896,
+                id: "navy-l",
+                id_printify: 32896,
                 cost: 2187,
                 price: 3645,
                 title: "Navy / L",
@@ -1081,7 +1177,8 @@ export const PRODUCT_TYPES = [
                 size_id: 16,
             },
             {
-                id: 33387,
+                id: "red-l",
+                id_printify: 33387,
                 cost: 2187,
                 price: 3645,
                 title: "Red / L",
@@ -1090,7 +1187,8 @@ export const PRODUCT_TYPES = [
                 size_id: 16,
             },
             {
-                id: 33395,
+                id: "royal-l",
+                id_printify: 33395,
                 cost: 2187,
                 price: 3645,
                 title: "Royal / L",
@@ -1099,7 +1197,8 @@ export const PRODUCT_TYPES = [
                 size_id: 16,
             },
             {
-                id: 32912,
+                id: "white-l",
+                id_printify: 32912,
                 cost: 2187,
                 price: 3645,
                 title: "White / L",
@@ -1108,7 +1207,8 @@ export const PRODUCT_TYPES = [
                 size_id: 16,
             },
             {
-                id: 32904,
+                id: "sport-grey-l",
+                id_printify: 32904,
                 cost: 2187,
                 price: 3645,
                 title: "Sport Grey / L",
@@ -1117,7 +1217,9 @@ export const PRODUCT_TYPES = [
                 size_id: 16,
             },
             {
-                id: 32921,
+                id: "black-xl",
+                id: "black-xl",
+                id_printify: 32921,
                 cost: 2187,
                 price: 3645,
                 title: "Black / XL",
@@ -1126,7 +1228,8 @@ export const PRODUCT_TYPES = [
                 size_id: 17,
             },
             {
-                id: 33428,
+                id: "military-green-xl",
+                id_printify: 33428,
                 cost: 2187,
                 price: 3645,
                 title: "Military Green / XL",
@@ -1135,7 +1238,8 @@ export const PRODUCT_TYPES = [
                 size_id: 17,
             },
             {
-                id: 32881,
+                id: "dark-heather-xl",
+                id_printify: 32881,
                 cost: 2187,
                 price: 3645,
                 title: "Dark Heather / XL",
@@ -1144,7 +1248,8 @@ export const PRODUCT_TYPES = [
                 size_id: 17,
             },
             {
-                id: 33372,
+                id: "irish-green-xl",
+                id_printify: 33372,
                 cost: 2187,
                 price: 3645,
                 title: "Irish Green / XL",
@@ -1153,7 +1258,8 @@ export const PRODUCT_TYPES = [
                 size_id: 17,
             },
             {
-                id: 32889,
+                id: "maroon-xl",
+                id_printify: 32889,
                 cost: 2187,
                 price: 3645,
                 title: "Maroon / XL",
@@ -1162,7 +1268,8 @@ export const PRODUCT_TYPES = [
                 size_id: 17,
             },
             {
-                id: 32897,
+                id: "navy-xl",
+                id_printify: 32897,
                 cost: 2187,
                 price: 3645,
                 title: "Navy / XL",
@@ -1171,7 +1278,8 @@ export const PRODUCT_TYPES = [
                 size_id: 17,
             },
             {
-                id: 33388,
+                id: "red-xl",
+                id_printify: 33388,
                 cost: 2187,
                 price: 3645,
                 title: "Red / XL",
@@ -1180,7 +1288,8 @@ export const PRODUCT_TYPES = [
                 size_id: 17,
             },
             {
-                id: 33396,
+                id: "royal-xl",
+                id_printify: 33396,
                 cost: 2187,
                 price: 3645,
                 title: "Royal / XL",
@@ -1189,7 +1298,8 @@ export const PRODUCT_TYPES = [
                 size_id: 17,
             },
             {
-                id: 32913,
+                id: "white-xl",
+                id_printify: 32913,
                 cost: 2187,
                 price: 3645,
                 title: "White / XL",
@@ -1198,7 +1308,8 @@ export const PRODUCT_TYPES = [
                 size_id: 17,
             },
             {
-                id: 32905,
+                id: "sport-grey-xl",
+                id_printify: 32905,
                 cost: 2187,
                 price: 3645,
                 title: "Sport Grey / XL",
@@ -1207,7 +1318,8 @@ export const PRODUCT_TYPES = [
                 size_id: 17,
             },
             {
-                id: 32922,
+                id: "black-2xl",
+                id_printify: 32922,
                 cost: 2396,
                 price: 3993,
                 title: "Black / 2XL",
@@ -1216,7 +1328,8 @@ export const PRODUCT_TYPES = [
                 size_id: 18,
             },
             {
-                id: 33429,
+                id: "military-green-2xl",
+                id_printify: 33429,
                 cost: 2396,
                 price: 3993,
                 title: "Military Green / 2XL",
@@ -1225,7 +1338,8 @@ export const PRODUCT_TYPES = [
                 size_id: 18,
             },
             {
-                id: 32882,
+                id: "dark-heather-2xl",
+                id_printify: 32882,
                 cost: 2396,
                 price: 3993,
                 title: "Dark Heather / 2XL",
@@ -1234,7 +1348,8 @@ export const PRODUCT_TYPES = [
                 size_id: 18,
             },
             {
-                id: 33373,
+                id: "irish-green-2xl",
+                id_printify: 33373,
                 cost: 2396,
                 price: 3993,
                 title: "Irish Green / 2XL",
@@ -1243,7 +1358,8 @@ export const PRODUCT_TYPES = [
                 size_id: 18,
             },
             {
-                id: 32890,
+                id: "maroon-2xl",
+                id_printify: 32890,
                 cost: 2396,
                 price: 3993,
                 title: "Maroon / 2XL",
@@ -1252,7 +1368,8 @@ export const PRODUCT_TYPES = [
                 size_id: 18,
             },
             {
-                id: 32898,
+                id: "navy-2xl",
+                id_printify: 32898,
                 cost: 2396,
                 price: 3993,
                 title: "Navy / 2XL",
@@ -1261,7 +1378,8 @@ export const PRODUCT_TYPES = [
                 size_id: 18,
             },
             {
-                id: 33389,
+                id: "red-2xl",
+                id_printify: 33389,
                 cost: 2396,
                 price: 3993,
                 title: "Red / 2XL",
@@ -1270,7 +1388,8 @@ export const PRODUCT_TYPES = [
                 size_id: 18,
             },
             {
-                id: 33397,
+                id: "royal-2xl",
+                id_printify: 33397,
                 cost: 2396,
                 price: 3993,
                 title: "Royal / 2XL",
@@ -1279,7 +1398,8 @@ export const PRODUCT_TYPES = [
                 size_id: 18,
             },
             {
-                id: 32914,
+                id: "white-2xl",
+                id_printify: 32914,
                 cost: 2396,
                 price: 3993,
                 title: "White / 2XL",
@@ -1288,7 +1408,8 @@ export const PRODUCT_TYPES = [
                 size_id: 18,
             },
             {
-                id: 32906,
+                id: "sport-grey-2xl",
+                id_printify: 32906,
                 cost: 2396,
                 price: 3993,
                 title: "Sport Grey / 2XL",
@@ -1308,7 +1429,8 @@ export const PRODUCT_TYPES = [
         sizes: [14, 15, 16, 17, 18],
         variants: [
             {
-                id: 33522,
+                id: "royal-white-s",
+                id_printify: 33522,
                 cost: 1782,
                 price: 2970,
                 title: "Royal/White / S",
@@ -1317,7 +1439,8 @@ export const PRODUCT_TYPES = [
                 size_id: 14,
             },
             {
-                id: 36255,
+                id: "asphalt-white-s",
+                id_printify: 36255,
                 cost: 1782,
                 price: 2970,
                 title: "Asphalt/White / S",
@@ -1326,7 +1449,8 @@ export const PRODUCT_TYPES = [
                 size_id: 14,
             },
             {
-                id: 36256,
+                id: "red-white-s",
+                id_printify: 36256,
                 cost: 1782,
                 price: 2970,
                 title: "Red/White / S",
@@ -1335,7 +1459,8 @@ export const PRODUCT_TYPES = [
                 size_id: 14,
             },
             {
-                id: 33523,
+                id: "royal-white-m",
+                id_printify: 33523,
                 cost: 1782,
                 price: 2970,
                 title: "Royal/White / M",
@@ -1344,7 +1469,8 @@ export const PRODUCT_TYPES = [
                 size_id: 15,
             },
             {
-                id: 36257,
+                id: "asphalt-white-m",
+                id_printify: 36257,
                 cost: 1782,
                 price: 2970,
                 title: "Asphalt/White / M",
@@ -1353,7 +1479,8 @@ export const PRODUCT_TYPES = [
                 size_id: 15,
             },
             {
-                id: 36258,
+                id: "red-white-m",
+                id_printify: 36258,
                 cost: 1782,
                 price: 2970,
                 title: "Red/White / M",
@@ -1362,7 +1489,8 @@ export const PRODUCT_TYPES = [
                 size_id: 15,
             },
             {
-                id: 33524,
+                id: "royal-white-l",
+                id_printify: 33524,
                 cost: 1782,
                 price: 2970,
                 title: "Royal/White / L",
@@ -1371,7 +1499,8 @@ export const PRODUCT_TYPES = [
                 size_id: 16,
             },
             {
-                id: 36259,
+                id: "asphalt-white-l",
+                id_printify: 36259,
                 cost: 1782,
                 price: 2970,
                 title: "Asphalt/White / L",
@@ -1380,7 +1509,8 @@ export const PRODUCT_TYPES = [
                 size_id: 16,
             },
             {
-                id: 36260,
+                id: "red-white-l",
+                id_printify: 36260,
                 cost: 1782,
                 price: 2970,
                 title: "Red/White / L",
@@ -1389,7 +1519,8 @@ export const PRODUCT_TYPES = [
                 size_id: 16,
             },
             {
-                id: 33525,
+                id: "royal-white-xl",
+                id_printify: 33525,
                 cost: 1782,
                 price: 2970,
                 title: "Royal/White / XL",
@@ -1398,7 +1529,8 @@ export const PRODUCT_TYPES = [
                 size_id: 17,
             },
             {
-                id: 36261,
+                id: "asphalt-white-xl",
+                id_printify: 36261,
                 cost: 1782,
                 price: 2970,
                 title: "Asphalt/White / XL",
@@ -1407,7 +1539,8 @@ export const PRODUCT_TYPES = [
                 size_id: 17,
             },
             {
-                id: 36262,
+                id: "red-white-xl",
+                id_printify: 36262,
                 cost: 1782,
                 price: 2970,
                 title: "Red/White / XL",
@@ -1416,7 +1549,8 @@ export const PRODUCT_TYPES = [
                 size_id: 17,
             },
             {
-                id: 33526,
+                id: "royal-white-2xl",
+                id_printify: 33526,
                 cost: 1993,
                 price: 3322,
                 title: "Royal/White / 2XL",
@@ -1425,7 +1559,8 @@ export const PRODUCT_TYPES = [
                 size_id: 18,
             },
             {
-                id: 36263,
+                id: "asphalt-white-2xl",
+                id_printify: 36263,
                 cost: 1993,
                 price: 3322,
                 title: "Asphalt/White / 2XL",
@@ -1434,7 +1569,8 @@ export const PRODUCT_TYPES = [
                 size_id: 18,
             },
             {
-                id: 36264,
+                id: "red-white-2xl",
+                id_printify: 36264,
                 cost: 1993,
                 price: 3322,
                 title: "Red/White / 2XL",
@@ -1443,7 +1579,8 @@ export const PRODUCT_TYPES = [
                 size_id: 18,
             },
             {
-                id: 39151,
+                id: "white-black-s",
+                id_printify: 39151,
                 cost: 1782,
                 price: 2970,
                 title: "White/Black / S",
@@ -1452,7 +1589,8 @@ export const PRODUCT_TYPES = [
                 size_id: 14,
             },
             {
-                id: 39193,
+                id: "green-white-s",
+                id_printify: 39193,
                 cost: 1782,
                 price: 2970,
                 title: "Green/White / S",
@@ -1461,7 +1599,8 @@ export const PRODUCT_TYPES = [
                 size_id: 14,
             },
             {
-                id: 39196,
+                id: "navy-white-s",
+                id_printify: 39196,
                 cost: 1782,
                 price: 2970,
                 title: "Navy/White / S",
@@ -1470,7 +1609,8 @@ export const PRODUCT_TYPES = [
                 size_id: 14,
             },
             {
-                id: 39217,
+                id: "black-white-s",
+                id_printify: 39217,
                 cost: 1782,
                 price: 2970,
                 title: "Black/White / S",
@@ -1479,7 +1619,8 @@ export const PRODUCT_TYPES = [
                 size_id: 14,
             },
             {
-                id: 39229,
+                id: "white-black-m",
+                id_printify: 39229,
                 cost: 1782,
                 price: 2970,
                 title: "White/Black / M",
@@ -1488,7 +1629,8 @@ export const PRODUCT_TYPES = [
                 size_id: 15,
             },
             {
-                id: 39271,
+                id: "green-white-m",
+                id_printify: 39271,
                 cost: 1782,
                 price: 2970,
                 title: "Green/White / M",
@@ -1497,7 +1639,8 @@ export const PRODUCT_TYPES = [
                 size_id: 15,
             },
             {
-                id: 39274,
+                id: "navy-white-m",
+                id_printify: 39274,
                 cost: 1782,
                 price: 2970,
                 title: "Navy/White / M",
@@ -1506,7 +1649,7 @@ export const PRODUCT_TYPES = [
                 size_id: 15,
             },
             {
-                id: 39295,
+                id_printify: 39295,
                 cost: 1782,
                 price: 2970,
                 title: "Black/White / M",
@@ -1515,7 +1658,8 @@ export const PRODUCT_TYPES = [
                 size_id: 15,
             },
             {
-                id: 39307,
+                id: "white-black-l",
+                id_printify: 39307,
                 cost: 1782,
                 price: 2970,
                 title: "White/Black / L",
@@ -1524,7 +1668,8 @@ export const PRODUCT_TYPES = [
                 size_id: 16,
             },
             {
-                id: 39349,
+                id: "green-white-l",
+                id_printify: 39349,
                 cost: 1782,
                 price: 2970,
                 title: "Green/White / L",
@@ -1533,7 +1678,8 @@ export const PRODUCT_TYPES = [
                 size_id: 16,
             },
             {
-                id: 39352,
+                id: "navy-white-l",
+                id_printify: 39352,
                 cost: 1782,
                 price: 2970,
                 title: "Navy/White / L",
@@ -1542,7 +1688,8 @@ export const PRODUCT_TYPES = [
                 size_id: 16,
             },
             {
-                id: 39373,
+                id: "black-white-l",
+                id_printify: 39373,
                 cost: 1782,
                 price: 2970,
                 title: "Black/White / L",
@@ -1551,7 +1698,8 @@ export const PRODUCT_TYPES = [
                 size_id: 16,
             },
             {
-                id: 39385,
+                id: "white-black-xl",
+                id_printify: 39385,
                 cost: 1782,
                 price: 2970,
                 title: "White/Black / XL",
@@ -1560,7 +1708,8 @@ export const PRODUCT_TYPES = [
                 size_id: 17,
             },
             {
-                id: 39427,
+                id: "green-white-xl",
+                id_printify: 39427,
                 cost: 1782,
                 price: 2970,
                 title: "Green/White / XL",
@@ -1569,7 +1718,8 @@ export const PRODUCT_TYPES = [
                 size_id: 17,
             },
             {
-                id: 39430,
+                id: "navy-white-xl",
+                id_printify: 39430,
                 cost: 1782,
                 price: 2970,
                 title: "Navy/White / XL",
@@ -1578,7 +1728,8 @@ export const PRODUCT_TYPES = [
                 size_id: 17,
             },
             {
-                id: 39451,
+                id: "black-white-xl",
+                id_printify: 39451,
                 cost: 1782,
                 price: 2970,
                 title: "Black/White / XL",
@@ -1587,7 +1738,8 @@ export const PRODUCT_TYPES = [
                 size_id: 17,
             },
             {
-                id: 39463,
+                id: "white-black-2xl",
+                id_printify: 39463,
                 cost: 1993,
                 price: 3322,
                 title: "White/Black / 2XL",
@@ -1596,7 +1748,8 @@ export const PRODUCT_TYPES = [
                 size_id: 18,
             },
             {
-                id: 39505,
+                id: "green-white-2xl",
+                id_printify: 39505,
                 cost: 1993,
                 price: 3322,
                 title: "Green/White / 2XL",
@@ -1605,7 +1758,8 @@ export const PRODUCT_TYPES = [
                 size_id: 18,
             },
             {
-                id: 39508,
+                id: "navy-white-2xl",
+                id_printify: 39508,
                 cost: 1993,
                 price: 3322,
                 title: "Navy/White / 2XL",
@@ -1614,7 +1768,8 @@ export const PRODUCT_TYPES = [
                 size_id: 18,
             },
             {
-                id: 39529,
+                id: "black-white-2xl",
+                id_printify: 39529,
                 cost: 1993,
                 price: 3322,
                 title: "Black/White / 2XL",
@@ -1634,11 +1789,15 @@ export const PRODUCT_TYPES = [
         colors: [2620],
         variants: [
             {
-                id: 79661,
-                cost: 527,
-                price: 878,
-                title: '11oz / White',
-                grams: 340,
+                id: 'white-11oz',
+                id_printify: {
+                    1: 33719,
+                    87: 79661,
+                },
+                cost: 634,
+                price: 1057,
+                title: 'White / 11oz',
+                grams: 460,
                 color_id: 2620,
                 size_id: 1189,
             }
@@ -1654,36 +1813,52 @@ export const PRODUCT_TYPES = [
         colors: [2621, 2662, 2663, 2665],
         variants: [
             {
-                id: 72180,
-                cost: 552,
-                price: 920,
+                id: 'black-11oz',
+                id_printify: {
+                    28: 72180,
+                    87: 79654,
+                },
+                cost: 607,
+                price: 1012,
                 title: 'Black / 11oz',
                 grams: 390,
                 color_id: 2621,
                 size_id: 1189,
             },
             {
-                id: 72181,
-                cost: 552,
-                price: 920,
+                id: 'blue-11oz',
+                id_printify: {
+                    28: 72181,
+                    87: 79655,
+                },
+                cost: 607,
+                price: 1012,
                 title: 'Blue / 11oz',
                 grams: 390,
                 color_id: 2662,
                 size_id: 1189,
             },
             {
-                id: 72183,
-                cost: 552,
-                price: 920,
+                id: 'pink-11oz',
+                id_printify: {
+                    28: 72183,
+                    87: 79657,
+                },
+                cost: 607,
+                price: 1012,
                 title: 'Pink / 11oz',
                 grams: 390,
                 color_id: 2665,
                 size_id: 1189,
             },
             {
-                id: 72184,
-                cost: 552,
-                price: 920,
+                id: 'red-11oz',
+                id_printify: {
+                    28: 72184,
+                    87: 79658,
+                },
+                cost: 607,
+                price: 1012,
                 title: 'Red / 11oz',
                 grams: 390,
                 color_id: 2663,

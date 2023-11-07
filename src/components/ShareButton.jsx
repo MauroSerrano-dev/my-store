@@ -15,7 +15,7 @@ export default function ShareButton(props) {
         mobile
     } = props
 
-    const link_replace = link.replace('+', '%2B').replace('&', '%26')
+    const link_replace = link.replaceAll('+', '%2B').replaceAll('&', '%26')
 
     const [open, setOpen] = useState(false)
     const [copied, setCopied] = useState(false)
