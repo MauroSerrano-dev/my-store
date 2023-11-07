@@ -271,7 +271,6 @@ export default withRouter(props => {
 
         const diff = getObjectsDiff(newProduct, inicialProduct)
         const diffKeys = Object.keys(diff)
-        console.log(newProduct, diff)
 
         if (diffKeys.length === 0) {
             showToast({ msg: 'No changes made.' })

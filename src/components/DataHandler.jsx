@@ -368,10 +368,7 @@ export default function DataHandler(props) {
 
         const products = await fetch("/api/products-by-title", options)
             .then(response => response.json())
-            .then(response => {
-                console.log(response)
-                return response.products
-            })
+            .then(response => response.products)
             .catch(err => console.error(err))
 
         setProductOptions(products)

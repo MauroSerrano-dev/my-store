@@ -1,8 +1,7 @@
-import { collection, doc, addDoc, getDoc, getFirestore, updateDoc } from "firebase/firestore";
+import { collection, doc, addDoc, getDoc, getFirestore, updateDoc, Timestamp, getDocs, query, where } from "firebase/firestore";
 import { initializeApp } from 'firebase/app'
 import { firebaseConfig } from "../firebase.config"
 import { deleteCartSession, getCartSessionById } from "./cart-session";
-import { getUserById } from "./user";
 
 initializeApp(firebaseConfig)
 
@@ -26,15 +25,52 @@ async function getCartById(id) {
     }
 }
 
+async function getCartByUserId(userId) {
+    try {
+        const cartCollection = collection(db, process.env.COLL_CARTS)
+
+        let q = query(
+            cartCollection,
+            where("user_id", "==", userId)
+        )
+
+        const querySnapshot = await getDocs(q)
+
+        if (querySnapshot.empty) {
+            return {
+                status: 200,
+                message: "Cart not found",
+                cart: null,
+            }
+        }
+
+        const cartDoc = querySnapshot.docs[0]
+        const cart = { id: cartDoc.id, data: cartDoc.data() }
+
+        return {
+            status: 200,
+            message: "Cart retrieved successfully",
+            cart: cart,
+        }
+    } catch (error) {
+        console.error(error);
+        return {
+            status: 500,
+            message: "Error retrieving cart",
+            cart: null,
+            error: error,
+        }
+    }
+}
+
 async function createCart(userId, products) {
     const cartRef = collection(db, process.env.COLL_CARTS)
-    const now = new Date()
 
     try {
         const newCartDocRef = await addDoc(cartRef, {
             user_id: userId,
             products: products,
-            created_at: now,
+            created_at: Timestamp.now(),
         })
 
         console.log(`Cart created with ID: ${newCartDocRef.id}`)
@@ -45,13 +81,13 @@ async function createCart(userId, products) {
     }
 }
 
-async function updateCart(cartId, cart) {
+async function updateCart(cartId, cartProducts) {
     const cartRef = doc(db, process.env.COLL_CARTS, cartId)
     const cartDoc = await getDoc(cartRef);
 
     try {
         const cartData = cartDoc.data()
-        cartData.products = cart
+        cartData.products = cartProducts
 
         await updateDoc(cartRef, cartData)
 
@@ -63,32 +99,32 @@ async function updateCart(cartId, cart) {
 
 async function mergeCarts(userId, cart_cookie_id) {
     try {
-        const user = await getUserById(userId)
-        const cartId = user.cart_id
-        const userCart = await getCartById(cartId)
+        const userCartRes = await getCartByUserId(userId)
+        const userCartId = userCartRes?.cart?.id
+        const userCart = userCartRes?.cart?.data
 
-        if (userCart) {
-            const cartProducts = await getCartSessionById(cart_cookie_id)
+        if (userCartRes) {
+            const cartSession = await getCartSessionById(cart_cookie_id)
 
-            if (cartProducts) {
+            if (cartSession) {
                 await deleteCartSession(cart_cookie_id)
 
-                const mergedCart = userCart.map(p => {
-                    const exist = cartProducts.find(prod => prod.id === p.id && prod.variant_id === p.variant_id)
+                const mergedProducts = userCart.products.map(p => {
+                    const exist = cartSession.products.find(prod => prod.id === p.id && prod.variant_id === p.variant_id)
                     if (exist)
                         return { ...p, quantity: p.quantity + exist.quantity }
                     else
                         return p
-                }).concat(cartProducts.filter(prod => !userCart.some(p => p.id === prod.id && p.variant_id === prod.variant_id)))
+                }).concat(cartSession.products.filter(prod => !userCart.products.some(p => p.id === prod.id && p.variant_id === prod.variant_id)))
 
-                await updateCart(cartId, mergedCart)
+                await updateCart(userCartId, mergedProducts)
 
-                console.log(`Cart Session ${cart_cookie_id} merged with cart ${cartId} successfully.`)
+                console.log(`Cart Session ${cart_cookie_id} merged with cart ${userCartId} successfully.`)
             } else {
                 console.log(`Cart Session with ID ${cart_cookie_id} not found.`)
             }
         } else {
-            console.log(`Cart ${cartId} not found.`)
+            console.log(`User ${userId} Cart not found.`)
         }
     } catch (error) {
         console.error(`Error merging Cart Session ${cart_cookie_id}.`, error)
@@ -101,5 +137,6 @@ export {
     createCart,
     updateCart,
     getCartById,
+    getCartByUserId,
     mergeCarts,
 }

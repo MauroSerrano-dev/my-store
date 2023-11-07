@@ -1,4 +1,4 @@
-import { arrayUnion, collection, doc, addDoc, getDoc, getDocs, getFirestore, query, setDoc, updateDoc, where, deleteDoc } from "firebase/firestore";
+import { arrayUnion, collection, doc, addDoc, getDoc, getDocs, getFirestore, query, setDoc, updateDoc, where, deleteDoc, Timestamp } from "firebase/firestore";
 import { initializeApp } from 'firebase/app'
 import { firebaseConfig } from "../firebase.config"
 
@@ -17,7 +17,7 @@ async function getCartSessionById(id) {
         } else {
             console.log("Cart Session not found")
             await createCartSession([], id)
-            return []
+            return await getCartSessionById(id)
         }
     } catch (error) {
         console.error("Error getting Cart Session by ID:", error)
@@ -45,20 +45,19 @@ async function deleteCartSession(id) {
 
 async function createCartSession(products, id = null) {
     const cartsRef = id ? doc(db, process.env.COLL_CARTS_SESSION, id) : collection(db, process.env.COLL_CARTS_SESSION);
-    const now = new Date();
 
     try {
         if (id) {
             // Usando o ID personalizado
             await setDoc(cartsRef, {
                 products: products,
-                created_at: now,
+                created_at: Timestamp.now(),
             });
         } else {
             // O Firestore gera automaticamente um ID
             const newCartDocRef = await addDoc(cartsRef, {
                 products: products,
-                created_at: now,
+                created_at: Timestamp.now(),
             });
 
             console.log(`Cart Session created with ID: ${newCartDocRef.id}`);

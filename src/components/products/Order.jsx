@@ -212,6 +212,9 @@ export default function Order(props) {
                                             Canceled
                                         </p>
                                     }
+                                    <p className='text-start' style={{ fontSize: 14 }}>Color: <span style={{ fontWeight: 600 }}>{COLORS_POOL[product.variant.color_id].title}</span></p>
+                                    <p className='text-start' style={{ fontSize: 14 }}>Size: <span style={{ fontWeight: 600 }}>{SIZES_POOL.find(sz => sz.id === product.variant.size_id).title}</span></p>
+                                    <p className='text-start' style={{ fontSize: 14 }}>Quantity: <span style={{ fontWeight: 600 }}>{product.quantity}</span></p>
                                 </div>
                             </div>
                             <div className={styles.productInfosRight}>
