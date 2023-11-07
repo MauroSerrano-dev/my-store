@@ -72,6 +72,7 @@ export default async function handler(req, res) {
         id: item.id,
         id_printify: item.id_printify,
         variant_id: item.variant_id,
+        variant_id_printify: item.variant_id_printify,
         quantity: item.quantity,
         price: item.price,
         status: STEPS[0].id,

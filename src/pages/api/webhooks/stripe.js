@@ -53,7 +53,7 @@ export default async function handler(req, res) {
                 line_items: line_items.map(lineItem => (
                     {
                         product_id: lineItem.id_printify,
-                        variant_id: lineItem.variant_id,
+                        variant_id: lineItem.variant_id_printify,
                         quantity: lineItem.quantity,
                     }
                 )),

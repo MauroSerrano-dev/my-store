@@ -49,7 +49,8 @@ export default function Cart(props) {
                     return {
                         ...prod,
                         id_printify: prod.printify_ids[providerId],
-                        variant_id: typeof prod.variant.id_printify === 'number' ? prod.variant.id_printify : prod.variant.id_printify[providerId],
+                        variant_id: prod.variant_id,
+                        variant_id_printify: typeof prod.variant.id_printify === 'number' ? prod.variant.id_printify : prod.variant.id_printify[providerId],
                         price: convertDolarToCurrency(prod.variant.price, userCurrency.code),
                     }
                 }),
