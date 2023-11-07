@@ -86,13 +86,13 @@ async function getCartProductsInfo(cartProducts) {
                 products: [],
             }
         }
-        const productsCollection = collection(db, process.env.COLL_PRODUCTS);
+        const productsCollection = collection(db, process.env.COLL_PRODUCTS)
 
-        const q = query(productsCollection, where('id', 'in', cartProducts.map(prod => prod.id)));
+        const q = query(productsCollection, where('id', 'in', cartProducts.map(prod => prod.id)))
 
-        const querySnapshot = await getDocs(q);
+        const querySnapshot = await getDocs(q)
 
-        const products = querySnapshot.docs.map((doc) => doc.data());
+        const products = querySnapshot.docs.map((doc) => doc.data())
 
         const productsOneVariant = cartProducts.map(prod => {
             const product = products.find(p => p.id === prod.id)
