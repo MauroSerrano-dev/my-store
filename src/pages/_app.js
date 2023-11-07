@@ -51,12 +51,14 @@ export default function App(props) {
   const { Component, pageProps } = props
 
   const [loading, setLoading] = useState(false)
-
   const router = useRouter()
+  const [currencies, setCurrencies] = useState()
 
   useEffect(() => {
 
     handleLoading()
+
+    getCurrencies()
 
     function handleLoading() {
       setLoading(true)
@@ -76,6 +78,20 @@ export default function App(props) {
       router.events.off("routeChangeError", handleEndLoading)
     }
   }, [])
+
+  function getCurrencies() {
+    const options = {
+      method: 'GET',
+      headers: {
+        authorization: process.env.NEXT_PUBLIC_APP_TOKEN,
+      },
+    }
+
+    fetch("/api/app-settings/currencies", options)
+      .then(response => response.json())
+      .then(response => setCurrencies(response))
+      .catch(err => console.error(err))
+  }
 
   return (
     <div className={montserrat.className}>
@@ -125,6 +141,7 @@ export default function App(props) {
             Component={Component}
             router={router}
             setLoading={setLoading}
+            currencies={currencies}
           />
         }
       </ThemeProvider>

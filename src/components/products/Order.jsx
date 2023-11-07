@@ -5,13 +5,14 @@ import Image from 'next/image';
 import { Button, Step, StepLabel, Stepper } from '@mui/material';
 import styled from '@emotion/styled';
 import StepConnector, { stepConnectorClasses } from '@mui/material/StepConnector';
-import { PRODUCT_TYPES, getCurrencyByCode, SIZES_POOL, COLORS_POOL, STEPS_ATTEMPT, STEPS } from '../../../consts';
+import { PRODUCT_TYPES, SIZES_POOL, COLORS_POOL, STEPS_ATTEMPT, STEPS } from '../../../consts';
 import { format } from 'date-fns';
 
 export default function Order(props) {
     const {
         order,
         index,
+        currencies,
     } = props
 
     const createAt = new Date(order.create_at.seconds * 1000 + order.create_at.nanoseconds * 0.000001)
@@ -65,7 +66,7 @@ export default function Order(props) {
                             TOTAL
                         </p>
                         <p style={{ textAlign: 'start' }}>
-                            {`${getCurrencyByCode(order.amount.currency).symbol} ${order.amount.amount_total / 100}`}
+                            {`${currencies[order.amount.currency].symbol} ${order.amount.amount_total / 100}`}
                         </p>
                     </div>
                     <div>

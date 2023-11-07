@@ -5,7 +5,7 @@ import ImagesSlider from '@/components/ImagesSlider'
 import { Button } from '@mui/material'
 import ShoppingCartOutlinedIcon from '@mui/icons-material/ShoppingCartOutlined';
 import CreditCardOutlinedIcon from '@mui/icons-material/CreditCardOutlined';
-import { CART_COOKIE, COLORS_POOL, SIZES_POOL, convertDolarToCurrency } from '../../../consts'
+import { CART_COOKIE, COLORS_POOL, SIZES_POOL } from '../../../consts'
 import Head from 'next/head'
 import ColorSelector from '@/components/ColorSelector'
 import SizesSelector from '@/components/SizesSelector'
@@ -37,9 +37,9 @@ export default withRouter(props => {
 
     const productCurrentVariant = product?.variants.find(vari => vari.size_id === currentSize?.id && vari.color_id === currentColor?.id)
 
-    const productPrice = product ? `${userCurrency.symbol} ${(convertDolarToCurrency(productCurrentVariant?.price * (product.sold_out ? 1 - product.sold_out.percentage : 1), userCurrency.code) / 100).toFixed(2)}` : undefined
+    const productPrice = product ? `${userCurrency.symbol} ${((productCurrentVariant?.price * (product.sold_out ? 1 - product.sold_out.percentage : 1) * userCurrency?.code.rate) / 100).toFixed(2)}` : undefined
 
-    const originalPrice = product ? `${userCurrency.symbol} ${(convertDolarToCurrency(productCurrentVariant?.price, userCurrency.code) / 100).toFixed(2)}` : undefined
+    const originalPrice = product ? `${userCurrency.symbol} ${((productCurrentVariant?.price * userCurrency?.rate) / 100).toFixed(2)}` : undefined
 
     useEffect(() => {
         setCurrentColor(cl ? cl : COLORS_POOL[product?.colors_ids[0]])
@@ -131,7 +131,7 @@ export default withRouter(props => {
             if (session) {
                 options.headers.user_id = session.id
             }
-            
+
             fetch("/api/carts/cart-products", options)
                 .then(response => response.json())
                 .then(response => setCart(response.cart))
@@ -164,20 +164,20 @@ export default withRouter(props => {
                     <meta property="og:url" content={urlMeta} key='og:url' />
                 </Head>
                 <div className={styles.productContainer}>
-                    <section className={`${styles.section} ${styles.one}`}>
+                    <section className={`${styles.section} ${styles.one} `}>
                         <div className={styles.left}>
                             <div
                                 className={styles.sliderContainer}
                             >
                                 <ShareButton
-                                    link={`${process.env.NEXT_PUBLIC_URL}/product/${product.id}${currentColor.id !== product.colors_ids[0] && currentSize.id !== product.sizes_ids[0]
+                                    link={`${process.env.NEXT_PUBLIC_URL} /product/${product.id}${currentColor.id !== product.colors_ids[0] && currentSize.id !== product.sizes_ids[0]
                                         ? `?sz=${currentSize.title.toLowerCase()}&cl=${currentColor.id_string}`
                                         : currentSize.id !== product.sizes_ids[0]
                                             ? `?sz=${currentSize.title.toLowerCase()}`
                                             : currentColor.id !== product.colors_ids[0]
                                                 ? `?cl=${currentColor.id_string}`
                                                 : ''
-                                        }`}
+                                        } `}
                                     wppMsg={`${product.title} (${currentColor.title})`}
                                     mobile={mobile}
                                     style={{
@@ -277,7 +277,7 @@ export default withRouter(props => {
                             </Button>
                         </div>
                     </section>
-                    <section className={`${styles.section} ${styles.two}`}>
+                    <section className={`${styles.section} ${styles.two} `}>
                         <div className={styles.sectionTitle}>
                             <h1 style={{ textAlign: 'start' }}>
                                 Description
@@ -289,7 +289,7 @@ export default withRouter(props => {
                             </p>
                         </div>
                     </section>
-                    <section className={`${styles.section} ${styles.three}`}>
+                    <section className={`${styles.section} ${styles.three} `}>
                         <div className={styles.sectionTitle}>
                             <h1 style={{ textAlign: 'start' }}>
                                 Key features
@@ -298,7 +298,7 @@ export default withRouter(props => {
                         <div className={styles.sectionBody}>
                         </div>
                     </section>
-                    <section className={`${styles.section} ${styles.four}`}>
+                    <section className={`${styles.section} ${styles.four} `}>
                         <div className={styles.sectionTitle}>
                             <h1 style={{ textAlign: 'start' }}>
                                 Care instructions
@@ -312,7 +312,7 @@ export default withRouter(props => {
                             />
                         </div>
                     </section>
-                    <section className={`${styles.section} ${styles.five}`}>
+                    <section className={`${styles.section} ${styles.five} `}>
                         <div className={styles.sectionTitle}>
                             <h1 style={{ textAlign: 'start' }}>
                                 Size guide
@@ -343,7 +343,7 @@ export async function getServerSideProps(context) {
                 id: id,
             }
         }
-        const product = await fetch(`${process.env.NEXT_PUBLIC_URL}/api/product`, options)
+        const product = await fetch(`${process.env.NEXT_PUBLIC_URL} /api/product`, options)
             .then(response => response.json())
             .then(response => response.product)
             .catch(err => console.error(err))
@@ -361,7 +361,7 @@ export async function getServerSideProps(context) {
                 product: product,
                 cl: colorQuery === undefined ? null : colorQuery,
                 sz: sizeQuery === undefined ? null : sizeQuery,
-                urlMeta: `${process.env.NEXT_PUBLIC_URL}${context.resolvedUrl}`,
+                urlMeta: `${process.env.NEXT_PUBLIC_URL}${context.resolvedUrl} `,
                 productMetaImage: colorQuery
                     ? product.images.filter(img => img.color_id === colorQuery.id)[product.image_showcase_index].src
                     : product.images[product.image_showcase_index].src

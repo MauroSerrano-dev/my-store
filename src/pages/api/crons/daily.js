@@ -1,9 +1,18 @@
-import { clearUpdateCounter } from "../../../../backend/user"
+import { updateAllCurrencies } from '../../../../backend/app-settings'
+
+const axios = require('axios')
+
+const CURRENCIES = {
+    brl: { code: 'brl', symbol: 'R$' },
+    gbp: { code: 'gbp', symbol: '£' },
+    eur: { code: 'eur', symbol: '€' },
+    usd: { code: 'usd', symbol: '$' },
+}
 
 export default async function handler(req, res) {
     const { authorization } = req.headers
 
-    if (!authorization) {
+    /* if (!authorization) {
         console.error("Invalid authentication.")
         return res.status(401).json({ error: "Invalid authentication." })
     }
@@ -11,8 +20,24 @@ export default async function handler(req, res) {
     if (authorization !== `Bearer ${process.env.CRON_SECRET}`) {
         console.error("Invalid authentication.")
         return res.status(401).json({ error: "Invalid authentication." })
-    }
+    } */
 
-    /* const response = await clearUpdateCounter() */
-    res.status(200).json({})
+    const API_ENDPOINT = `https://api.currencybeacon.com/v1/latest?api_key=${process.env.CURRENCY_BEACON_API_KEY}`
+
+    const response = await axios.get(
+        API_ENDPOINT,
+        {
+            params: {
+                base: 'USD',
+            },
+        })
+
+    const updatedCurrencies = {}
+    Object.keys(CURRENCIES).forEach(code => {
+        updatedCurrencies[code] = { ...CURRENCIES[code], rate: response.data.rates[code.toUpperCase()] }
+    })
+
+    await updateAllCurrencies(updatedCurrencies)
+
+    res.status(200).json({ message: 'Currencies updated successfully!' })
 }

@@ -2,7 +2,7 @@ import styles from '@/styles/components/products/ProductCart.module.css'
 import { SlClose } from "react-icons/sl";
 import { motion } from "framer-motion";
 import Link from 'next/link';
-import { convertDolarToCurrency, SIZES_POOL, COLORS_POOL } from '../../../consts';
+import { SIZES_POOL, COLORS_POOL } from '../../../consts';
 import Image from 'next/image';
 import Selector from '../material-ui/Selector';
 import { useState } from 'react';
@@ -21,9 +21,9 @@ export default function ProductCart(props) {
     const COLOR = COLORS_POOL[product.variant.color_id]
     const SIZE = SIZES_POOL.find(sz => sz.id === product.variant.size_id)
 
-    const price = `${userCurrency.symbol} ${((convertDolarToCurrency(product.variant.price * (product.sold_out ? 1 - product.sold_out.percentage : 1), userCurrency.code) / 100) * product.quantity).toFixed(2)}`
+    const price = `${userCurrency.symbol} ${(((product.variant.price * (product.sold_out ? 1 - product.sold_out.percentage : 1) * userCurrency?.rate) / 100) * product.quantity).toFixed(2)}`
 
-    const priceUnit = `${userCurrency.symbol} ${(convertDolarToCurrency(product.variant.price * (product.sold_out ? 1 - product.sold_out.percentage : 1), userCurrency.code) / 100).toFixed(2)} unit`
+    const priceUnit = `${userCurrency.symbol} ${((product.variant.price * (product.sold_out ? 1 - product.sold_out.percentage : 1), userCurrency?.rate) / 100).toFixed(2)} unit`
 
     const [deleting, setDeleting] = useState(false)
 
@@ -62,7 +62,7 @@ export default function ProductCart(props) {
     function handleChangeQuantity(event) {
         setLoading(true)
         setDeleting(true)
-        
+
         const options = {
             method: 'PUT',
             headers: {

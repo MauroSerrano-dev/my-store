@@ -3,7 +3,7 @@ import { useEffect, useState, useRef } from 'react'
 import { Button, Skeleton } from '@mui/material'
 import Link from 'next/link'
 import { motion } from "framer-motion";
-import { COLORS_POOL, PRODUCT_TYPES, convertDolarToCurrency } from '../../../consts';
+import { COLORS_POOL, PRODUCT_TYPES } from '../../../consts';
 import ColorButton from '../ColorButton';
 import Image from 'next/image';
 
@@ -251,7 +251,7 @@ export default function Product(props) {
                                     fontSize: width * 0.056
                                 }}
                             >
-                                {userCurrency.symbol} {(convertDolarToCurrency(product.min_price, userCurrency.code) / 100).toFixed(2)}
+                                {userCurrency.symbol} {((product.min_price * userCurrency?.rate) / 100).toFixed(2)}
                             </p>
                         }
                         <p
@@ -260,7 +260,7 @@ export default function Product(props) {
                                 fontSize: width * 0.085
                             }}
                         >
-                            {userCurrency.symbol} {(convertDolarToCurrency(product.min_price * (product.sold_out ? 1 - product.sold_out.percentage : 1), userCurrency.code) / 100).toFixed(2)}
+                            {userCurrency.symbol} {(product.min_price * (product.sold_out ? 1 - product.sold_out.percentage : 1 * userCurrency?.rate) / 100).toFixed(2)}
                         </p>
                     </div>
                     {

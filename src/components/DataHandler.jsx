@@ -21,6 +21,7 @@ export default function DataHandler(props) {
         pageProps,
         router,
         setLoading,
+        currencies,
     } = props
     const [cart, setCart] = useState()
     const [isScrollAtTop, setIsScrollAtTop] = useState(true)
@@ -29,7 +30,7 @@ export default function DataHandler(props) {
     const [windowWidth, setWindowWidth] = useState()
     const [websiteVisible, setWebsiteVisible] = useState(false)
     const [showIntroduction, setShowIntroduction] = useState(false)
-    const [userCurrency, setUserCurrency] = useState({ code: 'usd', symbol: '$' })
+    const [userCurrency, setUserCurrency] = useState()
     const [search, setSearch] = useState('')
     const [productOptions, setProductOptions] = useState([])
     const [supportsHoverAndPointer, setSupportsHoverAndPointer] = useState()
@@ -101,9 +102,9 @@ export default function DataHandler(props) {
             })
     }
 
-    function handleChangeCurrency(newCurrency) {
-        Cookies.set('CURR', JSON.stringify(newCurrency))
-        setUserCurrency(newCurrency)
+    function handleChangeCurrency(newCurrencyCode) {
+        Cookies.set('CURR', newCurrencyCode)
+        setUserCurrency(currencies?.[newCurrencyCode])
     }
 
     function handleLogin(authUser) {
@@ -217,11 +218,6 @@ export default function DataHandler(props) {
     }
 
     useEffect(() => {
-        if (Cookies.get('CURR'))
-            setUserCurrency(JSON.parse(Cookies.get('CURR')))
-        else
-            Cookies.set('CURR', JSON.stringify(userCurrency))
-
         updateSession()
 
         const handleLanguageChange = () => {
@@ -237,6 +233,15 @@ export default function DataHandler(props) {
             window.removeEventListener("languagechange", handleLanguageChange);
         }
     }, [])
+
+    useEffect(() => {
+        if (currencies) {
+            if (Cookies.get('CURR'))
+                setUserCurrency(currencies?.[Cookies.get('CURR')])
+            else
+                Cookies.set('CURR', 'usd') //talvez mudar para moeda da região
+        }
+    }, [currencies])
 
     useEffect(() => {
         function handleResize() {
@@ -432,6 +437,7 @@ export default function DataHandler(props) {
                     logout={logout}
                     auth={auth}
                     userCurrency={userCurrency}
+                    currencies={currencies}
                     handleChangeCurrency={handleChangeCurrency}
                     mobile={mobile}
                     supportsHoverAndPointer={supportsHoverAndPointer}

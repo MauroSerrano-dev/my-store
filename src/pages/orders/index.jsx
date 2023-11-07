@@ -11,6 +11,7 @@ export default function Orders(props) {
     const {
         session,
         supportsHoverAndPointer,
+        currencies,
         windowWidth,
     } = props
 
@@ -93,6 +94,7 @@ export default function Orders(props) {
                                         order={order}
                                         key={i}
                                         index={i}
+                                        currencies={currencies}
                                     />
                                 )}
                             </div>

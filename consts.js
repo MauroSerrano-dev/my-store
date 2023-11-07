@@ -2170,29 +2170,3 @@ export function getShippingOptions(product_type, country) {
 }
 
 export const USER_CUSTOMIZE_HOME_PAGE = THEMES_POOL.map(theme => ({ ...theme, query: 'h' })).concat(Object.keys(PRODUCTS_FAMILY).map(id => ({ id: id, title: PRODUCTS_FAMILY[id].title, query: 'v' }))).sort((a, b) => b.id < a.id ? 1 : -1)
-
-export function convertDolarToCurrency(value, currency) {
-    if (currency === 'usd')
-        return value
-    if (currency === 'gbp')
-        return Math.round(value * 0.82)
-    if (currency === 'eur')
-        return Math.round(value * 0.94)
-    if (currency === 'brl')
-        return Math.round(value * 4.87)
-    console.error('Currency not found')
-    return null
-}
-
-export function getCurrencyByCode(code) {
-    if (code === 'brl')
-        return { code: 'brl', symbol: 'R$' }
-    if (code === 'gbp')
-        return { code: 'gbp', symbol: '£' }
-    if (code === 'eur')
-        return { code: 'eur', symbol: '€' }
-    if (code === 'usd')
-        return { code: 'usd', symbol: '$' }
-    console.error('Currency not found')
-    return null
-}

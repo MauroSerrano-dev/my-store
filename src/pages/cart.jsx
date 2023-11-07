@@ -1,7 +1,7 @@
 import ProductCart from '@/components/products/ProductCart'
 import styles from '@/styles/pages/cart.module.css'
 import { Button } from '@mui/material'
-import { CART_COOKIE, convertDolarToCurrency, getCurrencyByCode, getShippingOptions } from '../../consts'
+import { CART_COOKIE, getShippingOptions } from '../../consts'
 import { useEffect, useState } from 'react'
 import Selector from '@/components/material-ui/Selector'
 import Cookies from 'js-cookie'
@@ -17,18 +17,19 @@ export default function Cart(props) {
         supportsHoverAndPointer,
         windowWidth,
         setLoading,
-        getInicialCart
+        getInicialCart,
+        currencies,
     } = props
 
     const [shippingValue, setShippingValue] = useState(0)
     const [shippingCountry, setShippingCountry] = useState('US')
     const [allProducts, setAllProducts] = useState()
 
-    const ITEMS_TOTAL = (cart?.products.reduce((acc, product) => acc + (convertDolarToCurrency(product.variant.price, userCurrency.code) * product.quantity), 0) / 100).toFixed(2)
+    const ITEMS_TOTAL = (cart?.products.reduce((acc, product) => acc + (product.variant.price * userCurrency?.rate * product.quantity), 0) / 100).toFixed(2)
 
-    const SHIPPING_CONVERTED = convertDolarToCurrency(shippingValue, userCurrency.code)
+    const SHIPPING_CONVERTED = shippingValue * userCurrency?.rate
 
-    const ORDER_TOTAL = ((SHIPPING_CONVERTED + cart?.products.reduce((acc, product) => acc + (convertDolarToCurrency(product.variant.price, userCurrency.code) * product.quantity), 0)) / 100).toFixed(2)
+    const ORDER_TOTAL = ((SHIPPING_CONVERTED + cart?.products.reduce((acc, product) => acc + (product.variant.price * userCurrency?.rate * product.quantity), 0)) / 100).toFixed(2)
 
     useEffect(() => {
         getShippingValue()
@@ -54,15 +55,15 @@ export default function Cart(props) {
                         id_printify: prod.printify_ids[providerId],
                         variant_id: prod.variant.id,
                         variant_id_printify: typeof prod.variant.id_printify === 'number' ? prod.variant.id_printify : prod.variant.id_printify[providerId],
-                        price: convertDolarToCurrency(prod.variant.price, userCurrency.code),
+                        price: prod.variant.price * userCurrency?.rate,
                     }
                 }),
                 cancel_url: window.location.href,
                 success_url: session ? `${process.env.NEXT_PUBLIC_URL}/orders` : process.env.NEXT_PUBLIC_URL,
                 customer: session,
-                shippingValue: convertDolarToCurrency(shippingValue, userCurrency.code),
+                shippingValue: shippingValue * userCurrency?.rate,
                 shippingCountry: shippingCountry,
-                currency: userCurrency.code,
+                currency: userCurrency?.code,
                 cart_id: session ? session.cart_id : Cookies.get(CART_COOKIE),
             })
         }
@@ -203,15 +204,10 @@ export default function Cart(props) {
                                     <Selector
                                         label='currency'
                                         value={userCurrency.code}
-                                        options={[
-                                            { value: 'usd', name: 'USD' },
-                                            { value: 'eur', name: 'EUR' },
-                                            { value: 'gbp', name: 'GBP' },
-                                            { value: 'brl', name: 'BRL' },
-                                        ]}
+                                        options={Object.values(currencies).map(currency => ({ value: currency.code, name: currency.code.toUpperCase() }))}
                                         width='100px'
                                         dark
-                                        onChange={(event) => handleChangeCurrency(getCurrencyByCode(event.target.value))}
+                                        onChange={(event) => handleChangeCurrency(event.target.value)}
                                         supportsHoverAndPointer={supportsHoverAndPointer}
                                     />
                                 </div>
