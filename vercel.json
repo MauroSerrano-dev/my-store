@@ -6,7 +6,7 @@
         }
     ],
     "functions": {
-        "src/pages/api/webhooks/stripe": {
+        "src/pages/api/webhooks/stripe.js": {
             "maxDuration": 300
         }
     }
