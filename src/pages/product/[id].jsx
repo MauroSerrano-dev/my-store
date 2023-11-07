@@ -343,7 +343,7 @@ export async function getServerSideProps(context) {
                 id: id,
             }
         }
-        const product = await fetch(`${process.env.NEXT_PUBLIC_URL} /api/product`, options)
+        const product = await fetch(`${process.env.NEXT_PUBLIC_URL}/api/product`, options)
             .then(response => response.json())
             .then(response => response.product)
             .catch(err => console.error(err))
