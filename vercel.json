@@ -6,7 +6,7 @@
         }
     ],
     "functions": {
-        "api/webhook/stripe.js": {
+        "api/webhooks/stripe.js": {
             "maxDuration": 300
         }
     }
