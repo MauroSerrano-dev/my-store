@@ -41,11 +41,6 @@ export default async function handler(req, res) {
         })
       }
     }
-    else {
-      await stripe.customers.create({
-        name: 'Anonymous',
-      })
-    }
 
     const line_items = cartItems.map(item => {
       return {
