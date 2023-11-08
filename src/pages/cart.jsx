@@ -25,11 +25,11 @@ export default function Cart(props) {
     const [shippingCountry, setShippingCountry] = useState('US')
     const [allProducts, setAllProducts] = useState()
 
-    const ITEMS_TOTAL = (cart?.products.reduce((acc, product) => acc + (product.variant.price * userCurrency?.rate * product.quantity), 0) / 100).toFixed(2)
+    const SHIPPING_CONVERTED = Math.ceil(shippingValue * userCurrency?.rate)
 
-    const SHIPPING_CONVERTED = shippingValue * userCurrency?.rate
+    const ITEMS_TOTAL = cart?.products.reduce((acc, product) => acc + (Math.ceil(product.variant.price * userCurrency?.rate) * product.quantity), 0)
 
-    const ORDER_TOTAL = ((SHIPPING_CONVERTED + cart?.products.reduce((acc, product) => acc + (product.variant.price * userCurrency?.rate * product.quantity), 0)) / 100).toFixed(2)
+    const ORDER_TOTAL = SHIPPING_CONVERTED + ITEMS_TOTAL
 
     useEffect(() => {
         getShippingValue()
@@ -55,13 +55,13 @@ export default function Cart(props) {
                         id_printify: prod.printify_ids[providerId],
                         variant_id: prod.variant.id,
                         variant_id_printify: typeof prod.variant.id_printify === 'number' ? prod.variant.id_printify : prod.variant.id_printify[providerId],
-                        price: prod.variant.price * userCurrency?.rate,
+                        price: Math.ceil(prod.variant.price * userCurrency?.rate),
                     }
                 }),
                 cancel_url: window.location.href,
-                success_url: session ? `${process.env.NEXT_PUBLIC_URL}/orders` : process.env.NEXT_PUBLIC_URL,
+                success_url: session ? `${window.location.origin}/orders` : window.location.origin,
                 customer: session,
-                shippingValue: shippingValue * userCurrency?.rate,
+                shippingValue: SHIPPING_CONVERTED,
                 shippingCountry: shippingCountry,
                 currency: userCurrency?.code,
                 cart_id: session ? session.cart_id : Cookies.get(CART_COOKIE),
@@ -216,7 +216,7 @@ export default function Cart(props) {
                                         Items Total:
                                     </p>
                                     <p>
-                                        {`${userCurrency?.symbol} ${ITEMS_TOTAL}`}
+                                        {`${userCurrency?.symbol} ${(ITEMS_TOTAL / 100).toFixed(2)}`}
                                     </p>
                                 </div>
                                 <div className={styles.detailsItem}>
@@ -237,7 +237,7 @@ export default function Cart(props) {
                                                 fontWeight: '700'
                                             }}
                                         >
-                                            {`${userCurrency?.symbol} ${ORDER_TOTAL}`}
+                                            {`${userCurrency?.symbol} ${(ORDER_TOTAL / 100).toFixed(2)}`}
                                         </p>
                                     </div>
                                 </div>

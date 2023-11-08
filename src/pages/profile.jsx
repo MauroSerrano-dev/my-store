@@ -38,35 +38,38 @@ export default function Profile(props) {
         })
         if (Object.keys(changes).length === 0) {
             showToast({ msg: 'No changes made.' })
+            return
         }
-        else {
-            setDisableSaveButton(true)
-            const options = {
-                method: 'PATCH',
-                headers: {
-                    'Content-Type': 'application/json',
-                    authorization: process.env.NEXT_PUBLIC_APP_TOKEN
-                },
-                body: JSON.stringify({
-                    user_id: session.id,
-                    changes: changes,
-                })
-            }
-            fetch("/api/user", options)
-                .then(response => response.json())
-                .then(response => {
-                    if (response.status === 200) {
-                        showToast({ type: 'success', msg: response.message })
-                        updateSession()
-                    }
-                    else {
-                        showToast({ type: 'error', msg: response.message })
-                    }
-                })
-                .catch(err => {
-                    console.error(err)
-                })
+        if (user.home_page_tags.length < TAGS_MIN_LIMIT) {
+            showToast({ type: 'error', msg: 'You must have at least 3 keywords.' })
+            return
         }
+        setDisableSaveButton(true)
+        const options = {
+            method: 'PATCH',
+            headers: {
+                'Content-Type': 'application/json',
+                authorization: process.env.NEXT_PUBLIC_APP_TOKEN
+            },
+            body: JSON.stringify({
+                user_id: session.id,
+                changes: changes,
+            })
+        }
+        fetch("/api/user", options)
+            .then(response => response.json())
+            .then(response => {
+                if (response.status === 200) {
+                    showToast({ type: 'success', msg: response.message })
+                    updateSession()
+                }
+                else {
+                    showToast({ type: 'error', msg: response.message })
+                }
+            })
+            .catch(err => {
+                console.error(err)
+            })
     }
 
     useEffect(() => {
@@ -130,9 +133,7 @@ export default function Profile(props) {
                                             width: '100%'
                                         }}
                                         onChange={(event, value) => {
-                                            if (value.length < TAGS_MIN_LIMIT)
-                                                showToast({ type: 'error', msg: 'You must have at least 3 keywords.' })
-                                            else if (value.length > TAGS_MAX_LIMIT)
+                                            if (value.length > TAGS_MAX_LIMIT)
                                                 showToast({ type: 'error', msg: 'Maximum number of keywords reached.' })
                                             else
                                                 handleChanges('home_page_tags', value)

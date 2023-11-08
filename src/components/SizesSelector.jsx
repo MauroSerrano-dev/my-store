@@ -18,16 +18,16 @@ export default function SizesSelector(props) {
             {options.map((option, i) =>
                 <button
                     key={i}
-                    onClick={() => onChange(value.some(color => option.id === color?.id)
-                        ? value.filter(color => option.id !== color?.id)
+                    onClick={() => onChange(value.some(size => option.id === size?.id)
+                        ? value.filter(size => option.id !== size?.id)
                         : value.concat(option),
                         i,
                         option
                     )}
                     className={styles.button}
                     style={{
-                        opacity: value.some(color => option.id === color?.id) ? 1 : 0.7,
-                        outline: value.some(color => option.id === color?.id) ? '2px solid var(--primary)' : '1px solid black',
+                        opacity: value.some(size => option.id === size?.id) ? 1 : 0.7,
+                        outline: value.some(size => option.id === size?.id) ? '2px solid var(--primary)' : '1px solid black',
                     }}
                 >
                     {option.title}

@@ -239,7 +239,7 @@ async function updateUser(userId, changes) {
 
             return {
                 status: 200,
-                message: 'User updated successfully!',
+                message: 'Profile updated successfully!',
             }
         } else {
             return {
@@ -250,7 +250,7 @@ async function updateUser(userId, changes) {
     } catch (error) {
         return {
             status: 500,
-            message: 'Error updating user.',
+            message: 'Error updating profile.',
             error: error,
         }
     }

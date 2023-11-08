@@ -19,6 +19,7 @@ import { showToast } from '../../../../utils/toasts';
 import { getObjectsDiff } from '../../../../utils';
 import Head from 'next/head';
 import Selector from '@/components/material-ui/Selector';
+import { isNewProductValid } from '../../../../utils/edit-product';
 
 export default withRouter(props => {
 
@@ -263,6 +264,11 @@ export default withRouter(props => {
     async function updateProduct() {
         setDisableUpdateButton(true)
 
+        if (!isNewProductValid(product, images)) {
+            setDisableUpdateButton(false)
+            return
+        }
+
         const newProduct = {
             ...product,
             min_price: product.variants.reduce((acc, vari) => acc < vari.price ? acc : vari.price, product.variants[0].price),
@@ -352,17 +358,6 @@ export default withRouter(props => {
     function handlePrintifyId(providerId, newValue) {
         setProduct(prev => ({ ...prev, printify_ids: { ...prev.printify_ids, [providerId]: newValue } }))
     }
-
-    useEffect(() => {
-        if (product) {
-            product.images.forEach(image => {
-                const img = new window.Image()
-                img.src = image.src
-                img.width = 250
-                img.height = 300
-            })
-        }
-    }, [product])
 
     function handleChangeSizes(value) {
         setProduct(prev => (
@@ -717,8 +712,8 @@ export default withRouter(props => {
                                             </h3>
                                         </div>
                                         <ColorSelector
-                                            value={[SEARCH_ART_COLORS.map(cl => ({ id: cl.id, colors: [cl.color_display.color] })).find(scl => scl.id === product.variants.find(vari => vari.color_id === product.colors_ids[colorIndex]).art.color_id)]}
-                                            options={SEARCH_ART_COLORS.map(cl => ({ id: cl.id, colors: [cl.color_display.color] }))}
+                                            value={[SEARCH_ART_COLORS.map(cl => ({ id: cl.id, colors: [cl.color_display.color], title: cl.color_display.title })).find(scl => scl.id === product.variants.find(vari => vari.color_id === product.colors_ids[colorIndex]).art.color_id)]}
+                                            options={SEARCH_ART_COLORS.map(cl => ({ id: cl.id, colors: [cl.color_display.color], title: cl.color_display.title }))}
                                             onChange={handleArtColor}
                                             supportsHoverAndPointer={supportsHoverAndPointer}
                                             style={{
@@ -763,6 +758,7 @@ export default withRouter(props => {
                                     variant='contained'
                                     onClick={updateProduct}
                                     disabled={disableUpdateButton}
+                                    size='large'
                                     sx={{
                                         width: '100%',
                                         color: '#ffffff',

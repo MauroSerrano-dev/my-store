@@ -1,6 +1,8 @@
 .container {
     width: 100%;
     --text-color: var(--text-white);
+
+    padding-bottom: 2rem;
 }
 
 .sectionsContainer {

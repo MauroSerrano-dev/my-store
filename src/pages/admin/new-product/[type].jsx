@@ -17,7 +17,7 @@ import BrokeChain from '@/components/svgs/BrokeChain'
 import { showToast } from '../../../../utils/toasts'
 import NoFound404 from '@/pages/404'
 import Selector from '@/components/material-ui/Selector'
-import { hasRepeatedItems } from '../../../../utils'
+import { isNewProductValid } from '../../../../utils/edit-product'
 
 const INICIAL_PRODUCT = {
     id: '',
@@ -75,18 +75,7 @@ export default withRouter(props => {
     async function createProduct() {
         setDisableCreateButton(true)
 
-        if (product.colors.length === 0) {
-            showToast({ msg: 'Choose at least one color.', type: 'error' })
-            setDisableCreateButton(false)
-            return
-        }
-        if (product.title === '') {
-            showToast({ msg: 'Some fields missing.', type: 'error' })
-            setDisableCreateButton(false)
-            return
-        }
-        if (hasRepeatedItems(Object.values(product.printify_ids))) {
-            showToast({ msg: 'Printify ids must be unique.', type: 'error' })
+        if (!isNewProductValid(product, images)) {
             setDisableCreateButton(false)
             return
         }
@@ -156,6 +145,16 @@ export default withRouter(props => {
                     setSizesChained(prev => ({ ...prev, [color.id]: [] }))
                 }
                 setImages(prevImgs => ({ ...prevImgs, [color.id]: [{ src: '', color_id: color.id }, { src: '', color_id: color.id }, { src: '', color_id: color.id }, { src: '', color_id: color.id }] }))
+                return {
+                    ...prev,
+                    colors: value,
+                    variants: prev.variants
+                        .concat(
+                            type.variants
+                                .filter(vari => color.id === vari.color_id && prev.sizes.some(sz => sz.id === vari.size_id))
+                                .map(vari => ({ ...vari, art: { id: artIdChained ? prev.id : '', color_id: artColorChained && prev.variants.length > 0 ? prev.variants[0].art.color_id : null } }))
+                        )
+                }
             }
             // remove color
             else {
@@ -168,16 +167,19 @@ export default withRouter(props => {
                     delete prevImgs[color.id]
                     return prevImgs
                 })
-            }
-            return {
-                ...prev,
-                colors: value,
-                variants: type.variants
-                    .filter(vari => value.some(cl => cl.id === vari.color_id && prev.sizes.some(sz => sz.id === vari.size_id)))
-                    .map(vari => ({ ...vari, art: { id: prev.id, color_id: null } }))
+                return {
+                    ...prev,
+                    colors: value,
+                    variants: prev.variants
+                        .filter(vari => value.some(cl => cl.id === vari.color_id))
+                }
             }
         })
     }
+
+    useEffect(() => {
+        console.log('vari', product.variants)
+    }, [product])
 
     function handleSelectedColor(value, i) {
         setColorIndex(i)
@@ -198,14 +200,31 @@ export default withRouter(props => {
         setImages(prev => ({ ...prev, [colorId]: prev[colorId].map((img, i) => index === i ? { ...img, [fieldname]: newValue } : img) }))
     }
 
-    function handleChangeSizes(value) {
-        setProduct(prev => (
-            {
-                ...prev,
-                sizes: value,
-                variants: type.variants.filter(vari => value.some(sz => sz.id === vari.size_id && prev.colors.some(cl => cl.id === vari.color_id)))
+    function handleChangeSizes(value, i, size) {
+        setProduct(prev => {
+            // add size
+            if (value.length > prev.sizes.length) {
+                return {
+                    ...prev,
+                    sizes: value,
+                    variants: prev.variants
+                        .concat(
+                            type.variants
+                                .filter(vari => size.id === vari.size_id && prev.colors.some(cl => cl.id === vari.color_id))
+                                .map(vari => ({ ...vari, art: { id: artIdChained ? prev.id : '', color_id: artColorChained && prev.variants.length > 0 ? prev.variants[0].art.color_id : null } }))
+                        )
+                }
             }
-        ))
+            // remove size
+            else {
+                return {
+                    ...prev,
+                    sizes: value,
+                    variants: prev.variants
+                        .filter(vari => value.some(sz => sz.id === vari.size_id))
+                }
+            }
+        })
     }
 
     function handleChainSize(sizeId) {
@@ -579,7 +598,7 @@ export default withRouter(props => {
                                         onChange={handleChangeSizes}
                                     />
                                 </section>
-                                {product.colors.length > 0 &&
+                                {product.colors.length > 0 && product.sizes.length > 0 &&
                                     <section className={styles.section}>
                                         <div className={styles.sectionLeft}>
                                             <div>
@@ -751,8 +770,8 @@ export default withRouter(props => {
                                                 </h3>
                                             </div>
                                             <ColorSelector
-                                                value={[SEARCH_ART_COLORS.map(cl => ({ id: cl.id, colors: [cl.color_display.color] })).find(scl => scl.id === product.variants.find(vari => vari.color_id === product.colors[colorIndex].id).art.color_id)]}
-                                                options={SEARCH_ART_COLORS.map(cl => ({ id: cl.id, colors: [cl.color_display.color] }))}
+                                                value={[SEARCH_ART_COLORS.map(cl => ({ id: cl.id, colors: [cl.color_display.color], title: cl.color_display.title })).find(scl => scl.id === product.variants.find(vari => vari.color_id === product.colors[colorIndex].id).art.color_id)]}
+                                                options={SEARCH_ART_COLORS.map(cl => ({ id: cl.id, colors: [cl.color_display.color], title: cl.color_display.title }))}
                                                 onChange={handleArtColor}
                                                 supportsHoverAndPointer={supportsHoverAndPointer}
                                                 style={{

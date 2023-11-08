@@ -104,18 +104,6 @@ export default withRouter(props => {
                 image: product.images.filter(img => img.color_id === prodVariant.color_id)[product.image_showcase_index],
             }
 
-            /* setCart(prev => (
-                {
-                    ...prev,
-                    products: prev.products.some(prod => prod.id === product.id && prod.variant.id === prodVariant.id)
-                        ? prev.products.map(p => p.id === product.id && p.variant.id === prodVariant.id
-                            ? ({ ...p, quantity: p.quantity + 1 })
-                            : p
-                        )
-                        : prev.products.concat(productCart)
-                }
-            )) */
-
             const options = {
                 method: 'PATCH',
                 headers: {
@@ -327,9 +315,9 @@ export default withRouter(props => {
     )
 })
 
-export const config = {
+/* export const config = {
     runtime: 'experimental-edge'
-}
+} */
 
 export async function getServerSideProps(context) {
 
