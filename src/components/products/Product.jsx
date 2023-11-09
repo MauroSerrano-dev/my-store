@@ -6,6 +6,7 @@ import { motion } from "framer-motion";
 import { COLORS_POOL, PRODUCT_TYPES } from '../../../consts';
 import ColorButton from '../ColorButton';
 import Image from 'next/image';
+import { useTranslation } from 'next-i18next'
 
 /**
  * @param {object} props - Component props.
@@ -40,6 +41,9 @@ export default function Product(props) {
         },
         style,
     } = props
+
+    const tCommon = useTranslation('common').t
+    const tProducts = useTranslation('products').t
 
     const height = width * 10 / 9
 
@@ -218,7 +222,7 @@ export default function Product(props) {
                             {
                                 product.sold_out
                                     ? PRODUCT_TYPES.find(type => type.id === product.type_id).title + ' ' + Math.round(100 * product.sold_out.percentage) + '% OFF'
-                                    : PRODUCT_TYPES.find(type => type.id === product.type_id).title
+                                    : tCommon(PRODUCT_TYPES.find(type => type.id === product.type_id).title)
                             }
                         </p>
                     </div>
@@ -354,7 +358,7 @@ export default function Product(props) {
                                         fontWeight: '700'
                                     }}
                                 >
-                                    MORE INFO
+                                    {tProducts('more_info_button')}
                                 </Button>
                             </Link>
                         }

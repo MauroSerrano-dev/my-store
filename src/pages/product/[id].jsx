@@ -320,47 +320,37 @@ export default withRouter(props => {
 } */
 
 export async function getServerSideProps(context) {
+    const { id, cl, sz } = context.query
 
-    const { id, cl, sz } = context.query;
-
-    try {
-        const options = {
-            method: 'GET',
-            headers: {
-                authorization: process.env.NEXT_PUBLIC_APP_TOKEN,
-                id: id,
-            }
+    const options = {
+        method: 'GET',
+        headers: {
+            authorization: process.env.NEXT_PUBLIC_APP_TOKEN,
+            id: id,
         }
-        const product = await fetch(`${process.env.NEXT_PUBLIC_URL}/api/product`, options)
-            .then(response => response.json())
-            .then(response => response.product)
-            .catch(err => console.error(err))
+    }
+    const product = await fetch(`${process.env.NEXT_PUBLIC_URL}/api/product`, options)
+        .then(response => response.json())
+        .then(response => response.product)
+        .catch(err => console.error(err))
 
-        const colorQuery = cl
-            ? Object.values(COLORS_POOL).find(color => color.id_string === cl.toLowerCase())
-            : null
+    const colorQuery = cl
+        ? Object.values(COLORS_POOL).find(color => color.id_string === cl.toLowerCase())
+        : null
 
-        const sizeQuery = sz
-            ? SIZES_POOL.find(size => size.title.toLowerCase() === sz.toLowerCase())
-            : null
+    const sizeQuery = sz
+        ? SIZES_POOL.find(size => size.title.toLowerCase() === sz.toLowerCase())
+        : null
 
-        return {
-            props: {
-                product: product,
-                cl: colorQuery === undefined ? null : colorQuery,
-                sz: sizeQuery === undefined ? null : sizeQuery,
-                urlMeta: `${process.env.NEXT_PUBLIC_URL}${context.resolvedUrl} `,
-                productMetaImage: colorQuery
-                    ? product.images.filter(img => img.color_id === colorQuery.id)[product.image_showcase_index].src
-                    : product.images[product.image_showcase_index].src
-            },
-        }
-    } catch (error) {
-        console.error(error);
-        return {
-            props: {
-                product: null,
-            },
+    return {
+        props: {
+            product: product,
+            cl: colorQuery === undefined ? null : colorQuery,
+            sz: sizeQuery === undefined ? null : sizeQuery,
+            urlMeta: `${process.env.NEXT_PUBLIC_URL}${context.resolvedUrl} `,
+            productMetaImage: colorQuery
+                ? product.images.filter(img => img.color_id === colorQuery.id)[product.image_showcase_index].src
+                : product.images[product.image_showcase_index].src
         }
     }
 }

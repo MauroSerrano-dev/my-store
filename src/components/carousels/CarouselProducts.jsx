@@ -2,8 +2,7 @@ import { useRef, useState } from 'react';
 import { motion } from 'framer-motion';
 import Product from '../products/Product';
 import styles from '@/styles/components/carousels/CarouselProducts.module.css'
-import { Skeleton } from '@mui/material';
-import ProductSkeleton from '../products/ProductSkeleton';
+import ProductSkeleton from '../products/ProductSkeleton'
 
 export default function CarouselProducts(props) {
     const {
@@ -11,6 +10,7 @@ export default function CarouselProducts(props) {
         userCurrency,
         supportsHoverAndPointer,
         windowWidth,
+        noProductFoundLabel = "No Products Found"
     } = props
 
     const carouselRef = useRef(null)
@@ -105,9 +105,9 @@ export default function CarouselProducts(props) {
             }
             {products?.length === 0 &&
                 <h3 style={{ color: 'var(--text-white)' }}>
-                    No Products Found
+                    {noProductFoundLabel}
                 </h3>
             }
-        </motion.div >
+        </motion.div>
     )
 }

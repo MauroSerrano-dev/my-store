@@ -14,6 +14,8 @@ import ProductSkeleton from '@/components/products/ProductSkeleton'
 import KeyboardArrowDownRoundedIcon from '@mui/icons-material/KeyboardArrowDownRounded';
 import MenuFilter from '@/components/MenuFilter'
 import lottie from 'lottie-web';
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
+import { useTranslation } from 'react-i18next';
 
 const QUERIES = {
     h: { title: 'category', show: true, showTitle: true, isFilter: true },
@@ -53,6 +55,8 @@ export default withRouter(props => {
         p = '1',
         limit = '60',
     } = props.router.query
+
+    const { i18n } = useTranslation()
 
     const mobile = windowWidth <= 700
 
@@ -119,6 +123,7 @@ export default withRouter(props => {
             headers: {
                 authorization: process.env.NEXT_PUBLIC_APP_TOKEN,
                 limit: limit,
+                user_language: i18n.language,
                 ...router.query,
             }
         }
@@ -584,3 +589,11 @@ export default withRouter(props => {
         </div>
     )
 })
+
+export async function getServerSideProps({ locale }) {
+    return {
+        props: {
+            ...(await serverSideTranslations(locale, ['common', 'navbar']))
+        }
+    }
+}

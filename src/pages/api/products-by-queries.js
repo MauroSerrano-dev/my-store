@@ -1,6 +1,6 @@
 import { isTokenValid } from "../../../auth";
 import { getAllProducts, getProductsByQueries } from "../../../backend/product";
-import { SEARCH_PRODUCT_COLORS, SEARCH_ART_COLORS } from "../../../consts";
+import { SEARCH_PRODUCT_COLORS, SEARCH_ART_COLORS, LANGUAGES } from "../../../consts";
 
 export default async function handler(req, res) {
     const { authorization } = req.headers
@@ -25,7 +25,7 @@ export default async function handler(req, res) {
             max,
             order,
             limit,
-            l,
+            user_language,
         } = req.headers
 
         let response
@@ -51,7 +51,7 @@ export default async function handler(req, res) {
                 max: max,
                 order: order,
                 prods_limit: limit,
-                user_language: l,
+                user_language: LANGUAGES.includes(user_language) ? user_language : 'en',
             })
         }
 

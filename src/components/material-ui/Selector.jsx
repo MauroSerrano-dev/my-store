@@ -22,6 +22,7 @@ export default function Selector(props) {
         name = 'name',
         style,
         styleLabel,
+        size = 'small'
     } = props
 
     const [hover, setHover] = useState(false)
@@ -51,7 +52,7 @@ export default function Selector(props) {
                 label={label}
                 value={value}
                 MenuProps={{ disableScrollLock: true }}
-                size='small'
+                size={size}
                 sx={{
                     color: colorText,
                     '.MuiSelect-select': {

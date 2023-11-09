@@ -3,8 +3,11 @@ import styles from '../styles/components/Footer.module.css'
 import { BsShieldLockFill } from "react-icons/bs";
 import Link from 'next/link';
 import SocialButtons from './SocialButtons';
+import { useTranslation } from 'next-i18next'
 
 export default function Footer() {
+
+    const tFooter = useTranslation('footer').t
 
     const PAYMENTS_METHODS = [
         { alt: 'visa', img: '/payments/visa.webp' },
@@ -24,34 +27,34 @@ export default function Footer() {
                 <div className={styles.left}>
                     <div className={styles.column}>
                         <h3>
-                            Support
+                            {tFooter('Support')}
                         </h3>
                         <div>
                             <a>
-                                Check order status
+                                {tFooter('Check order status')}
                             </a>
                         </div>
                         <div>
                             <a>
-                                Help/FAQ
+                                {tFooter('Help/FAQ')}
                             </a>
                         </div>
                         <div>
                             <a>
-                                Contact us
+                                {tFooter('Contact us')}
                             </a>
                         </div>
                     </div>
                     <div className={styles.column}>
-                        <h3 className="text-start">About us</h3>
+                        <h3 className="text-start">{tFooter('About us')}</h3>
                         <div>
                             <Link href='/privacy-policy'>
-                                Privacy policy
+                                {tFooter('Privacy policy')}
                             </Link>
                         </div>
                         <div>
                             <Link href='/terms-of-use'>
-                                Terms of use
+                                {tFooter('Terms of use')}
                             </Link>
                         </div>
                     </div>
@@ -71,7 +74,7 @@ export default function Footer() {
                                     fontSize: 14
                                 }}
                             >
-                                Guaranteed <b>safe & secure</b> checkout
+                                {tFooter('guaranteed_start')}<b>{tFooter('guaranteed_middle')}</b>{tFooter('guaranteed_end')}
                             </p>
                         </div>
                         <Link
@@ -123,7 +126,7 @@ export default function Footer() {
             </div>
             <div className={styles.bottom}>
                 <p>
-                    Copyright © {new Date().getFullYear()}, {process.env.NEXT_PUBLIC_STORE_NAME}. All Rights Reserved.
+                    {tFooter('copyright', { year: new Date().getFullYear(), store_name: process.env.NEXT_PUBLIC_STORE_NAME })}
                 </p>
             </div>
         </footer>

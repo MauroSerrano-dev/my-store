@@ -7,6 +7,8 @@ import Carousel from '@/components/carousels/Carousel'
 import Link from 'next/link'
 import Image from 'next/image'
 import { DEFAULT_PRODUCTS_TAGS, USER_CUSTOMIZE_HOME_PAGE } from '../../consts'
+import { useTranslation } from 'next-i18next'
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 
 const categories = [
   { id: 'games', title: 'Games', url: '/search?h=games', img: 'https://firebasestorage.googleapis.com/v0/b/my-store-4aef7.appspot.com/o/index%2Fgames.webp?alt=media&token=c28521d0-8fd8-45b7-9c80-60feffab7f60&_gl=1*fshtki*_ga*NjQyNzA2OTM1LjE2OTE2NjI4OTU.*_ga_CW55HF8NVT*MTY5NzM2NTMyMy4yMzYuMS4xNjk3MzY1Mzk3LjUxLjAuMA..' },
@@ -25,6 +27,10 @@ export default function Home(props) {
     windowWidth,
     session,
   } = props
+
+  const tCommon = useTranslation('common').t
+  const tIndex = useTranslation('index').t
+  const tErrors = useTranslation('errors').t
 
   const [bannerColorsOpacity, setBannerColorsOpacity] = useState(0)
 
@@ -170,7 +176,7 @@ export default function Home(props) {
         >
           <div className={styles.carouselAndTitle}>
             <h2 className={styles.carouselTitle}>
-              Find categories that fit your world
+              {tIndex('categories_title')}
             </h2>
             <div
               className={styles.carousel}
@@ -208,7 +214,7 @@ export default function Home(props) {
                             : 20,
                         }}
                       >
-                        {cat.title}
+                        {tCommon(cat.title)}
                       </span>
                       <div
                         className={styles.categoryItemImg}
@@ -253,7 +259,7 @@ export default function Home(props) {
               <h2 className={styles.carouselTitle}>
                 {session === undefined
                   ? ''
-                  : USER_CUSTOMIZE_HOME_PAGE.find(ele => ele.id === (session?.home_page_tags || DEFAULT_PRODUCTS_TAGS)[i])?.title
+                  : tCommon(USER_CUSTOMIZE_HOME_PAGE.find(ele => ele.id === (session?.home_page_tags || DEFAULT_PRODUCTS_TAGS)[i])?.title)
                 }
               </h2>
               <CarouselProducts
@@ -261,6 +267,7 @@ export default function Home(props) {
                 userCurrency={userCurrency}
                 supportsHoverAndPointer={supportsHoverAndPointer}
                 windowWidth={windowWidth}
+                noProductFoundLabel={tErrors('no_products_found')}
               />
             </div>
           )}
@@ -269,4 +276,12 @@ export default function Home(props) {
       <Footer />
     </div>
   )
+}
+
+export async function getServerSideProps({ locale }) {
+  return {
+    props: {
+      ...(await serverSideTranslations(locale, ['common', 'navbar', 'footer', 'index', 'products', 'errors']))
+    }
+  }
 }

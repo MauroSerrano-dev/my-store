@@ -1,5 +1,10 @@
 export const CART_COOKIE = 'CART'
 
+export const LANGUAGES = [
+    'en',
+    'pt',
+]
+
 export const STEPS = [
     { id: 'sending-to-production', title: 'Sending to Production' },
     { id: 'in-production', title: 'In Production' },

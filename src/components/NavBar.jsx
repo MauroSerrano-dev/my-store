@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import Link from 'next/link'
 import styles from '../styles/components/NavBar.module.css'
 import Logo from './svgs/Logo';
@@ -10,6 +10,7 @@ import SearchRoundedIcon from '@mui/icons-material/SearchRounded';
 import { itemsNavBar } from '../../consts';
 import { motion } from "framer-motion";
 import { MenuToggle } from './MenuToggle';
+import { useTranslation } from 'react-i18next';
 
 export default function NavBar(props) {
     const {
@@ -32,6 +33,18 @@ export default function NavBar(props) {
         menuOpen,
         switchMenu,
     } = props
+
+    const tNavbar = useTranslation('navbar').t
+
+    const search_bar_placeholder = tNavbar('search_bar_placeholder')
+
+    const [translationReady, setTranslationReady] = useState(false)
+
+    useEffect(() => {
+        if (search_bar_placeholder !== 'search_bar_placeholder') {
+            setTranslationReady(true)
+        }
+    }, [search_bar_placeholder])
 
     return (
         <div className={styles.container}>
@@ -76,17 +89,19 @@ export default function NavBar(props) {
                         >
                             <Logo height='100%' />
                         </Link>
-                        : <SearchBar
-                            show={isScrollAtTop}
-                            placeholder='What are you looking for?'
-                            onChange={handleChangeSearch}
-                            onKeyDown={handleKeyDownSearch}
-                            onClick={handleClickSearch}
-                            value={search}
-                            options={productOptions}
-                            setOptions={setProductOptions}
-                            setSearch={setSearch}
-                        />
+                        : translationReady
+                            ? <SearchBar
+                                show={isScrollAtTop}
+                                placeholder={search_bar_placeholder}
+                                onChange={handleChangeSearch}
+                                onKeyDown={handleKeyDownSearch}
+                                onClick={handleClickSearch}
+                                value={search}
+                                options={productOptions}
+                                setOptions={setProductOptions}
+                                setSearch={setSearch}
+                            />
+                            : <div></div>
                     }
                     {!mobile &&
                         <div
@@ -164,6 +179,6 @@ export default function NavBar(props) {
                     />
                 </div>
             </div>
-        </div >
+        </div>
     )
 }

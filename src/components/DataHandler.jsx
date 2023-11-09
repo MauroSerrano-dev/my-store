@@ -1,15 +1,15 @@
 import NavBar from './NavBar'
 import styles from '../styles/components/DataHandler.module.css'
 import { useEffect, useState } from "react"
-import Cookies from 'js-cookie';
-import { getAuth, onAuthStateChanged, signOut, signInWithEmailAndPassword } from "firebase/auth";
-import { initializeApp } from 'firebase/app';
-import { firebaseConfig } from '../../firebase.config';
-import { CART_COOKIE, DEFAULT_PRODUCTS_TAGS } from '../../consts';
-import SearchBar from './SearchBar';
-import Menu from './Menu';
-import { motion } from 'framer-motion';
-import { v4 as uuidv4 } from 'uuid';
+import Cookies from 'js-cookie'
+import { getAuth, onAuthStateChanged, signOut, signInWithEmailAndPassword } from "firebase/auth"
+import { initializeApp } from 'firebase/app'
+import { firebaseConfig } from '../../firebase.config'
+import { CART_COOKIE, DEFAULT_PRODUCTS_TAGS } from '../../consts'
+import SearchBar from './SearchBar'
+import Menu from './Menu'
+import { motion } from 'framer-motion'
+import { v4 as uuidv4 } from 'uuid'
 
 const SUB_NAVBAR_HEIGHT = 40
 const SUB_NAVBAR_HEIGHT_MOBILE = 43
@@ -219,19 +219,6 @@ export default function DataHandler(props) {
 
     useEffect(() => {
         updateSession()
-
-        const handleLanguageChange = () => {
-            Cookies.set('LANG', (navigator.language || navigator.userLanguage))
-        }
-
-        handleLanguageChange()
-
-        window.addEventListener("languagechange", handleLanguageChange);
-
-        // Remova o ouvinte quando o componente for desmontado
-        return () => {
-            window.removeEventListener("languagechange", handleLanguageChange);
-        }
     }, [])
 
     useEffect(() => {
@@ -291,8 +278,7 @@ export default function DataHandler(props) {
     }
 
     function handleClickSearch() {
-        const language = Cookies.get('LANG') === 'en' ? false : Cookies.get('LANG')
-        router.push(`/search?s=${search}${language ? `&l=${language.slice(0, 2)}` : ''}`)
+        router.push(`/search?s=${search}`)
     }
 
     function handleKeyDownSearch(event) {

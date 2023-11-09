@@ -2,12 +2,15 @@ import styles from '@/styles/pages/profile.module.css'
 import Head from 'next/head'
 import NoFound404 from './404'
 import TagsSelector from '@/components/material-ui/TagsSelector'
-import { USER_CUSTOMIZE_HOME_PAGE } from '../../consts'
+import { LANGUAGES, USER_CUSTOMIZE_HOME_PAGE } from '../../consts'
 import { Button } from '@mui/material'
 import { useEffect, useState } from 'react'
 import { showToast } from '../../utils/toasts'
 import { getObjectsDiff } from '../../utils'
 import TextInput from '@/components/material-ui/TextInput'
+import Selector from '@/components/material-ui/Selector'
+import { useTranslation } from 'react-i18next';
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
 
 const TAGS_MIN_LIMIT = 3
 const TAGS_MAX_LIMIT = 8
@@ -17,16 +20,32 @@ export default function Profile(props) {
         session,
         updateSession,
         supportsHoverAndPointer,
+        router,
     } = props
+
+    const { i18n } = useTranslation()
+    const tLanguages = useTranslation('languages').t
+    const tProfile = useTranslation('profile').t
 
     const starterUser = session ? { ...session } : undefined
 
     const [user, setUser] = useState()
+    const [currentLanguage, setCurrentLanguage] = useState(i18n.language)
     const [disableSaveButton, setDisableSaveButton] = useState(true)
+
+    useEffect(() => {
+        if (session)
+            setUser({ ...session })
+    }, [session])
 
     function handleChanges(fieldName, value) {
         setDisableSaveButton(false)
         setUser(prev => ({ ...prev, [fieldName]: value }))
+    }
+
+    function handleChangeLanguageSelector(event) {
+        setDisableSaveButton(false)
+        setCurrentLanguage(event.target.value)
     }
 
     function handleUpdateUser() {
@@ -36,8 +55,8 @@ export default function Profile(props) {
         Object.keys(getObjectsDiff(starterUser, user)).forEach(key => {
             changes[key] = user[key]
         })
-        if (Object.keys(changes).length === 0) {
-            showToast({ msg: 'No changes made.' })
+        if (Object.keys(changes).length === 0 && router.locale === currentLanguage) {
+            showToast({ msg: tProfile('no_changes_toast') })
             return
         }
         if (user.home_page_tags.length < TAGS_MIN_LIMIT) {
@@ -45,6 +64,10 @@ export default function Profile(props) {
             return
         }
         setDisableSaveButton(true)
+
+        const { pathname, asPath, query } = router
+        router.push({ pathname, query }, asPath, { locale: currentLanguage })
+
         const options = {
             method: 'PATCH',
             headers: {
@@ -71,11 +94,6 @@ export default function Profile(props) {
                 console.error(err)
             })
     }
-
-    useEffect(() => {
-        if (session)
-            setUser({ ...session })
-    }, [session])
 
     return (
         session === undefined || user === undefined
@@ -118,6 +136,14 @@ export default function Profile(props) {
                                     supportsHoverAndPointer={supportsHoverAndPointer}
                                     onChange={event => handleChanges('email', event.target.value)}
                                 />
+                                <Selector
+                                    label={tProfile("Language")}
+                                    options={LANGUAGES.map(lang => ({ value: lang, name: tLanguages(lang) }))}
+                                    value={currentLanguage}
+                                    onChange={handleChangeLanguageSelector}
+                                    size={'medium'}
+                                    supportsHoverAndPointer={supportsHoverAndPointer}
+                                />
                             </div>
                             <div className={styles.right}>
                                 <div className={styles.field}>
@@ -134,7 +160,7 @@ export default function Profile(props) {
                                         }}
                                         onChange={(event, value) => {
                                             if (value.length > TAGS_MAX_LIMIT)
-                                                showToast({ type: 'error', msg: 'Maximum number of keywords reached.' })
+                                                showToast({ type: 'error', msg: tProfile('max_keywords_toast') })
                                             else
                                                 handleChanges('home_page_tags', value)
                                         }}
@@ -154,4 +180,12 @@ export default function Profile(props) {
                     </main>
                 </div>
     )
+}
+
+export async function getServerSideProps({ locale }) {
+    return {
+        props: {
+            ...(await serverSideTranslations(locale, ['common', 'navbar', 'profile', 'languages']))
+        }
+    }
 }

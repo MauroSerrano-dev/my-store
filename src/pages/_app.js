@@ -1,16 +1,17 @@
 import '@/styles/globals.css'
 import Head from 'next/head'
+import { useEffect, useState } from 'react';
 import Script from 'next/script'
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import DataHandler from '@/components/DataHandler'
 import { useRouter } from 'next/router';
-import { useEffect, useState } from 'react';
 import { CircularProgress } from '@mui/material';
 import { motion } from 'framer-motion';
 import Maintenance from '@/components/Maintenance';
 import { ToastContainer, Flip } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css';
 import { Montserrat } from 'next/font/google'
+import { appWithTranslation } from 'next-i18next';
 
 const montserrat = Montserrat({
   weight: 'variable',
@@ -47,7 +48,7 @@ const mainTheme = createTheme({
   },
 })
 
-export default function App(props) {
+function App(props) {
   const { Component, pageProps } = props
 
   const [loading, setLoading] = useState(false)
@@ -209,3 +210,5 @@ export default function App(props) {
     </div>
   )
 }
+
+export default appWithTranslation(App)
