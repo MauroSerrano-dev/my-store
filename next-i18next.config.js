@@ -7,4 +7,5 @@ module.exports = {
         locales: ['en', 'pt'],
     },
     localePath: path.resolve('./public/locales'),
+    localeStructure: '{{lng}}/{{ns}}',
 }
