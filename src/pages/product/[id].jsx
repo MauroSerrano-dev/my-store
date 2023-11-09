@@ -315,9 +315,9 @@ export default withRouter(props => {
     )
 })
 
-export const config = {
+/* export const config = {
     runtime: 'experimental-edge'
-}
+} */
 
 export async function getServerSideProps(context) {
     const { id, cl, sz } = context.query
