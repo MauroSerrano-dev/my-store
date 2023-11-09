@@ -11,6 +11,7 @@ import styles from '@/styles/components/AvatarMenu.module.css'
 import { Button } from '@mui/material'
 import ReceiptLongRoundedIcon from '@mui/icons-material/ReceiptLongRounded';
 import AdminPanelSettingsRoundedIcon from '@mui/icons-material/AdminPanelSettingsRounded';
+import { useTranslation } from 'react-i18next';
 
 export default function AvatarMenu(props) {
   const {
@@ -20,6 +21,7 @@ export default function AvatarMenu(props) {
   } = props
 
   const [open, setOpen] = useState(false)
+  const tNavbar = useTranslation('navbar').t
 
   function handleLogout() {
     logout()
@@ -93,7 +95,7 @@ export default function AvatarMenu(props) {
                   <ListItemIcon>
                     <ReceiptLongRoundedIcon fontSize="medium" />
                   </ListItemIcon>
-                  My Orders
+                  {tNavbar('My Orders')}
                 </MenuItem>
               </Link>
               <Link
@@ -105,7 +107,7 @@ export default function AvatarMenu(props) {
                   <ListItemIcon>
                     <SupportAgentIcon fontSize="medium" />
                   </ListItemIcon>
-                  Support
+                  {tNavbar('Support')}
                 </MenuItem>
               </Link>
               {process.env.NEXT_PUBLIC_AUTHORIZED_EMAILS.includes(session.email) &&

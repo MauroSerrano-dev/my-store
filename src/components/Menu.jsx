@@ -7,6 +7,7 @@ import { IoIosArrowForward, IoIosArrowBack } from "react-icons/io";
 import { useState } from 'react';
 import { motion } from "framer-motion";
 import { MENU_FORWARD_OPTIONS, MENU_OPTIONS } from '../../consts';
+import { useTranslation } from 'react-i18next';
 
 export default function Menu(props) {
     const {
@@ -17,6 +18,8 @@ export default function Menu(props) {
     } = props
     const [optionMenu, setOptionMenu] = useState()
     const [optionMenuDelay, setOptionMenuDelay] = useState()
+
+    const tMenu = useTranslation('menu').t
 
     function handleCloseMenu() {
         switchMenu()
@@ -139,7 +142,7 @@ export default function Menu(props) {
                         />
                         {session &&
                             <div>
-                                Welcome! <span style={{ color: 'var(--primary)', fontWeight: '700' }}>{session.first_name ? session.first_name + ' ' + session.last_name : session.last_name}</span>
+                                {tMenu('Welcome')}! <span style={{ color: 'var(--primary)', fontWeight: '700' }}>{session.first_name ? session.first_name + ' ' + session.last_name : session.last_name}</span>
                             </div>
                         }
                         {session === null &&
@@ -156,7 +159,7 @@ export default function Menu(props) {
                                 onClick={handleCloseMenu}
                                 className={`${styles.menuItem} noUnderline`}
                             >
-                                {option.title}
+                                {tMenu(option.title)}
                             </Link>
                             : <div
                                 key={i}
@@ -166,7 +169,7 @@ export default function Menu(props) {
                                 }}
                                 className={styles.menuItem}
                             >
-                                {option.title}
+                                {tMenu(option.title)}
                                 {option.type === 'forward' &&
                                     <IoIosArrowForward
                                         className={styles.forwardButton}

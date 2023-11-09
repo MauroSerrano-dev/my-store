@@ -169,13 +169,14 @@ export default function Home(props) {
               }}
             />
             <p>Free Shipping</p>
-          </div> */}
+          </div> */
+          }
         </div>
         <div
           className={styles.body}
         >
           <div className={styles.carouselAndTitle}>
-            <h2 className={styles.carouselTitle}>
+            <h2 className={styles.categoriesTitle}>
               {tIndex('categories_title')}
             </h2>
             <div
@@ -281,7 +282,7 @@ export default function Home(props) {
 export async function getServerSideProps({ locale }) {
   return {
     props: {
-      ...(await serverSideTranslations(locale, ['common', 'navbar', 'footer', 'index', 'products', 'errors']))
+      ...(await serverSideTranslations(locale, ['common', 'menu', 'navbar', 'footer', 'index', 'products', 'errors']))
     }
   }
 }

@@ -10,6 +10,7 @@ import SearchBar from './SearchBar'
 import Menu from './Menu'
 import { motion } from 'framer-motion'
 import { v4 as uuidv4 } from 'uuid'
+import { useTranslation } from 'react-i18next';
 
 const SUB_NAVBAR_HEIGHT = 40
 const SUB_NAVBAR_HEIGHT_MOBILE = 43
@@ -37,9 +38,18 @@ export default function DataHandler(props) {
     const [menuOpen, setMenuOpen] = useState(false)
     const [showMenu, setShowMenu] = useState(false)
 
+    const tNavbar = useTranslation('navbar').t
+    const search_bar_placeholder = tNavbar('search_bar_placeholder')
+    const [translationReady, setTranslationReady] = useState(false)
+
     // Inicialize o Firebase
     const firebaseApp = initializeApp(firebaseConfig)
     const auth = getAuth(firebaseApp)
+
+    useEffect(() => {
+        if (search_bar_placeholder !== 'search_bar_placeholder')
+            setTranslationReady(true)
+    }, [search_bar_placeholder])
 
     useEffect(() => {
         getInicialCart()
@@ -394,18 +404,20 @@ export default function DataHandler(props) {
                         transition: `all ease-in-out ${websiteVisible ? 200 : 0}ms`,
                     }}
                 >
-                    <SearchBar
-                        show={isScrollAtTop && mobile}
-                        placeholder='What are you looking for?'
-                        onChange={handleChangeSearch}
-                        onKeyDown={handleKeyDownSearch}
-                        onClick={handleClickSearch}
-                        value={search}
-                        options={productOptions}
-                        setOptions={setProductOptions}
-                        setSearch={setSearch}
-                        barHeight={30}
-                    />
+                    {translationReady &&
+                        <SearchBar
+                            show={isScrollAtTop && mobile}
+                            placeholder={search_bar_placeholder}
+                            onChange={handleChangeSearch}
+                            onKeyDown={handleKeyDownSearch}
+                            onClick={handleClickSearch}
+                            value={search}
+                            options={productOptions}
+                            setOptions={setProductOptions}
+                            setSearch={setSearch}
+                            barHeight={30}
+                        />
+                    }
                 </div>
             </div>
             <div

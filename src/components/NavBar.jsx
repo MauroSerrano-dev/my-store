@@ -34,6 +34,7 @@ export default function NavBar(props) {
         switchMenu,
     } = props
 
+    const tCommon = useTranslation('common').t
     const tNavbar = useTranslation('navbar').t
 
     const search_bar_placeholder = tNavbar('search_bar_placeholder')
@@ -41,9 +42,8 @@ export default function NavBar(props) {
     const [translationReady, setTranslationReady] = useState(false)
 
     useEffect(() => {
-        if (search_bar_placeholder !== 'search_bar_placeholder') {
+        if (search_bar_placeholder !== 'search_bar_placeholder')
             setTranslationReady(true)
-        }
     }, [search_bar_placeholder])
 
     return (
@@ -112,7 +112,7 @@ export default function NavBar(props) {
                                     : '22px',
                             }}
                         >
-                            {itemsNavBar.map((item, i) =>
+                            {translationReady && itemsNavBar.map((item, i) =>
                                 <Link
                                     key={i}
                                     href={`/search?v=${item.value}`}
@@ -120,7 +120,7 @@ export default function NavBar(props) {
                                     className={`noUnderline fillHeight flex center ${styles.titleLink}`}
                                 >
                                     <p className={styles.title}>
-                                        {item.title}
+                                        {tNavbar(item.title)}
                                     </p>
                                 </Link>
                             )}

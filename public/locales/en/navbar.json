@@ -1,3 +1,13 @@
 {
-    "search_bar_placeholder": "What are you looking for?"
+    "search_bar_placeholder": "What are you looking for?",
+    "T-SHIRTS": "T-SHIRTS",
+    "HOODIES": "HOODIES",
+    "MUGS": "MUGS",
+    "BAGS": "BAGS",
+    "ACCESSORIES": "ACCESSORIES",
+    "PILLOWS": "PILLOWS",
+    "SOCKS": "SOCKS",
+    "Profile": "Perfil",
+    "Support": "Support",
+    "My Orders": "My Orders"
 }

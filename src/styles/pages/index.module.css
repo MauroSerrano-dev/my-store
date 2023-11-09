@@ -102,10 +102,14 @@
   padding-top: 1rem;
 
   gap: 1rem;
+  --text-color: var(--text-white);
+}
+
+.categoriesTitle {
+  text-shadow: 0px 2px 6px rgba(0, 0, 0, 0.8);
 }
 
 .carouselTitle {
-  --text-color: var(--text-white);
   height: 36px;
   text-shadow: 0px 2px 6px rgba(0, 0, 0, 0.8);
 }
@@ -142,6 +146,13 @@
 
 /* Mobile */
 @media (max-width: 700px) {
+  .categoriesTitle {
+    font-size: 17px;
+    width: 100%;
+    text-align: start;
+    text-align-last: start;
+  }
+
   .carouselTitle {
     font-size: 17px;
     height: 25.5px;
@@ -149,6 +160,11 @@
 
   .banner {
     height: 205px;
+  }
+
+  .body {
+    padding-left: 0.8rem;
+    padding-right: 0.8rem;
   }
 }
 
