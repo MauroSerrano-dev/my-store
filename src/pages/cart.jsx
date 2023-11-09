@@ -186,7 +186,7 @@ export default function Cart(props) {
                                         {tCart('ship_to')}:
                                     </p>
                                     <Selector
-                                        label='Country'
+                                        label={tCommon('Country')}
                                         value={shippingCountry}
                                         options={[
                                             { value: 'BR', name: 'Brazil' },
@@ -207,7 +207,7 @@ export default function Cart(props) {
                                         {tCommon('Currency')}:
                                     </p>
                                     <Selector
-                                        label='currency'
+                                        label={tCommon('Currency')}
                                         value={userCurrency.code}
                                         options={Object.values(currencies).map(currency => ({ value: currency.code, name: currency.code.toUpperCase() }))}
                                         width='100px'
@@ -263,7 +263,7 @@ export default function Cart(props) {
                                     Checkout
                                 </Button>
                                 <p className={styles.securedText}>
-                                    Transaction secured by <a href='https://stripe.com' target='_blank'>Stripe</a>
+                                    {tCart('Transaction secured by')} <a href='https://stripe.com' target='_blank'>Stripe</a>
                                 </p>
                             </div>
                         </div>

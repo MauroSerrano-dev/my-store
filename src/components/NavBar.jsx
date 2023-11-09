@@ -67,7 +67,7 @@ export default function NavBar(props) {
                             aria-label='Home'
                             style={{
                                 height: '70%',
-                                paddingTop: '2%',
+                                paddingTop: '0.4rem',
                             }}
                         >
                             <Logo height='100%' />
@@ -80,14 +80,15 @@ export default function NavBar(props) {
                     {mobile
                         ? <Link
                             href={'/'}
-                            className='fillHeight'
+                            className='fillHeight flex center'
                             aria-label='Home'
                             style={{
-                                height: '90%',
-                                paddingTop: '2%',
+                                width: '70px',
+                                height: '100%',
+                                paddingTop: '0.7rem',
                             }}
                         >
-                            <Logo height='100%' />
+                            <Logo width='100%' />
                         </Link>
                         : translationReady
                             ? <SearchBar

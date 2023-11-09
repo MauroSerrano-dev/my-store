@@ -55,6 +55,8 @@
   width: 100%;
   padding-left: 6%;
   padding-right: 6%;
+
+  transition: padding-left ease-in-out 200ms, padding-right ease-in-out 200ms;
 }
 
 .categoryItem {
@@ -107,11 +109,13 @@
 
 .categoriesTitle {
   text-shadow: 0px 2px 6px rgba(0, 0, 0, 0.8);
+  transition: font-size ease-in-out 200ms;
 }
 
 .carouselTitle {
   height: 36px;
   text-shadow: 0px 2px 6px rgba(0, 0, 0, 0.8);
+  transition: font-size ease-in-out 200ms;
 }
 
 .carousel {
@@ -121,6 +125,8 @@
   justify-content: flex-start;
 
   width: 100%;
+
+  transition: margin-bottom ease-in-out 200ms;
 }
 
 .bannerColors {
@@ -154,7 +160,7 @@
 }
 
 /* Mobile */
-@media (max-width: 700px) {
+@media (max-width: 750px) {
   .categoriesTitle {
     font-size: 17px;
     width: 100%;

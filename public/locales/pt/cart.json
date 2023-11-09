@@ -4,5 +4,6 @@
     "ship_to": "Enviar para",
     "items_total": "Valor total dos itens",
     "shipping_and_taxes": "Frete e impostos",
-    "order_total": "Valor total"
+    "order_total": "Valor total",
+    "Transaction secured by": "Transação protegida por"
 }

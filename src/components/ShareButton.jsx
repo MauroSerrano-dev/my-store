@@ -21,6 +21,7 @@ export default function ShareButton(props) {
     const [copied, setCopied] = useState(false)
 
     function handleCopy() {
+        console.log(link)
         navigator.clipboard.writeText(link)
         setCopied(true)
     }

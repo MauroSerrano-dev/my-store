@@ -157,14 +157,14 @@ export default function Home(props) {
         >
           <div className={styles.carouselAndTitle}>
             <h2 className={styles.categoriesTitle}>
-              {tIndex('categories_title')}
+              {tIndex('categories_title', { count: windowWidth > 500 ? 1 : 2 })}
             </h2>
             <div
               className={styles.carousel}
               style={{
-                marginBottom: windowWidth < 420
-                  ? '0.5rem'
-                  : '2rem',
+                marginBottom: windowWidth > 750
+                  ? '2rem'
+                  : '0.5rem',
               }}
             >
               <Carousel
@@ -175,12 +175,17 @@ export default function Home(props) {
                       href={cat.url}
                       draggable={false}
                       style={{
-                        width: windowWidth < 420
+                        width: windowWidth > 750
+                          ? 200
+                          : windowWidth > 420
+                            ? 150
+                            : 130,
+                        height: windowWidth > 750
                           ? 130
-                          : 200,
-                        height: windowWidth < 420
-                          ? 84.5
-                          : 130,
+                          : windowWidth > 420
+                            ? 97.5
+                            : 84.5,
+                        transition: 'all ease-in-out 200ms',
                       }}
                     >
                       <div
@@ -190,9 +195,10 @@ export default function Home(props) {
                       <span
                         className={styles.itemTitle}
                         style={{
-                          fontSize: windowWidth < 420
-                            ? 17
-                            : 20,
+                          fontSize: windowWidth > 420
+                            ? 20
+                            : 17,
+                          transition: 'font-size ease-in-out 200ms'
                         }}
                       >
                         {tCommon(cat.title)}
@@ -204,7 +210,7 @@ export default function Home(props) {
                           priority
                           quality={100}
                           src={cat.img}
-                          sizes={`${(windowWidth < 420 ? 130 : 200) * 0.8}px`}
+                          sizes={`${(windowWidth > 420 ? 200 : 130) * 0.8}px`}
                           fill
                           alt={cat.title}
                           style={{
@@ -216,17 +222,25 @@ export default function Home(props) {
                   )
                 }
                 itemStyle={{
-                  height: windowWidth < 420
-                    ? 84.5
-                    : 130
+                  height: windowWidth > 750
+                    ? 130
+                    : windowWidth > 420
+                      ? 97.5
+                      : 84.5,
+                  transition: 'all ease-in-out 200ms',
                 }}
                 skeletonStyle={{
-                  width: windowWidth < 420
+                  width: windowWidth > 750
+                    ? 200
+                    : windowWidth > 420
+                      ? 150
+                      : 130,
+                  height: windowWidth > 750
                     ? 130
-                    : 200,
-                  height: windowWidth < 420
-                    ? 84.5
-                    : 130,
+                    : windowWidth > 420
+                      ? 97.5
+                      : 84.5,
+                  transition: 'all ease-in-out 200ms',
                 }}
               />
             </div>

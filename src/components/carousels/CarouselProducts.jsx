@@ -35,13 +35,13 @@ export default function CarouselProducts(props) {
         setAntVisualBug(true)
     }
 
-    const productWidth = windowWidth < 1075
-        ? windowWidth < 750
-            ? windowWidth < 381
-                ? 140
-                : 155
-            : 190
-        : 225
+    const productWidth = windowWidth > 1075
+        ? 225
+        : windowWidth > 750
+            ? 190
+            : windowWidth > 420
+                ? 155
+                : 140
 
     return (
         <motion.div

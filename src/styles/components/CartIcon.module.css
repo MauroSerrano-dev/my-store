@@ -42,7 +42,7 @@
 .contentContainer {
     position: absolute;
     top: 30px;
-    left: -233px;
+    left: -253px;
 }
 
 .contentVisible {
@@ -76,7 +76,7 @@
 
 .pointer {
     position: absolute;
-    right: 30px;
+    right: 10px;
     top: 20px;
 
     border-radius: 3px;

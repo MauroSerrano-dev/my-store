@@ -64,10 +64,10 @@ export default function AvatarMenu(props) {
           className={styles.contentContainer}
           style={{
             left: !session
-              ? -203.5
+              ? -223.5
               : i18n.language === 'pt'
-                ? -115.5
-                : -98.5
+                ? -135.5
+                : -118.5
           }}
         >
           <div className={styles.pointer}>
