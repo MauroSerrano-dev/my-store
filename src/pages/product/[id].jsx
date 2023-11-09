@@ -42,9 +42,9 @@ export default withRouter(props => {
 
     const productCurrentVariant = product?.variants.find(vari => vari.size_id === currentSize?.id && vari.color_id === currentColor?.id)
 
-    const productPrice = product && userCurrency ? `${userCurrency.symbol} ${((productCurrentVariant?.price * (product.sold_out ? 1 - product.sold_out.percentage : 1) * userCurrency.rate) / 100).toFixed(2)}` : undefined
+    const PRODUCT_PRICE = product && userCurrency ? Math.ceil(productCurrentVariant?.price * userCurrency.rate) * (product.sold_out ? 1 - product.sold_out.percentage : 1) : undefined
 
-    const originalPrice = product && userCurrency ? `${userCurrency.symbol} ${((productCurrentVariant?.price * userCurrency.rate) / 100).toFixed(2)}` : undefined
+    const ORIGINAL_PRICE = product && userCurrency ? Math.ceil(productCurrentVariant?.price * userCurrency.rate) : undefined
 
     useEffect(() => {
         setCurrentColor(cl ? cl : COLORS_POOL[product?.colors_ids[0]])
@@ -210,28 +210,30 @@ export default withRouter(props => {
                                     </p>
                                 </div>
                             }
-                            <div className={styles.prices}>
-                                {product.sold_out &&
+                            {userCurrency &&
+                                <div className={styles.prices}>
+                                    {product.sold_out &&
+                                        <p
+                                            style={{
+                                                color: 'grey',
+                                                textDecoration: 'line-through',
+                                                fontSize: '17px',
+                                            }}
+                                        >
+                                            {`${userCurrency.symbol} ${(ORIGINAL_PRICE / 100).toFixed(2)}`}
+                                        </p>
+                                    }
                                     <p
                                         style={{
-                                            color: 'grey',
-                                            textDecoration: 'line-through',
-                                            fontSize: '17px',
+                                            fontSize: '27px',
+                                            color: 'var(--primary)',
+                                            fontWeight: '600',
                                         }}
                                     >
-                                        {originalPrice}
+                                        {`${userCurrency.symbol} ${(PRODUCT_PRICE / 100).toFixed(2)}`}
                                     </p>
-                                }
-                                <p
-                                    style={{
-                                        fontSize: '27px',
-                                        color: 'var(--primary)',
-                                        fontWeight: '600',
-                                    }}
-                                >
-                                    {productPrice}
-                                </p>
-                            </div>
+                                </div>
+                            }
                             <div>
                                 <p style={{ textAlign: 'start', fontWeight: '700' }}>
                                     {product.colors_ids.length === 1 ? 'Color' : 'Pick a color'}
