@@ -65,8 +65,8 @@ export default function Profile(props) {
         }
         setDisableSaveButton(true)
 
-        /* const { pathname, asPath, query } = router
-        router.push({ pathname, query }, asPath, { locale: currentLanguage }) */
+        const { pathname, asPath, query } = router
+        router.push({ pathname, query }, asPath, { locale: currentLanguage })
 
         const options = {
             method: 'PATCH',
