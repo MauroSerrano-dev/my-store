@@ -19,16 +19,19 @@ export default function ProductCart(props) {
         setLoading,
     } = props
 
-    const COLOR = COLORS_POOL[product.variant.color_id]
-    const SIZE = SIZES_POOL.find(sz => sz.id === product.variant.size_id)
-
-    const price = `${userCurrency?.symbol} ${(((product.variant.price * (product.sold_out ? 1 - product.sold_out.percentage : 1) * userCurrency?.rate) / 100) * product.quantity).toFixed(2)}`
-
-    const priceUnit = `${userCurrency?.symbol} ${((product.variant.price * (product.sold_out ? 1 - product.sold_out.percentage : 1), userCurrency?.rate) / 100).toFixed(2)} unit`
-
-    const [deleting, setDeleting] = useState(false)
+    const { i18n } = useTranslation()
 
     const tCommon = useTranslation('common').t
+
+    const COLOR = COLORS_POOL[product.variant.color_id]
+
+    const SIZE = SIZES_POOL.find(sz => sz.id === product.variant.size_id)
+
+    const PRICE_UNIT = Math.ceil(product.variant.price * userCurrency?.rate) * (product.sold_out ? 1 - product.sold_out.percentage : 1)
+
+    const PRICE = Math.ceil(PRICE_UNIT * product.quantity)
+
+    const [deleting, setDeleting] = useState(false)
 
     function handleDeleteCartProduct() {
         setLoading(true)
@@ -124,14 +127,14 @@ export default function ProductCart(props) {
             </button>
             <Link
                 className={styles.imageContainer}
-                href={`/product/${product.id}${COLOR.id !== product.default_variant.color_id && SIZE.id !== product.default_variant.size_id
+                href={`/ product / ${product.id}${COLOR.id !== product.default_variant.color_id && SIZE.id !== product.default_variant.size_id
                     ? `?sz=${SIZE.title.toLowerCase()}&cl=${COLOR.id_string}`
                     : SIZE.id !== product.default_variant.size_id
                         ? `?sz=${SIZE.title.toLowerCase()}`
                         : COLOR.id !== product.default_variant.color_id
                             ? `?cl=${COLOR.id_string}`
                             : ''
-                    }`}
+                    } `}
             >
                 <Image
                     priority
@@ -149,14 +152,14 @@ export default function ProductCart(props) {
             <div className={styles.right}>
                 <div className={styles.rightLeft}>
                     <div className={styles.productName}>
-                        <Link href={`/product/${product.id}${COLOR.id !== product.default_variant.color_id && SIZE.id !== product.default_variant.size_id
+                        <Link href={`/ product / ${product.id}${COLOR.id !== product.default_variant.color_id && SIZE.id !== product.default_variant.size_id
                             ? `?sz=${SIZE.title.toLowerCase()}&cl=${COLOR.id_string}`
                             : SIZE.id !== product.default_variant.size_id
                                 ? `?sz=${SIZE.title.toLowerCase()}`
                                 : COLOR.id !== product.default_variant.color_id
                                     ? `?cl=${COLOR.id_string}`
                                     : ''
-                            }`}
+                            } `}
                         >
                             {product.title}
                         </Link>
@@ -180,18 +183,18 @@ export default function ProductCart(props) {
                             </div>
                             <Selector
                                 value={product.quantity}
-                                label="Quantity"
+                                label={tCommon('Quantity')}
                                 onChange={handleChangeQuantity}
                                 onClick={() => setHoverQuantity(false)}
                                 style={{
                                     height: 30,
                                     fontSize: 16,
-                                    width: 78
+                                    width: ['pt'].includes(i18n.language) ? 100 : 78
                                 }}
                                 styleOption={{
                                     height: 30,
                                     fontSize: 16,
-                                    width: 78
+                                    width: ['pt'].includes(i18n.language) ? 100 : 78
                                 }}
                                 styleLabel={{
                                     fontSize: 16,
@@ -218,11 +221,11 @@ export default function ProductCart(props) {
                         {tCommon('Price')}:
                     </p>
                     <p className={styles.price}>
-                        {price}
+                        {`${userCurrency?.symbol} ${(PRICE / 100).toFixed(2)}`}
                     </p>
                     {product.quantity > 1 &&
                         <p className={styles.rightP}>
-                            {priceUnit}
+                            {`${userCurrency?.symbol} ${(PRICE_UNIT / 100).toFixed(2)} ${tCommon('unit')}`}
                         </p>
                     }
                 </div>

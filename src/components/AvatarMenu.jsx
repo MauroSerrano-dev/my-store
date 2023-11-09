@@ -65,7 +65,7 @@ export default function AvatarMenu(props) {
           style={{
             left: !session
               ? -223.5
-              : i18n.language === 'pt'
+              : ['pt'].includes(i18n.language)
                 ? -135.5
                 : -118.5
           }}
@@ -76,7 +76,7 @@ export default function AvatarMenu(props) {
             ? <div
               className={styles.session}
               style={{
-                minWidth: i18n.language === 'pt' ? 182 : 165,
+                minWidth: ['pt'].includes(i18n.language) ? 182 : 165,
               }}
             >
               <Link

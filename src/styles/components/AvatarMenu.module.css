@@ -73,14 +73,17 @@
 
 .pointer {
     position: absolute;
-    right: 10px;
-    top: 20px;
+    right: 17.5px;
+    top: 17px;
 
-    border-radius: 3px;
+    border-top-left-radius: 3px;
+
+    border-left: rgba(0, 0, 0, 0.2) solid 1px;
+    border-top: rgba(0, 0, 0, 0.2) solid 1px;
 
     background-color: white;
-    height: 30px;
-    width: 30px;
+    height: 15px;
+    width: 15px;
     transform: rotateZ(45deg);
 }
 

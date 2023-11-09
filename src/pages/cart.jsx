@@ -29,7 +29,7 @@ export default function Cart(props) {
 
     const SHIPPING_CONVERTED = Math.ceil(shippingValue * userCurrency?.rate)
 
-    const ITEMS_TOTAL = cart?.products.reduce((acc, product) => acc + (Math.ceil(product.variant.price * userCurrency?.rate) * product.quantity), 0)
+    const ITEMS_TOTAL = cart?.products.reduce((acc, product) => acc + ((Math.ceil(product.variant.price * userCurrency?.rate) * product.quantity)), 0)
 
     const ORDER_TOTAL = SHIPPING_CONVERTED + ITEMS_TOTAL
 

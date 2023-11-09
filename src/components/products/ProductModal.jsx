@@ -6,6 +6,7 @@ import { SIZES_POOL, COLORS_POOL, CART_COOKIE } from '../../../consts';
 import Image from 'next/image';
 import Cookies from 'js-cookie';
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 export default function ProductModal(props) {
     const {
@@ -16,9 +17,11 @@ export default function ProductModal(props) {
         session,
     } = props
 
-    const price = `${userCurrency?.symbol} ${(((product.variant.price * (product.sold_out ? 1 - product.sold_out.percentage : 1) * userCurrency?.rate) / 100) * product.quantity).toFixed(2)}`
+    const tCommon = useTranslation('common').t
 
-    const priceUnit = `${userCurrency?.symbol} ${((product.variant.price * (product.sold_out ? 1 - product.sold_out.percentage : 1) * userCurrency?.rate) / 100).toFixed(2)} unit`
+    const PRICE_UNIT = Math.ceil(product.variant.price * userCurrency?.rate) * (product.sold_out ? 1 - product.sold_out.percentage : 1)
+
+    const PRICE = Math.ceil(PRICE_UNIT * product.quantity)
 
     const COLOR = COLORS_POOL[product.variant.color_id]
     const SIZE = SIZES_POOL.find(sz => sz.id === product.variant.size_id)
@@ -129,13 +132,13 @@ export default function ProductModal(props) {
                 </Link>
                 <div className={styles.infos}>
                     <p>
-                        Size: <span style={{ fontWeight: 500 }}>{SIZE.title}</span>
+                        {tCommon('Size')}: <span style={{ fontWeight: 500 }}>{SIZE.title}</span>
                     </p>
                     <p>
-                        Color: <span style={{ fontWeight: 500 }}>{COLOR.title}</span>
+                        {tCommon('Color')}: <span style={{ fontWeight: 500 }}>{tCommon(COLOR.title)}</span>
                     </p>
                     <p>
-                        Quantity: <span style={{ fontWeight: 500 }}>{product.quantity}</span>
+                        {tCommon('Quantity')}: <span style={{ fontWeight: 500 }}>{product.quantity}</span>
                     </p>
                 </div>
                 <div className={styles.priceContainer}>
@@ -145,11 +148,11 @@ export default function ProductModal(props) {
                             fontSize: '14px',
                         }}
                     >
-                        {price}
+                        {`${userCurrency?.symbol} ${(PRICE / 100).toFixed(2)}`}
                     </p>
                     {product.quantity > 1 &&
                         <p style={{ fontSize: '10px', color: 'var(--text-black)' }}>
-                            {priceUnit}
+                            {`${userCurrency?.symbol} ${(PRICE_UNIT / 100).toFixed(2)} ${tCommon('unit', { count: 2 })}`}
                         </p>
                     }
                 </div>

@@ -227,7 +227,7 @@ export default function Home(props) {
                     : windowWidth > 420
                       ? 97.5
                       : 84.5,
-                  transition: 'all ease-in-out 200ms',
+                  transition: 'height ease-in-out 200ms',
                 }}
                 skeletonStyle={{
                   width: windowWidth > 750
@@ -240,7 +240,6 @@ export default function Home(props) {
                     : windowWidth > 420
                       ? 97.5
                       : 84.5,
-                  transition: 'all ease-in-out 200ms',
                 }}
               />
             </div>

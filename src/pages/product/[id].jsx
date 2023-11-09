@@ -5,7 +5,7 @@ import ImagesSlider from '@/components/ImagesSlider'
 import { Button } from '@mui/material'
 import ShoppingCartOutlinedIcon from '@mui/icons-material/ShoppingCartOutlined';
 import CreditCardOutlinedIcon from '@mui/icons-material/CreditCardOutlined';
-import { CART_COOKIE, COLORS_POOL, SIZES_POOL } from '../../../consts'
+import { CART_COOKIE, CART_MAX_ITEMS, COLORS_POOL, SIZES_POOL } from '../../../consts'
 import Head from 'next/head'
 import ColorSelector from '@/components/ColorSelector'
 import SizesSelector from '@/components/SizesSelector'
@@ -15,6 +15,7 @@ import NoFound404 from '../404'
 import Cookies from 'js-cookie';
 import { useTranslation } from 'react-i18next'
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
+import { showToast } from '../../../utils/toasts'
 
 export default withRouter(props => {
     const {
@@ -33,6 +34,8 @@ export default withRouter(props => {
         supportsHoverAndPointer,
         setLoading,
     } = props
+
+    const tErrors = useTranslation('errors').t
 
     const [currentColor, setCurrentColor] = useState(cl ? cl : COLORS_POOL[product?.colors_ids[0]])
     const [currentSize, setCurrentSize] = useState(sz ? sz : SIZES_POOL.find(sz => sz.id === product?.sizes_ids[0]))
@@ -56,24 +59,29 @@ export default withRouter(props => {
                 authorization: process.env.NEXT_PUBLIC_APP_TOKEN,
             },
             body: JSON.stringify({
-                userId: 'userId',
                 cartItems: [
                     {
-                        title: product.title,
-                        image: product.images[0].src,
-                        desc: 'my productuct description',
-                        type: product.type,
                         id: product.id,
-                        id_printify: product.id_printify,
-                        price: product.variants[0].price,
+                        type_id: product.type_id,
+                        title: product.title,
+                        description: product.description,
+                        printify_ids: product.printify_ids,
+                        variant: prodVariant,
                         quantity: 1,
-                        variant_id: product.variants[0].id,
+                        default_variant: {
+                            color_id: product.variants[0].color_id,
+                            size_id: product.variants[0].size_id,
+                        },
+                        image: product.images.filter(img => img.color_id === prodVariant.color_id)[product.image_showcase_index],
                     }
                 ],
-                success_url: window.location.href,
+                success_url: session ? `${window.location.origin}/orders` : window.location.origin,
                 cancel_url: window.location.href,
                 customer: session,
                 cart_id: session ? session.cart_id : Cookies.get(CART_COOKIE),
+                currency: userCurrency?.code,
+                /* shippingValue: SHIPPING_CONVERTED,
+                shippingCountry: shippingCountry, */
             })
         }
 
@@ -87,9 +95,15 @@ export default withRouter(props => {
 
     function handleAddToCart() {
         if (cart) {
-            setLoading(true)
+
             const prodVariant = product.variants.find(vari => vari.size_id === currentSize.id && vari.color_id === currentColor.id)
 
+            if (cart.products.some(prod => prod.id === product.id && prod.variant_id === prodVariant.id && prod.quantity >= CART_MAX_ITEMS)) {
+                showToast({ msg: tErrors('max_products_toast'), type: 'error' })
+                return
+            }
+
+            setLoading(true)
             //se alterar o squema tem que alterar no arquivo backend/product.js
             const productCart = {
                 id: product.id,
@@ -346,7 +360,7 @@ export async function getServerSideProps({ query, locale, resolvedUrl }) {
 
     return {
         props: {
-            ...(await serverSideTranslations(locale, ['common', 'navbar', 'menu'])),
+            ...(await serverSideTranslations(locale, ['common', 'navbar', 'menu', 'errors'])),
             product: product,
             cl: colorQuery === undefined ? null : colorQuery,
             sz: sizeQuery === undefined ? null : sizeQuery,

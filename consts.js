@@ -1,5 +1,7 @@
 export const CART_COOKIE = 'CART'
 
+export const CART_MAX_ITEMS = 10
+
 export const LANGUAGES = [
     'en',
     'pt',

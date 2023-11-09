@@ -1,3 +1,4 @@
 {
-    "no_products_found": "Nenhum Produto Encontrado"
+    "no_products_found": "Nenhum Produto Encontrado",
+    "max_products_toast": "Número máximo de produtos iguais atingido"
 }

@@ -1,3 +1,4 @@
 {
-    "no_products_found": "No Products Found"
+    "no_products_found": "No Products Found",
+    "max_products_toast": "Maximum number of identical products reached"
 }

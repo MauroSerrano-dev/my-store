@@ -26,6 +26,7 @@ export default function Profile(props) {
     const { i18n } = useTranslation()
     const tLanguages = useTranslation('languages').t
     const tProfile = useTranslation('profile').t
+    const tMenu = useTranslation('menu').t
 
     const starterUser = session ? { ...session } : undefined
 
@@ -105,12 +106,12 @@ export default function Profile(props) {
                     </Head>
                     <main className={styles.userContainer}>
                         <div className={styles.fieldsHead}>
-                            <p style={{ fontSize: 23, textAlign: 'start' }}>Welcome <b style={{ color: 'var(--primary)' }}>{session.first_name ? session.first_name + ' ' + session.last_name : session.last_name}!</b></p>
+                            <p style={{ fontSize: 23, textAlign: 'start' }}>{tMenu('Welcome')} <b style={{ color: 'var(--primary)' }}>{session.first_name ? session.first_name + ' ' + session.last_name : session.last_name}!</b></p>
                         </div>
                         <div className={styles.fieldsBody}>
                             <div className={styles.left}>
                                 <TextInput
-                                    label='First Name'
+                                    label={tProfile('first_name')}
                                     defaultValue={user.first_name || ''}
                                     style={{
                                         width: '100%'
@@ -119,7 +120,7 @@ export default function Profile(props) {
                                     onChange={event => handleChanges('first_name', event.target.value)}
                                 />
                                 <TextInput
-                                    label='Last Name'
+                                    label={tProfile('last_name')}
                                     defaultValue={user.last_name}
                                     style={{
                                         width: '100%'
@@ -128,7 +129,7 @@ export default function Profile(props) {
                                     onChange={event => handleChanges('last_name', event.target.value)}
                                 />
                                 <TextInput
-                                    label='E-mail'
+                                    label={tProfile('E-mail')}
                                     defaultValue={user.email}
                                     style={{
                                         width: '100%'
@@ -147,13 +148,13 @@ export default function Profile(props) {
                             </div>
                             <div className={styles.right}>
                                 <div className={styles.field}>
-                                    <h3>Customize your Home Page</h3>
-                                    <p style={{ textAlign: 'start' }}>Pick <b>{TAGS_MIN_LIMIT} to {TAGS_MAX_LIMIT} keywords.</b> You'll see bestsellers from chosen keywords on your Home Page</p>
-                                    <p>Chosen: <b style={{ color: 'var(--primary)' }}>{user.home_page_tags.length}/{TAGS_MAX_LIMIT}</b></p>
+                                    <h3>{tProfile('customize_title')}</h3>
+                                    <p style={{ textAlign: 'start' }}>{tProfile('customize_p_start')}<b>{tProfile('customize_p_middle', { min: TAGS_MIN_LIMIT, max: TAGS_MAX_LIMIT })}</b>{tProfile('customize_p_end')}</p>
+                                    <p>{tProfile('Chosen')}: <b style={{ color: 'var(--primary)' }}>{user.home_page_tags.length}/{TAGS_MAX_LIMIT}</b></p>
                                     <TagsSelector
                                         supportsHoverAndPointer={supportsHoverAndPointer}
                                         options={USER_CUSTOMIZE_HOME_PAGE.map(theme => theme.id)}
-                                        label='Keywords'
+                                        label={tProfile('Keywords')}
                                         value={user.home_page_tags}
                                         sx={{
                                             width: '100%'
@@ -175,7 +176,7 @@ export default function Profile(props) {
                             className={`${styles.saveButton} ${disableSaveButton ? styles.saveDisabled : ''}`}
                             onClick={handleUpdateUser}
                         >
-                            Save
+                            {tProfile('Save')}
                         </Button>
                     </main>
                 </div>

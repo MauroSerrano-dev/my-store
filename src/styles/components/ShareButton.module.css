@@ -33,7 +33,7 @@
     position: absolute;
     width: 170px;
     top: 23px;
-    left: -118px;
+    left: -127px;
 }
 
 .session {    
@@ -54,7 +54,7 @@
 
 .pointer {
     position: absolute;
-    right: 24px;
+    right: 15px;
     top: 17px;
 
     border-top-left-radius: 3px;

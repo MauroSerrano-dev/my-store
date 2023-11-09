@@ -1,5 +1,15 @@
 {
     "Language": "Language",
     "max_keywords_toast": "Maximum number of keywords reached.",
-    "no_changes_toast": "No changes made."
+    "no_changes_toast": "No changes made.",
+    "first_name": "First Name",
+    "last_name": "Last Name",
+    "E-mail": "E-mail",
+    "customize_title": "Customize your Home Page",
+    "customize_p_start": "Pick ",
+    "customize_p_middle": "{{min}} to {{max}} keywords",
+    "customize_p_end": ". You'll see bestsellers from chosen keywords on your Home Page",
+    "Chosen": "Chosen",
+    "Keywords": "Keywords",
+    "Save": "Save"
 }
