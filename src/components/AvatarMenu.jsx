@@ -34,6 +34,7 @@ export default function AvatarMenu(props) {
     >
       {supportsHoverAndPointer
         ? <Link
+          onClick={() => console.log('clicou')}
           href={session ? '/profile' : '/login'}
           className={`${styles.iconContainer} flex center noUnderline`}
         >
