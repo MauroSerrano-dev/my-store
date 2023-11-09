@@ -278,6 +278,10 @@ export default function Home(props) {
   )
 }
 
+export const config = {
+  runtime: 'experimental-edge'
+}
+
 export async function getServerSideProps({ locale }) {
   return {
     props: {
