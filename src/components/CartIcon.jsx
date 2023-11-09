@@ -4,6 +4,7 @@ import ShoppingCartOutlinedIcon from '@mui/icons-material/ShoppingCartOutlined';
 import styles from '@/styles/components/CartIcon.module.css'
 import { Button } from '@mui/material'
 import ProductModal from './products/ProductModal'
+import { useTranslation } from 'react-i18next';
 
 export default function CartIcon(props) {
     const {
@@ -15,6 +16,7 @@ export default function CartIcon(props) {
     } = props
 
     const [open, setOpen] = useState(false)
+    const tNavbar = useTranslation('navbar').t
 
     useEffect(() => {
         // Em caso de deletar ultimo elemento do cart
@@ -85,12 +87,12 @@ export default function CartIcon(props) {
                                     fontWeight: '700',
                                 }}
                             >
-                                Go to Cart
+                                {tNavbar('cart_button')}
                             </Button>
                         </Link>
                     </div>
                 </div>
             }
-        </div >
+        </div>
     )
 }

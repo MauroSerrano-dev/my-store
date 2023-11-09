@@ -6,6 +6,7 @@ import { SIZES_POOL, COLORS_POOL } from '../../../consts';
 import Image from 'next/image';
 import Selector from '../material-ui/Selector';
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 export default function ProductCart(props) {
     const {
@@ -26,6 +27,8 @@ export default function ProductCart(props) {
     const priceUnit = `${userCurrency?.symbol} ${((product.variant.price * (product.sold_out ? 1 - product.sold_out.percentage : 1), userCurrency?.rate) / 100).toFixed(2)} unit`
 
     const [deleting, setDeleting] = useState(false)
+
+    const tCommon = useTranslation('common').t
 
     function handleDeleteCartProduct() {
         setLoading(true)
@@ -172,8 +175,8 @@ export default function ProductCart(props) {
                         </div>
                         <div className={styles.bodyBottom}>
                             <div className='flex column' style={{ fontSize: 13, paddingBottom: '0.7rem' }}>
-                                <p className='text-start'>Color: <span style={{ fontWeight: 600 }}>{COLOR.title}</span></p>
-                                <p className='text-start'>Size: <span style={{ fontWeight: 600 }}>{SIZE.title}</span></p>
+                                <p className='text-start'>{tCommon('Color')}: <span style={{ fontWeight: 600 }}>{COLOR.title}</span></p>
+                                <p className='text-start'>{tCommon('Size')}: <span style={{ fontWeight: 600 }}>{SIZE.title}</span></p>
                             </div>
                             <Selector
                                 value={product.quantity}
@@ -205,13 +208,14 @@ export default function ProductCart(props) {
                                     { value: 9, name: '9' },
                                     { value: 10, name: '10' },
                                 ]}
+                                supportsHoverAndPointer={supportsHoverAndPointer}
                             />
                         </div>
                     </div>
                 </div>
                 <div className={styles.rightRight}>
                     <p className={styles.rightP}>
-                        Price:
+                        {tCommon('Price')}:
                     </p>
                     <p className={styles.price}>
                         {price}
@@ -225,7 +229,7 @@ export default function ProductCart(props) {
             </div>
             {
                 deleting &&
-                < div
+                <div
                     style={{
                         position: 'absolute',
                         left: 0,
@@ -237,6 +241,6 @@ export default function ProductCart(props) {
                 >
                 </div>
             }
-        </motion.div >
+        </motion.div>
     )
 }

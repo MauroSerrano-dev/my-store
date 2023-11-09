@@ -6,6 +6,8 @@ import { useEffect, useState } from 'react'
 import Selector from '@/components/material-ui/Selector'
 import Cookies from 'js-cookie'
 import CarouselProducts from '@/components/carousels/CarouselProducts'
+import { useTranslation } from 'react-i18next';
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
 
 export default function Cart(props) {
     const {
@@ -30,6 +32,9 @@ export default function Cart(props) {
     const ITEMS_TOTAL = cart?.products.reduce((acc, product) => acc + (Math.ceil(product.variant.price * userCurrency?.rate) * product.quantity), 0)
 
     const ORDER_TOTAL = SHIPPING_CONVERTED + ITEMS_TOTAL
+
+    const tCommon = useTranslation('common').t
+    const tCart = useTranslation('cart').t
 
     useEffect(() => {
         getShippingValue()
@@ -144,7 +149,7 @@ export default function Cart(props) {
                             <div
                                 className={styles.productsHead}
                             >
-                                <h1>Your Cart</h1>
+                                <h1>{tCart('my_cart')}</h1>
                             </div>
                             <div
                                 className={styles.productsBody}
@@ -170,7 +175,7 @@ export default function Cart(props) {
                                 className={styles.detailsHead}
                             >
                                 <h3>
-                                    Order details
+                                    {tCart('order_details')}
                                 </h3>
                             </div>
                             <div
@@ -178,7 +183,7 @@ export default function Cart(props) {
                             >
                                 <div className={styles.detailsItem}>
                                     <p>
-                                        Ship To:
+                                        {tCart('ship_to')}:
                                     </p>
                                     <Selector
                                         label='Country'
@@ -199,7 +204,7 @@ export default function Cart(props) {
                                 </div>
                                 <div className={styles.detailsItem}>
                                     <p>
-                                        Currency:
+                                        {tCommon('Currency')}:
                                     </p>
                                     <Selector
                                         label='currency'
@@ -213,7 +218,7 @@ export default function Cart(props) {
                                 </div>
                                 <div className={styles.detailsItem}>
                                     <p>
-                                        Items Total:
+                                        {tCart('items_total')}:
                                     </p>
                                     <p>
                                         {`${userCurrency?.symbol} ${(ITEMS_TOTAL / 100).toFixed(2)}`}
@@ -221,7 +226,7 @@ export default function Cart(props) {
                                 </div>
                                 <div className={styles.detailsItem}>
                                     <p>
-                                        Shipping & Taxes:
+                                        {tCart('shipping_and_taxes')}:
                                     </p>
                                     <p>
                                         {`${userCurrency?.symbol} ${(SHIPPING_CONVERTED / 100).toFixed(2)}`}
@@ -230,7 +235,7 @@ export default function Cart(props) {
                                 <div className={styles.orderTotalContainer}>
                                     <div className={styles.detailsItem}>
                                         <p>
-                                            Order Total:
+                                            {tCart('order_total')}:
                                         </p>
                                         <p
                                             style={{
@@ -266,4 +271,12 @@ export default function Cart(props) {
             }
         </div>
     )
+}
+
+export async function getServerSideProps({ locale }) {
+    return {
+        props: {
+            ...(await serverSideTranslations(locale, ['common', 'navbar', 'menu', 'cart']))
+        }
+    }
 }

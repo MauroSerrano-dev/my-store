@@ -32,8 +32,6 @@ export default function Home(props) {
   const tIndex = useTranslation('index').t
   const tErrors = useTranslation('errors').t
 
-  const [bannerColorsOpacity, setBannerColorsOpacity] = useState(0)
-
   const [productsOne, setProductsOne] = useState()
   const [productsTwo, setProductsTwo] = useState()
   const [productsThree, setProductsThree] = useState()
@@ -82,19 +80,6 @@ export default function Home(props) {
       setStates[i].set(await getProductsByTagOrType(USER_CUSTOMIZE_HOME_PAGE.find(ele => ele.id === tag)))
     })
   }
-
-  useEffect(() => {
-    if (bannerColorsOpacity === 0) {
-      setTimeout(() => {
-        setBannerColorsOpacity(1)
-      }, 2000)
-    }
-    else {
-      setTimeout(() => {
-        setBannerColorsOpacity(0)
-      }, 1500)
-    }
-  }, [bannerColorsOpacity])
 
   return (
     <div className={styles.container}>
@@ -145,12 +130,7 @@ export default function Home(props) {
             fill
             draggable={false}
             alt='t-shirts_colors'
-            style={{
-              objectFit: 'cover',
-              objectPosition: 'top',
-              opacity: bannerColorsOpacity,
-              transition: 'opacity ease-in-out 200ms',
-            }}
+            className={styles.bannerColors}
           />
         </Link>
         <div className={styles.infos}>
@@ -282,7 +262,7 @@ export default function Home(props) {
 export async function getServerSideProps({ locale }) {
   return {
     props: {
-      ...(await serverSideTranslations(locale, ['common', 'menu', 'navbar', 'footer', 'index', 'products', 'errors']))
+      ...(await serverSideTranslations(locale, ['common', 'navbar', 'menu', 'footer', 'index', 'products', 'errors']))
     }
   }
 }

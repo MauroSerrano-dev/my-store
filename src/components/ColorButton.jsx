@@ -1,4 +1,5 @@
 import MyTooltip from './MyTooltip';
+import { useTranslation } from 'react-i18next'
 
 export default function ColorButton(props) {
     const {
@@ -9,6 +10,8 @@ export default function ColorButton(props) {
         color,
         supportsHoverAndPointer,
     } = props
+
+    const tCommon = useTranslation('common').t
 
     const buttonStyle = {
         borderRadius: '100%',
@@ -25,7 +28,7 @@ export default function ColorButton(props) {
     return (
         supportsHoverAndPointer
             ? <MyTooltip
-                title={color.title}
+                title={tCommon(color.title)}
                 arrow
                 backgroundColor='#000000'
                 titleColor='#ffffff'

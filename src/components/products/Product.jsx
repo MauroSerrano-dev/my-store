@@ -43,7 +43,6 @@ export default function Product(props) {
     } = props
 
     const tCommon = useTranslation('common').t
-    const tProducts = useTranslation('products').t
 
     const height = width * 10 / 9
 
@@ -358,7 +357,7 @@ export default function Product(props) {
                                         fontWeight: '700'
                                     }}
                                 >
-                                    {tProducts('more_info_button')}
+                                    {tCommon('more_info_button')}
                                 </Button>
                             </Link>
                         }

@@ -593,7 +593,7 @@ export default withRouter(props => {
 export async function getServerSideProps({ locale }) {
     return {
         props: {
-            ...(await serverSideTranslations(locale, ['common', 'navbar']))
+            ...(await serverSideTranslations(locale, ['common', 'menu', 'navbar']))
         }
     }
 }

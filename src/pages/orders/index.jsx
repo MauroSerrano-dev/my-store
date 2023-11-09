@@ -6,6 +6,8 @@ import Selector from '@/components/material-ui/Selector'
 import { motion } from "framer-motion";
 import { CircularProgress } from '@mui/material'
 import NoFound404 from '../404'
+import { useTranslation } from 'react-i18next'
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
 
 export default function Orders(props) {
     const {
@@ -14,6 +16,8 @@ export default function Orders(props) {
         currencies,
         windowWidth,
     } = props
+
+    const tOrders = useTranslation('orders').t
 
     const NOW = new Date()
     const userCreateAt = new Date(session?.create_at.seconds * 1000 + session?.create_at.nanoseconds * 0.000001)
@@ -69,7 +73,7 @@ export default function Orders(props) {
                     {orders
                         ? <main className={styles.main}>
                             <div className={styles.top}>
-                                <p><b>{orders?.length} {orders?.length > 1 ? 'orders' : 'order'}</b> placed in</p>
+                                <p><b>{tOrders('order', { count: orders.length })}</b> {tOrders('placed in', { count: orders.length })}</p>
                                 <Selector
                                     value={dateSelected}
                                     options={datesRange}
@@ -143,4 +147,12 @@ export default function Orders(props) {
                     }
                 </div>
     )
+}
+
+export async function getServerSideProps({ locale }) {
+    return {
+        props: {
+            ...(await serverSideTranslations(locale, ['common', 'navbar', 'menu', 'orders']))
+        }
+    }
 }

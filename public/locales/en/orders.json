@@ -1,0 +1,7 @@
+{
+    "order_zero": "No order",
+    "order_one": "{{count}} order",
+    "order_other": "{{count}} orders",
+    "placed in": "placed in",
+    "placed in_zero": "found in"
+}

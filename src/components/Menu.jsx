@@ -20,6 +20,7 @@ export default function Menu(props) {
     const [optionMenuDelay, setOptionMenuDelay] = useState()
 
     const tMenu = useTranslation('menu').t
+    const tCommon = useTranslation('common').t
 
     function handleCloseMenu() {
         switchMenu()
@@ -215,14 +216,14 @@ export default function Menu(props) {
                                     onClick={handleCloseMenu}
                                     className={`${styles.menuItem} noUnderline`}
                                 >
-                                    {option.title}
+                                    {tCommon(option.title)}
                                 </Link>
                                 : <div
                                     key={i}
                                     onClick={() => setOptionMenu(option.value)}
                                     className={styles.menuItem}
                                 >
-                                    {option.title}
+                                    {tCommon(option.title)}
                                     {option.type === 'forward' &&
                                         <IoIosArrowForward
                                             className={styles.forwardButton}

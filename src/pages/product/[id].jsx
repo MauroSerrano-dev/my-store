@@ -13,6 +13,8 @@ import ShareButton from '@/components/ShareButton'
 import CareInstructionsIcons from '@/components/svgs/CareInstructionsIcons'
 import NoFound404 from '../404'
 import Cookies from 'js-cookie';
+import { useTranslation } from 'react-i18next'
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
 
 export default withRouter(props => {
     const {
@@ -319,8 +321,8 @@ export default withRouter(props => {
     runtime: 'experimental-edge'
 } */
 
-export async function getServerSideProps(context) {
-    const { id, cl, sz } = context.query
+export async function getServerSideProps({ query, locale, resolvedUrl }) {
+    const { id, cl, sz } = query
 
     const options = {
         method: 'GET',
@@ -344,10 +346,11 @@ export async function getServerSideProps(context) {
 
     return {
         props: {
+            ...(await serverSideTranslations(locale, ['common', 'navbar', 'menu'])),
             product: product,
             cl: colorQuery === undefined ? null : colorQuery,
             sz: sizeQuery === undefined ? null : sizeQuery,
-            urlMeta: `${process.env.NEXT_PUBLIC_URL}${context.resolvedUrl} `,
+            urlMeta: `${process.env.NEXT_PUBLIC_URL}${resolvedUrl} `,
             productMetaImage: colorQuery
                 ? product.images.filter(img => img.color_id === colorQuery.id)[product.image_showcase_index].src
                 : product.images[product.image_showcase_index].src

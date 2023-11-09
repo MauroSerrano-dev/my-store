@@ -21,6 +21,7 @@ export default function AvatarMenu(props) {
   } = props
 
   const [open, setOpen] = useState(false)
+  const { i18n } = useTranslation()
   const tNavbar = useTranslation('navbar').t
 
   function handleLogout() {
@@ -62,9 +63,11 @@ export default function AvatarMenu(props) {
         <div
           className={styles.contentContainer}
           style={{
-            left: session
-              ? '-98.5px'
-              : '-203.5px'
+            left: !session
+              ? -203.5
+              : i18n.language === 'pt'
+                ? -115.5
+                : -98.5
           }}
         >
           <div className={styles.pointer}>
@@ -72,6 +75,9 @@ export default function AvatarMenu(props) {
           {session
             ? <div
               className={styles.session}
+              style={{
+                minWidth: i18n.language === 'pt' ? 182 : 165,
+              }}
             >
               <Link
                 href={'/profile'}
@@ -82,7 +88,7 @@ export default function AvatarMenu(props) {
                   <ListItemIcon>
                     <AccountCircleRoundedIcon fontSize="medium" />
                   </ListItemIcon>
-                  Profile
+                  {tNavbar('Profile')}
                 </MenuItem>
               </Link>
               <Divider />
@@ -120,7 +126,7 @@ export default function AvatarMenu(props) {
                     <ListItemIcon>
                       <AdminPanelSettingsRoundedIcon fontSize="medium" />
                     </ListItemIcon>
-                    Admin
+                    {tNavbar('Admin')}
                   </MenuItem>
                 </Link>
               }
@@ -128,7 +134,7 @@ export default function AvatarMenu(props) {
                 <ListItemIcon>
                   <Logout fontSize="medium" />
                 </ListItemIcon>
-                Logout
+                {tNavbar('Logout')}
               </MenuItem>
             </div>
             : <div className={styles.noSession}>

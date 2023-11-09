@@ -7,7 +7,10 @@
     "ACCESSORIES": "ACCESSORIES",
     "PILLOWS": "PILLOWS",
     "SOCKS": "SOCKS",
-    "Profile": "Perfil",
+    "Profile": "Profile",
     "Support": "Support",
-    "My Orders": "My Orders"
+    "My Orders": "My Orders",
+    "Admin": "Admin",
+    "Logout": "Logout",
+    "cart_button": "Go to Cart"
 }

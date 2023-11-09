@@ -83,7 +83,7 @@ export default function NavBar(props) {
                             className='fillHeight'
                             aria-label='Home'
                             style={{
-                                height: '70%',
+                                height: '90%',
                                 paddingTop: '2%',
                             }}
                         >
@@ -110,6 +110,9 @@ export default function NavBar(props) {
                                 bottom: isScrollAtTop
                                     ? '-39px'
                                     : '22px',
+                                width: isScrollAtTop
+                                    ? '120%'
+                                    : '100%',
                             }}
                         >
                             {translationReady && itemsNavBar.map((item, i) =>
@@ -179,6 +182,6 @@ export default function NavBar(props) {
                     />
                 </div>
             </div>
-        </div>
+        </div >
     )
 }

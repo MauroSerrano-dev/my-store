@@ -18,6 +18,8 @@ import { showToast } from '../../../../utils/toasts'
 import NoFound404 from '@/pages/404'
 import Selector from '@/components/material-ui/Selector'
 import { isNewProductValid } from '../../../../utils/edit-product'
+import { useTranslation } from 'react-i18next'
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
 
 const INICIAL_PRODUCT = {
     id: '',
@@ -54,6 +56,8 @@ export default withRouter(props => {
     const [disableCreateButton, setDisableCreateButton] = useState(false)
     const [artIdChained, setArtIdChained] = useState(true)
     const [artColorChained, setArtColorChained] = useState(true)
+
+    const tCommon = useTranslation('common').t
 
     useEffect(() => {
         if (router.isReady) {
@@ -697,7 +701,7 @@ export default withRouter(props => {
                                                             }}
                                                         >
                                                             <h3>
-                                                                {product.colors[colorIndex].title} Price (USD)
+                                                                {tCommon(product.colors[colorIndex].title)} Price (USD)
                                                             </h3>
                                                             {product.sizes.map((size, i) =>
                                                                 <div
@@ -832,3 +836,11 @@ export default withRouter(props => {
                 </ div>
     )
 })
+
+export async function getServerSideProps({ locale }) {
+    return {
+        props: {
+            ...(await serverSideTranslations(locale, ['common', 'navbar', 'menu']))
+        }
+    }
+}

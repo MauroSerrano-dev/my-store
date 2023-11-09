@@ -18,8 +18,8 @@ export default function MyTooltip(props) {
     }))
 
     return (
-            <MyTooltip title={title}>
-                {content}
-            </MyTooltip>
+        <MyTooltip title={title}>
+            {content}
+        </MyTooltip>
     )
 }
