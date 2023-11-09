@@ -12,5 +12,6 @@
     "My Orders": "Meus Pedidos",
     "Admin": "Admin",
     "Logout": "Sair",
-    "cart_button": "Ir para carrinho"
+    "cart_button": "Ir para carrinho",
+    "toggle_label": "Menu"
 }

@@ -12,5 +12,6 @@
     "My Orders": "My Orders",
     "Admin": "Admin",
     "Logout": "Logout",
-    "cart_button": "Go to Cart"
+    "cart_button": "Go to Cart",
+    "toggle_label": "Menu"
 }

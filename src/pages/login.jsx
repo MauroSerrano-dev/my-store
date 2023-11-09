@@ -82,6 +82,28 @@ export default function Login(props) {
                             paddingRight: mobile ? '4.5vw' : '10vw'
                         }}
                     >
+                        <div
+                            className='flex column center fillWidth'
+                            style={{
+                                gap: '1rem',
+                                paddingBottom: '1rem'
+                            }}
+                        >
+                            <button
+                                className={styles.providerLogin}
+                                onClick={googleLogin}
+                            >
+                                <FcGoogle
+                                    size='30px'
+                                    style={{
+                                        position: 'absolute',
+                                        left: '1.5rem'
+                                    }}
+                                />
+                                Login with Google
+                            </button>
+                            <p>or Login with</p>
+                        </div>
                         <form
                             onSubmit={handleSubmit}
                             method='POST'
@@ -141,19 +163,6 @@ export default function Login(props) {
                                 </Button>
                             </div>
                         </form>
-                        <button
-                            className={styles.providerLogin}
-                            onClick={googleLogin}
-                        >
-                            <FcGoogle
-                                size='30px'
-                                style={{
-                                    position: 'absolute',
-                                    left: '1.5rem'
-                                }}
-                            />
-                            Login with Google
-                        </button>
                     </div>
                 </div>
                 <div

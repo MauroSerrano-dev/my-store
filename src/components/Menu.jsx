@@ -148,7 +148,7 @@ export default function Menu(props) {
                         }
                         {session === null &&
                             <div>
-                                Hello! <Link href={'/login'} onClick={handleCloseMenu} className='noUnderline'>Log in</Link> or <Link href={'/signin'} onClick={handleCloseMenu} className='noUnderline'>Sign up</Link>
+                                {tMenu('Hello')}! <Link href={'/login'} onClick={handleCloseMenu} className='noUnderline'>Log in</Link> {tMenu('or')} <Link href={'/signin'} onClick={handleCloseMenu} className='noUnderline'>Sign up</Link>
                             </div>
                         }
                     </div>
