@@ -87,7 +87,7 @@ export default function ProductModal(props) {
                     fontSize: '15px',
                     cursor: 'pointer',
                     position: 'absolute',
-                    top: '0.7rem',
+                    top: '0.8rem',
                     right: '0.3rem',
                     color: 'var(--global-black)',
                     zIndex: 10,
@@ -159,7 +159,7 @@ export default function ProductModal(props) {
             </div>
             {
                 deleting &&
-                < div
+                <div
                     style={{
                         position: 'absolute',
                         left: 0,
