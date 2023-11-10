@@ -5,6 +5,7 @@ import { withRouter } from 'next/router'
 import Link from 'next/link'
 import { PRODUCT_TYPES } from '../../../../consts'
 import NoFound404 from '@/components/NoFound404';
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 
 export default withRouter(props => {
 
@@ -75,3 +76,11 @@ export default withRouter(props => {
                 </div>
     )
 })
+
+export async function getServerSideProps({ locale }) {
+    return {
+        props: {
+            ...(await serverSideTranslations(locale, ['common', 'navbar', 'menu']))
+        }
+    }
+}
