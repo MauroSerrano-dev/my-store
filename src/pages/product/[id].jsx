@@ -3,8 +3,8 @@ import styles from '@/styles/pages/product/id.module.css'
 import { useEffect, useState } from 'react'
 import ImagesSlider from '@/components/ImagesSlider'
 import { Button } from '@mui/material'
-import ShoppingCartOutlinedIcon from '@mui/icons-material/ShoppingCartOutlined';
-import CreditCardOutlinedIcon from '@mui/icons-material/CreditCardOutlined';
+import ShoppingCartOutlinedIcon from '@mui/icons-material/ShoppingCartOutlined'
+import CreditCardOutlinedIcon from '@mui/icons-material/CreditCardOutlined'
 import { CART_COOKIE, CART_MAX_ITEMS, COLORS_POOL, SIZES_POOL } from '../../../consts'
 import Head from 'next/head'
 import ColorSelector from '@/components/ColorSelector'
