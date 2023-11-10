@@ -1,15 +1,15 @@
 import styles from '@/styles/pages/login.module.css'
 import { Button, TextField } from '@mui/material'
 import Link from 'next/link'
-import { FcGoogle } from "react-icons/fc";
-import { PiHandshakeLight } from "react-icons/pi";
-import ReCAPTCHA from "react-google-recaptcha";
-import { useEffect, useState } from 'react';
-import { signInWithPopup, GoogleAuthProvider, signInWithRedirect } from "firebase/auth";
-import { showToast } from '../../utils/toasts';
-import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
+import { FcGoogle } from "react-icons/fc"
+import { PiHandshakeLight } from "react-icons/pi"
+import ReCAPTCHA from "react-google-recaptcha"
+import { useEffect, useState } from 'react'
+import { signInWithPopup, GoogleAuthProvider, signInWithRedirect } from "firebase/auth"
+import { showToast } from '../../utils/toasts'
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
 
-const provider = new GoogleAuthProvider();
+const provider = new GoogleAuthProvider()
 
 export default function Login(props) {
     const {
