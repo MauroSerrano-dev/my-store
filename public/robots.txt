@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: hhtps://mrfstyles.com/api/sitemap
+Sitemap: hhtps://mrfstyles.com/sitemap.xml
