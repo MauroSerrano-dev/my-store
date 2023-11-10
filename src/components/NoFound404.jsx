@@ -12,7 +12,6 @@ export default function NoFound404(props) {
     const animationContainer = useRef(null)
 
     useEffect(() => {
-        console.log(props)
         const animation = lottie.loadAnimation({
             container: animationContainer.current,
             renderer: 'svg',

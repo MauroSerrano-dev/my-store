@@ -466,6 +466,30 @@ async function handleProductsPurchased(line_items) {
     }
 }
 
+async function getAllProductsIds() {
+    try {
+        const productsCollection = collection(db, process.env.COLL_PRODUCTS);
+        const q = query(productsCollection);
+
+        const querySnapshot = await getDocs(q);
+        const productIds = querySnapshot.docs.map(doc => doc.id);
+
+        return {
+            status: 200,
+            message: 'All product IDs retrieved successfully!',
+            productIds: productIds,
+        };
+    } catch (error) {
+        console.log('Error getting product IDs.', error);
+        return {
+            status: 500,
+            message: 'Error getting all product IDs.',
+            productIds: null,
+            error: error,
+        };
+    }
+}
+
 export {
     createProduct,
     getProductsByQueries,
@@ -476,4 +500,5 @@ export {
     updateProduct,
     handleProductsPurchased,
     getCartProductsInfo,
+    getAllProductsIds,
 }
