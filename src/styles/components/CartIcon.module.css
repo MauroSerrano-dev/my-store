@@ -60,7 +60,7 @@
 }
 
 .productsScroll {
-    max-height: 272px;
+    max-height: 272px; /* Só deve ativar o scroll com mais de 2 items no carrinho */
     overflow: auto;
 }
 
