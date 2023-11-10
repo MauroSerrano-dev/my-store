@@ -1,3 +1,4 @@
+import { hasRepeatedItems } from ".";
 import { showToast } from "./toasts";
 
 export function isNewProductValid(product, images) {

@@ -181,10 +181,6 @@ export default withRouter(props => {
         })
     }
 
-    useEffect(() => {
-        console.log('vari', product.variants)
-    }, [product])
-
     function handleSelectedColor(value, i) {
         setColorIndex(i)
     }
