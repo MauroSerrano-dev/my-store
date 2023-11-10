@@ -125,8 +125,6 @@
   justify-content: flex-start;
 
   width: 100%;
-
-  transition: margin-bottom ease-in-out 200ms;
 }
 
 .bannerColors {

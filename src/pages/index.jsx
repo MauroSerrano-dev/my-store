@@ -165,6 +165,7 @@ export default function Home(props) {
                 marginBottom: windowWidth > 750
                   ? '2rem'
                   : '0.5rem',
+                transition: `margin-bottom ease-in-out ${session === undefined ? 0 : 200}ms`
               }}
             >
               <Carousel
@@ -185,7 +186,7 @@ export default function Home(props) {
                           : windowWidth > 420
                             ? 97.5
                             : 84.5,
-                        transition: 'all ease-in-out 200ms',
+                        transition: `all ease-in-out ${session === undefined ? 0 : 200}ms`,
                       }}
                     >
                       <div
@@ -198,7 +199,7 @@ export default function Home(props) {
                           fontSize: windowWidth > 420
                             ? 20
                             : 17,
-                          transition: 'font-size ease-in-out 200ms'
+                          transition: `font-size ease-in-out ${session === undefined ? 0 : 200}ms`
                         }}
                       >
                         {tCommon(cat.title)}
@@ -227,7 +228,7 @@ export default function Home(props) {
                     : windowWidth > 420
                       ? 97.5
                       : 84.5,
-                  transition: 'height ease-in-out 200ms',
+                  transition: `height ease-in-out ${session === undefined ? 0 : 200}ms`,
                 }}
                 skeletonStyle={{
                   width: windowWidth > 750
