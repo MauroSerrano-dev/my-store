@@ -1,3 +1,4 @@
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
 import Head from 'next/head'
 import Link from 'next/link'
 
@@ -159,4 +160,12 @@ export default function TermsOfUse() {
             </main>
         </div>
     )
+}
+
+export async function getServerSideProps({ locale }) {
+    return {
+        props: {
+            ...(await serverSideTranslations(locale, ['common', 'menu', 'navbar']))
+        }
+    }
 }

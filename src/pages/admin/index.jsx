@@ -3,7 +3,7 @@ import AddCircleOutlineRoundedIcon from '@mui/icons-material/AddCircleOutlineRou
 import EditNoteRoundedIcon from '@mui/icons-material/EditNoteRounded';
 import FormatListBulletedRoundedIcon from '@mui/icons-material/FormatListBulletedRounded';
 import Link from 'next/link'
-import NoFound404 from '../404';
+import NoFound404 from '../../components/NoFound404';
 
 export default function Admin(props) {
     const {

@@ -2,7 +2,6 @@ import Link from 'next/link';
 import { useEffect, useRef } from 'react';
 import lottie from 'lottie-web';
 import styles from '@/styles/pages/404.module.css'
-import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 
 export default function NoFound404(props) {
 
@@ -13,6 +12,7 @@ export default function NoFound404(props) {
     const animationContainer = useRef(null)
 
     useEffect(() => {
+        console.log(props)
         const animation = lottie.loadAnimation({
             container: animationContainer.current,
             renderer: 'svg',
@@ -51,12 +51,4 @@ export default function NoFound404(props) {
             </div>
         </div>
     )
-}
-
-export async function getServerSideProps({ locale }) {
-    return {
-        props: {
-            ...(await serverSideTranslations(locale, ['common', 'navbar', 'menu']))
-        }
-    }
 }

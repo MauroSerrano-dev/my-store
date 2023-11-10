@@ -1,6 +1,6 @@
 import styles from '@/styles/pages/profile.module.css'
 import Head from 'next/head'
-import NoFound404 from './404'
+import NoFound404 from '../components/NoFound404'
 import TagsSelector from '@/components/material-ui/TagsSelector'
 import { LANGUAGES, USER_CUSTOMIZE_HOME_PAGE } from '../../consts'
 import { Button } from '@mui/material'

@@ -11,7 +11,7 @@ import ColorSelector from '@/components/ColorSelector'
 import SizesSelector from '@/components/SizesSelector'
 import ShareButton from '@/components/ShareButton'
 import CareInstructionsIcons from '@/components/svgs/CareInstructionsIcons'
-import NoFound404 from '../404'
+import NoFound404 from '../../components/NoFound404'
 import Cookies from 'js-cookie';
 import { useTranslation } from 'react-i18next'
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations'

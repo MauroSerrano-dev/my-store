@@ -5,6 +5,7 @@ import { PiHandshakeLight } from "react-icons/pi";
 import ReCAPTCHA from "react-google-recaptcha";
 import { useEffect, useState } from 'react';
 import { showToast } from '../../utils/toasts';
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 
 export default function Signin(props) {
     const {
@@ -197,4 +198,12 @@ export default function Signin(props) {
             </main>
         </div>
     )
+}
+
+export async function getServerSideProps({ locale }) {
+    return {
+        props: {
+            ...(await serverSideTranslations(locale, ['common', 'menu', 'navbar']))
+        }
+    }
 }

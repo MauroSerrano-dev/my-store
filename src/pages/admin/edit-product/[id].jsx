@@ -9,7 +9,7 @@ import SizesSelector from '@/components/SizesSelector';
 import { Button, Checkbox, Slider } from '@mui/material';
 import Link from 'next/link';
 import KeyboardArrowLeftRoundedIcon from '@mui/icons-material/KeyboardArrowLeftRounded';
-import NoFound404 from '@/pages/404';
+import NoFound404 from '@/components/NoFound404';
 import ClearRoundedIcon from '@mui/icons-material/ClearRounded';
 import Chain from '@/components/svgs/Chain';
 import BrokeChain from '@/components/svgs/BrokeChain';

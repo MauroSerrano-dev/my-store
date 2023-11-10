@@ -2,6 +2,8 @@ import Link from 'next/link';
 import { useEffect, useRef } from 'react';
 import lottie from 'lottie-web';
 import styles from '@/styles/pages/_error.module.css'
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
+import NoFound404 from '@/components/NoFound404';
 
 function Error({ statusCode }) {
 
@@ -22,38 +24,44 @@ function Error({ statusCode }) {
     }, [])
 
     return (
-        <div
-            className='flex column align-center fillWidth'
-            style={{
-                '--text-color': 'var(--text-white)',
-            }}
-        >
-            <div
-                ref={animationContainer}
-                className={styles.animationContainer}
+        statusCode === 404
+            ? <NoFound404 />
+            : <div
+                className='flex column align-center fillWidth'
+                style={{
+                    '--text-color': 'var(--text-white)',
+                }}
             >
-            </div>
-            <div style={{ zIndex: 1 }}>
-                <p className={styles.errorMsg}>
-                    {statusCode
-                        ? `An error ${statusCode} occurred on server`
-                        : 'An error occurred on the website'
-                    }
-                </p>
-                <Link
-                    href="/"
-                    className={styles.link}
+                <div
+                    ref={animationContainer}
+                    className={styles.animationContainer}
                 >
-                    Back to homepage
-                </Link>
+                </div>
+                <div style={{ zIndex: 1 }}>
+                    <p className={styles.errorMsg}>
+                        {statusCode
+                            ? `An error ${statusCode} occurred on server`
+                            : 'An error occurred on the website'
+                        }
+                    </p>
+                    <Link
+                        href="/"
+                        className={styles.link}
+                    >
+                        Back to homepage
+                    </Link>
+                </div>
             </div>
-        </div>
     )
 }
 
-Error.getInitialProps = ({ res, err }) => {
-    const statusCode = res ? res.statusCode : err ? err.statusCode : 404
-    return { statusCode }
+export async function getServerSideProps({ locale, res }) {
+    return {
+        props: {
+            ...(await serverSideTranslations(locale, ['common', 'navbar', 'menu'])),
+            statusCode: res.statusCode,
+        }
+    }
 }
 
 export default Error

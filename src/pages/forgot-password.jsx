@@ -5,6 +5,7 @@ import { PiHandshakeLight } from "react-icons/pi";
 import { useEffect, useState } from 'react';
 import { sendPasswordResetEmail } from 'firebase/auth';
 import { Button } from '@mui/material'
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 
 export default function ForgotPassword(props) {
     const { session, login, auth, supportsHoverAndPointer } = props
@@ -119,4 +120,12 @@ export default function ForgotPassword(props) {
             </main>
         </div>
     )
+}
+
+export async function getServerSideProps({ locale }) {
+    return {
+        props: {
+            ...(await serverSideTranslations(locale, ['common', 'menu', 'navbar']))
+        }
+    }
 }

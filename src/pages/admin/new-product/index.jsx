@@ -4,7 +4,7 @@ import KeyboardArrowLeftRoundedIcon from '@mui/icons-material/KeyboardArrowLeftR
 import { withRouter } from 'next/router'
 import Link from 'next/link'
 import { PRODUCT_TYPES } from '../../../../consts'
-import NoFound404 from '@/pages/404';
+import NoFound404 from '@/components/NoFound404';
 
 export default withRouter(props => {
 
