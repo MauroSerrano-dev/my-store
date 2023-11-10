@@ -367,13 +367,15 @@ export async function getServerSideProps({ query, locale, resolvedUrl }) {
     return {
         props: {
             ...(await serverSideTranslations(locale, ['common', 'navbar', 'menu', 'errors'])),
-            product: product,
+            product: product || null,
             cl: colorQuery === undefined ? null : colorQuery,
             sz: sizeQuery === undefined ? null : sizeQuery,
             urlMeta: `${process.env.NEXT_PUBLIC_URL}${resolvedUrl} `,
-            productMetaImage: colorQuery
-                ? product.images.filter(img => img.color_id === colorQuery.id)[product.image_showcase_index].src
-                : product.images[product.image_showcase_index].src
+            productMetaImage: !product
+                ? 'https://mrfstyles.com/logos/circle-black.jpg'
+                : colorQuery
+                    ? product.images.filter(img => img.color_id === colorQuery.id)[product.image_showcase_index].src
+                    : product.images[product.image_showcase_index].src
         }
     }
 }
