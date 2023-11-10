@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: hhtps://mrfstyles.com/api/sitemap
