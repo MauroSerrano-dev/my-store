@@ -127,7 +127,7 @@ export default function ProductCart(props) {
             </button>
             <Link
                 className={styles.imageContainer}
-                href={`/ product / ${product.id}${COLOR.id !== product.default_variant.color_id && SIZE.id !== product.default_variant.size_id
+                href={`/product/${product.id}${COLOR.id !== product.default_variant.color_id && SIZE.id !== product.default_variant.size_id
                     ? `?sz=${SIZE.title.toLowerCase()}&cl=${COLOR.id_string}`
                     : SIZE.id !== product.default_variant.size_id
                         ? `?sz=${SIZE.title.toLowerCase()}`
@@ -152,7 +152,7 @@ export default function ProductCart(props) {
             <div className={styles.right}>
                 <div className={styles.rightLeft}>
                     <div className={styles.productName}>
-                        <Link href={`/ product / ${product.id}${COLOR.id !== product.default_variant.color_id && SIZE.id !== product.default_variant.size_id
+                        <Link href={`/product/${product.id}${COLOR.id !== product.default_variant.color_id && SIZE.id !== product.default_variant.size_id
                             ? `?sz=${SIZE.title.toLowerCase()}&cl=${COLOR.id_string}`
                             : SIZE.id !== product.default_variant.size_id
                                 ? `?sz=${SIZE.title.toLowerCase()}`

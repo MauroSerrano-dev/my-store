@@ -336,7 +336,7 @@ export default withRouter(props => {
             : <NoFound404 message='Product not found!' />
     )
 })
-
+//está rápido sem isso
 /* export const config = {
     runtime: 'experimental-edge'
 } */
