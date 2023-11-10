@@ -8,6 +8,7 @@ import Cookies from 'js-cookie'
 import CarouselProducts from '@/components/carousels/CarouselProducts'
 import { useTranslation } from 'react-i18next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
+import { showToast } from '../../utils/toasts'
 
 export default function Cart(props) {
     const {
@@ -46,6 +47,10 @@ export default function Cart(props) {
     }, [])
 
     function handleCheckout() {
+        if (process.env.NEXT_PUBLIC_DISABLE_CHECKOUT === 'true') {
+            showToast({ msg: 'Checkout temporarily disabled' })
+            return
+        }
         const options = {
             method: 'POST',
             headers: {
@@ -253,7 +258,7 @@ export default function Cart(props) {
                                 <Button
                                     variant='contained'
                                     size='large'
-                                    onClick={() => handleCheckout()}
+                                    onClick={handleCheckout}
                                     sx={{
                                         width: '100%',
                                         color: 'white',

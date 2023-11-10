@@ -22,8 +22,6 @@ const primaryColor = '#1189C4'
 const successColor = '#52b963'
 const errorColor = '#ed2b2a'
 
-const maintenance = false
-
 const mainTheme = createTheme({
   palette: {
     primary: {
@@ -135,7 +133,7 @@ function App(props) {
         }
       </Head>
       <ThemeProvider theme={mainTheme}>
-        {maintenance
+        {process.env.NEXT_PUBLIC_MAINTENANCE === 'true'
           ? <Maintenance></Maintenance>
           : <DataHandler
             pageProps={pageProps}

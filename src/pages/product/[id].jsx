@@ -52,6 +52,10 @@ export default withRouter(props => {
     }, [router])
 
     function handleBuyNow() {
+        if (process.env.NEXT_PUBLIC_DISABLE_CHECKOUT === 'true') {
+            showToast({ msg: 'Checkout temporarily disabled' })
+            return
+        }
         const options = {
             method: 'POST',
             headers: {
