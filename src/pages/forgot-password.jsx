@@ -1,11 +1,10 @@
 import styles from '@/styles/pages/forgot-password.module.css'
 import { TextField } from '@mui/material'
 import Link from 'next/link'
-import { PiHandshakeLight } from "react-icons/pi";
-import { useEffect, useState } from 'react';
-import { sendPasswordResetEmail } from 'firebase/auth';
+import { useState } from 'react'
+import { sendPasswordResetEmail } from 'firebase/auth'
 import { Button } from '@mui/material'
-import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
 
 export default function ForgotPassword(props) {
     const { session, login, auth, supportsHoverAndPointer } = props

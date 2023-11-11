@@ -4,14 +4,14 @@ import ListItemIcon from '@mui/material/ListItemIcon'
 import Divider from '@mui/material/Divider'
 import Logout from '@mui/icons-material/Logout'
 import SupportAgentIcon from '@mui/icons-material/SupportAgent'
-import AccountCircleRoundedIcon from '@mui/icons-material/AccountCircleRounded';
+import AccountCircleRoundedIcon from '@mui/icons-material/AccountCircleRounded'
 import Link from 'next/link'
-import PersonOutlineOutlinedIcon from '@mui/icons-material/PersonOutlineOutlined';
+import PersonOutlineOutlinedIcon from '@mui/icons-material/PersonOutlineOutlined'
 import styles from '@/styles/components/AvatarMenu.module.css'
 import { Button } from '@mui/material'
-import ReceiptLongRoundedIcon from '@mui/icons-material/ReceiptLongRounded';
-import AdminPanelSettingsRoundedIcon from '@mui/icons-material/AdminPanelSettingsRounded';
-import { useTranslation } from 'react-i18next';
+import ReceiptLongRoundedIcon from '@mui/icons-material/ReceiptLongRounded'
+import AdminPanelSettingsRoundedIcon from '@mui/icons-material/AdminPanelSettingsRounded'
+import { useTranslation } from 'react-i18next'
 
 export default function AvatarMenu(props) {
   const {

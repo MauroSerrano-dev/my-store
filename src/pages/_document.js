@@ -1,5 +1,6 @@
 import { Html, Head, Main, NextScript } from 'next/document'
 import { useTranslation } from 'react-i18next';
+import { Analytics } from '@vercel/analytics/react';
 
 export default function Document() {
 
@@ -11,6 +12,7 @@ export default function Document() {
       <body>
         <Main />
         <NextScript />
+        <Analytics mode={process.env.NODE_ENV} />
       </body>
     </Html>
   )
