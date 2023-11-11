@@ -12,6 +12,7 @@ import { ToastContainer, Flip } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css';
 import { Montserrat } from 'next/font/google'
 import { appWithTranslation } from 'next-i18next';
+import { Analytics } from '@vercel/analytics/react';
 
 const montserrat = Montserrat({
   weight: 'variable',
@@ -144,6 +145,7 @@ function App(props) {
           />
         }
       </ThemeProvider>
+      <Analytics mode={process.env.NODE_ENV} />
       <ToastContainer
         newestOnTop
         transition={Flip}
