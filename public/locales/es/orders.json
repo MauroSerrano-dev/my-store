@@ -1,0 +1,7 @@
+{
+    "order_zero": "Ningún pedido",
+    "order_one": "{{count}} pedido",
+    "order_other": "{{count}} pedidos",
+    "placed in": "realizado en",
+    "placed in_zero": "encontrado en"
+}

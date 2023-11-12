@@ -4,6 +4,7 @@ export const CART_MAX_ITEMS = 10
 
 export const LANGUAGES = [
     'en',
+    'es',
     'pt',
 ]
 

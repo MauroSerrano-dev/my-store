@@ -35,6 +35,7 @@ export default function Profile(props) {
     const [disableSaveButton, setDisableSaveButton] = useState(true)
 
     useEffect(() => {
+        console.log(i18n.languages)
         if (session)
             setUser({ ...session })
     }, [session])

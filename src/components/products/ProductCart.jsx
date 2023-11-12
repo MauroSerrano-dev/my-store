@@ -189,15 +189,23 @@ export default function ProductCart(props) {
                                 style={{
                                     height: 30,
                                     fontSize: 16,
-                                    width: ['pt'].includes(i18n.language) ? 100 : 78
+                                    width: ['pt'].includes(i18n.language)
+                                        ? 88
+                                        : ['es'].includes(i18n.language)
+                                            ? 80
+                                            : 78
                                 }}
                                 styleOption={{
                                     height: 30,
                                     fontSize: 16,
-                                    width: ['pt'].includes(i18n.language) ? 100 : 78
+                                    width: ['pt'].includes(i18n.language)
+                                        ? 88
+                                        : ['es'].includes(i18n.language)
+                                            ? 80
+                                            : 78
                                 }}
                                 styleLabel={{
-                                    fontSize: 16,
+                                    fontSize: ['pt'].includes(i18n.language) ? 14 : 16,
                                 }}
                                 options={[
                                     { value: 1, name: '1' },
