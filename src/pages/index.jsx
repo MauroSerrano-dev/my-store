@@ -91,7 +91,7 @@ export default function Home(props) {
         <meta property="og:url" content='https://mrfstyles.com' key='og:url' />
       </Head>
       <main className={styles.main}>
-        <Link
+{/*         <Link
           className={`${styles.banner} noUnderline`}
           draggable={false}
           href='/search?c=sound-vibes'
@@ -132,7 +132,7 @@ export default function Home(props) {
             alt='t-shirts_colors'
             className={styles.bannerColors}
           />
-        </Link>
+        </Link> */}
         <div className={styles.infos}>
           {/* <div className={styles.infosItem}>
             <LocalShippingOutlinedIcon
