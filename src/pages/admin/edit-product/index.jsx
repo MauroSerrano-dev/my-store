@@ -5,6 +5,7 @@ import Link from 'next/link'
 import { useState } from 'react'
 import KeyboardArrowLeftRoundedIcon from '@mui/icons-material/KeyboardArrowLeftRounded';
 import NoFound404 from '@/components/NoFound404'
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
 
 export default function EditProduct(props) {
     const {
@@ -75,4 +76,12 @@ export default function EditProduct(props) {
                     </main>
                 </div>
     )
+}
+
+export async function getServerSideProps({ locale }) {
+    return {
+        props: {
+            ...(await serverSideTranslations(locale, ['common', 'navbar', 'menu']))
+        }
+    }
 }

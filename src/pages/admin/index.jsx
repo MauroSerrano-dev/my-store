@@ -4,6 +4,7 @@ import EditNoteRoundedIcon from '@mui/icons-material/EditNoteRounded';
 import FormatListBulletedRoundedIcon from '@mui/icons-material/FormatListBulletedRounded';
 import Link from 'next/link'
 import NoFound404 from '../../components/NoFound404';
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 
 export default function Admin(props) {
     const {
@@ -68,4 +69,11 @@ export default function Admin(props) {
                     </main>
                 </div>
     )
+}
+export async function getServerSideProps({ locale }) {
+    return {
+        props: {
+            ...(await serverSideTranslations(locale, ['common', 'navbar', 'menu']))
+        }
+    }
 }
