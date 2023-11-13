@@ -1,3 +1,4 @@
+import Footer from '@/components/Footer'
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
 import Head from 'next/head'
 import Link from 'next/link'
@@ -14,16 +15,10 @@ const pStyle = {
     fontSize: 16,
 }
 
-const finalPStyle = {
-    textAlign: 'justify',
-    fontWeight: 400,
-    fontSize: 13,
-}
-
 export default function TermsOfUse() {
 
     return (
-        <div className='flex center'>
+        <div className='flex center column'>
             <Head>
             </Head>
             <main
@@ -131,6 +126,7 @@ export default function TermsOfUse() {
                     </div>
                 </div>
             </main>
+            <Footer />
         </div>
     )
 }

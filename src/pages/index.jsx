@@ -245,7 +245,7 @@ export default function Home(props) {
               />
             </div>
           </div>
-          {setStates.map((state, i) =>
+          {false && setStates.map((state, i) =>
             (session?.home_page_tags || DEFAULT_PRODUCTS_TAGS)[i] &&
             <div
               className={styles.carouselAndTitle}

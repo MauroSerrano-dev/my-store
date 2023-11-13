@@ -20,6 +20,7 @@ import { getObjectsDiff } from '../../../../utils';
 import Head from 'next/head';
 import Selector from '@/components/material-ui/Selector';
 import { isNewProductValid } from '../../../../utils/edit-product';
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 
 export default withRouter(props => {
 
@@ -781,3 +782,11 @@ export default withRouter(props => {
                 </div>
     )
 })
+
+export async function getServerSideProps({ locale }) {
+    return {
+        props: {
+            ...(await serverSideTranslations(locale, ['common', 'navbar', 'menu']))
+        }
+    }
+}
