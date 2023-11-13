@@ -99,7 +99,7 @@ export default function Home(props) {
           <Image
             priority
             quality={100}
-            src='https://firebasestorage.googleapis.com/v0/b/my-store-4aef7.appspot.com/o/banners%2Fsound-vibes_bg.webp?alt=media&token=27f3d428-7542-4c9e-9960-6c300a4bc68a&_gl=1*1lhdp2p*_ga*NjQyNzA2OTM1LjE2OTE2NjI4OTU.*_ga_CW55HF8NVT*MTY5NzQ1MTEzNC4yNDMuMS4xNjk3NDUxMTYyLjMyLjAuMA..'
+            src='https://firebasestorage.googleapis.com/v0/b/my-store-4aef7.appspot.com/o/banners%2Fsound-vibes_bg.webp?alt=media&token=1055158b-e595-4a76-aa65-7fd5c0cccd42'
             sizes='100%'
             fill
             alt='banner'
@@ -109,20 +109,7 @@ export default function Home(props) {
               objectPosition: 'top',
             }}
           />
-{/*           <Image
-            priority
-            quality={100}
-            src='https://firebasestorage.googleapis.com/v0/b/my-store-4aef7.appspot.com/o/banners%2Fsound-vibes_black.webp?alt=media&token=756a7de4-0b31-441d-b021-753b6dd83e10&_gl=1*z943a0*_ga*NjQyNzA2OTM1LjE2OTE2NjI4OTU.*_ga_CW55HF8NVT*MTY5NzQ1MTEzNC4yNDMuMS4xNjk3NDU0NTgwLjQzLjAuMA..'
-            sizes='100%'
-            fill
-            alt='people'
-            draggable={false}
-            style={{
-              objectFit: 'cover',
-              objectPosition: 'top',
-            }}
-          />
-          <Image
+          {/* <Image
             priority
             quality={100}
             src='https://firebasestorage.googleapis.com/v0/b/my-store-4aef7.appspot.com/o/banners%2Fsound-vibes_color.webp?alt=media&token=de2c1a9f-fef1-4214-8539-593e69ac5bdc&_gl=1*1fizmog*_ga*NjQyNzA2OTM1LjE2OTE2NjI4OTU.*_ga_CW55HF8NVT*MTY5NzY0Njk3NC4yNTkuMS4xNjk3NjQ3NjU2LjUyLjAuMA..'
