@@ -91,7 +91,7 @@ export default function Home(props) {
         <meta property="og:url" content='https://mrfstyles.com' key='og:url' />
       </Head>
       <main className={styles.main}>
-{/*         <Link
+        <Link
           className={`${styles.banner} noUnderline`}
           draggable={false}
           href='/search?c=sound-vibes'
@@ -109,7 +109,7 @@ export default function Home(props) {
               objectPosition: 'top',
             }}
           />
-          <Image
+{/*           <Image
             priority
             quality={100}
             src='https://firebasestorage.googleapis.com/v0/b/my-store-4aef7.appspot.com/o/banners%2Fsound-vibes_black.webp?alt=media&token=756a7de4-0b31-441d-b021-753b6dd83e10&_gl=1*z943a0*_ga*NjQyNzA2OTM1LjE2OTE2NjI4OTU.*_ga_CW55HF8NVT*MTY5NzQ1MTEzNC4yNDMuMS4xNjk3NDU0NTgwLjQzLjAuMA..'
@@ -131,8 +131,8 @@ export default function Home(props) {
             draggable={false}
             alt='t-shirts_colors'
             className={styles.bannerColors}
-          />
-        </Link> */}
+          /> */}
+        </Link>
         <div className={styles.infos}>
           {/* <div className={styles.infosItem}>
             <LocalShippingOutlinedIcon
