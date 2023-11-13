@@ -109,7 +109,7 @@ export default function Home(props) {
               objectPosition: 'top',
             }}
           />
-          {/* <Image
+          <Image
             priority
             quality={100}
             src='https://firebasestorage.googleapis.com/v0/b/my-store-4aef7.appspot.com/o/banners%2Fsound-vibes_color.webp?alt=media&token=de2c1a9f-fef1-4214-8539-593e69ac5bdc&_gl=1*1fizmog*_ga*NjQyNzA2OTM1LjE2OTE2NjI4OTU.*_ga_CW55HF8NVT*MTY5NzY0Njk3NC4yNTkuMS4xNjk3NjQ3NjU2LjUyLjAuMA..'
@@ -118,7 +118,7 @@ export default function Home(props) {
             draggable={false}
             alt='t-shirts_colors'
             className={styles.bannerColors}
-          /> */}
+          />
         </Link>
         <div className={styles.infos}>
           {/* <div className={styles.infosItem}>
