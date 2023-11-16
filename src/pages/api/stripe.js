@@ -46,7 +46,6 @@ export default async function handler(req, res) {
       }
     }
 
-    console.log('cuuuu', stripeCustomer)
     const line_items = cartItems.map(item => {
       return {
         price_data: {
