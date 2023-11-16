@@ -28,7 +28,7 @@ export default function Cart(props) {
     } = props
 
     const [shippingValue, setShippingValue] = useState(0)
-    const [shippingCountry, setShippingCountry] = useState(location || 'US')
+    const [shippingCountry, setShippingCountry] = useState(location?.country || 'US')
     const [allProducts, setAllProducts] = useState()
 
     const SHIPPING_CONVERTED = Math.ceil(shippingValue * userCurrency?.rate)
