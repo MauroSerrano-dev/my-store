@@ -1,9 +1,9 @@
-import Link from 'next/link';
-import { useEffect, useRef } from 'react';
-import lottie from 'lottie-web';
+import Link from 'next/link'
+import { useEffect, useRef } from 'react'
+import lottie from 'lottie-web'
 import styles from '@/styles/pages/_error.module.css'
-import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
-import NoFound404 from '@/components/NoFound404';
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
+import NoFound404 from '@/components/NoFound404'
 
 function Error({ statusCode }) {
 
