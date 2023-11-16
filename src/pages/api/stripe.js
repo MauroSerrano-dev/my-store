@@ -26,22 +26,27 @@ export default async function handler(req, res) {
       cancel_url,
     } = req.body
 
+    let stripeCustomer
+
     if (customer) {
       // Check if the email already exists in Stripe
       const existingCustomer = await stripe.customers.list({
         email: customer.email,
         limit: 1,
       })
-
       // The customer doesn't exist, create a new one
       if (existingCustomer.data.length === 0) {
-        await stripe.customers.create({
+        stripeCustomer = await stripe.customers.create({
           name: `${customer.first_name} ${customer.last_name}`,
           email: customer.email,
         })
       }
+      else {
+        stripeCustomer = existingCustomer.data[0]
+      }
     }
 
+    console.log('cuuuu', stripeCustomer)
     const line_items = cartItems.map(item => {
       return {
         price_data: {
@@ -75,9 +80,6 @@ export default async function handler(req, res) {
     })
 
     const session = await stripe.checkout.sessions.create({
-      /* discounts: [
-        { coupon: '7Taroh9C' }
-      ], */
       metadata: {
         cart_id: cart_id || '',
         user_id: customer?.id || '',
@@ -114,10 +116,11 @@ export default async function handler(req, res) {
       }, */
       line_items: line_items,
       mode: "payment",
-      /* customer: customer.id, */
+      allow_promotion_codes: true,
       success_url: success_url,
       cancel_url: cancel_url,
-      customer_email: customer?.email
+      customer: stripeCustomer?.id || undefined,
+      /* customer_email: (stripeCustomer || customer)?.email */
     })
 
     // res.redirect(303, session.url)
