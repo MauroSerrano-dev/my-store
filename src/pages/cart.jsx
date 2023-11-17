@@ -294,9 +294,15 @@ export async function getServerSideProps({ locale, req }) {
     const translate = await serverSideTranslations(locale, ['common', 'navbar', 'menu', 'cart', 'countries'])
 
     try {
-        const ipAddress = req.connection.remoteAddress
+        const ipAddress = req.headers["x-forwarded-for"]
+            ? req.headers["x-forwarded-for"].split(',')[0]
+            : req.headers["x-real-ip"]
+                ? req.connection.remoteAddress
+                : req.connection.remoteAddress
 
         const response = await axios.get(`https://ipinfo.io/${ipAddress}?token=${process.env.IP_INFO_TOKEN}`)
+
+        console.log(response)
 
         return {
             props: {
