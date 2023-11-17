@@ -298,8 +298,6 @@ export async function getServerSideProps({ locale, req }) {
 
         const response = await axios.get(`https://ipinfo.io/${ipAddress}?token=${process.env.IP_INFO_TOKEN}`)
 
-        console.log(response)
-
         return {
             props: {
                 location: response.data.country ? response.data : null,
