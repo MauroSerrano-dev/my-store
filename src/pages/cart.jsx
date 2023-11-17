@@ -294,9 +294,7 @@ export async function getServerSideProps({ locale, req }) {
     try {
         const ipAddress = req.headers["x-forwarded-for"]
             ? req.headers["x-forwarded-for"].split(',')[0]
-            : req.headers["x-real-ip"]
-                ? req.connection.remoteAddress
-                : req.connection.remoteAddress
+            : req.connection.remoteAddress
 
         const response = await axios.get(`https://ipinfo.io/${ipAddress}?token=${process.env.IP_INFO_TOKEN}`)
 
