@@ -220,7 +220,7 @@ export default function Product(props) {
                         <p>
                             {
                                 product.sold_out
-                                    ? PRODUCT_TYPES.find(type => type.id === product.type_id).title + ' ' + Math.round(100 * product.sold_out.percentage) + '% OFF'
+                                    ? tCommon(PRODUCT_TYPES.find(type => type.id === product.type_id).title) + ' ' + Math.round(100 * product.sold_out.percentage) + '% OFF'
                                     : tCommon(PRODUCT_TYPES.find(type => type.id === product.type_id).title)
                             }
                         </p>

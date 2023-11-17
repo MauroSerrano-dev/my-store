@@ -305,7 +305,7 @@ export async function getServerSideProps({ locale, req }) {
 
         return {
             props: {
-                location: response.data.country ? response.data : null,
+                location: response.data.country && Object.keys(COUNTRIES_POOL).includes(response.data.country) ? response.data : null,
                 ...translate,
             }
         }
