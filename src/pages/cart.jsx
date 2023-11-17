@@ -1,7 +1,8 @@
 import ProductCart from '@/components/products/ProductCart'
 import styles from '@/styles/pages/cart.module.css'
 import { Button } from '@mui/material'
-import { CART_COOKIE, COUNTRIES_POOL, getShippingOptions } from '../../consts'
+import { CART_COOKIE, getShippingOptions } from '../../consts'
+import COUNTRIES_POOL from '../../public/locales/en/countries.json'
 import { useEffect, useState } from 'react'
 import Selector from '@/components/material-ui/Selector'
 import Cookies from 'js-cookie'
@@ -125,7 +126,7 @@ export default function Cart(props) {
     }
 
     function handleChangeCountrySelector(event, value) {
-        setShippingCountry(value)
+        setShippingCountry(value.id)
     }
 
     return (
@@ -206,13 +207,17 @@ export default function Cart(props) {
                                     <SelectorAutocomplete
                                         multiple={false}
                                         supportsHoverAndPointer={supportsHoverAndPointer}
-                                        options={COUNTRIES_POOL.map(country => tCountries(country))}
+                                        options={
+                                            Object.keys(COUNTRIES_POOL)
+                                                .map(key => ({ id: key, label: tCountries(key) }))
+                                                .sort((a, b) => a.label.localeCompare(b.label, 'en', { sensitivity: 'base' }))
+                                        }
                                         label={tCommon('Country')}
-                                        value={tCountries(shippingCountry)}
+                                        value={{ id: shippingCountry, label: tCountries(shippingCountry) }}
                                         onChange={handleChangeCountrySelector}
                                         dark
                                         style={{
-                                            width: 200,
+                                            width: 210,
                                         }}
                                     />
                                 </div>
@@ -308,7 +313,7 @@ export async function getServerSideProps({ locale, req }) {
         console.error('Error getting location information:', error)
         return {
             props: {
-                country: null,
+                location: null,
                 ...translate
             },
         }
