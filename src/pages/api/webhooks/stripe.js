@@ -102,11 +102,13 @@ export default async function handler(req, res) {
                     },
                 }
             )
-
-            if (user_id)
-                await setCartProducts(cart_id, [])
-            else
-                await setCartSessionProducts(cart_id, [])
+            
+            if (cart_id) {
+                if (user_id)
+                    await setCartProducts(cart_id, [])
+                else
+                    await setCartSessionProducts(cart_id, [])
+            }
 
             res.status(200).json({ message: `Order ${orderId} Created. Checkout Complete!` })
         }
