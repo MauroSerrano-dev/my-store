@@ -24,7 +24,8 @@ export default function Cart(props) {
         setLoading,
         getInicialCart,
         currencies,
-        location
+        location,
+        ipAddress
     } = props
 
     const [shippingValue, setShippingValue] = useState(0)
@@ -42,7 +43,7 @@ export default function Cart(props) {
     const tCountries = useTranslation('countries').t
 
     useEffect(() => {
-        console.log('location', location)
+        console.log('location', location, ipAddress)
         getShippingValue()
     }, [cart, shippingCountry])
 
@@ -300,7 +301,8 @@ export async function getServerSideProps({ locale, req }) {
         return {
             props: {
                 location: response.data.country ? response.data : null,
-                ...translate
+                ...translate,
+                ipAddress: ipAddress,
             }
         }
     } catch (error) {
