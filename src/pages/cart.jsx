@@ -42,6 +42,7 @@ export default function Cart(props) {
     const tCountries = useTranslation('countries').t
 
     useEffect(() => {
+        console.log('location', location)
         getShippingValue()
     }, [cart, shippingCountry])
 
