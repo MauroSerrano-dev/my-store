@@ -41,7 +41,7 @@ async function getCartIdByUserId(userId) {
             return {
                 status: 200,
                 message: "Cart ID not found",
-                cart_id: null,
+                id: null,
             }
         }
 
@@ -50,14 +50,14 @@ async function getCartIdByUserId(userId) {
         return {
             status: 200,
             message: "Cart ID retrieved successfully",
-            cart_id: cartDoc.id,
+            id: cartDoc.id,
         }
     } catch (error) {
         console.error(error);
         return {
             status: 500,
             message: "Error retrieving cart ID",
-            cart_id: null,
+            id: null,
             error: error,
         }
     }
@@ -204,7 +204,6 @@ async function mergeCarts(userId, cart_cookie_id) {
 
             if (cartSession) {
                 await deleteCartSession(cart_cookie_id)
-
                 await addProductsToCart(userCartId, cartSession.products)
 
                 console.log(`Cart Session ${cart_cookie_id} merged with cart ${userCartId} successfully.`)

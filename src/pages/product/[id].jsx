@@ -108,21 +108,6 @@ export default withRouter(props => {
             }
 
             setLoading(true)
-            //se alterar o squema tem que alterar no arquivo backend/product.js
-            const productCart = {
-                id: product.id,
-                type_id: product.type_id,
-                title: product.title,
-                description: product.description,
-                printify_ids: product.printify_ids,
-                variant: prodVariant,
-                quantity: 1,
-                default_variant: {
-                    color_id: product.variants[0].color_id,
-                    size_id: product.variants[0].size_id,
-                },
-                image: product.images.filter(img => img.color_id === prodVariant.color_id)[product.image_showcase_index],
-            }
 
             const options = {
                 method: 'PATCH',
@@ -132,7 +117,7 @@ export default withRouter(props => {
                 },
                 body: JSON.stringify({
                     cartId: session ? session.cart_id : Cookies.get(CART_COOKIE),
-                    cartProducts: [{ id: productCart.id, variant_id: productCart.variant.id, quantity: productCart.quantity }]
+                    cartProducts: [{ id: product.id, variant_id: prodVariant.id, quantity: 1 }]
                 }),
             }
 
