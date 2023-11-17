@@ -2,11 +2,12 @@ import styles from '@/styles/components/products/ProductCart.module.css'
 import { SlClose } from "react-icons/sl";
 import { motion } from "framer-motion";
 import Link from 'next/link';
-import { SIZES_POOL, COLORS_POOL } from '../../../consts';
+import { SIZES_POOL, COLORS_POOL, CART_COOKIE } from '../../../consts';
 import Image from 'next/image';
 import Selector from '../material-ui/Selector';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import Cookies from 'js-cookie';
 
 export default function ProductCart(props) {
     const {

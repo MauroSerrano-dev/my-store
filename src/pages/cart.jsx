@@ -1,7 +1,7 @@
 import ProductCart from '@/components/products/ProductCart'
 import styles from '@/styles/pages/cart.module.css'
 import { Button } from '@mui/material'
-import { CART_COOKIE, getShippingOptions } from '../../consts'
+import { CART_COOKIE, COUNTRIES_POOL, getShippingOptions } from '../../consts'
 import { useEffect, useState } from 'react'
 import Selector from '@/components/material-ui/Selector'
 import Cookies from 'js-cookie'
@@ -9,6 +9,8 @@ import CarouselProducts from '@/components/carousels/CarouselProducts'
 import { useTranslation } from 'react-i18next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
 import { showToast } from '../../utils/toasts'
+import SelectorAutocomplete from '@/components/material-ui/SelectorAutocomplete'
+import axios from 'axios'
 
 export default function Cart(props) {
     const {
@@ -22,10 +24,11 @@ export default function Cart(props) {
         setLoading,
         getInicialCart,
         currencies,
+        location,
     } = props
 
     const [shippingValue, setShippingValue] = useState(0)
-    const [shippingCountry, setShippingCountry] = useState('US')
+    const [shippingCountry, setShippingCountry] = useState(location?.country || 'US')
     const [allProducts, setAllProducts] = useState()
 
     const SHIPPING_CONVERTED = Math.ceil(shippingValue * userCurrency?.rate)
@@ -36,6 +39,7 @@ export default function Cart(props) {
 
     const tCommon = useTranslation('common').t
     const tCart = useTranslation('cart').t
+    const tCountries = useTranslation('countries').t
 
     useEffect(() => {
         getShippingValue()
@@ -120,8 +124,8 @@ export default function Cart(props) {
         setShippingValue(value)
     }
 
-    function handleChangeCountrySelector(event) {
-        setShippingCountry(event.target.value)
+    function handleChangeCountrySelector(event, value) {
+        setShippingCountry(value)
     }
 
     return (
@@ -190,21 +194,26 @@ export default function Cart(props) {
                                     <p>
                                         {tCart('ship_to')}:
                                     </p>
-                                    <Selector
+                                    {/* <Selector
                                         label={tCommon('Country')}
                                         value={shippingCountry}
-                                        options={[
-                                            { value: 'BR', name: 'Brazil' },
-                                            { value: 'DE', name: 'Germany' },
-                                            { value: 'PL', name: 'Poland' },
-                                            { value: 'PT', name: 'Portugal' },
-                                            { value: 'UK', name: 'United Kingdom' },
-                                            { value: 'US', name: 'United States' },
-                                        ]}
+                                        options={COUNTRIES_POOL}
                                         width='170px'
                                         dark
                                         onChange={handleChangeCountrySelector}
                                         supportsHoverAndPointer={supportsHoverAndPointer}
+                                    /> */}
+                                    <SelectorAutocomplete
+                                        multiple={false}
+                                        supportsHoverAndPointer={supportsHoverAndPointer}
+                                        options={COUNTRIES_POOL.map(country => tCountries(country))}
+                                        label={tCommon('Country')}
+                                        value={tCountries(shippingCountry)}
+                                        onChange={handleChangeCountrySelector}
+                                        dark
+                                        style={{
+                                            width: 200,
+                                        }}
                                     />
                                 </div>
                                 <div className={styles.detailsItem}>
@@ -278,10 +287,30 @@ export default function Cart(props) {
     )
 }
 
-export async function getServerSideProps({ locale }) {
-    return {
-        props: {
-            ...(await serverSideTranslations(locale, ['common', 'navbar', 'menu', 'cart']))
+export async function getServerSideProps({ locale, req }) {
+
+    const translate = await serverSideTranslations(locale, ['common', 'navbar', 'menu', 'cart', 'countries'])
+
+    try {
+        const ipAddress = req.headers["x-forwarded-for"]
+            ? req.headers["x-forwarded-for"].split(',')[0]
+            : req.connection.remoteAddress
+
+        const response = await axios.get(`https://ipinfo.io/${ipAddress}?token=${process.env.IP_INFO_TOKEN}`)
+
+        return {
+            props: {
+                location: response.data.country ? response.data : null,
+                ...translate,
+            }
+        }
+    } catch (error) {
+        console.error('Error getting location information:', error)
+        return {
+            props: {
+                country: null,
+                ...translate
+            },
         }
     }
 }

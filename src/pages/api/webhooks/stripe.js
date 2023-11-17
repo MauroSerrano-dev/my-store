@@ -91,9 +91,11 @@ export default async function handler(req, res) {
                     },
                     amount: {
                         amount_total: data.amount_total,
+                        amount_discount: data.total_details.amount_discount,
                         amount_subtotal: data.amount_subtotal,
+                        amount_shipping: data.total_details.amount_shipping,
+                        amount_tax: data.total_details.amount_tax,
                         currency: data.currency,
-                        shipping_cost: data.shipping_cost,
                     },
                     shipping_details: {
                         ...data.shipping_details,
