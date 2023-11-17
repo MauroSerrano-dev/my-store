@@ -1,6 +1,7 @@
 import { isTokenValid } from "../../../auth";
 import { mergeCarts } from "../../../backend/cart";
 import { updateField, createNewUserWithGoogle, getUserById } from "../../../backend/user";
+import { DEFAULT_PRODUCTS_TAGS } from "../../../consts";
 
 export default async function handler(req, res) {
     const { authorization } = req.headers
@@ -12,10 +13,10 @@ export default async function handler(req, res) {
         return res.status(401).json({ error: "Invalid authentication." })
 
     if (req.method === "POST") {
-        const { uid, new_user, providers, cart_cookie_id } = req.body
+        const { uid, authUser, providers, cart_cookie_id } = req.body
 
         const user = await getUserById(uid)
-
+        console.log('vai tomar no cu')
         if (user) {
             if (cart_cookie_id) {
                 await mergeCarts(uid, cart_cookie_id)
@@ -27,6 +28,21 @@ export default async function handler(req, res) {
             })
         }
         else {
+            const fullName = authUser.displayName.split(' ')
+
+            const firstName = fullName.length <= 1 ? null : fullName.slice(0, fullName.length - 1).join(' ')
+            const lastName = fullName.length <= 1 ? authUser.displayName : fullName[fullName.length - 1]
+
+            const new_user = {
+                email: authUser.email,
+                first_name: firstName,
+                last_name: lastName,
+                providers: authUser.providerData.map(provider => provider.providerId),
+                email_verified: authUser.emailVerified,
+                introduction_complete: false,
+                home_page_tags: DEFAULT_PRODUCTS_TAGS,
+            }
+
             const newUser = await createNewUserWithGoogle(new_user, uid, cart_cookie_id)
             res.status(200).json({
                 ...newUser,
