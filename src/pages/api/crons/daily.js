@@ -1,4 +1,5 @@
 import { updateAllCurrencies } from '../../../../backend/app-settings'
+import { deleteExpiredCartSessions } from '../../../../backend/cart-session'
 
 const axios = require('axios')
 
@@ -12,7 +13,7 @@ const CURRENCIES = {
 export default async function handler(req, res) {
     const { authorization } = req.headers
 
-    /* if (!authorization) {
+    if (!authorization) {
         console.error("Invalid authentication.")
         return res.status(401).json({ error: "Invalid authentication." })
     }
@@ -20,7 +21,7 @@ export default async function handler(req, res) {
     if (authorization !== `Bearer ${process.env.CRON_SECRET}`) {
         console.error("Invalid authentication.")
         return res.status(401).json({ error: "Invalid authentication." })
-    } */
+    }
 
     const API_ENDPOINT = `https://api.currencybeacon.com/v1/latest?api_key=${process.env.CURRENCY_BEACON_API_KEY}`
 
@@ -39,5 +40,7 @@ export default async function handler(req, res) {
 
     await updateAllCurrencies(updatedCurrencies)
 
-    res.status(200).json({ message: 'Currencies updated successfully!' })
+    await deleteExpiredCartSessions()
+
+    res.status(200).json({ message: 'Daily cron run successfully!' })
 }

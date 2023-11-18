@@ -57,10 +57,13 @@ async function createCartSession(cartId, products) {
             }
         }
 
+        const now = Timestamp.now()
+
         const newCartSession = {
             id: cartId,
             products: products,
-            created_at: Timestamp.now(),
+            created_at: now,
+            expire_at: Timestamp.fromMillis(now.toMillis() + 0)
         }
 
         await setDoc(cartRef, newCartSession)
@@ -82,6 +85,9 @@ async function setCartSessionProducts(cartId, cartProducts) {
 
         cartData.products = cartProducts
 
+        const now = Timestamp.now()
+        cartData.expire_at = Timestamp.fromMillis(now.toMillis() + 0)
+
         await updateDoc(userRef, cartData)
 
         console.log(`Cart Session ${cartId} setted successfully!`)
@@ -98,6 +104,8 @@ async function addProductsToCartSession(cartId, cartNewProducts) {
         const cartData = cartDoc.data()
 
         cartData.products = mergeProducts(cartData.products, cartNewProducts)
+        const now = Timestamp.now()
+        cartData.expire_at = Timestamp.fromMillis(now.toMillis() + 0)
 
         await updateDoc(userRef, cartData)
 
@@ -124,6 +132,8 @@ async function deleteProductFromCartSession(cartId, product) {
         const cartData = cartDoc.data()
 
         cartData.products = cartData.products.filter(prod => prod.id !== product.id || prod.variant_id !== product.variant_id)
+        const now = Timestamp.now()
+        cartData.expire_at = Timestamp.fromMillis(now.toMillis() + 0)
 
         await updateDoc(userRef, cartData)
 
@@ -143,11 +153,31 @@ async function deleteProductFromCartSession(cartId, product) {
     }
 }
 
+async function deleteExpiredCartSessions() {
+    const cartsCollectionRef = collection(db, process.env.COLL_CARTS_SESSION);
+    const now = Timestamp.now();
+
+    try {
+        const querySnapshot = await getDocs(cartsCollectionRef);
+        
+        querySnapshot.forEach(async (doc) => {
+            const cartData = doc.data();
+            if (cartData.expire_at && cartData.expire_at.toMillis() < now.toMillis()) {
+                await deleteDoc(doc.ref);
+                console.log(`Cart Session with ID ${doc.id} expired and was deleted.`);
+            }
+        });
+    } catch (error) {
+        console.error("Error deleting expired Cart Sessions:", error);
+    }
+}
+
 export {
     createCartSession,
     setCartSessionProducts,
     getCartSessionById,
     deleteCartSession,
     addProductsToCartSession,
-    deleteProductFromCartSession
+    deleteProductFromCartSession,
+    deleteExpiredCartSessions
 }
