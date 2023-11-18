@@ -63,7 +63,7 @@ async function createCartSession(cartId, products) {
             id: cartId,
             products: products,
             created_at: now,
-            expire_at: Timestamp.fromMillis(now.toMillis() + 0)
+            expire_at: Timestamp.fromMillis(now.toMillis() + 7 * 24 * 60 * 60 * 1000)
         }
 
         await setDoc(cartRef, newCartSession)
@@ -86,7 +86,7 @@ async function setCartSessionProducts(cartId, cartProducts) {
         cartData.products = cartProducts
 
         const now = Timestamp.now()
-        cartData.expire_at = Timestamp.fromMillis(now.toMillis() + 0)
+        cartData.expire_at = Timestamp.fromMillis(now.toMillis() + 7 * 24 * 60 * 60 * 1000)
 
         await updateDoc(userRef, cartData)
 
@@ -105,7 +105,7 @@ async function addProductsToCartSession(cartId, cartNewProducts) {
 
         cartData.products = mergeProducts(cartData.products, cartNewProducts)
         const now = Timestamp.now()
-        cartData.expire_at = Timestamp.fromMillis(now.toMillis() + 0)
+        cartData.expire_at = Timestamp.fromMillis(now.toMillis() + 7 * 24 * 60 * 60 * 1000)
 
         await updateDoc(userRef, cartData)
 
@@ -133,7 +133,7 @@ async function deleteProductFromCartSession(cartId, product) {
 
         cartData.products = cartData.products.filter(prod => prod.id !== product.id || prod.variant_id !== product.variant_id)
         const now = Timestamp.now()
-        cartData.expire_at = Timestamp.fromMillis(now.toMillis() + 0)
+        cartData.expire_at = Timestamp.fromMillis(now.toMillis() + 7 * 24 * 60 * 60 * 1000)
 
         await updateDoc(userRef, cartData)
 
