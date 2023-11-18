@@ -1,12 +1,13 @@
 .container {
+    display: flex;
+    flex-direction: column;
+
     height: auto;
     width: 100%;
 
-    padding: 2rem 6rem;
+    gap: 1.5rem;
 
     --text-color: var(--text-white);
-
-    transition: padding ease-in-out 200ms;
 }
 
 .main {
@@ -15,13 +16,18 @@
     justify-content: flex-start;
     align-items: flex-start;
 
+    padding-left: 6rem;
+    padding-right: 6rem;
+    padding-top: 2rem;
+
     gap: 1rem;
+    transition: padding ease-in-out 200ms;
 }
 
 .top {
     display: flex;
     flex-direction: row;
-    justify-content: center;
+    justify-content: flex-start;
     align-items: center;
 
     gap: 0.4rem;

@@ -116,30 +116,30 @@
 /* Mobile and Tablet */
 @media (max-width: 1074.5px) {
     .leftSide {
-        width: 180px
+        width: 220px
     }
 
     .middle {
-        width: calc(100% - 360px);
+        width: calc(100% - 440px);
     }
 
     .rightSide {
-        width: 180px
+        width: 220px
     }
 }
 
 /* Mobile */
 @media (max-width: 550px) {
     .leftSide {
-        width: 70px
+        width: 60px
     }
 
     .middle {
-        width: calc(100% - 210px);
+        width: calc(100% - 220px);
     }
 
     .rightSide {
-        width: 180px
+        width: 220px
     }
 }
 

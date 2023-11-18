@@ -156,9 +156,11 @@ export default function DataHandler(props) {
     }
 
     function logout() {
-        setSession(null)
-        signOut(auth)
         router.push('/')
+        setTimeout(() => {
+            setSession(null)
+            signOut(auth)
+        }, 1000)
     }
 
     function handleIntroductionComplete() {
