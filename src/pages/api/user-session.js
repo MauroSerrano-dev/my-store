@@ -16,7 +16,7 @@ export default async function handler(req, res) {
         const { uid, authUser, providers, cart_cookie_id } = req.body
 
         const user = await getUserById(uid)
-        console.log('vai tomar no cu')
+
         if (user) {
             if (cart_cookie_id) {
                 await mergeCarts(uid, cart_cookie_id)
