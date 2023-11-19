@@ -34,11 +34,12 @@ export default withRouter(props => {
         router,
         supportsHoverAndPointer,
         setLoading,
+        setSession,
     } = props
 
     const tErrors = useTranslation('errors').t
 
-    const [inWishlist, setInWishlist] = useState(false)
+    const [inWishlist, setInWishlist] = useState()
 
     const [currentColor, setCurrentColor] = useState(cl ? cl : COLORS_POOL[product?.colors_ids[0]])
     const [currentSize, setCurrentSize] = useState(sz ? sz : SIZES_POOL.find(sz => sz.id === product?.sizes_ids[0]))
@@ -48,6 +49,11 @@ export default withRouter(props => {
     const PRODUCT_PRICE = product && userCurrency ? Math.ceil(productCurrentVariant?.price * userCurrency.rate) * (product.sold_out ? 1 - product.sold_out.percentage : 1) : undefined
 
     const ORIGINAL_PRICE = product && userCurrency ? Math.ceil(productCurrentVariant?.price * userCurrency.rate) : undefined
+
+    useEffect(() => {
+        if (session)
+            setInWishlist(session.wishlist_products_ids.includes(product.id))
+    }, [session])
 
     useEffect(() => {
         setCurrentColor(cl ? cl : COLORS_POOL[product?.colors_ids[0]])
@@ -147,7 +153,35 @@ export default withRouter(props => {
     }
 
     function handleWishlist() {
-        setInWishlist(prev => !prev)
+        setInWishlist(prev => {
+            const options = {
+                method: prev ? 'DELETE' : 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    authorization: process.env.NEXT_PUBLIC_APP_TOKEN
+                },
+                body: JSON.stringify({
+                    wishlist_id: session.wishlist_id,
+                    product: { id: product.id }
+                }),
+            }
+
+            fetch("/api/wishlists/wishlist-products", options)
+                .then(response => response.json())
+                .then(() =>
+                    setSession(prevSession => (
+                        {
+                            ...prevSession,
+                            wishlist_products_ids: prev
+                                ? prevSession.wishlist_products_ids.filter(prodId => prodId !== product.id)
+                                : prevSession.wishlist_products_ids.concat(product.id)
+                        }
+                    ))
+                )
+                .catch(err => console.error(err))
+
+            return !prev
+        })
     }
 
     return (

@@ -16,6 +16,7 @@ import { firebaseConfig } from "../firebase.config"
 import { createCart } from "./cart"
 import { getCartSessionById, deleteCartSession } from "./cart-session"
 import { DEFAULT_PRODUCTS_TAGS } from "../consts"
+import { createWishlist } from "./wishlists"
 const { v4: uuidv4 } = require('uuid')
 
 initializeApp(firebaseConfig)
@@ -78,6 +79,12 @@ async function createNewUserWithCredentials(user) {
             // Add the new user to the collection with password encryption
             const newUserRef = doc(usersCollection, authenticatedUser.uid)
 
+            const cart_id = uuidv4()
+            await createCart(newUserRef.id, cart_id, [])
+
+            const wishlist_id = uuidv4()
+            await createWishlist(newUserRef.id, wishlist_id)
+
             const newUser = {
                 email: user.email,
                 first_name: user.first_name,
@@ -87,12 +94,13 @@ async function createNewUserWithCredentials(user) {
                 email_verified: false,
                 introduction_complete: false,
                 home_page_tags: DEFAULT_PRODUCTS_TAGS,
+                cart_id: cart_id,
+                wishlist_id: wishlist_id,
                 create_at: Timestamp.now(),
             }
-            const cart_id = uuidv4()
-            await createCart(newUserRef.id, cart_id, [])
+
             // Set the document for the new user
-            await setDoc(newUserRef, { ...newUser, cart_id: cart_id })
+            await setDoc(newUserRef, newUser)
 
             /* // Envie o e-mail de verificação
             sendEmailVerification(authenticatedUser)
@@ -138,9 +146,13 @@ async function createNewUserWithGoogle(user, id, cart_cookie_id) {
             const cart_id = uuidv4()
             await createCart(newUserRef.id, cart_id, cartSession ? cartSession.products : [])
 
+            const wishlist_id = uuidv4()
+            await createWishlist(newUserRef.id, wishlist_id)
+
             const newUser = {
                 ...user,
                 cart_id: cart_id,
+                wishlist_id: wishlist_id,
                 create_at: Timestamp.now(),
             }
 

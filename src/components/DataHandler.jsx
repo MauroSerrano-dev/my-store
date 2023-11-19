@@ -118,7 +118,6 @@ export default function DataHandler(props) {
     }
 
     function handleLogin(authUser) {
-
         const options = {
             method: 'POST',
             headers: {
@@ -417,8 +416,7 @@ export default function DataHandler(props) {
                     transition: `all ease-in-out ${websiteVisible ? 200 : 0}ms`,
                 }}
             >
-                <
-                    Component{...pageProps}
+                <Component{...pageProps}
                     cart={cart}
                     setCart={setCart}
                     session={session}
@@ -435,6 +433,7 @@ export default function DataHandler(props) {
                     router={router}
                     setLoading={setLoading}
                     getInicialCart={getInicialCart}
+                    setSession={setSession}
                 />
                 {showMenu &&
                     <Menu

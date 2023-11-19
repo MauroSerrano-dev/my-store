@@ -491,6 +491,48 @@ async function getAllProductsIds() {
     }
 }
 
+async function getProductsByIds(ids) {
+    try {
+        if (!ids || ids.length === 0) {
+            return {
+                status: 400,
+                message: 'No product IDs provided.',
+                products: [],
+            };
+        }
+
+        const productsCollection = collection(db, process.env.COLL_PRODUCTS);
+
+        const q = query(productsCollection, where('id', 'in', ids));
+
+        const querySnapshot = await getDocs(q);
+
+        const products = querySnapshot.docs.map(doc => doc.data());
+
+        if (products.length > 0) {
+            return {
+                status: 200,
+                message: 'Products retrieved successfully by IDs!',
+                products: products,
+            };
+        } else {
+            return {
+                status: 200,
+                message: 'No products found for the provided IDs.',
+                products: [],
+            };
+        }
+    } catch (error) {
+        console.log('Error getting products by IDs:', error);
+        return {
+            status: 500,
+            message: 'Error getting products by IDs.',
+            products: null,
+            error: error,
+        };
+    }
+}
+
 export {
     createProduct,
     getProductsByQueries,
@@ -502,4 +544,5 @@ export {
     handleProductsPurchased,
     getCartProductsInfo,
     getAllProductsIds,
+    getProductsByIds,
 }

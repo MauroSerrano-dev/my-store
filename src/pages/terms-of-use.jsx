@@ -134,7 +134,7 @@ export default function TermsOfUse() {
 export async function getServerSideProps({ locale }) {
     return {
         props: {
-            ...(await serverSideTranslations(locale, ['common', 'menu', 'navbar']))
+            ...(await serverSideTranslations(locale, ['common', 'menu', 'navbar', 'footer']))
         }
     }
 }

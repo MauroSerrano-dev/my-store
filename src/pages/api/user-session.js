@@ -1,6 +1,7 @@
 import { isTokenValid } from "../../../auth";
 import { mergeCarts } from "../../../backend/cart";
 import { updateField, createNewUserWithGoogle, getUserById } from "../../../backend/user";
+import { getWishlistById } from "../../../backend/wishlists";
 import { DEFAULT_PRODUCTS_TAGS } from "../../../consts";
 
 export default async function handler(req, res) {
@@ -21,9 +22,14 @@ export default async function handler(req, res) {
             if (cart_cookie_id) {
                 await mergeCarts(uid, cart_cookie_id)
             }
+
             const updateUser = await updateField(uid, 'providers', providers)
+
+            const wishlist = await getWishlistById(updateUser.wishlist_id)
+
             res.status(200).json({
                 ...updateUser,
+                wishlist_products_ids: wishlist.products.map(prod => prod.id),
                 id: uid
             })
         }
