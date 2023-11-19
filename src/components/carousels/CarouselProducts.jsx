@@ -10,7 +10,9 @@ export default function CarouselProducts(props) {
         userCurrency,
         supportsHoverAndPointer,
         windowWidth,
-        noProductFoundLabel = "No Products Found"
+        noProductFoundLabel = "No Products Found",
+        session,
+        setSession,
     } = props
 
     const carouselRef = useRef(null)
@@ -75,6 +77,8 @@ export default function CarouselProducts(props) {
                             userCurrency={userCurrency}
                             supportsHoverAndPointer={supportsHoverAndPointer}
                             isDragging={isDragging}
+                            session={session}
+                            setSession={setSession}
                             style={{
                                 pointerEvents: isDragging ? 'none' : 'auto',
                                 willChange: 'transform',

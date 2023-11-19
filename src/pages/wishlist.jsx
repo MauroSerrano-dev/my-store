@@ -3,7 +3,7 @@ import Product from '@/components/products/Product'
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
 import { useEffect, useState } from 'react'
 
-export default function Wishlist({ session, supportsHoverAndPointer, userCurrency }) {
+export default function Wishlist({ session, setSession, supportsHoverAndPointer, userCurrency }) {
 
     const [wishlist, setWishlist] = useState()
 
@@ -35,6 +35,8 @@ export default function Wishlist({ session, supportsHoverAndPointer, userCurrenc
                     product={product}
                     userCurrency={userCurrency}
                     supportsHoverAndPointer={supportsHoverAndPointer}
+                    session={session}
+                    setSession={setSession}
                 />
             )}
             <Footer />

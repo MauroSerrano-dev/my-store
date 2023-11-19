@@ -26,6 +26,7 @@ export default function Cart(props) {
         getInicialCart,
         currencies,
         location,
+        setSession,
     } = props
 
     const [shippingValue, setShippingValue] = useState(0)
@@ -149,6 +150,8 @@ export default function Cart(props) {
                                 userCurrency={userCurrency}
                                 supportsHoverAndPointer={supportsHoverAndPointer}
                                 windowWidth={windowWidth}
+                                session={session}
+                                setSession={setSession}
                             />
                         </div>
                     </main>

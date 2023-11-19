@@ -510,10 +510,12 @@ async function getProductsByIds(ids) {
         const products = querySnapshot.docs.map(doc => doc.data());
 
         if (products.length > 0) {
+            const orderedProducts = ids.map(id => products.find(product => product.id === id));
+
             return {
                 status: 200,
                 message: 'Products retrieved successfully by IDs!',
-                products: products,
+                products: orderedProducts,
             };
         } else {
             return {

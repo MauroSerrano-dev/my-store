@@ -20,12 +20,12 @@ export default function HeartButton(props) {
         color = '#fe251b',
         checked,
         onClick,
+        size = 35,
+        style,
     } = props
 
     const [stateBalls, setStateBalls] = useState(false)
     const [allowChange, setAllowChange] = useState(false)
-
-    const size = 35
 
     useEffect(() => {
         setTimeout(() => {
@@ -43,6 +43,7 @@ export default function HeartButton(props) {
             style={{
                 width: size,
                 height: size,
+                ...style
             }}
             initial='hidden'
             animate='visible'
