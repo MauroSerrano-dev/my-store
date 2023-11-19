@@ -148,10 +148,10 @@ export default function DataHandler(props) {
     async function login(email, password) {
         try {
             await signInWithEmailAndPassword(auth, email, password);
+            router.push('/')
         } catch (error) {
             console.error('Error trying to login:', error);
         }
-        router.push('/')
     }
 
     function logout() {
