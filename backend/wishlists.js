@@ -1,0 +1,117 @@
+import { doc, getDoc, getFirestore, updateDoc, Timestamp, setDoc } from "firebase/firestore";
+import { initializeApp } from 'firebase/app'
+import { firebaseConfig } from "../firebase.config"
+import { mergeProducts } from "../utils";
+
+initializeApp(firebaseConfig)
+
+const db = getFirestore()
+
+async function getWishlistById(id) {
+    const wishlistRef = doc(db, process.env.COLL_WISHLISTS, id)
+
+    try {
+        const wishlistDoc = await getDoc(wishlistRef)
+
+        if (wishlistDoc.exists()) {
+            return wishlistDoc.data()
+        } else {
+            console.log("Wishlist not found")
+            return null
+        }
+    } catch (error) {
+        console.error("Error getting wishlist by ID:", error)
+        return null
+    }
+}
+
+async function createWishlist(userId, wishlistId) {
+    try {
+        const wishlistRef = doc(db, process.env.COLL_WISHLISTS, wishlistId)
+
+        const docSnapshot = await getDoc(wishlistRef)
+
+        if (docSnapshot.exists()) {
+            return {
+                status: 409,
+                message: `Wishlist ID ${wishlistId} already exists.`,
+            }
+        }
+
+        const newWishlist = {
+            id: wishlistId,
+            user_id: userId,
+            products: [],
+            created_at: Timestamp.now(),
+        }
+
+        await setDoc(wishlistRef, newWishlist)
+
+        console.log(`Wishlist created with ID: ${wishlistId}`)
+        return wishlistId
+    } catch (error) {
+        console.error("Error creating wishlist:", error)
+        return null
+    }
+}
+
+async function addProductToWishlist(wishlistId, wishlistNewProduct) {
+    const wishlistRef = doc(db, process.env.COLL_WISHLISTS, wishlistId)
+    const wishlistDoc = await getDoc(wishlistRef)
+
+    try {
+        const wishlistData = wishlistDoc.data()
+
+        wishlistData.products.push(wishlistNewProduct)
+
+        await updateDoc(wishlistRef, wishlistData)
+
+        return {
+            status: 200,
+            message: `Wishlist ${wishlistId} updated successfully!`,
+            wishlist: wishlistData,
+        }
+    } catch (error) {
+        console.error(`Error updating wishlist ${wishlistId}:`, error)
+        return {
+            status: 500,
+            message: `Error updating wishlist ${wishlistId}: ${error}`,
+            wishlist: null,
+            error: error,
+        }
+    }
+}
+
+async function deleteProductFromWishlist(wishlistId, product) {
+    const wishlistRef = doc(db, process.env.COLL_WISHLISTS, wishlistId)
+    const wishlistDoc = await getDoc(wishlistRef)
+
+    try {
+        const wishlistData = wishlistDoc.data()
+
+        wishlistData.products = wishlistData.products.filter(prod => prod.id !== product.id)
+
+        await updateDoc(wishlistRef, wishlistData)
+
+        return {
+            status: 200,
+            message: `Wishlist ${wishlistId} updated successfully!`,
+            wishlist: wishlistData,
+        }
+    } catch (error) {
+        console.error(`Error Deleting Product from wishlist ${wishlistId}: ${error}`)
+        return {
+            status: 500,
+            message: `Error Deleting Product from wishlist ${wishlistId}: ${error}`,
+            wishlist: null,
+            error: error,
+        }
+    }
+}
+
+export {
+    getWishlistById,
+    createWishlist,
+    addProductToWishlist,
+    deleteProductFromWishlist,
+}

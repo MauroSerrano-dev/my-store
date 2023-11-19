@@ -23,6 +23,7 @@ export default function HeartButton(props) {
     } = props
 
     const [stateBalls, setStateBalls] = useState(false)
+    const [allowChange, setAllowChange] = useState(false)
 
     const size = 35
 
@@ -30,6 +31,9 @@ export default function HeartButton(props) {
         setTimeout(() => {
             setStateBalls(!checked)
         }, 100)
+        setTimeout(() => {
+            setAllowChange(true)
+        }, 200)
     }, [checked])
 
     return (
@@ -62,12 +66,14 @@ export default function HeartButton(props) {
                     on: {
                         scale: 1,
                         transition: {
+                            duration: allowChange ? 0.3 : 0,
                             ease: [0, .18, 0, 2],
                         }
                     },
                     off: {
                         scale: 0,
                         transition: {
+                            duration: allowChange ? 0.3 : 0,
                             ease: [1, 0, 0, 1],
                         }
                     },
@@ -83,7 +89,7 @@ export default function HeartButton(props) {
                     }}
                 />
             </motion.div>
-            {circles.map((circle, i) =>
+            {allowChange && circles.map((circle, i) =>
                 <motion.div
                     key={i}
                     className={styles.circle}
@@ -103,12 +109,14 @@ export default function HeartButton(props) {
                         on: {
                             transform: `translateX(${circle.x}) translateY(${circle.y})`,
                             transition: {
+                                duration: allowChange ? 0.3 : 0,
                                 ease: [0, .18, 0, 2],
                             }
                         },
                         off: {
                             transform: 'translateX(-50%) translateY(-50%)',
                             transition: {
+                                duration: allowChange ? 0.3 : 0,
                                 ease: [1, 0, .95, .21],
                             }
                         },
@@ -130,6 +138,7 @@ export default function HeartButton(props) {
                                 width: '100%',
                                 height: '100%',
                                 transition: {
+                                    duration: allowChange ? 0.3 : 0,
                                     ease: [0, .18, 0, 1.5],
                                 }
                             },
@@ -137,6 +146,7 @@ export default function HeartButton(props) {
                                 width: '0%',
                                 height: '0%',
                                 transition: {
+                                    duration: allowChange ? 0.3 : 0,
                                     ease: 'easeIn',
                                 }
                             },

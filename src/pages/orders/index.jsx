@@ -233,7 +233,7 @@ export default function Orders(props) {
 export async function getServerSideProps({ locale }) {
     return {
         props: {
-            ...(await serverSideTranslations(locale, ['common', 'navbar', 'menu', 'orders']))
+            ...(await serverSideTranslations(locale, ['common', 'navbar', 'menu', 'orders', 'footer']))
         }
     }
 }
