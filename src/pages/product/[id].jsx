@@ -198,10 +198,12 @@ export default withRouter(props => {
                         <div className={styles.right}>
                             <div className='fillWidth flex row' style={{ justifyContent: 'space-between' }}>
                                 <h2>{product.title}</h2>
-                                <HeartButton
-                                    checked={inWishlist}
-                                    onClick={handleWishlist}
-                                />
+                                {session &&
+                                    <HeartButton
+                                        checked={inWishlist}
+                                        onClick={handleWishlist}
+                                    />
+                                }
                             </div>
                             {product.sold_out &&
                                 <div
