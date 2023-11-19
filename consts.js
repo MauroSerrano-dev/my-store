@@ -132,37 +132,37 @@ export const COLLECTIONS = [
 ]
 
 export const MENU_OPTIONS = [
-    { title: 'Home', type: 'link', href: '/' },
-    { title: 'Products', type: 'forward', value: 'products' },
-    { title: 'Collections', type: 'forward', value: 'collections' },
-    { title: 'Support', type: 'link', href: '/support' },
-    { title: 'About us', type: 'link', href: '/about-us' },
+    { id: 'Home', type: 'link', href: '/' },
+    { id: 'Products', type: 'forward', value: 'products' },
+    { id: 'Collections', type: 'forward', value: 'collections' },
+    { id: 'Support', type: 'link', href: '/support' },
+    { id: 'About us', type: 'link', href: '/about-us' },
 ]
 
 export const MENU_FORWARD_OPTIONS = {
     products: [
-        { title: 'T-Shirts', type: 'link', href: '/search?v=t-shirts' },
-        { title: 'Hoodies', type: 'link', href: '/search?v=hoodies' },
+        { id: 't-shirts', type: 'link', href: '/search?v=t-shirts' },
+        { id: 'hoodies', type: 'link', href: '/search?v=hoodies' },
     ],
     possibleProducts: [
-        { title: 'T-Shirts', type: 'link', href: '/search?v=t-shirts' },
-        { title: 'Hoodies', type: 'link', href: '/search?v=hoodies' },
-        { title: 'Long Sleeves', type: 'link', href: '/search?v=long+sleeves' },
-        { title: 'Socks', type: 'link', href: '/search?v=socks' },
-        { title: 'Mugs', type: 'link', href: '/search?v=mugs' },
-        { title: 'Phone Cases', type: 'link', href: '/search?v=phone+cases' },
-        { title: 'Pillows', type: 'link', href: '/search?v=pillows' },
-        { title: 'Bottles & Tumblers', type: 'link', href: '/search?v=bottles+tumblers' },
-        { title: 'Hats', type: 'link', href: '/search?v=hats' },
-        { title: 'Blankets', type: 'link', href: '/search?v=blankets' },
-        { title: 'Poster', type: 'link', href: '/search?v=poster' },
-        { title: 'Apron', type: 'link', href: '/search?v=apron' },
-        { title: 'Towels', type: 'link', href: '/search?v=towels' },
-        { title: 'Shoes', type: 'link', href: '/search?v=shoes' },
-        { title: 'Tank Tops', type: 'link', href: '/search?v=tank+tops' },
-        { title: 'Bottoms', type: 'link', href: '/search?v=bottoms' },
+        { id: 'T-Shirts', type: 'link', href: '/search?v=t-shirts' },
+        { id: 'Hoodies', type: 'link', href: '/search?v=hoodies' },
+        { id: 'Long Sleeves', type: 'link', href: '/search?v=long+sleeves' },
+        { id: 'Socks', type: 'link', href: '/search?v=socks' },
+        { id: 'Mugs', type: 'link', href: '/search?v=mugs' },
+        { id: 'Phone Cases', type: 'link', href: '/search?v=phone+cases' },
+        { id: 'Pillows', type: 'link', href: '/search?v=pillows' },
+        { id: 'Bottles & Tumblers', type: 'link', href: '/search?v=bottles+tumblers' },
+        { id: 'Hats', type: 'link', href: '/search?v=hats' },
+        { id: 'Blankets', type: 'link', href: '/search?v=blankets' },
+        { id: 'Poster', type: 'link', href: '/search?v=poster' },
+        { id: 'Apron', type: 'link', href: '/search?v=apron' },
+        { id: 'Towels', type: 'link', href: '/search?v=towels' },
+        { id: 'Shoes', type: 'link', href: '/search?v=shoes' },
+        { id: 'Tank Tops', type: 'link', href: '/search?v=tank+tops' },
+        { id: 'Bottoms', type: 'link', href: '/search?v=bottoms' },
     ],
-    collections: COLLECTIONS.map(coll => ({ ...coll, type: 'link', href: `/search?c=${coll.id}` }))
+    collections: COLLECTIONS.map(coll => ({ id: coll.title, type: 'link', href: `/search?c=${coll.id}` }))
 }
 
 export const TAGS_POOL = [
@@ -197,10 +197,10 @@ export const itemsNavBar = [
 ]
 
 export const PRODUCTS_FAMILY = {
-    't-shirts': { id: 't-shirts', title: 'T-Shirts', color: '#1189C4' },
-    'hoodies': { id: 'hoodies', title: 'Hoodies', color: '#026539' },
-    'raglan-tees': { id: 'raglan-tees', title: 'Raglan Tees', color: '#e0824b' },
-    'mugs': { id: 'mugs', title: 'Mugs', color: '#bA2326' },
+    't-shirts': { id: 't-shirts', color: '#1189C4' },
+    'hoodies': { id: 'hoodies', color: '#026539' },
+    'raglan-tees': { id: 'raglan-tees', color: '#e0824b' },
+    'mugs': { id: 'mugs', color: '#bA2326' },
 }
 
 export const PRODUCT_TYPES = [
@@ -2177,4 +2177,4 @@ export function getShippingOptions(product_type, country) {
     }
 }
 
-export const USER_CUSTOMIZE_HOME_PAGE = THEMES_POOL.map(theme => ({ ...theme, query: 'h' })).concat(Object.keys(PRODUCTS_FAMILY).map(id => ({ id: id, title: PRODUCTS_FAMILY[id].title, query: 'v' }))).sort((a, b) => b.id.toLowerCase() < a.id.toLowerCase() ? 1 : -1)
+export const USER_CUSTOMIZE_HOME_PAGE = THEMES_POOL.map(theme => ({ ...theme, query: 'h' })).concat(Object.keys(PRODUCTS_FAMILY).map(id => ({ id: id, query: 'v' }))).sort((a, b) => b.id.toLowerCase() < a.id.toLowerCase() ? 1 : -1)

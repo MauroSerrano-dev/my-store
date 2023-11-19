@@ -4,8 +4,8 @@ import styles from '../styles/components/NavBar.module.css'
 import Logo from './svgs/Logo';
 import SearchBar from './SearchBar';
 import FavoriteBorderRoundedIcon from '@mui/icons-material/FavoriteBorderRounded';
-import AvatarMenu from './AvatarMenu';
-import CartIcon from './CartIcon';
+import AvatarMenu from './buttons-icon/AvatarMenu';
+import CartIcon from './buttons-icon/CartIcon';
 import SearchRoundedIcon from '@mui/icons-material/SearchRounded';
 import { itemsNavBar } from '../../consts';
 import { motion } from "framer-motion";

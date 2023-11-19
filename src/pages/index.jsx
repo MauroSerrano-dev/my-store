@@ -254,7 +254,7 @@ export default function Home(props) {
               <h2 className={styles.carouselTitle}>
                 {session === undefined
                   ? ''
-                  : tCommon(USER_CUSTOMIZE_HOME_PAGE.find(ele => ele.id === (session?.home_page_tags || DEFAULT_PRODUCTS_TAGS)[i])?.title)
+                  : tCommon(USER_CUSTOMIZE_HOME_PAGE.find(ele => ele.id === (session?.home_page_tags || DEFAULT_PRODUCTS_TAGS)[i])?.id)
                 }
               </h2>
               <CarouselProducts
