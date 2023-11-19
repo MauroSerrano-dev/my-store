@@ -26,6 +26,7 @@ export default function Home(props) {
     supportsHoverAndPointer,
     windowWidth,
     session,
+    setSession,
   } = props
 
   const tCommon = useTranslation('common').t
@@ -262,6 +263,8 @@ export default function Home(props) {
                 userCurrency={userCurrency}
                 supportsHoverAndPointer={supportsHoverAndPointer}
                 windowWidth={windowWidth}
+                session={session}
+                setSession={setSession}
                 noProductFoundLabel={tErrors('no_products_found')}
               />
             </div>

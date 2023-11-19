@@ -51,11 +51,6 @@ export default withRouter(props => {
     const ORIGINAL_PRICE = product && userCurrency ? Math.ceil(productCurrentVariant?.price * userCurrency.rate) : undefined
 
     useEffect(() => {
-        if (session)
-            setInWishlist(session.wishlist_products_ids.includes(product.id))
-    }, [session])
-
-    useEffect(() => {
         setCurrentColor(cl ? cl : COLORS_POOL[product?.colors_ids[0]])
         setCurrentSize(sz ? sz : SIZES_POOL.find(sz => sz.id === product?.sizes_ids[0]))
     }, [router])
@@ -152,36 +147,43 @@ export default withRouter(props => {
         setCurrentSize(size)
     }
 
-    function handleWishlist() {
-        setInWishlist(prev => {
-            const options = {
-                method: prev ? 'DELETE' : 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    authorization: process.env.NEXT_PUBLIC_APP_TOKEN
-                },
-                body: JSON.stringify({
-                    wishlist_id: session.wishlist_id,
-                    product: { id: product.id }
-                }),
+    function handleWishlist(event) {
+        const add = !session.wishlist_products_ids.includes(product.id)
+
+        setSession(prevSession => (
+            {
+                ...prevSession,
+                wishlist_products_ids: add
+                    ? session.wishlist_products_ids.concat(product.id)
+                    : session.wishlist_products_ids.filter(prod_id => prod_id !== product.id)
             }
+        ))
 
-            fetch("/api/wishlists/wishlist-products", options)
-                .then(response => response.json())
-                .then(() =>
-                    setSession(prevSession => (
-                        {
-                            ...prevSession,
-                            wishlist_products_ids: prev
-                                ? prevSession.wishlist_products_ids.filter(prodId => prodId !== product.id)
-                                : prevSession.wishlist_products_ids.concat(product.id)
-                        }
-                    ))
-                )
-                .catch(err => console.error(err))
+        const options = {
+            method: add ? 'POST' : 'DELETE',
+            headers: {
+                'Content-Type': 'application/json',
+                authorization: process.env.NEXT_PUBLIC_APP_TOKEN
+            },
+            body: JSON.stringify({
+                wishlist_id: session.wishlist_id,
+                product: { id: product.id }
+            }),
+        }
 
-            return !prev
-        })
+        fetch("/api/wishlists/wishlist-products", options)
+            .then(response => response.json())
+            .catch(err => {
+                setSession(prevSession => (
+                    {
+                        ...prevSession,
+                        wishlist_products_ids: add
+                            ? session.wishlist_products_ids.filter(prod_id => prod_id !== product.id)
+                            : session.wishlist_products_ids.concat(product.id)
+                    }
+                ))
+                console.error(err)
+            })
     }
 
     return (
@@ -234,7 +236,7 @@ export default withRouter(props => {
                                 <h2>{product.title}</h2>
                                 {session &&
                                     <HeartButton
-                                        checked={inWishlist}
+                                        checked={session.wishlist_products_ids.includes(product.id)}
                                         onClick={handleWishlist}
                                     />
                                 }

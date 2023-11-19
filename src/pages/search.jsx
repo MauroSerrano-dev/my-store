@@ -39,6 +39,8 @@ export default withRouter(props => {
         supportsHoverAndPointer,
         router,
         windowWidth,
+        session,
+        setSession,
     } = props
 
     const {
@@ -536,6 +538,8 @@ export default withRouter(props => {
                                         product={product}
                                         width={productWidth}
                                         supportsHoverAndPointer={supportsHoverAndPointer}
+                                        session={session}
+                                        setSession={setSession}
                                         inicialVariantId={
                                             product.variants.find(vari => {
                                                 if (cl && ac)

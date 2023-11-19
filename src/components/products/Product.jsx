@@ -7,6 +7,7 @@ import { COLORS_POOL, PRODUCT_TYPES } from '../../../consts';
 import ColorButton from '../ColorButton';
 import Image from 'next/image';
 import { useTranslation } from 'next-i18next'
+import HeartButton from '../buttons-icon/HeartButton';
 
 /**
  * @param {object} props - Component props.
@@ -40,6 +41,8 @@ export default function Product(props) {
             }
         },
         style,
+        session,
+        setSession,
     } = props
 
     const tCommon = useTranslation('common').t
@@ -117,6 +120,47 @@ export default function Product(props) {
         setHover(false)
     }
 
+    function handleWishlist(event) {
+        event.preventDefault()
+
+        const add = !session.wishlist_products_ids.includes(product.id)
+
+        setSession(prevSession => (
+            {
+                ...prevSession,
+                wishlist_products_ids: add
+                    ? session.wishlist_products_ids.concat(product.id)
+                    : session.wishlist_products_ids.filter(prod_id => prod_id !== product.id)
+            }
+        ))
+
+        const options = {
+            method: add ? 'POST' : 'DELETE',
+            headers: {
+                'Content-Type': 'application/json',
+                authorization: process.env.NEXT_PUBLIC_APP_TOKEN
+            },
+            body: JSON.stringify({
+                wishlist_id: session.wishlist_id,
+                product: { id: product.id }
+            }),
+        }
+
+        fetch("/api/wishlists/wishlist-products", options)
+            .then(response => response.json())
+            .catch(err => {
+                setSession(prevSession => (
+                    {
+                        ...prevSession,
+                        wishlist_products_ids: add
+                            ? session.wishlist_products_ids.filter(prod_id => prod_id !== product.id)
+                            : session.wishlist_products_ids.concat(product.id)
+                    }
+                ))
+                console.error(err)
+            })
+    }
+
     return (
         <motion.div
             className={styles.container}
@@ -139,6 +183,30 @@ export default function Product(props) {
                 className={`${styles.linkContainer} noUnderline`}
                 draggable={false}
             >
+                {session && hover && supportsHoverAndPointer &&
+                    <motion.div
+                        className={styles.wishlistButton}
+                        onClick={handleWishlist}
+                        initial='hidden'
+                        animate='visible'
+                        variants={{
+                            hidden: {
+                                opacity: 0,
+                            },
+                            visible: {
+                                opacity: 1,
+                            },
+                        }}
+                    >
+                        <HeartButton
+                            style={{
+                                top: '1px'
+                            }}
+                            checked={session.wishlist_products_ids.includes(product.id)}
+                            size={width * 0.13}
+                        />
+                    </motion.div>
+                }
                 {supportsHoverAndPointer &&
                     <div
                         className={styles.imgHoverContainer}

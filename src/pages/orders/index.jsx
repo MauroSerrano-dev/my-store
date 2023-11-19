@@ -19,6 +19,7 @@ export default function Orders(props) {
         currencies,
         windowWidth,
         userCurrency,
+        setSession,
     } = props
 
     const tOrders = useTranslation('orders').t
@@ -221,6 +222,8 @@ export default function Orders(props) {
                                     userCurrency={userCurrency}
                                     supportsHoverAndPointer={supportsHoverAndPointer}
                                     windowWidth={windowWidth}
+                                    session={session}
+                                    setSession={setSession}
                                 />
                             </div>
                         </div>
