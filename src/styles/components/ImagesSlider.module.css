@@ -4,6 +4,10 @@
     justify-content: center;
     align-items: center;
 
+    animation: fadeIn ease-in-out forwards 200ms 400ms;
+
+    opacity: 0;
+
     transition: width ease-in-out 200ms,
         height ease-in-out 200ms;
 }
@@ -76,5 +80,15 @@
 
     .optionShadow:hover {
         opacity: 0;
+    }
+}
+
+@keyframes fadeIn {
+    0% {
+        opacity: 0;
+    }
+
+    100% {
+        opacity: 1;
     }
 }

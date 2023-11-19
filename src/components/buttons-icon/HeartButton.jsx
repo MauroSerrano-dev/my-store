@@ -33,12 +33,22 @@ export default function HeartButton(props) {
     }, [checked])
 
     return (
-        <div
+        <motion.div
             className={styles.container}
             onClick={onClick}
             style={{
                 width: size,
                 height: size,
+            }}
+            initial='hidden'
+            animate='visible'
+            variants={{
+                hidden: {
+                    opacity: 0
+                },
+                visible: {
+                    opacity: 1
+                }
             }}
         >
             <motion.div
@@ -140,6 +150,6 @@ export default function HeartButton(props) {
                     fontSize: size,
                 }}
             />
-        </div>
+        </motion.div>
     )
 }

@@ -153,22 +153,34 @@ export default function NavBar(props) {
                             }}
                         />
                     </div>
-                    <Link
-                        href={'/wishlist'}
-                    >
-                        <div
-                            className={styles.iconContainer}
+                    {session &&
+                        <Link
+                            href={'/wishlist'}
                         >
-                            <FavoriteBorderRoundedIcon
-                                style={{
-                                    fontSize: 'calc(var(--bar-height) * 0.36)',
-                                    color: 'var(--global-white)',
-                                    position: 'relative',
-                                    top: '1px',
+                            <motion.div
+                                className={styles.iconContainer}
+                                initial='hidden'
+                                animate='visible'
+                                variants={{
+                                    hidden: {
+                                        opacity: 0
+                                    },
+                                    visible: {
+                                        opacity: 1
+                                    }
                                 }}
-                            />
-                        </div>
-                    </Link>
+                            >
+                                <FavoriteBorderRoundedIcon
+                                    style={{
+                                        fontSize: 'calc(var(--bar-height) * 0.36)',
+                                        color: 'var(--global-white)',
+                                        position: 'relative',
+                                        top: '1px',
+                                    }}
+                                />
+                            </motion.div>
+                        </Link>
+                    }
                     <CartIcon
                         session={session}
                         cart={cart}
