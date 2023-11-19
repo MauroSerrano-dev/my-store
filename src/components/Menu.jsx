@@ -160,7 +160,7 @@ export default function Menu(props) {
                                 onClick={handleCloseMenu}
                                 className={`${styles.menuItem} noUnderline`}
                             >
-                                {tMenu(option.title)}
+                                {tMenu(option.id)}
                             </Link>
                             : <div
                                 key={i}
@@ -170,7 +170,7 @@ export default function Menu(props) {
                                 }}
                                 className={styles.menuItem}
                             >
-                                {tMenu(option.title)}
+                                {tMenu(option.id)}
                                 {option.type === 'forward' &&
                                     <IoIosArrowForward
                                         className={styles.forwardButton}
@@ -216,14 +216,14 @@ export default function Menu(props) {
                                     onClick={handleCloseMenu}
                                     className={`${styles.menuItem} noUnderline`}
                                 >
-                                    {tCommon(option.title)}
+                                    {tCommon(option.id)}
                                 </Link>
                                 : <div
                                     key={i}
                                     onClick={() => setOptionMenu(option.value)}
                                     className={styles.menuItem}
                                 >
-                                    {tCommon(option.title)}
+                                    {tCommon(option.id)}
                                     {option.type === 'forward' &&
                                         <IoIosArrowForward
                                             className={styles.forwardButton}

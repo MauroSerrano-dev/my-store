@@ -1,0 +1,21 @@
+.container {
+    position: relative;
+}
+
+.circle {
+    position: absolute;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.circleInner {
+    border-radius: 100%;
+}
+
+/* Enable hover only on non-touch devices */
+@media (hover: hover) and (pointer: fine) {
+    .container {
+        cursor: pointer;
+    }
+}

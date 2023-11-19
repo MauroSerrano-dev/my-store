@@ -16,6 +16,7 @@ import Cookies from 'js-cookie'
 import { useTranslation } from 'react-i18next'
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
 import { showToast } from '../../../utils/toasts'
+import HeartButton from '@/components/buttons-icon/HeartButton'
 
 export default withRouter(props => {
     const {
@@ -36,6 +37,8 @@ export default withRouter(props => {
     } = props
 
     const tErrors = useTranslation('errors').t
+
+    const [inWishlist, setInWishlist] = useState(false)
 
     const [currentColor, setCurrentColor] = useState(cl ? cl : COLORS_POOL[product?.colors_ids[0]])
     const [currentSize, setCurrentSize] = useState(sz ? sz : SIZES_POOL.find(sz => sz.id === product?.sizes_ids[0]))
@@ -143,6 +146,10 @@ export default withRouter(props => {
         setCurrentSize(size)
     }
 
+    function handleWishlist() {
+        setInWishlist(prev => !prev)
+    }
+
     return (
         product && currentColor && currentSize
             ? <div className={styles.container}>
@@ -189,7 +196,13 @@ export default withRouter(props => {
                             </div>
                         </div>
                         <div className={styles.right}>
-                            <h2>{product.title}</h2>
+                            <div className='fillWidth flex row' style={{ justifyContent: 'space-between' }}>
+                                <h2>{product.title}</h2>
+                                <HeartButton
+                                    checked={inWishlist}
+                                    onClick={handleWishlist}
+                                />
+                            </div>
                             {product.sold_out &&
                                 <div
                                     className={styles.soldOut}

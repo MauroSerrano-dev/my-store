@@ -1,9 +1,9 @@
 import { useEffect, useState } from 'react'
 import Link from 'next/link'
 import ShoppingCartOutlinedIcon from '@mui/icons-material/ShoppingCartOutlined';
-import styles from '@/styles/components/CartIcon.module.css'
+import styles from '@/styles/components/buttons-icon/CartIcon.module.css'
 import { Button } from '@mui/material'
-import ProductModal from './products/ProductModal'
+import ProductModal from '../products/ProductModal'
 import { useTranslation } from 'react-i18next';
 
 export default function CartIcon(props) {
