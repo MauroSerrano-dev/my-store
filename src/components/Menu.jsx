@@ -205,6 +205,6 @@ export default function Menu(props) {
                     </motion.div>
                 }
             </div>
-        </div >
+        </div>
     )
 }
