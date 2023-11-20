@@ -1,0 +1,15 @@
+.products {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: flex-start;
+
+    column-gap: 16px;
+
+    width: 100%;
+
+    flex-wrap: wrap;
+
+    padding-left: 8px;
+    padding-bottom: 1rem;
+}

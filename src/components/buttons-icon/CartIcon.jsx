@@ -4,7 +4,7 @@ import ShoppingCartOutlinedIcon from '@mui/icons-material/ShoppingCartOutlined';
 import styles from '@/styles/components/buttons-icon/CartIcon.module.css'
 import { Button } from '@mui/material'
 import ProductModal from '../products/ProductModal'
-import { useTranslation } from 'react-i18next';
+import { useTranslation } from 'next-i18next';
 
 export default function CartIcon(props) {
     const {

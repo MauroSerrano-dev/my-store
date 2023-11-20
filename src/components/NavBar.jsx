@@ -10,7 +10,7 @@ import SearchRoundedIcon from '@mui/icons-material/SearchRounded';
 import { itemsNavBar } from '../../consts';
 import { motion } from "framer-motion";
 import { MenuToggle } from './MenuToggle';
-import { useTranslation } from 'react-i18next';
+import { useTranslation } from 'next-i18next';
 
 export default function NavBar(props) {
     const {
@@ -34,17 +34,7 @@ export default function NavBar(props) {
         switchMenu,
     } = props
 
-    const tCommon = useTranslation('common').t
     const tNavbar = useTranslation('navbar').t
-
-    const search_bar_placeholder = tNavbar('search_bar_placeholder')
-
-    const [translationReady, setTranslationReady] = useState(false)
-
-    useEffect(() => {
-        if (search_bar_placeholder !== 'search_bar_placeholder')
-            setTranslationReady(true)
-    }, [search_bar_placeholder])
 
     return (
         <div className={styles.container}>
@@ -90,19 +80,17 @@ export default function NavBar(props) {
                         >
                             <Logo width='100%' />
                         </Link>
-                        : translationReady
-                            ? <SearchBar
-                                show={isScrollAtTop}
-                                placeholder={search_bar_placeholder}
-                                onChange={handleChangeSearch}
-                                onKeyDown={handleKeyDownSearch}
-                                onClick={handleClickSearch}
-                                value={search}
-                                options={productOptions}
-                                setOptions={setProductOptions}
-                                setSearch={setSearch}
-                            />
-                            : <div></div>
+                        : <SearchBar
+                            show={isScrollAtTop}
+                            placeholder={tNavbar('search_bar_placeholder')}
+                            onChange={handleChangeSearch}
+                            onKeyDown={handleKeyDownSearch}
+                            onClick={handleClickSearch}
+                            value={search}
+                            options={productOptions}
+                            setOptions={setProductOptions}
+                            setSearch={setSearch}
+                        />
                     }
                     {!mobile &&
                         <div
@@ -116,7 +104,7 @@ export default function NavBar(props) {
                                     : '100%',
                             }}
                         >
-                            {translationReady && itemsNavBar.map((item, i) =>
+                            {itemsNavBar.map((item, i) =>
                                 <Link
                                     key={i}
                                     href={`/search?v=${item.value}`}

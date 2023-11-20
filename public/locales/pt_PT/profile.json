@@ -1,0 +1,15 @@
+{
+    "Language": "Idioma",
+    "max_keywords_toast": "Número máximo de palavras-chave atingido.",
+    "no_changes_toast": "Nenhuma mudança realizada.",
+    "first_name": "Primeiro Nome",
+    "last_name": "Sobrenome",
+    "E-mail": "E-mail",
+    "customize_title": "Personalize sua Página Inicial",
+    "customize_p_start": "Escolha ",
+    "customize_p_middle": "de 3 a 8 palavras-chave",
+    "customize_p_end": ". Você verá os mais vendidos das palavras-chave escolhidas em sua Página Inicial",
+    "Chosen": "Escolhido",
+    "Keywords": "Palavras-chave",
+    "Save": "Salvar"
+}

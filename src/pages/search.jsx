@@ -15,7 +15,7 @@ import KeyboardArrowDownRoundedIcon from '@mui/icons-material/KeyboardArrowDownR
 import MenuFilter from '@/components/MenuFilter'
 import lottie from 'lottie-web';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
-import { useTranslation } from 'react-i18next';
+import { useTranslation } from 'next-i18next';
 
 const QUERIES = {
     h: { title: 'category', show: true, showTitle: true, isFilter: true },
@@ -88,22 +88,14 @@ export default withRouter(props => {
                 setFiltersOpenDelay(false)
             }
 
-            if (containerWidth > 900) {
+            if (containerWidth > 900)
                 setProductWidth((containerWidth - 16 * 5) / 5)
-                setProductsPerLine(5)
-            }
-            else if (containerWidth > 700) {
+            else if (containerWidth > 700)
                 setProductWidth((containerWidth - 16 * 4) / 4)
-                setProductsPerLine(4)
-            }
-            else if (containerWidth > 500) {
+            else if (containerWidth > 500)
                 setProductWidth((containerWidth - 16 * 3) / 3)
-                setProductsPerLine(3)
-            }
-            else {
+            else
                 setProductWidth((containerWidth - 16 * 2) / 2)
-                setProductsPerLine(2)
-            }
         }
 
         if (windowWidth) {

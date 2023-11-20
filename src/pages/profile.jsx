@@ -9,7 +9,7 @@ import { showToast } from '../../utils/toasts'
 import { getObjectsDiff } from '../../utils'
 import TextInput from '@/components/material-ui/TextInput'
 import Selector from '@/components/material-ui/Selector'
-import { useTranslation } from 'react-i18next'
+import { useTranslation } from 'next-i18next'
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
 
 const TAGS_MIN_LIMIT = 3

@@ -6,7 +6,7 @@ import { SIZES_POOL, COLORS_POOL, CART_COOKIE } from '../../../consts';
 import Image from 'next/image';
 import Selector from '../material-ui/Selector';
 import { useState } from 'react';
-import { useTranslation } from 'react-i18next';
+import { useTranslation } from 'next-i18next';
 import Cookies from 'js-cookie';
 
 export default function ProductCart(props) {

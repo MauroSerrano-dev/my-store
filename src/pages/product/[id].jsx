@@ -13,7 +13,7 @@ import ShareButton from '@/components/ShareButton'
 import CareInstructionsIcons from '@/components/svgs/CareInstructionsIcons'
 import NoFound404 from '../../components/NoFound404'
 import Cookies from 'js-cookie'
-import { useTranslation } from 'react-i18next'
+import { useTranslation } from 'next-i18next'
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
 import { showToast } from '../../../utils/toasts'
 import HeartButton from '@/components/buttons-icon/HeartButton'
@@ -38,8 +38,6 @@ export default withRouter(props => {
     } = props
 
     const tErrors = useTranslation('errors').t
-
-    const [inWishlist, setInWishlist] = useState()
 
     const [currentColor, setCurrentColor] = useState(cl ? cl : COLORS_POOL[product?.colors_ids[0]])
     const [currentSize, setCurrentSize] = useState(sz ? sz : SIZES_POOL.find(sz => sz.id === product?.sizes_ids[0]))

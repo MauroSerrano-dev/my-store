@@ -11,7 +11,7 @@ import styles from '@/styles/components/buttons-icon/AvatarMenu.module.css'
 import { Button } from '@mui/material'
 import ReceiptLongRoundedIcon from '@mui/icons-material/ReceiptLongRounded'
 import AdminPanelSettingsRoundedIcon from '@mui/icons-material/AdminPanelSettingsRounded'
-import { useTranslation } from 'react-i18next'
+import { useTranslation } from 'next-i18next'
 
 export default function AvatarMenu(props) {
   const {
