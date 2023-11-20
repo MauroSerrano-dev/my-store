@@ -2,7 +2,8 @@ import styles from '@/styles/pages/profile.module.css'
 import Head from 'next/head'
 import NoFound404 from '../components/NoFound404'
 import TagsSelector from '@/components/material-ui/TagsSelector'
-import { LANGUAGES, USER_CUSTOMIZE_HOME_PAGE } from '../../consts'
+import { USER_CUSTOMIZE_HOME_PAGE } from '../../consts'
+import LANGUAGES from '../../public/locales/en/languages.json'
 import { Button } from '@mui/material'
 import { useEffect, useState } from 'react'
 import { showToast } from '../../utils/toasts'
@@ -35,7 +36,6 @@ export default function Profile(props) {
     const [disableSaveButton, setDisableSaveButton] = useState(true)
 
     useEffect(() => {
-        console.log(i18n.languages)
         if (session)
             setUser({ ...session })
     }, [session])
@@ -140,7 +140,7 @@ export default function Profile(props) {
                                 />
                                 <Selector
                                     label={tProfile("Language")}
-                                    options={LANGUAGES.map(lang => ({ value: lang, name: tLanguages(lang) }))}
+                                    options={Object.keys(LANGUAGES).map(lang => ({ value: lang, name: tLanguages(lang) }))}
                                     value={currentLanguage}
                                     onChange={handleChangeLanguageSelector}
                                     size={'medium'}

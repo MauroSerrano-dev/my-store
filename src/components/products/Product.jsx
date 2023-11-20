@@ -2,12 +2,13 @@ import styles from '@/styles/components/products/Product.module.css'
 import { useEffect, useState, useRef } from 'react'
 import { Button, Skeleton } from '@mui/material'
 import Link from 'next/link'
-import { motion } from "framer-motion";
-import { COLORS_POOL, PRODUCT_TYPES } from '../../../consts';
-import ColorButton from '../ColorButton';
-import Image from 'next/image';
+import { motion } from "framer-motion"
+import { COLORS_POOL, PRODUCT_TYPES } from '../../../consts'
+import ColorButton from '../ColorButton'
+import Image from 'next/image'
 import { useTranslation } from 'next-i18next'
-import HeartButton from '../buttons-icon/HeartButton';
+import HeartButton from '../buttons-icon/HeartButton'
+import CloseRoundedIcon from '@mui/icons-material/CloseRounded'
 
 /**
  * @param {object} props - Component props.
@@ -43,6 +44,9 @@ export default function Product(props) {
         style,
         session,
         setSession,
+        hideWishlistButton,
+        showDeleteButton,
+        onDeleteClick,
     } = props
 
     const tCommon = useTranslation('common').t
@@ -73,6 +77,11 @@ export default function Product(props) {
         setIsDraggingColors(true)
         document.body.style.cursor = 'grabbing'
     }
+
+    // Isso resolveu um bug ao deletar itens no wishlist
+    useEffect(() => {
+        setCurrentVariant(inicialVariantId ? product.variants.find(vari => vari.id === inicialVariantId) : product.variants[0])
+    }, [product])
 
     function handleDragColorsEnd() {
         setAntVisualBug(false)
@@ -183,7 +192,19 @@ export default function Product(props) {
                 className={`${styles.linkContainer} noUnderline`}
                 draggable={false}
             >
-                {session && hover && supportsHoverAndPointer &&
+                {showDeleteButton &&
+                    <div
+                        className={styles.wishlistButton}
+                        onClick={onDeleteClick}
+                    >
+                        <CloseRoundedIcon
+                            style={{
+                                fontSize: width * 0.12,
+                            }}
+                        />
+                    </div>
+                }
+                {!hideWishlistButton && session && hover && supportsHoverAndPointer &&
                     <motion.div
                         className={styles.wishlistButton}
                         onClick={handleWishlist}
@@ -227,7 +248,7 @@ export default function Product(props) {
                                 alt={product.title}
                                 style={{
                                     zIndex: currentVariant.color_id === color_id ? 3 : 2,
-                                    opacity: currentVariant.color_id === color_id ? 3 : 2,
+                                    opacity: currentVariant.color_id === color_id ? 1 : 0,
                                 }}
                             />
                         )}

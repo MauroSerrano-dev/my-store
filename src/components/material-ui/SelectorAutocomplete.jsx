@@ -34,6 +34,7 @@ export default function SelectorAutocomplete(props) {
             options={options}
             onChange={onChange}
             value={value}
+            isOptionEqualToValue={(option, value) => option.id === value.id}
             clearIcon={false}
             size='small'
             sx={{

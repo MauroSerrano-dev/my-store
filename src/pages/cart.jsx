@@ -198,15 +198,6 @@ export default function Cart(props) {
                                     <p>
                                         {tCart('ship_to')}:
                                     </p>
-                                    {/* <Selector
-                                        label={tCommon('Country')}
-                                        value={shippingCountry}
-                                        options={COUNTRIES_POOL}
-                                        width='170px'
-                                        dark
-                                        onChange={handleChangeCountrySelector}
-                                        supportsHoverAndPointer={supportsHoverAndPointer}
-                                    /> */}
                                     <SelectorAutocomplete
                                         multiple={false}
                                         supportsHoverAndPointer={supportsHoverAndPointer}
