@@ -11,7 +11,7 @@ import styles from '@/styles/components/buttons-icon/AvatarMenu.module.css'
 import { Button } from '@mui/material'
 import ReceiptLongRoundedIcon from '@mui/icons-material/ReceiptLongRounded'
 import AdminPanelSettingsRoundedIcon from '@mui/icons-material/AdminPanelSettingsRounded'
-import { useTranslation } from 'react-i18next'
+import { useTranslation } from 'next-i18next'
 
 export default function AvatarMenu(props) {
   const {
@@ -58,14 +58,13 @@ export default function AvatarMenu(props) {
           />
         </div>
       }
-      {
-        open && session !== undefined &&
+      {open && session !== undefined &&
         <div
           className={styles.contentContainer}
           style={{
             left: !session
               ? -223.5
-              : ['pt'].includes(i18n.language)
+              : ['pt-BR', 'pt-PT'].includes(i18n.language)
                 ? -135.5
                 : -118.5
           }}
@@ -76,7 +75,7 @@ export default function AvatarMenu(props) {
             ? <div
               className={styles.session}
               style={{
-                minWidth: ['pt'].includes(i18n.language) ? 182 : 165,
+                minWidth: ['pt-BR', 'pt-PT'].includes(i18n.language) ? 182 : 165,
               }}
             >
               <Link

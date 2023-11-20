@@ -2,14 +2,15 @@ import styles from '@/styles/pages/profile.module.css'
 import Head from 'next/head'
 import NoFound404 from '../components/NoFound404'
 import TagsSelector from '@/components/material-ui/TagsSelector'
-import { LANGUAGES, USER_CUSTOMIZE_HOME_PAGE } from '../../consts'
+import { USER_CUSTOMIZE_HOME_PAGE } from '../../consts'
+import LANGUAGES from '../../public/locales/en/languages.json'
 import { Button } from '@mui/material'
 import { useEffect, useState } from 'react'
 import { showToast } from '../../utils/toasts'
 import { getObjectsDiff } from '../../utils'
 import TextInput from '@/components/material-ui/TextInput'
 import Selector from '@/components/material-ui/Selector'
-import { useTranslation } from 'react-i18next'
+import { useTranslation } from 'next-i18next'
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
 
 const TAGS_MIN_LIMIT = 3
@@ -35,7 +36,6 @@ export default function Profile(props) {
     const [disableSaveButton, setDisableSaveButton] = useState(true)
 
     useEffect(() => {
-        console.log(i18n.languages)
         if (session)
             setUser({ ...session })
     }, [session])
@@ -140,7 +140,7 @@ export default function Profile(props) {
                                 />
                                 <Selector
                                     label={tProfile("Language")}
-                                    options={LANGUAGES.map(lang => ({ value: lang, name: tLanguages(lang) }))}
+                                    options={Object.keys(LANGUAGES).map(lang => ({ value: lang, name: tLanguages(lang) }))}
                                     value={currentLanguage}
                                     onChange={handleChangeLanguageSelector}
                                     size={'medium'}
@@ -187,7 +187,7 @@ export default function Profile(props) {
 export async function getServerSideProps({ locale }) {
     return {
         props: {
-            ...(await serverSideTranslations(locale, ['common', 'navbar', 'menu', 'profile', 'languages']))
+            ...(await serverSideTranslations(locale, ['common', 'navbar', 'menu', 'profile', 'languages', 'toasts']))
         }
     }
 }

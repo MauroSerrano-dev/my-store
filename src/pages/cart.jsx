@@ -7,7 +7,7 @@ import { useEffect, useState } from 'react'
 import Selector from '@/components/material-ui/Selector'
 import Cookies from 'js-cookie'
 import CarouselProducts from '@/components/carousels/CarouselProducts'
-import { useTranslation } from 'react-i18next';
+import { useTranslation } from 'next-i18next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
 import { showToast } from '../../utils/toasts'
 import SelectorAutocomplete from '@/components/material-ui/SelectorAutocomplete'
@@ -198,15 +198,6 @@ export default function Cart(props) {
                                     <p>
                                         {tCart('ship_to')}:
                                     </p>
-                                    {/* <Selector
-                                        label={tCommon('Country')}
-                                        value={shippingCountry}
-                                        options={COUNTRIES_POOL}
-                                        width='170px'
-                                        dark
-                                        onChange={handleChangeCountrySelector}
-                                        supportsHoverAndPointer={supportsHoverAndPointer}
-                                    /> */}
                                     <SelectorAutocomplete
                                         multiple={false}
                                         supportsHoverAndPointer={supportsHoverAndPointer}
@@ -297,7 +288,7 @@ export default function Cart(props) {
 
 export async function getServerSideProps({ locale, req }) {
 
-    const translate = await serverSideTranslations(locale, ['common', 'navbar', 'menu', 'cart', 'countries'])
+    const translate = await serverSideTranslations(locale, ['common', 'navbar', 'menu', 'cart', 'countries', 'toasts'])
 
     try {
         const ipAddress = req.headers["x-forwarded-for"]

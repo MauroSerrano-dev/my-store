@@ -2,12 +2,14 @@ import styles from '@/styles/components/products/Product.module.css'
 import { useEffect, useState, useRef } from 'react'
 import { Button, Skeleton } from '@mui/material'
 import Link from 'next/link'
-import { motion } from "framer-motion";
-import { COLORS_POOL, PRODUCT_TYPES } from '../../../consts';
-import ColorButton from '../ColorButton';
-import Image from 'next/image';
+import { motion } from "framer-motion"
+import { COLORS_POOL, PRODUCT_TYPES, WISHLIST_LIMIT } from '../../../consts'
+import ColorButton from '../ColorButton'
+import Image from 'next/image'
 import { useTranslation } from 'next-i18next'
-import HeartButton from '../buttons-icon/HeartButton';
+import HeartButton from '../buttons-icon/HeartButton'
+import CloseRoundedIcon from '@mui/icons-material/CloseRounded'
+import { showToast } from '../../../utils/toasts'
 
 /**
  * @param {object} props - Component props.
@@ -43,9 +45,13 @@ export default function Product(props) {
         style,
         session,
         setSession,
+        hideWishlistButton,
+        showDeleteButton,
+        onDeleteClick,
     } = props
 
     const tCommon = useTranslation('common').t
+    const tToasts = useTranslation('toasts').t
 
     const height = width * 10 / 9
 
@@ -73,6 +79,11 @@ export default function Product(props) {
         setIsDraggingColors(true)
         document.body.style.cursor = 'grabbing'
     }
+
+    // Isso resolveu um bug ao deletar itens no wishlist
+    useEffect(() => {
+        setCurrentVariant(inicialVariantId ? product.variants.find(vari => vari.id === inicialVariantId) : product.variants[0])
+    }, [product])
 
     function handleDragColorsEnd() {
         setAntVisualBug(false)
@@ -124,6 +135,11 @@ export default function Product(props) {
         event.preventDefault()
 
         const add = !session.wishlist_products_ids.includes(product.id)
+
+        if (add && session.wishlist_products_ids.length >= WISHLIST_LIMIT) {
+            showToast({ msg: tToasts('wishlist_limit'), type: 'error' })
+            return
+        }
 
         setSession(prevSession => (
             {
@@ -183,7 +199,19 @@ export default function Product(props) {
                 className={`${styles.linkContainer} noUnderline`}
                 draggable={false}
             >
-                {session && hover && supportsHoverAndPointer &&
+                {showDeleteButton &&
+                    <div
+                        className={styles.wishlistButton}
+                        onClick={onDeleteClick}
+                    >
+                        <CloseRoundedIcon
+                            style={{
+                                fontSize: width * 0.12,
+                            }}
+                        />
+                    </div>
+                }
+                {!hideWishlistButton && session && hover && supportsHoverAndPointer &&
                     <motion.div
                         className={styles.wishlistButton}
                         onClick={handleWishlist}
@@ -219,6 +247,7 @@ export default function Product(props) {
                     >
                         {product.colors_ids.map((color_id, i) =>
                             <Image
+                                priority={color_id === currentVariant.color_id}
                                 quality={100}
                                 key={i}
                                 src={product.images.filter(img => img.color_id === color_id)[product.image_hover_index].src}
@@ -227,7 +256,7 @@ export default function Product(props) {
                                 alt={product.title}
                                 style={{
                                     zIndex: currentVariant.color_id === color_id ? 3 : 2,
-                                    opacity: currentVariant.color_id === color_id ? 3 : 2,
+                                    opacity: currentVariant.color_id === color_id ? 1 : 0,
                                 }}
                             />
                         )}
@@ -243,7 +272,7 @@ export default function Product(props) {
                 >
                     {product.colors_ids.map((color_id, i) =>
                         <Image
-                            priority
+                            priority={color_id === currentVariant.color_id}
                             quality={100}
                             key={i}
                             src={product.images.filter(img => img.color_id === color_id)[product.image_showcase_index].src}

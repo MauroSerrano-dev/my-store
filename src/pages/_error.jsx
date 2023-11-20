@@ -58,7 +58,7 @@ function Error({ statusCode }) {
 export async function getServerSideProps({ locale, res }) {
     return {
         props: {
-            ...(await serverSideTranslations(locale, ['common', 'navbar', 'menu'])),
+            ...(await serverSideTranslations(locale, ['common', 'navbar', 'menu', 'toasts'])),
             statusCode: res.statusCode,
         }
     }

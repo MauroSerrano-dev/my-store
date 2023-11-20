@@ -1,12 +1,11 @@
 import styles from '@/styles/pages/orders/index.module.css'
-import Head from 'next/head'
 import { useEffect, useRef, useState } from 'react'
 import Order from '@/components/products/Order'
 import Selector from '@/components/material-ui/Selector'
 import { motion } from "framer-motion";
 import { CircularProgress } from '@mui/material'
 import NoFound404 from '../../components/NoFound404'
-import { useTranslation } from 'react-i18next'
+import { useTranslation } from 'next-i18next'
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
 import CarouselProducts from '@/components/carousels/CarouselProducts'
 import Footer from '@/components/Footer'
@@ -236,7 +235,7 @@ export default function Orders(props) {
 export async function getServerSideProps({ locale }) {
     return {
         props: {
-            ...(await serverSideTranslations(locale, ['common', 'navbar', 'menu', 'orders', 'footer']))
+            ...(await serverSideTranslations(locale, ['common', 'navbar', 'menu', 'orders', 'footer', 'toasts']))
         }
     }
 }

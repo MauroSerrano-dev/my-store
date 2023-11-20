@@ -5,7 +5,7 @@ import ImagesSlider from '@/components/ImagesSlider'
 import { Button } from '@mui/material'
 import ShoppingCartOutlinedIcon from '@mui/icons-material/ShoppingCartOutlined'
 import CreditCardOutlinedIcon from '@mui/icons-material/CreditCardOutlined'
-import { CART_COOKIE, CART_MAX_ITEMS, COLORS_POOL, SIZES_POOL } from '../../../consts'
+import { CART_COOKIE, CART_MAX_ITEMS, COLORS_POOL, SIZES_POOL, WISHLIST_LIMIT } from '../../../consts'
 import Head from 'next/head'
 import ColorSelector from '@/components/ColorSelector'
 import SizesSelector from '@/components/SizesSelector'
@@ -13,7 +13,7 @@ import ShareButton from '@/components/ShareButton'
 import CareInstructionsIcons from '@/components/svgs/CareInstructionsIcons'
 import NoFound404 from '../../components/NoFound404'
 import Cookies from 'js-cookie'
-import { useTranslation } from 'react-i18next'
+import { useTranslation } from 'next-i18next'
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
 import { showToast } from '../../../utils/toasts'
 import HeartButton from '@/components/buttons-icon/HeartButton'
@@ -37,9 +37,7 @@ export default withRouter(props => {
         setSession,
     } = props
 
-    const tErrors = useTranslation('errors').t
-
-    const [inWishlist, setInWishlist] = useState()
+    const tToasts = useTranslation('toasts').t
 
     const [currentColor, setCurrentColor] = useState(cl ? cl : COLORS_POOL[product?.colors_ids[0]])
     const [currentSize, setCurrentSize] = useState(sz ? sz : SIZES_POOL.find(sz => sz.id === product?.sizes_ids[0]))
@@ -107,7 +105,7 @@ export default withRouter(props => {
             const prodVariant = product.variants.find(vari => vari.size_id === currentSize.id && vari.color_id === currentColor.id)
 
             if (cart.products.some(prod => prod.id === product.id && prod.variant_id === prodVariant.id && prod.quantity >= CART_MAX_ITEMS)) {
-                showToast({ msg: tErrors('max_products_toast'), type: 'error' })
+                showToast({ msg: tToasts('max_products'), type: 'error' })
                 return
             }
 
@@ -147,8 +145,13 @@ export default withRouter(props => {
         setCurrentSize(size)
     }
 
-    function handleWishlist(event) {
+    function handleWishlist() {
         const add = !session.wishlist_products_ids.includes(product.id)
+
+        if (add && session.wishlist_products_ids.length >= WISHLIST_LIMIT) {
+            showToast({ msg: tToasts('wishlist_limit'), type: 'error' })
+            return
+        }
 
         setSession(prevSession => (
             {
@@ -402,7 +405,7 @@ export async function getServerSideProps({ query, locale, resolvedUrl }) {
 
     return {
         props: {
-            ...(await serverSideTranslations(locale, ['common', 'navbar', 'menu', 'errors'])),
+            ...(await serverSideTranslations(locale, ['common', 'navbar', 'menu', 'toasts'])),
             product: product || null,
             cl: colorQuery === undefined ? null : colorQuery,
             sz: sizeQuery === undefined ? null : sizeQuery,

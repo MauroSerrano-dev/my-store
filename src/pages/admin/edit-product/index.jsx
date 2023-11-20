@@ -81,7 +81,7 @@ export default function EditProduct(props) {
 export async function getServerSideProps({ locale }) {
     return {
         props: {
-            ...(await serverSideTranslations(locale, ['common', 'navbar', 'menu']))
+            ...(await serverSideTranslations(locale, ['common', 'navbar', 'menu', 'toasts']))
         }
     }
 }

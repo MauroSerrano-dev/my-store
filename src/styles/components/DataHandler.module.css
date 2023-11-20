@@ -21,8 +21,8 @@
 
     z-index: 30;
 
-    top: 0;
     position: fixed;
+    top: 0;
 
     transition: all ease-in-out 200ms;
 }

@@ -7,7 +7,7 @@ import { IoIosArrowForward, IoIosArrowBack } from "react-icons/io";
 import { useState } from 'react';
 import { motion } from "framer-motion";
 import { MENU_FORWARD_OPTIONS, MENU_OPTIONS } from '../../consts';
-import { useTranslation } from 'react-i18next';
+import { useTranslation } from 'next-i18next';
 
 export default function Menu(props) {
     const {
@@ -62,8 +62,26 @@ export default function Menu(props) {
                 }}
             >
             </motion.div>
-            <div
+            <motion.div
                 className={styles.menu}
+                initial='hidden'
+                animate={menuOpen ? 'visible' : 'hidden'}
+                variants={{
+                    hidden: {
+                        transform: 'translateX(-350px)',
+                        transition: {
+                            ease: 'easeInOut',
+                            duration: 0.35,
+                        }
+                    },
+                    visible: {
+                        transform: 'translateX(0px)',
+                        transition: {
+                            ease: 'easeInOut',
+                            duration: 0.35,
+                        }
+                    }
+                }}
             >
                 <div className={styles.menuHead}>
                     <Logo
@@ -204,7 +222,7 @@ export default function Menu(props) {
                         )}
                     </motion.div>
                 }
-            </div>
+            </motion.div>
         </div>
     )
 }

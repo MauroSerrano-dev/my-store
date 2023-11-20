@@ -1,5 +1,4 @@
 {
-    "Games": "Games",
     "t-shirt": "T-Shirt",
     "mug": "Mug",
     "mug-c": "Mug",
@@ -13,6 +12,7 @@
     "home": "Home",
     "christmas": "Christmas",
     "valentines": "Valentines",
+    "games": "Games",
     "more_info_button": "MORE INFO",
     "Price": "Price",
     "Country": "Country",
