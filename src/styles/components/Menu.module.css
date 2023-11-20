@@ -23,9 +23,10 @@
 
     height: 100vh;
     width: 350px;
-
+    
+    left: -350px;
     top: 0px;
-
+    
     padding: 3rem 1rem;
 
     overflow: hidden;
@@ -63,6 +64,8 @@
     width: 100%;
 
     position: absolute;
+
+    left: 0px;
 
     padding: 0 1rem;
 }
