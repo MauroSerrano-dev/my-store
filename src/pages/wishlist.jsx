@@ -65,7 +65,7 @@ export default function Wishlist({
 
         fetch("/api/wishlists/wishlist", options)
             .then(response => response.json())
-            .then(response => setWishlist(response.wishlist))
+            .then(response => setWishlist(response))
             .catch(err => console.error(err))
     }
 
