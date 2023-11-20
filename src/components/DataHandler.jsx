@@ -340,17 +340,21 @@ export default function DataHandler(props) {
             }
             variants={{
                 closed: {
-                    left: '0px',
+                    transform: 'translateX(0px)',
+                    transition: {
+                        ease: 'easeInOut',
+                        duration: 0.35,
+                    },
                 },
                 open: {
-                    left: '350px',
+                    transform: 'translateX(350px)',
                     transition: {
                         ease: 'easeInOut',
                         duration: 0.35,
                     },
                 },
                 openMobile: {
-                    left: '100vw',
+                    transform: 'translateX(100vw)',
                     transition: {
                         ease: 'easeInOut',
                         duration: 0.35,

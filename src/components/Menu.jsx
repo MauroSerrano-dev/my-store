@@ -62,37 +62,8 @@ export default function Menu(props) {
                 }}
             >
             </motion.div>
-            <motion.div
+            <div
                 className={styles.menu}
-                initial='closed'
-                animate={
-                    menuOpen
-                        ? windowWidth < 420
-                            ? 'openMobile'
-                            : 'open'
-                        : 'closed'
-                }
-                variants={{
-                    closed: {
-                        left: windowWidth < 420
-                            ? '-100%'
-                            : '-350px'
-                    },
-                    open: {
-                        left: '0px',
-                        transition: {
-                            ease: 'easeInOut',
-                            duration: 0.35,
-                        },
-                    },
-                    openMobile: {
-                        left: '0px',
-                        transition: {
-                            ease: 'easeInOut',
-                            duration: 0.35,
-                        },
-                    },
-                }}
             >
                 <div className={styles.menuHead}>
                     <Logo
@@ -120,14 +91,14 @@ export default function Menu(props) {
                     animate={optionMenu ? 'visible' : 'hidden'}
                     variants={{
                         hidden: {
-                            left: '0px',
+                            transform: 'translateX(0px)',
                             transition: {
                                 ease: 'easeInOut',
                                 duration: 0.35,
                             }
                         },
                         visible: {
-                            left: '-110%',
+                            transform: 'translateX(-110%)',
                             transition: {
                                 ease: 'easeInOut',
                                 duration: 0.35,
@@ -233,7 +204,7 @@ export default function Menu(props) {
                         )}
                     </motion.div>
                 }
-            </motion.div>
-        </div >
+            </div>
+        </div>
     )
 }
