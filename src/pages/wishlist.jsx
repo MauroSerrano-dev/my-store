@@ -115,7 +115,12 @@ export default function Wishlist({
 
     return (
         <div className={styles.container}>
-            <div className={styles.pageContainer}>
+            <div
+                className={styles.pageContainer}
+                style={{
+                    minHeight: wishlist ? '0' : '100vh'
+                }}
+            >
                 <div className={styles.titleContainer}>
                     <h1>
                         {tWishlist('wishlist_title')}
@@ -168,7 +173,7 @@ export default function Wishlist({
                 </div>
             </div>
             <Footer />
-        </div>
+        </div >
     )
 }
 
