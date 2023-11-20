@@ -2,6 +2,8 @@ export const CART_COOKIE = 'CART'
 
 export const CART_MAX_ITEMS = 10
 
+export const WISHLIST_LIMIT = 60
+
 export const STEPS = [
     { id: 'sending-to-production', title: 'Sending to Production' },
     { id: 'in-production', title: 'In Production' },

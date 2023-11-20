@@ -187,7 +187,7 @@ export default function Profile(props) {
 export async function getServerSideProps({ locale }) {
     return {
         props: {
-            ...(await serverSideTranslations(locale, ['common', 'navbar', 'menu', 'profile', 'languages']))
+            ...(await serverSideTranslations(locale, ['common', 'navbar', 'menu', 'profile', 'languages', 'toasts']))
         }
     }
 }

@@ -288,7 +288,7 @@ export default function Cart(props) {
 
 export async function getServerSideProps({ locale, req }) {
 
-    const translate = await serverSideTranslations(locale, ['common', 'navbar', 'menu', 'cart', 'countries'])
+    const translate = await serverSideTranslations(locale, ['common', 'navbar', 'menu', 'cart', 'countries', 'toasts'])
 
     try {
         const ipAddress = req.headers["x-forwarded-for"]

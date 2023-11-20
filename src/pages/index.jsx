@@ -279,7 +279,7 @@ export default function Home(props) {
 export async function getServerSideProps({ locale }) {
   return {
     props: {
-      ...(await serverSideTranslations(locale, ['common', 'navbar', 'menu', 'footer', 'index', 'products', 'errors']))
+      ...(await serverSideTranslations(locale, ['common', 'navbar', 'menu', 'footer', 'index', 'products', 'errors', 'toasts']))
     }
   }
 }

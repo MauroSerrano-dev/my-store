@@ -6,8 +6,7 @@ import { useEffect, useRef, useState } from 'react'
 import styles from '@/styles/pages/wishlist.module.css'
 import { useTranslation } from 'next-i18next';
 import lottie from 'lottie-web';
-
-const WISHLIST_LIMIT = 60
+import { WISHLIST_LIMIT } from '../../consts'
 
 export default function Wishlist({
     session,
@@ -176,7 +175,7 @@ export default function Wishlist({
 export async function getServerSideProps({ locale }) {
     return {
         props: {
-            ...(await serverSideTranslations(locale, ['common', 'menu', 'navbar', 'wishlist', 'footer']))
+            ...(await serverSideTranslations(locale, ['common', 'menu', 'navbar', 'wishlist', 'footer', 'toasts']))
         }
     }
 }

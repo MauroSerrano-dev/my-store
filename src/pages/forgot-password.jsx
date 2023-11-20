@@ -124,7 +124,7 @@ export default function ForgotPassword(props) {
 export async function getServerSideProps({ locale }) {
     return {
         props: {
-            ...(await serverSideTranslations(locale, ['common', 'menu', 'navbar']))
+            ...(await serverSideTranslations(locale, ['common', 'menu', 'navbar', 'toasts']))
         }
     }
 }
