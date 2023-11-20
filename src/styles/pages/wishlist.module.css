@@ -54,3 +54,22 @@
     padding-left: 8px;
     padding-bottom: 1rem;
 }
+
+/* Mobile */
+@media (max-width: 500px) {
+    .titleContainer {
+        flex-direction: column;
+    }  
+
+    .titleContainer h1 {
+        font-size: 22px;
+    }
+
+    .titleContainer p {
+        position: relative;
+        font-size: 13px;
+        font-weight: 500;
+        right: 0px;
+        bottom: 0px;
+    }
+}
