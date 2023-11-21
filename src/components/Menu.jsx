@@ -14,6 +14,7 @@ export default function Menu(props) {
         switchMenu,
         menuOpen,
         session,
+        windowWidth,
     } = props
     const [optionMenu, setOptionMenu] = useState()
     const [optionMenuDelay, setOptionMenuDelay] = useState()
@@ -63,9 +64,22 @@ export default function Menu(props) {
             </motion.div>
             <motion.div
                 className={styles.menu}
-                initial='hidden'
-                animate={menuOpen ? 'visible' : 'hidden'}
+                initial={windowWidth < 420 ? 'hiddenMobile' : 'hidden'}
+                animate={
+                    menuOpen
+                        ? 'visible'
+                        : windowWidth < 420
+                            ? 'hiddenMobile'
+                            : 'hidden'
+                }
                 variants={{
+                    hiddenMobile: {
+                        transform: 'translateX(-100vw)',
+                        transition: {
+                            ease: 'easeInOut',
+                            duration: 0.35,
+                        },
+                    },
                     hidden: {
                         transform: 'translateX(-350px)',
                         transition: {
