@@ -14,7 +14,6 @@ export default function Menu(props) {
         switchMenu,
         menuOpen,
         session,
-        windowWidth,
     } = props
     const [optionMenu, setOptionMenu] = useState()
     const [optionMenuDelay, setOptionMenuDelay] = useState()
