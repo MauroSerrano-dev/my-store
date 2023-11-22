@@ -3,6 +3,7 @@ import { setCartProducts } from '../../../../backend/cart'
 import { setCartSessionProducts } from '../../../../backend/cart-session'
 import { createOrder } from '../../../../backend/orders'
 import getRawBody from 'raw-body'
+import { deleteProductsFromWishlist } from '../../../../backend/wishlists'
 const { v4: uuidv4 } = require('uuid')
 
 const Stripe = require("stripe")
@@ -102,10 +103,12 @@ export default async function handler(req, res) {
                     },
                 }
             )
-            
+
             if (cart_id) {
-                if (user_id)
+                if (user_id) {
                     await setCartProducts(cart_id, [])
+                    await deleteProductsFromWishlist(user_id, line_items)
+                }
                 else
                     await setCartSessionProducts(cart_id, [])
             }

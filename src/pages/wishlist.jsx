@@ -7,6 +7,7 @@ import styles from '@/styles/pages/wishlist.module.css'
 import { useTranslation } from 'next-i18next';
 import lottie from 'lottie-web';
 import { WISHLIST_LIMIT } from '../../consts'
+import NoFound404 from '@/components/NoFound404'
 
 export default function Wishlist({
     session,
@@ -23,6 +24,7 @@ export default function Wishlist({
     const animationContainer = useRef(null)
 
     const tWishlist = useTranslation('wishlist').t
+    const tErrors = useTranslation('errors').t
 
     useEffect(() => {
         if (session)
@@ -32,7 +34,6 @@ export default function Wishlist({
     useEffect(() => {
         function handleResize() {
             const containerWidth = productsContainer.current.offsetWidth
-
             if (containerWidth > 900)
                 setProductWidth((containerWidth - 16 * 5) / 5)
             else if (containerWidth > 700)
@@ -43,7 +44,7 @@ export default function Wishlist({
                 setProductWidth((containerWidth - 16 * 2) / 2)
         }
 
-        if (windowWidth) {
+        if (windowWidth && session !== undefined) {
             handleResize()
         }
 
@@ -52,7 +53,7 @@ export default function Wishlist({
         return () => {
             window.removeEventListener('resize', handleResize)
         }
-    }, [windowWidth])
+    }, [windowWidth, session])
 
     function getWishlist() {
         const options = {
@@ -114,73 +115,77 @@ export default function Wishlist({
     }, [wishlist])
 
     return (
-        <div className={styles.container}>
-            <div
-                className={styles.pageContainer}
-                style={{
-                    minHeight: wishlist ? '0' : '100vh'
-                }}
-            >
-                <div className={styles.titleContainer}>
-                    <h1>
-                        {tWishlist('wishlist_title')}
-                    </h1>
-                    {wishlist &&
-                        <p>
-                            {wishlist.products.length}/{WISHLIST_LIMIT}
-                        </p>
-                    }
-                </div>
-                <div
-                    className={styles.products}
-                    ref={productsContainer}
-                >
-                    {!wishlist
-                        ? Array(20).fill(null).map((ske, i) =>
-                            <ProductSkeleton
-                                key={i}
-                                productWidth={productWidth}
-                                supportsHoverAndPointer={supportsHoverAndPointer}
-                            />
-                        )
-                        : wishlist?.products.length === 0
-                            ? <div className='flex column center fillWidth'>
-                                <div
-                                    ref={animationContainer}
-                                    style={{
-                                        width: '100%',
-                                        height: 400,
-                                    }}
-                                >
-                                </div>
-                                <h2>No Products Found</h2>
-                            </div>
-                            : wishlist?.products.map((product, i) =>
-                                <Product
-                                    key={i}
-                                    product={product}
-                                    userCurrency={userCurrency}
-                                    supportsHoverAndPointer={supportsHoverAndPointer}
-                                    session={session}
-                                    setSession={setSession}
-                                    width={productWidth}
-                                    hideWishlistButton
-                                    showDeleteButton
-                                    onDeleteClick={event => handleDeleteClick(event, product.id)}
-                                />
-                            )
-                    }
-                </div>
-            </div>
-            <Footer />
-        </div >
+        session === undefined
+            ? <div></div>
+            : session === null
+                ? <NoFound404 />
+                : <div className={styles.container}>
+                    <div
+                        className={styles.pageContainer}
+                        style={{
+                            minHeight: wishlist ? '0' : '100vh'
+                        }}
+                    >
+                        <div className={styles.titleContainer}>
+                            <h1>
+                                {tWishlist('wishlist_title')}
+                            </h1>
+                            {wishlist &&
+                                <p>
+                                    {wishlist.products.length}/{WISHLIST_LIMIT}
+                                </p>
+                            }
+                        </div>
+                        <div
+                            className={styles.products}
+                            ref={productsContainer}
+                        >
+                            {!wishlist
+                                ? Array(20).fill(null).map((ske, i) =>
+                                    <ProductSkeleton
+                                        key={i}
+                                        productWidth={productWidth}
+                                        supportsHoverAndPointer={supportsHoverAndPointer}
+                                    />
+                                )
+                                : wishlist?.products.length === 0
+                                    ? <div className='flex column center fillWidth'>
+                                        <div
+                                            ref={animationContainer}
+                                            style={{
+                                                width: '100%',
+                                                height: 400,
+                                            }}
+                                        >
+                                        </div>
+                                        <h2>{tErrors('no_products_found')}</h2>
+                                    </div>
+                                    : wishlist?.products.map((product, i) =>
+                                        <Product
+                                            key={i}
+                                            product={product}
+                                            userCurrency={userCurrency}
+                                            supportsHoverAndPointer={supportsHoverAndPointer}
+                                            session={session}
+                                            setSession={setSession}
+                                            width={productWidth}
+                                            hideWishlistButton
+                                            showDeleteButton
+                                            onDeleteClick={event => handleDeleteClick(event, product.id)}
+                                        />
+                                    )
+                            }
+                        </div>
+                    </div>
+                    <Footer />
+                </div >
     )
 }
 
 export async function getServerSideProps({ locale }) {
     return {
         props: {
-            ...(await serverSideTranslations(locale, ['common', 'menu', 'navbar', 'wishlist', 'footer', 'toasts']))
+            ...(await serverSideTranslations(locale, ['common', 'menu', 'navbar', 'wishlist', 'footer', 'toasts', 'errors']))
         }
     }
 }
