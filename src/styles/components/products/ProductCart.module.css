@@ -54,7 +54,7 @@
 
 .rightRight {
     position: relative;
-    
+
     white-space: nowrap;
 
     display: flex;
@@ -122,6 +122,21 @@
     align-items: center;
 
     background-color: var(--sold-out-bg);
+
+    border-radius: 30rem;
+    font-weight: 700;
+    --text-color: var(--text-white);
+
+    font-size: 13px;
+    padding: 0.1rem 0.6rem;
+}
+
+.outOfStock {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    background-color: var(--out-of-stock-bg);
 
     border-radius: 30rem;
     font-weight: 700;

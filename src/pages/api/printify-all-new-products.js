@@ -19,7 +19,7 @@ export default async function handler(req, res) {
         };
 
         try {
-            const response = await axios.get(base_url, { headers });
+            const response = await axios.get(base_url, { headers: headers });
             const printifyApiData = response.data;
 
             const existingProductPrintifyIdsData = await getAllProductPrintifyIds();

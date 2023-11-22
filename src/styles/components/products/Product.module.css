@@ -142,25 +142,6 @@
     display: none;
 }
 
-.outOfStock {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-
-    background-color: #f9a11d;
-
-    border-radius: 30rem;
-    font-weight: 700;
-    --text-color: var(--text-white);
-
-    position: absolute;
-    height: 17%;
-    width: 52%;
-
-    top: -8.5%;
-    left: 24%;
-}
-
 .tagContainer {
     display: flex;
     justify-content: center;

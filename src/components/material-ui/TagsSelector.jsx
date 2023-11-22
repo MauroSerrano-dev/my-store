@@ -60,7 +60,7 @@ export default function TagsSelector(props) {
                     transition: 'all ease-in-out 200ms'
                 },
             }}
-            renderInput={(params) => (
+            renderInput={params => (
                 <TextInput
                     supportsHoverAndPointer={supportsHoverAndPointer}
                     style={style}

@@ -32,6 +32,7 @@ export default function Cart(props) {
     const [shippingValue, setShippingValue] = useState(0)
     const [shippingCountry, setShippingCountry] = useState(location?.country || 'US')
     const [allProducts, setAllProducts] = useState()
+    const [outOfStock, setOutOfStock] = useState([])
 
     const SHIPPING_CONVERTED = Math.ceil(shippingValue * userCurrency?.rate)
 
@@ -42,6 +43,7 @@ export default function Cart(props) {
     const tCommon = useTranslation('common').t
     const tCart = useTranslation('cart').t
     const tCountries = useTranslation('countries').t
+    const tToasts = useTranslation('toasts').t
 
     useEffect(() => {
         getShippingValue()
@@ -65,10 +67,11 @@ export default function Cart(props) {
             },
             body: JSON.stringify({
                 cartItems: cart.products.map(prod => {
-                    const providerId = getShippingOptions(prod.type_id, shippingCountry).provider_id
+                    const provider = getShippingOptions(prod.type_id, shippingCountry)
                     return {
                         ...prod,
-                        id_printify: prod.printify_ids[providerId],
+                        id_printify: prod.printify_ids[provider.id],
+                        provider: provider,
                         variant_id: prod.variant.id,
                         variant_id_printify: typeof prod.variant.id_printify === 'number' ? prod.variant.id_printify : prod.variant.id_printify[providerId],
                         price: Math.ceil(prod.variant.price * userCurrency?.rate),
@@ -86,7 +89,25 @@ export default function Cart(props) {
 
         fetch('/api/stripe', options)
             .then(response => response.json())
-            .then(response => window.location.href = response.url)
+            .then(response => {
+                if (response.outOfStock) {
+                    setOutOfStock(response.outOfStock)
+                    showToast({
+                        msg: tToasts(
+                            'out_of_stock',
+                            {
+                                count: response.outOfStock.length,
+                                country: tCountries(shippingCountry),
+                                product_title: response.outOfStock[0].title,
+                                variant_title: response.outOfStock[0].variant.title,
+                            }
+                        ),
+                        type: 'error'
+                    })
+                }
+                else
+                    window.location.href = response.url
+            })
             .catch(err => console.error(err))
     }
 
@@ -169,6 +190,7 @@ export default function Cart(props) {
                             >
                                 {cart.products.map((product, i) =>
                                     <ProductCart
+                                        outOfStock={outOfStock.some(prodOut => prodOut.id === product.id && prodOut.variant.id === product.variant.id)}
                                         session={session}
                                         setCart={setCart}
                                         product={product}
@@ -199,7 +221,6 @@ export default function Cart(props) {
                                         {tCart('ship_to')}:
                                     </p>
                                     <SelectorAutocomplete
-                                        multiple={false}
                                         supportsHoverAndPointer={supportsHoverAndPointer}
                                         options={
                                             Object.keys(COUNTRIES_POOL)

@@ -1,4 +1,6 @@
 {
     "max_products": "Maximum number of identical products reached",
-    "wishlist_limit": "Maximum number of products in wishlist reached"
+    "wishlist_limit": "Maximum number of products in wishlist reached",
+    "out_of_stock_one": "{{product_title}} {{variant_title}} is Out of Stock for {{country}}.",
+    "out_of_stock_other": "{{count}} Products Out of Stock for {{country}}."
 }

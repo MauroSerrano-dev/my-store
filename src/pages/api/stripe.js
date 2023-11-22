@@ -1,5 +1,6 @@
 import { isTokenValid } from "../../../auth";
 import { STEPS } from "../../../consts";
+import axios from 'axios'
 
 const Stripe = require("stripe");
 
@@ -25,6 +26,23 @@ export default async function handler(req, res) {
       success_url,
       cancel_url,
     } = req.body
+
+    let outOfStock = []
+
+    const asyncRequests = cartItems.map(async item => {
+      const base_url_print = `https://api.printify.com/v1/catalog/blueprints/${item.blueprint_ids[item.provider.provider_id]}/print_providers/${item.provider.provider_id}/variants.json?show-out-of-stock=0`
+      const headers_print = { Authorization: process.env.PRINTIFY_ACCESS_TOKEN }
+      const print_res = await axios.get(base_url_print, { headers: headers_print })
+
+      if (print_res.data.variants.every(vari => vari.id !== item.variant.id_printify))
+        outOfStock.push({ id: item.id, title: item.title, variant: item.variant })
+    })
+
+    await Promise.all(asyncRequests)
+
+    if (outOfStock.length !== 0) {
+      return res.status(200).json({ outOfStock: outOfStock })
+    }
 
     let stripeCustomer
 
@@ -123,7 +141,7 @@ export default async function handler(req, res) {
     })
 
     // res.redirect(303, session.url)
-    res.send({ url: session.url })
+    return res.send({ url: session.url })
   }
 }
 

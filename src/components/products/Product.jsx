@@ -19,12 +19,10 @@ import { showToast } from '../../../utils/toasts'
  * @param {string} props.width - Component width.
  * @param {boolean} props.responsive - Responsive width.
  * @param {boolean} props.supportsHoverAndPointer - Device supportsHoverAndPointer.
- * @param {boolean} props.outOfStock - Product outOfStock.
  */
 
 export default function Product(props) {
     const {
-        outOfStock,
         userCurrency,
         width = 225,
         supportsHoverAndPointer,
@@ -322,19 +320,6 @@ export default function Product(props) {
                             }
                         </p>
                     </div>
-                    {outOfStock &&
-                        <div
-                            className={styles.outOfStock}
-                        >
-                            <p
-                                style={{
-                                    fontSize: width * 0.055
-                                }}
-                            >
-                                OUT OF STOCK
-                            </p>
-                        </div>
-                    }
                     <p
                         className={styles.name}
                         style={{

@@ -3,6 +3,14 @@
         {
             "path": "/api/crons/daily",
             "schedule": "30 4 * * *"
+        },
+        {
+            "path": "/api/crons/monthly",
+            "schedule": "5 0 1 * *"
+        },
+        {
+            "path": "/api/crons/yearly",
+            "schedule": "5 0 1 1 *"
         }
     ],
     "functions": {
