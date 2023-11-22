@@ -18,6 +18,7 @@ export default function ProductCart(props) {
         session,
         supportsHoverAndPointer,
         setLoading,
+        outOfStock,
     } = props
 
     const { i18n } = useTranslation()
@@ -167,7 +168,15 @@ export default function ProductCart(props) {
                     </div>
                     <div className={styles.bodyContainer}>
                         <div className={styles.bodyTop}>
-                            {product.sold_out &&
+                            {outOfStock
+                                ? <div
+                                    className={styles.outOfStock}
+                                >
+                                    <p>
+                                        OUT OF STOCK
+                                    </p>
+                                </div>
+                                : product.sold_out &&
                                 <div
                                     className={styles.soldOut}
                                 >

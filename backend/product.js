@@ -15,7 +15,7 @@ import {
 import { initializeApp } from 'firebase/app'
 import { firebaseConfig } from "../firebase.config"
 import Fuse from 'fuse.js'
-import { PRODUCT_TYPES, TAGS_POOL, THEMES_POOL } from "../consts"
+import { POPULARITY_POINTS, PRODUCT_TYPES, TAGS_POOL, THEMES_POOL } from "../consts"
 import translate from "translate"
 
 initializeApp(firebaseConfig)
@@ -105,6 +105,7 @@ async function getCartProductsInfo(cartProducts) {
                 description: product.description,
                 sold_out: product.sold_out,
                 printify_ids: product.printify_ids,
+                blueprint_ids: product.blueprint_ids,
                 variant: variant,
                 default_variant: {
                     color_id: product.variants[0].color_id,
@@ -440,6 +441,12 @@ async function handleProductsPurchased(line_items) {
                 // Atualize o total_sales no produto
                 productData.total_sales += quantity
 
+                productData.popularity += POPULARITY_POINTS.purchase * quantity
+
+                productData.popularity_year += POPULARITY_POINTS.purchase * quantity
+                
+                productData.popularity_month += POPULARITY_POINTS.purchase * quantity
+
                 // Verifique se o produto tem variantes
                 if (productData.variants) {
                     const variant = productData.variants.find(v => v.id === variant_id)
@@ -535,6 +542,68 @@ async function getProductsByIds(ids) {
     }
 }
 
+async function cleanPopularityMonth() {
+    try {
+        const productsCollection = collection(db, process.env.COLL_PRODUCTS);
+        const querySnapshot = await getDocs(productsCollection);
+
+        const batch = db.batch();
+
+        querySnapshot.forEach((doc) => {
+            const productRef = doc.ref;
+            const data = doc.data();
+            const updatedData = { ...data, popularity_month: 0 }; // Atualiza o campo popularity_month para zero
+
+            batch.update(productRef, updatedData);
+        });
+
+        await batch.commit();
+
+        return {
+            status: 200,
+            message: 'Popularity month reset for all products!',
+        };
+    } catch (error) {
+        console.error('Error cleaning popularity month:', error);
+        return {
+            status: 500,
+            message: 'Error cleaning popularity month.',
+            error: error,
+        };
+    }
+}
+
+async function cleanPopularityYear() {
+    try {
+        const productsCollection = collection(db, process.env.COLL_PRODUCTS);
+        const querySnapshot = await getDocs(productsCollection);
+
+        const batch = db.batch();
+
+        querySnapshot.forEach((doc) => {
+            const productRef = doc.ref;
+            const data = doc.data();
+            const updatedData = { ...data, popularity_year: 0 }; // Atualiza o campo popularity_year para zero
+
+            batch.update(productRef, updatedData);
+        });
+
+        await batch.commit();
+
+        return {
+            status: 200,
+            message: 'Popularity year reset for all products!',
+        };
+    } catch (error) {
+        console.error('Error cleaning popularity year:', error);
+        return {
+            status: 500,
+            message: 'Error cleaning popularity year.',
+            error: error,
+        };
+    }
+}
+
 export {
     createProduct,
     getProductsByQueries,
@@ -547,4 +616,6 @@ export {
     getCartProductsInfo,
     getAllProductsIds,
     getProductsByIds,
+    cleanPopularityMonth,
+    cleanPopularityYear
 }

@@ -21,6 +21,7 @@
   --filter-tag-color: #222222;
 
   --sold-out-bg: #ff5e5b;
+  --out-of-stock-bg: #bA2326;
 }
 
 * {

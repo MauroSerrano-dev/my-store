@@ -3,7 +3,7 @@ import TextInput from './TextInput';
 
 export default function SelectorAutocomplete(props) {
     const {
-        label = 'Label',
+        label,
         dark,
         colorBorderHover = dark ? '#000000' : '#ffffff',
         colorBorder = dark ? '#00000070' : '#ffffff90',
@@ -57,7 +57,7 @@ export default function SelectorAutocomplete(props) {
                     transition: 'all ease-in-out 200ms'
                 },
             }}
-            renderInput={(params) => (
+            renderInput={params => (
                 <TextInput
                     supportsHoverAndPointer={supportsHoverAndPointer}
                     style={style}

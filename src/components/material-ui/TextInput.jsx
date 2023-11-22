@@ -3,7 +3,7 @@ import { useState } from 'react';
 
 export default function TextInput(props) {
     const {
-        label = 'Label',
+        label,
         dark,
         colorBorderHover = dark ? '#000000' : '#ffffff',
         colorBorder = dark ? '#00000070' : '#ffffff90',

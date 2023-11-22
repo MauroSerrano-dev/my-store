@@ -199,6 +199,13 @@ export const PRODUCTS_FAMILY = {
     'mugs': { id: 'mugs', color: '#bA2326' },
 }
 
+export const POPULARITY_POINTS = {
+    'visit': 1,
+    'putOnCart': 5,
+    'share': 20,
+    'purchase': 100,
+}
+
 export const PRODUCT_TYPES = [
     {
         id: 't-shirt',
@@ -206,6 +213,11 @@ export const PRODUCT_TYPES = [
         title: 'T-Shirt',
         color: '#1189C4',
         providers: [29, 87, 72],
+        blueprint_ids: {
+            29: 145,
+            87: 145,
+            72: 145,
+        },
         colors: [521, 418, 358, 362, 364, 369, 392, 424, 425, 511, 423],
         sizes: [14, 15, 16, 17, 18],
         variants: [
@@ -767,6 +779,11 @@ export const PRODUCT_TYPES = [
         title: 'Hoodie',
         color: '#026539',
         providers: [29, 26, 72],
+        blueprint_ids: {
+            29: 77,
+            26: 77,
+            72: 77,
+        },
         colors: [521, 418, 358, 395, 364, 369, 367, 392, 425, 511, 423],
         sizes: [14, 15, 16, 17, 18],
         variants: [
@@ -1429,6 +1446,10 @@ export const PRODUCT_TYPES = [
         title: 'Raglan Tee',
         color: '#e0824b',
         providers: [27, 6],
+        blueprint_ids: {
+            27: 79,
+            6: 79,
+        },
         colors: [1535, 1062, 1792, 1536, 1058, 1795, 1750],
         sizes: [14, 15, 16, 17, 18],
         variants: [
@@ -1789,6 +1810,10 @@ export const PRODUCT_TYPES = [
         title: 'Mug',
         color: '#bA2326',
         providers: [1, 87],
+        blueprint_ids: {
+            1: 1020,
+            87: 68,
+        },
         sizes: [1189],
         colors: [2620],
         variants: [
@@ -1813,6 +1838,10 @@ export const PRODUCT_TYPES = [
         title: 'Mug',
         color: '#bA2326',
         providers: [28, 87],
+        blueprint_ids: {
+            28: 635,
+            87: 1019,
+        },
         sizes: [1189],
         colors: [2621, 2662, 2663, 2665],
         variants: [
@@ -1873,6 +1902,7 @@ export const PRODUCT_TYPES = [
 ]
 
 export function getShippingOptions(product_type, country) {
+    console.log(country)
     const EU_COUNTRIES = ['PL', 'DE', 'BV', 'GE', 'SM', 'GI', 'GG', 'AT', 'HU', 'MD', 'HR', 'BE', 'IM', 'GR', 'IT', 'BY', 'GL', 'GP', 'LU', 'VA', 'JE', 'SK', 'BG', 'MK', 'PT', 'RE', 'FR', 'RO', 'TR', 'SI', 'XK', 'CZ', 'RS', 'ES', 'MC', 'ME', 'UA', 'AL', 'AM', 'CY', 'AX', 'AD', 'FO', 'BA', 'NL', 'MT']
 
     const EU_NORTH_COUNTRIES = ['LV', 'LT', 'NO', 'FI', 'SE', 'EE', 'IS', 'DK', 'CH', 'LI']
@@ -1908,7 +1938,7 @@ export function getShippingOptions(product_type, country) {
                 currency: 'usd'
             }
         }
-        if (countryCode === 'UK') {
+        if (countryCode === 'GB') {
             return {
                 provider_id: 72,
                 first_item: 429,
@@ -1964,7 +1994,7 @@ export function getShippingOptions(product_type, country) {
                 currency: 'usd'
             }
         }
-        if (countryCode === 'UK') {
+        if (countryCode === 'GB') {
             return {
                 provider_id: 72,
                 first_item: 759,
@@ -2020,7 +2050,7 @@ export function getShippingOptions(product_type, country) {
                 currency: 'usd'
             }
         }
-        if (countryCode === 'UK') {
+        if (countryCode === 'GB') {
             return {
                 provider_id: 6,
                 first_item: 398,
@@ -2068,7 +2098,7 @@ export function getShippingOptions(product_type, country) {
                 currency: 'usd'
             }
         }
-        if (countryCode === 'UK') {
+        if (countryCode === 'GB') {
             return {
                 provider_id: 87,
                 first_item: 729,
@@ -2132,7 +2162,7 @@ export function getShippingOptions(product_type, country) {
                 currency: 'usd'
             }
         }
-        if (countryCode === 'UK') {
+        if (countryCode === 'GB') {
             return {
                 provider_id: 87,
                 first_item: 729,
