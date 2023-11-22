@@ -1,4 +1,4 @@
-import { doc, getDoc, getFirestore, updateDoc, Timestamp, setDoc } from "firebase/firestore";
+import { doc, getDoc, getFirestore, updateDoc, Timestamp, setDoc, getDocs } from "firebase/firestore";
 import { initializeApp } from 'firebase/app'
 import { firebaseConfig } from "../firebase.config"
 import { mergeProducts } from "../utils";
@@ -109,9 +109,50 @@ async function deleteProductFromWishlist(wishlistId, product) {
     }
 }
 
+async function deleteProductsFromWishlist(user_id, productsToDelete) {
+    try {
+        const wishlistQuery = query(
+            collection(db, process.env.COLL_WISHLISTS),
+            where("user_id", "==", user_id)
+        )
+        const querySnapshot = await getDocs(wishlistQuery);
+
+        if (querySnapshot.empty) {
+            return {
+                status: 404,
+                message: `Wishlist for user ID ${user_id} not found.`,
+                wishlist: null,
+            }
+        }
+
+        const wishlistDoc = querySnapshot.docs[0];
+        const wishlistData = wishlistDoc.data();
+
+        wishlistData.products = wishlistData.products.filter(prod => !productsToDelete.some(product => product.id === prod.id))
+
+        await updateDoc(wishlistDoc.ref, wishlistData)
+
+        return {
+            status: 200,
+            message: `Products deleted from the wishlist successfully!`,
+            wishlist: wishlistData,
+        }
+    } catch (error) {
+        console.error(`Error deleting products from the wishlist: ${error}`)
+        return {
+            status: 500,
+            message: `Error deleting products from the wishlist: ${error}`,
+            wishlist: null,
+            error: error,
+        }
+    }
+}
+
+
 export {
     getWishlistById,
     createWishlist,
     addProductToWishlist,
     deleteProductFromWishlist,
+    deleteProductsFromWishlist
 }

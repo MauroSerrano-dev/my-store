@@ -226,7 +226,8 @@ export default function Product(props) {
                     >
                         <HeartButton
                             style={{
-                                top: '1px'
+                                top: '1px',
+                                color: 'var(--global-white)'
                             }}
                             checked={session.wishlist_products_ids.includes(product.id)}
                             size={width * 0.13}

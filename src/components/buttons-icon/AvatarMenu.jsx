@@ -29,11 +29,30 @@ export default function AvatarMenu(props) {
     setOpen(false)
   }
 
+  function handleMouseEnter() {
+    if (supportsHoverAndPointer) {
+      setOpen(true)
+    }
+  }
+
+  function handleMouseLeave() {
+    if (supportsHoverAndPointer) {
+      setOpen(false)
+    }
+  }
+
+  function handleOnClick() {
+    if (!supportsHoverAndPointer) {
+      setOpen(prev => !prev)
+    }
+  }
+
   return (
     <div
       className={styles.container}
-      onMouseEnter={() => setOpen(true)}
-      onMouseLeave={() => setOpen(false)}
+      onMouseEnter={handleMouseEnter}
+      onMouseLeave={handleMouseLeave}
+      onClick={handleOnClick}
     >
       {supportsHoverAndPointer
         ? <Link

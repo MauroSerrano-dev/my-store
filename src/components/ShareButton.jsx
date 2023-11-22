@@ -12,7 +12,8 @@ export default function ShareButton(props) {
         link,
         wppMsg,
         style,
-        mobile
+        mobile,
+        supportsHoverAndPointer
     } = props
 
     const link_replace = link.replaceAll('+', '%2B').replaceAll('&', '%26')
@@ -46,12 +47,34 @@ export default function ShareButton(props) {
         closeModal();
     }
 
+    function handleMouseEnter() {
+        if (supportsHoverAndPointer) {
+            openModal()
+        }
+    }
+
+    function handleMouseLeave() {
+        if (supportsHoverAndPointer) {
+            closeModal()
+        }
+    }
+
+    function handleOnClick() {
+        if (!supportsHoverAndPointer) {
+            if (open)
+                closeModal()
+            else
+                openModal()
+        }
+    }
+
     return (
         <div
             className={styles.container}
             style={style}
-            onMouseEnter={openModal}
-            onMouseLeave={closeModal}
+            onMouseEnter={handleMouseEnter}
+            onMouseLeave={handleMouseLeave}
+            onClick={handleOnClick}
         >
             <div className={styles.iconContainer}>
                 <IosShareRoundedIcon
