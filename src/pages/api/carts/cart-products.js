@@ -1,4 +1,4 @@
-import { isTokenValid } from "../../../../auth";
+import { isTokenValid } from "../../../../utils/auth";
 import { addProductsToCart } from "../../../../backend/cart";
 import { addProductsToCartSession } from "../../../../backend/cart-session";
 import { getCartProductsInfo } from "../../../../backend/product";

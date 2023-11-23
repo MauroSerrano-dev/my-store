@@ -11,6 +11,7 @@ import Menu from './Menu'
 import { motion } from 'framer-motion'
 import { v4 as uuidv4 } from 'uuid'
 import { useTranslation } from 'next-i18next';
+import { showToast } from '../../utils/toasts'
 
 const SUB_NAVBAR_HEIGHT = 40
 const SUB_NAVBAR_HEIGHT_MOBILE = 43
@@ -30,7 +31,6 @@ export default function DataHandler(props) {
     const [mobile, setMobile] = useState()
     const [windowWidth, setWindowWidth] = useState()
     const [websiteVisible, setWebsiteVisible] = useState(false)
-    const [showIntroduction, setShowIntroduction] = useState(false)
     const [userCurrency, setUserCurrency] = useState()
     const [search, setSearch] = useState('')
     const [productOptions, setProductOptions] = useState([])
@@ -39,6 +39,7 @@ export default function DataHandler(props) {
     const [showMenu, setShowMenu] = useState(false)
 
     const tNavbar = useTranslation('navbar').t
+    const tToasts = useTranslation('toasts').t
 
     // Inicialize o Firebase
     const firebaseApp = initializeApp(firebaseConfig)
@@ -134,29 +135,40 @@ export default function DataHandler(props) {
 
     function handleSetSession(session) {
         setSession(session)
-        if (!session.introduction_complete)
-            setShowIntroduction(true)
     }
 
-    async function login(email, password) {
+    async function login(email, password, isNewUser) {
         try {
-            await signInWithEmailAndPassword(auth, email, password);
+            await signInWithEmailAndPassword(auth, email, password)
             router.push('/')
+            if (!isNewUser) {
+                showToast({ msg: tToasts('success_login'), type: 'success' })
+            }
         } catch (error) {
-            console.error('Error trying to login:', error);
+            setLoading(false)
+            if (error.code === 'auth/wrong-password')
+                showToast({ msg: tToasts('wrong_password'), type: 'error' })
+            else if (error.code === 'auth/user-not-found')
+                showToast({ msg: tToasts('user_not_found'), type: 'error' })
+            else if (error.code === 'auth/too-many-requests')
+                showToast({ msg: tToasts('too_many_requests'), type: 'error' })
+            else
+                showToast({ msg: tToasts('default_error'), type: 'error' })
         }
     }
 
     function logout() {
-        router.push('/')
+        signOut(auth)
+        window.location.href = window.origin
+        /* router.push('/')
         setTimeout(() => {
             setSession(null)
             signOut(auth)
-        }, 1000)
+        }, 1000) */
     }
 
     function handleIntroductionComplete() {
-        setShowIntroduction(false)
+        setSession(prev => ({ ...prev, introduction_complete: true }))
         const options = {
             method: 'POST',
             headers: {
@@ -439,8 +451,7 @@ export default function DataHandler(props) {
                     />
                 }
             </div>
-            {
-                showIntroduction &&
+            {session && !session.introduction_complete &&
                 <div
                     className={styles.introduction}
                     onClick={handleIntroductionComplete}

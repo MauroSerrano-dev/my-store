@@ -1,4 +1,4 @@
-import { isTokenValid } from "../../../auth";
+import { isTokenValid } from "../../../utils/auth";
 import { mergeCarts } from "../../../backend/cart";
 import { updateField, createNewUserWithGoogle, getUserById } from "../../../backend/user";
 import { getWishlistById } from "../../../backend/wishlists";

@@ -18,7 +18,7 @@ import { toast } from 'react-toastify'
 
 export function showToast(props = {}) {
     const {
-        type = 'info',
+        type = 'warning',
         msg = 'This is a toast!',
         time = 3000,
         theme = 'light',
@@ -30,7 +30,19 @@ export function showToast(props = {}) {
         position = 'top-center'
     } = props
 
-    if (type === 'info') {
+    if (type === 'warning') {
+        toast.warning(msg, {
+            position: position,
+            autoClose: time,
+            hideProgressBar: hideProgressBar,
+            closeOnClick: closeOnClick,
+            pauseOnHover: pauseOnHover,
+            draggable: draggable,
+            progress: progress,
+            theme: theme,
+        })
+    }
+    else if (type === 'info') {
         toast.info(msg, {
             position: position,
             autoClose: time,

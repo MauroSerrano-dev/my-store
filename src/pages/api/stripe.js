@@ -1,4 +1,4 @@
-import { isTokenValid } from "../../../auth";
+import { isTokenValid } from "../../../utils/auth";
 import { STEPS } from "../../../consts";
 import axios from 'axios'
 

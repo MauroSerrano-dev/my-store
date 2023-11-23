@@ -1,4 +1,4 @@
-import { isTokenValid } from "../../../auth";
+import { isTokenValid } from "../../../utils/auth";
 import { updateField } from "../../../backend/user";
 
 export default async function handler(req, res) {

@@ -114,16 +114,33 @@ async function createNewUserWithCredentials(user) {
                 });
  */
             return {
-                ...newUser,
-                id: newUserRef.id
-            };
+                status: 201,
+                user: {
+                    ...newUser,
+                    id: newUserRef.id
+                },
+                message: 'user_created',
+            }
         } else {
             console.log(`${user.email} already exists as a user.`)
-            return null
+            return {
+                status: 400,
+                message: 'email_already_exists',
+            }
         }
     } catch (error) {
         console.error("Error creating a new user and session:", error)
-        throw error
+        if (error.code === 'auth/invalid-email')
+            return {
+                status: 400,
+                message: 'invalid_email',
+            }
+        else {
+            return {
+                status: 400,
+                message: 'default_error',
+            }
+        }
     }
 }
 

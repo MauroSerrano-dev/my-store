@@ -8,6 +8,8 @@ import { useEffect, useState } from 'react'
 import { signInWithPopup, GoogleAuthProvider, signInWithRedirect } from "firebase/auth"
 import { showToast } from '../../utils/toasts'
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
+import PasswordInput from '@/components/material-ui/PasswordInput'
+import { useTranslation } from 'next-i18next';
 
 const provider = new GoogleAuthProvider()
 
@@ -18,9 +20,12 @@ export default function Login(props) {
         mobile,
         router,
         session,
+        setLoading,
     } = props
 
     const [reCaptchaSolve, setReCaptchaSolve] = useState(false)
+
+    const tToasts = useTranslation('toasts').t
 
     useEffect(() => {
         if (session)
@@ -37,8 +42,13 @@ export default function Login(props) {
 
     function googleLogin() {
         signInWithPopup(auth, provider)
-            .then(result => router.push('/'))
-            .catch(error => console.error(error))
+            .then(result => {
+                router.push('/')
+                showToast({ msg: tToasts('success_login'), type: 'success' })
+            })
+            .catch(error => {
+                showToast({ msg: tToasts('default_error'), type: 'error' })
+            })
     }
 
     async function handleSubmit(event) {
@@ -47,11 +57,11 @@ export default function Login(props) {
         if (reCaptchaSolve) {
             const email = event.target.email.value
             const password = event.target.password.value
-
+            setLoading(true)
             login(email, password)
         }
         else {
-            showToast({ type: 'error', msg: 'Please solve the reCAPTCHA.' })
+            showToast({ msg: 'Please solve the reCAPTCHA.' })
         }
     }
 
@@ -115,16 +125,7 @@ export default function Login(props) {
                                         width: '100%'
                                     }}
                                 />
-                                <TextField
-                                    variant='outlined'
-                                    label='Password'
-                                    type='password'
-                                    name='password'
-                                    size='small'
-                                    sx={{
-                                        width: '100%'
-                                    }}
-                                />
+                                <PasswordInput />
                                 <Link
                                     href='/forgot-password'
                                     className={styles.linkCreateAccount}

@@ -11,6 +11,9 @@
   --text-black: #0a0a0a;
   --text-white: #f3f3f3;
   --text-color: var(--text-black);
+
+  --color-warning: #ffc05b;
+  --color-info: #1189C4;
   --color-success: #52b963;
   --color-error: #ed2b2a;
 
@@ -22,6 +25,11 @@
 
   --sold-out-bg: #ff5e5b;
   --out-of-stock-bg: #bA2326;
+
+  --toastify-color-warning: var(--color-warning) !important;
+  --toastify-color-info: var(--color-info) !important;
+  --toastify-color-success: var(--color-success) !important;
+  --toastify-color-error: var(--color-error) !important;
 }
 
 * {

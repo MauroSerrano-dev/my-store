@@ -1,4 +1,4 @@
-import { isTokenValid } from "../../../auth";
+import { isTokenValid } from "../../../utils/auth";
 import { createNewUserWithCredentials, updateUser } from "../../../backend/user"
 
 export default async function handler(req, res) {
@@ -12,8 +12,8 @@ export default async function handler(req, res) {
 
     if (req.method === "POST") {
         const { user } = req.body
-        const userData = await createNewUserWithCredentials(user)
-        res.status(201).json({ user: userData })
+        const credentialResponse = await createNewUserWithCredentials(user)
+        res.status(credentialResponse.status).json(credentialResponse)
     }
     else if (req.method === "PATCH") {
         const { user_id, changes } = req.body
