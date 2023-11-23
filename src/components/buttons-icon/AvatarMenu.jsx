@@ -36,9 +36,7 @@ export default function AvatarMenu(props) {
   }
 
   function handleMouseLeave() {
-    if (supportsHoverAndPointer) {
-      setOpen(false)
-    }
+    setOpen(false)
   }
 
   function handleOnClick() {
