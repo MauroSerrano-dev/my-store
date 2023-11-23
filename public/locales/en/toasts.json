@@ -1,6 +1,19 @@
 {
     "max_products": "Maximum number of identical products reached",
     "wishlist_limit": "Maximum number of products in wishlist reached",
-    "out_of_stock_one": "{{product_title}} {{variant_title}} is Out of Stock for {{country}}.",
-    "out_of_stock_other": "{{count}} Products Out of Stock for {{country}}."
+    "out_of_stock_one": "{{product_title}} {{variant_title}} is Out of Stock for {{country}}",
+    "out_of_stock_other": "{{count}} Products Out of Stock for {{country}}",
+    "password_length": "Password must have at least 8 characters",
+    "password_lowercase": "Password must contain at least one lowercase character",
+    "password_uppercase": "Password must contain at least one uppercase character",
+    "password_number": "Password must contain at least one number",
+    "password_special_char": "Password must contain at least one special character",
+    "invalid_email": "Invalid E-mail",
+    "user_created": "User created successfully",
+    "email_already_exists": "The provided email is already in use",
+    "wrong_password": "Incorrect password",
+    "default_error": "Something went wrong",
+    "user_not_found": "User not found",
+    "too_many_requests": "Too many requests, please try again later",
+    "success_login": "Login successful"
 }

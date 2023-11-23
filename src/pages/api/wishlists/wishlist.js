@@ -1,4 +1,4 @@
-import { isTokenValid } from "../../../../auth";
+import { isTokenValid } from "../../../../utils/auth";
 import { getProductsByIds } from "../../../../backend/product";
 import { getWishlistById } from "../../../../backend/wishlists";
 

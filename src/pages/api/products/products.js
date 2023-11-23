@@ -1,4 +1,4 @@
-import { isTokenValid } from "../../../../auth";
+import { isTokenValid } from "../../../../utils/auth";
 import { getProductsByIds } from "../../../../backend/product";
 
 export default async function handler(req, res) {

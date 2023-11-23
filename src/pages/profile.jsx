@@ -38,6 +38,8 @@ export default function Profile(props) {
     useEffect(() => {
         if (session)
             setUser({ ...session })
+        else if (session === null)
+            setUser(null)
     }, [session])
 
     function handleChanges(fieldName, value) {
@@ -100,7 +102,7 @@ export default function Profile(props) {
     return (
         session === undefined || user === undefined
             ? <div></div>
-            : session === null
+            : session === null || user === null
                 ? <NoFound404 />
                 : <div className={styles.container}>
                     <Head>

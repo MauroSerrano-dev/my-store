@@ -6,13 +6,17 @@ import ReCAPTCHA from "react-google-recaptcha";
 import { useEffect, useState } from 'react';
 import { showToast } from '../../utils/toasts';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
+import { isStrongPassword } from '../../utils/validations';
+import { useTranslation } from 'next-i18next';
+import PasswordInput from '@/components/material-ui/PasswordInput';
 
 export default function Signin(props) {
     const {
         login,
         mobile,
         session,
-        router
+        router,
+        setLoading,
     } = props
 
     const [reCaptchaSolve, setReCaptchaSolve] = useState(false)
@@ -22,6 +26,8 @@ export default function Signin(props) {
         if (session)
             router.push('/profile')
     }, [session])
+
+    const tToasts = useTranslation('toasts').t
 
     function handleReCaptchaSuccess() {
         setReCaptchaSolve(true)
@@ -42,6 +48,12 @@ export default function Signin(props) {
 
     function handleCreateNewUser(user) {
         if (reCaptchaSolve) {
+            const passValidation = isStrongPassword(user.password)
+            if (passValidation !== true) {
+                showToast({ msg: tToasts(passValidation) })
+                return
+            }
+            setLoading(true)
             const options = {
                 method: 'POST',
                 headers: {
@@ -54,12 +66,19 @@ export default function Signin(props) {
             fetch('/api/user', options)
                 .then(response => response.json())
                 .then(response => {
-                    login(user.email, user.password)
+                    if (response.status === 201) {
+                        showToast({ msg: tToasts(response.message), type: 'success' })
+                        login(user.email, user.password, true)
+                    }
+                    else {
+                        setLoading(false)
+                        showToast({ msg: tToasts(response.message) })
+                    }
                 })
-                .catch(err => console.error(err))
+                .catch(() => setLoading(false))
         }
         else {
-            showToast({ type: 'error', msg: 'Please solve the reCAPTCHA.' })
+            showToast({ msg: 'Please solve the reCAPTCHA.' })
         }
     }
 
@@ -96,8 +115,9 @@ export default function Signin(props) {
                             <TextField
                                 variant='outlined'
                                 label='First Name'
+                                autoComplete='off'
                                 size='small'
-                                onChange={(e) => handleNewUser(e.target.value, 'first_name')}
+                                onChange={e => handleNewUser(e.target.value, 'first_name')}
                                 sx={{
                                     width: '100%'
                                 }}
@@ -105,8 +125,9 @@ export default function Signin(props) {
                             <TextField
                                 variant='outlined'
                                 label='Last Name (optional)'
+                                autoComplete='off'
                                 size='small'
-                                onChange={(e) => handleNewUser(e.target.value, 'last_name')}
+                                onChange={e => handleNewUser(e.target.value, 'last_name')}
                                 sx={{
                                     width: '100%'
                                 }}
@@ -117,20 +138,13 @@ export default function Signin(props) {
                                 size='small'
                                 name='email'
                                 autoComplete='off'
-                                onChange={(e) => handleNewUser(e.target.value, 'email')}
+                                onChange={e => handleNewUser(e.target.value, 'email')}
                                 sx={{
                                     width: '100%'
                                 }}
                             />
-                            <TextField
-                                variant='outlined'
-                                label='Password'
-                                type='password'
-                                size='small'
-                                onChange={(e) => handleNewUser(e.target.value, 'password')}
-                                sx={{
-                                    width: '100%'
-                                }}
+                            <PasswordInput
+                                onChange={e => handleNewUser(e.target.value, 'password')}
                             />
                             <ReCAPTCHA
                                 sitekey={process.env.NEXT_PUBLIC_RE_CAPTCHA_KEY}
