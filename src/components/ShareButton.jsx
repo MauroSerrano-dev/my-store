@@ -54,9 +54,7 @@ export default function ShareButton(props) {
     }
 
     function handleMouseLeave() {
-        if (supportsHoverAndPointer) {
-            closeModal()
-        }
+        closeModal()
     }
 
     function handleOnClick() {
