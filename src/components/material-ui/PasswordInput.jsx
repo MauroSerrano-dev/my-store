@@ -41,6 +41,7 @@ export default function PasswordInput(props) {
     const [hasLength, setHasLength] = useState(false)
     const [password, setPassword] = useState('')
 
+    const tCommon = useTranslation('common').t
     const tToasts = useTranslation('toasts').t
 
     function handleOnChange(event) {
@@ -146,19 +147,19 @@ export default function PasswordInput(props) {
                     <div className={styles.pointer}>
                     </div>
                     <div className={styles.modalBody}>
-                        <p className={styles.title}>At least:</p>
+                        <p className={styles.title}>{tCommon('at_least')}:</p>
                         <div className={styles.checkItems}>
                             <div className={styles.checkItem}>
-                                {hasLower ? <CheckRoundedIcon className={styles.success} /> : <CloseRoundedIcon className={styles.error} />}<p className={styles.itemText}>1 lower case letter</p>
+                                {hasLower ? <CheckRoundedIcon className={styles.success} /> : <CloseRoundedIcon className={styles.error} />}<p className={styles.itemText}>{tCommon('at_least_lower_case')}</p>
                             </div>
                             <div className={styles.checkItem}>
-                                {hasUpper ? <CheckRoundedIcon className={styles.success} /> : <CloseRoundedIcon className={styles.error} />}<p className={styles.itemText}>1 upper case letter</p>
+                                {hasUpper ? <CheckRoundedIcon className={styles.success} /> : <CloseRoundedIcon className={styles.error} />}<p className={styles.itemText}>{tCommon('at_least_upper_case')}</p>
                             </div>
                             <div className={styles.checkItem}>
-                                {hasNumber ? <CheckRoundedIcon className={styles.success} /> : <CloseRoundedIcon className={styles.error} />}<p className={styles.itemText}>1 number</p>
+                                {hasNumber ? <CheckRoundedIcon className={styles.success} /> : <CloseRoundedIcon className={styles.error} />}<p className={styles.itemText}>{tCommon('at_least_number')}</p>
                             </div>
                             <div className={styles.checkItem}>
-                                {hasLength ? <CheckRoundedIcon className={styles.success} /> : <CloseRoundedIcon className={styles.error} />}<p className={styles.itemText}>6 characters long</p>
+                                {hasLength ? <CheckRoundedIcon className={styles.success} /> : <CloseRoundedIcon className={styles.error} />}<p className={styles.itemText}>{tCommon('at_least_characters_long')}</p>
                             </div>
                         </div>
                     </div>

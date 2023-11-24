@@ -37,5 +37,10 @@
     "Dark Heather": "Dark Heather",
     "Maroon": "Granate",
     "Charcoal": "Antracita",
-    "Royal": "Royal"
+    "Royal": "Royal",
+    "at_least": "Al menos",
+    "at_least_lower_case": "1 letra minúscula",
+    "at_least_upper_case": "1 letra mayúscula",
+    "at_least_number": "1 número",
+    "at_least_characters_long": "6 caracteres de longitud"
 }

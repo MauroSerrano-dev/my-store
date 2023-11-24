@@ -87,51 +87,53 @@ export default function Login(props) {
                             paddingRight: mobile ? '4.5vw' : '10vw'
                         }}
                     >
-                        <GoogleButton
-                            router={router}
-                            auth={auth}
-                        />
-                        <p style={{ fontSize: 14, fontWeight: 500, color: 'var(--global-light-grey)' }}>
-                            or Login with
-                        </p>
-                        <div className={styles.fieldsContainer}>
-                            <TextInput
-                                label='E-Mail'
-                                size='small'
-                                name='email'
-                                onChange={handleEmailChange}
-                                value={email}
-                                dark
-                                supportsHoverAndPointer={supportsHoverAndPointer}
-                                style={{
-                                    width: '100%'
-                                }}
+                        <div className={styles.loginBodyTop}>
+                            <GoogleButton
+                                router={router}
+                                auth={auth}
                             />
-                            <PasswordInput
-                                onChange={handlePasswordChange}
-                                mobile={mobile}
-                                value={password}
-                                supportsHoverAndPointer={supportsHoverAndPointer}
-                                dark
-                            />
-                            <Link
-                                href='/forgot-password'
-                                className={styles.linkCreateAccount}
-                            >
-                                Forgot my password
-                            </Link>
-                            <div className='fillWidth center'>
-                                <ReCAPTCHA
-                                    sitekey={process.env.NEXT_PUBLIC_RE_CAPTCHA_KEY}
-                                    onChange={handleReCaptchaSuccess}
-                                    onExpired={handleReCaptchaError}
-                                    onErrored={handleReCaptchaError}
-                                    hl={i18n.language}
+                            <p style={{ fontSize: 14, fontWeight: 500, color: 'var(--global-light-grey)' }}>
+                                or Login with
+                            </p>
+                            <div className={styles.fieldsContainer}>
+                                <TextInput
+                                    label='E-Mail'
+                                    size='small'
+                                    name='email'
+                                    onChange={handleEmailChange}
+                                    value={email}
+                                    dark
+                                    supportsHoverAndPointer={supportsHoverAndPointer}
+                                    style={{
+                                        width: '100%'
+                                    }}
                                 />
+                                <PasswordInput
+                                    onChange={handlePasswordChange}
+                                    mobile={mobile}
+                                    value={password}
+                                    supportsHoverAndPointer={supportsHoverAndPointer}
+                                    dark
+                                />
+                                <Link
+                                    href='/forgot-password'
+                                    className={styles.linkCreateAccount}
+                                >
+                                    Forgot my password
+                                </Link>
+                                <div className='fillWidth center'>
+                                    <ReCAPTCHA
+                                        sitekey={process.env.NEXT_PUBLIC_RE_CAPTCHA_KEY}
+                                        onChange={handleReCaptchaSuccess}
+                                        onExpired={handleReCaptchaError}
+                                        onErrored={handleReCaptchaError}
+                                        hl={i18n.language}
+                                    />
+                                </div>
                             </div>
                         </div>
                         <div
-                            className={styles.loginButton}
+                            className={styles.loginBodyBottom}
                         >
                             <Button
                                 variant='contained'
