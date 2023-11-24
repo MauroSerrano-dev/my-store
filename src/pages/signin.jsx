@@ -27,6 +27,7 @@ export default function Signin(props) {
             router.push('/profile')
     }, [session])
 
+    const { i18n } = useTranslation()
     const tToasts = useTranslation('toasts').t
 
     function handleReCaptchaSuccess() {
@@ -145,12 +146,14 @@ export default function Signin(props) {
                             />
                             <PasswordInput
                                 onChange={e => handleNewUser(e.target.value, 'password')}
+                                mobile={mobile}
                             />
                             <ReCAPTCHA
                                 sitekey={process.env.NEXT_PUBLIC_RE_CAPTCHA_KEY}
                                 onChange={handleReCaptchaSuccess}
                                 onExpired={handleReCaptchaError}
                                 onErrored={handleReCaptchaError}
+                                hl={i18n.language}
                             />
                         </div>
                         <div className={styles.loginButtons}>

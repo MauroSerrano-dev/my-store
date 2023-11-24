@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import MenuItem from '@mui/material/MenuItem'
 import ListItemIcon from '@mui/material/ListItemIcon'
 import styles from '@/styles/components/ShareButton.module.css'
@@ -65,6 +65,22 @@ export default function ShareButton(props) {
                 openModal()
         }
     }
+
+    useEffect(() => {
+        function handleCloseMenuOnScroll() {
+            setOpen(false)
+        }
+
+        if (!supportsHoverAndPointer) {
+            window.addEventListener('scroll', handleCloseMenuOnScroll);
+        }
+
+        return () => {
+            if (!supportsHoverAndPointer) {
+                window.removeEventListener('scroll', handleCloseMenuOnScroll);
+            }
+        }
+    }, [supportsHoverAndPointer])
 
     return (
         <div

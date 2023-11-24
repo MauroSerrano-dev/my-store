@@ -11,7 +11,7 @@ import {
     Timestamp,
 } from "firebase/firestore"
 import { initializeApp } from "firebase/app"
-import { getAuth, createUserWithEmailAndPassword, sendEmailVerification } from "firebase/auth"
+import { getAuth, createUserWithEmailAndPassword, sendEmailVerification, fetchSignInMethodsForEmail } from "firebase/auth"
 import { firebaseConfig } from "../firebase.config"
 import { createCart } from "./cart"
 import { getCartSessionById, deleteCartSession } from "./cart-session"
@@ -65,82 +65,83 @@ async function getUserById(id) {
 
 async function createNewUserWithCredentials(user) {
     try {
-        // Verifique se o usuário com o mesmo e-mail já existe
-        const userIdExists = await getUserIdByEmail(user.email)
+        // Create a reference to the users collection
+        const usersCollection = collection(db, process.env.COLL_USERS)
 
-        // Se o usuário não existir, crie um novo
-        if (!userIdExists) {
-            // Create a reference to the users collection
-            const usersCollection = collection(db, process.env.COLL_USERS)
+        // Create a session for the new user and return the session ID
+        const { user: authenticatedUser } = await createUserWithEmailAndPassword(auth, user.email, user.password)
 
-            // Create a session for the new user and return the session ID
-            const { user: authenticatedUser } = await createUserWithEmailAndPassword(auth, user.email, user.password)
+        // Add the new user to the collection with password encryption
+        const newUserRef = doc(usersCollection, authenticatedUser.uid)
 
-            // Add the new user to the collection with password encryption
-            const newUserRef = doc(usersCollection, authenticatedUser.uid)
+        const cart_id = uuidv4()
+        await createCart(newUserRef.id, cart_id, [])
 
-            const cart_id = uuidv4()
-            await createCart(newUserRef.id, cart_id, [])
+        const wishlist_id = uuidv4()
+        await createWishlist(newUserRef.id, wishlist_id)
 
-            const wishlist_id = uuidv4()
-            await createWishlist(newUserRef.id, wishlist_id)
+        const newUser = {
+            email: user.email,
+            first_name: user.first_name,
+            last_name: user.last_name,
+            cart: [],
+            email_verified: false,
+            introduction_complete: false,
+            home_page_tags: DEFAULT_PRODUCTS_TAGS,
+            cart_id: cart_id,
+            wishlist_id: wishlist_id,
+            create_at: Timestamp.now(),
+        }
 
-            const newUser = {
-                email: user.email,
-                first_name: user.first_name,
-                last_name: user.last_name,
-                cart: [],
-                providers: ['password'],
-                email_verified: false,
-                introduction_complete: false,
-                home_page_tags: DEFAULT_PRODUCTS_TAGS,
-                cart_id: cart_id,
-                wishlist_id: wishlist_id,
-                create_at: Timestamp.now(),
-            }
+        // Set the document for the new user
+        await setDoc(newUserRef, newUser)
 
-            // Set the document for the new user
-            await setDoc(newUserRef, newUser)
-
-            /* // Envie o e-mail de verificação
-            sendEmailVerification(authenticatedUser)
-                .then(() => {
-                    // O e-mail de verificação foi enviado com sucesso
-                    console.log(`Verification email sent to ${authenticatedUser.email}`);
-                })
-                .catch((error) => {
-                    // Lidar com erros ao enviar o e-mail de verificação
-                    console.error("Error sending verification email:", error);
-                });
- */
-            return {
-                status: 201,
-                user: {
-                    ...newUser,
-                    id: newUserRef.id
-                },
-                message: 'user_created',
-            }
-        } else {
-            console.log(`${user.email} already exists as a user.`)
-            return {
-                status: 400,
-                message: 'email_already_exists',
-            }
+        /* // Envie o e-mail de verificação
+        sendEmailVerification(authenticatedUser)
+            .then(() => {
+                // O e-mail de verificação foi enviado com sucesso
+                console.log(`Verification email sent to ${authenticatedUser.email}`);
+            })
+            .catch((error) => {
+                // Lidar com erros ao enviar o e-mail de verificação
+                console.error("Error sending verification email:", error);
+            }); */
+        return {
+            status: 201,
+            user: {
+                ...newUser,
+                id: newUserRef.id
+            },
+            message: 'user_created',
         }
     } catch (error) {
         console.error("Error creating a new user and session:", error)
+        console.log('eita', error.code)
         if (error.code === 'auth/invalid-email')
             return {
                 status: 400,
                 message: 'invalid_email',
             }
-        else {
+        if (error.code === 'auth/email-already-in-use')
             return {
                 status: 400,
-                message: 'default_error',
+                message: 'email_already_exists',
             }
+        if (error.code === 'auth/weak-password')
+            return {
+                status: 400,
+                message: 'weak_password',
+            }
+        if (error.code === 'auth/account-exists-with-different-credential')
+            return {
+                status: 400,
+                message: 'account_exists_with_different_credential',
+            }
+        return {
+            status: 400,
+            message: 'default_error',
         }
+
     }
 }
 
@@ -320,6 +321,17 @@ async function clearUpdateCounter() {
     }
 }
 
+async function getUserProvidersByEmail(email) {
+    try {
+        const providers = await fetchSignInMethodsForEmail(auth, email)
+
+        return providers
+    } catch (error) {
+        console.error("Error fetching sign-in methods for email:", error)
+        throw error
+    }
+}
+
 export {
     createNewUserWithCredentials,
     createNewUserWithGoogle,
@@ -329,4 +341,5 @@ export {
     updateField,
     updateUser,
     clearUpdateCounter,
+    getUserProvidersByEmail,
 }

@@ -14,7 +14,7 @@ export default async function handler(req, res) {
         return res.status(401).json({ error: "Invalid authentication." })
 
     if (req.method === "POST") {
-        const { uid, authUser, providers, cart_cookie_id } = req.body
+        const { uid, authUser, cart_cookie_id } = req.body
 
         const user = await getUserById(uid)
 
@@ -23,12 +23,10 @@ export default async function handler(req, res) {
                 await mergeCarts(uid, cart_cookie_id)
             }
 
-            const updateUser = await updateField(uid, 'providers', providers)
-
-            const wishlist = await getWishlistById(updateUser.wishlist_id)
+            const wishlist = await getWishlistById(user.wishlist_id)
 
             res.status(200).json({
-                ...updateUser,
+                ...user,
                 wishlist_products_ids: wishlist.products.map(prod => prod.id),
                 id: uid
             })
@@ -43,7 +41,6 @@ export default async function handler(req, res) {
                 email: authUser.email,
                 first_name: firstName,
                 last_name: lastName,
-                providers: authUser.providerData.map(provider => provider.providerId),
                 email_verified: authUser.emailVerified,
                 introduction_complete: false,
                 home_page_tags: DEFAULT_PRODUCTS_TAGS,
