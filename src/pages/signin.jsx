@@ -9,6 +9,7 @@ import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { isStrongPassword } from '../../utils/validations';
 import { useTranslation } from 'next-i18next';
 import PasswordInput from '@/components/material-ui/PasswordInput';
+import GoogleButton from '@/components/buttons/GoogleButton';
 
 export default function Signin(props) {
     const {
@@ -17,6 +18,7 @@ export default function Signin(props) {
         session,
         router,
         setLoading,
+        auth,
     } = props
 
     const [reCaptchaSolve, setReCaptchaSolve] = useState(false)
@@ -112,6 +114,14 @@ export default function Signin(props) {
                             paddingRight: mobile ? '4.5vw' : '10vw'
                         }}
                     >
+                        <GoogleButton
+                            router={router}
+                            auth={auth}
+                            text='Signin with Google'
+                        />
+                        <p style={{ fontSize: 14, fontWeight: 500, color: 'var(--global-light-grey)' }}>
+                            or Signin with
+                        </p>
                         <div className={styles.fieldsContainer}>
                             <TextField
                                 variant='outlined'
@@ -146,6 +156,7 @@ export default function Signin(props) {
                             />
                             <PasswordInput
                                 onChange={e => handleNewUser(e.target.value, 'password')}
+                                showModalGuide
                                 mobile={mobile}
                             />
                             <ReCAPTCHA
@@ -173,8 +184,19 @@ export default function Signin(props) {
                             <Link
                                 href='/login'
                                 className={styles.linkCreateAccount}
+                                style={{
+                                    width: '100%'
+                                }}
                             >
-                                I already have an account
+                                <Button
+                                    sx={{
+                                        width: '100%',
+                                        height: '35px',
+                                        fontWeight: '700',
+                                    }}
+                                >
+                                    I already have an account
+                                </Button>
                             </Link>
                         </div>
                     </div>
@@ -183,7 +205,7 @@ export default function Signin(props) {
                     className={styles.joinContainer}
                     style={{
                         width: mobile ? '100%' : '34.55%',
-                        height: mobile ? 'auto' : '600px'
+                        height: mobile ? 'auto' : '655px'
                     }}
                 >
                     <div

@@ -12,6 +12,7 @@ import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
 import { showToast } from '../../utils/toasts'
 import SelectorAutocomplete from '@/components/material-ui/SelectorAutocomplete'
 import axios from 'axios'
+import { cartItemModel } from '../../utils/models'
 
 export default function Cart(props) {
     const {
@@ -67,15 +68,20 @@ export default function Cart(props) {
             },
             body: JSON.stringify({
                 cartItems: cart.products.map(prod => {
-                    const provider = getShippingOptions(prod.type_id, shippingCountry)
-                    return {
-                        ...prod,
-                        id_printify: prod.printify_ids[provider.id],
-                        provider: provider,
-                        variant_id: prod.variant.id,
-                        variant_id_printify: typeof prod.variant.id_printify === 'number' ? prod.variant.id_printify : prod.variant.id_printify[providerId],
+                    const shippingOption = getShippingOptions(prod.type_id, shippingCountry)
+                    return cartItemModel({
+                        id: prod.id,
+                        quantity: prod.quantity,
+                        title: prod.title,
+                        image: prod.image,
+                        blueprint_ids: prod.blueprint_ids,
+                        description: tCommon(prod.type_id),
+                        id_printify: prod.printify_ids[shippingOption.id],
+                        provider_id: shippingOption.provider_id,
+                        variant: prod.variant,
+                        variant_id_printify: typeof prod.variant.id_printify === 'number' ? prod.variant.id_printify : prod.variant.id_printify[shippingOption.provider_id],
                         price: Math.ceil(prod.variant.price * userCurrency?.rate),
-                    }
+                    })
                 }),
                 cancel_url: window.location.href,
                 success_url: session ? `${window.location.origin}/orders` : window.location.origin,

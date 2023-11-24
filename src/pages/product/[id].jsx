@@ -5,7 +5,7 @@ import ImagesSlider from '@/components/ImagesSlider'
 import { Button } from '@mui/material'
 import ShoppingCartOutlinedIcon from '@mui/icons-material/ShoppingCartOutlined'
 import CreditCardOutlinedIcon from '@mui/icons-material/CreditCardOutlined'
-import { CART_COOKIE, CART_MAX_ITEMS, COLORS_POOL, SIZES_POOL, WISHLIST_LIMIT } from '../../../consts'
+import { CART_COOKIE, CART_MAX_ITEMS, COLORS_POOL, SIZES_POOL, WISHLIST_LIMIT, getShippingOptions } from '../../../consts'
 import Head from 'next/head'
 import ColorSelector from '@/components/ColorSelector'
 import SizesSelector from '@/components/SizesSelector'
@@ -17,6 +17,9 @@ import { useTranslation } from 'next-i18next'
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
 import { showToast } from '../../../utils/toasts'
 import HeartButton from '@/components/buttons-icon/HeartButton'
+import { cartItemModel } from '../../../utils/models'
+import SelectorAutocomplete from '@/components/material-ui/SelectorAutocomplete'
+import COUNTRIES_POOL from '../../../public/locales/en/countries.json'
 
 export default withRouter(props => {
     const {
@@ -35,12 +38,17 @@ export default withRouter(props => {
         supportsHoverAndPointer,
         setLoading,
         setSession,
+        location,
     } = props
 
     const tToasts = useTranslation('toasts').t
+    const tCommon = useTranslation('common').t
+    const tCountries = useTranslation('countries').t
+    const tProduct = useTranslation('product').t
 
     const [currentColor, setCurrentColor] = useState(cl ? cl : COLORS_POOL[product?.colors_ids[0]])
     const [currentSize, setCurrentSize] = useState(sz ? sz : SIZES_POOL.find(sz => sz.id === product?.sizes_ids[0]))
+    const [shippingCountry, setShippingCountry] = useState(location?.country || 'US')
 
     const productCurrentVariant = product?.variants.find(vari => vari.size_id === currentSize?.id && vari.color_id === currentColor?.id)
 
@@ -58,6 +66,7 @@ export default withRouter(props => {
             showToast({ msg: 'Checkout temporarily disabled' })
             return
         }
+        const shippingOption = getShippingOptions(product.type_id, shippingCountry)
         const options = {
             method: 'POST',
             headers: {
@@ -65,29 +74,26 @@ export default withRouter(props => {
                 authorization: process.env.NEXT_PUBLIC_APP_TOKEN,
             },
             body: JSON.stringify({
-                cartItems: [
-                    {
-                        id: product.id,
-                        type_id: product.type_id,
-                        title: product.title,
-                        description: product.description,
-                        printify_ids: product.printify_ids,
-                        variant: prodVariant,
-                        quantity: 1,
-                        default_variant: {
-                            color_id: product.variants[0].color_id,
-                            size_id: product.variants[0].size_id,
-                        },
-                        image: product.images.filter(img => img.color_id === prodVariant.color_id)[product.image_showcase_index],
-                    }
-                ],
+                cartItems: [cartItemModel({
+                    id: product.id,
+                    quantity: 1,
+                    title: product.title,
+                    image: product.images.find(img => img.color_id === productCurrentVariant.color_id),
+                    blueprint_ids: product.blueprint_ids,
+                    description: tCommon(product.type_id),
+                    id_printify: product.printify_ids[shippingOption.id],
+                    provider_id: shippingOption.provider_id,
+                    variant: productCurrentVariant,
+                    variant_id_printify: typeof productCurrentVariant.id_printify === 'number' ? productCurrentVariant.id_printify : productCurrentVariant.id_printify[shippingOption.provider_id],
+                    price: Math.ceil(productCurrentVariant.price * userCurrency?.rate),
+                })],
                 success_url: session ? `${window.location.origin}/orders` : window.location.origin,
                 cancel_url: window.location.href,
                 customer: session,
-                cart_id: session ? session.cart_id : Cookies.get(CART_COOKIE),
+                shippingValue: 10,
+                shippingCountry: shippingCountry,
                 currency: userCurrency?.code,
-                /* shippingValue: SHIPPING_CONVERTED,
-                shippingCountry: shippingCountry, */
+                cart_id: session ? session.cart_id : Cookies.get(CART_COOKIE),
             })
         }
 
@@ -135,6 +141,10 @@ export default withRouter(props => {
                     console.error(err)
                 })
         }
+    }
+
+    function handleChangeCountrySelector(event, value) {
+        setShippingCountry(value.id)
     }
 
     function handleColorChange(arr, index, color) {
@@ -236,95 +246,124 @@ export default withRouter(props => {
                             </div>
                         </div>
                         <div className={styles.right}>
-                            <div className='fillWidth flex row' style={{ justifyContent: 'space-between' }}>
-                                <h2>{product.title}</h2>
-                                {session &&
-                                    <HeartButton
-                                        checked={session.wishlist_products_ids.includes(product.id)}
-                                        onClick={handleWishlist}
-                                    />
-                                }
-                            </div>
-                            {product.sold_out &&
-                                <div
-                                    className={styles.soldOut}
-                                >
-                                    <p>
-                                        {Math.round(100 * product.sold_out.percentage)}% OFF
-                                    </p>
-                                </div>
-                            }
-                            {userCurrency &&
-                                <div className={styles.prices}>
+                            <div className={styles.rightTop}>
+                                <div>
+                                    <div className='fillWidth flex row' style={{ justifyContent: 'space-between' }}>
+                                        <h2>{product.title}</h2>
+                                        {session &&
+                                            <HeartButton
+                                                checked={session.wishlist_products_ids.includes(product.id)}
+                                                onClick={handleWishlist}
+                                            />
+                                        }
+                                    </div>
                                     {product.sold_out &&
-                                        <p
-                                            style={{
-                                                color: 'grey',
-                                                textDecoration: 'line-through',
-                                                fontSize: '17px',
-                                            }}
+                                        <div
+                                            className={styles.soldOut}
                                         >
-                                            {`${userCurrency.symbol} ${(ORIGINAL_PRICE / 100).toFixed(2)}`}
-                                        </p>
+                                            <p>
+                                                {Math.round(100 * product.sold_out.percentage)}% OFF
+                                            </p>
+                                        </div>
                                     }
-                                    <p
+                                    {userCurrency &&
+                                        <div className={styles.prices}>
+                                            {product.sold_out &&
+                                                <p
+                                                    style={{
+                                                        color: 'grey',
+                                                        textDecoration: 'line-through',
+                                                        fontSize: '17px',
+                                                    }}
+                                                >
+                                                    {`${userCurrency.symbol} ${(ORIGINAL_PRICE / 100).toFixed(2)}`}
+                                                </p>
+                                            }
+                                            <p
+                                                style={{
+                                                    fontSize: '27px',
+                                                    color: 'var(--primary)',
+                                                    fontWeight: '600',
+                                                }}
+                                            >
+                                                {`${userCurrency.symbol} ${(PRODUCT_PRICE / 100).toFixed(2)}`}
+                                            </p>
+                                        </div>
+                                    }
+                                </div>
+                                <div className={styles.colorAndSizeSelectors}>
+                                    <div>
+                                        <p style={{ textAlign: 'start', fontWeight: '700' }}>
+                                            {product.colors_ids.length === 1 ? 'Color' : 'Pick a color'}
+                                        </p>
+                                        <ColorSelector
+                                            options={product.colors_ids.map(color_id => COLORS_POOL[color_id])}
+                                            value={[currentColor]}
+                                            onChange={handleColorChange}
+                                            supportsHoverAndPointer={supportsHoverAndPointer}
+                                            styleButton={{
+                                                height: mobile ? 35 : 40,
+                                                width: mobile ? 35 : 40,
+                                            }}
+                                        />
+                                    </div>
+                                    <div>
+                                        <p style={{ textAlign: 'start', fontWeight: '700' }}>
+                                            {product.sizes_ids.length === 1 ? 'Size' : 'Pick a size'}
+                                        </p>
+                                        <SizesSelector
+                                            value={[currentSize]}
+                                            options={product.sizes_ids.map(size_id => SIZES_POOL.find(sz => sz.id === size_id))}
+                                            onChange={handleSizeChange}
+                                        />
+                                    </div>
+                                </div>
+                                <div className={styles.shippingContainer}>
+                                    <p>
+                                        {tProduct('ship_to')}:
+                                    </p>
+                                    <SelectorAutocomplete
+                                        supportsHoverAndPointer={supportsHoverAndPointer}
+                                        options={
+                                            Object.keys(COUNTRIES_POOL)
+                                                .map(key => ({ id: key, label: tCountries(key) }))
+                                                .sort((a, b) => a.label.localeCompare(b.label, 'en', { sensitivity: 'base' }))
+                                        }
+                                        label={tCommon('Country')}
+                                        value={{ id: shippingCountry, label: tCountries(shippingCountry) }}
+                                        onChange={handleChangeCountrySelector}
                                         style={{
-                                            fontSize: '27px',
-                                            color: 'var(--primary)',
-                                            fontWeight: '600',
+                                            width: 210,
+                                        }}
+                                    />
+                                </div>
+                            </div>
+                            <div className={styles.rightBottom}>
+                                <div className={styles.buyButtons}>
+                                    <Button
+                                        variant='contained'
+                                        onClick={() => handleAddToCart()}
+                                        sx={{
+                                            width: '100%',
+                                            height: '55px'
                                         }}
                                     >
-                                        {`${userCurrency.symbol} ${(PRODUCT_PRICE / 100).toFixed(2)}`}
-                                    </p>
+                                        <ShoppingCartOutlinedIcon />
+                                        Add to Cart
+                                    </Button>
+                                    <Button
+                                        variant='outlined'
+                                        onClick={() => handleBuyNow()}
+                                        sx={{
+                                            width: '100%',
+                                            height: '55px'
+                                        }}
+                                    >
+                                        <CreditCardOutlinedIcon />
+                                        Buy Now
+                                    </Button>
                                 </div>
-                            }
-                            <div>
-                                <p style={{ textAlign: 'start', fontWeight: '700' }}>
-                                    {product.colors_ids.length === 1 ? 'Color' : 'Pick a color'}
-                                </p>
-                                <ColorSelector
-                                    options={product.colors_ids.map(color_id => COLORS_POOL[color_id])}
-                                    value={[currentColor]}
-                                    onChange={handleColorChange}
-                                    supportsHoverAndPointer={supportsHoverAndPointer}
-                                    styleButton={{
-                                        height: mobile ? 35 : 40,
-                                        width: mobile ? 35 : 40,
-                                    }}
-                                />
                             </div>
-                            <div>
-                                <p style={{ textAlign: 'start', fontWeight: '700' }}>
-                                    {product.sizes_ids.length === 1 ? 'Size' : 'Pick a size'}
-                                </p>
-                                <SizesSelector
-                                    value={[currentSize]}
-                                    options={product.sizes_ids.map(size_id => SIZES_POOL.find(sz => sz.id === size_id))}
-                                    onChange={handleSizeChange}
-                                />
-                            </div>
-                            <Button
-                                variant='contained'
-                                onClick={() => handleAddToCart()}
-                                sx={{
-                                    width: '100%',
-                                    height: '55px'
-                                }}
-                            >
-                                <ShoppingCartOutlinedIcon />
-                                Add to Cart
-                            </Button>
-                            <Button
-                                variant='outlined'
-                                onClick={() => handleBuyNow()}
-                                sx={{
-                                    width: '100%',
-                                    height: '55px'
-                                }}
-                            >
-                                <CreditCardOutlinedIcon />
-                                Buy Now
-                            </Button>
                         </div>
                     </section>
                     <section className={`${styles.section} ${styles.two} `}>
@@ -406,7 +445,7 @@ export async function getServerSideProps({ query, locale, resolvedUrl }) {
 
     return {
         props: {
-            ...(await serverSideTranslations(locale, ['common', 'navbar', 'menu', 'toasts'])),
+            ...(await serverSideTranslations(locale, ['common', 'navbar', 'menu', 'toasts', 'countries', 'product'])),
             product: product || null,
             cl: colorQuery === undefined ? null : colorQuery,
             sz: sizeQuery === undefined ? null : sizeQuery,

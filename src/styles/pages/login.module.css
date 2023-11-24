@@ -23,7 +23,7 @@
     align-items: center;
 
     background-color: #f5f5f5;
-    height: 600px;
+    height: 655px;
     max-height: 900px;
     max-width: 800px;
 
@@ -68,45 +68,10 @@
     padding-bottom: 1.5rem;
 }
 
-.form {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    align-items: center;
-
-    width: 100%;
-}
-
 .loginButton {
     border-top: #d2d2d2 solid 1px;
     padding-top: 1rem;
     width: 100%;
-}
-
-.providerLogin {
-    position: relative;
-
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    align-items: center;
-
-    width: 100%;
-    height: 50px;
-
-    background-color: #ffffff;
-    border: none;
-
-    font-weight: 700;
-
-    border-radius: 0.5rem;
-
-    font-size: 100%;
-    box-shadow: 0px 3px 1px -2px rgba(0, 0, 0, 0.2),
-        0px 2px 2px 0px rgba(0, 0, 0, 0.14),
-        0px 1px 5px 0px rgba(0, 0, 0, 0.12);
-
-    transition: all ease-in-out 200ms;
 }
 
 .joinContainer {
@@ -180,20 +145,6 @@
 
 /* Enable hover only on non-touch devices */
 @media (hover: hover) and (pointer: fine) {
-    .providerLogin:hover {
-        background-color: #f9f9f9;
-
-        box-shadow: 0px 2px 4px -1px rgba(0, 0, 0, 0.2),
-            0px 4px 5px 0px rgba(0, 0, 0, 0.14),
-            0px 1px 10px 0px rgba(0, 0, 0, 0.12);
-    }
-
-    .providerLogin:active {
-        box-shadow: 0px 2px 1px -6px rgba(0, 0, 0, 0.2),
-            0px 2px 2px 0px rgba(0, 0, 0, 0.14),
-            0px 1px 5px 0px rgba(0, 0, 0, 0.12);
-    }
-
     .linkCreateAccount:hover {
         text-decoration: underline var(--link-color);
     }

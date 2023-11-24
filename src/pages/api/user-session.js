@@ -42,7 +42,6 @@ export default async function handler(req, res) {
                 first_name: firstName,
                 last_name: lastName,
                 email_verified: authUser.emailVerified,
-                introduction_complete: false,
                 home_page_tags: DEFAULT_PRODUCTS_TAGS,
             }
 

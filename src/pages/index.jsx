@@ -160,7 +160,7 @@ export default function Home(props) {
             <h2 className={styles.categoriesTitle}>
               {tIndex('categories_title', { count: windowWidth > 500 ? 1 : 2 })}
             </h2>
-            <div
+            {/* <div
               className={styles.carousel}
               style={{
                 marginBottom: windowWidth > 750
@@ -244,7 +244,7 @@ export default function Home(props) {
                       : 84.5,
                 }}
               />
-            </div>
+            </div> */}
           </div>
           {setStates.map((state, i) =>
             (session?.home_page_tags || DEFAULT_PRODUCTS_TAGS)[i] &&

@@ -5,6 +5,7 @@ import styles from '@/styles/components/buttons-icon/CartIcon.module.css'
 import { Button } from '@mui/material'
 import ProductModal from '../products/ProductModal'
 import { useTranslation } from 'next-i18next';
+import { motion } from 'framer-motion'
 
 export default function CartIcon(props) {
     const {
@@ -51,10 +52,19 @@ export default function CartIcon(props) {
                     </div>
                 }
             </Link>
-            {
-                open && cart && cart.products.length > 0 && supportsHoverAndPointer &&
-                <div
+            {open && cart && cart.products.length > 0 && supportsHoverAndPointer &&
+                <motion.div
                     className={styles.contentContainer}
+                    initial='hidden'
+                    animate='visible'
+                    variants={{
+                        hidden: {
+                            opacity: 0,
+                        },
+                        visible: {
+                            opacity: 1,
+                        }
+                    }}
                 >
                     <div className={styles.pointer}>
                     </div>
@@ -91,7 +101,7 @@ export default function CartIcon(props) {
                             </Button>
                         </Link>
                     </div>
-                </div>
+                </motion.div>
             }
         </div>
     )

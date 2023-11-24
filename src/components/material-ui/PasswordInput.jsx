@@ -1,6 +1,6 @@
 import { Visibility, VisibilityOff } from '@mui/icons-material';
 import { FormControl, IconButton, InputAdornment, InputLabel, OutlinedInput, TextField } from '@mui/material';
-import { useEffect, useRef, useState } from 'react';
+import { useState } from 'react';
 import CloseRoundedIcon from '@mui/icons-material/CloseRounded'
 import CheckRoundedIcon from '@mui/icons-material/CheckRounded';
 import styles from '@/styles/components/material-ui/PasswordInput.module.css'
@@ -10,6 +10,9 @@ export default function PasswordInput(props) {
     const {
         onChange,
         mobile,
+        name = 'password',
+        label = 'Password',
+        showModalGuide
     } = props
 
     const [showPassword, setShowPassword] = useState(false)
@@ -43,8 +46,8 @@ export default function PasswordInput(props) {
             <OutlinedInput
                 onFocus={() => setFocus(true)}
                 onBlur={() => setFocus(false)}
-                label='Password'
-                name='password'
+                label={label}
+                name={name}
                 type={showPassword ? 'text' : 'password'}
                 onChange={handleOnChange}
                 autoComplete='off'
@@ -61,7 +64,7 @@ export default function PasswordInput(props) {
                     </InputAdornment>
                 }
             />
-            {(focus || (password.length !== 0 && (!hasLower || !hasUpper || !hasNumber || !hasLength))) &&
+            {showModalGuide && (focus || (password.length !== 0 && (!hasLower || !hasUpper || !hasNumber || !hasLength))) &&
                 <motion.div
                     className={styles.modalContainer}
                     style={{

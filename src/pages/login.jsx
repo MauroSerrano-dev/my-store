@@ -1,17 +1,14 @@
 import styles from '@/styles/pages/login.module.css'
 import { Button, TextField } from '@mui/material'
 import Link from 'next/link'
-import { FcGoogle } from "react-icons/fc"
 import { PiHandshakeLight } from "react-icons/pi"
 import ReCAPTCHA from "react-google-recaptcha"
 import { useEffect, useState } from 'react'
-import { signInWithPopup, GoogleAuthProvider, signInWithRedirect } from "firebase/auth"
 import { showToast } from '../../utils/toasts'
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
 import PasswordInput from '@/components/material-ui/PasswordInput'
 import { useTranslation } from 'next-i18next';
-
-const provider = new GoogleAuthProvider()
+import GoogleButton from '@/components/buttons/GoogleButton'
 
 export default function Login(props) {
     const {
@@ -24,6 +21,8 @@ export default function Login(props) {
     } = props
 
     const [reCaptchaSolve, setReCaptchaSolve] = useState(false)
+    const [password, setPassword] = useState('')
+    const [email, setEmail] = useState('')
 
     const { i18n } = useTranslation()
     const tToasts = useTranslation('toasts').t
@@ -52,18 +51,22 @@ export default function Login(props) {
             })
     }
 
-    async function handleSubmit(event) {
-        event.preventDefault()
-
+    function handleLogin() {
         if (reCaptchaSolve) {
-            const email = event.target.email.value
-            const password = event.target.password.value
             setLoading(true)
             login(email, password)
         }
         else {
             showToast({ msg: 'Please solve the reCAPTCHA.' })
         }
+    }
+
+    function handleEmailChange(event) {
+        setEmail(event.target.value)
+    }
+
+    function handlePasswordChange(event) {
+        setPassword(event.target.value)
     }
 
     return (
@@ -94,82 +97,69 @@ export default function Login(props) {
                             paddingRight: mobile ? '4.5vw' : '10vw'
                         }}
                     >
-                        <button
-                            className={styles.providerLogin}
-                            onClick={googleLogin}
-                        >
-                            <FcGoogle
-                                size='30px'
-                                style={{
-                                    position: 'absolute',
-                                    left: '1.5rem'
-                                }}
-                            />
-                            Login with Google
-                        </button>
-                        <p style={{ fontWeight: 500 }}>
+                        <GoogleButton
+                            router={router}
+                            auth={auth}
+                        />
+                        <p style={{ fontSize: 14, fontWeight: 500, color: 'var(--global-light-grey)' }}>
                             or Login with
                         </p>
-                        <form
-                            onSubmit={handleSubmit}
-                            method='POST'
-                            className={styles.form}
-                        >
-                            <div className={styles.fieldsContainer}>
-                                <TextField
-                                    variant='outlined'
-                                    label='E-Mail'
-                                    size='small'
-                                    name='email'
-                                    autoComplete='off'
-                                    sx={{
-                                        width: '100%'
-                                    }}
-                                />
-                                <PasswordInput
-                                    mobile={mobile}
-                                />
-                                <Link
-                                    href='/forgot-password'
-                                    className={styles.linkCreateAccount}
-                                >
-                                    Forgot my password
-                                </Link>
-                                <div className='fillWidth center'>
-                                    <ReCAPTCHA
-                                        sitekey={process.env.NEXT_PUBLIC_RE_CAPTCHA_KEY}
-                                        onChange={handleReCaptchaSuccess}
-                                        onExpired={handleReCaptchaError}
-                                        onErrored={handleReCaptchaError}
-                                        hl={i18n.language}
-                                    />
-                                </div>
-                            </div>
-                            <div
-                                className={styles.loginButton}
+                        <div className={styles.fieldsContainer}>
+                            <TextField
+                                variant='outlined'
+                                label='E-Mail'
+                                size='small'
+                                name='email'
+                                autoComplete='off'
+                                onChange={handleEmailChange}
+                                sx={{
+                                    width: '100%'
+                                }}
+                            />
+                            <PasswordInput
+                                onChange={handlePasswordChange}
+                                mobile={mobile}
+                            />
+                            <Link
+                                href='/forgot-password'
+                                className={styles.linkCreateAccount}
                             >
-                                <Button
-                                    type='submit'
-                                    variant='contained'
-                                    sx={{
-                                        width: '100%',
-                                        height: '50px',
-                                        color: '#ffffff',
-                                        fontWeight: '700',
-                                        fontSize: '16px',
-                                    }}
-                                >
-                                    Login
-                                </Button>
+                                Forgot my password
+                            </Link>
+                            <div className='fillWidth center'>
+                                <ReCAPTCHA
+                                    sitekey={process.env.NEXT_PUBLIC_RE_CAPTCHA_KEY}
+                                    onChange={handleReCaptchaSuccess}
+                                    onExpired={handleReCaptchaError}
+                                    onErrored={handleReCaptchaError}
+                                    hl={i18n.language}
+                                />
                             </div>
-                        </form>
+                        </div>
+                        <div
+                            className={styles.loginButton}
+                        >
+                            <Button
+                                variant='contained'
+                                onClick={handleLogin}
+                                sx={{
+                                    width: '100%',
+                                    height: '50px',
+                                    color: '#ffffff',
+                                    fontWeight: '700',
+                                    fontSize: '16px',
+                                }}
+                            >
+                                Login
+                            </Button>
+                        </div>
                     </div>
                 </div>
                 <div
                     className={styles.joinContainer}
                     style={{
                         width: mobile ? '100%' : '34.55%',
-                        height: mobile ? 'auto' : '600px'
+                        height: mobile ? 'auto' : '655px'
                     }}
                 >
                     <div
