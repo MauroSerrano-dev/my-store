@@ -19,5 +19,6 @@
     "account_exists_with_different_credential": "La cuenta ya existe con credenciales diferentes",
     "weak_password": "contraseña debil",
     "account_exists_with_different_provider_one": "Esta cuenta debe iniciar sesión con {{provider}}",
-    "account_exists_with_different_provider_other": "Esta cuenta debe iniciar sesión con otro proveedor"
+    "account_exists_with_different_provider_other": "Esta cuenta debe iniciar sesión con otro proveedor",
+    "input_limit": "Se ha alcanzado el límite máximo de caracteres"
 }

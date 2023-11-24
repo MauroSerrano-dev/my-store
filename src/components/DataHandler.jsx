@@ -187,25 +187,6 @@ export default function DataHandler(props) {
         }, 1000) */
     }
 
-    function handleIntroductionComplete() {
-        setSession(prev => ({ ...prev, introduction_complete: true }))
-        const options = {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                authorization: process.env.NEXT_PUBLIC_APP_TOKEN
-            },
-            body: JSON.stringify({
-                id: session.id,
-            })
-        }
-
-        fetch("/api/introduction-complete", options)
-            .then(response => response.json())
-            .then(response => console.log(response))
-            .catch(err => console.error(err))
-    }
-
     useEffect(() => {
         let timeoutId
 
@@ -472,16 +453,6 @@ export default function DataHandler(props) {
                     />
                 }
             </div>
-            {session && !session.introduction_complete &&
-                <div
-                    className={styles.introduction}
-                    onClick={handleIntroductionComplete}
-                >
-                    <h1>
-                        Introduction
-                    </h1>
-                </div>
-            }
         </motion.div>
     )
 }

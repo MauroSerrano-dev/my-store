@@ -86,7 +86,6 @@ async function createNewUserWithCredentials(user) {
             last_name: user.last_name,
             cart: [],
             email_verified: false,
-            introduction_complete: false,
             home_page_tags: DEFAULT_PRODUCTS_TAGS,
             cart_id: cart_id,
             wishlist_id: wishlist_id,

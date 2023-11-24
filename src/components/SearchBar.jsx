@@ -1,8 +1,11 @@
 import { useEffect, useState } from 'react'
 import styles from '../styles/components/SearchBar.module.css'
-import SearchRoundedIcon from '@mui/icons-material/SearchRounded';
-import { motion } from "framer-motion";
+import SearchRoundedIcon from '@mui/icons-material/SearchRounded'
+import { motion } from "framer-motion"
 import Link from 'next/link'
+import { LIMITS } from '../../consts'
+import { showToast } from '../../utils/toasts'
+import { useTranslation } from 'next-i18next'
 
 export default function SearchBar(props) {
     const {
@@ -20,10 +23,13 @@ export default function SearchBar(props) {
         setSearch,
     } = props
 
+    const tToasts = useTranslation('toasts').t
+
     const [opacity, setOpacity] = useState(1)
     const [boolean, setBoolean] = useState(show)
     const [focus, setFocus] = useState(false)
     const [showOptions, setShowOptions] = useState(false)
+    const [toastActive, setToastActive] = useState(false)
 
     useEffect(() => {
         let time
@@ -50,6 +56,20 @@ export default function SearchBar(props) {
         setShowOptions(options.length > 0 && focus)
     }, [options, focus])
 
+    function handleOnChange(event) {
+        if (onChange) {
+            if (event.target.value.length <= LIMITS.input_search_bar)
+                onChange(event)
+            else if (!toastActive) {
+                setToastActive(true)
+                showToast({ msg: tToasts('input_limit') })
+                setTimeout(() => {
+                    setToastActive(false)
+                }, 3000)
+            }
+        }
+    }
+
     return (
         boolean &&
         <div
@@ -73,7 +93,7 @@ export default function SearchBar(props) {
                     name='search'
                     className={styles.input}
                     placeholder={placeholder}
-                    onChange={onChange}
+                    onChange={handleOnChange}
                     onKeyDown={onKeyDown}
                     value={value}
                     spellCheck={false}

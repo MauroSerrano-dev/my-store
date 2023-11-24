@@ -12,6 +12,7 @@ import { Button } from '@mui/material'
 import ReceiptLongRoundedIcon from '@mui/icons-material/ReceiptLongRounded'
 import AdminPanelSettingsRoundedIcon from '@mui/icons-material/AdminPanelSettingsRounded'
 import { useTranslation } from 'next-i18next'
+import { motion } from 'framer-motion'
 
 export default function AvatarMenu(props) {
   const {
@@ -100,7 +101,7 @@ export default function AvatarMenu(props) {
         </div>
       }
       {open && session !== undefined &&
-        <div
+        <motion.div
           className={styles.contentContainer}
           style={{
             left: !session
@@ -108,6 +109,16 @@ export default function AvatarMenu(props) {
               : ['pt-BR', 'pt-PT'].includes(i18n.language)
                 ? -135.5
                 : -118.5
+          }}
+          initial='hidden'
+          animate='visible'
+          variants={{
+            hidden: {
+              opacity: 0,
+            },
+            visible: {
+              opacity: 1,
+            }
           }}
         >
           <div className={styles.pointer}>
@@ -196,7 +207,7 @@ export default function AvatarMenu(props) {
               </p>
             </div>
           }
-        </div>
+        </motion.div>
       }
     </div>
   )

@@ -30,11 +30,10 @@ export default async function handler(req, res) {
     let outOfStock = []
 
     const asyncRequests = cartItems.map(async item => {
-      const base_url_print = `https://api.printify.com/v1/catalog/blueprints/${item.blueprint_ids[item.provider.provider_id]}/print_providers/${item.provider.provider_id}/variants.json?show-out-of-stock=0`
+      const base_url_print = `https://api.printify.com/v1/catalog/blueprints/${item.blueprint_ids[item.provider_id]}/print_providers/${item.provider_id}/variants.json?show-out-of-stock=0`
       const headers_print = { Authorization: process.env.PRINTIFY_ACCESS_TOKEN }
       const print_res = await axios.get(base_url_print, { headers: headers_print })
-
-      if (print_res.data.variants.every(vari => vari.id !== item.variant.id_printify))
+      if (print_res.data.variants.every(vari => vari.id !== item.variant_id_printify))
         outOfStock.push({ id: item.id, title: item.title, variant: item.variant })
     })
 
@@ -71,7 +70,7 @@ export default async function handler(req, res) {
           product_data: {
             name: item.title,
             images: [item.image.src],
-            description: item.desc,
+            description: item.description,
             metadata: {
               id: item.id,
             },
@@ -88,7 +87,7 @@ export default async function handler(req, res) {
       cartMetadata[i] = JSON.stringify({
         id: item.id,
         id_printify: item.id_printify,
-        variant_id: item.variant_id,
+        variant_id: item.variant.id,
         variant_id_printify: item.variant_id_printify,
         quantity: item.quantity,
         price: item.price,
