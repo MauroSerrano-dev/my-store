@@ -25,6 +25,7 @@ export default function Login(props) {
 
     const [reCaptchaSolve, setReCaptchaSolve] = useState(false)
 
+    const { i18n } = useTranslation()
     const tToasts = useTranslation('toasts').t
 
     useEffect(() => {
@@ -125,7 +126,9 @@ export default function Login(props) {
                                         width: '100%'
                                     }}
                                 />
-                                <PasswordInput />
+                                <PasswordInput
+                                    mobile={mobile}
+                                />
                                 <Link
                                     href='/forgot-password'
                                     className={styles.linkCreateAccount}
@@ -138,6 +141,7 @@ export default function Login(props) {
                                         onChange={handleReCaptchaSuccess}
                                         onExpired={handleReCaptchaError}
                                         onErrored={handleReCaptchaError}
+                                        hl={i18n.language}
                                     />
                                 </div>
                             </div>

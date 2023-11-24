@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import { useEffect, useRef } from 'react';
 import lottie from 'lottie-web';
-import styles from '@/styles/pages/404.module.css'
+import styles from '@/styles/components/NoFound404.module.css'
 
 export default function NoFound404(props) {
 

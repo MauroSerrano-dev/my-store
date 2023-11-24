@@ -10,7 +10,7 @@ import SearchBar from './SearchBar'
 import Menu from './Menu'
 import { motion } from 'framer-motion'
 import { v4 as uuidv4 } from 'uuid'
-import { useTranslation } from 'next-i18next';
+import { useTranslation } from 'next-i18next'
 import { showToast } from '../../utils/toasts'
 
 const SUB_NAVBAR_HEIGHT = 40
@@ -122,7 +122,6 @@ export default function DataHandler(props) {
                 uid: authUser.uid,
                 authUser: authUser,
                 cart_cookie_id: Cookies.get(CART_COOKIE),
-                providers: authUser.providerData.map(provider => provider.providerId)
             })
         }
 
@@ -142,19 +141,40 @@ export default function DataHandler(props) {
             await signInWithEmailAndPassword(auth, email, password)
             router.push('/')
             if (!isNewUser) {
-                showToast({ msg: tToasts('success_login'), type: 'success' })
+                showToast({ type: 'success', msg: tToasts('success_login') })
             }
         } catch (error) {
             setLoading(false)
-            if (error.code === 'auth/wrong-password')
-                showToast({ msg: tToasts('wrong_password'), type: 'error' })
-            else if (error.code === 'auth/user-not-found')
-                showToast({ msg: tToasts('user_not_found'), type: 'error' })
-            else if (error.code === 'auth/too-many-requests')
-                showToast({ msg: tToasts('too_many_requests'), type: 'error' })
-            else
-                showToast({ msg: tToasts('default_error'), type: 'error' })
+            if (error.code === 'auth/wrong-password') {
+                const providers = await getUserLoginProviders(email)
+                if (providers.includes('password'))
+                    return showToast({ msg: tToasts('wrong_password'), type: 'error' })
+                return showToast({ type: 'error', msg: tToasts('account_exists_with_different_provider', { count: providers.length, provider: providers.map(prov => prov === 'google.com' ? 'Google' : prov)[0] }) })
+            }
+            if (error.code === 'auth/user-not-found')
+                return showToast({ type: 'error', msg: tToasts('user_not_found') })
+            if (error.code === 'auth/invalid-email')
+                return showToast({ type: 'error', msg: tToasts('invalid_email') })
+            if (error.code === 'auth/too-many-requests')
+                return showToast({ type: 'error', msg: tToasts('too_many_requests') })
+            return showToast({ type: 'error', msg: tToasts('default_error') })
         }
+    }
+
+    async function getUserLoginProviders(email) {
+        const options = {
+            method: 'GET',
+            headers: {
+                authorization: process.env.NEXT_PUBLIC_APP_TOKEN,
+                email: email
+            },
+        }
+
+        const providers = await fetch("/api/user-providers", options)
+            .then(response => response.json())
+            .then(response => response.data)
+
+        return providers
     }
 
     function logout() {

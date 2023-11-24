@@ -15,5 +15,9 @@
     "default_error": "Something went wrong",
     "user_not_found": "User not found",
     "too_many_requests": "Too many requests, please try again later",
-    "success_login": "Login successful"
+    "success_login": "Login successful",
+    "account_exists_with_different_credential": "Account exists with different credentials",
+    "weak_password": "Weak password",
+    "account_exists_with_different_provider_one": "This account should log in with {{provider}}",
+    "account_exists_with_different_provider_other": "This account should log in with another provider"
 }
