@@ -3,7 +3,7 @@ import { useEffect, useState, useRef } from 'react'
 import { Button, Skeleton } from '@mui/material'
 import Link from 'next/link'
 import { motion } from "framer-motion"
-import { COLORS_POOL, PRODUCT_TYPES, WISHLIST_LIMIT } from '../../../consts'
+import { COLORS_POOL, PRODUCT_TYPES, LIMITS } from '../../../consts'
 import ColorButton from '../ColorButton'
 import Image from 'next/image'
 import { useTranslation } from 'next-i18next'
@@ -134,7 +134,7 @@ export default function Product(props) {
 
         const add = !session.wishlist_products_ids.includes(product.id)
 
-        if (add && session.wishlist_products_ids.length >= WISHLIST_LIMIT) {
+        if (add && session.wishlist_products_ids.length >= LIMITS.wishlist_products) {
             showToast({ msg: tToasts('wishlist_limit'), type: 'error' })
             return
         }
@@ -246,7 +246,6 @@ export default function Product(props) {
                     >
                         {product.colors_ids.map((color_id, i) =>
                             <Image
-                                priority={color_id === currentVariant.color_id}
                                 quality={100}
                                 key={i}
                                 src={product.images.filter(img => img.color_id === color_id)[product.image_hover_index].src}

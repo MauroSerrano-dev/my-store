@@ -12,7 +12,8 @@ export default function PasswordInput(props) {
         mobile,
         name = 'password',
         label = 'Password',
-        showModalGuide
+        showModalGuide,
+        value
     } = props
 
     const [showPassword, setShowPassword] = useState(false)
@@ -48,6 +49,7 @@ export default function PasswordInput(props) {
                 onBlur={() => setFocus(false)}
                 label={label}
                 name={name}
+                value={value}
                 type={showPassword ? 'text' : 'password'}
                 onChange={handleOnChange}
                 autoComplete='off'

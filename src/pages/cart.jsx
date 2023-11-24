@@ -154,7 +154,8 @@ export default function Cart(props) {
     }
 
     function handleChangeCountrySelector(event, value) {
-        setShippingCountry(value.id)
+        if (value)
+            setShippingCountry(value.id)
     }
 
     return (

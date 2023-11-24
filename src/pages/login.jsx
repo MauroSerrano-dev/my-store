@@ -9,6 +9,7 @@ import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
 import PasswordInput from '@/components/material-ui/PasswordInput'
 import { useTranslation } from 'next-i18next';
 import GoogleButton from '@/components/buttons/GoogleButton'
+import { LIMITS } from '../../consts'
 
 export default function Login(props) {
     const {
@@ -23,6 +24,7 @@ export default function Login(props) {
     const [reCaptchaSolve, setReCaptchaSolve] = useState(false)
     const [password, setPassword] = useState('')
     const [email, setEmail] = useState('')
+    const [toastActive, setToastActive] = useState(false)
 
     const { i18n } = useTranslation()
     const tToasts = useTranslation('toasts').t
@@ -40,17 +42,6 @@ export default function Login(props) {
         setReCaptchaSolve(false)
     }
 
-    function googleLogin() {
-        signInWithPopup(auth, provider)
-            .then(result => {
-                router.push('/')
-                showToast({ msg: tToasts('success_login'), type: 'success' })
-            })
-            .catch(error => {
-                showToast({ msg: tToasts('default_error'), type: 'error' })
-            })
-    }
-
     function handleLogin() {
         if (reCaptchaSolve) {
             setLoading(true)
@@ -62,11 +53,28 @@ export default function Login(props) {
     }
 
     function handleEmailChange(event) {
-        setEmail(event.target.value)
+        if (event.target.value.length <= LIMITS.input_email)
+            setEmail(event.target.value)
+        else if (!toastActive) {
+            console.log('dsa')
+            setToastActive(true)
+            showToast({ msg: tToasts('input_limit') })
+            setTimeout(() => {
+                setToastActive(false)
+            }, 3000)
+        }
     }
 
     function handlePasswordChange(event) {
-        setPassword(event.target.value)
+        if (event.target.value.length <= LIMITS.input_password)
+            setPassword(event.target.value)
+        else if (!toastActive) {
+            setToastActive(true)
+            showToast({ msg: tToasts('input_limit') })
+            setTimeout(() => {
+                setToastActive(false)
+            }, 3000)
+        }
     }
 
     return (
@@ -112,6 +120,7 @@ export default function Login(props) {
                                 name='email'
                                 autoComplete='off'
                                 onChange={handleEmailChange}
+                                value={email}
                                 sx={{
                                     width: '100%'
                                 }}
@@ -119,6 +128,7 @@ export default function Login(props) {
                             <PasswordInput
                                 onChange={handlePasswordChange}
                                 mobile={mobile}
+                                value={password}
                             />
                             <Link
                                 href='/forgot-password'

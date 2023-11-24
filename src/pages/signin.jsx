@@ -1,15 +1,16 @@
 import styles from '@/styles/pages/signin.module.css'
 import { Button, TextField } from '@mui/material'
 import Link from 'next/link'
-import { PiHandshakeLight } from "react-icons/pi";
-import ReCAPTCHA from "react-google-recaptcha";
-import { useEffect, useState } from 'react';
-import { showToast } from '../../utils/toasts';
-import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
-import { isStrongPassword } from '../../utils/validations';
-import { useTranslation } from 'next-i18next';
-import PasswordInput from '@/components/material-ui/PasswordInput';
-import GoogleButton from '@/components/buttons/GoogleButton';
+import { PiHandshakeLight } from "react-icons/pi"
+import ReCAPTCHA from "react-google-recaptcha"
+import { useEffect, useState } from 'react'
+import { showToast } from '../../utils/toasts'
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
+import { isStrongPassword } from '../../utils/validations'
+import { useTranslation } from 'next-i18next'
+import PasswordInput from '@/components/material-ui/PasswordInput'
+import GoogleButton from '@/components/buttons/GoogleButton'
+import { LIMITS } from '../../consts'
 
 export default function Signin(props) {
     const {
@@ -22,7 +23,13 @@ export default function Signin(props) {
     } = props
 
     const [reCaptchaSolve, setReCaptchaSolve] = useState(false)
-    const [newUser, setNewUser] = useState({})
+    const [newUser, setNewUser] = useState({
+        first_name: '',
+        last_name: '',
+        email: '',
+        password: ''
+    })
+    const [toastActive, setToastActive] = useState(false)
 
     useEffect(() => {
         if (session)
@@ -41,12 +48,20 @@ export default function Signin(props) {
     }
 
     function handleNewUser(value, field) {
-        setNewUser(prev => (
-            {
-                ...prev,
-                [field]: value
-            }
-        ))
+        if (value.length <= LIMITS[`input_${field}`])
+            setNewUser(prev => (
+                {
+                    ...prev,
+                    [field]: value
+                }
+            ))
+        else if (!toastActive) {
+            setToastActive(true)
+            showToast({ msg: tToasts('input_limit') })
+            setTimeout(() => {
+                setToastActive(false)
+            }, 3000)
+        }
     }
 
     function handleCreateNewUser(user) {
@@ -126,6 +141,7 @@ export default function Signin(props) {
                             <TextField
                                 variant='outlined'
                                 label='First Name'
+                                value={newUser.first_name}
                                 autoComplete='off'
                                 size='small'
                                 onChange={e => handleNewUser(e.target.value, 'first_name')}
@@ -136,6 +152,7 @@ export default function Signin(props) {
                             <TextField
                                 variant='outlined'
                                 label='Last Name (optional)'
+                                value={newUser.last_name}
                                 autoComplete='off'
                                 size='small'
                                 onChange={e => handleNewUser(e.target.value, 'last_name')}
@@ -146,6 +163,7 @@ export default function Signin(props) {
                             <TextField
                                 variant='outlined'
                                 label='E-Mail'
+                                value={newUser.email}
                                 size='small'
                                 name='email'
                                 autoComplete='off'
@@ -158,6 +176,7 @@ export default function Signin(props) {
                                 onChange={e => handleNewUser(e.target.value, 'password')}
                                 showModalGuide
                                 mobile={mobile}
+                                value={newUser.password}
                             />
                             <ReCAPTCHA
                                 sitekey={process.env.NEXT_PUBLIC_RE_CAPTCHA_KEY}

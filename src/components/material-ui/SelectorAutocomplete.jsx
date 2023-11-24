@@ -1,5 +1,6 @@
 import { Autocomplete } from '@mui/material';
 import TextInput from './TextInput';
+import { useEffect } from 'react';
 
 export default function SelectorAutocomplete(props) {
     const {
@@ -28,6 +29,10 @@ export default function SelectorAutocomplete(props) {
         value,
         supportsHoverAndPointer,
     } = props
+
+    useEffect(() => {
+        console.log(value)
+    }, [])
 
     return (
         <Autocomplete
@@ -59,9 +64,9 @@ export default function SelectorAutocomplete(props) {
             }}
             renderInput={params => (
                 <TextInput
+                    params={params}
                     supportsHoverAndPointer={supportsHoverAndPointer}
                     style={style}
-                    params={params}
                     label={label}
                     dark={dark}
                     variant={variant}

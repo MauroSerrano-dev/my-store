@@ -1,5 +1,8 @@
 import { TextField } from '@mui/material';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { showToast } from '../../../utils/toasts';
+import { useTranslation } from 'next-i18next'
+import { LIMITS } from '../../../consts';
 
 export default function TextInput(props) {
     const {
@@ -26,17 +29,45 @@ export default function TextInput(props) {
         disabled
     } = props
 
+    const tToasts = useTranslation('toasts').t
+
     const [hover, setHover] = useState(false)
     const [focus, setFocus] = useState(false)
+    const [toastActive, setToastActive] = useState(false)
+
+    function handleOnChange(event) {
+        if (onChange) {
+            if (event.target.value.length <= LIMITS.input_search_bar)
+                onChange(event)
+            else if (!toastActive) {
+                setToastActive(true)
+                showToast({ msg: tToasts('input_limit') })
+                setTimeout(() => {
+                    setToastActive(false)
+                }, 3000)
+            }
+        }
+    }
+
+    useEffect(() => {
+        if (params && !toastActive && params.inputProps.value.length > LIMITS.input_country) {
+            setToastActive(true)
+            showToast({ msg: tToasts('input_limit') })
+            setTimeout(() => {
+                setToastActive(false)
+            }, 3000)
+        }
+    }, [params])
 
     return (
         <TextField
             {...params}
+            inputProps={{ ...params.inputProps, value: params.inputProps.value.slice(0, LIMITS.input_country) }}
             variant={variant}
             label={label}
             name={name}
             autoComplete={autoComplete}
-            onChange={onChange}
+            onChange={handleOnChange}
             placeholder={placeholder}
             value={value}
             defaultValue={defaultValue}

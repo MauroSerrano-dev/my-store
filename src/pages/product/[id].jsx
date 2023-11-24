@@ -5,7 +5,7 @@ import ImagesSlider from '@/components/ImagesSlider'
 import { Button } from '@mui/material'
 import ShoppingCartOutlinedIcon from '@mui/icons-material/ShoppingCartOutlined'
 import CreditCardOutlinedIcon from '@mui/icons-material/CreditCardOutlined'
-import { CART_COOKIE, CART_MAX_ITEMS, COLORS_POOL, SIZES_POOL, WISHLIST_LIMIT, getShippingOptions } from '../../../consts'
+import { CART_COOKIE, CART_MAX_ITEMS, COLORS_POOL, SIZES_POOL, LIMITS, getShippingOptions } from '../../../consts'
 import Head from 'next/head'
 import ColorSelector from '@/components/ColorSelector'
 import SizesSelector from '@/components/SizesSelector'
@@ -144,7 +144,8 @@ export default withRouter(props => {
     }
 
     function handleChangeCountrySelector(event, value) {
-        setShippingCountry(value.id)
+        if (value)
+            setShippingCountry(value.id)
     }
 
     function handleColorChange(arr, index, color) {
@@ -158,7 +159,7 @@ export default withRouter(props => {
     function handleWishlist() {
         const add = !session.wishlist_products_ids.includes(product.id)
 
-        if (add && session.wishlist_products_ids.length >= WISHLIST_LIMIT) {
+        if (add && session.wishlist_products_ids.length >= LIMITS.wishlist_products) {
             showToast({ msg: tToasts('wishlist_limit'), type: 'error' })
             return
         }
