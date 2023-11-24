@@ -16,8 +16,6 @@ export default function PasswordInput(props) {
     const [showPassword, setShowPassword] = useState(false)
     const [focus, setFocus] = useState(false)
 
-    const inputRef = useRef()
-
     const [hasUpper, setHasUpper] = useState(false)
     const [hasLower, setHasLower] = useState(false)
     const [hasNumber, setHasNumber] = useState(false)
@@ -36,8 +34,7 @@ export default function PasswordInput(props) {
 
     useEffect(() => {
         function handleCloseMenuOnScroll() {
-            if (inputRef.current)
-                inputRef.current.querySelector('input').blur();
+            setFocus(false)
         }
 
         if (!supportsHoverAndPointer) {
@@ -61,8 +58,8 @@ export default function PasswordInput(props) {
                 Password
             </InputLabel>
             <OutlinedInput
-                ref={inputRef}
                 onFocus={() => setFocus(true)}
+                onClick={() => setFocus(true)}
                 onBlur={() => setFocus(false)}
                 label='Password'
                 name='password'
