@@ -10,7 +10,6 @@ export default function PasswordInput(props) {
     const {
         onChange,
         mobile,
-        supportsHoverAndPointer,
     } = props
 
     const [showPassword, setShowPassword] = useState(false)
@@ -32,22 +31,6 @@ export default function PasswordInput(props) {
         setPassword(pass)
     }
 
-    useEffect(() => {
-        function handleCloseMenuOnScroll() {
-            setFocus(false)
-        }
-
-        if (!supportsHoverAndPointer) {
-            window.addEventListener('scroll', handleCloseMenuOnScroll);
-        }
-
-        return () => {
-            if (!supportsHoverAndPointer) {
-                window.removeEventListener('scroll', handleCloseMenuOnScroll);
-            }
-        }
-    }, [supportsHoverAndPointer])
-
     return (
         <FormControl
             size='small'
@@ -59,7 +42,6 @@ export default function PasswordInput(props) {
             </InputLabel>
             <OutlinedInput
                 onFocus={() => setFocus(true)}
-                onClick={() => setFocus(true)}
                 onBlur={() => setFocus(false)}
                 label='Password'
                 name='password'
