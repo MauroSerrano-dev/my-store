@@ -5,11 +5,10 @@ import { useState } from 'react'
 import { sendPasswordResetEmail } from 'firebase/auth'
 import { Button } from '@mui/material'
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
+import TextInput from '@/components/material-ui/TextInput'
 
 export default function ForgotPassword(props) {
     const { session, login, auth, supportsHoverAndPointer } = props
-    const [hover, setHover] = useState(false)
-    const [focus, setFocus] = useState(false)
 
     const [reCaptchaSolve, setReCaptchaSolve] = useState(false)
 
@@ -55,36 +54,14 @@ export default function ForgotPassword(props) {
                         className={styles.form}
                     >
                         <div className={styles.fieldsContainer}>
-                            <TextField
-                                variant='outlined'
+                            <TextInput
                                 label='E-Mail'
                                 size='small'
                                 name='email'
-                                autoComplete='off'
-                                sx={{
+                                style={{
                                     width: '93.5%',
-                                    '.MuiOutlinedInput-notchedOutline': {
-                                        borderColor: `${focus
-                                            ? 'var(--primary)' :
-                                            hover || !supportsHoverAndPointer
-                                                ? '#ffffff'
-                                                : '#ffffff90'
-                                            } !important`,
-                                        transition: 'all ease-in-out 200ms',
-                                    },
-                                    '.MuiInputLabel-outlined': {
-                                        color: `${focus
-                                            ? 'var(--primary)' : '#ffffff'} !important`,
-                                        transition: 'all ease-in-out 200ms',
-                                    },
-                                    '.MuiInputBase-input': {
-                                        color: '#ffffff',
-                                    },
                                 }}
-                                onFocus={() => setFocus(true)}
-                                onBlur={() => setFocus(false)}
-                                onMouseEnter={() => setHover(true)}
-                                onMouseLeave={() => setHover(false)}
+                                supportsHoverAndPointer={supportsHoverAndPointer}
                             />
                         </div>
                         <Button

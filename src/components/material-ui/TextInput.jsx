@@ -2,7 +2,6 @@ import { TextField } from '@mui/material';
 import { useEffect, useState } from 'react';
 import { showToast } from '../../../utils/toasts';
 import { useTranslation } from 'next-i18next'
-import { LIMITS } from '../../../consts';
 
 export default function TextInput(props) {
     const {
@@ -26,7 +25,10 @@ export default function TextInput(props) {
         value,
         defaultValue,
         supportsHoverAndPointer,
-        disabled
+        disabled,
+        limit = 100,
+        size,
+        type,
     } = props
 
     const tToasts = useTranslation('toasts').t
@@ -37,7 +39,7 @@ export default function TextInput(props) {
 
     function handleOnChange(event) {
         if (onChange) {
-            if (event.target.value.length <= LIMITS.input_search_bar)
+            if (event.target.value.length <= limit)
                 onChange(event)
             else if (!toastActive) {
                 setToastActive(true)
@@ -50,7 +52,7 @@ export default function TextInput(props) {
     }
 
     useEffect(() => {
-        if (params && !toastActive && params.inputProps.value.length > LIMITS.input_country) {
+        if (params && !toastActive && params.inputProps.value.length > limit) {
             setToastActive(true)
             showToast({ msg: tToasts('input_limit') })
             setTimeout(() => {
@@ -62,7 +64,8 @@ export default function TextInput(props) {
     return (
         <TextField
             {...params}
-            inputProps={{ ...params.inputProps, value: params.inputProps.value.slice(0, LIMITS.input_country) }}
+            inputProps={params ? { ...params.inputProps, value: params.inputProps.value.slice(0, limit) } : undefined}
+            type={type}
             variant={variant}
             label={label}
             name={name}
@@ -72,6 +75,7 @@ export default function TextInput(props) {
             value={value}
             defaultValue={defaultValue}
             disabled={disabled}
+            size={size}
             sx={{
                 ...style,
                 '.MuiOutlinedInput-notchedOutline': {
@@ -98,6 +102,8 @@ export default function TextInput(props) {
                     transition: 'all ease-in-out 200ms',
                     ...styleInput,
                 },
+                borderRadius: '4px',
+                boxShadow: '0px 1px 1px 0px rgba(0, 0, 0, 0.1), 0px 1px 2px 0px rgba(0, 0, 0, 0.07), 0px 1px 3px 0px rgba(0, 0, 0, 0.05)',
             }}
             onFocus={() => setFocus(true)}
             onBlur={() => setFocus(false)}

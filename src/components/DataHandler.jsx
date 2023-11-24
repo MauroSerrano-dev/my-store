@@ -139,10 +139,10 @@ export default function DataHandler(props) {
     async function login(email, password, isNewUser) {
         try {
             await signInWithEmailAndPassword(auth, email, password)
-            router.push('/')
             if (!isNewUser) {
                 showToast({ type: 'success', msg: tToasts('success_login') })
             }
+            router.push('/') // talvez isso tenha resolvido um bug
         } catch (error) {
             setLoading(false)
             if (error.code === 'auth/wrong-password') {
