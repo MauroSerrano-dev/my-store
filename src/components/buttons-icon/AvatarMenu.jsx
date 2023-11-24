@@ -17,6 +17,7 @@ export default function AvatarMenu(props) {
   const {
     logout,
     session,
+    router,
     supportsHoverAndPointer
   } = props
 
@@ -46,6 +47,10 @@ export default function AvatarMenu(props) {
   }
 
   useEffect(() => {
+    setOpen(false)
+  }, [router])
+
+  useEffect(() => {
     function handleCloseMenuOnScroll() {
       setOpen(false)
     }
@@ -67,6 +72,9 @@ export default function AvatarMenu(props) {
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
       onClick={handleOnClick}
+      style={{
+        backgroundColor: open ? 'rgba(0, 0, 0, 0.15)' : 'transparent'
+      }}
     >
       {supportsHoverAndPointer
         ? <Link
@@ -114,7 +122,6 @@ export default function AvatarMenu(props) {
               <Link
                 href={'/profile'}
                 className='noUnderline'
-                onClick={() => setOpen(false)}
               >
                 <MenuItem>
                   <ListItemIcon>
@@ -127,7 +134,6 @@ export default function AvatarMenu(props) {
               <Link
                 href={'/orders'}
                 className='noUnderline'
-                onClick={() => setOpen(false)}
               >
                 <MenuItem>
                   <ListItemIcon>
@@ -139,7 +145,6 @@ export default function AvatarMenu(props) {
               <Link
                 href={'/support'}
                 className='noUnderline'
-                onClick={() => setOpen(false)}
               >
                 <MenuItem>
                   <ListItemIcon>
@@ -152,7 +157,6 @@ export default function AvatarMenu(props) {
                 <Link
                   href={'/admin'}
                   className='noUnderline'
-                  onClick={() => setOpen(false)}
                 >
                   <MenuItem>
                     <ListItemIcon>
@@ -172,7 +176,6 @@ export default function AvatarMenu(props) {
             : <div className={styles.noSession}>
               <Link
                 href={'/login'}
-                onClick={() => setOpen(false)}
                 className='noUnderline fillWidth'
               >
                 <Button
@@ -189,7 +192,7 @@ export default function AvatarMenu(props) {
                 </Button>
               </Link>
               <p>
-                Don't have an account yet? <Link onClick={() => setOpen(false)} className='noUnderline' href={'/signin'}>Sign up</Link>
+                Don't have an account yet? <Link className='noUnderline' href={'/signin'}>Sign up</Link>
               </p>
             </div>
           }
