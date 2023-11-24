@@ -85,10 +85,13 @@ export default function ShareButton(props) {
     return (
         <div
             className={styles.container}
-            style={style}
             onMouseEnter={handleMouseEnter}
             onMouseLeave={handleMouseLeave}
             onClick={handleOnClick}
+            style={{
+                ...style,
+                backgroundColor: open ? 'rgba(255, 255, 255, 0.9)' : 'rgba(255, 255, 255, 0.5)'
+            }}
         >
             <div className={styles.iconContainer}>
                 <IosShareRoundedIcon

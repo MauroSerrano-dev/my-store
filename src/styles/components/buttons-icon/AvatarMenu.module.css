@@ -87,10 +87,6 @@
     transform: rotateZ(45deg);
 }
 
-.container:hover {
-    background-color: rgba(0, 0, 0, 0.15);
-}
-
 /* Enable hover only on non-touch devices */
 @media (hover: hover) and (pointer: fine) {
 

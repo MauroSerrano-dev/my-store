@@ -1,6 +1,6 @@
 import { Visibility, VisibilityOff } from '@mui/icons-material';
 import { FormControl, IconButton, InputAdornment, InputLabel, OutlinedInput, TextField } from '@mui/material';
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import CloseRoundedIcon from '@mui/icons-material/CloseRounded'
 import CheckRoundedIcon from '@mui/icons-material/CheckRounded';
 import styles from '@/styles/components/material-ui/PasswordInput.module.css'
@@ -10,10 +10,13 @@ export default function PasswordInput(props) {
     const {
         onChange,
         mobile,
+        supportsHoverAndPointer,
     } = props
 
     const [showPassword, setShowPassword] = useState(false)
     const [focus, setFocus] = useState(false)
+
+    const inputRef = useRef()
 
     const [hasUpper, setHasUpper] = useState(false)
     const [hasLower, setHasLower] = useState(false)
@@ -31,6 +34,23 @@ export default function PasswordInput(props) {
         setPassword(pass)
     }
 
+    useEffect(() => {
+        function handleCloseMenuOnScroll() {
+            if (inputRef.current)
+                inputRef.current.querySelector('input').blur();
+        }
+
+        if (!supportsHoverAndPointer) {
+            window.addEventListener('scroll', handleCloseMenuOnScroll);
+        }
+
+        return () => {
+            if (!supportsHoverAndPointer) {
+                window.removeEventListener('scroll', handleCloseMenuOnScroll);
+            }
+        }
+    }, [supportsHoverAndPointer])
+
     return (
         <FormControl
             size='small'
@@ -41,6 +61,7 @@ export default function PasswordInput(props) {
                 Password
             </InputLabel>
             <OutlinedInput
+                ref={inputRef}
                 onFocus={() => setFocus(true)}
                 onBlur={() => setFocus(false)}
                 label='Password'

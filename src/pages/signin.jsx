@@ -17,6 +17,7 @@ export default function Signin(props) {
         session,
         router,
         setLoading,
+        supportsHoverAndPointer,
     } = props
 
     const [reCaptchaSolve, setReCaptchaSolve] = useState(false)
@@ -147,6 +148,7 @@ export default function Signin(props) {
                             <PasswordInput
                                 onChange={e => handleNewUser(e.target.value, 'password')}
                                 mobile={mobile}
+                                supportsHoverAndPointer={supportsHoverAndPointer}
                             />
                             <ReCAPTCHA
                                 sitekey={process.env.NEXT_PUBLIC_RE_CAPTCHA_KEY}

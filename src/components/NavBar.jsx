@@ -32,6 +32,7 @@ export default function NavBar(props) {
         supportsHoverAndPointer,
         menuOpen,
         switchMenu,
+        router,
     } = props
 
     const tNavbar = useTranslation('navbar').t
@@ -180,6 +181,7 @@ export default function NavBar(props) {
                         session={session}
                         logout={logout}
                         supportsHoverAndPointer={supportsHoverAndPointer}
+                        router={router}
                     />
                 </div>
             </div>
