@@ -9,7 +9,7 @@ import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
 import PasswordInput from '@/components/material-ui/PasswordInput'
 import { useTranslation } from 'next-i18next';
 import GoogleButton from '@/components/buttons/GoogleButton'
-import { LIMITS } from '../../consts'
+import TextInput from '@/components/material-ui/TextInput'
 
 export default function Login(props) {
     const {
@@ -19,15 +19,14 @@ export default function Login(props) {
         router,
         session,
         setLoading,
+        supportsHoverAndPointer,
     } = props
 
     const [reCaptchaSolve, setReCaptchaSolve] = useState(false)
     const [password, setPassword] = useState('')
     const [email, setEmail] = useState('')
-    const [toastActive, setToastActive] = useState(false)
 
     const { i18n } = useTranslation()
-    const tToasts = useTranslation('toasts').t
 
     useEffect(() => {
         if (session)
@@ -53,28 +52,11 @@ export default function Login(props) {
     }
 
     function handleEmailChange(event) {
-        if (event.target.value.length <= LIMITS.input_email)
-            setEmail(event.target.value)
-        else if (!toastActive) {
-            console.log('dsa')
-            setToastActive(true)
-            showToast({ msg: tToasts('input_limit') })
-            setTimeout(() => {
-                setToastActive(false)
-            }, 3000)
-        }
+        setEmail(event.target.value)
     }
 
     function handlePasswordChange(event) {
-        if (event.target.value.length <= LIMITS.input_password)
-            setPassword(event.target.value)
-        else if (!toastActive) {
-            setToastActive(true)
-            showToast({ msg: tToasts('input_limit') })
-            setTimeout(() => {
-                setToastActive(false)
-            }, 3000)
-        }
+        setPassword(event.target.value)
     }
 
     return (
@@ -113,15 +95,15 @@ export default function Login(props) {
                             or Login with
                         </p>
                         <div className={styles.fieldsContainer}>
-                            <TextField
-                                variant='outlined'
+                            <TextInput
                                 label='E-Mail'
                                 size='small'
                                 name='email'
-                                autoComplete='off'
                                 onChange={handleEmailChange}
                                 value={email}
-                                sx={{
+                                dark
+                                supportsHoverAndPointer={supportsHoverAndPointer}
+                                style={{
                                     width: '100%'
                                 }}
                             />
@@ -129,6 +111,8 @@ export default function Login(props) {
                                 onChange={handlePasswordChange}
                                 mobile={mobile}
                                 value={password}
+                                supportsHoverAndPointer={supportsHoverAndPointer}
+                                dark
                             />
                             <Link
                                 href='/forgot-password'

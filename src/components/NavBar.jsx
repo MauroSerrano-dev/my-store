@@ -121,27 +121,31 @@ export default function NavBar(props) {
                     }
                 </div>
                 <div className={styles.rightSide}>
-                    <div
-                        className={styles.iconContainer}
-                        onClick={() => setIsScrollAtTop(true)}
-                        style={{
-                            pointerEvents: isScrollAtTop
-                                ? 'none'
-                                : 'auto',
-                            opacity: isScrollAtTop
-                                ? 0
-                                : 1
-                        }}
-                    >
-                        <SearchRoundedIcon
-                            style={{
-                                fontSize: 'calc(var(--bar-height) * 0.36)',
-                                color: 'var(--global-white)',
-                                position: 'relative',
-                                top: '1px',
+                    {!isScrollAtTop &&
+                        <motion.div
+                            className={styles.iconContainer}
+                            onClick={() => setIsScrollAtTop(true)}
+                            initial='hidden'
+                            animate='visible'
+                            variants={{
+                                hidden: {
+                                    opacity: 0
+                                },
+                                visible: {
+                                    opacity: 1
+                                }
                             }}
-                        />
-                    </div>
+                        >
+                            <SearchRoundedIcon
+                                style={{
+                                    fontSize: 'calc(var(--bar-height) * 0.36)',
+                                    color: 'var(--global-white)',
+                                    position: 'relative',
+                                    top: '1px',
+                                }}
+                            />
+                        </motion.div>
+                    }
                     {session &&
                         <Link
                             href={'/wishlist'}

@@ -1,10 +1,13 @@
 import { Visibility, VisibilityOff } from '@mui/icons-material';
-import { FormControl, IconButton, InputAdornment, InputLabel, OutlinedInput, TextField } from '@mui/material';
+import { FormControl, IconButton, InputAdornment, InputLabel, OutlinedInput } from '@mui/material';
 import { useState } from 'react';
 import CloseRoundedIcon from '@mui/icons-material/CloseRounded'
 import CheckRoundedIcon from '@mui/icons-material/CheckRounded';
 import styles from '@/styles/components/material-ui/PasswordInput.module.css'
 import { motion } from 'framer-motion'
+import { showToast } from '../../../utils/toasts';
+import { useTranslation } from 'next-i18next'
+import { LIMITS } from '../../../consts';
 
 export default function PasswordInput(props) {
     const {
@@ -13,11 +16,24 @@ export default function PasswordInput(props) {
         name = 'password',
         label = 'Password',
         showModalGuide,
-        value
+        value,
+        style,
+        supportsHoverAndPointer,
+        dark,
+        colorBorderHover = dark ? '#000000' : '#ffffff',
+        colorBorder = dark ? '#00000070' : '#ffffff90',
+        colorBorderFocus = 'var(--primary)',
+        colorLabelHover = dark ? '#000000' : '#ffffff',
+        colorLabel = dark ? '#000000' : '#ffffff',
+        colorLabelFocus = 'var(--primary)',
+        colorText = dark ? '#000000' : '#ffffff',
+        limit = LIMITS.input_password,
     } = props
 
     const [showPassword, setShowPassword] = useState(false)
     const [focus, setFocus] = useState(false)
+    const [hover, setHover] = useState(false)
+    const [toastActive, setToastActive] = useState(false)
 
     const [hasUpper, setHasUpper] = useState(false)
     const [hasLower, setHasLower] = useState(false)
@@ -25,14 +41,27 @@ export default function PasswordInput(props) {
     const [hasLength, setHasLength] = useState(false)
     const [password, setPassword] = useState('')
 
+    const tToasts = useTranslation('toasts').t
+
     function handleOnChange(event) {
-        onChange(event)
-        const pass = event.target.value
-        setHasUpper(/[A-Z]+/.test(pass))
-        setHasLower(/[a-z]+/.test(pass))
-        setHasNumber(/[0-9]+/.test(pass))
-        setHasLength(/.{6,}/.test(pass))
-        setPassword(pass)
+        if (onChange) {
+            if (event.target.value.length <= limit) {
+                onChange(event)
+                const pass = event.target.value
+                setHasUpper(/[A-Z]+/.test(pass))
+                setHasLower(/[a-z]+/.test(pass))
+                setHasNumber(/[0-9]+/.test(pass))
+                setHasLength(/.{6,}/.test(pass))
+                setPassword(pass)
+            }
+            else if (!toastActive) {
+                setToastActive(true)
+                showToast({ msg: tToasts('input_limit') })
+                setTimeout(() => {
+                    setToastActive(false)
+                }, 3000)
+            }
+        }
     }
 
     return (
@@ -41,18 +70,29 @@ export default function PasswordInput(props) {
             sx={{ width: '100%' }}
             variant="outlined"
         >
-            <InputLabel>
+            <InputLabel
+                sx={{
+                    color: `${focus
+                        ? colorLabelFocus
+                        : hover || !supportsHoverAndPointer
+                            ? colorLabelHover
+                            : colorLabel
+                        } !important`,
+                    transition: 'all ease-in-out 200ms',
+                }}
+            >
                 Password
             </InputLabel>
             <OutlinedInput
                 onFocus={() => setFocus(true)}
                 onBlur={() => setFocus(false)}
+                onMouseEnter={() => setHover(true)}
+                onMouseLeave={() => setHover(false)}
                 label={label}
                 name={name}
                 value={value}
                 type={showPassword ? 'text' : 'password'}
                 onChange={handleOnChange}
-                autoComplete='off'
                 endAdornment={
                     <InputAdornment position="end">
                         <IconButton
@@ -65,6 +105,25 @@ export default function PasswordInput(props) {
                         </IconButton>
                     </InputAdornment>
                 }
+                sx={{
+                    ...style,
+                    '.MuiOutlinedInput-notchedOutline': {
+                        borderColor: `${focus
+                            ? colorBorderFocus
+                            : hover || !supportsHoverAndPointer
+                                ? colorBorderHover
+                                : colorBorder
+                            } !important`,
+                        transition: 'all ease-in-out 200ms',
+                    },
+                    '.MuiInputBase-input': {
+                        WebkitTextFillColor: `${colorText} !important`,
+                        color: `${colorText} !important`,
+                        transition: 'all ease-in-out 200ms',
+                    },
+                    borderRadius: '4px',
+                    boxShadow: '0px 1px 1px 0px rgba(0, 0, 0, 0.1), 0px 1px 2px 0px rgba(0, 0, 0, 0.07), 0px 1px 3px 0px rgba(0, 0, 0, 0.05)',
+                }}
             />
             {showModalGuide && (focus || (password.length !== 0 && (!hasLower || !hasUpper || !hasNumber || !hasLength))) &&
                 <motion.div

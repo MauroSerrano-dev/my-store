@@ -11,6 +11,7 @@ import { useTranslation } from 'next-i18next'
 import PasswordInput from '@/components/material-ui/PasswordInput'
 import GoogleButton from '@/components/buttons/GoogleButton'
 import { LIMITS } from '../../consts'
+import TextInput from '@/components/material-ui/TextInput'
 
 export default function Signin(props) {
     const {
@@ -20,6 +21,7 @@ export default function Signin(props) {
         router,
         setLoading,
         auth,
+        supportsHoverAndPointer,
     } = props
 
     const [reCaptchaSolve, setReCaptchaSolve] = useState(false)
@@ -29,7 +31,6 @@ export default function Signin(props) {
         email: '',
         password: ''
     })
-    const [toastActive, setToastActive] = useState(false)
 
     useEffect(() => {
         if (session)
@@ -48,20 +49,12 @@ export default function Signin(props) {
     }
 
     function handleNewUser(value, field) {
-        if (value.length <= LIMITS[`input_${field}`])
-            setNewUser(prev => (
-                {
-                    ...prev,
-                    [field]: value
-                }
-            ))
-        else if (!toastActive) {
-            setToastActive(true)
-            showToast({ msg: tToasts('input_limit') })
-            setTimeout(() => {
-                setToastActive(false)
-            }, 3000)
-        }
+        setNewUser(prev => (
+            {
+                ...prev,
+                [field]: value
+            }
+        ))
     }
 
     function handleCreateNewUser(user) {
@@ -129,64 +122,72 @@ export default function Signin(props) {
                             paddingRight: mobile ? '4.5vw' : '10vw'
                         }}
                     >
-                        <GoogleButton
-                            router={router}
-                            auth={auth}
-                            text='Signin with Google'
-                        />
-                        <p style={{ fontSize: 14, fontWeight: 500, color: 'var(--global-light-grey)' }}>
-                            or Signin with
-                        </p>
-                        <div className={styles.fieldsContainer}>
-                            <TextField
-                                variant='outlined'
-                                label='First Name'
-                                value={newUser.first_name}
-                                autoComplete='off'
-                                size='small'
-                                onChange={e => handleNewUser(e.target.value, 'first_name')}
-                                sx={{
-                                    width: '100%'
-                                }}
+                        <div className={styles.loginBodyTop}>
+
+                            <GoogleButton
+                                router={router}
+                                auth={auth}
+                                text='Signin with Google'
                             />
-                            <TextField
-                                variant='outlined'
-                                label='Last Name (optional)'
-                                value={newUser.last_name}
-                                autoComplete='off'
-                                size='small'
-                                onChange={e => handleNewUser(e.target.value, 'last_name')}
-                                sx={{
-                                    width: '100%'
-                                }}
-                            />
-                            <TextField
-                                variant='outlined'
-                                label='E-Mail'
-                                value={newUser.email}
-                                size='small'
-                                name='email'
-                                autoComplete='off'
-                                onChange={e => handleNewUser(e.target.value, 'email')}
-                                sx={{
-                                    width: '100%'
-                                }}
-                            />
-                            <PasswordInput
-                                onChange={e => handleNewUser(e.target.value, 'password')}
-                                showModalGuide
-                                mobile={mobile}
-                                value={newUser.password}
-                            />
-                            <ReCAPTCHA
-                                sitekey={process.env.NEXT_PUBLIC_RE_CAPTCHA_KEY}
-                                onChange={handleReCaptchaSuccess}
-                                onExpired={handleReCaptchaError}
-                                onErrored={handleReCaptchaError}
-                                hl={i18n.language}
-                            />
+                            <p style={{ fontSize: 14, fontWeight: 500, color: 'var(--global-light-grey)' }}>
+                                or Signin with
+                            </p>
+                            <div className={styles.fieldsContainer}>
+                                <TextInput
+                                    label='First Name'
+                                    value={newUser.first_name}
+                                    size='small'
+                                    onChange={e => handleNewUser(e.target.value, 'first_name')}
+                                    dark
+                                    limit={LIMITS.input_first_name}
+                                    supportsHoverAndPointer={supportsHoverAndPointer}
+                                    style={{
+                                        width: '100%'
+                                    }}
+                                />
+                                <TextInput
+                                    label='Last Name (optional)'
+                                    value={newUser.last_name}
+                                    size='small'
+                                    onChange={e => handleNewUser(e.target.value, 'last_name')}
+                                    dark
+                                    limit={LIMITS.input_last_name}
+                                    supportsHoverAndPointer={supportsHoverAndPointer}
+                                    style={{
+                                        width: '100%'
+                                    }}
+                                />
+                                <TextInput
+                                    label='E-Mail'
+                                    value={newUser.email}
+                                    name='email'
+                                    size='small'
+                                    onChange={e => handleNewUser(e.target.value, 'email')}
+                                    limit={LIMITS.input_email}
+                                    dark
+                                    supportsHoverAndPointer={supportsHoverAndPointer}
+                                    style={{
+                                        width: '100%',
+                                    }}
+                                />
+                                <PasswordInput
+                                    showModalGuide
+                                    onChange={e => handleNewUser(e.target.value, 'password')}
+                                    mobile={mobile}
+                                    value={newUser.password}
+                                    dark
+                                    supportsHoverAndPointer={supportsHoverAndPointer}
+                                />
+                                <ReCAPTCHA
+                                    sitekey={process.env.NEXT_PUBLIC_RE_CAPTCHA_KEY}
+                                    onChange={handleReCaptchaSuccess}
+                                    onExpired={handleReCaptchaError}
+                                    onErrored={handleReCaptchaError}
+                                    hl={i18n.language}
+                                />
+                            </div>
                         </div>
-                        <div className={styles.loginButtons}>
+                        <div className={styles.loginBodyBottom}>
                             <Button
                                 variant='contained'
                                 onClick={() => handleCreateNewUser(newUser)}

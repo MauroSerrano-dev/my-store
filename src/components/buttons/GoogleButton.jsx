@@ -15,8 +15,8 @@ export default function GoogleButton(props) {
     function googleLogin() {
         signInWithPopup(auth, provider)
             .then(result => {
-                router.push('/')
                 showToast({ msg: tToasts('success_login'), type: 'success' })
+                router.push('/')
             })
             .catch(error => {
                 showToast({ msg: tToasts('default_error'), type: 'error' })
