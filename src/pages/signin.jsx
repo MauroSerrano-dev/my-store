@@ -1,5 +1,5 @@
 import styles from '@/styles/pages/signin.module.css'
-import { Button, TextField } from '@mui/material'
+import { Button } from '@mui/material'
 import Link from 'next/link'
 import { PiHandshakeLight } from "react-icons/pi"
 import ReCAPTCHA from "react-google-recaptcha"
@@ -19,6 +19,7 @@ export default function Signin(props) {
         mobile,
         session,
         router,
+        loading,
         setLoading,
         auth,
         supportsHoverAndPointer,
@@ -33,12 +34,13 @@ export default function Signin(props) {
     })
 
     useEffect(() => {
-        if (session)
+        if (session && !loading)
             router.push('/profile')
     }, [session])
 
     const { i18n } = useTranslation()
     const tToasts = useTranslation('toasts').t
+    const tSignin = useTranslation('login-signin').t
 
     function handleReCaptchaSuccess() {
         setReCaptchaSolve(true)
@@ -89,7 +91,7 @@ export default function Signin(props) {
                 .catch(() => setLoading(false))
         }
         else {
-            showToast({ msg: 'Please solve the reCAPTCHA.' })
+            showToast({ msg: tToasts('solve_recaptcha') })
         }
     }
 
@@ -113,7 +115,7 @@ export default function Signin(props) {
                     <div
                         className={styles.loginHead}
                     >
-                        <h1>Create an account</h1>
+                        <h1>{tSignin('create_an_account')}</h1>
                     </div>
                     <div
                         className={styles.loginBody}
@@ -127,14 +129,14 @@ export default function Signin(props) {
                             <GoogleButton
                                 router={router}
                                 auth={auth}
-                                text='Signin with Google'
+                                text={tSignin('google_button_signin')}
                             />
                             <p style={{ fontSize: 14, fontWeight: 500, color: 'var(--global-light-grey)' }}>
-                                or Signin with
+                                {tSignin('or_signin_with')}
                             </p>
                             <div className={styles.fieldsContainer}>
                                 <TextInput
-                                    label='First Name'
+                                    label={tSignin('first_name')}
                                     value={newUser.first_name}
                                     size='small'
                                     onChange={e => handleNewUser(e.target.value, 'first_name')}
@@ -146,7 +148,7 @@ export default function Signin(props) {
                                     }}
                                 />
                                 <TextInput
-                                    label='Last Name (optional)'
+                                    label={tSignin('last_name')}
                                     value={newUser.last_name}
                                     size='small'
                                     onChange={e => handleNewUser(e.target.value, 'last_name')}
@@ -158,7 +160,7 @@ export default function Signin(props) {
                                     }}
                                 />
                                 <TextInput
-                                    label='E-Mail'
+                                    label={tSignin('E-Mail')}
                                     value={newUser.email}
                                     name='email'
                                     size='small'
@@ -171,6 +173,7 @@ export default function Signin(props) {
                                     }}
                                 />
                                 <PasswordInput
+                                    label={tSignin('Password')}
                                     showModalGuide
                                     onChange={e => handleNewUser(e.target.value, 'password')}
                                     mobile={mobile}
@@ -199,7 +202,7 @@ export default function Signin(props) {
                                     fontSize: '16px',
                                 }}
                             >
-                                Create an account
+                                {tSignin('create_an_account')}
                             </Button>
                             <Link
                                 href='/login'
@@ -215,7 +218,7 @@ export default function Signin(props) {
                                         fontWeight: '700',
                                     }}
                                 >
-                                    I already have an account
+                                    {tSignin('already_have_account')}
                                 </Button>
                             </Link>
                         </div>
@@ -232,10 +235,10 @@ export default function Signin(props) {
                         className={styles.joinHead}
                     >
                         <h3>
-                            Are you planning to buy?
+                            {tSignin('planning_to_buy')}
                         </h3>
                         <p>
-                            Join {process.env.NEXT_PUBLIC_STORE_NAME} community!
+                            {tSignin('join_community', { store_name: process.env.NEXT_PUBLIC_STORE_NAME })}
                         </p>
                     </div>
                     <div
@@ -245,12 +248,12 @@ export default function Signin(props) {
                             size='45px'
                         />
                         <h4>
-                            Join as a Customer
+                            {tSignin('join_as_customer')}
                         </h4>
                         <ul>
-                            <li>Save your wishlist picks.</li>
-                            <li>Save your order data for next purchases.</li>
-                            <li>Be the first one to know about our discounts.</li>
+                            <li>{tSignin('save_your_wishlist')}</li>
+                            <li>{tSignin('save_your_order')}</li>
+                            <li>{tSignin('be_the_first')}</li>
                         </ul>
                     </div>
                 </div>
@@ -262,7 +265,7 @@ export default function Signin(props) {
 export async function getServerSideProps({ locale }) {
     return {
         props: {
-            ...(await serverSideTranslations(locale, ['common', 'menu', 'navbar', 'toasts']))
+            ...(await serverSideTranslations(locale, ['common', 'menu', 'navbar', 'toasts', 'login-signin']))
         }
     }
 }

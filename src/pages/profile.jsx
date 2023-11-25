@@ -148,7 +148,7 @@ export default function Profile(props) {
                                     size={'medium'}
                                     supportsHoverAndPointer={supportsHoverAndPointer}
                                 />
-                                <p className={styles.createAtDate}>Customer since: {convertTimestampToFormatDate(session.create_at)}</p>
+                                <p className={styles.createAtDate}>{tProfile('customer_since')}: {convertTimestampToFormatDate(session.create_at, i18n.language)}</p>
                             </div>
                             <div className={styles.right}>
                                 <div className={styles.field}>

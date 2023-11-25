@@ -1,0 +1,22 @@
+{
+    "Login": "Login",
+    "google_button": "Login with Google",
+    "google_button_signin": "Signin with Google",
+    "E-Mail": "E-Mail",
+    "Password": "Password",
+    "forgot_password": "Forgot my password",
+    "or_login_with": "or Login with",
+    "dont_have_account": "Don’t have an account?",
+    "join_community": "Join {{store_name}} community!",
+    "create_customer_account": "Create a Customer Account",
+    "create_an_account": "Create account",
+    "or_signin_with": "or Signin with",
+    "first_name": "First Name",
+    "last_name": "Last Name (optional)",
+    "already_have_account": "I already have an account",
+    "planning_to_buy": "Are you planning to buy?",
+    "join_as_customer": "Join as a Customer",
+    "save_your_wishlist": "Save your wishlist picks.",
+    "save_your_order": "Save your order data for next purchases.",
+    "be_the_first": "Be the first one to know about our discounts."
+}

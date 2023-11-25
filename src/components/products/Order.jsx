@@ -6,7 +6,7 @@ import { Button, Step, StepLabel, Stepper } from '@mui/material';
 import styled from '@emotion/styled';
 import StepConnector, { stepConnectorClasses } from '@mui/material/StepConnector';
 import { PRODUCT_TYPES, SIZES_POOL, COLORS_POOL, STEPS_ATTEMPT, STEPS } from '../../../consts';
-import { format } from 'date-fns';
+import { useTranslation } from 'next-i18next'
 
 export default function Order(props) {
     const {
@@ -15,8 +15,9 @@ export default function Order(props) {
         currencies,
     } = props
 
-    const createAt = new Date(order.create_at.seconds * 1000 + order.create_at.nanoseconds * 0.000001)
-    const formattedDate = format(createAt, 'MMMM d, yyyy')
+    const { i18n } = useTranslation()
+
+    const createAt = convertTimestampToFormatDate(order.create_at, i18n.language)
 
     const QontoConnector = styled(StepConnector)(() => ({
         [`&.${stepConnectorClasses.completed}`]: {
@@ -58,7 +59,7 @@ export default function Order(props) {
                             ORDER PLACED
                         </p>
                         <p style={{ textAlign: 'start' }}>
-                            {formattedDate}
+                            {createAt}
                         </p>
                     </div>
                     <div>

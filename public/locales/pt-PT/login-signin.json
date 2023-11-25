@@ -1,0 +1,22 @@
+{
+    "Login": "Login",
+    "google_button": "Entrar com o Google",
+    "google_button_signin": "Criar conta com o Google",
+    "E-Mail": "E-mail",
+    "Password": "Palavra-passe",
+    "forgot_password": "Esqueci minha senha",
+    "or_login_with": "ou iniciar sessão com",
+    "dont_have_account": "Não tem uma conta?",
+    "join_community": "Junte-se à comunidade {{store_name}}!",
+    "create_customer_account": "Criar uma conta de cliente",
+    "create_an_account": "Criar conta",
+    "or_signin_with": "ou iniciar sessão com",
+    "first_name": "Nome",
+    "last_name": "Apelido (opcional)",
+    "already_have_account": "Já tenho uma conta",
+    "planning_to_buy": "Está a planear comprar?",
+    "join_as_customer": "Juntar como Cliente",
+    "save_your_wishlist": "Guarde as suas escolhas na lista de desejos.",
+    "save_your_order": "Guarde os seus dados de pedido para futuras compras.",
+    "be_the_first": "Seja o primeiro a saber sobre os nossos descontos."
+}

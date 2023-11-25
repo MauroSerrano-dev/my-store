@@ -13,5 +13,7 @@
     "Admin": "Admin",
     "Logout": "Logout",
     "cart_button": "Go to Cart",
-    "toggle_label": "Menu"
+    "toggle_label": "Menu",
+    "LOG_IN": "LOG IN",
+    "SIGN_UP": "SIGN UP"
 }

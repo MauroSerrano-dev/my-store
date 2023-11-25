@@ -13,5 +13,7 @@
     "Admin": "Admin",
     "Logout": "Cerrar sesión",
     "cart_button": "Ir al Carrito",
-    "toggle_label": "Menú"
+    "toggle_label": "Menú",
+    "LOG_IN": "INICIAR SESIÓN",
+    "SIGN_UP": "CREAR CUENTA"
 }

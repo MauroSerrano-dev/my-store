@@ -81,7 +81,7 @@ export default withRouter(props => {
                     image: product.images.find(img => img.color_id === productCurrentVariant.color_id),
                     blueprint_ids: product.blueprint_ids,
                     description: tCommon(product.type_id),
-                    id_printify: product.printify_ids[shippingOption.id],
+                    id_printify: product.printify_ids[shippingOption.provider_id],
                     provider_id: shippingOption.provider_id,
                     variant: productCurrentVariant,
                     variant_id_printify: typeof productCurrentVariant.id_printify === 'number' ? productCurrentVariant.id_printify : productCurrentVariant.id_printify[shippingOption.provider_id],

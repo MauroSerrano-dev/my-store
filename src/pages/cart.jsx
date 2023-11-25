@@ -13,6 +13,7 @@ import { showToast } from '../../utils/toasts'
 import SelectorAutocomplete from '@/components/material-ui/SelectorAutocomplete'
 import axios from 'axios'
 import { cartItemModel } from '../../utils/models'
+import { LoadingButton } from '@mui/lab'
 
 export default function Cart(props) {
     const {
@@ -30,6 +31,7 @@ export default function Cart(props) {
         setSession,
     } = props
 
+    const [disableCheckoutButton, setDisableCheckoutButton] = useState(false)
     const [shippingValue, setShippingValue] = useState(0)
     const [shippingCountry, setShippingCountry] = useState(location?.country || 'US')
     const [allProducts, setAllProducts] = useState()
@@ -60,6 +62,7 @@ export default function Cart(props) {
             showToast({ msg: 'Checkout temporarily disabled' })
             return
         }
+        setDisableCheckoutButton(true)
         const options = {
             method: 'POST',
             headers: {
@@ -97,6 +100,7 @@ export default function Cart(props) {
             .then(response => response.json())
             .then(response => {
                 if (response.outOfStock) {
+                    setDisableCheckoutButton(false)
                     setOutOfStock(response.outOfStock)
                     showToast({
                         msg: tToasts(
@@ -114,7 +118,10 @@ export default function Cart(props) {
                 else
                     window.location.href = response.url
             })
-            .catch(err => console.error(err))
+            .catch(err => {
+                setDisableCheckoutButton(false)
+                console.error(err)
+            })
     }
 
     async function getAllProducts() {
@@ -289,7 +296,8 @@ export default function Cart(props) {
                             <div
                                 className={styles.detailsBottom}
                             >
-                                <Button
+                                <LoadingButton
+                                    loading={disableCheckoutButton}
                                     variant='contained'
                                     size='large'
                                     onClick={handleCheckout}
@@ -300,7 +308,7 @@ export default function Cart(props) {
                                     }}
                                 >
                                     Checkout
-                                </Button>
+                                </LoadingButton>
                                 <p className={styles.securedText}>
                                     {tCart('Transaction secured by')} <a href='https://stripe.com' target='_blank'>Stripe</a>
                                 </p>

@@ -21,5 +21,6 @@
     "account_exists_with_different_provider_one": "Esta cuenta debe iniciar sesión con {{provider}}",
     "account_exists_with_different_provider_other": "Esta cuenta debe iniciar sesión con otro proveedor",
     "input_limit": "Se ha alcanzado el límite máximo de caracteres",
-    "error_creating_user": "Error al crear nuevo usuario"
+    "error_creating_user": "Error al crear nuevo usuario",
+    "solve_recaptcha": "Por favor, resuelve el reCAPTCHA"
 }
