@@ -2,6 +2,7 @@ import styles from '@/styles/components/buttons/GoogleButton.module.css'
 import { signInWithPopup, GoogleAuthProvider, signInWithRedirect } from "firebase/auth"
 import { showToast } from '../../../utils/toasts'
 import { FcGoogle } from 'react-icons/fc'
+import { useTranslation } from 'next-i18next'
 
 const provider = new GoogleAuthProvider()
 
@@ -11,6 +12,8 @@ export default function GoogleButton(props) {
         router,
         text = 'Login with Google'
     } = props
+
+    const tToasts = useTranslation('toasts').t
 
     function googleLogin() {
         signInWithPopup(auth, provider)

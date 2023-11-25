@@ -142,7 +142,7 @@ export default function DataHandler(props) {
             if (!isNewUser) {
                 showToast({ type: 'success', msg: tToasts('success_login') })
             }
-            router.push('/') // talvez isso tenha resolvido um bug
+            router.push('/')
         } catch (error) {
             setLoading(false)
             if (error.code === 'auth/wrong-password') {
