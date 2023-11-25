@@ -1,5 +1,10 @@
 import { CART_MAX_ITEMS } from "../consts";
 import { format } from 'date-fns';
+import en from 'date-fns/locale/en-US'
+import es from 'date-fns/locale/es'
+import ptBR from 'date-fns/locale/pt-BR'
+import ptPT from 'date-fns/locale/pt'
+
 
 export function getObjectsDiff(obj1, obj2) {
     const differentFields = {};
@@ -47,7 +52,26 @@ export function mergeProducts(prods1, prods2) {
     }).concat(prods2.filter(prod => !prods1.some(p => p.id === prod.id && p.variant_id === prod.variant_id)))
 }
 
-export function convertTimestampToFormatDate(create_at, model = 'MMMM d, yyyy') {
-    const date = new Date(create_at.seconds * 1000 + create_at.nanoseconds * 0.000001)
-    return format(date, model)
+export function convertTimestampToFormatDate(timestamp, locale) {
+    const date = new Date(timestamp.seconds * 1000 + timestamp.nanoseconds * 0.000001)
+
+    let selectedLocale = en
+    let model = 'MMMM d, yyyy'
+
+    if (locale === 'es') {
+        selectedLocale = es
+        model = 'd \'de\' MMMM, yyyy'
+    }
+    else if (locale === 'pt-BR') {
+        selectedLocale = ptBR
+        model = 'd \'de\' MMMM, yyyy'
+    }
+    else if (locale === 'pt-PT') {
+        selectedLocale = ptPT
+        model = 'd \'de\' MMMM, yyyy'
+    }
+
+    console.log(locale, selectedLocale)
+
+    return format(date, model, { locale: selectedLocale })
 }

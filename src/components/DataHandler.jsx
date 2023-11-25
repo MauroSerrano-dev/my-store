@@ -210,7 +210,6 @@ export default function DataHandler(props) {
     function updateSession() {
         onAuthStateChanged(auth, (authUser) => {
             if (authUser) {
-                console.log(authUser.emailVerified)
                 setUserEmailVerify(authUser.emailVerified)
                 handleLogin(authUser)
             }

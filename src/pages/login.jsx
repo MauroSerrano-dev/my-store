@@ -1,5 +1,5 @@
 import styles from '@/styles/pages/login.module.css'
-import { Button, TextField } from '@mui/material'
+import { Button } from '@mui/material'
 import Link from 'next/link'
 import { PiHandshakeLight } from "react-icons/pi"
 import ReCAPTCHA from "react-google-recaptcha"
@@ -18,6 +18,7 @@ export default function Login(props) {
         mobile,
         router,
         session,
+        loading,
         setLoading,
         supportsHoverAndPointer,
     } = props
@@ -27,9 +28,11 @@ export default function Login(props) {
     const [email, setEmail] = useState('')
 
     const { i18n } = useTranslation()
+    const tLogin = useTranslation('login-signin').t
+    const tToasts = useTranslation('toasts').t
 
     useEffect(() => {
-        if (session)
+        if (session && !loading)
             router.push('/profile')
     }, [session])
 
@@ -47,7 +50,7 @@ export default function Login(props) {
             login(email, password)
         }
         else {
-            showToast({ msg: 'Please solve the reCAPTCHA.' })
+            showToast({ msg: tToasts('solve_recaptcha') })
         }
     }
 
@@ -78,7 +81,7 @@ export default function Login(props) {
                     <div
                         className={styles.loginHead}
                     >
-                        <h1>Login</h1>
+                        <h1>{tLogin('Login')}</h1>
                     </div>
                     <div
                         className={styles.loginBody}
@@ -91,13 +94,14 @@ export default function Login(props) {
                             <GoogleButton
                                 router={router}
                                 auth={auth}
+                                text={tLogin('google_button')}
                             />
                             <p style={{ fontSize: 14, fontWeight: 500, color: 'var(--global-light-grey)' }}>
-                                or Login with
+                                {tLogin('or_login_with')}
                             </p>
                             <div className={styles.fieldsContainer}>
                                 <TextInput
-                                    label='E-Mail'
+                                    label={tLogin('E-Mail')}
                                     size='small'
                                     name='email'
                                     onChange={handleEmailChange}
@@ -109,6 +113,7 @@ export default function Login(props) {
                                     }}
                                 />
                                 <PasswordInput
+                                    label={tLogin('Password')}
                                     onChange={handlePasswordChange}
                                     mobile={mobile}
                                     value={password}
@@ -119,7 +124,7 @@ export default function Login(props) {
                                     href='/forgot-password'
                                     className={styles.linkCreateAccount}
                                 >
-                                    Forgot my password
+                                    {tLogin('forgot_password')}
                                 </Link>
                                 <div className='fillWidth center'>
                                     <ReCAPTCHA
@@ -146,7 +151,7 @@ export default function Login(props) {
                                     fontSize: '16px',
                                 }}
                             >
-                                Login
+                                {tLogin('Login')}
                             </Button>
                         </div>
                     </div>
@@ -166,10 +171,10 @@ export default function Login(props) {
                                 fontSize: '19px'
                             }}
                         >
-                            Don’t have an account?
+                            {tLogin('dont_have_account')}
                         </h2>
                         <p>
-                            Join {process.env.NEXT_PUBLIC_STORE_NAME} community!
+                            {tLogin('join_community', { store_name: process.env.NEXT_PUBLIC_STORE_NAME })}
                         </p>
                     </div>
                     <div
@@ -183,18 +188,18 @@ export default function Login(props) {
                                 fontSize: '16px'
                             }}
                         >
-                            Join as a Customer
+                            {tLogin('join_as_customer')}
                         </h3>
                         <ul>
-                            <li>Save your wishlist picks.</li>
-                            <li>Save your order data for next purchases.</li>
-                            <li>Be the first one to know about our discounts.</li>
+                            <li>{tLogin('save_your_wishlist')}</li>
+                            <li>{tLogin('save_your_order')}</li>
+                            <li>{tLogin('be_the_first')}</li>
                         </ul>
                         <Link
                             href='/signin'
                             className={styles.linkCreateAccount}
                         >
-                            Create a Customer Account
+                            {tLogin('create_customer_account')}
                         </Link>
                     </div>
                 </div>
@@ -206,7 +211,7 @@ export default function Login(props) {
 export async function getServerSideProps({ locale }) {
     return {
         props: {
-            ...(await serverSideTranslations(locale, ['common', 'menu', 'navbar', 'toasts']))
+            ...(await serverSideTranslations(locale, ['common', 'menu', 'navbar', 'toasts', 'login-signin']))
         }
     }
 }

@@ -82,7 +82,7 @@ export default function PasswordInput(props) {
                     transition: 'all ease-in-out 200ms',
                 }}
             >
-                Password
+                {label}
             </InputLabel>
             <OutlinedInput
                 onFocus={() => setFocus(true)}

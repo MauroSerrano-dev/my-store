@@ -21,5 +21,6 @@
     "account_exists_with_different_provider_one": "This account should log in with {{provider}}",
     "account_exists_with_different_provider_other": "This account should log in with another provider",
     "input_limit": "Maximum character limit reached",
-    "error_creating_user": "Error creating new user"
+    "error_creating_user": "Error creating new user",
+    "solve_recaptcha": "Please solve the reCAPTCHA"
 }

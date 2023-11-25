@@ -190,21 +190,33 @@ export default function AvatarMenu(props) {
                 className='noUnderline fillWidth'
               >
                 <Button
-                  variant='contained'
+                  variant='outlined'
                   sx={{
                     width: '100%',
                     height: '38px',
-                    color: '#ffffff',
                     fontWeight: '700',
                     zIndex: 10,
                   }}
                 >
-                  Log In
+                  {tNavbar('LOG_IN')}
                 </Button>
               </Link>
-              <p>
-                Don't have an account yet? <Link className='noUnderline' href={'/signin'}>Sign up</Link>
-              </p>
+              <Link
+                href={'/signin'}
+                className='noUnderline fillWidth'
+              >
+                <Button
+                  variant='contained'
+                  sx={{
+                    width: '100%',
+                    height: '38px',
+                    fontWeight: '700',
+                    zIndex: 10,
+                  }}
+                >
+                  {tNavbar('SIGN_UP')}
+                </Button>
+              </Link>
             </div>
           }
         </motion.div>

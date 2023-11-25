@@ -12,7 +12,7 @@ const stripe = Stripe(process.env.STRIPE_SECRET_KEY)
 export default async function handler(req, res) {
     const sig = req.headers['stripe-signature']
 
-    let event
+    let event = req.body
 
     try {
         const rawBody = await getRawBody(req)
@@ -73,7 +73,7 @@ export default async function handler(req, res) {
                     zip: data.shipping_details.address.postal_code
                 }
             }
-
+            console.log(base_url, body_data, options)
             const printifyRes = await axios.post(base_url, body_data, options)
 
             await createOrder(
@@ -131,9 +131,9 @@ export default async function handler(req, res) {
         res.status(500).json({ error: `Error on stripe webhook: ${error}` })
     }
 }
-
+/* 
 export const config = {
     api: {
         bodyParser: false,
     },
-}
+} */
