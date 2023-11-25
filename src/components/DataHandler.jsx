@@ -37,6 +37,7 @@ export default function DataHandler(props) {
     const [supportsHoverAndPointer, setSupportsHoverAndPointer] = useState()
     const [menuOpen, setMenuOpen] = useState(false)
     const [showMenu, setShowMenu] = useState(false)
+    const [userEmailVerify, setUserEmailVerify] = useState()
 
     const tNavbar = useTranslation('navbar').t
     const tToasts = useTranslation('toasts').t
@@ -213,8 +214,11 @@ export default function DataHandler(props) {
     function updateSession() {
         onAuthStateChanged(auth, (authUser) => {
             if (authUser) {
+                console.log(authUser.emailVerified)
+                setUserEmailVerify(authUser.emailVerified)
                 handleLogin(authUser)
-            } else {
+            }
+            else {
                 // O usuário fez logout ou não está autenticado
                 setSession(null)
             }
@@ -450,6 +454,19 @@ export default function DataHandler(props) {
                         session={session}
                         windowWidth={windowWidth}
                     />
+                }
+                {userEmailVerify === false &&
+                    <div
+                        style={{
+                            position: 'fixed',
+                            width: '100%',
+                            height: '30px',
+                            bottom: 0,
+                            backgroundColor: 'red',
+                            zIndex: 50,
+                        }}
+                    >
+                    </div>
                 }
             </div>
         </motion.div>
