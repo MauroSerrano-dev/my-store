@@ -11,7 +11,7 @@ import {
     Timestamp,
 } from "firebase/firestore"
 import { initializeApp } from "firebase/app"
-import { getAuth, createUserWithEmailAndPassword, sendEmailVerification, fetchSignInMethodsForEmail } from "firebase/auth"
+import { getAuth, createUserWithEmailAndPassword, sendEmailVerification, fetchSignInMethodsForEmail, updateProfile } from "firebase/auth"
 import { firebaseConfig } from "../firebase.config"
 import { createCart } from "./cart"
 import { getCartSessionById, deleteCartSession } from "./cart-session"
@@ -71,6 +71,11 @@ async function createNewUserWithCredentials(user) {
         // Create a session for the new user and return the session ID
         const { user: authenticatedUser } = await createUserWithEmailAndPassword(auth, user.email, user.password)
 
+        // Set display name for the authenticated user
+        await updateProfile(authenticatedUser, {
+            displayName: `${user.first_name} ${user.last_name}`
+        })
+
         // Add the new user to the collection with password encryption
         const newUserRef = doc(usersCollection, authenticatedUser.uid)
 
@@ -95,16 +100,18 @@ async function createNewUserWithCredentials(user) {
         // Set the document for the new user
         await setDoc(newUserRef, newUser)
 
-        /* // Envie o e-mail de verificação
-        sendEmailVerification(authenticatedUser)
+        // Envie o e-mail de verificação
+        sendEmailVerification(authenticatedUser, {
+            url: process.env.NEXT_PUBLIC_URL.concat('/email-verification'),
+            handleCodeInApp: true,
+        })
             .then(() => {
-                // O e-mail de verificação foi enviado com sucesso
                 console.log(`Verification email sent to ${authenticatedUser.email}`);
             })
             .catch((error) => {
-                // Lidar com erros ao enviar o e-mail de verificação
                 console.error("Error sending verification email:", error);
-            }); */
+            })
+
         return {
             status: 201,
             user: {
@@ -114,33 +121,8 @@ async function createNewUserWithCredentials(user) {
             message: 'user_created',
         }
     } catch (error) {
-        console.error("Error creating a new user and session:", error)
-        console.log('eita', error.code)
-        if (error.code === 'auth/invalid-email')
-            return {
-                status: 400,
-                message: 'invalid_email',
-            }
-        if (error.code === 'auth/email-already-in-use')
-            return {
-                status: 400,
-                message: 'email_already_exists',
-            }
-        if (error.code === 'auth/weak-password')
-            return {
-                status: 400,
-                message: 'weak_password',
-            }
-        if (error.code === 'auth/account-exists-with-different-credential')
-            return {
-                status: 400,
-                message: 'account_exists_with_different_credential',
-            }
-        return {
-            status: 400,
-            message: 'default_error',
-        }
-
+        console.error("Error creating new user with credentials", error)
+        throw error
     }
 }
 

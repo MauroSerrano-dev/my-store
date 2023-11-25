@@ -73,7 +73,8 @@
     justify-content: flex-start;
     align-items: center;
 
-    padding: 0 2rem;
+    padding-right: 2rem;
+    padding-left: 2rem;
 
     padding-bottom: 1rem;
 
@@ -112,6 +113,10 @@
     padding-top: 0.8rem;
 
     gap: 1rem;
+}
+
+.detailsBody p {
+    text-align: start;
 }
 
 .detailsItem {
@@ -154,6 +159,10 @@
     font-weight: 700;
 }
 
+.countryInput {
+    width: 210px;
+}
+
 /* Mobile and Tablet */
 @media (max-width: 1074.5px) {
     .main {
@@ -187,5 +196,10 @@
     .emptyTitle {
         padding-top: 1rem;
         font-size: 10px;
+    }
+
+    .detailsContainer {
+        padding-left: 1rem;
+        padding-right: 1rem;
     }
 }

@@ -7,7 +7,7 @@ import LANGUAGES from '../../public/locales/en/languages.json'
 import { Button } from '@mui/material'
 import { useEffect, useState } from 'react'
 import { showToast } from '../../utils/toasts'
-import { getObjectsDiff } from '../../utils'
+import { convertTimestampToFormatDate, getObjectsDiff } from '../../utils'
 import TextInput from '@/components/material-ui/TextInput'
 import Selector from '@/components/material-ui/Selector'
 import { useTranslation } from 'next-i18next'
@@ -109,7 +109,7 @@ export default function Profile(props) {
                     </Head>
                     <main className={styles.userContainer}>
                         <div className={styles.fieldsHead}>
-                            <p style={{ fontSize: 23, textAlign: 'start' }}>{tMenu('Welcome')} <b style={{ color: 'var(--primary)' }}>{session.first_name ? session.first_name + ' ' + session.last_name : session.last_name}!</b></p>
+                            <p className={styles.welcomeTitle}>{tMenu('Welcome')} <b style={{ color: 'var(--primary)' }}>{session.first_name ? session.first_name + ' ' + session.last_name : session.last_name}!</b></p>
                         </div>
                         <div className={styles.fieldsBody}>
                             <div className={styles.left}>
@@ -148,6 +148,7 @@ export default function Profile(props) {
                                     size={'medium'}
                                     supportsHoverAndPointer={supportsHoverAndPointer}
                                 />
+                                <p className={styles.createAtDate}>Customer since: {convertTimestampToFormatDate(session.create_at)}</p>
                             </div>
                             <div className={styles.right}>
                                 <div className={styles.field}>

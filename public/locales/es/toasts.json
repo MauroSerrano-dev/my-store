@@ -20,5 +20,6 @@
     "weak_password": "contraseña debil",
     "account_exists_with_different_provider_one": "Esta cuenta debe iniciar sesión con {{provider}}",
     "account_exists_with_different_provider_other": "Esta cuenta debe iniciar sesión con otro proveedor",
-    "input_limit": "Se ha alcanzado el límite máximo de caracteres"
+    "input_limit": "Se ha alcanzado el límite máximo de caracteres",
+    "error_creating_user": "Error al crear nuevo usuario"
 }

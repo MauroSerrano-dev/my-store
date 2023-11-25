@@ -41,7 +41,6 @@ export default function DataHandler(props) {
     const tNavbar = useTranslation('navbar').t
     const tToasts = useTranslation('toasts').t
 
-    // Inicialize o Firebase
     const firebaseApp = initializeApp(firebaseConfig)
     const auth = getAuth(firebaseApp)
 

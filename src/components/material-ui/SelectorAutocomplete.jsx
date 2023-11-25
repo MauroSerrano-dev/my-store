@@ -1,6 +1,5 @@
 import { Autocomplete } from '@mui/material';
 import TextInput from './TextInput';
-import { useEffect } from 'react';
 
 export default function SelectorAutocomplete(props) {
     const {
@@ -28,11 +27,9 @@ export default function SelectorAutocomplete(props) {
         name,
         value,
         supportsHoverAndPointer,
+        size = 'small',
+        className
     } = props
-
-    useEffect(() => {
-        console.log(value)
-    }, [])
 
     return (
         <Autocomplete
@@ -41,7 +38,8 @@ export default function SelectorAutocomplete(props) {
             value={value}
             isOptionEqualToValue={(option, value) => option.id === value.id}
             clearIcon={false}
-            size='small'
+            size={size}
+            className={className}
             sx={{
                 ...sx,
                 '.MuiAutocomplete-tag': {
@@ -67,6 +65,7 @@ export default function SelectorAutocomplete(props) {
                     params={params}
                     supportsHoverAndPointer={supportsHoverAndPointer}
                     style={style}
+                    size={size}
                     label={label}
                     dark={dark}
                     variant={variant}
