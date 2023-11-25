@@ -3,21 +3,19 @@ import Head from 'next/head'
 import { getAuth, applyActionCode } from 'firebase/auth';
 import { useEffect } from 'react';
 
-export default function EmailVerification() {
+export default function EmailVerification(props) {
+    const {
+        router
+    } = props
 
     useEffect(() => {
-        // Capturando o URL atual
-        const currentURL = window.location.href;
-        // Extrair o código de verificação do URL (exemplo de implementação)
-        const verificationCode = extractVerificationCodeFromURL(currentURL);
-
         // Verificar se há um código de verificação no URL
-        if (verificationCode) {
+        if (router.query?.oobCode) {
             // Obtendo a instância de autenticação do Firebase
-            const auth = getAuth();
+            const auth = getAuth()
 
             // Use o código de verificação para verificar o e-mail
-            applyActionCode(auth, verificationCode)
+            applyActionCode(auth, router.query.oobCode)
                 .then(() => {
                     // Email verificado com sucesso!
                     // Atualize o status no seu aplicativo ou redirecione o usuário, se necessário
@@ -29,15 +27,6 @@ export default function EmailVerification() {
                 });
         }
     }, [])
-
-    // Função para extrair o código de verificação do URL (exemplo)
-    function extractVerificationCodeFromURL(url) {
-        // Implemente a lógica para extrair o código de verificação do URL
-        // Retorne o código de verificação, se encontrado, ou null
-        // Exemplo: www.seusite.com/verificar-email?code=SEUCODIGOAQUI
-        const params = new URLSearchParams(new URL(url).search);
-        return params.get('code');
-    }
 
     return (
         <div className='flex center column'>
