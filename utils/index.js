@@ -1,4 +1,5 @@
 import { CART_MAX_ITEMS } from "../consts";
+import { format } from 'date-fns';
 
 export function getObjectsDiff(obj1, obj2) {
     const differentFields = {};
@@ -44,4 +45,9 @@ export function mergeProducts(prods1, prods2) {
         else
             return p
     }).concat(prods2.filter(prod => !prods1.some(p => p.id === prod.id && p.variant_id === prod.variant_id)))
+}
+
+export function convertTimestampToFormatDate(create_at, model = 'MMMM d, yyyy') {
+    const date = new Date(create_at.seconds * 1000 + create_at.nanoseconds * 0.000001)
+    return format(date, model)
 }

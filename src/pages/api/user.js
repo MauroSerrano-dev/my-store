@@ -12,8 +12,13 @@ export default async function handler(req, res) {
 
     if (req.method === "POST") {
         const { user } = req.body
-        const credentialResponse = await createNewUserWithCredentials(user)
-        res.status(credentialResponse.status).json(credentialResponse)
+        try {
+            const credentialResponse = await createNewUserWithCredentials(user)
+            res.status(200).json(credentialResponse)
+        }
+        catch {
+            res.status(500).json({ message: 'error_creating_user' })
+        }
     }
     else if (req.method === "PATCH") {
         const { user_id, changes } = req.body

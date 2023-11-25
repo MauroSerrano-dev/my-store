@@ -238,9 +238,7 @@ export default function Cart(props) {
                                         value={{ id: shippingCountry, label: tCountries(shippingCountry) }}
                                         onChange={handleChangeCountrySelector}
                                         dark
-                                        style={{
-                                            width: 210,
-                                        }}
+                                        className={styles.countryInput}
                                     />
                                 </div>
                                 <div className={styles.detailsItem}>
