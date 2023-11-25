@@ -127,13 +127,9 @@ export default function DataHandler(props) {
 
         fetch("/api/user-session", options)
             .then(response => response.json())
-            .then(response => handleSetSession(response))
+            .then(response => setSession(response))
             .catch(err => console.error(err))
         Cookies.remove(CART_COOKIE)
-    }
-
-    function handleSetSession(session) {
-        setSession(session)
     }
 
     async function login(email, password, isNewUser) {
@@ -446,6 +442,7 @@ export default function DataHandler(props) {
                     setLoading={setLoading}
                     getInicialCart={getInicialCart}
                     setSession={setSession}
+                    setUserEmailVerify={setUserEmailVerify}
                 />
                 {showMenu &&
                     <Menu
@@ -455,7 +452,7 @@ export default function DataHandler(props) {
                         windowWidth={windowWidth}
                     />
                 }
-                {userEmailVerify === false &&
+                {userEmailVerify === false && session &&
                     <div
                         style={{
                             position: 'fixed',
