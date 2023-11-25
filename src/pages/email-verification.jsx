@@ -7,6 +7,7 @@ import { showToast } from '../../utils/toasts';
 export default function EmailVerification(props) {
     const {
         router,
+        session
     } = props
 
     const [showSpinner, setShowSpinner] = useState(false)
@@ -17,10 +18,12 @@ export default function EmailVerification(props) {
             const auth = getAuth()
 
             applyActionCode(auth, router.query.oobCode)
-                .then(response => {
-                    console.log(response)
-                    showToast({ type: 'success', msg: response })
-                    router.push('/')
+                .then(() => {
+                    showToast({ type: 'success', msg: 'E-mail verificado com sucesso!' })
+                    if (session)
+                        router.push('/')
+                    else
+                        router.push('/login')
                 })
                 .catch(() => {
                     showToast({ type: 'error', msg: 'Erro ao verificar o e-mail' })
