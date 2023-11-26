@@ -92,7 +92,6 @@ export default async function handler(req, res) {
         quantity: item.quantity,
         price: item.price,
         status: STEPS[0].id,
-        blueprint_ids: item.blueprint_ids,
       })
     })
 

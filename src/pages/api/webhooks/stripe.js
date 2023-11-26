@@ -131,9 +131,9 @@ export default async function handler(req, res) {
         res.status(500).json({ error: `Error on stripe webhook: ${error}` })
     }
 }
-/* 
+
 export const config = {
     api: {
         bodyParser: false,
     },
-} */
+}
