@@ -80,7 +80,7 @@ export default function Cart(props) {
                         image: prod.image,
                         blueprint_ids: prod.blueprint_ids,
                         description: `${tCommon(prod.type_id)} ${tCommon(COLORS_POOL[prod.variant.color_id].title)} / ${tCommon(SIZES_POOL.find(sz => sz.id === prod.variant.size_id).title)}`,
-                        id_printify: prod.printify_ids[shippingOption.id],
+                        id_printify: prod.printify_ids[shippingOption.provider_id],
                         provider_id: shippingOption.provider_id,
                         variant: prod.variant,
                         variant_id_printify: typeof prod.variant.id_printify === 'number' ? prod.variant.id_printify : prod.variant.id_printify[shippingOption.provider_id],
