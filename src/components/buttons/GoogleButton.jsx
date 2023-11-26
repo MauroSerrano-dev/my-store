@@ -17,12 +17,13 @@ export default function GoogleButton(props) {
 
     function googleLogin() {
         signInWithPopup(auth, provider)
-            .then(result => {
-                showToast({ msg: tToasts('success_login'), type: 'success' })
+            .then(response => {
+                showToast({ type: 'success', msg: tToasts('success_login', { user_name: response.user.displayName }) })
                 router.push('/')
             })
             .catch(error => {
-                showToast({ msg: tToasts('default_error'), type: 'error' })
+                if (error.code !== 'auth/popup-closed-by-user' && error.code !== 'auth/cancelled-popup-request')
+                    showToast({ type: 'error', msg: tToasts('default_error') })
             })
     }
 

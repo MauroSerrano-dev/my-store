@@ -15,7 +15,7 @@
     "default_error": "Algo deu errado",
     "user_not_found": "Usuário não encontrado",
     "too_many_requests": "Muitas solicitações, por favor, tente novamente mais tarde",
-    "success_login": "Login realizado com sucesso",
+    "success_login": "Bem vindo(a) {{user_name}}!",
     "account_exists_with_different_credential": "A conta já existe com credenciais diferentes",
     "weak_password": "Senha fraca",
     "account_exists_with_different_provider_one": "Essa conta deve realizar login com o {{provider}}",

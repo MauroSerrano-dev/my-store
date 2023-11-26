@@ -10,6 +10,7 @@ import PasswordInput from '@/components/material-ui/PasswordInput'
 import { useTranslation } from 'next-i18next';
 import GoogleButton from '@/components/buttons/GoogleButton'
 import TextInput from '@/components/material-ui/TextInput'
+import { LoadingButton } from '@mui/lab'
 
 export default function Login(props) {
     const {
@@ -23,6 +24,7 @@ export default function Login(props) {
         supportsHoverAndPointer,
     } = props
 
+    const [disableLoginButton, setDisableLoginButton] = useState(false)
     const [reCaptchaSolve, setReCaptchaSolve] = useState(false)
     const [password, setPassword] = useState('')
     const [email, setEmail] = useState('')
@@ -36,6 +38,11 @@ export default function Login(props) {
             router.push('/profile')
     }, [session])
 
+    useEffect(() => {
+        if (!loading)
+            setDisableLoginButton(false)
+    }, [loading])
+
     function handleReCaptchaSuccess() {
         setReCaptchaSolve(true)
     }
@@ -47,6 +54,7 @@ export default function Login(props) {
     function handleLogin() {
         if (reCaptchaSolve) {
             setLoading(true)
+            setDisableLoginButton(true)
             login(email, password)
         }
         else {
@@ -140,7 +148,8 @@ export default function Login(props) {
                         <div
                             className={styles.loginBodyBottom}
                         >
-                            <Button
+                            <LoadingButton
+                                loading={disableLoginButton}
                                 variant='contained'
                                 onClick={handleLogin}
                                 sx={{
@@ -152,7 +161,7 @@ export default function Login(props) {
                                 }}
                             >
                                 {tLogin('Login')}
-                            </Button>
+                            </LoadingButton>
                         </div>
                     </div>
                 </div>

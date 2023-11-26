@@ -1,56 +1,34 @@
 import TextInput from '@/components/material-ui/TextInput'
-import styles from '@/styles/admin/edit-product/index.module.css'
+import styles from '@/styles/admin/products/edit/index.module.css'
 import { Button } from '@mui/material'
 import Link from 'next/link'
-import { useState } from 'react'
-import KeyboardArrowLeftRoundedIcon from '@mui/icons-material/KeyboardArrowLeftRounded';
+import { useEffect, useState } from 'react'
 import NoFound404 from '@/components/NoFound404'
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
+import { isAdmin } from '../../../../../utils/validations'
 
 export default function EditProduct(props) {
     const {
-        session
+        session,
+        auth,
+        setAdminMenuOpen,
     } = props
 
     const [productIdInput, setProductIdInput] = useState('')
 
+    useEffect(() => {
+        setAdminMenuOpen(false)
+    }, [])
+
     return (
         session === undefined
             ? <div></div>
-            : session === null || session.email !== 'mauro.serrano.dev@gmail.com'
+            : session === null || !isAdmin(auth)
                 ? <NoFound404 />
                 : <div className={styles.container}>
                     <header>
                     </header>
                     <main className={styles.main}>
-                        <div className={styles.top}>
-                            <Link
-                                href='/admin'
-                                className='noUnderline'
-                            >
-                                <Button
-                                    variant='outlined'
-                                    sx={{
-                                        display: 'flex',
-                                        alignItems: 'center',
-                                        justifyContent: 'center',
-                                    }}
-                                >
-                                    <KeyboardArrowLeftRoundedIcon
-                                        style={{
-                                            marginLeft: '-0.5rem'
-                                        }}
-                                    />
-                                    <p
-                                        style={{
-                                            color: 'var(--primary)'
-                                        }}
-                                    >
-                                        Back
-                                    </p>
-                                </Button>
-                            </Link>
-                        </div>
                         <div
                             className={styles.body}
                         >
@@ -63,7 +41,7 @@ export default function EditProduct(props) {
                                 }}
                             />
                             <Link
-                                href={`/admin/edit-product/${productIdInput}`}
+                                href={`/admin/products/edit/${productIdInput}`}
                                 className='noUnderline'
                             >
                                 <Button

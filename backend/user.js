@@ -112,14 +112,7 @@ async function createNewUserWithCredentials(user) {
                 console.error("Error sending verification email:", error);
             })
 
-        return {
-            status: 201,
-            user: {
-                ...newUser,
-                id: newUserRef.id
-            },
-            message: 'user_created',
-        }
+        return newUserRef.id
     } catch (error) {
         console.error("Error creating new user with credentials", error)
         throw error

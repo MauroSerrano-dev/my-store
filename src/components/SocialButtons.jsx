@@ -1,6 +1,6 @@
 import styles from '@/styles/components/SocialButtons.module.css'
-import Link from 'next/link';
-import { FaInstagram, FaFacebookSquare } from 'react-icons/fa';
+import Link from 'next/link'
+import { FaInstagram, FaFacebookSquare } from 'react-icons/fa'
 
 export default function SocialButtons() {
 
@@ -10,7 +10,7 @@ export default function SocialButtons() {
         >
             <Link
                 className={styles.option}
-                href='https://www.instagram.com'
+                href={process.env.NEXT_PUBLIC_STORE_INSTAGRAM}
                 target='_blank'
             >
                 <FaInstagram

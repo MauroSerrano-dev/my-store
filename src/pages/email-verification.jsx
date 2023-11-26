@@ -1,5 +1,5 @@
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
-import { getAuth, applyActionCode } from 'firebase/auth';
+import { applyActionCode } from 'firebase/auth';
 import { useEffect, useState } from 'react';
 import { CircularProgress } from '@mui/material';
 import { showToast } from '../../utils/toasts';
@@ -8,7 +8,8 @@ export default function EmailVerification(props) {
     const {
         router,
         session,
-        setUserEmailVerify
+        setUserEmailVerify,
+        auth
     } = props
 
     const [showSpinner, setShowSpinner] = useState(false)
@@ -16,8 +17,6 @@ export default function EmailVerification(props) {
     useEffect(() => {
         setShowSpinner(true)
         if (router.query?.oobCode) {
-            const auth = getAuth()
-
             applyActionCode(auth, router.query.oobCode)
                 .then(() => {
                     showToast({ type: 'success', msg: 'E-mail verificado com sucesso!' })

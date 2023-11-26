@@ -4,12 +4,12 @@ export const CART_MAX_ITEMS = 10
 
 export const LIMITS = {
     wishlist_products: 60,
-    input_email: 150,
-    input_first_name: 100,
-    input_last_name: 100,
+    input_email: 50,
+    input_first_name: 30,
+    input_last_name: 30,
     input_password: 30,
     input_search_bar: 200,
-    input_country: 15,
+    input_country: 20,
 }
 
 export const STEPS = [

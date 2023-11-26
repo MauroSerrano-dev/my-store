@@ -1,6 +1,5 @@
-import React, { useEffect, useState } from 'react'
 import Link from 'next/link'
-import styles from '../styles/components/NavBar.module.css'
+import styles from '@/styles/components/NavBar.module.css'
 import Logo from './svgs/Logo';
 import SearchBar from './SearchBar';
 import FavoriteBorderRoundedIcon from '@mui/icons-material/FavoriteBorderRounded';
@@ -33,6 +32,8 @@ export default function NavBar(props) {
         menuOpen,
         switchMenu,
         router,
+        auth,
+        adminMode
     } = props
 
     const tNavbar = useTranslation('navbar').t
@@ -43,14 +44,16 @@ export default function NavBar(props) {
                 className={styles.bodyContainer}
             >
                 <div className={styles.leftSide}>
-                    <motion.div
-                        initial={false}
-                        animate={menuOpen ? "open" : "closed"}
-                    >
-                        <MenuToggle
-                            toggle={() => switchMenu()}
-                        />
-                    </motion.div>
+                    {!adminMode &&
+                        <motion.div
+                            initial={false}
+                            animate={menuOpen ? "open" : "closed"}
+                        >
+                            <MenuToggle
+                                toggle={() => switchMenu()}
+                            />
+                        </motion.div>
+                    }
                     {!mobile &&
                         <Link
                             href={'/'}
@@ -68,32 +71,34 @@ export default function NavBar(props) {
                 <div
                     className={styles.middle}
                 >
-                    {mobile
-                        ? <Link
-                            href={'/'}
-                            className='fillHeight flex center'
-                            aria-label='Home'
-                            style={{
-                                width: '70px',
-                                height: '100%',
-                                paddingTop: '0.7rem',
-                            }}
-                        >
-                            <Logo width='100%' />
-                        </Link>
-                        : <SearchBar
-                            show={isScrollAtTop}
-                            placeholder={tNavbar('search_bar_placeholder')}
-                            onChange={handleChangeSearch}
-                            onKeyDown={handleKeyDownSearch}
-                            onClick={handleClickSearch}
-                            value={search}
-                            options={productOptions}
-                            setOptions={setProductOptions}
-                            setSearch={setSearch}
-                        />
+                    {adminMode
+                        ? <div></div>
+                        : mobile
+                            ? <Link
+                                href={'/'}
+                                className='fillHeight flex center'
+                                aria-label='Home'
+                                style={{
+                                    width: '70px',
+                                    height: '100%',
+                                    paddingTop: '0.7rem',
+                                }}
+                            >
+                                <Logo width='100%' />
+                            </Link>
+                            : <SearchBar
+                                show={isScrollAtTop}
+                                placeholder={tNavbar('search_bar_placeholder')}
+                                onChange={handleChangeSearch}
+                                onKeyDown={handleKeyDownSearch}
+                                onClick={handleClickSearch}
+                                value={search}
+                                options={productOptions}
+                                setOptions={setProductOptions}
+                                setSearch={setSearch}
+                            />
                     }
-                    {!mobile &&
+                    {!adminMode && !mobile &&
                         <div
                             className={styles.categoriesContainer}
                             style={{
@@ -121,7 +126,7 @@ export default function NavBar(props) {
                     }
                 </div>
                 <div className={styles.rightSide}>
-                    {!isScrollAtTop &&
+                    {!adminMode && !isScrollAtTop &&
                         <motion.div
                             className={styles.iconContainer}
                             onClick={() => setIsScrollAtTop(true)}
@@ -146,7 +151,7 @@ export default function NavBar(props) {
                             />
                         </motion.div>
                     }
-                    {session &&
+                    {!adminMode && session &&
                         <Link
                             href={'/wishlist'}
                         >
@@ -174,21 +179,24 @@ export default function NavBar(props) {
                             </motion.div>
                         </Link>
                     }
-                    <CartIcon
-                        session={session}
-                        cart={cart}
-                        setCart={setCart}
-                        userCurrency={userCurrency}
-                        supportsHoverAndPointer={supportsHoverAndPointer}
-                    />
+                    {!adminMode &&
+                        <CartIcon
+                            session={session}
+                            cart={cart}
+                            setCart={setCart}
+                            userCurrency={userCurrency}
+                            supportsHoverAndPointer={supportsHoverAndPointer}
+                        />
+                    }
                     <AvatarMenu
                         session={session}
+                        auth={auth}
                         logout={logout}
                         supportsHoverAndPointer={supportsHoverAndPointer}
                         router={router}
                     />
                 </div>
             </div>
-        </div >
+        </div>
     )
 }

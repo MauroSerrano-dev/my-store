@@ -70,8 +70,6 @@ export function convertTimestampToFormatDate(timestamp, locale) {
         selectedLocale = ptPT
         model = 'd \'de\' MMMM, yyyy'
     }
-
-    console.log(locale, selectedLocale)
-
+    
     return format(date, model, { locale: selectedLocale })
 }

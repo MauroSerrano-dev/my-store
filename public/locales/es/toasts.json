@@ -15,7 +15,7 @@
     "default_error": "Algo salió mal",
     "user_not_found": "Usuario no encontrado",
     "too_many_requests": "Demasiadas solicitudes, por favor, inténtelo de nuevo más tarde",
-    "success_login": "Inicio de sesión exitoso",
+    "success_login": "Bienvenido(a) {{user_name}}!",
     "account_exists_with_different_credential": "La cuenta ya existe con credenciales diferentes",
     "weak_password": "contraseña debil",
     "account_exists_with_different_provider_one": "Esta cuenta debe iniciar sesión con {{provider}}",

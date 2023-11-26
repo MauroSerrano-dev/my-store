@@ -1,5 +1,5 @@
 import Image from 'next/image'
-import styles from '../styles/components/Footer.module.css'
+import styles from '@/styles/components/Footer.module.css'
 import { BsShieldLockFill } from "react-icons/bs";
 import Link from 'next/link';
 import SocialButtons from './SocialButtons';

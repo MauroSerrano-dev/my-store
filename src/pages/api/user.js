@@ -13,20 +13,19 @@ export default async function handler(req, res) {
     if (req.method === "POST") {
         const { user } = req.body
         try {
-            const credentialResponse = await createNewUserWithCredentials(user)
-            res.status(200).json(credentialResponse)
+            await createNewUserWithCredentials(user)
+            res.status(201).json({ status: 201, message: 'user_created' })
         }
         catch (error) {
             if (error.code === 'auth/invalid-email')
-                return res.status(400).json({ message: 'invalid_email' })
+                return res.status(400).json({ status: 400, message: 'invalid_email' })
             if (error.code === 'auth/email-already-in-use')
-                return res.status(400).json({ message: 'email_already_exists' })
+                return res.status(400).json({ status: 400, message: 'email_already_exists' })
             if (error.code === 'auth/weak-password')
-                return res.status(400).json({ message: 'weak_password' })
-
+                return res.status(400).json({ status: 400, message: 'weak_password' })
             if (error.code === 'auth/account-exists-with-different-credential')
-                return res.status(400).json({ message: 'account_exists_with_different_credential' })
-            return res.status(500).json({ message: 'error_creating_user' })
+                return res.status(400).json({ status: 400, message: 'account_exists_with_different_credential' })
+            return res.status(500).json({ status: 500, message: 'error_creating_user' })
         }
     }
     else if (req.method === "PATCH") {

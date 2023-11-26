@@ -1,11 +1,9 @@
 import ImagesSlider from '@/components/ImagesSlider'
-import styles from '@/styles/admin/new-product/type.module.css'
+import styles from '@/styles/admin/products/new/type.module.css'
 import { Button, Checkbox, Slider } from '@mui/material'
 import { useEffect, useState } from 'react'
-import KeyboardArrowLeftRoundedIcon from '@mui/icons-material/KeyboardArrowLeftRounded'
 import { withRouter } from 'next/router'
-import Link from 'next/link'
-import { COLLECTIONS, TAGS_POOL, THEMES_POOL, PRODUCT_TYPES, COLORS_POOL, SIZES_POOL, PROVIDERS_POOL, SEARCH_ART_COLORS } from '../../../../consts'
+import { COLLECTIONS, TAGS_POOL, THEMES_POOL, PRODUCT_TYPES, COLORS_POOL, SIZES_POOL, PROVIDERS_POOL, SEARCH_ART_COLORS } from '../../../../../consts'
 import ColorSelector from '@/components/ColorSelector'
 import TextInput from '@/components/material-ui/TextInput'
 import TagsSelector from '@/components/material-ui/TagsSelector'
@@ -14,12 +12,14 @@ import ButtonIcon from '@/components/material-ui/ButtonIcon'
 import SizesSelector from '@/components/SizesSelector'
 import Chain from '@/components/svgs/Chain'
 import BrokeChain from '@/components/svgs/BrokeChain'
-import { showToast } from '../../../../utils/toasts'
+import { showToast } from '../../../../../utils/toasts'
 import NoFound404 from '@/components/NoFound404'
 import Selector from '@/components/material-ui/Selector'
-import { isNewProductValid } from '../../../../utils/edit-product'
+import { isNewProductValid } from '../../../../../utils/edit-product'
 import { useTranslation } from 'next-i18next'
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
+import TextOutlinedInput from '@/components/material-ui/TextOutlinedInput'
+import { isAdmin } from '../../../../../utils/validations'
 
 const INICIAL_PRODUCT = {
     id: '',
@@ -45,6 +45,8 @@ export default withRouter(props => {
         router,
         session,
         supportsHoverAndPointer,
+        auth,
+        setAdminMenuOpen
     } = props
 
     const [product, setProduct] = useState(INICIAL_PRODUCT)
@@ -58,6 +60,10 @@ export default withRouter(props => {
     const [artColorChained, setArtColorChained] = useState(true)
 
     const tCommon = useTranslation('common').t
+
+    useEffect(() => {
+        setAdminMenuOpen(false)
+    }, [])
 
     useEffect(() => {
         if (router.isReady) {
@@ -108,7 +114,7 @@ export default withRouter(props => {
                     min_price: product.variants.reduce((acc, vari) => acc < vari.price ? acc : vari.price, product.variants[0].price),
                     images: product.colors.reduce((acc, color) => acc.concat(images[color.id].map(img => ({ src: img.src, color_id: img.color_id }))), []),
                     variants: product.variants.map(vari => ({ ...vari, sales: 0 })),
-                    sold_out: null,
+                    promotion: null,
                 }
             })
         }
@@ -122,7 +128,7 @@ export default withRouter(props => {
             .catch(err => showToast({ type: 'error', msg: err }))
 
         setDisableCreateButton(false)
-        router.push('/admin/new-product')
+        router.push('/admin/products/new')
     }
 
     function updateProductField(fieldName, newValue) {
@@ -133,7 +139,7 @@ export default withRouter(props => {
         setProduct(prev => ({ ...prev, printify_ids: { ...prev.printify_ids, [providerId]: newValue } }))
     }
 
-    function handleChangeVariants(value, i, color) {
+    function handleChangeColors(value, i, color) {
         setProduct(prev => {
             setColorIndex(prevIndex => value.length > prev.colors.length
                 ? value.length - 1
@@ -144,11 +150,11 @@ export default withRouter(props => {
             // add color
             if (value.length > prev.colors.length) {
                 setColorsChained(prevC => prevC.concat(color.id))
-                if (Object.keys(sizesChained).map(ele => Number(ele)).some(cId => colorsChained.includes(cId)))
-                    setSizesChained(prev => ({ ...prev, [color.id]: prev[Object.keys(prev).map(ele => Number(ele)).find(cId => colorsChained.includes(cId))] }))
-                else {
-                    setSizesChained(prev => ({ ...prev, [color.id]: [] }))
-                }
+                setSizesChained(sizesChainedPrev =>
+                    Object.keys(sizesChainedPrev).map(ele => Number(ele)).some(cId => colorsChained.includes(cId))
+                        ? { ...sizesChainedPrev, [color.id]: sizesChainedPrev[Object.keys(sizesChainedPrev).map(ele => Number(ele)).find(cId => colorsChained.includes(cId))] }
+                        : { ...sizesChainedPrev, [color.id]: [] }
+                )
                 setImages(prevImgs => ({ ...prevImgs, [color.id]: [{ src: '', color_id: color.id }, { src: '', color_id: color.id }, { src: '', color_id: color.id }, { src: '', color_id: color.id }] }))
                 return {
                     ...prev,
@@ -202,10 +208,10 @@ export default withRouter(props => {
     }
 
     function handleChangeSizes(value, i, size) {
-        setProduct(prev => {
-            // add size
-            if (value.length > prev.sizes.length) {
-                return {
+        setProduct(prev =>
+            value.length > prev.sizes.length
+                // add size
+                ? {
                     ...prev,
                     sizes: value,
                     variants: prev.variants
@@ -215,17 +221,15 @@ export default withRouter(props => {
                                 .map(vari => ({ ...vari, art: { id: artIdChained ? prev.id : '', color_id: artColorChained && prev.variants.length > 0 ? prev.variants[0].art.color_id : null } }))
                         )
                 }
-            }
-            // remove size
-            else {
-                return {
+                // remove size
+                : {
                     ...prev,
                     sizes: value,
                     variants: prev.variants
                         .filter(vari => value.some(sz => sz.id === vari.size_id))
                 }
-            }
-        })
+
+        )
     }
 
     function handleChainSize(sizeId) {
@@ -456,45 +460,17 @@ export default withRouter(props => {
     return (
         session === undefined
             ? <div></div>
-            : session === null || session.email !== 'mauro.serrano.dev@gmail.com'
+            : session === null || !isAdmin(auth)
                 ? <NoFound404 />
                 : <div className={styles.container}>
                     <header>
                     </header>
                     <main className={styles.main}>
-                        <div className={styles.top}>
-                            <Link
-                                href='/admin/new-product'
-                                className='noUnderline'
-                            >
-                                <Button
-                                    variant='outlined'
-                                    sx={{
-                                        display: 'flex',
-                                        alignItems: 'center',
-                                        justifyContent: 'center',
-                                    }}
-                                >
-                                    <KeyboardArrowLeftRoundedIcon
-                                        style={{
-                                            marginLeft: '-0.5rem'
-                                        }}
-                                    />
-                                    <p
-                                        style={{
-                                            color: 'var(--primary)'
-                                        }}
-                                    >
-                                        Back
-                                    </p>
-                                </Button>
-                            </Link>
-                        </div>
                         {type &&
                             <div className={styles.sectionsContainer}>
                                 <section className={styles.section}>
                                     <div className='flex center fillWidth'>
-                                        <TextInput
+                                        <TextOutlinedInput
                                             colorText='var(--color-success)'
                                             supportsHoverAndPointer={supportsHoverAndPointer}
                                             label='ID'
@@ -503,10 +479,12 @@ export default withRouter(props => {
                                             style={{
                                                 width: '100%'
                                             }}
+                                            inputAdornment={
+                                                <p>
+                                                    -{type.id}
+                                                </p>
+                                            }
                                         />
-                                        <p style={{ whiteSpace: 'nowrap', paddingLeft: '0.5rem' }}>
-                                            -{type.id}
-                                        </p>
                                     </div>
                                 </section>
                                 <section className={styles.section}>
@@ -586,7 +564,7 @@ export default withRouter(props => {
                                     <ColorSelector
                                         value={product.colors}
                                         options={type.colors.map(cl_id => COLORS_POOL[cl_id])}
-                                        onChange={handleChangeVariants}
+                                        onChange={handleChangeColors}
                                         supportsHoverAndPointer={supportsHoverAndPointer}
                                         style={{
                                             paddingLeft: '50px',
@@ -753,6 +731,19 @@ export default withRouter(props => {
                                             </div>
                                         </div>
                                         <div className={styles.sectionRight}>
+                                            {images?.[product?.colors?.[colorIndex]?.id] &&
+                                                <div>
+                                                    <h3>
+                                                        Preview
+                                                    </h3>
+                                                    <ImagesSlider
+                                                        images={Object.keys(images).reduce((acc, key) => acc.concat(images[key]), [])}
+                                                        currentColor={product.colors[colorIndex]}
+                                                        colors={product.colors}
+                                                        supportsHoverAndPointer={supportsHoverAndPointer}
+                                                    />
+                                                </div>
+                                            }
                                             <div className='flex row center' style={{ gap: '1rem' }}>
                                                 <Button
                                                     variant={artColorChained ? 'contained' : 'outlined'}
@@ -804,14 +795,6 @@ export default withRouter(props => {
                                                     }}
                                                 />
                                             </div>
-                                            {images?.[product?.colors?.[colorIndex]?.id] &&
-                                                <ImagesSlider
-                                                    images={Object.keys(images).reduce((acc, key) => acc.concat(images[key]), [])}
-                                                    currentColor={product.colors[colorIndex]}
-                                                    colors={product.colors}
-                                                    supportsHoverAndPointer={supportsHoverAndPointer}
-                                                />
-                                            }
                                         </div>
                                     </section>
                                 }

@@ -19,7 +19,7 @@ export default function ProductModal(props) {
 
     const tCommon = useTranslation('common').t
 
-    const PRICE_UNIT = Math.ceil(product.variant.price * userCurrency?.rate) * (product.sold_out ? 1 - product.sold_out.percentage : 1)
+    const PRICE_UNIT = Math.ceil(product.variant.price * userCurrency?.rate) * (product.promotion ? 1 - product.promotion.percentage : 1)
 
     const PRICE = Math.ceil(PRICE_UNIT * product.quantity)
 

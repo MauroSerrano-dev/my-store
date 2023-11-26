@@ -1,4 +1,4 @@
-import styles from '../styles/components/SizesSelector.module.css'
+import styles from '@/styles/components/SizesSelector.module.css'
 
 export default function SizesSelector(props) {
     const {

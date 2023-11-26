@@ -1,4 +1,4 @@
-import styles from '../styles/components/MenuFilter.module.css'
+import styles from '@/styles/components/MenuFilter.module.css'
 import { motion } from "framer-motion";
 import Link from 'next/link';
 import { useEffect, useState } from 'react';

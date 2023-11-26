@@ -140,6 +140,7 @@ function App(props) {
             pageProps={pageProps}
             Component={Component}
             router={router}
+            loading={loading}
             setLoading={setLoading}
             currencies={currencies}
           />

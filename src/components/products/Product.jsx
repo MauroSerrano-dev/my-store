@@ -307,15 +307,15 @@ export default function Product(props) {
                             fontSize: width < 150 ? width * 0.07 : width * 0.055,
                             height: width < 150 ? '20%' : '17%',
                             top: width < 150 ? '-10%' : '-8.5%',
-                            backgroundColor: product.sold_out
+                            backgroundColor: product.promotion
                                 ? 'var(--sold-out-bg)'
                                 : PRODUCT_TYPES.find(type => type.id === product.type_id).color || 'var(--primary)',
                         }}
                     >
                         <p>
                             {
-                                product.sold_out
-                                    ? tCommon(PRODUCT_TYPES.find(type => type.id === product.type_id).id) + ' ' + Math.round(100 * product.sold_out.percentage) + '% OFF'
+                                product.promotion
+                                    ? tCommon(PRODUCT_TYPES.find(type => type.id === product.type_id).id) + ' ' + Math.round(100 * product.promotion.percentage) + '% OFF'
                                     : tCommon(PRODUCT_TYPES.find(type => type.id === product.type_id).id)
                             }
                         </p>
@@ -329,14 +329,14 @@ export default function Product(props) {
                         {product.title}
                     </p>
                     <div className={styles.priceContainer}>
-                        {product.sold_out &&
+                        {product.promotion &&
                             <p
                                 className={styles.oldPrice}
                                 style={{
                                     fontSize: width * 0.056
                                 }}
                             >
-                                {userCurrency?.symbol} {(Math.ceil(product.sold_out ? product.sold_out.min_price_original : product.min_price * userCurrency?.rate) / 100).toFixed(2)}
+                                {userCurrency?.symbol} {(Math.ceil(product.promotion ? product.promotion.min_price_original : product.min_price * userCurrency?.rate) / 100).toFixed(2)}
                             </p>
                         }
                         <p

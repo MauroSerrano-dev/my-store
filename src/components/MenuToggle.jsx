@@ -1,6 +1,6 @@
 import * as React from "react";
 import { motion } from "framer-motion";
-import styles from '../styles/components/MenuToggle.module.css'
+import styles from '@/styles/components/MenuToggle.module.css'
 import { useTranslation } from 'next-i18next'
 
 const Path = props => (
