@@ -110,7 +110,7 @@ export default function Wishlist({
         })
 
         return () => {
-            animation.destroy();
+            animation.destroy()
         }
     }, [wishlist])
 
