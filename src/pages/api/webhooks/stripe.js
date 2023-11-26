@@ -73,7 +73,7 @@ export default async function handler(req, res) {
                     zip: data.shipping_details.address.postal_code
                 }
             }
-            console.log(base_url, body_data, options)
+
             const printifyRes = await axios.post(base_url, body_data, options)
 
             await createOrder(

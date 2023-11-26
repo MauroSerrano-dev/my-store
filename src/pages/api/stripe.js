@@ -63,6 +63,7 @@ export default async function handler(req, res) {
       }
     }
 
+
     const line_items = cartItems.map(item => {
       return {
         price_data: {
@@ -84,15 +85,17 @@ export default async function handler(req, res) {
     const cartMetadata = {}
 
     cartItems.forEach((item, i) => {
-      cartMetadata[i] = JSON.stringify({
-        id: item.id,
-        id_printify: item.id_printify,
-        variant_id: item.variant.id,
-        variant_id_printify: item.variant_id_printify,
-        quantity: item.quantity,
-        price: item.price,
-        status: STEPS[0].id,
-      })
+      cartMetadata[i] = JSON.stringify(
+        {
+          id: item.id,
+          id_printify: item.id_printify,
+          variant_id: item.variant.id,
+          variant_id_printify: item.variant_id_printify,
+          quantity: item.quantity,
+          price: item.price,
+          status: STEPS[0].id,
+        }
+      )
     })
 
     const session = await stripe.checkout.sessions.create({
