@@ -73,7 +73,6 @@ export default function Home(props) {
   useEffect(() => {
     if (session !== undefined)
       getProductsFromCategories()
-    dsaindjas
   }, [session])
 
   async function getProductsFromCategories() {
