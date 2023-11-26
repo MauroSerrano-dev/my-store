@@ -20,6 +20,8 @@ import Selector from '@/components/material-ui/Selector'
 import { isNewProductValid } from '../../../../utils/edit-product'
 import { useTranslation } from 'next-i18next'
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
+import TextOutlinedInput from '@/components/material-ui/TextOutlinedInput'
+import { isAdmin } from '../../../../utils/validations'
 
 const INICIAL_PRODUCT = {
     id: '',
@@ -45,6 +47,7 @@ export default withRouter(props => {
         router,
         session,
         supportsHoverAndPointer,
+        auth
     } = props
 
     const [product, setProduct] = useState(INICIAL_PRODUCT)
@@ -456,7 +459,7 @@ export default withRouter(props => {
     return (
         session === undefined
             ? <div></div>
-            : session === null || session.email !== 'mauro.serrano.dev@gmail.com'
+            : session === null || !isAdmin(auth)
                 ? <NoFound404 />
                 : <div className={styles.container}>
                     <header>
@@ -494,7 +497,7 @@ export default withRouter(props => {
                             <div className={styles.sectionsContainer}>
                                 <section className={styles.section}>
                                     <div className='flex center fillWidth'>
-                                        <TextInput
+                                        <TextOutlinedInput
                                             colorText='var(--color-success)'
                                             supportsHoverAndPointer={supportsHoverAndPointer}
                                             label='ID'
@@ -503,10 +506,12 @@ export default withRouter(props => {
                                             style={{
                                                 width: '100%'
                                             }}
+                                            inputAdornment={
+                                                <p>
+                                                    -{type.id}
+                                                </p>
+                                            }
                                         />
-                                        <p style={{ whiteSpace: 'nowrap', paddingLeft: '0.5rem' }}>
-                                            -{type.id}
-                                        </p>
                                     </div>
                                 </section>
                                 <section className={styles.section}>
@@ -753,6 +758,19 @@ export default withRouter(props => {
                                             </div>
                                         </div>
                                         <div className={styles.sectionRight}>
+                                            {images?.[product?.colors?.[colorIndex]?.id] &&
+                                                <div>
+                                                    <h3>
+                                                        Preview
+                                                    </h3>
+                                                    <ImagesSlider
+                                                        images={Object.keys(images).reduce((acc, key) => acc.concat(images[key]), [])}
+                                                        currentColor={product.colors[colorIndex]}
+                                                        colors={product.colors}
+                                                        supportsHoverAndPointer={supportsHoverAndPointer}
+                                                    />
+                                                </div>
+                                            }
                                             <div className='flex row center' style={{ gap: '1rem' }}>
                                                 <Button
                                                     variant={artColorChained ? 'contained' : 'outlined'}
@@ -804,14 +822,6 @@ export default withRouter(props => {
                                                     }}
                                                 />
                                             </div>
-                                            {images?.[product?.colors?.[colorIndex]?.id] &&
-                                                <ImagesSlider
-                                                    images={Object.keys(images).reduce((acc, key) => acc.concat(images[key]), [])}
-                                                    currentColor={product.colors[colorIndex]}
-                                                    colors={product.colors}
-                                                    supportsHoverAndPointer={supportsHoverAndPointer}
-                                                />
-                                            }
                                         </div>
                                     </section>
                                 }

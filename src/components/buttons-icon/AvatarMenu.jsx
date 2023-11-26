@@ -19,7 +19,8 @@ export default function AvatarMenu(props) {
     logout,
     session,
     router,
-    supportsHoverAndPointer
+    supportsHoverAndPointer,
+    auth
   } = props
 
   const [open, setOpen] = useState(false)
@@ -164,7 +165,7 @@ export default function AvatarMenu(props) {
                   {tNavbar('Support')}
                 </MenuItem>
               </Link>
-              {process.env.NEXT_PUBLIC_AUTHORIZED_EMAILS.includes(session.email) &&
+              {auth?.currentUser && process.env.NEXT_PUBLIC_AUTHORIZED_EMAILS.includes(auth.currentUser.email) &&
                 <Link
                   href={'/admin'}
                   className='noUnderline'

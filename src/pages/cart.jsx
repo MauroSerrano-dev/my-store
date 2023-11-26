@@ -1,7 +1,7 @@
 import ProductCart from '@/components/products/ProductCart'
 import styles from '@/styles/pages/cart.module.css'
 import { Button } from '@mui/material'
-import { CART_COOKIE, getShippingOptions } from '../../consts'
+import { CART_COOKIE, COLORS_POOL, SIZES_POOL, getShippingOptions } from '../../consts'
 import COUNTRIES_POOL from '../../public/locales/en/countries.json'
 import { useEffect, useState } from 'react'
 import Selector from '@/components/material-ui/Selector'
@@ -72,13 +72,14 @@ export default function Cart(props) {
             body: JSON.stringify({
                 cartItems: cart.products.map(prod => {
                     const shippingOption = getShippingOptions(prod.type_id, shippingCountry)
+                    console.log(prod)
                     return cartItemModel({
                         id: prod.id,
                         quantity: prod.quantity,
                         title: prod.title,
                         image: prod.image,
                         blueprint_ids: prod.blueprint_ids,
-                        description: tCommon(prod.type_id),
+                        description: `${tCommon(prod.type_id)} ${tCommon(COLORS_POOL[prod.variant.color_id].title)} / ${tCommon(SIZES_POOL.find(sz => sz.id === prod.variant.size_id).title)}`,
                         id_printify: prod.printify_ids[shippingOption.id],
                         provider_id: shippingOption.provider_id,
                         variant: prod.variant,

@@ -9,7 +9,8 @@ import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
 
 export default function EditProduct(props) {
     const {
-        session
+        session,
+        auth
     } = props
 
     const [productIdInput, setProductIdInput] = useState('')
@@ -17,7 +18,7 @@ export default function EditProduct(props) {
     return (
         session === undefined
             ? <div></div>
-            : session === null || session.email !== 'mauro.serrano.dev@gmail.com'
+            : session === null || !isAdmin(auth)
                 ? <NoFound404 />
                 : <div className={styles.container}>
                     <header>

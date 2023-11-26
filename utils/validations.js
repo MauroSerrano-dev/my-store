@@ -27,3 +27,7 @@ export function isStrongPassword(password) {
 
     return true;
 }
+
+export function isAdmin(auth) {
+    return auth?.currentUser && process.env.NEXT_PUBLIC_AUTHORIZED_EMAILS.includes(auth.currentUser.email)
+}

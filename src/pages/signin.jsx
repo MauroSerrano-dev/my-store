@@ -12,6 +12,7 @@ import PasswordInput from '@/components/material-ui/PasswordInput'
 import GoogleButton from '@/components/buttons/GoogleButton'
 import { LIMITS } from '../../consts'
 import TextInput from '@/components/material-ui/TextInput'
+import { LoadingButton } from '@mui/lab'
 
 export default function Signin(props) {
     const {
@@ -26,6 +27,7 @@ export default function Signin(props) {
     } = props
 
     const [reCaptchaSolve, setReCaptchaSolve] = useState(false)
+    const [showModalPassword, setShowModalPassword] = useState(false)
     const [newUser, setNewUser] = useState({
         first_name: '',
         last_name: '',
@@ -38,6 +40,7 @@ export default function Signin(props) {
             router.push('/profile')
     }, [session])
 
+    const [disableSigninButton, setDisableSigninButton] = useState(false)
     const { i18n } = useTranslation()
     const tToasts = useTranslation('toasts').t
     const tSignin = useTranslation('login-signin').t
@@ -64,8 +67,10 @@ export default function Signin(props) {
             const passValidation = isStrongPassword(user.password)
             if (passValidation !== true) {
                 showToast({ msg: tToasts(passValidation) })
+                setShowModalPassword(true)
                 return
             }
+            setDisableSigninButton(true)
             setLoading(true)
             const options = {
                 method: 'POST',
@@ -79,16 +84,26 @@ export default function Signin(props) {
             fetch('/api/user', options)
                 .then(response => response.json())
                 .then(response => {
-                    if (response.status === 201) {
-                        showToast({ msg: tToasts(response.message), type: 'success' })
-                        login(user.email, user.password, true)
+                    console.log(response.status)
+                    if (response.status < 300) {
+                        login(user.email, user.password)
                     }
-                    else {
+                    else if (response.status < 500) {
+                        setDisableSigninButton(false)
                         setLoading(false)
                         showToast({ msg: tToasts(response.message) })
                     }
+                    else {
+                        setDisableSigninButton(false)
+                        setLoading(false)
+                        showToast({ type: 'error', msg: tToasts(response.message) })
+                    }
                 })
-                .catch(() => setLoading(false))
+                .catch(() => {
+                    setDisableSigninButton(false)
+                    setLoading(false)
+                    showToast({ type: 'error', msg: tToasts('error_creating_user') })
+                })
         }
         else {
             showToast({ msg: tToasts('solve_recaptcha') })
@@ -174,7 +189,8 @@ export default function Signin(props) {
                                 />
                                 <PasswordInput
                                     label={tSignin('Password')}
-                                    showModalGuide
+                                    showModalGuide={showModalPassword}
+                                    setShowModalGuide={setShowModalPassword}
                                     onChange={e => handleNewUser(e.target.value, 'password')}
                                     mobile={mobile}
                                     value={newUser.password}
@@ -191,7 +207,8 @@ export default function Signin(props) {
                             </div>
                         </div>
                         <div className={styles.loginBodyBottom}>
-                            <Button
+                            <LoadingButton
+                                loading={disableSigninButton}
                                 variant='contained'
                                 onClick={() => handleCreateNewUser(newUser)}
                                 sx={{
@@ -203,7 +220,7 @@ export default function Signin(props) {
                                 }}
                             >
                                 {tSignin('create_an_account')}
-                            </Button>
+                            </LoadingButton>
                             <Link
                                 href='/login'
                                 className={styles.linkCreateAccount}

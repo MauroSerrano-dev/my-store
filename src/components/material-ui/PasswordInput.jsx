@@ -16,8 +16,10 @@ export default function PasswordInput(props) {
         name = 'password',
         label = 'Password',
         showModalGuide,
+        setShowModalGuide,
         value,
         style,
+        autoComplete = 'off',
         supportsHoverAndPointer,
         dark,
         colorBorderHover = dark ? '#000000' : '#ffffff',
@@ -39,7 +41,6 @@ export default function PasswordInput(props) {
     const [hasLower, setHasLower] = useState(false)
     const [hasNumber, setHasNumber] = useState(false)
     const [hasLength, setHasLength] = useState(false)
-    const [password, setPassword] = useState('')
 
     const tCommon = useTranslation('common').t
     const tToasts = useTranslation('toasts').t
@@ -53,7 +54,6 @@ export default function PasswordInput(props) {
                 setHasLower(/[a-z]+/.test(pass))
                 setHasNumber(/[0-9]+/.test(pass))
                 setHasLength(/.{6,}/.test(pass))
-                setPassword(pass)
             }
             else if (!toastActive) {
                 setToastActive(true)
@@ -63,6 +63,16 @@ export default function PasswordInput(props) {
                 }, 3000)
             }
         }
+    }
+
+    function handleFocus() {
+        setFocus(true)
+    }
+
+    function handleBlur() {
+        setFocus(false)
+        if (setShowModalGuide)
+            setShowModalGuide(false)
     }
 
     return (
@@ -85,12 +95,13 @@ export default function PasswordInput(props) {
                 {label}
             </InputLabel>
             <OutlinedInput
-                onFocus={() => setFocus(true)}
-                onBlur={() => setFocus(false)}
+                onFocus={handleFocus}
+                onBlur={handleBlur}
                 onMouseEnter={() => setHover(true)}
                 onMouseLeave={() => setHover(false)}
                 label={label}
                 name={name}
+                autoComplete={autoComplete}
                 value={value}
                 type={showPassword ? 'text' : 'password'}
                 onChange={handleOnChange}
@@ -126,7 +137,7 @@ export default function PasswordInput(props) {
                     boxShadow: '0px 1px 1px 0px rgba(0, 0, 0, 0.1), 0px 1px 2px 0px rgba(0, 0, 0, 0.07), 0px 1px 3px 0px rgba(0, 0, 0, 0.05)',
                 }}
             />
-            {showModalGuide && (focus || (password.length !== 0 && (!hasLower || !hasUpper || !hasNumber || !hasLength))) &&
+            {(showModalGuide || focus) &&
                 <motion.div
                     className={styles.modalContainer}
                     style={{

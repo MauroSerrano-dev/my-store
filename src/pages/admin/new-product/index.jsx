@@ -10,13 +10,14 @@ import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 export default withRouter(props => {
 
     const {
-        session
+        session,
+        auth
     } = props
 
     return (
         session === undefined
             ? <div></div>
-            : session === null || session.email !== 'mauro.serrano.dev@gmail.com'
+            : session === null || !isAdmin(auth)
                 ? <NoFound404 />
                 : <div className={styles.container}>
                     <header>

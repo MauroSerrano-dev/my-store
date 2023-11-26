@@ -12,6 +12,7 @@ import { motion } from 'framer-motion'
 import { v4 as uuidv4 } from 'uuid'
 import { useTranslation } from 'next-i18next'
 import { showToast } from '../../utils/toasts'
+import { isAdmin } from '../../utils/validations'
 
 const SUB_NAVBAR_HEIGHT = 40
 const SUB_NAVBAR_HEIGHT_MOBILE = 43
@@ -22,6 +23,7 @@ export default function DataHandler(props) {
         Component,
         pageProps,
         router,
+        loading,
         setLoading,
         currencies,
     } = props
@@ -44,6 +46,8 @@ export default function DataHandler(props) {
 
     const firebaseApp = initializeApp(firebaseConfig)
     const auth = getAuth(firebaseApp)
+
+    const adminMode = isAdmin(auth) && router.pathname.split('/')[1] === 'admin'
 
     useEffect(() => {
         getInicialCart()
@@ -132,12 +136,10 @@ export default function DataHandler(props) {
         Cookies.remove(CART_COOKIE)
     }
 
-    async function login(email, password, isNewUser) {
+    async function login(email, password) {
         try {
-            await signInWithEmailAndPassword(auth, email, password)
-            if (!isNewUser) {
-                showToast({ type: 'success', msg: tToasts('success_login') })
-            }
+            const authRes = await signInWithEmailAndPassword(auth, email, password)
+            showToast({ type: 'success', msg: tToasts('success_login', { user_name: authRes.user.displayName }) })
             router.push('/')
         } catch (error) {
             setLoading(false)
@@ -378,6 +380,7 @@ export default function DataHandler(props) {
                     isScrollAtTop={isScrollAtTop}
                     setIsScrollAtTop={setIsScrollAtTop}
                     session={session}
+                    auth={auth}
                     login={login}
                     logout={logout}
                     userCurrency={userCurrency}
@@ -393,28 +396,31 @@ export default function DataHandler(props) {
                     menuOpen={menuOpen}
                     switchMenu={switchMenu}
                     router={router}
+                    adminMode={adminMode}
                 />
-                <div
-                    className={styles.subNavBar}
-                    style={{
-                        top: isScrollAtTop ? '5rem' : 0,
-                        height: mobile ? SUB_NAVBAR_HEIGHT_MOBILE : SUB_NAVBAR_HEIGHT,
-                        transition: `all ease-in-out ${websiteVisible ? 200 : 0}ms`,
-                    }}
-                >
-                    <SearchBar
-                        show={isScrollAtTop && mobile}
-                        placeholder={tNavbar('search_bar_placeholder')}
-                        onChange={handleChangeSearch}
-                        onKeyDown={handleKeyDownSearch}
-                        onClick={handleClickSearch}
-                        value={search}
-                        options={productOptions}
-                        setOptions={setProductOptions}
-                        setSearch={setSearch}
-                        barHeight={30}
-                    />
-                </div>
+                {!adminMode &&
+                    <div
+                        className={styles.subNavBar}
+                        style={{
+                            top: isScrollAtTop ? '5rem' : 0,
+                            height: mobile ? SUB_NAVBAR_HEIGHT_MOBILE : SUB_NAVBAR_HEIGHT,
+                            transition: `all ease-in-out ${websiteVisible ? 200 : 0}ms`,
+                        }}
+                    >
+                        <SearchBar
+                            show={isScrollAtTop && mobile}
+                            placeholder={tNavbar('search_bar_placeholder')}
+                            onChange={handleChangeSearch}
+                            onKeyDown={handleKeyDownSearch}
+                            onClick={handleClickSearch}
+                            value={search}
+                            options={productOptions}
+                            setOptions={setProductOptions}
+                            setSearch={setSearch}
+                            barHeight={30}
+                        />
+                    </div>
+                }
             </div>
             <div
                 className={styles.componentContainer}
@@ -438,6 +444,7 @@ export default function DataHandler(props) {
                     supportsHoverAndPointer={supportsHoverAndPointer}
                     windowWidth={windowWidth}
                     router={router}
+                    loading={loading}
                     setLoading={setLoading}
                     getInicialCart={getInicialCart}
                     setSession={setSession}

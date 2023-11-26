@@ -5,16 +5,18 @@ import FormatListBulletedRoundedIcon from '@mui/icons-material/FormatListBullete
 import Link from 'next/link'
 import NoFound404 from '../../components/NoFound404';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
+import { isAdmin } from '../../../utils/validations';
 
 export default function Admin(props) {
     const {
-        session
+        session,
+        auth
     } = props
 
     return (
         session === undefined
             ? <div></div>
-            : session === null || session.email !== 'mauro.serrano.dev@gmail.com'
+            : session === null || !isAdmin(auth)
                 ? <NoFound404 />
                 : <div className={styles.container}>
                     <header>

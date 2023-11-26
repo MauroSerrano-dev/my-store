@@ -28,6 +28,7 @@ export default withRouter(props => {
         router,
         supportsHoverAndPointer,
         session,
+        auth,
     } = props;
 
     const [product, setProduct] = useState()
@@ -423,7 +424,7 @@ export default withRouter(props => {
     return (
         session === undefined
             ? <div></div>
-            : session === null || session.email !== 'mauro.serrano.dev@gmail.com'
+            : session === null || !isAdmin(auth)
                 ? <NoFound404 />
                 : <div className={styles.container}>
                     <Head>

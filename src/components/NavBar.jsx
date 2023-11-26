@@ -33,6 +33,8 @@ export default function NavBar(props) {
         menuOpen,
         switchMenu,
         router,
+        auth,
+        adminMode
     } = props
 
     const tNavbar = useTranslation('navbar').t
@@ -68,30 +70,32 @@ export default function NavBar(props) {
                 <div
                     className={styles.middle}
                 >
-                    {mobile
-                        ? <Link
-                            href={'/'}
-                            className='fillHeight flex center'
-                            aria-label='Home'
-                            style={{
-                                width: '70px',
-                                height: '100%',
-                                paddingTop: '0.7rem',
-                            }}
-                        >
-                            <Logo width='100%' />
-                        </Link>
-                        : <SearchBar
-                            show={isScrollAtTop}
-                            placeholder={tNavbar('search_bar_placeholder')}
-                            onChange={handleChangeSearch}
-                            onKeyDown={handleKeyDownSearch}
-                            onClick={handleClickSearch}
-                            value={search}
-                            options={productOptions}
-                            setOptions={setProductOptions}
-                            setSearch={setSearch}
-                        />
+                    {adminMode
+                        ? <div></div>
+                        : mobile
+                            ? <Link
+                                href={'/'}
+                                className='fillHeight flex center'
+                                aria-label='Home'
+                                style={{
+                                    width: '70px',
+                                    height: '100%',
+                                    paddingTop: '0.7rem',
+                                }}
+                            >
+                                <Logo width='100%' />
+                            </Link>
+                            : <SearchBar
+                                show={isScrollAtTop}
+                                placeholder={tNavbar('search_bar_placeholder')}
+                                onChange={handleChangeSearch}
+                                onKeyDown={handleKeyDownSearch}
+                                onClick={handleClickSearch}
+                                value={search}
+                                options={productOptions}
+                                setOptions={setProductOptions}
+                                setSearch={setSearch}
+                            />
                     }
                     {!mobile &&
                         <div
@@ -105,7 +109,7 @@ export default function NavBar(props) {
                                     : '100%',
                             }}
                         >
-                            {itemsNavBar.map((item, i) =>
+                            {!adminMode && itemsNavBar.map((item, i) =>
                                 <Link
                                     key={i}
                                     href={`/search?v=${item.value}`}
@@ -146,7 +150,7 @@ export default function NavBar(props) {
                             />
                         </motion.div>
                     }
-                    {session &&
+                    {!adminMode && session &&
                         <Link
                             href={'/wishlist'}
                         >
@@ -174,15 +178,18 @@ export default function NavBar(props) {
                             </motion.div>
                         </Link>
                     }
-                    <CartIcon
-                        session={session}
-                        cart={cart}
-                        setCart={setCart}
-                        userCurrency={userCurrency}
-                        supportsHoverAndPointer={supportsHoverAndPointer}
-                    />
+                    {!adminMode &&
+                        <CartIcon
+                            session={session}
+                            cart={cart}
+                            setCart={setCart}
+                            userCurrency={userCurrency}
+                            supportsHoverAndPointer={supportsHoverAndPointer}
+                        />
+                    }
                     <AvatarMenu
                         session={session}
+                        auth={auth}
                         logout={logout}
                         supportsHoverAndPointer={supportsHoverAndPointer}
                         router={router}
