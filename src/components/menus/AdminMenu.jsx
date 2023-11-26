@@ -8,11 +8,12 @@ import GroupOutlinedIcon from '@mui/icons-material/GroupOutlined'
 import StyleOutlinedIcon from '@mui/icons-material/StyleOutlined'
 import ReportProblemOutlinedIcon from '@mui/icons-material/ReportProblemOutlined'
 import PaymentsOutlinedIcon from '@mui/icons-material/PaymentsOutlined'
-import ConfirmationNumberOutlinedIcon from '@mui/icons-material/ConfirmationNumberOutlined';
-import AdminPanelSettingsOutlinedIcon from '@mui/icons-material/AdminPanelSettingsOutlined';
+import ConfirmationNumberOutlinedIcon from '@mui/icons-material/ConfirmationNumberOutlined'
+import AdminPanelSettingsOutlinedIcon from '@mui/icons-material/AdminPanelSettingsOutlined'
 import Link from 'next/link'
 import { motion } from 'framer-motion'
-import ArrowForwardIosOutlinedIcon from '@mui/icons-material/ArrowForwardIosOutlined';
+import ArrowForwardIosOutlinedIcon from '@mui/icons-material/ArrowForwardIosOutlined'
+import ColorLensOutlinedIcon from '@mui/icons-material/ColorLensOutlined'
 
 const OPTIONS = [
     { title: 'Dashboard', type: 'link', href: '/admin', icon: <EqualizerOutlinedIcon /> },
@@ -25,6 +26,7 @@ const OPTIONS = [
     { title: 'Admins', type: 'link', href: '/admin/admins', icon: <AdminPanelSettingsOutlinedIcon /> },
     { title: 'Tags', type: 'link', href: '/admin/tags', icon: <StyleOutlinedIcon /> },
     { title: 'Tickets', type: 'link', href: '/admin/tickets', icon: <ConfirmationNumberOutlinedIcon /> },
+    { title: 'Visual Identity', type: 'link', href: '/admin/visual-identity', icon: <ColorLensOutlinedIcon /> },
     { title: 'Global Report', type: 'link', href: '/admin/global-report', icon: <ReportProblemOutlinedIcon /> },
 ]
 
