@@ -62,6 +62,7 @@ export default function Cart(props) {
             showToast({ msg: 'Checkout temporarily disabled' })
             return
         }
+        setLoading(true)
         setDisableCheckoutButton(true)
         const options = {
             method: 'POST',
@@ -72,7 +73,6 @@ export default function Cart(props) {
             body: JSON.stringify({
                 cartItems: cart.products.map(prod => {
                     const shippingOption = getShippingOptions(prod.type_id, shippingCountry)
-                    console.log(prod)
                     return cartItemModel({
                         id: prod.id,
                         quantity: prod.quantity,
@@ -101,6 +101,7 @@ export default function Cart(props) {
             .then(response => response.json())
             .then(response => {
                 if (response.outOfStock) {
+                    setLoading(false)
                     setDisableCheckoutButton(false)
                     setOutOfStock(response.outOfStock)
                     showToast({
@@ -120,6 +121,7 @@ export default function Cart(props) {
                     window.location.href = response.url
             })
             .catch(err => {
+                setLoading(false)
                 setDisableCheckoutButton(false)
                 console.error(err)
             })
