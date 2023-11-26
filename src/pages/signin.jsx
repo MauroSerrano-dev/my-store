@@ -70,8 +70,8 @@ export default function Signin(props) {
                 setShowModalPassword(true)
                 return
             }
-            setDisableSigninButton(true)
             setLoading(true)
+            setDisableSigninButton(true)
             const options = {
                 method: 'POST',
                 headers: {
@@ -89,19 +89,19 @@ export default function Signin(props) {
                         login(user.email, user.password)
                     }
                     else if (response.status < 500) {
-                        setDisableSigninButton(false)
                         setLoading(false)
+                        setDisableSigninButton(false)
                         showToast({ msg: tToasts(response.message) })
                     }
                     else {
-                        setDisableSigninButton(false)
                         setLoading(false)
+                        setDisableSigninButton(false)
                         showToast({ type: 'error', msg: tToasts(response.message) })
                     }
                 })
                 .catch(() => {
-                    setDisableSigninButton(false)
                     setLoading(false)
+                    setDisableSigninButton(false)
                     showToast({ type: 'error', msg: tToasts('error_creating_user') })
                 })
         }
