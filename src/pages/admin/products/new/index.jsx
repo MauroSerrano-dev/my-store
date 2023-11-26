@@ -1,18 +1,24 @@
-import styles from '@/styles/admin/new-product/index.module.css'
+import styles from '@/styles/admin/products/new/index.module.css'
 import { Button } from '@mui/material'
-import KeyboardArrowLeftRoundedIcon from '@mui/icons-material/KeyboardArrowLeftRounded';
 import { withRouter } from 'next/router'
 import Link from 'next/link'
-import { PRODUCT_TYPES } from '../../../../consts'
+import { PRODUCT_TYPES } from '../../../../../consts'
 import NoFound404 from '@/components/NoFound404';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
+import { isAdmin } from '../../../../../utils/validations';
+import { useEffect } from 'react'
 
 export default withRouter(props => {
 
     const {
         session,
-        auth
+        auth,
+        setAdminMenuOpen,
     } = props
+
+    useEffect(() => {
+        setAdminMenuOpen(false)
+    }, [])
 
     return (
         session === undefined
@@ -23,39 +29,11 @@ export default withRouter(props => {
                     <header>
                     </header>
                     <main className={styles.main}>
-                        <div className={styles.top}>
-                            <Link
-                                href='/admin'
-                                className='noUnderline'
-                            >
-                                <Button
-                                    variant='outlined'
-                                    sx={{
-                                        display: 'flex',
-                                        alignItems: 'center',
-                                        justifyContent: 'center',
-                                    }}
-                                >
-                                    <KeyboardArrowLeftRoundedIcon
-                                        style={{
-                                            marginLeft: '-0.5rem'
-                                        }}
-                                    />
-                                    <p
-                                        style={{
-                                            color: 'var(--primary)'
-                                        }}
-                                    >
-                                        Back
-                                    </p>
-                                </Button>
-                            </Link>
-                        </div>
                         <div className={styles.menuContainer}>
                             <h3>Create New Product</h3>
                             {PRODUCT_TYPES.map((type, i) =>
                                 <Link
-                                    href={`/admin/new-product/${type.id}`}
+                                    href={`/admin/products/new/${type.id}`}
                                     key={i}
                                     className='noUnderline fillWidth'
                                 >

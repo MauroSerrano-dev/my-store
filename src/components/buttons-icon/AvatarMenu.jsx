@@ -2,15 +2,15 @@ import { useEffect, useState } from 'react'
 import MenuItem from '@mui/material/MenuItem'
 import ListItemIcon from '@mui/material/ListItemIcon'
 import Divider from '@mui/material/Divider'
+import Link from 'next/link'
 import Logout from '@mui/icons-material/Logout'
 import SupportAgentIcon from '@mui/icons-material/SupportAgent'
-import AccountCircleRoundedIcon from '@mui/icons-material/AccountCircleRounded'
-import Link from 'next/link'
 import PersonOutlineOutlinedIcon from '@mui/icons-material/PersonOutlineOutlined'
+import AccountCircleRoundedIcon from '@mui/icons-material/AccountCircleRounded'
 import styles from '@/styles/components/buttons-icon/AvatarMenu.module.css'
-import { Button } from '@mui/material'
-import ReceiptLongRoundedIcon from '@mui/icons-material/ReceiptLongRounded'
 import AdminPanelSettingsRoundedIcon from '@mui/icons-material/AdminPanelSettingsRounded'
+import ShoppingBagOutlinedIcon from '@mui/icons-material/ShoppingBagOutlined'
+import { Button } from '@mui/material'
 import { useTranslation } from 'next-i18next'
 import { motion } from 'framer-motion'
 
@@ -149,7 +149,7 @@ export default function AvatarMenu(props) {
               >
                 <MenuItem>
                   <ListItemIcon>
-                    <ReceiptLongRoundedIcon fontSize="medium" />
+                    <ShoppingBagOutlinedIcon fontSize="medium" />
                   </ListItemIcon>
                   {tNavbar('My Orders')}
                 </MenuItem>

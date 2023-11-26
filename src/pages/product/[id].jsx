@@ -52,7 +52,7 @@ export default withRouter(props => {
 
     const productCurrentVariant = product?.variants.find(vari => vari.size_id === currentSize?.id && vari.color_id === currentColor?.id)
 
-    const PRODUCT_PRICE = product && userCurrency ? Math.ceil(productCurrentVariant?.price * userCurrency.rate) * (product.sold_out ? 1 - product.sold_out.percentage : 1) : undefined
+    const PRODUCT_PRICE = product && userCurrency ? Math.ceil(productCurrentVariant?.price * userCurrency.rate) * (product.promotion ? 1 - product.promotion.percentage : 1) : undefined
 
     const ORIGINAL_PRICE = product && userCurrency ? Math.ceil(productCurrentVariant?.price * userCurrency.rate) : undefined
 
@@ -258,18 +258,18 @@ export default withRouter(props => {
                                             />
                                         }
                                     </div>
-                                    {product.sold_out &&
+                                    {product.promotion &&
                                         <div
-                                            className={styles.soldOut}
+                                            className={styles.promotion}
                                         >
                                             <p>
-                                                {Math.round(100 * product.sold_out.percentage)}% OFF
+                                                {Math.round(100 * product.promotion.percentage)}% OFF
                                             </p>
                                         </div>
                                     }
                                     {userCurrency &&
                                         <div className={styles.prices}>
-                                            {product.sold_out &&
+                                            {product.promotion &&
                                                 <p
                                                     style={{
                                                         color: 'grey',

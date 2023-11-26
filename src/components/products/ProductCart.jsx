@@ -29,7 +29,7 @@ export default function ProductCart(props) {
 
     const SIZE = SIZES_POOL.find(sz => sz.id === product.variant.size_id)
 
-    const PRICE_UNIT = Math.ceil(product.variant.price * userCurrency?.rate) * (product.sold_out ? 1 - product.sold_out.percentage : 1)
+    const PRICE_UNIT = Math.ceil(product.variant.price * userCurrency?.rate) * (product.promotion ? 1 - product.promotion.percentage : 1)
 
     const PRICE = Math.ceil(PRICE_UNIT * product.quantity)
 
@@ -176,12 +176,12 @@ export default function ProductCart(props) {
                                         OUT OF STOCK
                                     </p>
                                 </div>
-                                : product.sold_out &&
+                                : product.promotion &&
                                 <div
-                                    className={styles.soldOut}
+                                    className={styles.promotion}
                                 >
                                     <p>
-                                        {Math.round(100 * product.sold_out.percentage)}% OFF
+                                        {Math.round(100 * product.promotion.percentage)}% OFF
                                     </p>
                                 </div>
                             }

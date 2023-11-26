@@ -1,6 +1,5 @@
-import React, { useEffect, useState } from 'react'
 import Link from 'next/link'
-import styles from '../styles/components/NavBar.module.css'
+import styles from '@/styles/components/NavBar.module.css'
 import Logo from './svgs/Logo';
 import SearchBar from './SearchBar';
 import FavoriteBorderRoundedIcon from '@mui/icons-material/FavoriteBorderRounded';
@@ -53,7 +52,7 @@ export default function NavBar(props) {
                             toggle={() => switchMenu()}
                         />
                     </motion.div>
-                    {!mobile &&
+                    {adminMode || !mobile &&
                         <Link
                             href={'/'}
                             className='fillHeight'
@@ -70,34 +69,32 @@ export default function NavBar(props) {
                 <div
                     className={styles.middle}
                 >
-                    {adminMode
-                        ? <div></div>
-                        : mobile
-                            ? <Link
-                                href={'/'}
-                                className='fillHeight flex center'
-                                aria-label='Home'
-                                style={{
-                                    width: '70px',
-                                    height: '100%',
-                                    paddingTop: '0.7rem',
-                                }}
-                            >
-                                <Logo width='100%' />
-                            </Link>
-                            : <SearchBar
-                                show={isScrollAtTop}
-                                placeholder={tNavbar('search_bar_placeholder')}
-                                onChange={handleChangeSearch}
-                                onKeyDown={handleKeyDownSearch}
-                                onClick={handleClickSearch}
-                                value={search}
-                                options={productOptions}
-                                setOptions={setProductOptions}
-                                setSearch={setSearch}
-                            />
+                    {adminMode || mobile
+                        ? <Link
+                            href={'/'}
+                            className='fillHeight flex center'
+                            aria-label='Home'
+                            style={{
+                                width: '70px',
+                                height: '100%',
+                                paddingTop: '0.7rem',
+                            }}
+                        >
+                            <Logo width='100%' />
+                        </Link>
+                        : <SearchBar
+                            show={isScrollAtTop}
+                            placeholder={tNavbar('search_bar_placeholder')}
+                            onChange={handleChangeSearch}
+                            onKeyDown={handleKeyDownSearch}
+                            onClick={handleClickSearch}
+                            value={search}
+                            options={productOptions}
+                            setOptions={setProductOptions}
+                            setSearch={setSearch}
+                        />
                     }
-                    {!mobile &&
+                    {!adminMode && !mobile &&
                         <div
                             className={styles.categoriesContainer}
                             style={{
@@ -109,7 +106,7 @@ export default function NavBar(props) {
                                     : '100%',
                             }}
                         >
-                            {!adminMode && itemsNavBar.map((item, i) =>
+                            {itemsNavBar.map((item, i) =>
                                 <Link
                                     key={i}
                                     href={`/search?v=${item.value}`}
@@ -196,6 +193,6 @@ export default function NavBar(props) {
                     />
                 </div>
             </div>
-        </div >
+        </div>
     )
 }

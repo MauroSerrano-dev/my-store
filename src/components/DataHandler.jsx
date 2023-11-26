@@ -1,5 +1,5 @@
 import NavBar from './NavBar'
-import styles from '../styles/components/DataHandler.module.css'
+import styles from '@/styles/components/DataHandler.module.css'
 import { useEffect, useState } from "react"
 import Cookies from 'js-cookie'
 import { getAuth, onAuthStateChanged, signOut, signInWithEmailAndPassword } from "firebase/auth"
@@ -13,6 +13,7 @@ import { v4 as uuidv4 } from 'uuid'
 import { useTranslation } from 'next-i18next'
 import { showToast } from '../../utils/toasts'
 import { isAdmin } from '../../utils/validations'
+import AdminMenu from './menus/AdminMenu'
 
 const SUB_NAVBAR_HEIGHT = 40
 const SUB_NAVBAR_HEIGHT_MOBILE = 43
@@ -40,6 +41,7 @@ export default function DataHandler(props) {
     const [menuOpen, setMenuOpen] = useState(false)
     const [showMenu, setShowMenu] = useState(false)
     const [userEmailVerify, setUserEmailVerify] = useState()
+    const [adminMenuOpen, setAdminMenuOpen] = useState(false)
 
     const tNavbar = useTranslation('navbar').t
     const tToasts = useTranslation('toasts').t
@@ -449,6 +451,7 @@ export default function DataHandler(props) {
                     getInicialCart={getInicialCart}
                     setSession={setSession}
                     setUserEmailVerify={setUserEmailVerify}
+                    setAdminMenuOpen={setAdminMenuOpen}
                 />
                 {showMenu &&
                     <Menu
@@ -456,6 +459,13 @@ export default function DataHandler(props) {
                         menuOpen={menuOpen}
                         session={session}
                         windowWidth={windowWidth}
+                    />
+                }
+                {adminMode &&
+                    <AdminMenu
+                        router={router}
+                        open={adminMenuOpen}
+                        setOpen={setAdminMenuOpen}
                     />
                 }
                 {userEmailVerify === false && session &&

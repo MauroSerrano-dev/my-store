@@ -1,11 +1,9 @@
 import ImagesSlider from '@/components/ImagesSlider'
-import styles from '@/styles/admin/new-product/type.module.css'
+import styles from '@/styles/admin/products/new/type.module.css'
 import { Button, Checkbox, Slider } from '@mui/material'
 import { useEffect, useState } from 'react'
-import KeyboardArrowLeftRoundedIcon from '@mui/icons-material/KeyboardArrowLeftRounded'
 import { withRouter } from 'next/router'
-import Link from 'next/link'
-import { COLLECTIONS, TAGS_POOL, THEMES_POOL, PRODUCT_TYPES, COLORS_POOL, SIZES_POOL, PROVIDERS_POOL, SEARCH_ART_COLORS } from '../../../../consts'
+import { COLLECTIONS, TAGS_POOL, THEMES_POOL, PRODUCT_TYPES, COLORS_POOL, SIZES_POOL, PROVIDERS_POOL, SEARCH_ART_COLORS } from '../../../../../consts'
 import ColorSelector from '@/components/ColorSelector'
 import TextInput from '@/components/material-ui/TextInput'
 import TagsSelector from '@/components/material-ui/TagsSelector'
@@ -14,14 +12,14 @@ import ButtonIcon from '@/components/material-ui/ButtonIcon'
 import SizesSelector from '@/components/SizesSelector'
 import Chain from '@/components/svgs/Chain'
 import BrokeChain from '@/components/svgs/BrokeChain'
-import { showToast } from '../../../../utils/toasts'
+import { showToast } from '../../../../../utils/toasts'
 import NoFound404 from '@/components/NoFound404'
 import Selector from '@/components/material-ui/Selector'
-import { isNewProductValid } from '../../../../utils/edit-product'
+import { isNewProductValid } from '../../../../../utils/edit-product'
 import { useTranslation } from 'next-i18next'
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
 import TextOutlinedInput from '@/components/material-ui/TextOutlinedInput'
-import { isAdmin } from '../../../../utils/validations'
+import { isAdmin } from '../../../../../utils/validations'
 
 const INICIAL_PRODUCT = {
     id: '',
@@ -47,7 +45,8 @@ export default withRouter(props => {
         router,
         session,
         supportsHoverAndPointer,
-        auth
+        auth,
+        setAdminMenuOpen
     } = props
 
     const [product, setProduct] = useState(INICIAL_PRODUCT)
@@ -61,6 +60,10 @@ export default withRouter(props => {
     const [artColorChained, setArtColorChained] = useState(true)
 
     const tCommon = useTranslation('common').t
+
+    useEffect(() => {
+        setAdminMenuOpen(false)
+    }, [])
 
     useEffect(() => {
         if (router.isReady) {
@@ -111,7 +114,7 @@ export default withRouter(props => {
                     min_price: product.variants.reduce((acc, vari) => acc < vari.price ? acc : vari.price, product.variants[0].price),
                     images: product.colors.reduce((acc, color) => acc.concat(images[color.id].map(img => ({ src: img.src, color_id: img.color_id }))), []),
                     variants: product.variants.map(vari => ({ ...vari, sales: 0 })),
-                    sold_out: null,
+                    promotion: null,
                 }
             })
         }
@@ -125,7 +128,7 @@ export default withRouter(props => {
             .catch(err => showToast({ type: 'error', msg: err }))
 
         setDisableCreateButton(false)
-        router.push('/admin/new-product')
+        router.push('/admin/products/new')
     }
 
     function updateProductField(fieldName, newValue) {
@@ -465,34 +468,6 @@ export default withRouter(props => {
                     <header>
                     </header>
                     <main className={styles.main}>
-                        <div className={styles.top}>
-                            <Link
-                                href='/admin/new-product'
-                                className='noUnderline'
-                            >
-                                <Button
-                                    variant='outlined'
-                                    sx={{
-                                        display: 'flex',
-                                        alignItems: 'center',
-                                        justifyContent: 'center',
-                                    }}
-                                >
-                                    <KeyboardArrowLeftRoundedIcon
-                                        style={{
-                                            marginLeft: '-0.5rem'
-                                        }}
-                                    />
-                                    <p
-                                        style={{
-                                            color: 'var(--primary)'
-                                        }}
-                                    >
-                                        Back
-                                    </p>
-                                </Button>
-                            </Link>
-                        </div>
                         {type &&
                             <div className={styles.sectionsContainer}>
                                 <section className={styles.section}>

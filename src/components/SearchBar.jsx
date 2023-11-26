@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import styles from '../styles/components/SearchBar.module.css'
+import styles from '@/styles/components/SearchBar.module.css'
 import SearchRoundedIcon from '@mui/icons-material/SearchRounded'
 import { motion } from "framer-motion"
 import Link from 'next/link'

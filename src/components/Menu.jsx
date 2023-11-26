@@ -1,4 +1,4 @@
-import styles from '../styles/components/Menu.module.css'
+import styles from '@/styles/components/Menu.module.css'
 import Logo from './svgs/Logo';
 import { SlClose } from "react-icons/sl";
 import PersonOutlineOutlinedIcon from '@mui/icons-material/PersonOutlineOutlined';

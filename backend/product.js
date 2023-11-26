@@ -103,7 +103,7 @@ async function getCartProductsInfo(cartProducts) {
                 type_id: product.type_id,
                 title: product.title,
                 description: product.description,
-                sold_out: product.sold_out,
+                promotion: product.promotion,
                 printify_ids: product.printify_ids,
                 blueprint_ids: product.blueprint_ids,
                 variant: variant,
@@ -444,7 +444,7 @@ async function handleProductsPurchased(line_items) {
                 productData.popularity += POPULARITY_POINTS.purchase * quantity
 
                 productData.popularity_year += POPULARITY_POINTS.purchase * quantity
-                
+
                 productData.popularity_month += POPULARITY_POINTS.purchase * quantity
 
                 // Verifique se o produto tem variantes
