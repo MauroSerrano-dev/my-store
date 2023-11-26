@@ -1,4 +1,4 @@
-import { doc, getDoc, getFirestore, updateDoc, Timestamp, setDoc, getDocs } from "firebase/firestore";
+import { doc, getDoc, getFirestore, updateDoc, Timestamp, setDoc, getDocs, query, collection, where } from "firebase/firestore";
 import { initializeApp } from 'firebase/app'
 import { firebaseConfig } from "../firebase.config"
 import { mergeProducts } from "../utils";

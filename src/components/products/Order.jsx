@@ -7,6 +7,7 @@ import styled from '@emotion/styled';
 import StepConnector, { stepConnectorClasses } from '@mui/material/StepConnector';
 import { PRODUCT_TYPES, SIZES_POOL, COLORS_POOL, STEPS_ATTEMPT, STEPS } from '../../../consts';
 import { useTranslation } from 'next-i18next'
+import { convertTimestampToFormatDate } from '../../../utils';
 
 export default function Order(props) {
     const {
