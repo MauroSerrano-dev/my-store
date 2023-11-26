@@ -15,7 +15,9 @@ export default function Wishlist({
     supportsHoverAndPointer,
     userCurrency,
     windowWidth,
-    setLoading
+    setLoading,
+    router,
+    loading,
 }) {
 
     const [wishlist, setWishlist] = useState()
@@ -118,7 +120,11 @@ export default function Wishlist({
         session === undefined
             ? <div></div>
             : session === null
-                ? <NoFound404 />
+                ? <NoFound404
+                    autoRedirect
+                    router={router}
+                    loading={loading}
+                />
                 : <div className={styles.container}>
                     <div
                         className={styles.pageContainer}

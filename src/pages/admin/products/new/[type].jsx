@@ -46,7 +46,8 @@ export default withRouter(props => {
         session,
         supportsHoverAndPointer,
         auth,
-        setAdminMenuOpen
+        setAdminMenuOpen,
+        loading
     } = props
 
     const [product, setProduct] = useState(INICIAL_PRODUCT)
@@ -461,7 +462,11 @@ export default withRouter(props => {
         session === undefined
             ? <div></div>
             : session === null || !isAdmin(auth)
-                ? <NoFound404 />
+                ? <NoFound404
+                    autoRedirect
+                    router={router}
+                    loading={loading}
+                />
                 : <div className={styles.container}>
                     <header>
                     </header>

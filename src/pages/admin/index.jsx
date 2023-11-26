@@ -8,7 +8,9 @@ export default function Admin(props) {
     const {
         session,
         auth,
-        setAdminMenuOpen
+        setAdminMenuOpen,
+        router,
+        loading
     } = props
 
     useEffect(() => {
@@ -19,7 +21,11 @@ export default function Admin(props) {
         session === undefined
             ? <div></div>
             : session === null || !isAdmin(auth)
-                ? <NoFound404 />
+                ? <NoFound404
+                    autoRedirect
+                    router={router}
+                    loading={loading}
+                />
                 : <div className={styles.container}>
                     <header>
                     </header>

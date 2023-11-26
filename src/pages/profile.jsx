@@ -22,6 +22,7 @@ export default function Profile(props) {
         updateSession,
         supportsHoverAndPointer,
         router,
+        loading,
     } = props
 
     const { i18n } = useTranslation()
@@ -103,7 +104,11 @@ export default function Profile(props) {
         session === undefined || user === undefined
             ? <div></div>
             : session === null || user === null
-                ? <NoFound404 />
+                ? <NoFound404
+                    autoRedirect
+                    router={router}
+                    loading={loading}
+                />
                 : <div className={styles.container}>
                     <Head>
                     </Head>

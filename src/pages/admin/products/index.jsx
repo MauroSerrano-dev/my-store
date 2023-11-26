@@ -10,14 +10,20 @@ import { isAdmin } from '../../../../utils/validations';
 export default function Products(props) {
     const {
         session,
-        auth
+        auth,
+        router,
+        loading
     } = props
 
     return (
         session === undefined
             ? <div></div>
             : session === null || !isAdmin(auth)
-                ? <NoFound404 />
+                ? <NoFound404
+                    autoRedirect
+                    router={router}
+                    loading={loading}
+                />
                 : <div className={styles.container}>
                     <header>
                     </header>

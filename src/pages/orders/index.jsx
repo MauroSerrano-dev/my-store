@@ -19,6 +19,8 @@ export default function Orders(props) {
         windowWidth,
         userCurrency,
         setSession,
+        router,
+        loading
     } = props
 
     const tOrders = useTranslation('orders').t
@@ -109,7 +111,11 @@ export default function Orders(props) {
         session === undefined
             ? <div></div>
             : session === null
-                ? <NoFound404 />
+                ? <NoFound404
+                    autoRedirect
+                    router={router}
+                    loading={loading}
+                />
                 : <div className={styles.container}>
                     <main className={styles.main}>
                         {orders

@@ -5,11 +5,23 @@ import styles from '@/styles/pages/_error.module.css'
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
 import NoFound404 from '@/components/NoFound404'
 
-function Error({ statusCode }) {
+function Error({ statusCode, router, loading }) {
 
     const animationContainer = useRef(null)
 
     useEffect(() => {
+        let time
+        time = setTimeout(() => {
+            router.push('/')
+        }, 3000)
+
+        return () => {
+            clearTimeout(time)
+        }
+    }, [loading])
+
+    useEffect(() => {
+        console.log('dsa', router, loading)
         const animation = lottie.loadAnimation({
             container: animationContainer.current,
             renderer: 'svg', // or 'canvas' or 'html'

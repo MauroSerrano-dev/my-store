@@ -14,6 +14,8 @@ export default withRouter(props => {
         session,
         auth,
         setAdminMenuOpen,
+        router,
+        loading
     } = props
 
     useEffect(() => {
@@ -24,7 +26,11 @@ export default withRouter(props => {
         session === undefined
             ? <div></div>
             : session === null || !isAdmin(auth)
-                ? <NoFound404 />
+                ? <NoFound404
+                    autoRedirect
+                    router={router}
+                    loading={loading}
+                />
                 : <div className={styles.container}>
                     <header>
                     </header>

@@ -39,6 +39,7 @@ export default withRouter(props => {
         setLoading,
         setSession,
         location,
+        loading
     } = props
 
     const tToasts = useTranslation('toasts').t
@@ -413,13 +414,14 @@ export default withRouter(props => {
                     </section>
                 </div>
             </div>
-            : <NoFound404 message='Product not found!' />
+            : <NoFound404
+                message='Product not found!'
+                autoRedirect
+                router={router}
+                loading={loading}
+            />
     )
 })
-//está rápido sem isso
-/* export const config = {
-    runtime: 'experimental-edge'
-} */
 
 export async function getServerSideProps({ query, locale, resolvedUrl }) {
     const { id, cl, sz } = query
