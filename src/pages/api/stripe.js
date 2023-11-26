@@ -98,10 +98,6 @@ export default async function handler(req, res) {
       )
     })
 
-    console.log(cartMetadata, 'wtf')
-
-    return
-
     const session = await stripe.checkout.sessions.create({
       metadata: {
         cart_id: cart_id || '',
