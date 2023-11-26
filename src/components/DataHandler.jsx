@@ -453,7 +453,7 @@ export default function DataHandler(props) {
                     setUserEmailVerify={setUserEmailVerify}
                     setAdminMenuOpen={setAdminMenuOpen}
                 />
-                {showMenu &&
+                {!adminMode && showMenu &&
                     <Menu
                         switchMenu={switchMenu}
                         menuOpen={menuOpen}

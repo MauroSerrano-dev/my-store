@@ -44,15 +44,17 @@ export default function NavBar(props) {
                 className={styles.bodyContainer}
             >
                 <div className={styles.leftSide}>
-                    <motion.div
-                        initial={false}
-                        animate={menuOpen ? "open" : "closed"}
-                    >
-                        <MenuToggle
-                            toggle={() => switchMenu()}
-                        />
-                    </motion.div>
-                    {adminMode || !mobile &&
+                    {!adminMode &&
+                        <motion.div
+                            initial={false}
+                            animate={menuOpen ? "open" : "closed"}
+                        >
+                            <MenuToggle
+                                toggle={() => switchMenu()}
+                            />
+                        </motion.div>
+                    }
+                    {!mobile &&
                         <Link
                             href={'/'}
                             className='fillHeight'
@@ -69,30 +71,32 @@ export default function NavBar(props) {
                 <div
                     className={styles.middle}
                 >
-                    {adminMode || mobile
-                        ? <Link
-                            href={'/'}
-                            className='fillHeight flex center'
-                            aria-label='Home'
-                            style={{
-                                width: '70px',
-                                height: '100%',
-                                paddingTop: '0.7rem',
-                            }}
-                        >
-                            <Logo width='100%' />
-                        </Link>
-                        : <SearchBar
-                            show={isScrollAtTop}
-                            placeholder={tNavbar('search_bar_placeholder')}
-                            onChange={handleChangeSearch}
-                            onKeyDown={handleKeyDownSearch}
-                            onClick={handleClickSearch}
-                            value={search}
-                            options={productOptions}
-                            setOptions={setProductOptions}
-                            setSearch={setSearch}
-                        />
+                    {adminMode
+                        ? <div></div>
+                        : mobile
+                            ? <Link
+                                href={'/'}
+                                className='fillHeight flex center'
+                                aria-label='Home'
+                                style={{
+                                    width: '70px',
+                                    height: '100%',
+                                    paddingTop: '0.7rem',
+                                }}
+                            >
+                                <Logo width='100%' />
+                            </Link>
+                            : <SearchBar
+                                show={isScrollAtTop}
+                                placeholder={tNavbar('search_bar_placeholder')}
+                                onChange={handleChangeSearch}
+                                onKeyDown={handleKeyDownSearch}
+                                onClick={handleClickSearch}
+                                value={search}
+                                options={productOptions}
+                                setOptions={setProductOptions}
+                                setSearch={setSearch}
+                            />
                     }
                     {!adminMode && !mobile &&
                         <div
@@ -122,7 +126,7 @@ export default function NavBar(props) {
                     }
                 </div>
                 <div className={styles.rightSide}>
-                    {!isScrollAtTop &&
+                    {!adminMode && !isScrollAtTop &&
                         <motion.div
                             className={styles.iconContainer}
                             onClick={() => setIsScrollAtTop(true)}

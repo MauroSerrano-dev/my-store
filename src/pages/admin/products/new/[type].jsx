@@ -139,7 +139,7 @@ export default withRouter(props => {
         setProduct(prev => ({ ...prev, printify_ids: { ...prev.printify_ids, [providerId]: newValue } }))
     }
 
-    function handleChangeVariants(value, i, color) {
+    function handleChangeColors(value, i, color) {
         setProduct(prev => {
             setColorIndex(prevIndex => value.length > prev.colors.length
                 ? value.length - 1
@@ -150,11 +150,11 @@ export default withRouter(props => {
             // add color
             if (value.length > prev.colors.length) {
                 setColorsChained(prevC => prevC.concat(color.id))
-                if (Object.keys(sizesChained).map(ele => Number(ele)).some(cId => colorsChained.includes(cId)))
-                    setSizesChained(prev => ({ ...prev, [color.id]: prev[Object.keys(prev).map(ele => Number(ele)).find(cId => colorsChained.includes(cId))] }))
-                else {
-                    setSizesChained(prev => ({ ...prev, [color.id]: [] }))
-                }
+                setSizesChained(sizesChainedPrev =>
+                    Object.keys(sizesChainedPrev).map(ele => Number(ele)).some(cId => colorsChained.includes(cId))
+                        ? { ...sizesChainedPrev, [color.id]: sizesChainedPrev[Object.keys(sizesChainedPrev).map(ele => Number(ele)).find(cId => colorsChained.includes(cId))] }
+                        : { ...sizesChainedPrev, [color.id]: [] }
+                )
                 setImages(prevImgs => ({ ...prevImgs, [color.id]: [{ src: '', color_id: color.id }, { src: '', color_id: color.id }, { src: '', color_id: color.id }, { src: '', color_id: color.id }] }))
                 return {
                     ...prev,
@@ -208,10 +208,10 @@ export default withRouter(props => {
     }
 
     function handleChangeSizes(value, i, size) {
-        setProduct(prev => {
-            // add size
-            if (value.length > prev.sizes.length) {
-                return {
+        setProduct(prev =>
+            value.length > prev.sizes.length
+                // add size
+                ? {
                     ...prev,
                     sizes: value,
                     variants: prev.variants
@@ -221,17 +221,15 @@ export default withRouter(props => {
                                 .map(vari => ({ ...vari, art: { id: artIdChained ? prev.id : '', color_id: artColorChained && prev.variants.length > 0 ? prev.variants[0].art.color_id : null } }))
                         )
                 }
-            }
-            // remove size
-            else {
-                return {
+                // remove size
+                : {
                     ...prev,
                     sizes: value,
                     variants: prev.variants
                         .filter(vari => value.some(sz => sz.id === vari.size_id))
                 }
-            }
-        })
+
+        )
     }
 
     function handleChainSize(sizeId) {
@@ -566,7 +564,7 @@ export default withRouter(props => {
                                     <ColorSelector
                                         value={product.colors}
                                         options={type.colors.map(cl_id => COLORS_POOL[cl_id])}
-                                        onChange={handleChangeVariants}
+                                        onChange={handleChangeColors}
                                         supportsHoverAndPointer={supportsHoverAndPointer}
                                         style={{
                                             paddingLeft: '50px',
