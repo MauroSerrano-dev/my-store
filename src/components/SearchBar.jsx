@@ -4,7 +4,7 @@ import SearchRoundedIcon from '@mui/icons-material/SearchRounded'
 import { motion } from "framer-motion"
 import Link from 'next/link'
 import { LIMITS } from '../../consts'
-import { showToast } from '../../utils/toasts'
+import { showToast } from '@/utils/toasts'
 import { useTranslation } from 'next-i18next'
 
 export default function SearchBar(props) {

@@ -99,7 +99,7 @@ export default function Orders(props) {
             renderer: 'svg',
             loop: true,
             autoplay: true,
-            animationData: require('../../../utils/animations/animationNoOrders.json'),
+            animationData: require('@/utils/animations/animationNoOrders.json'),
         })
 
         return () => {

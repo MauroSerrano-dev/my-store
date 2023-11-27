@@ -13,7 +13,7 @@ import ShoppingBagOutlinedIcon from '@mui/icons-material/ShoppingBagOutlined'
 import { Button } from '@mui/material'
 import { useTranslation } from 'next-i18next'
 import { motion } from 'framer-motion'
-import { isAdmin } from '../../../utils/validations'
+import { isAdmin } from '@/utils/validations'
 
 export default function AvatarMenu(props) {
   const {

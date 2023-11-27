@@ -4,7 +4,7 @@ import Link from 'next/link'
 import { PiHandshakeLight } from "react-icons/pi"
 import ReCAPTCHA from "react-google-recaptcha"
 import { useEffect, useState } from 'react'
-import { showToast } from '../../utils/toasts'
+import { showToast } from '@/utils/toasts'
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
 import PasswordInput from '@/components/material-ui/PasswordInput'
 import { useTranslation } from 'next-i18next';

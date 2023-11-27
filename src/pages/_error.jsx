@@ -27,7 +27,7 @@ function Error({ statusCode, router, loading }) {
             renderer: 'svg', // or 'canvas' or 'html'
             loop: true,
             autoplay: true,
-            animationData: require('../../utils/animations/animationError.json'),
+            animationData: require('@/utils/animations/animationError.json'),
         })
 
         return () => {

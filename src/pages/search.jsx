@@ -215,7 +215,7 @@ export default withRouter(props => {
                 renderer: 'svg',
                 loop: true,
                 autoplay: true,
-                animationData: require('../../utils/animations/animationNoProducts.json'),
+                animationData: require('@/utils/animations/animationNoProducts.json'),
             })
         }
 

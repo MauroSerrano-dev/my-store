@@ -4,7 +4,6 @@ import lottie from 'lottie-web';
 import styles from '@/styles/components/NoFound404.module.css'
 
 export default function NoFound404(props) {
-
     const {
         message = 'Page not found!',
         router,
@@ -34,7 +33,7 @@ export default function NoFound404(props) {
             renderer: 'svg',
             loop: true,
             autoplay: true,
-            animationData: require('../../utils/animations/animation404.json'),
+            animationData: require('@/utils/animations/animation404.json'),
         })
 
         return () => {

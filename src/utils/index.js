@@ -1,9 +1,9 @@
-import { CART_MAX_ITEMS } from "../consts";
 import { format } from 'date-fns';
 import en from 'date-fns/locale/en-US'
 import es from 'date-fns/locale/es'
 import ptBR from 'date-fns/locale/pt-BR'
 import ptPT from 'date-fns/locale/pt'
+import { CART_MAX_ITEMS } from '../../consts';
 
 
 export function getObjectsDiff(obj1, obj2) {

@@ -1,4 +1,4 @@
-import { isTokenValid } from "../../../utils/auth";
+import { isTokenValid } from "@/utils/auth";
 import { getAllProducts, getProductsByQueries } from "../../../backend/product";
 import { SEARCH_PRODUCT_COLORS, SEARCH_ART_COLORS } from "../../../consts";
 import LANGUAGES from '../../../public/locales/en/languages.json'

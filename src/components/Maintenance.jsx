@@ -13,7 +13,7 @@ export default function Maintenance() {
             renderer: 'svg', // or 'canvas' or 'html'
             loop: true,
             autoplay: true,
-            animationData: require('../../utils/animations/animationMaintenance.json'),
+            animationData: require('@/utils/animations/animationMaintenance.json'),
         })
 
         return () => {

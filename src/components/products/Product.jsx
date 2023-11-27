@@ -9,7 +9,7 @@ import Image from 'next/image'
 import { useTranslation } from 'next-i18next'
 import HeartButton from '../buttons-icon/HeartButton'
 import CloseRoundedIcon from '@mui/icons-material/CloseRounded'
-import { showToast } from '../../../utils/toasts'
+import { showToast } from '@/utils/toasts'
 
 /**
  * @param {object} props - Component props.

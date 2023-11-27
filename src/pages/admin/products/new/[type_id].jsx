@@ -12,14 +12,14 @@ import ButtonIcon from '@/components/material-ui/ButtonIcon'
 import SizesSelector from '@/components/SizesSelector'
 import Chain from '@/components/svgs/Chain'
 import BrokeChain from '@/components/svgs/BrokeChain'
-import { showToast } from '../../../../../utils/toasts'
+import { showToast } from '@/utils/toasts'
 import NoFound404 from '@/components/NoFound404'
 import Selector from '@/components/material-ui/Selector'
-import { isNewProductValid } from '../../../../../utils/edit-product'
+import { isNewProductValid } from '@/utils/edit-product'
 import { useTranslation } from 'next-i18next'
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
 import TextOutlinedInput from '@/components/material-ui/TextOutlinedInput'
-import { isAdmin } from '../../../../../utils/validations'
+import { isAdmin } from '@/utils/validations'
 
 const INICIAL_PRODUCT = {
     id: '',

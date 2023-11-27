@@ -1,4 +1,4 @@
-import { isTokenValid } from "../../../utils/auth";
+import { isTokenValid } from "@/utils/auth";
 import { getOrdersByUserId } from "../../../backend/orders";
 import { getCartProductsInfo } from "../../../backend/product";
 

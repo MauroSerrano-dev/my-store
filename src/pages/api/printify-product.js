@@ -1,6 +1,6 @@
 // pages/api/getPrintifyProducts.js
 import axios from 'axios'
-import { isTokenValid } from '../../../utils/auth'
+import { isTokenValid } from '@/utils/auth'
 
 export default async function handler(req, res) {
     const { authorization } = req.headers

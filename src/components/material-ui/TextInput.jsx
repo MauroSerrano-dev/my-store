@@ -1,6 +1,6 @@
 import { InputAdornment, TextField } from '@mui/material';
 import { useEffect, useState } from 'react';
-import { showToast } from '../../../utils/toasts';
+import { showToast } from '@/utils/toasts';
 import { useTranslation } from 'next-i18next'
 
 export default function TextInput(props) {
