@@ -6,7 +6,7 @@ import { useEffect, useRef, useState } from 'react'
 import styles from '@/styles/pages/wishlist.module.css'
 import { useTranslation } from 'next-i18next';
 import lottie from 'lottie-web';
-import { LIMITS } from '../../consts'
+import { LIMITS } from '@/consts'
 import NoFound404 from '@/components/NoFound404'
 
 export default function Wishlist({

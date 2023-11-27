@@ -3,7 +3,7 @@ import { motion } from "framer-motion";
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
 import { SlClose } from "react-icons/sl";
-import { PRODUCTS_TYPES, SEARCH_PRODUCT_COLORS, SEARCH_ART_COLORS, SEARCH_FILTERS } from '../../consts';
+import { PRODUCTS_TYPES, SEARCH_PRODUCT_COLORS, SEARCH_ART_COLORS, SEARCH_FILTERS } from '@/consts';
 import ColorButton from './ColorButton';
 
 export default function MenuFilter(props) {

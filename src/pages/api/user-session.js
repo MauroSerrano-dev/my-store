@@ -2,7 +2,7 @@ import { isTokenValid } from "@/utils/auth";
 import { mergeCarts } from "../../../backend/cart";
 import { updateField, createNewUserWithGoogle, getUserById } from "../../../backend/user";
 import { getWishlistById } from "../../../backend/wishlists";
-import { DEFAULT_PRODUCTS_TAGS } from "../../../consts";
+import { DEFAULT_PRODUCTS_TAGS } from "@/consts";
 
 export default async function handler(req, res) {
     const { authorization } = req.headers

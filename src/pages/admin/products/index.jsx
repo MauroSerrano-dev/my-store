@@ -3,7 +3,7 @@ import Link from 'next/link'
 import NoFound404 from '../../../components/NoFound404';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { isAdmin } from '@/utils/validations';
-import { PRODUCTS_TYPES } from '../../../../consts';
+import { PRODUCTS_TYPES } from '@/consts';
 import { useTranslation } from 'next-i18next'
 
 export default function Products(props) {

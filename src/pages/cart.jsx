@@ -1,7 +1,7 @@
 import ProductCart from '@/components/products/ProductCart'
 import styles from '@/styles/pages/cart.module.css'
 import { Button } from '@mui/material'
-import { CART_COOKIE, COLORS_POOL, SIZES_POOL, getShippingOptions } from '../../consts'
+import { CART_COOKIE, COLORS_POOL, SIZES_POOL, getShippingOptions } from '@/consts'
 import COUNTRIES_POOL from '../../public/locales/en/countries.json'
 import { useEffect, useState } from 'react'
 import Selector from '@/components/material-ui/Selector'

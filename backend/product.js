@@ -15,7 +15,7 @@ import {
 import { initializeApp } from 'firebase/app'
 import { firebaseConfig } from "../firebase.config"
 import Fuse from 'fuse.js'
-import { POPULARITY_POINTS, PRODUCTS_TYPES, TAGS_POOL, THEMES_POOL } from "../consts"
+import { POPULARITY_POINTS, PRODUCTS_TYPES, TAGS_POOL, THEMES_POOL } from "@/consts"
 import translate from "translate"
 
 initializeApp(firebaseConfig)

@@ -13,7 +13,7 @@ import {
 import { initializeApp } from 'firebase/app'
 import { firebaseConfig } from "../firebase.config"
 import { handleProductsPurchased } from "./product"
-import { ALLOWED_WEBHOOK_STATUS } from "../consts"
+import { ALLOWED_WEBHOOK_STATUS } from "@/consts"
 
 initializeApp(firebaseConfig)
 

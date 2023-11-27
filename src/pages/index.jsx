@@ -6,7 +6,7 @@ import CarouselProducts from '@/components/carousels/CarouselProducts'
 import Carousel from '@/components/carousels/Carousel'
 import Link from 'next/link'
 import Image from 'next/image'
-import { DEFAULT_PRODUCTS_TAGS, USER_CUSTOMIZE_HOME_PAGE } from '../../consts'
+import { DEFAULT_PRODUCTS_TAGS, USER_CUSTOMIZE_HOME_PAGE } from '@/consts'
 import { useTranslation } from 'next-i18next'
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
 

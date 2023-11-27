@@ -15,7 +15,7 @@ import { getAuth, createUserWithEmailAndPassword, sendEmailVerification, fetchSi
 import { firebaseConfig } from "../firebase.config"
 import { createCart } from "./cart"
 import { getCartSessionById, deleteCartSession } from "./cart-session"
-import { DEFAULT_PRODUCTS_TAGS } from "../consts"
+import { DEFAULT_PRODUCTS_TAGS } from "@/consts"
 import { createWishlist } from "./wishlists"
 const { v4: uuidv4 } = require('uuid')
 

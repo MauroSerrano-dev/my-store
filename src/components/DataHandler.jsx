@@ -5,7 +5,7 @@ import Cookies from 'js-cookie'
 import { getAuth, onAuthStateChanged, signOut, signInWithEmailAndPassword } from "firebase/auth"
 import { initializeApp } from 'firebase/app'
 import { firebaseConfig } from '../../firebase.config'
-import { CART_COOKIE } from '../../consts'
+import { CART_COOKIE } from '@/consts'
 import SearchBar from './SearchBar'
 import Menu from './Menu'
 import { motion } from 'framer-motion'

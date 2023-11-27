@@ -3,7 +3,7 @@ import { useEffect, useState, useRef } from 'react'
 import { Button, Skeleton } from '@mui/material'
 import Link from 'next/link'
 import { motion } from "framer-motion"
-import { COLORS_POOL, PRODUCTS_TYPES, LIMITS } from '../../../consts'
+import { COLORS_POOL, PRODUCTS_TYPES, LIMITS } from '@/consts'
 import ColorButton from '../ColorButton'
 import Image from 'next/image'
 import { useTranslation } from 'next-i18next'

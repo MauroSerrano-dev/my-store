@@ -2,7 +2,7 @@ import styles from '@/styles/components/products/ProductModal.module.css'
 import { SlClose } from "react-icons/sl";
 import { motion } from "framer-motion";
 import Link from 'next/link';
-import { SIZES_POOL, COLORS_POOL, CART_COOKIE } from '../../../consts';
+import { SIZES_POOL, COLORS_POOL, CART_COOKIE } from '@/consts';
 import Image from 'next/image';
 import Cookies from 'js-cookie';
 import { useState } from 'react';

@@ -3,7 +3,7 @@ import styles from '@/styles/components/SearchBar.module.css'
 import SearchRoundedIcon from '@mui/icons-material/SearchRounded'
 import { motion } from "framer-motion"
 import Link from 'next/link'
-import { LIMITS } from '../../consts'
+import { LIMITS } from '@/consts'
 import { showToast } from '@/utils/toasts'
 import { useTranslation } from 'next-i18next'
 

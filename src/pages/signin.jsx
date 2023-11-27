@@ -10,7 +10,7 @@ import { isStrongPassword } from '@/utils/validations'
 import { useTranslation } from 'next-i18next'
 import PasswordInput from '@/components/material-ui/PasswordInput'
 import GoogleButton from '@/components/buttons/GoogleButton'
-import { LIMITS } from '../../consts'
+import { LIMITS } from '@/consts'
 import TextInput from '@/components/material-ui/TextInput'
 import { LoadingButton } from '@mui/lab'
 
