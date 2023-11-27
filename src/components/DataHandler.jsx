@@ -451,6 +451,7 @@ export default function DataHandler(props) {
                     getInicialCart={getInicialCart}
                     setSession={setSession}
                     setUserEmailVerify={setUserEmailVerify}
+                    adminMenuOpen={adminMenuOpen}
                     setAdminMenuOpen={setAdminMenuOpen}
                 />
                 {!adminMode && showMenu &&
