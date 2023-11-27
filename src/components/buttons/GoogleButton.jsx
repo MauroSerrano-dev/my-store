@@ -1,6 +1,6 @@
 import styles from '@/styles/components/buttons/GoogleButton.module.css'
 import { signInWithPopup, GoogleAuthProvider, signInWithRedirect } from "firebase/auth"
-import { showToast } from '../../../utils/toasts'
+import { showToast } from '@/utils/toasts'
 import { FcGoogle } from 'react-icons/fc'
 import { useTranslation } from 'next-i18next'
 

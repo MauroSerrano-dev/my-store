@@ -1,5 +1,5 @@
 import { getUserProvidersByEmail } from "../../../backend/user";
-import { isTokenValid } from "../../../utils/auth";
+import { isTokenValid } from "@/utils/auth";
 
 export default async function handler(req, res) {
     const { authorization, email } = req.headers

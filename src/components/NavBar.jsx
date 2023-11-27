@@ -6,7 +6,7 @@ import FavoriteBorderRoundedIcon from '@mui/icons-material/FavoriteBorderRounded
 import AvatarMenu from './buttons-icon/AvatarMenu';
 import CartIcon from './buttons-icon/CartIcon';
 import SearchRoundedIcon from '@mui/icons-material/SearchRounded';
-import { itemsNavBar } from '../../consts';
+import { itemsNavBar } from '@/consts';
 import { motion } from "framer-motion";
 import { MenuToggle } from './MenuToggle';
 import { useTranslation } from 'next-i18next';

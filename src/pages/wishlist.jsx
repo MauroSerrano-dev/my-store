@@ -6,7 +6,7 @@ import { useEffect, useRef, useState } from 'react'
 import styles from '@/styles/pages/wishlist.module.css'
 import { useTranslation } from 'next-i18next';
 import lottie from 'lottie-web';
-import { LIMITS } from '../../consts'
+import { LIMITS } from '@/consts'
 import NoFound404 from '@/components/NoFound404'
 
 export default function Wishlist({
@@ -15,7 +15,9 @@ export default function Wishlist({
     supportsHoverAndPointer,
     userCurrency,
     windowWidth,
-    setLoading
+    setLoading,
+    router,
+    loading,
 }) {
 
     const [wishlist, setWishlist] = useState()
@@ -106,7 +108,7 @@ export default function Wishlist({
             renderer: 'svg',
             loop: true,
             autoplay: true,
-            animationData: require('../../utils/animations/animationNoOrders.json'),
+            animationData: require('@/utils/animations/animationNoOrders.json'),
         })
 
         return () => {
@@ -118,7 +120,11 @@ export default function Wishlist({
         session === undefined
             ? <div></div>
             : session === null
-                ? <NoFound404 />
+                ? <NoFound404
+                    autoRedirect
+                    router={router}
+                    loading={loading}
+                />
                 : <div className={styles.container}>
                     <div
                         className={styles.pageContainer}

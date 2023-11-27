@@ -1,7 +1,7 @@
 import ProductCart from '@/components/products/ProductCart'
 import styles from '@/styles/pages/cart.module.css'
 import { Button } from '@mui/material'
-import { CART_COOKIE, COLORS_POOL, SIZES_POOL, getShippingOptions } from '../../consts'
+import { CART_COOKIE, COLORS_POOL, SIZES_POOL, getShippingOptions } from '@/consts'
 import COUNTRIES_POOL from '../../public/locales/en/countries.json'
 import { useEffect, useState } from 'react'
 import Selector from '@/components/material-ui/Selector'
@@ -9,10 +9,10 @@ import Cookies from 'js-cookie'
 import CarouselProducts from '@/components/carousels/CarouselProducts'
 import { useTranslation } from 'next-i18next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
-import { showToast } from '../../utils/toasts'
+import { showToast } from '@/utils/toasts'
 import SelectorAutocomplete from '@/components/material-ui/SelectorAutocomplete'
 import axios from 'axios'
-import { cartItemModel } from '../../utils/models'
+import { cartItemModel } from '@/utils/models'
 import { LoadingButton } from '@mui/lab'
 
 export default function Cart(props) {

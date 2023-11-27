@@ -2,7 +2,7 @@ import { collection, doc, addDoc, getDoc, getFirestore, updateDoc, Timestamp, ge
 import { initializeApp } from 'firebase/app'
 import { firebaseConfig } from "../firebase.config"
 import { deleteCartSession, getCartSessionById } from "./cart-session";
-import { mergeProducts } from "../utils";
+import { mergeProducts } from "@/utils";
 
 initializeApp(firebaseConfig)
 

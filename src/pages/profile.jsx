@@ -2,12 +2,12 @@ import styles from '@/styles/pages/profile.module.css'
 import Head from 'next/head'
 import NoFound404 from '../components/NoFound404'
 import TagsSelector from '@/components/material-ui/TagsSelector'
-import { USER_CUSTOMIZE_HOME_PAGE } from '../../consts'
+import { USER_CUSTOMIZE_HOME_PAGE } from '@/consts'
 import LANGUAGES from '../../public/locales/en/languages.json'
 import { Button } from '@mui/material'
 import { useEffect, useState } from 'react'
-import { showToast } from '../../utils/toasts'
-import { convertTimestampToFormatDate, getObjectsDiff } from '../../utils'
+import { showToast } from '@/utils/toasts'
+import { convertTimestampToFormatDate, getObjectsDiff } from '@/utils'
 import TextInput from '@/components/material-ui/TextInput'
 import Selector from '@/components/material-ui/Selector'
 import { useTranslation } from 'next-i18next'
@@ -22,6 +22,7 @@ export default function Profile(props) {
         updateSession,
         supportsHoverAndPointer,
         router,
+        loading,
     } = props
 
     const { i18n } = useTranslation()
@@ -103,7 +104,11 @@ export default function Profile(props) {
         session === undefined || user === undefined
             ? <div></div>
             : session === null || user === null
-                ? <NoFound404 />
+                ? <NoFound404
+                    autoRedirect
+                    router={router}
+                    loading={loading}
+                />
                 : <div className={styles.container}>
                     <Head>
                     </Head>

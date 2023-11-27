@@ -1,7 +1,7 @@
 import { arrayUnion, collection, doc, addDoc, getDoc, getDocs, getFirestore, query, setDoc, updateDoc, where, deleteDoc, Timestamp } from "firebase/firestore";
 import { initializeApp } from 'firebase/app'
 import { firebaseConfig } from "../firebase.config"
-import { mergeProducts } from "../utils";
+import { mergeProducts } from "@/utils";
 
 initializeApp(firebaseConfig)
 

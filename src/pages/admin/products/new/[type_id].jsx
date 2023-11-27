@@ -3,7 +3,7 @@ import styles from '@/styles/admin/products/new/type.module.css'
 import { Button, Checkbox, Slider } from '@mui/material'
 import { useEffect, useState } from 'react'
 import { withRouter } from 'next/router'
-import { COLLECTIONS, TAGS_POOL, THEMES_POOL, PRODUCT_TYPES, COLORS_POOL, SIZES_POOL, PROVIDERS_POOL, SEARCH_ART_COLORS } from '../../../../../consts'
+import { COLLECTIONS, TAGS_POOL, THEMES_POOL, PRODUCTS_TYPES, COLORS_POOL, SIZES_POOL, PROVIDERS_POOL, SEARCH_ART_COLORS } from '@/consts'
 import ColorSelector from '@/components/ColorSelector'
 import TextInput from '@/components/material-ui/TextInput'
 import TagsSelector from '@/components/material-ui/TagsSelector'
@@ -12,14 +12,14 @@ import ButtonIcon from '@/components/material-ui/ButtonIcon'
 import SizesSelector from '@/components/SizesSelector'
 import Chain from '@/components/svgs/Chain'
 import BrokeChain from '@/components/svgs/BrokeChain'
-import { showToast } from '../../../../../utils/toasts'
+import { showToast } from '@/utils/toasts'
 import NoFound404 from '@/components/NoFound404'
 import Selector from '@/components/material-ui/Selector'
-import { isNewProductValid } from '../../../../../utils/edit-product'
+import { isNewProductValid } from '@/utils/edit-product'
 import { useTranslation } from 'next-i18next'
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
 import TextOutlinedInput from '@/components/material-ui/TextOutlinedInput'
-import { isAdmin } from '../../../../../utils/validations'
+import { isAdmin } from '@/utils/validations'
 
 const INICIAL_PRODUCT = {
     id: '',
@@ -46,7 +46,8 @@ export default withRouter(props => {
         session,
         supportsHoverAndPointer,
         auth,
-        setAdminMenuOpen
+        setAdminMenuOpen,
+        loading
     } = props
 
     const [product, setProduct] = useState(INICIAL_PRODUCT)
@@ -67,8 +68,8 @@ export default withRouter(props => {
 
     useEffect(() => {
         if (router.isReady) {
-            const type_id = router.query.type
-            const tp = PRODUCT_TYPES.find(t => t.id === type_id)
+            const { type_id } = router.query
+            const tp = PRODUCTS_TYPES.find(t => t.id === type_id)
             if (tp) {
                 setProduct(prev => (
                     {
@@ -461,7 +462,11 @@ export default withRouter(props => {
         session === undefined
             ? <div></div>
             : session === null || !isAdmin(auth)
-                ? <NoFound404 />
+                ? <NoFound404
+                    autoRedirect
+                    router={router}
+                    loading={loading}
+                />
                 : <div className={styles.container}>
                     <header>
                     </header>

@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { getAllProductPrintifyIds } from '../../../backend/product'
-import { isTokenValid } from '../../../utils/auth';
+import { isTokenValid } from '@/utils/auth';
 
 export default async function handler(req, res) {
     const { authorization } = req.headers

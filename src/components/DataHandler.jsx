@@ -5,14 +5,14 @@ import Cookies from 'js-cookie'
 import { getAuth, onAuthStateChanged, signOut, signInWithEmailAndPassword } from "firebase/auth"
 import { initializeApp } from 'firebase/app'
 import { firebaseConfig } from '../../firebase.config'
-import { CART_COOKIE } from '../../consts'
+import { CART_COOKIE } from '@/consts'
 import SearchBar from './SearchBar'
 import Menu from './Menu'
 import { motion } from 'framer-motion'
 import { v4 as uuidv4 } from 'uuid'
 import { useTranslation } from 'next-i18next'
-import { showToast } from '../../utils/toasts'
-import { isAdmin } from '../../utils/validations'
+import { showToast } from '@/utils/toasts'
+import { isAdmin } from '@/utils/validations'
 import AdminMenu from './menus/AdminMenu'
 
 const SUB_NAVBAR_HEIGHT = 40

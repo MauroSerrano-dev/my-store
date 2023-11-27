@@ -6,7 +6,7 @@ import Link from 'next/link'
 import Selector from '@/components/material-ui/Selector'
 import { Checkbox, FormControlLabel, Pagination, PaginationItem } from '@mui/material'
 import Footer from '@/components/Footer'
-import { SEARCH_PRODUCT_COLORS, SEARCH_ART_COLORS, SEARCH_FILTERS } from '../../consts'
+import { SEARCH_PRODUCT_COLORS, SEARCH_ART_COLORS, SEARCH_FILTERS } from '@/consts'
 import ColorButton from '@/components/ColorButton'
 import Tag from '@/components/material-ui/Tag'
 import CircleIcon from '@mui/icons-material/Circle';
@@ -215,7 +215,7 @@ export default withRouter(props => {
                 renderer: 'svg',
                 loop: true,
                 autoplay: true,
-                animationData: require('../../utils/animations/animationNoProducts.json'),
+                animationData: require('@/utils/animations/animationNoProducts.json'),
             })
         }
 

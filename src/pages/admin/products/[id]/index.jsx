@@ -1,21 +1,15 @@
-import styles from '@/styles/admin/index.module.css'
-import NoFound404 from '../../components/NoFound404';
+import styles from '@/styles/admin/products/index.module.css'
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
+import NoFound404 from '@/components/NoFound404';
 import { isAdmin } from '@/utils/validations';
-import { useEffect } from 'react';
 
-export default function Admin(props) {
+export default function ProductsId(props) {
     const {
         session,
         auth,
-        setAdminMenuOpen,
         router,
         loading
     } = props
-
-    useEffect(() => {
-        setAdminMenuOpen(true)
-    }, [])
 
     return (
         session === undefined

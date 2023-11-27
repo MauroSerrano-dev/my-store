@@ -3,13 +3,13 @@ import { useEffect, useState, useRef } from 'react'
 import { Button, Skeleton } from '@mui/material'
 import Link from 'next/link'
 import { motion } from "framer-motion"
-import { COLORS_POOL, PRODUCT_TYPES, LIMITS } from '../../../consts'
+import { COLORS_POOL, PRODUCTS_TYPES, LIMITS } from '@/consts'
 import ColorButton from '../ColorButton'
 import Image from 'next/image'
 import { useTranslation } from 'next-i18next'
 import HeartButton from '../buttons-icon/HeartButton'
 import CloseRoundedIcon from '@mui/icons-material/CloseRounded'
-import { showToast } from '../../../utils/toasts'
+import { showToast } from '@/utils/toasts'
 
 /**
  * @param {object} props - Component props.
@@ -309,14 +309,14 @@ export default function Product(props) {
                             top: width < 150 ? '-10%' : '-8.5%',
                             backgroundColor: product.promotion
                                 ? 'var(--sold-out-bg)'
-                                : PRODUCT_TYPES.find(type => type.id === product.type_id).color || 'var(--primary)',
+                                : PRODUCTS_TYPES.find(type => type.id === product.type_id).color || 'var(--primary)',
                         }}
                     >
                         <p>
                             {
                                 product.promotion
-                                    ? tCommon(PRODUCT_TYPES.find(type => type.id === product.type_id).id) + ' ' + Math.round(100 * product.promotion.percentage) + '% OFF'
-                                    : tCommon(PRODUCT_TYPES.find(type => type.id === product.type_id).id)
+                                    ? tCommon(PRODUCTS_TYPES.find(type => type.id === product.type_id).id) + ' ' + Math.round(100 * product.promotion.percentage) + '% OFF'
+                                    : tCommon(PRODUCTS_TYPES.find(type => type.id === product.type_id).id)
                             }
                         </p>
                     </div>

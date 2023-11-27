@@ -5,9 +5,9 @@ import CloseRoundedIcon from '@mui/icons-material/CloseRounded'
 import CheckRoundedIcon from '@mui/icons-material/CheckRounded';
 import styles from '@/styles/components/material-ui/PasswordInput.module.css'
 import { motion } from 'framer-motion'
-import { showToast } from '../../../utils/toasts';
+import { showToast } from '@/utils/toasts';
 import { useTranslation } from 'next-i18next'
-import { LIMITS } from '../../../consts';
+import { LIMITS } from '@/consts';
 
 export default function PasswordInput(props) {
     const {

@@ -1,4 +1,4 @@
-import { isTokenValid } from "../../../utils/auth";
+import { isTokenValid } from "@/utils/auth";
 import { createNewUserWithCredentials, updateUser } from "../../../backend/user"
 
 export default async function handler(req, res) {

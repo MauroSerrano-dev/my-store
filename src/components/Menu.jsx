@@ -6,7 +6,7 @@ import Link from 'next/link';
 import { IoIosArrowForward, IoIosArrowBack } from "react-icons/io";
 import { useState } from 'react';
 import { motion } from "framer-motion";
-import { MENU_FORWARD_OPTIONS, MENU_OPTIONS } from '../../consts';
+import { MENU_FORWARD_OPTIONS, MENU_OPTIONS } from '@/consts';
 import { useTranslation } from 'next-i18next';
 
 export default function Menu(props) {

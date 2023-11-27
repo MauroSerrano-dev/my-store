@@ -13,6 +13,7 @@ import ShoppingBagOutlinedIcon from '@mui/icons-material/ShoppingBagOutlined'
 import { Button } from '@mui/material'
 import { useTranslation } from 'next-i18next'
 import { motion } from 'framer-motion'
+import { isAdmin } from '@/utils/validations'
 
 export default function AvatarMenu(props) {
   const {
@@ -165,7 +166,7 @@ export default function AvatarMenu(props) {
                   {tNavbar('Support')}
                 </MenuItem>
               </Link>
-              {auth?.currentUser && process.env.NEXT_PUBLIC_AUTHORIZED_EMAILS.includes(auth.currentUser.email) &&
+              {isAdmin(auth) &&
                 <Link
                   href={'/admin'}
                   className='noUnderline'

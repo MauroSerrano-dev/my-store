@@ -3,7 +3,7 @@ import { motion } from "framer-motion";
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
 import { SlClose } from "react-icons/sl";
-import { PRODUCT_TYPES, SEARCH_PRODUCT_COLORS, SEARCH_ART_COLORS, SEARCH_FILTERS } from '../../consts';
+import { PRODUCTS_TYPES, SEARCH_PRODUCT_COLORS, SEARCH_ART_COLORS, SEARCH_FILTERS } from '@/consts';
 import ColorButton from './ColorButton';
 
 export default function MenuFilter(props) {
@@ -121,7 +121,7 @@ export default function MenuFilter(props) {
                     <div className={styles.section}>
                         <h3>Products</h3>
                         <div className={styles.options}>
-                            {PRODUCT_TYPES.map((type, i) =>
+                            {PRODUCTS_TYPES.map((type, i) =>
                                 <button
                                     className={styles.option}
                                     style={{

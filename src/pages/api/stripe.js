@@ -1,5 +1,5 @@
-import { isTokenValid } from "../../../utils/auth";
-import { STEPS } from "../../../consts";
+import { isTokenValid } from "@/utils/auth";
+import { STEPS } from "@/consts";
 import axios from 'axios'
 
 const Stripe = require("stripe");

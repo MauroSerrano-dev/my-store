@@ -3,7 +3,7 @@ import TextInput from '@/components/material-ui/TextInput';
 import styles from '@/styles/admin/products/edit/id.module.css'
 import { withRouter } from 'next/router'
 import { useEffect, useState } from 'react';
-import { COLLECTIONS, TAGS_POOL, PRODUCT_TYPES, COLORS_POOL, SIZES_POOL, PROVIDERS_POOL, THEMES_POOL, SEARCH_ART_COLORS } from '../../../../../consts';
+import { COLLECTIONS, TAGS_POOL, PRODUCTS_TYPES, COLORS_POOL, SIZES_POOL, PROVIDERS_POOL, THEMES_POOL, SEARCH_ART_COLORS } from '@/consts';
 import ColorSelector from '@/components/ColorSelector';
 import SizesSelector from '@/components/SizesSelector';
 import { Button, Checkbox, Slider } from '@mui/material';
@@ -13,13 +13,13 @@ import Chain from '@/components/svgs/Chain';
 import BrokeChain from '@/components/svgs/BrokeChain';
 import ButtonIcon from '@/components/material-ui/ButtonIcon';
 import ImagesSlider from '@/components/ImagesSlider';
-import { showToast } from '../../../../../utils/toasts';
-import { getObjectsDiff } from '../../../../../utils';
+import { showToast } from '@/utils/toasts';
+import { getObjectsDiff } from '@/utils';
 import Head from 'next/head';
 import Selector from '@/components/material-ui/Selector';
-import { isNewProductValid } from '../../../../../utils/edit-product';
+import { isNewProductValid } from '@/utils/edit-product';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
-import { isAdmin } from '../../../../../utils/validations';
+import { isAdmin } from '@/utils/validations';
 import { useTranslation } from 'next-i18next'
 
 export default withRouter(props => {
@@ -30,6 +30,7 @@ export default withRouter(props => {
         session,
         auth,
         setAdminMenuOpen,
+        loading,
     } = props;
 
     const [product, setProduct] = useState()
@@ -45,7 +46,7 @@ export default withRouter(props => {
 
     const tCommon = useTranslation('common').t
 
-    const TYPE = PRODUCT_TYPES.find(type => type.id === product?.type_id)
+    const TYPE = PRODUCTS_TYPES.find(type => type.id === product?.type_id)
     const COLORS = product?.colors_ids.map(cl_id => COLORS_POOL[cl_id])
     const SIZES = product?.sizes_ids.map(sz_id => SIZES_POOL.find(size => size.id === sz_id))
 
@@ -467,7 +468,11 @@ export default withRouter(props => {
         session === undefined
             ? <div></div>
             : session === null || !isAdmin(auth)
-                ? <NoFound404 />
+                ? <NoFound404
+                    autoRedirect
+                    router={router}
+                    loading={loading}
+                />
                 : <div className={styles.container}>
                     <Head>
                     </Head>

@@ -2,7 +2,7 @@ import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
 import { applyActionCode } from 'firebase/auth';
 import { useEffect, useState } from 'react';
 import { CircularProgress } from '@mui/material';
-import { showToast } from '../../utils/toasts';
+import { showToast } from '@/utils/toasts';
 
 export default function EmailVerification(props) {
     const {

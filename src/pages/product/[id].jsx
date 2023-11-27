@@ -5,7 +5,7 @@ import ImagesSlider from '@/components/ImagesSlider'
 import { Button } from '@mui/material'
 import ShoppingCartOutlinedIcon from '@mui/icons-material/ShoppingCartOutlined'
 import CreditCardOutlinedIcon from '@mui/icons-material/CreditCardOutlined'
-import { CART_COOKIE, CART_MAX_ITEMS, COLORS_POOL, SIZES_POOL, LIMITS, getShippingOptions } from '../../../consts'
+import { CART_COOKIE, CART_MAX_ITEMS, COLORS_POOL, SIZES_POOL, LIMITS, getShippingOptions } from '@/consts'
 import Head from 'next/head'
 import ColorSelector from '@/components/ColorSelector'
 import SizesSelector from '@/components/SizesSelector'
@@ -15,9 +15,9 @@ import NoFound404 from '../../components/NoFound404'
 import Cookies from 'js-cookie'
 import { useTranslation } from 'next-i18next'
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
-import { showToast } from '../../../utils/toasts'
+import { showToast } from '@/utils/toasts'
 import HeartButton from '@/components/buttons-icon/HeartButton'
-import { cartItemModel } from '../../../utils/models'
+import { cartItemModel } from '@/utils/models'
 import SelectorAutocomplete from '@/components/material-ui/SelectorAutocomplete'
 import COUNTRIES_POOL from '../../../public/locales/en/countries.json'
 
@@ -39,6 +39,7 @@ export default withRouter(props => {
         setLoading,
         setSession,
         location,
+        loading
     } = props
 
     const tToasts = useTranslation('toasts').t
@@ -413,13 +414,14 @@ export default withRouter(props => {
                     </section>
                 </div>
             </div>
-            : <NoFound404 message='Product not found!' />
+            : <NoFound404
+                message='Product not found!'
+                autoRedirect
+                router={router}
+                loading={loading}
+            />
     )
 })
-//está rápido sem isso
-/* export const config = {
-    runtime: 'experimental-edge'
-} */
 
 export async function getServerSideProps({ query, locale, resolvedUrl }) {
     const { id, cl, sz } = query

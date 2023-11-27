@@ -15,7 +15,7 @@ import { getAuth, createUserWithEmailAndPassword, sendEmailVerification, fetchSi
 import { firebaseConfig } from "../firebase.config"
 import { createCart } from "./cart"
 import { getCartSessionById, deleteCartSession } from "./cart-session"
-import { DEFAULT_PRODUCTS_TAGS } from "../consts"
+import { DEFAULT_PRODUCTS_TAGS } from "@/consts"
 import { createWishlist } from "./wishlists"
 const { v4: uuidv4 } = require('uuid')
 
@@ -101,7 +101,7 @@ async function createNewUserWithCredentials(user) {
         await setDoc(newUserRef, newUser)
 
         // Envie o e-mail de verificação
-        sendEmailVerification(authenticatedUser, {
+        /* sendEmailVerification(authenticatedUser, {
             url: process.env.NEXT_PUBLIC_URL.concat('/email-verification'),
             handleCodeInApp: true,
         })
@@ -110,7 +110,7 @@ async function createNewUserWithCredentials(user) {
             })
             .catch((error) => {
                 console.error("Error sending verification email:", error);
-            })
+            }) */
 
         return newUserRef.id
     } catch (error) {
