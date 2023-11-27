@@ -14,7 +14,7 @@ import BrokeChain from '@/components/svgs/BrokeChain';
 import ButtonIcon from '@/components/material-ui/ButtonIcon';
 import ImagesSlider from '@/components/ImagesSlider';
 import { showToast } from '@/utils/toasts';
-import { getObjectsDiff } from '../@/utils';
+import { getObjectsDiff } from '@/utils';
 import Head from 'next/head';
 import Selector from '@/components/material-ui/Selector';
 import { isNewProductValid } from '@/utils/edit-product';
