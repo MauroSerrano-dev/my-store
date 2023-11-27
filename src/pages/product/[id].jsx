@@ -423,7 +423,7 @@ export default withRouter(props => {
     )
 })
 
-export async function getServerSideProps({ query, locale, resolvedUrl }) {
+export async function getServerSideProps({ query, locale, resolvedUrl, req }) {
     const { id, cl, sz } = query
 
     const options = {

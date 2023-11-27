@@ -7,7 +7,7 @@
     flex-direction: column;
     background-color: var(--primary);
     height: 100%;
-    width: 210px;
+    width: var(--admin-menu-width);
 
     z-index: 10;
 

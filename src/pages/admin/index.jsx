@@ -10,7 +10,9 @@ export default function Admin(props) {
         auth,
         setAdminMenuOpen,
         router,
-        loading
+        loading,
+        total_products,
+        adminMenuOpen,
     } = props
 
     useEffect(() => {
@@ -26,17 +28,38 @@ export default function Admin(props) {
                     router={router}
                     loading={loading}
                 />
-                : <div className={styles.container}>
+                : <div
+                    className={styles.container}
+                    style={{
+                        paddingRight: adminMenuOpen ? '0rem' : '2rem',
+                        paddingLeft: adminMenuOpen ? 'calc(var(--admin-menu-width) + 2rem)' : '2rem',
+                        transition: 'padding-left ease 300ms',
+                    }}
+                >
                     <header>
                     </header>
                     <main className={styles.main}>
+                        <p>Total Products: {total_products}</p>
                     </main>
                 </div>
     )
 }
-export async function getServerSideProps({ locale }) {
+export async function getServerSideProps({ locale, req }) {
+
+    const options = {
+        method: 'GET',
+        headers: {
+            authorization: process.env.NEXT_PUBLIC_APP_TOKEN
+        },
+    }
+    const products = await fetch(`${process.env.NEXT_PUBLIC_URL}/api/products/all-products`, options)
+        .then(response => response.json())
+        .then(response => response.products)
+        .catch(err => console.error(err))
+
     return {
         props: {
+            total_products: products.length,
             ...(await serverSideTranslations(locale, ['common', 'navbar', 'menu', 'toasts']))
         }
     }

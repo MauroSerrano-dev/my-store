@@ -11,7 +11,8 @@ export default function Products(props) {
         session,
         auth,
         router,
-        loading
+        loading,
+        adminMenuOpen
     } = props
 
     const tCommon = useTranslation('common').t
@@ -25,7 +26,14 @@ export default function Products(props) {
                     router={router}
                     loading={loading}
                 />
-                : <div className={styles.container}>
+                : <div
+                    className={styles.container}
+                    style={{
+                        paddingRight: adminMenuOpen ? '0rem' : '3rem',
+                        paddingLeft: adminMenuOpen ? '18rem' : '3rem',
+                        transition: 'padding-left ease 300ms',
+                    }}
+                >
                     <header>
                     </header>
                     <main className={styles.main}>
