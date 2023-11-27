@@ -1,3 +1,8 @@
+import { IoShirt } from "react-icons/io5"
+import { GiHoodie } from "react-icons/gi";
+import { PiTShirtFill } from "react-icons/pi";
+import { ImMug } from "react-icons/im";
+
 export const CART_COOKIE = 'CART'
 
 export const CART_MAX_ITEMS = 10
@@ -214,7 +219,7 @@ export const POPULARITY_POINTS = {
     'purchase': 100,
 }
 
-export const PRODUCT_TYPES = [
+export const PRODUCTS_TYPES = [
     {
         id: 't-shirt',
         family_id: 't-shirts',
@@ -226,8 +231,9 @@ export const PRODUCT_TYPES = [
             87: 145,
             72: 145,
         },
-        colors: [521, 418, 358, 362, 364, 369, 392, 424, 425, 511, 423],
+        icon: IoShirt,
         sizes: [14, 15, 16, 17, 18],
+        colors: [521, 418, 358, 362, 364, 369, 392, 424, 425, 511, 423],
         variants: [
             {
                 id: "black-s",
@@ -792,8 +798,9 @@ export const PRODUCT_TYPES = [
             26: 77,
             72: 77,
         },
-        colors: [521, 418, 358, 395, 364, 369, 367, 392, 425, 511, 423],
+        icon: GiHoodie,
         sizes: [14, 15, 16, 17, 18],
+        colors: [521, 418, 358, 395, 364, 369, 367, 392, 425, 511, 423],
         variants: [
             {
                 id: "charcoal-s",
@@ -1458,8 +1465,9 @@ export const PRODUCT_TYPES = [
             27: 79,
             6: 79,
         },
-        colors: [1535, 1062, 1792, 1536, 1058, 1795, 1750],
+        icon: PiTShirtFill,
         sizes: [14, 15, 16, 17, 18],
+        colors: [1535, 1062, 1792, 1536, 1058, 1795, 1750],
         variants: [
             {
                 id: "royal-white-s",
@@ -1822,6 +1830,7 @@ export const PRODUCT_TYPES = [
             1: 1020,
             87: 68,
         },
+        icon: ImMug,
         sizes: [1189],
         colors: [2620],
         variants: [
@@ -1850,6 +1859,7 @@ export const PRODUCT_TYPES = [
             28: 635,
             87: 1019,
         },
+        icon: ImMug,
         sizes: [1189],
         colors: [2621, 2662, 2663, 2665],
         variants: [

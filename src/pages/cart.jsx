@@ -50,7 +50,6 @@ export default function Cart(props) {
 
     useEffect(() => {
         getShippingValue()
-        dasda
     }, [cart, shippingCountry])
 
     useEffect(() => {

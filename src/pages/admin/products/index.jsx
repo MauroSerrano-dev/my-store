@@ -6,6 +6,8 @@ import Link from 'next/link'
 import NoFound404 from '../../../components/NoFound404';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { isAdmin } from '../../../../utils/validations';
+import { PRODUCTS_TYPES } from '../../../../consts';
+import { useTranslation } from 'next-i18next'
 
 export default function Products(props) {
     const {
@@ -14,6 +16,8 @@ export default function Products(props) {
         router,
         loading
     } = props
+
+    const tCommon = useTranslation('common').t
 
     return (
         session === undefined
@@ -73,6 +77,22 @@ export default function Products(props) {
                                     </Link>
                                 </div>
                             </div>
+                        </div>
+                        <div className={styles.options}>
+                            {PRODUCTS_TYPES.map((type, i) =>
+                                <Link
+                                    className={`${styles.option} noUnderline`}
+                                    key={i}
+                                    href={`/admin/products/${type.id}`}
+                                >
+                                    <type.icon
+                                        className={styles.optionIcon}
+                                    />
+                                    <p>
+                                        {tCommon(type.family_id).concat(type.family_id === 'mugs-c' ? '-C' : '')}
+                                    </p>
+                                </Link>
+                            )}
                         </div>
                     </main>
                 </div>

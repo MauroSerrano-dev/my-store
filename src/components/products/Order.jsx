@@ -5,7 +5,7 @@ import Image from 'next/image';
 import { Button, Step, StepLabel, Stepper } from '@mui/material';
 import styled from '@emotion/styled';
 import StepConnector, { stepConnectorClasses } from '@mui/material/StepConnector';
-import { PRODUCT_TYPES, SIZES_POOL, COLORS_POOL, STEPS_ATTEMPT, STEPS } from '../../../consts';
+import { PRODUCTS_TYPES, SIZES_POOL, COLORS_POOL, STEPS_ATTEMPT, STEPS } from '../../../consts';
 import { useTranslation } from 'next-i18next'
 import { convertTimestampToFormatDate } from '../../../utils';
 
@@ -203,7 +203,7 @@ export default function Order(props) {
                                             fontWeight: 600
                                         }}
                                     >
-                                        {product.title} ({PRODUCT_TYPES.find(type => type.id === product.type_id).title})
+                                        {product.title} ({PRODUCTS_TYPES.find(type => type.id === product.type_id).title})
                                     </Link>
                                     {product.status === 'canceled' &&
                                         <p
