@@ -56,9 +56,8 @@ export default function DataHandler(props) {
     }, [session])
 
     useEffect(() => {
-        if (cart !== undefined) {
+        if (cart !== undefined)
             setLoading(false)
-        }
     }, [cart])
 
     function switchMenu() {

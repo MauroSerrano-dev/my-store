@@ -37,6 +37,7 @@ export default function Products(props) {
                     <header>
                     </header>
                     <main className={styles.main}>
+                        <h2>Products Types</h2>
                         <div className={styles.options}>
                             {PRODUCTS_TYPES.map((type, i) =>
                                 <Link

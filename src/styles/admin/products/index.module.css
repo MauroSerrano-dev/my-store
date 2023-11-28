@@ -1,6 +1,7 @@
 .container {
     width: 100%;
     padding-top: 2rem;
+    --text-color: var(--global-white);
 }
 
 .main {
@@ -9,6 +10,8 @@
     justify-content: center;
     align-items: center;
     width: 100%;
+
+    gap: 0.5rem;
 }
 
 .options {
@@ -17,8 +20,8 @@
 }
 
 .option {
-    outline: 2px white solid;
-    border-radius: 1rem;
+    outline: 2px solid white;
+    border-radius: 0.5rem;
 
     height: 200px;
     width: 200px;
@@ -26,8 +29,12 @@
     padding: 2rem;
 
     font-weight: 600;
-    --text-color: white;
+
     color: white;
+    transition: all ease-in-out 200ms;
+}
+.option p{
+    transition: all ease-in-out 200ms;
 }
 
 .optionIcon {
@@ -36,7 +43,14 @@
 }
 
 /* Enable hover only on non-touch devices */
-@media (hover: hover) and (pointer: fine) {}
+@media (hover: hover) and (pointer: fine) {
+    .option:hover {
+        outline: 2px solid var(--primary);
+        background-color: rgba(var(--primary-rgb), 0.2);
+        color: var(--primary);
+        --text-color: var(--primary);
+    }
+}
 
 /* Mobile */
 @media (max-width: 700px) {}
