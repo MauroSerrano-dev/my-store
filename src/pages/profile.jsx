@@ -39,6 +39,7 @@ export default function Profile(props) {
     const [disableSaveButton, setDisableSaveButton] = useState(true)
 
     useEffect(() => {
+        console.log('cerveja', session, user)
         if (session)
             setUser({ ...session })
         else if (session === null)

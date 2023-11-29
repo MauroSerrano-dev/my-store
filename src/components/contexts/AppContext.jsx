@@ -177,7 +177,6 @@ export function AppProvider({ children }) {
                 cart_cookie_id: Cookies.get(CART_COOKIE),
             })
         }
-
         fetch("/api/user-session", options)
             .then(response => response.json())
             .then(response => setSession(response))
@@ -279,9 +278,9 @@ export function AppProvider({ children }) {
 
     function updateSession() {
         onAuthStateChanged(auth, (authUser) => {
-            setIsUser(true)
             setAuthValidated(true)
             if (authUser) {
+                setIsUser(true)
                 setUserEmailVerify(authUser.emailVerified)
                 handleLogin(authUser)
             }
