@@ -10,18 +10,12 @@ import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
 import CarouselProducts from '@/components/carousels/CarouselProducts'
 import Footer from '@/components/Footer'
 import lottie from 'lottie-web';
+import { useAppContext } from '@/components/contexts/AppContext';
 
-export default function Orders(props) {
+export default function Orders() {
     const {
         session,
-        supportsHoverAndPointer,
-        currencies,
-        windowWidth,
-        userCurrency,
-        setSession,
-        router,
-        loading
-    } = props
+    } = useAppContext()
 
     const tOrders = useTranslation('orders').t
 
@@ -111,11 +105,7 @@ export default function Orders(props) {
         session === undefined
             ? <div></div>
             : session === null
-                ? <NoFound404
-                    autoRedirect
-                    router={router}
-                    loading={loading}
-                />
+                ? <NoFound404 />
                 : <div className={styles.container}>
                     <main className={styles.main}>
                         {orders
@@ -132,7 +122,6 @@ export default function Orders(props) {
                                         options={datesRange}
                                         width='100px'
                                         onChange={handleSelectYear}
-                                        supportsHoverAndPointer={supportsHoverAndPointer}
                                         style={{
                                             height: 27,
                                             fontSize: 14,
@@ -160,7 +149,6 @@ export default function Orders(props) {
                                                 order={order}
                                                 key={i}
                                                 index={i}
-                                                currencies={currencies}
                                             />
                                         )}
                                     </div>
@@ -224,11 +212,6 @@ export default function Orders(props) {
                             <div className='fillWidth'>
                                 <CarouselProducts
                                     products={allProducts}
-                                    userCurrency={userCurrency}
-                                    supportsHoverAndPointer={supportsHoverAndPointer}
-                                    windowWidth={windowWidth}
-                                    session={session}
-                                    setSession={setSession}
                                 />
                             </div>
                         </div>

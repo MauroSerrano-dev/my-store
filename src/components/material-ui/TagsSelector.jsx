@@ -27,7 +27,6 @@ export default function TagsSelector(props) {
         options = [],
         name,
         value,
-        supportsHoverAndPointer,
     } = props
 
     return (
@@ -62,7 +61,6 @@ export default function TagsSelector(props) {
             }}
             renderInput={params => (
                 <TextInput
-                    supportsHoverAndPointer={supportsHoverAndPointer}
                     style={style}
                     params={params}
                     label={label}

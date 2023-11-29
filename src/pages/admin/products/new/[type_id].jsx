@@ -20,6 +20,7 @@ import { useTranslation } from 'next-i18next'
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
 import TextOutlinedInput from '@/components/material-ui/TextOutlinedInput'
 import { isAdmin } from '@/utils/validations'
+import { useAppContext } from '@/components/contexts/AppContext'
 
 const INICIAL_PRODUCT = {
     id: '',
@@ -42,13 +43,14 @@ const INICIAL_PRODUCT = {
 export default withRouter(props => {
 
     const {
+        setAdminMenuOpen,
+    } = props
+
+    const {
+        auth,
         router,
         session,
-        supportsHoverAndPointer,
-        auth,
-        setAdminMenuOpen,
-        loading
-    } = props
+    } = useAppContext()
 
     const [product, setProduct] = useState(INICIAL_PRODUCT)
     const [colorIndex, setColorIndex] = useState(0)
@@ -462,11 +464,7 @@ export default withRouter(props => {
         session === undefined
             ? <div></div>
             : session === null || !isAdmin(auth)
-                ? <NoFound404
-                    autoRedirect
-                    router={router}
-                    loading={loading}
-                />
+                ? <NoFound404 />
                 : <div className={styles.container}>
                     <header>
                     </header>
@@ -477,7 +475,6 @@ export default withRouter(props => {
                                     <div className='flex center fillWidth'>
                                         <TextOutlinedInput
                                             colorText='var(--color-success)'
-                                            supportsHoverAndPointer={supportsHoverAndPointer}
                                             label='ID'
                                             value={product.id}
                                             onChange={handleChangeId}
@@ -496,7 +493,6 @@ export default withRouter(props => {
                                     <div className={styles.sectionLeft}>
                                         <TextInput
                                             colorText='var(--color-success)'
-                                            supportsHoverAndPointer={supportsHoverAndPointer}
                                             label='Title'
                                             value={product.title}
                                             onChange={event => updateProductField('title', event.target.value)}
@@ -506,7 +502,6 @@ export default withRouter(props => {
                                         />
                                         <TextInput
                                             colorText='var(--color-success)'
-                                            supportsHoverAndPointer={supportsHoverAndPointer}
                                             label='Description'
                                             value={product.description}
                                             onChange={event => updateProductField('description', event.target.value)}
@@ -523,10 +518,8 @@ export default withRouter(props => {
                                                 color: 'var(--color-success)'
                                             }}
                                             onChange={event => updateProductField('collection_id', event.target.value)}
-                                            supportsHoverAndPointer={supportsHoverAndPointer}
                                         />
                                         <TagsSelector
-                                            supportsHoverAndPointer={supportsHoverAndPointer}
                                             options={THEMES_POOL.map(theme => theme.id)}
                                             label='Themes'
                                             value={product.themes}
@@ -541,7 +534,6 @@ export default withRouter(props => {
                                             <TextInput
                                                 key={i}
                                                 colorText='var(--color-success)'
-                                                supportsHoverAndPointer={supportsHoverAndPointer}
                                                 label={`${provider.title} Printify ID`}
                                                 onChange={event => handlePrintifyId(provider.id, event.target.value)}
                                                 value={product.printify_ids[provider.id]}
@@ -551,7 +543,6 @@ export default withRouter(props => {
                                             />
                                         )}
                                         <TagsSelector
-                                            supportsHoverAndPointer={supportsHoverAndPointer}
                                             options={TAGS_POOL}
                                             label='Tags'
                                             value={product.tags}
@@ -570,7 +561,6 @@ export default withRouter(props => {
                                         value={product.colors}
                                         options={type.colors.map(cl_id => COLORS_POOL[cl_id])}
                                         onChange={handleChangeColors}
-                                        supportsHoverAndPointer={supportsHoverAndPointer}
                                         style={{
                                             paddingLeft: '50px',
                                             paddingRight: '50px',
@@ -593,7 +583,6 @@ export default withRouter(props => {
                                                     value={[product.colors[colorIndex]]}
                                                     options={product.colors}
                                                     onChange={handleSelectedColor}
-                                                    supportsHoverAndPointer={supportsHoverAndPointer}
                                                     style={{
                                                         paddingBottom: '1rem',
                                                     }}
@@ -633,7 +622,6 @@ export default withRouter(props => {
                                                                     >
                                                                         <TextInput
                                                                             colorText='var(--color-success)'
-                                                                            supportsHoverAndPointer={supportsHoverAndPointer}
                                                                             label={`Image ${i + 1}`}
                                                                             onChange={event => updateImageField('src', event.target.value, i)}
                                                                             style={{
@@ -656,7 +644,6 @@ export default withRouter(props => {
                                                                             }}
                                                                         />
                                                                         <ButtonIcon
-                                                                            supportsHoverAndPointer={supportsHoverAndPointer}
                                                                             icon={<ClearRoundedIcon />}
                                                                             onClick={() => handleDeleteImageField(i)}
                                                                         />
@@ -705,7 +692,6 @@ export default withRouter(props => {
                                                                     </Button>
                                                                     <TextInput
                                                                         colorText='var(--color-success)'
-                                                                        supportsHoverAndPointer={supportsHoverAndPointer}
                                                                         label={`${size.title}`}
                                                                         onChange={event => handleChangePrice(event.target.value, size.id)}
                                                                         value={product.variants.find(vari => vari.size_id === size.id && vari.color_id === product.colors[colorIndex].id).price}
@@ -745,7 +731,6 @@ export default withRouter(props => {
                                                         images={Object.keys(images).reduce((acc, key) => acc.concat(images[key]), [])}
                                                         currentColor={product.colors[colorIndex]}
                                                         colors={product.colors}
-                                                        supportsHoverAndPointer={supportsHoverAndPointer}
                                                     />
                                                 </div>
                                             }
@@ -770,7 +755,6 @@ export default withRouter(props => {
                                                 value={[SEARCH_ART_COLORS.map(cl => ({ id: cl.id, colors: [cl.color_display.color], title: cl.color_display.title })).find(scl => scl.id === product.variants.find(vari => vari.color_id === product.colors[colorIndex].id).art.color_id)]}
                                                 options={SEARCH_ART_COLORS.map(cl => ({ id: cl.id, colors: [cl.color_display.color], title: cl.color_display.title }))}
                                                 onChange={handleArtColor}
-                                                supportsHoverAndPointer={supportsHoverAndPointer}
                                                 style={{
                                                     paddingBottom: '1rem',
                                                 }}
@@ -791,7 +775,6 @@ export default withRouter(props => {
                                                 <TextInput
                                                     disabled={artIdChained}
                                                     colorText='var(--color-success)'
-                                                    supportsHoverAndPointer={supportsHoverAndPointer}
                                                     label='Art ID'
                                                     value={product.variants.find(vari => vari.color_id === product.colors[colorIndex].id).art.id || ''}
                                                     onChange={handleArtId}

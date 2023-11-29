@@ -4,8 +4,8 @@
     align-items: center;
     position: relative;
 
-    height: calc(var(--bar-height) * 0.51);
-    width: calc(var(--bar-height) * 0.51);
+    height: calc(var(--navbar-height) * 0.51);
+    width: calc(var(--navbar-height) * 0.51);
     color: var(--global-white);
     border-radius: 100%;
 
@@ -15,8 +15,8 @@
 .cartCounter {
     background-color: var(--global-white);
     position: absolute;
-    width: calc(var(--bar-height) * 0.2);
-    height: calc(var(--bar-height) * 0.2);
+    width: calc(var(--navbar-height) * 0.2);
+    height: calc(var(--navbar-height) * 0.2);
     border-radius: 100%;
     top: 8%;
     right: 10%;

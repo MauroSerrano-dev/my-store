@@ -12,18 +12,20 @@ import TextInput from '@/components/material-ui/TextInput'
 import Selector from '@/components/material-ui/Selector'
 import { useTranslation } from 'next-i18next'
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
+import { useAppContext } from '@/components/contexts/AppContext'
 
 const TAGS_MIN_LIMIT = 3
 const TAGS_MAX_LIMIT = 8
 
 export default function Profile(props) {
     const {
-        session,
         updateSession,
-        supportsHoverAndPointer,
-        router,
-        loading,
     } = props
+
+    const {
+        router,
+        session,
+    } = useAppContext()
 
     const { i18n } = useTranslation()
     const tLanguages = useTranslation('languages').t
@@ -104,11 +106,7 @@ export default function Profile(props) {
         session === undefined || user === undefined
             ? <div></div>
             : session === null || user === null
-                ? <NoFound404
-                    autoRedirect
-                    router={router}
-                    loading={loading}
-                />
+                ? <NoFound404 />
                 : <div className={styles.container}>
                     <Head>
                     </Head>
@@ -124,7 +122,6 @@ export default function Profile(props) {
                                     style={{
                                         width: '100%'
                                     }}
-                                    supportsHoverAndPointer={supportsHoverAndPointer}
                                     onChange={event => handleChanges('first_name', event.target.value)}
                                 />
                                 <TextInput
@@ -133,7 +130,6 @@ export default function Profile(props) {
                                     style={{
                                         width: '100%'
                                     }}
-                                    supportsHoverAndPointer={supportsHoverAndPointer}
                                     onChange={event => handleChanges('last_name', event.target.value)}
                                 />
                                 <TextInput
@@ -142,7 +138,6 @@ export default function Profile(props) {
                                     style={{
                                         width: '100%'
                                     }}
-                                    supportsHoverAndPointer={supportsHoverAndPointer}
                                     onChange={event => handleChanges('email', event.target.value)}
                                 />
                                 <Selector
@@ -151,7 +146,6 @@ export default function Profile(props) {
                                     value={currentLanguage}
                                     onChange={handleChangeLanguageSelector}
                                     size={'medium'}
-                                    supportsHoverAndPointer={supportsHoverAndPointer}
                                 />
                                 <p className={styles.createAtDate}>{tProfile('customer_since')}: {convertTimestampToFormatDate(session.create_at, i18n.language)}</p>
                             </div>
@@ -161,7 +155,6 @@ export default function Profile(props) {
                                     <p style={{ textAlign: 'start' }}>{tProfile('customize_p_start')}<b>{tProfile('customize_p_middle', { min: TAGS_MIN_LIMIT, max: TAGS_MAX_LIMIT })}</b>{tProfile('customize_p_end')}</p>
                                     <p>{tProfile('Chosen')}: <b style={{ color: 'var(--primary)' }}>{user.home_page_tags.length}/{TAGS_MAX_LIMIT}</b></p>
                                     <TagsSelector
-                                        supportsHoverAndPointer={supportsHoverAndPointer}
                                         options={USER_CUSTOMIZE_HOME_PAGE.map(theme => theme.id)}
                                         label={tProfile('Keywords')}
                                         value={user.home_page_tags}

@@ -6,6 +6,7 @@ import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 import Chip from '@mui/material/Chip';
+import { useAppContext } from './contexts/AppContext';
 
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
@@ -20,7 +21,17 @@ const MenuProps = {
 }
 
 export default function MultiSelector(props) {
-    const { list, label, onChange, value, supportsHoverAndPointer } = props
+    const {
+        list,
+        label,
+        onChange,
+        value,
+    } = props
+
+    const {
+        supportsHoverAndPointer,
+    } = useAppContext()
+
     const [hover, setHover] = React.useState(false)
     const [focus, setFocus] = React.useState(false)
 

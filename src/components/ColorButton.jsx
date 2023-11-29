@@ -1,5 +1,6 @@
 import MyTooltip from './MyTooltip';
 import { useTranslation } from 'next-i18next'
+import { useAppContext } from './contexts/AppContext';
 
 export default function ColorButton(props) {
     const {
@@ -8,8 +9,11 @@ export default function ColorButton(props) {
         selected,
         style,
         color,
-        supportsHoverAndPointer,
     } = props
+
+    const {
+        supportsHoverAndPointer,
+    } = useAppContext()
 
     const tCommon = useTranslation('common').t
 

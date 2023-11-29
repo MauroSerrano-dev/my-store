@@ -8,18 +8,21 @@ import Selector from '../material-ui/Selector';
 import { useState } from 'react';
 import { useTranslation } from 'next-i18next';
 import Cookies from 'js-cookie';
+import { useAppContext } from '../contexts/AppContext';
 
 export default function ProductCart(props) {
     const {
         product,
-        setCart,
         index,
-        userCurrency,
-        session,
-        supportsHoverAndPointer,
-        setLoading,
         outOfStock,
     } = props
+
+    const {
+        session,
+        setLoading,
+        userCurrency,
+        setCart,
+    } = useAppContext()
 
     const { i18n } = useTranslation()
 
@@ -229,7 +232,6 @@ export default function ProductCart(props) {
                                     { value: 9, name: '9' },
                                     { value: 10, name: '10' },
                                 ]}
-                                supportsHoverAndPointer={supportsHoverAndPointer}
                             />
                         </div>
                     </div>

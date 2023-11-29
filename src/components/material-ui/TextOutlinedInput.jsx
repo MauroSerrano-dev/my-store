@@ -2,6 +2,7 @@ import { FormControl, InputAdornment, InputLabel, OutlinedInput } from '@mui/mat
 import { useState } from 'react';
 import { showToast } from '@/utils/toasts';
 import { useTranslation } from 'next-i18next'
+import { useAppContext } from '../contexts/AppContext';
 
 export default function TextOutlinedInput(props) {
     const {
@@ -12,7 +13,6 @@ export default function TextOutlinedInput(props) {
         value,
         style,
         autoComplete = 'off',
-        supportsHoverAndPointer,
         dark,
         colorBorderHover = dark ? '#000000' : '#ffffff',
         colorBorder = dark ? '#00000070' : '#ffffff90',
@@ -24,8 +24,12 @@ export default function TextOutlinedInput(props) {
         limit = 300,
         inputAdornment,
         inputAdornmentPosition = 'end',
-        size='normal',
+        size = 'normal',
     } = props
+
+    const {
+        supportsHoverAndPointer,
+    } = useAppContext()
 
     const [focus, setFocus] = useState(false)
     const [hover, setHover] = useState(false)

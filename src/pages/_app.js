@@ -1,18 +1,11 @@
 import '@/styles/globals.css'
 import Head from 'next/head'
-import { useEffect, useState } from 'react';
 import Script from 'next/script'
 import { ThemeProvider, createTheme } from '@mui/material/styles';
-import DataHandler from '@/components/DataHandler'
-import { useRouter } from 'next/router';
-import { CircularProgress } from '@mui/material';
-import { motion } from 'framer-motion';
-import Maintenance from '@/components/Maintenance';
-import { ToastContainer, Flip } from 'react-toastify'
-import 'react-toastify/dist/ReactToastify.css';
 import { Montserrat } from 'next/font/google'
 import { appWithTranslation } from 'next-i18next';
 import { Analytics } from '@vercel/analytics/react';
+import { AppProvider } from '@/components/contexts/AppContext';
 
 const montserrat = Montserrat({
   weight: 'variable',
@@ -49,49 +42,6 @@ const mainTheme = createTheme({
 
 function App(props) {
   const { Component, pageProps } = props
-
-  const [loading, setLoading] = useState(false)
-  const router = useRouter()
-  const [currencies, setCurrencies] = useState()
-
-  useEffect(() => {
-
-    handleLoading()
-
-    getCurrencies()
-
-    function handleLoading() {
-      setLoading(true)
-    }
-
-    function handleEndLoading() {
-      setLoading(false)
-    }
-
-    router.events.on("routeChangeStart", handleLoading)
-    router.events.on("routeChangeComplete", handleEndLoading)
-    router.events.on("routeChangeError", handleEndLoading)
-
-    return () => {
-      router.events.off("routeChangeStart", handleLoading)
-      router.events.off("routeChangeComplete", handleEndLoading)
-      router.events.off("routeChangeError", handleEndLoading)
-    }
-  }, [])
-
-  function getCurrencies() {
-    const options = {
-      method: 'GET',
-      headers: {
-        authorization: process.env.NEXT_PUBLIC_APP_TOKEN,
-      },
-    }
-
-    fetch("/api/app-settings/currencies", options)
-      .then(response => response.json())
-      .then(response => setCurrencies(response))
-      .catch(err => console.error(err))
-  }
 
   return (
     <div className={montserrat.className}>
@@ -134,80 +84,11 @@ function App(props) {
         }
       </Head>
       <ThemeProvider theme={mainTheme}>
-        {process.env.NEXT_PUBLIC_MAINTENANCE === 'true'
-          ? <Maintenance></Maintenance>
-          : <DataHandler
-            pageProps={pageProps}
-            Component={Component}
-            router={router}
-            loading={loading}
-            setLoading={setLoading}
-            currencies={currencies}
-          />
-        }
+        <AppProvider>
+          <Component{...pageProps} />
+        </AppProvider>
       </ThemeProvider>
       <Analytics mode={process.env.NODE_ENV} />
-      <ToastContainer
-        newestOnTop
-        transition={Flip}
-        style={{ color: 'white' }}
-        pauseOnFocusLoss={false}
-      />
-      {loading &&
-        <div>
-          <div
-            style={{
-              position: 'fixed',
-              zIndex: 9999,
-              top: 0,
-              width: '100vw',
-              height: '100vh',
-            }}>
-          </div>
-          <motion.div
-            variants={{
-              hidden: {
-                opacity: 0,
-              },
-              visible: {
-                opacity: 1,
-                transition: {
-                  duration: 0,
-                  delay: 0.2,
-                }
-              }
-            }}
-            initial='hidden'
-            animate='visible'
-            style={{
-              position: 'fixed',
-              right: '4rem',
-              bottom: '4rem',
-              zIndex: 10000,
-            }}
-          >
-            <CircularProgress
-              variant="determinate"
-              sx={{
-                position: 'absolute',
-                color: '#525252',
-              }}
-              size={40}
-              thickness={4}
-              value={100}
-            />
-            <CircularProgress
-              disableShrink
-              size={40}
-              thickness={4}
-              sx={{
-                position: 'absolute',
-                animationDuration: '750ms',
-              }}
-            />
-          </motion.div>
-        </div>
-      }
     </div>
   )
 }

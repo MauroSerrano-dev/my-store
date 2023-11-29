@@ -21,17 +21,19 @@ import { isNewProductValid } from '@/utils/edit-product';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { isAdmin } from '@/utils/validations';
 import { useTranslation } from 'next-i18next'
+import { useAppContext } from '@/components/contexts/AppContext';
 
 export default withRouter(props => {
 
     const {
-        router,
-        supportsHoverAndPointer,
-        session,
-        auth,
         setAdminMenuOpen,
-        loading,
-    } = props;
+    } = props
+
+    const {
+        auth,
+        router,
+        session,
+    } = useAppContext()
 
     const [product, setProduct] = useState()
     const [images, setImages] = useState()
@@ -468,11 +470,7 @@ export default withRouter(props => {
         session === undefined
             ? <div></div>
             : session === null || !isAdmin(auth)
-                ? <NoFound404
-                    autoRedirect
-                    router={router}
-                    loading={loading}
-                />
+                ? <NoFound404 />
                 : <div className={styles.container}>
                     <Head>
                     </Head>
@@ -489,14 +487,12 @@ export default withRouter(props => {
                                             value={product.title}
                                             onChange={event => updateProductField('title', event.target.value)}
                                             colorText={fieldChanged['title'] ? 'var(--color-success)' : 'var(--text-color)'}
-                                            supportsHoverAndPointer={supportsHoverAndPointer}
                                         />
                                         <TextInput
                                             label='Description'
                                             value={product.description}
                                             onChange={event => updateProductField('description', event.target.value)}
                                             colorText={fieldChanged['description'] ? 'var(--color-success)' : 'var(--text-color)'}
-                                            supportsHoverAndPointer={supportsHoverAndPointer}
                                         />
                                         <Selector
                                             label='Collection'
@@ -507,10 +503,8 @@ export default withRouter(props => {
                                             }}
                                             onChange={event => updateProductField('collection_id', event.target.value)}
                                             colorText={fieldChanged['collection'] ? 'var(--color-success)' : 'var(--text-color)'}
-                                            supportsHoverAndPointer={supportsHoverAndPointer}
                                         />
                                         <TagsSelector
-                                            supportsHoverAndPointer={supportsHoverAndPointer}
                                             options={THEMES_POOL.map(theme => theme.id)}
                                             label='Themes'
                                             value={product.themes}
@@ -523,7 +517,6 @@ export default withRouter(props => {
                                     <div className={styles.sectionRight}>
                                         {TYPE.providers.map(prov_id => PROVIDERS_POOL[prov_id]).map((provider, i) =>
                                             <TextInput
-                                                supportsHoverAndPointer={supportsHoverAndPointer}
                                                 key={i}
                                                 label={`${provider.title} Printify ID`}
                                                 onChange={event => handlePrintifyId(provider.id, event.target.value)}
@@ -534,7 +527,6 @@ export default withRouter(props => {
                                             />
                                         )}
                                         <TagsSelector
-                                            supportsHoverAndPointer={supportsHoverAndPointer}
                                             options={TAGS_POOL}
                                             label='Tags'
                                             value={product.tags}
@@ -555,7 +547,6 @@ export default withRouter(props => {
                                         value={COLORS}
                                         options={TYPE.colors.map(cl_id => COLORS_POOL[cl_id])}
                                         onChange={handleChangeColors}
-                                        supportsHoverAndPointer={supportsHoverAndPointer}
                                         style={{
                                             paddingLeft: '50px',
                                             paddingRight: '50px',
@@ -573,7 +564,6 @@ export default withRouter(props => {
                                                     value={[COLORS_POOL[product.colors_ids[colorIndex]]]}
                                                     options={product.colors_ids.map(cl_id => COLORS_POOL[cl_id])}
                                                     onChange={handleSelectedColor}
-                                                    supportsHoverAndPointer={supportsHoverAndPointer}
                                                     style={{
                                                         paddingTop: '1rem',
                                                         paddingBottom: '1rem',
@@ -624,7 +614,6 @@ export default withRouter(props => {
                                                                     key={i}
                                                                 >
                                                                     <TextInput
-                                                                        supportsHoverAndPointer={supportsHoverAndPointer}
                                                                         label={`Image ${i + 1}`}
                                                                         onChange={event => updateImageField('src', event.target.value, i)}
                                                                         style={{
@@ -647,7 +636,6 @@ export default withRouter(props => {
                                                                         }}
                                                                     />
                                                                     <ButtonIcon
-                                                                        supportsHoverAndPointer={supportsHoverAndPointer}
                                                                         icon={<ClearRoundedIcon />}
                                                                         onClick={() => handleDeleteImageField(i)}
                                                                     />
@@ -694,7 +682,6 @@ export default withRouter(props => {
                                                                         {sizesChained[product.colors_ids[colorIndex]].includes(size.id) ? <Chain /> : <BrokeChain />}
                                                                     </Button>
                                                                     <TextInput
-                                                                        supportsHoverAndPointer={supportsHoverAndPointer}
                                                                         label={`${size.title}`}
                                                                         onChange={event => handleChangePrice(isNaN(Number(event.target.value)) ? 0 : Math.abs(Number(event.target.value.slice(0, Math.min(event.target.value.length, 7)))), size.id)}
                                                                         value={product.variants.find(vari => vari.size_id === size.id && vari.color_id === product.colors_ids[colorIndex]).price}
@@ -733,7 +720,6 @@ export default withRouter(props => {
                                                     images={Object.keys(images).reduce((acc, key) => acc.concat(images[key]), [])}
                                                     currentColor={COLORS_POOL[product.colors_ids[colorIndex]]}
                                                     colors={COLORS}
-                                                    supportsHoverAndPointer={supportsHoverAndPointer}
                                                 />
                                             }
                                             <div className='flex row center' style={{ gap: '1rem' }}>
@@ -757,7 +743,6 @@ export default withRouter(props => {
                                                 value={[SEARCH_ART_COLORS.map(cl => ({ id: cl.id, colors: [cl.color_display.color], title: cl.color_display.title })).find(scl => scl.id === product.variants.find(vari => vari.color_id === product.colors_ids[colorIndex]).art.color_id)]}
                                                 options={SEARCH_ART_COLORS.map(cl => ({ id: cl.id, colors: [cl.color_display.color], title: cl.color_display.title }))}
                                                 onChange={handleArtColor}
-                                                supportsHoverAndPointer={supportsHoverAndPointer}
                                                 style={{
                                                     paddingBottom: '1rem',
                                                 }}
@@ -777,7 +762,6 @@ export default withRouter(props => {
                                                 </Button>
                                                 <TextInput
                                                     disabled={artIdChained}
-                                                    supportsHoverAndPointer={supportsHoverAndPointer}
                                                     label='Art ID'
                                                     value={product.variants.find(vari => vari.color_id === product.colors_ids[colorIndex]).art.id || ''}
                                                     onChange={handleArtId}

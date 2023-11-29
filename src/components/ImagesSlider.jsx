@@ -1,6 +1,7 @@
 import styles from '@/styles/components/ImagesSlider.module.css'
 import { useRef, useState } from 'react'
 import { motion } from 'framer-motion';
+import { useAppContext } from './contexts/AppContext';
 
 export default function ImagesSlider(props) {
     const {
@@ -8,10 +9,13 @@ export default function ImagesSlider(props) {
         style,
         width = 450,
         height = width * 10 / 9,
-        supportsHoverAndPointer,
         colors,
         currentColor,
     } = props
+
+    const {
+        supportsHoverAndPointer,
+    } = useAppContext()
 
     const carouselRef = useRef(null)
     const optionsRef = useRef(null)

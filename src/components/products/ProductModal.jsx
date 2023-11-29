@@ -7,15 +7,20 @@ import Image from 'next/image';
 import Cookies from 'js-cookie';
 import { useState } from 'react';
 import { useTranslation } from 'next-i18next';
+import { useAppContext } from '../contexts/AppContext';
 
 export default function ProductModal(props) {
     const {
         product,
-        setCart,
         index,
-        userCurrency,
         session,
     } = props
+
+    const {
+        setLoading,
+        userCurrency,
+        setCart,
+    } = useAppContext()
 
     const tCommon = useTranslation('common').t
 

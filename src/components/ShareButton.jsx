@@ -6,15 +6,19 @@ import IosShareRoundedIcon from '@mui/icons-material/IosShareRounded';
 import { BsWhatsapp } from "react-icons/bs";
 import { MdOutlineContentCopy } from "react-icons/md";
 import { ImFacebook2 } from "react-icons/im";
+import { useAppContext } from './contexts/AppContext';
 
 export default function ShareButton(props) {
     const {
         link,
         wppMsg,
         style,
-        mobile,
-        supportsHoverAndPointer
     } = props
+
+    const {
+        mobile,
+        supportsHoverAndPointer,
+    } = useAppContext()
 
     const link_replace = link.replaceAll('+', '%2B').replaceAll('&', '%26')
 

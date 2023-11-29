@@ -5,6 +5,7 @@ import { useEffect, useState } from 'react';
 import { SlClose } from "react-icons/sl";
 import { PRODUCTS_TYPES, SEARCH_PRODUCT_COLORS, SEARCH_ART_COLORS, SEARCH_FILTERS } from '@/consts';
 import ColorButton from './ColorButton';
+import { useAppContext } from './contexts/AppContext';
 
 export default function MenuFilter(props) {
     const {
@@ -12,11 +13,13 @@ export default function MenuFilter(props) {
         open = false,
         onClose,
         getQueries,
-        router,
         handleMultiSelection,
         handleThemesSelect,
-        supportsHoverAndPointer,
     } = props
+
+    const {
+        router,
+    } = useAppContext()
 
     const {
         s,
@@ -31,7 +34,7 @@ export default function MenuFilter(props) {
         v,
         p = '1',
         limit = '60',
-    } = props.router.query
+    } = router
 
     const [searchFocus, setSearchFocus] = useState(false)
 
@@ -186,7 +189,6 @@ export default function MenuFilter(props) {
                                     <ColorButton
                                         selected={cl === color.color_display.id_string}
                                         color={{ title: color.color_display.title, colors: [color.color_display.color] }}
-                                        supportsHoverAndPointer={supportsHoverAndPointer}
                                     />
                                 </Link>
                             )}
@@ -209,7 +211,6 @@ export default function MenuFilter(props) {
                                     <ColorButton
                                         selected={ac === color.color_display.id_string}
                                         color={{ title: color.color_display.title, colors: [color.color_display.color] }}
-                                        supportsHoverAndPointer={supportsHoverAndPointer}
                                     />
                                 </Link>
                             )}

@@ -11,7 +11,7 @@
 
     z-index: 10;
 
-    padding-top: var(--bar-height);
+    padding-top: var(--navbar-height);
     border-right: 2px solid rgba(255, 255, 255, 0.9);
 }
 
@@ -67,7 +67,7 @@
     width: 30px;
     position: absolute;
     right: -30px;
-    top: calc(var(--bar-height) + 25px);
+    top: calc(var(--navbar-height) + 25px);
     border: none;
     outline: none;
     border-top-right-radius: 5px;

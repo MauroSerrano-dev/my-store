@@ -8,13 +8,17 @@ import StepConnector, { stepConnectorClasses } from '@mui/material/StepConnector
 import { PRODUCTS_TYPES, SIZES_POOL, COLORS_POOL, STEPS_ATTEMPT, STEPS } from '@/consts';
 import { useTranslation } from 'next-i18next'
 import { convertTimestampToFormatDate } from '@/utils';
+import { useAppContext } from '../contexts/AppContext';
 
 export default function Order(props) {
     const {
         order,
         index,
-        currencies,
     } = props
+
+    const {
+        currencies,
+    } = useAppContext()
 
     const { i18n } = useTranslation()
 

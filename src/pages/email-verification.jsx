@@ -3,14 +3,18 @@ import { applyActionCode } from 'firebase/auth';
 import { useEffect, useState } from 'react';
 import { CircularProgress } from '@mui/material';
 import { showToast } from '@/utils/toasts';
+import { useAppContext } from '@/components/contexts/AppContext';
 
 export default function EmailVerification(props) {
     const {
+        setUserEmailVerify,
+    } = props
+
+    const {
+        auth,
         router,
         session,
-        setUserEmailVerify,
-        auth
-    } = props
+    } = useAppContext()
 
     const [showSpinner, setShowSpinner] = useState(false)
 

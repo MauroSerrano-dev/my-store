@@ -10,17 +10,12 @@ import { itemsNavBar } from '@/consts';
 import { motion } from "framer-motion";
 import { MenuToggle } from './MenuToggle';
 import { useTranslation } from 'next-i18next';
+import { useAppContext } from './contexts/AppContext';
 
 export default function NavBar(props) {
     const {
-        session,
-        logout,
-        cart,
-        setCart,
         isScrollAtTop,
         setIsScrollAtTop,
-        userCurrency,
-        mobile,
         search,
         productOptions,
         handleChangeSearch,
@@ -28,13 +23,16 @@ export default function NavBar(props) {
         handleClickSearch,
         handleKeyDownSearch,
         setSearch,
-        supportsHoverAndPointer,
         menuOpen,
         switchMenu,
-        router,
-        auth,
         adminMode
     } = props
+
+    const {
+        mobile,
+        auth,
+        authValidated,
+    } = useAppContext()
 
     const tNavbar = useTranslation('navbar').t
 
@@ -125,7 +123,14 @@ export default function NavBar(props) {
                         </div>
                     }
                 </div>
-                <div className={styles.rightSide}>
+                <div
+                    className={styles.rightSide}
+                    style={{
+                        opacity: authValidated ? 1 : 0,
+                        pointerEvents: authValidated ? 'auto' : 'none',
+                        transition: 'opacity ease-in-out 300ms',
+                    }}
+                >
                     {!adminMode && !isScrollAtTop &&
                         <motion.div
                             className={styles.iconContainer}
@@ -143,7 +148,7 @@ export default function NavBar(props) {
                         >
                             <SearchRoundedIcon
                                 style={{
-                                    fontSize: 'calc(var(--bar-height) * 0.36)',
+                                    fontSize: 'calc(var(--navbar-height) * 0.36)',
                                     color: 'var(--global-white)',
                                     position: 'relative',
                                     top: '1px',
@@ -151,7 +156,7 @@ export default function NavBar(props) {
                             />
                         </motion.div>
                     }
-                    {!adminMode && session &&
+                    {!adminMode && auth?.currentUser &&
                         <Link
                             href={'/wishlist'}
                         >
@@ -170,7 +175,7 @@ export default function NavBar(props) {
                             >
                                 <FavoriteBorderRoundedIcon
                                     style={{
-                                        fontSize: 'calc(var(--bar-height) * 0.36)',
+                                        fontSize: 'calc(var(--navbar-height) * 0.36)',
                                         color: 'var(--global-white)',
                                         position: 'relative',
                                         top: '1px',
@@ -180,21 +185,9 @@ export default function NavBar(props) {
                         </Link>
                     }
                     {!adminMode &&
-                        <CartIcon
-                            session={session}
-                            cart={cart}
-                            setCart={setCart}
-                            userCurrency={userCurrency}
-                            supportsHoverAndPointer={supportsHoverAndPointer}
-                        />
+                        <CartIcon />
                     }
-                    <AvatarMenu
-                        session={session}
-                        auth={auth}
-                        logout={logout}
-                        supportsHoverAndPointer={supportsHoverAndPointer}
-                        router={router}
-                    />
+                    <AvatarMenu />
                 </div>
             </div>
         </div>

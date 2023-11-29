@@ -32,7 +32,7 @@
   --toastify-color-success: var(--color-success) !important;
   --toastify-color-error: var(--color-error) !important;
 
-  --bar-height: 5rem;
+  --navbar-height: 5rem;
   --admin-menu-width: 210px;
 }
 

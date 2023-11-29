@@ -20,27 +20,29 @@ import HeartButton from '@/components/buttons-icon/HeartButton'
 import { cartItemModel } from '@/utils/models'
 import SelectorAutocomplete from '@/components/material-ui/SelectorAutocomplete'
 import COUNTRIES_POOL from '../../../public/locales/en/countries.json'
+import { useAppContext } from '@/components/contexts/AppContext'
 
 export default withRouter(props => {
     const {
-        session,
-        cart,
-        setCart,
-        userCurrency,
         product,
-        windowWidth,
         cl,
         sz,
         productMetaImage,
         urlMeta,
-        mobile,
-        router,
-        supportsHoverAndPointer,
-        setLoading,
         setSession,
         location,
-        loading
     } = props
+
+    const {
+        mobile,
+        router,
+        session,
+        setLoading,
+        userCurrency,
+        setCart,
+        cart,
+        windowWidth,
+    } = useAppContext()
 
     const tToasts = useTranslation('toasts').t
     const tCommon = useTranslation('common').t
@@ -221,7 +223,6 @@ export default withRouter(props => {
                                 className={styles.sliderContainer}
                             >
                                 <ShareButton
-                                    supportsHoverAndPointer={supportsHoverAndPointer}
                                     link={`${process.env.NEXT_PUBLIC_URL}/product/${product.id}${currentColor.id !== product.colors_ids[0] && currentSize.id !== product.sizes_ids[0]
                                         ? `?sz=${currentSize.title.toLowerCase()}&cl=${currentColor.id_string}`
                                         : currentSize.id !== product.sizes_ids[0]
@@ -242,7 +243,6 @@ export default withRouter(props => {
                                     images={product.images}
                                     colors={product.colors_ids.map(color_id => COLORS_POOL[color_id])}
                                     currentColor={currentColor}
-                                    supportsHoverAndPointer={supportsHoverAndPointer}
                                     width={windowWidth > 1074 ? 450 : windowWidth > 549 ? 450 : windowWidth}
                                 />
                             </div>
@@ -302,7 +302,6 @@ export default withRouter(props => {
                                             options={product.colors_ids.map(color_id => COLORS_POOL[color_id])}
                                             value={[currentColor]}
                                             onChange={handleColorChange}
-                                            supportsHoverAndPointer={supportsHoverAndPointer}
                                             styleButton={{
                                                 height: mobile ? 35 : 40,
                                                 width: mobile ? 35 : 40,
@@ -325,7 +324,6 @@ export default withRouter(props => {
                                         {tProduct('ship_to')}:
                                     </p>
                                     <SelectorAutocomplete
-                                        supportsHoverAndPointer={supportsHoverAndPointer}
                                         options={
                                             Object.keys(COUNTRIES_POOL)
                                                 .map(key => ({ id: key, label: tCountries(key) }))
@@ -416,9 +414,6 @@ export default withRouter(props => {
             </div>
             : <NoFound404
                 message='Product not found!'
-                autoRedirect
-                router={router}
-                loading={loading}
             />
     )
 })

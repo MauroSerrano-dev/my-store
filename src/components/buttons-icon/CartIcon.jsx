@@ -6,15 +6,16 @@ import { Button } from '@mui/material'
 import ProductModal from '../products/ProductModal'
 import { useTranslation } from 'next-i18next';
 import { motion } from 'framer-motion'
+import { useAppContext } from '../contexts/AppContext';
 
-export default function CartIcon(props) {
+export default function CartIcon() {
     const {
         session,
-        cart,
-        setCart,
-        userCurrency,
         supportsHoverAndPointer,
-    } = props
+        userCurrency,
+        setCart,
+        cart,
+    } = useAppContext()
 
     const [open, setOpen] = useState(false)
     const tNavbar = useTranslation('navbar').t
@@ -37,7 +38,7 @@ export default function CartIcon(props) {
             >
                 <ShoppingCartOutlinedIcon
                     style={{
-                        fontSize: 'calc(var(--bar-height) * 0.36)',
+                        fontSize: 'calc(var(--navbar-height) * 0.36)',
                         color: 'var(--global-white)'
                     }}
                 />
@@ -76,10 +77,7 @@ export default function CartIcon(props) {
                                         product={product}
                                         key={i}
                                         index={i}
-                                        session={session}
-                                        setCart={setCart}
                                         setOpen={setOpen}
-                                        userCurrency={userCurrency}
                                     />
                                 )}
                             </div>

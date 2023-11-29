@@ -8,17 +8,15 @@ import { useTranslation } from 'next-i18next';
 import lottie from 'lottie-web';
 import { LIMITS } from '@/consts'
 import NoFound404 from '@/components/NoFound404'
+import { useAppContext } from '@/components/contexts/AppContext'
 
-export default function Wishlist({
-    session,
-    setSession,
-    supportsHoverAndPointer,
-    userCurrency,
-    windowWidth,
-    setLoading,
-    router,
-    loading,
-}) {
+export default function Wishlist() {
+    const {
+        session,
+        setLoading,
+        setSession,
+        windowWidth,
+    } = useAppContext()
 
     const [wishlist, setWishlist] = useState()
     const [productWidth, setProductWidth] = useState(0)
@@ -120,11 +118,7 @@ export default function Wishlist({
         session === undefined
             ? <div></div>
             : session === null
-                ? <NoFound404
-                    autoRedirect
-                    router={router}
-                    loading={loading}
-                />
+                ? <NoFound404 />
                 : <div className={styles.container}>
                     <div
                         className={styles.pageContainer}
@@ -151,7 +145,6 @@ export default function Wishlist({
                                     <ProductSkeleton
                                         key={i}
                                         productWidth={productWidth}
-                                        supportsHoverAndPointer={supportsHoverAndPointer}
                                     />
                                 )
                                 : wishlist?.products.length === 0
@@ -170,10 +163,6 @@ export default function Wishlist({
                                         <Product
                                             key={i}
                                             product={product}
-                                            userCurrency={userCurrency}
-                                            supportsHoverAndPointer={supportsHoverAndPointer}
-                                            session={session}
-                                            setSession={setSession}
                                             width={productWidth}
                                             hideWishlistButton
                                             showDeleteButton

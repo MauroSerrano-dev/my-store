@@ -2,14 +2,18 @@ import { useRef, useState } from 'react';
 import { motion } from 'framer-motion';
 import styles from '@/styles/components/carousels/Carousel.module.css'
 import { Skeleton } from '@mui/material';
+import { useAppContext } from '../contexts/AppContext';
 
 export default function Carousel(props) {
     const {
         items,
-        supportsHoverAndPointer,
         itemStyle,
         skeletonStyle,
     } = props
+
+    const {
+        supportsHoverAndPointer,
+    } = useAppContext()
 
     const carouselRef = useRef(null)
 
