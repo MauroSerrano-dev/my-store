@@ -159,9 +159,9 @@ export default function Wishlist() {
                                         </div>
                                         <h2>{tErrors('no_products_found')}</h2>
                                     </div>
-                                    : wishlist?.products.map((product, i) =>
+                                    : wishlist?.products.map(product =>
                                         <Product
-                                            key={i}
+                                            key={product.id}
                                             product={product}
                                             width={productWidth}
                                             hideWishlistButton

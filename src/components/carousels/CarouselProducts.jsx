@@ -70,10 +70,10 @@ export default function CarouselProducts(props) {
                 }}
             >
                 {products &&
-                    products.map((prod, i) =>
+                    products.map(prod =>
                         <Product
                             width={productWidth}
-                            key={i}
+                            key={prod.id}
                             product={prod}
                             isDragging={isDragging}
                             style={{

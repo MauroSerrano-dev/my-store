@@ -13,24 +13,24 @@ import Selector from '@/components/material-ui/Selector'
 import { useTranslation } from 'next-i18next'
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
 import { useAppContext } from '@/components/contexts/AppContext'
+import { updateEmail, updateProfile } from 'firebase/auth'
 
 const TAGS_MIN_LIMIT = 3
 const TAGS_MAX_LIMIT = 8
 
-export default function Profile(props) {
-    const {
-        updateSession,
-    } = props
-
+export default function Profile() {
     const {
         router,
         session,
+        updateSession,
+        auth,
     } = useAppContext()
 
     const { i18n } = useTranslation()
     const tLanguages = useTranslation('languages').t
     const tProfile = useTranslation('profile').t
     const tMenu = useTranslation('menu').t
+    const tToasts = useTranslation('toasts').t
 
     const starterUser = session ? { ...session } : undefined
 
@@ -72,33 +72,43 @@ export default function Profile(props) {
         }
         setDisableSaveButton(true)
 
-        const { pathname, asPath, query } = router
-        router.push({ pathname, query }, asPath, { locale: currentLanguage })
-
-        const options = {
-            method: 'PATCH',
-            headers: {
-                'Content-Type': 'application/json',
-                authorization: process.env.NEXT_PUBLIC_APP_TOKEN
-            },
-            body: JSON.stringify({
-                user_id: session.id,
-                changes: changes,
-            })
+        if (router.locale !== currentLanguage) {
+            const { pathname, asPath, query } = router
+            router.push({ pathname, query }, asPath, { locale: currentLanguage })
         }
-        fetch("/api/user", options)
-            .then(response => response.json())
-            .then(response => {
-                if (response.status === 200) {
-                    showToast({ type: 'success', msg: response.message })
-                    updateSession()
+
+        const { first_name, last_name } = changes
+        updateProfile(auth.currentUser, { displayName: `${first_name || session.first_name || ''} ${last_name || session.last_name || ''}` })
+            .then(() => {
+
+                const options = {
+                    method: 'PATCH',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        authorization: process.env.NEXT_PUBLIC_APP_TOKEN
+                    },
+                    body: JSON.stringify({
+                        user_id: session.id,
+                        changes: changes,
+                    })
                 }
-                else {
-                    showToast({ type: 'error', msg: response.message })
-                }
+                fetch("/api/user", options)
+                    .then(response => response.json())
+                    .then(response => {
+                        if (response.status === 200) {
+                            showToast({ type: 'success', msg: response.message })
+                            updateSession()
+                        }
+                        else {
+                            showToast({ type: 'error', msg: response.message })
+                        }
+                    })
+                    .catch(err => {
+                        console.error(err)
+                    })
             })
-            .catch(err => {
-                console.error(err)
+            .catch(() => {
+                showToast({ type: 'error', msg: tToasts('default_error') })
             })
     }
 
@@ -117,6 +127,15 @@ export default function Profile(props) {
                         <div className={styles.fieldsBody}>
                             <div className={styles.left}>
                                 <TextInput
+                                    label={tProfile('E-mail')}
+                                    defaultValue={user.email}
+                                    style={{
+                                        width: '100%'
+                                    }}
+                                    onChange={event => handleChanges('email', event.target.value)}
+                                    disabled
+                                />
+                                <TextInput
                                     label={tProfile('first_name')}
                                     defaultValue={user.first_name || ''}
                                     style={{
@@ -131,14 +150,6 @@ export default function Profile(props) {
                                         width: '100%'
                                     }}
                                     onChange={event => handleChanges('last_name', event.target.value)}
-                                />
-                                <TextInput
-                                    label={tProfile('E-mail')}
-                                    defaultValue={user.email}
-                                    style={{
-                                        width: '100%'
-                                    }}
-                                    onChange={event => handleChanges('email', event.target.value)}
                                 />
                                 <Selector
                                     label={tProfile("Language")}

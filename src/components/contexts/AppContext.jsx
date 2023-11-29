@@ -426,6 +426,7 @@ export function AppProvider({ children }) {
                 setShowLoadingScreen,
                 isUser,
                 isVisitant,
+                updateSession,
             }}
         >
             <motion.div
@@ -555,7 +556,7 @@ export function AppProvider({ children }) {
             />
             {loading &&
                 <div>
-                    <div
+                    {/* <div
                         style={{
                             position: 'fixed',
                             zIndex: 9999,
@@ -563,7 +564,7 @@ export function AppProvider({ children }) {
                             width: '100vw',
                             height: '100vh',
                         }}>
-                    </div>
+                    </div> */}
                     <motion.div
                         variants={{
                             hidden: {
