@@ -1,5 +1,6 @@
 import { Select, FormControl, MenuItem, InputLabel } from '@mui/material';
 import { useState } from 'react';
+import { useAppContext } from '../contexts/AppContext';
 
 export default function Selector(props) {
     const {
@@ -18,12 +19,15 @@ export default function Selector(props) {
         styleOption,
         onChange,
         width,
-        supportsHoverAndPointer,
         name = 'name',
         style,
         styleLabel,
         size = 'small'
     } = props
+
+    const {
+        supportsHoverAndPointer,
+    } = useAppContext()
 
     const [hover, setHover] = useState(false)
     const [focus, setFocus] = useState(false)

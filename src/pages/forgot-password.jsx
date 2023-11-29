@@ -6,9 +6,12 @@ import { sendPasswordResetEmail } from 'firebase/auth'
 import { Button } from '@mui/material'
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
 import TextInput from '@/components/material-ui/TextInput'
+import { useAppContext } from '@/components/contexts/AppContext'
 
-export default function ForgotPassword(props) {
-    const { session, login, auth, supportsHoverAndPointer } = props
+export default function ForgotPassword() {
+    const {
+        auth,
+    } = useAppContext()
 
     const [reCaptchaSolve, setReCaptchaSolve] = useState(false)
 
@@ -61,7 +64,6 @@ export default function ForgotPassword(props) {
                                 style={{
                                     width: '93.5%',
                                 }}
-                                supportsHoverAndPointer={supportsHoverAndPointer}
                             />
                         </div>
                         <Button

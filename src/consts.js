@@ -5,9 +5,8 @@ import { ImMug } from "react-icons/im";
 
 export const CART_COOKIE = 'CART'
 
-export const CART_MAX_ITEMS = 10
-
 export const LIMITS = {
+    cart_items: 10,
     wishlist_products: 60,
     input_email: 50,
     input_first_name: 30,

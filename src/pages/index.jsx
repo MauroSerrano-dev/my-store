@@ -9,6 +9,7 @@ import Image from 'next/image'
 import { DEFAULT_PRODUCTS_TAGS, USER_CUSTOMIZE_HOME_PAGE } from '@/consts'
 import { useTranslation } from 'next-i18next'
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
+import { useAppContext } from '@/components/contexts/AppContext'
 
 const categories = [
   { id: 'games', url: '/search?h=games', img: 'https://firebasestorage.googleapis.com/v0/b/my-store-4aef7.appspot.com/o/index%2Fgames.webp?alt=media&token=c28521d0-8fd8-45b7-9c80-60feffab7f60&_gl=1*fshtki*_ga*NjQyNzA2OTM1LjE2OTE2NjI4OTU.*_ga_CW55HF8NVT*MTY5NzM2NTMyMy4yMzYuMS4xNjk3MzY1Mzk3LjUxLjAuMA..' },
@@ -20,14 +21,11 @@ const categories = [
   { id: 'valentines', url: '/search?t=valentines', img: 'https://firebasestorage.googleapis.com/v0/b/my-store-4aef7.appspot.com/o/index%2Fvalentines.webp?alt=media&token=1a8ba264-3494-42ae-9099-39fe5417231e&_gl=1*zb3jw7*_ga*NjQyNzA2OTM1LjE2OTE2NjI4OTU.*_ga_CW55HF8NVT*MTY5NzI3MDYxMy4yMjUuMS4xNjk3MjcwNzYxLjYwLjAuMA..' },
 ]
 
-export default function Home(props) {
+export default function Home() {
   const {
-    userCurrency,
-    supportsHoverAndPointer,
-    windowWidth,
     session,
-    setSession,
-  } = props
+    windowWidth,
+  } = useAppContext()
 
   const tCommon = useTranslation('common').t
   const tIndex = useTranslation('index').t
@@ -52,6 +50,11 @@ export default function Home(props) {
     { value: productsEight, set: setProductsEight },
   ]
 
+  useEffect(() => {
+    if (session !== undefined)
+      getProductsFromCategories()
+  }, [session])
+
   async function getProductsByTagOrType(tag) {
     const { query, id } = tag
     const options = {
@@ -69,11 +72,6 @@ export default function Home(props) {
 
     return products
   }
-
-  useEffect(() => {
-    if (session !== undefined)
-      getProductsFromCategories()
-  }, [session])
 
   async function getProductsFromCategories() {
     //tem que ser na mesma ordem que está no HTML
@@ -260,11 +258,6 @@ export default function Home(props) {
               </h2>
               <CarouselProducts
                 products={state.value}
-                userCurrency={userCurrency}
-                supportsHoverAndPointer={supportsHoverAndPointer}
-                windowWidth={windowWidth}
-                session={session}
-                setSession={setSession}
                 noProductFoundLabel={tErrors('no_products_found')}
               />
             </div>

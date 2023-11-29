@@ -8,14 +8,19 @@ import { useState } from 'react';
 import { motion } from "framer-motion";
 import { MENU_FORWARD_OPTIONS, MENU_OPTIONS } from '@/consts';
 import { useTranslation } from 'next-i18next';
+import { useAppContext } from './contexts/AppContext';
 
 export default function Menu(props) {
     const {
         switchMenu,
         menuOpen,
+    } = props
+
+    const {
         session,
         windowWidth,
-    } = props
+    } = useAppContext()
+
     const [optionMenu, setOptionMenu] = useState()
     const [optionMenuDelay, setOptionMenuDelay] = useState()
 

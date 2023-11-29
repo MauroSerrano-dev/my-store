@@ -1,10 +1,14 @@
 import { Skeleton } from '@mui/material'
+import { useAppContext } from '../contexts/AppContext'
 
 export default function ProductSkeleton(props) {
     const {
         productWidth,
-        supportsHoverAndPointer,
     } = props
+
+    const {
+        supportsHoverAndPointer,
+    } = useAppContext()
 
     return (
         <div

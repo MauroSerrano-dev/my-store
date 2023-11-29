@@ -2,7 +2,7 @@
     position: relative;
     display: flex;
 
-    height: var(--bar-height);
+    height: var(--navbar-height);
     width: 100%;
 
     background-color: var(--navbar-color);
@@ -70,8 +70,8 @@
     align-items: center;
     position: relative;
 
-    height: calc(var(--bar-height) * 0.51);
-    width: calc(var(--bar-height) * 0.51);
+    height: calc(var(--navbar-height) * 0.51);
+    width: calc(var(--navbar-height) * 0.51);
 
     border-radius: 100%;
     padding: 5px;

@@ -4,8 +4,14 @@ import lottie from 'lottie-web'
 import styles from '@/styles/pages/_error.module.css'
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
 import NoFound404 from '@/components/NoFound404'
+import { useAppContext } from '@/components/contexts/AppContext'
 
-function Error({ statusCode, router, loading }) {
+function Error({ statusCode }) {
+
+    const {
+        router,
+        loading,
+    } = useAppContext()
 
     const animationContainer = useRef(null)
 
@@ -37,7 +43,7 @@ function Error({ statusCode, router, loading }) {
 
     return (
         statusCode === 404
-            ? <NoFound404 />
+            ? <NoFound404 autoRedirect={false} />
             : <div
                 className='flex column align-center fillWidth'
                 style={{

@@ -16,6 +16,7 @@ import MenuFilter from '@/components/MenuFilter'
 import lottie from 'lottie-web';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
 import { useTranslation } from 'next-i18next';
+import { useAppContext } from '@/components/contexts/AppContext'
 
 const QUERIES = {
     h: { title: 'category', show: true, showTitle: true, isFilter: true },
@@ -33,15 +34,14 @@ const QUERIES = {
     limit: { title: 'limit', show: false, showTitle: false, isFilter: false },
 }
 
-export default withRouter(props => {
+export default withRouter(() => {
+
     const {
-        userCurrency,
-        supportsHoverAndPointer,
         router,
+        supportsHoverAndPointer,
+        userCurrency,
         windowWidth,
-        session,
-        setSession,
-    } = props
+    } = useAppContext()
 
     const {
         s,
@@ -56,7 +56,7 @@ export default withRouter(props => {
         v,
         p = '1',
         limit = '60',
-    } = props.router.query
+    } = router.query
 
     const { i18n } = useTranslation()
 
@@ -386,7 +386,6 @@ export default withRouter(props => {
                                         <ColorButton
                                             selected={cl === color.color_display.id_string}
                                             color={{ title: color.color_display.title, colors: [color.color_display.color] }}
-                                            supportsHoverAndPointer={supportsHoverAndPointer}
                                         />
                                     </Link>
                                 )}
@@ -409,7 +408,6 @@ export default withRouter(props => {
                                         <ColorButton
                                             selected={ac === color.color_display.id_string}
                                             color={{ title: color.color_display.title, colors: [color.color_display.color] }}
-                                            supportsHoverAndPointer={supportsHoverAndPointer}
                                         />
                                     </Link>
                                 )}
@@ -496,7 +494,6 @@ export default withRouter(props => {
                                 fontSize: mobile ? '13px' : '16px'
                             }}
                             onChange={(event) => handleChangeOrder(event.target.value)}
-                            supportsHoverAndPointer={supportsHoverAndPointer}
                         />
                     </div>
                     <div
@@ -511,7 +508,6 @@ export default withRouter(props => {
                                 <ProductSkeleton
                                     key={i}
                                     productWidth={productWidth}
-                                    supportsHoverAndPointer={supportsHoverAndPointer}
                                 />
                             )
                             : products.length === 0
@@ -526,12 +522,8 @@ export default withRouter(props => {
                                 : products.map((product, i) =>
                                     <Product
                                         key={i}
-                                        userCurrency={userCurrency}
                                         product={product}
                                         width={productWidth}
-                                        supportsHoverAndPointer={supportsHoverAndPointer}
-                                        session={session}
-                                        setSession={setSession}
                                         inicialVariantId={
                                             product.variants.find(vari => {
                                                 if (cl && ac)
@@ -574,10 +566,8 @@ export default withRouter(props => {
                 open={filtersOpen}
                 onClose={handleCloseFilter}
                 getQueries={getQueries}
-                router={router}
                 handleMultiSelection={handleMultiSelection}
                 handleThemesSelect={handleThemesSelect}
-                supportsHoverAndPointer={supportsHoverAndPointer}
             />
             {productWidth &&
                 <Footer />

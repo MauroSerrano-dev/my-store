@@ -3,17 +3,19 @@ import NoFound404 from '../../components/NoFound404';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { isAdmin } from '@/utils/validations';
 import { useEffect } from 'react';
+import { useAppContext } from '@/components/contexts/AppContext';
 
 export default function Admin(props) {
     const {
-        session,
-        auth,
-        setAdminMenuOpen,
-        router,
-        loading,
         total_products,
         adminMenuOpen,
     } = props
+
+    const {
+        auth,
+        session,
+        setAdminMenuOpen,
+    } = useAppContext()
 
     useEffect(() => {
         setAdminMenuOpen(true)
@@ -23,11 +25,7 @@ export default function Admin(props) {
         session === undefined
             ? <div></div>
             : session === null || !isAdmin(auth)
-                ? <NoFound404
-                    autoRedirect
-                    router={router}
-                    loading={loading}
-                />
+                ? <NoFound404 />
                 : <div
                     className={styles.container}
                     style={{

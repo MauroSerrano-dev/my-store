@@ -14,15 +14,16 @@ import { Button } from '@mui/material'
 import { useTranslation } from 'next-i18next'
 import { motion } from 'framer-motion'
 import { isAdmin } from '@/utils/validations'
+import { useAppContext } from '../contexts/AppContext'
+import LoginOutlinedIcon from '@mui/icons-material/LoginOutlined';
 
-export default function AvatarMenu(props) {
+export default function AvatarMenu() {
   const {
-    logout,
-    session,
+    auth,
     router,
     supportsHoverAndPointer,
-    auth
-  } = props
+    logout,
+  } = useAppContext()
 
   const [open, setOpen] = useState(false)
   const { i18n } = useTranslation()
@@ -81,32 +82,50 @@ export default function AvatarMenu(props) {
     >
       {supportsHoverAndPointer
         ? <Link
-          href={session ? '/profile' : '/login'}
+          href={auth?.currentUser ? '/profile' : '/login'}
           className={`${styles.iconContainer} flex center noUnderline`}
         >
-          <PersonOutlineOutlinedIcon
-            style={{
-              fontSize: 'calc(var(--bar-height) * 0.43)',
-              color: 'var(--global-white)'
-            }}
-          />
+          {auth?.currentUser
+            ? <PersonOutlineOutlinedIcon
+              style={{
+                fontSize: 'calc(var(--navbar-height) * 0.43)',
+                color: 'var(--global-white)'
+              }}
+            />
+            : <LoginOutlinedIcon
+              style={{
+                fontSize: 'calc(var(--navbar-height) * 0.35)',
+                color: 'var(--global-white)',
+                transform: 'translateX(-3px)'
+              }}
+            />
+          }
         </Link>
         : <div
           className={`${styles.iconContainer} flex center`}
         >
-          <PersonOutlineOutlinedIcon
-            style={{
-              fontSize: 'calc(var(--bar-height) * 0.43)',
-              color: 'var(--global-white)'
-            }}
-          />
+          {auth?.currentUser
+            ? <PersonOutlineOutlinedIcon
+              style={{
+                fontSize: 'calc(var(--navbar-height) * 0.43)',
+                color: 'var(--global-white)'
+              }}
+            />
+            : <LoginOutlinedIcon
+              style={{
+                fontSize: 'calc(var(--navbar-height) * 0.35)',
+                color: 'var(--global-white)',
+                transform: 'translateX(-3px)'
+              }}
+            />
+          }
         </div>
       }
-      {open && session !== undefined &&
+      {open && auth?.currentUser !== undefined &&
         <motion.div
           className={styles.contentContainer}
           style={{
-            left: !session
+            left: !auth?.currentUser
               ? -223.5
               : ['pt-BR', 'pt-PT'].includes(i18n.language)
                 ? -135.5
@@ -125,7 +144,7 @@ export default function AvatarMenu(props) {
         >
           <div className={styles.pointer}>
           </div>
-          {session
+          {auth?.currentUser
             ? <div
               className={styles.session}
               style={{

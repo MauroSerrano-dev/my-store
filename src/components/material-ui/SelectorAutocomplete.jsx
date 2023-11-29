@@ -26,7 +26,6 @@ export default function SelectorAutocomplete(props) {
         options = [],
         name,
         value,
-        supportsHoverAndPointer,
         size = 'small',
         className
     } = props
@@ -63,7 +62,6 @@ export default function SelectorAutocomplete(props) {
             renderInput={params => (
                 <TextInput
                     params={params}
-                    supportsHoverAndPointer={supportsHoverAndPointer}
                     style={style}
                     size={size}
                     label={label}

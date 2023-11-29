@@ -5,15 +5,17 @@ import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { isAdmin } from '@/utils/validations';
 import { PRODUCTS_TYPES } from '@/consts';
 import { useTranslation } from 'next-i18next'
+import { useAppContext } from '@/components/contexts/AppContext';
 
 export default function Products(props) {
     const {
-        session,
-        auth,
-        router,
-        loading,
         adminMenuOpen
     } = props
+
+    const {
+        auth,
+        session,
+    } = useAppContext()
 
     const tCommon = useTranslation('common').t
 
@@ -21,11 +23,7 @@ export default function Products(props) {
         session === undefined
             ? <div></div>
             : session === null || !isAdmin(auth)
-                ? <NoFound404
-                    autoRedirect
-                    router={router}
-                    loading={loading}
-                />
+                ? <NoFound404 />
                 : <div
                     className={styles.container}
                     style={{
@@ -37,6 +35,7 @@ export default function Products(props) {
                     <header>
                     </header>
                     <main className={styles.main}>
+                        <h2>Products Types</h2>
                         <div className={styles.options}>
                             {PRODUCTS_TYPES.map((type, i) =>
                                 <Link

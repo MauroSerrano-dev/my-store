@@ -10,6 +10,7 @@ import { useTranslation } from 'next-i18next'
 import HeartButton from '../buttons-icon/HeartButton'
 import CloseRoundedIcon from '@mui/icons-material/CloseRounded'
 import { showToast } from '@/utils/toasts'
+import { useAppContext } from '../contexts/AppContext'
 
 /**
  * @param {object} props - Component props.
@@ -23,9 +24,7 @@ import { showToast } from '@/utils/toasts'
 
 export default function Product(props) {
     const {
-        userCurrency,
         width = 225,
-        supportsHoverAndPointer,
         isDragging = false,
         product,
         inicialVariantId,
@@ -41,12 +40,17 @@ export default function Product(props) {
             }
         },
         style,
-        session,
         setSession,
         hideWishlistButton,
         showDeleteButton,
         onDeleteClick,
     } = props
+
+    const {
+        session,
+        supportsHoverAndPointer,
+        userCurrency,
+    } = useAppContext()
 
     const tCommon = useTranslation('common').t
     const tToasts = useTranslation('toasts').t

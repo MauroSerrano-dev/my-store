@@ -1,5 +1,4 @@
-import { Autocomplete, Chip } from '@mui/material';
-import TextInput from './TextInput';
+import { Chip } from '@mui/material';
 
 export default function Tag(props) {
     const {
@@ -11,7 +10,6 @@ export default function Tag(props) {
         colorDeleteHover = dark ? 'rgba(0, 0, 0, 0.8)' : 'rgba(255, 255, 255, 0.8)',
         onDelete,
         style,
-        supportsHoverAndPointer,
     } = props
 
     return (

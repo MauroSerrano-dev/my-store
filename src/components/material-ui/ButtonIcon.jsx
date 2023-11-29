@@ -1,5 +1,6 @@
 import { IconButton, TextField } from '@mui/material';
 import { useEffect, useState } from 'react';
+import { useAppContext } from '../contexts/AppContext';
 
 export default function ButtonIcon(props) {
     const {
@@ -12,8 +13,11 @@ export default function ButtonIcon(props) {
         iconColorHover = dark ? '#000000' : '#ffffff',
         backgroundColor = dark ? 'transparent' : 'transparent',
         backgroundColorHover = dark ? '#00000020' : '#ffffff20',
-        supportsHoverAndPointer,
     } = props
+
+    const {
+        supportsHoverAndPointer,
+    } = useAppContext()
 
     const [hover, setHover] = useState(false)
 

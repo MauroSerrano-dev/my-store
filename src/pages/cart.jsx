@@ -14,22 +14,22 @@ import SelectorAutocomplete from '@/components/material-ui/SelectorAutocomplete'
 import axios from 'axios'
 import { cartItemModel } from '@/utils/models'
 import { LoadingButton } from '@mui/lab'
+import { useAppContext } from '@/components/contexts/AppContext'
 
 export default function Cart(props) {
     const {
-        session,
-        cart,
-        setCart,
-        userCurrency,
-        handleChangeCurrency,
-        supportsHoverAndPointer,
-        windowWidth,
-        setLoading,
-        getInicialCart,
-        currencies,
         location,
-        setSession,
     } = props
+
+    const {
+        getInicialCart,
+        session,
+        setLoading,
+        handleChangeCurrency,
+        userCurrency,
+        cart,
+        currencies,
+    } = useAppContext()
 
     const [disableCheckoutButton, setDisableCheckoutButton] = useState(false)
     const [shippingValue, setShippingValue] = useState(0)
@@ -185,11 +185,6 @@ export default function Cart(props) {
                         <div className='fillWidth'>
                             <CarouselProducts
                                 products={allProducts}
-                                userCurrency={userCurrency}
-                                supportsHoverAndPointer={supportsHoverAndPointer}
-                                windowWidth={windowWidth}
-                                session={session}
-                                setSession={setSession}
                             />
                         </div>
                     </main>
@@ -208,14 +203,9 @@ export default function Cart(props) {
                                 {cart.products.map((product, i) =>
                                     <ProductCart
                                         outOfStock={outOfStock.some(prodOut => prodOut.id === product.id && prodOut.variant.id === product.variant.id)}
-                                        session={session}
-                                        setCart={setCart}
                                         product={product}
                                         key={i}
                                         index={i}
-                                        userCurrency={userCurrency}
-                                        supportsHoverAndPointer={supportsHoverAndPointer}
-                                        setLoading={setLoading}
                                     />
                                 )}
                             </div>
@@ -238,7 +228,6 @@ export default function Cart(props) {
                                         {tCart('ship_to')}:
                                     </p>
                                     <SelectorAutocomplete
-                                        supportsHoverAndPointer={supportsHoverAndPointer}
                                         options={
                                             Object.keys(COUNTRIES_POOL)
                                                 .map(key => ({ id: key, label: tCountries(key) }))
@@ -262,7 +251,6 @@ export default function Cart(props) {
                                         width='100px'
                                         dark
                                         onChange={(event) => handleChangeCurrency(event.target.value)}
-                                        supportsHoverAndPointer={supportsHoverAndPointer}
                                     />
                                 </div>
                                 <div className={styles.detailsItem}>

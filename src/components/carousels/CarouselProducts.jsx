@@ -3,17 +3,18 @@ import { motion } from 'framer-motion';
 import Product from '../products/Product';
 import styles from '@/styles/components/carousels/CarouselProducts.module.css'
 import ProductSkeleton from '../products/ProductSkeleton'
+import { useAppContext } from '../contexts/AppContext';
 
 export default function CarouselProducts(props) {
     const {
         products,
-        userCurrency,
+        noProductFoundLabel = "No Products Found",
+    } = props
+
+    const {
         supportsHoverAndPointer,
         windowWidth,
-        noProductFoundLabel = "No Products Found",
-        session,
-        setSession,
-    } = props
+    } = useAppContext()
 
     const carouselRef = useRef(null)
 
@@ -74,11 +75,7 @@ export default function CarouselProducts(props) {
                             width={productWidth}
                             key={i}
                             product={prod}
-                            userCurrency={userCurrency}
-                            supportsHoverAndPointer={supportsHoverAndPointer}
                             isDragging={isDragging}
-                            session={session}
-                            setSession={setSession}
                             style={{
                                 pointerEvents: isDragging ? 'none' : 'auto',
                                 willChange: 'transform',
@@ -102,7 +99,6 @@ export default function CarouselProducts(props) {
                         <ProductSkeleton
                             key={i}
                             productWidth={productWidth}
-                            supportsHoverAndPointer={supportsHoverAndPointer}
                         />
                     )}
                 </div>

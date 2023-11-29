@@ -1,33 +1,32 @@
-import NavBar from './NavBar'
-import styles from '@/styles/components/DataHandler.module.css'
-import { useEffect, useState } from "react"
-import Cookies from 'js-cookie'
-import { getAuth, onAuthStateChanged, signOut, signInWithEmailAndPassword } from "firebase/auth"
-import { initializeApp } from 'firebase/app'
-import { firebaseConfig } from '../../firebase.config'
-import { CART_COOKIE } from '@/consts'
-import SearchBar from './SearchBar'
-import Menu from './Menu'
+import styles from '@/styles/components/contexts/AppContext.module.css'
+import { useTranslation } from "next-i18next"
+import { useRouter } from "next/router"
+import { createContext, useContext, useEffect, useState } from "react"
+import { ToastContainer, Flip } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
+import NavBar from "../NavBar"
+import Maintenance from "../Maintenance"
+import Menu from "../Menu"
+import { initializeApp } from "firebase/app"
+import { firebaseConfig } from "../../../firebase.config"
+import { getAuth, onAuthStateChanged, signOut } from "firebase/auth"
+import { isAdmin } from "@/utils/validations"
 import { motion } from 'framer-motion'
+import SearchBar from '../SearchBar'
+import { CircularProgress } from '@mui/material'
+import Cookies from 'js-cookie'
+import { CART_COOKIE } from '@/consts'
 import { v4 as uuidv4 } from 'uuid'
-import { useTranslation } from 'next-i18next'
-import { showToast } from '@/utils/toasts'
-import { isAdmin } from '@/utils/validations'
-import AdminMenu from './menus/AdminMenu'
+import AdminMenu from '../menus/AdminMenu'
+
+const AppContext = createContext()
 
 const SUB_NAVBAR_HEIGHT = 40
 const SUB_NAVBAR_HEIGHT_MOBILE = 43
 const MOBILE_LIMIT = 1075
 
-export default function DataHandler(props) {
-    const {
-        Component,
-        pageProps,
-        router,
-        loading,
-        setLoading,
-        currencies,
-    } = props
+export function AppProvider({ children }) {
+
     const [cart, setCart] = useState()
     const [isScrollAtTop, setIsScrollAtTop] = useState(true)
     const [session, setSession] = useState()
@@ -42,6 +41,12 @@ export default function DataHandler(props) {
     const [showMenu, setShowMenu] = useState(false)
     const [userEmailVerify, setUserEmailVerify] = useState()
     const [adminMenuOpen, setAdminMenuOpen] = useState(false)
+    const [authValidated, setAuthValidated] = useState(false)
+    const [showLoadingScreen, setShowLoadingScreen] = useState(false)
+    const [loading, setLoading] = useState(false)
+    const [currencies, setCurrencies] = useState()
+
+    const router = useRouter()
 
     const tNavbar = useTranslation('navbar').t
     const tToasts = useTranslation('toasts').t
@@ -52,13 +57,51 @@ export default function DataHandler(props) {
     const adminMode = isAdmin(auth) && router.pathname.split('/')[1] === 'admin'
 
     useEffect(() => {
+        handleLoading()
+
+        getCurrencies()
+
+        function handleLoading() {
+            setLoading(true)
+        }
+
+        function handleEndLoading() {
+            setLoading(false)
+            setShowLoadingScreen(false)
+        }
+
+        router.events.on("routeChangeStart", handleLoading)
+        router.events.on("routeChangeComplete", handleEndLoading)
+        router.events.on("routeChangeError", handleEndLoading)
+
+        return () => {
+            router.events.off("routeChangeStart", handleLoading)
+            router.events.off("routeChangeComplete", handleEndLoading)
+            router.events.off("routeChangeError", handleEndLoading)
+        }
+    }, [])
+
+    function getCurrencies() {
+        const options = {
+            method: 'GET',
+            headers: {
+                authorization: process.env.NEXT_PUBLIC_APP_TOKEN,
+            },
+        }
+
+        fetch("/api/app-settings/currencies", options)
+            .then(response => response.json())
+            .then(response => setCurrencies(response))
+            .catch(err => console.error(err))
+    }
+
+    useEffect(() => {
         getInicialCart()
     }, [session])
 
     useEffect(() => {
-        if (cart !== undefined) {
+        if (cart !== undefined)
             setLoading(false)
-        }
     }, [cart])
 
     function switchMenu() {
@@ -213,6 +256,8 @@ export default function DataHandler(props) {
 
     function updateSession() {
         onAuthStateChanged(auth, (authUser) => {
+            setShowLoadingScreen(true)
+            setAuthValidated(true)
             if (authUser) {
                 setUserEmailVerify(authUser.emailVerified)
                 handleLogin(authUser)
@@ -333,156 +378,219 @@ export default function DataHandler(props) {
     }, [menuOpen])
 
     return (
-        <motion.div
-            className={styles.container}
-            style={{
-                opacity: websiteVisible ? 1 : 0,
-            }}
-            initial='closed'
-            animate={
-                menuOpen
-                    ? windowWidth < 420
-                        ? 'openMobile'
-                        : 'open'
-                    : 'closed'
-            }
-            variants={{
-                closed: {
-                    left: '0px',
-                    transition: {
-                        ease: 'easeInOut',
-                        duration: 0.35,
-                    },
-                },
-                open: {
-                    left: '350px',
-                    transition: {
-                        ease: 'easeInOut',
-                        duration: 0.35,
-                    },
-                },
-                openMobile: {
-                    left: '100vw',
-                    transition: {
-                        ease: 'easeInOut',
-                        duration: 0.35,
-                    },
-                },
+        <AppContext.Provider
+            value={{
+                authValidated,
+                auth,
+                login,
+                mobile,
+                router,
+                session,
+                setSession,
+                loading,
+                setLoading,
+                supportsHoverAndPointer,
+                handleChangeCurrency,
+                userCurrency,
+                setCart,
+                cart,
+                currencies,
+                windowWidth,
+                getInicialCart,
+                setAdminMenuOpen,
+                logout,
+                showLoadingScreen,
+                setShowLoadingScreen
             }}
         >
-            <div
-                className={styles.topContainer}
+            <motion.div
+                className={styles.container}
                 style={{
-                    height: '5rem',
+                    opacity: websiteVisible ? 1 : 0,
                 }}
-            >
-                <NavBar
-                    cart={cart}
-                    setCart={setCart}
-                    isScrollAtTop={isScrollAtTop}
-                    setIsScrollAtTop={setIsScrollAtTop}
-                    session={session}
-                    auth={auth}
-                    login={login}
-                    logout={logout}
-                    userCurrency={userCurrency}
-                    mobile={mobile}
-                    handleChangeSearch={handleChangeSearch}
-                    search={search}
-                    productOptions={productOptions}
-                    setProductOptions={setProductOptions}
-                    handleClickSearch={handleClickSearch}
-                    handleKeyDownSearch={handleKeyDownSearch}
-                    setSearch={setSearch}
-                    supportsHoverAndPointer={supportsHoverAndPointer}
-                    menuOpen={menuOpen}
-                    switchMenu={switchMenu}
-                    router={router}
-                    adminMode={adminMode}
-                />
-                {!adminMode &&
-                    <div
-                        className={styles.subNavBar}
-                        style={{
-                            top: isScrollAtTop ? '5rem' : 0,
-                            height: mobile ? SUB_NAVBAR_HEIGHT_MOBILE : SUB_NAVBAR_HEIGHT,
-                            transition: `all ease-in-out ${websiteVisible ? 200 : 0}ms`,
-                        }}
-                    >
-                        <SearchBar
-                            show={isScrollAtTop && mobile}
-                            placeholder={tNavbar('search_bar_placeholder')}
-                            onChange={handleChangeSearch}
-                            onKeyDown={handleKeyDownSearch}
-                            onClick={handleClickSearch}
-                            value={search}
-                            options={productOptions}
-                            setOptions={setProductOptions}
-                            setSearch={setSearch}
-                            barHeight={30}
-                        />
-                    </div>
+                initial='closed'
+                animate={
+                    menuOpen
+                        ? windowWidth < 420
+                            ? 'openMobile'
+                            : 'open'
+                        : 'closed'
                 }
-            </div>
-            <div
-                className={styles.componentContainer}
-                style={{
-                    paddingTop: `calc(5rem + ${mobile ? SUB_NAVBAR_HEIGHT_MOBILE : SUB_NAVBAR_HEIGHT}px)`,
-                    transition: `all ease-in-out ${websiteVisible ? 200 : 0}ms`,
+                variants={{
+                    closed: {
+                        left: '0px',
+                        transition: {
+                            ease: 'easeInOut',
+                            duration: 0.35,
+                        },
+                    },
+                    open: {
+                        left: '350px',
+                        transition: {
+                            ease: 'easeInOut',
+                            duration: 0.35,
+                        },
+                    },
+                    openMobile: {
+                        left: '100vw',
+                        transition: {
+                            ease: 'easeInOut',
+                            duration: 0.35,
+                        },
+                    },
                 }}
             >
-                <Component{...pageProps}
-                    cart={cart}
-                    setCart={setCart}
-                    session={session}
-                    login={login}
-                    updateSession={updateSession}
-                    logout={logout}
-                    auth={auth}
-                    userCurrency={userCurrency}
-                    currencies={currencies}
-                    handleChangeCurrency={handleChangeCurrency}
-                    mobile={mobile}
-                    supportsHoverAndPointer={supportsHoverAndPointer}
-                    windowWidth={windowWidth}
-                    router={router}
-                    loading={loading}
-                    setLoading={setLoading}
-                    getInicialCart={getInicialCart}
-                    setSession={setSession}
-                    setUserEmailVerify={setUserEmailVerify}
-                    adminMenuOpen={adminMenuOpen}
-                    setAdminMenuOpen={setAdminMenuOpen}
-                />
-                {!adminMode && showMenu &&
-                    <Menu
-                        switchMenu={switchMenu}
+                <div
+                    className={styles.topContainer}
+                    style={{
+                        height: '5rem',
+                    }}
+                >
+                    <NavBar
+                        isScrollAtTop={isScrollAtTop}
+                        setIsScrollAtTop={setIsScrollAtTop}
+                        handleChangeSearch={handleChangeSearch}
+                        search={search}
+                        productOptions={productOptions}
+                        setProductOptions={setProductOptions}
+                        handleClickSearch={handleClickSearch}
+                        handleKeyDownSearch={handleKeyDownSearch}
+                        setSearch={setSearch}
                         menuOpen={menuOpen}
-                        session={session}
-                        windowWidth={windowWidth}
+                        switchMenu={switchMenu}
+                        adminMode={adminMode}
                     />
-                }
-                {adminMode &&
-                    <AdminMenu
-                        router={router}
-                        open={adminMenuOpen}
-                        setOpen={setAdminMenuOpen}
-                    />
-                }
-                {userEmailVerify === false && session &&
+                    {!adminMode &&
+                        <div
+                            className={styles.subNavBar}
+                            style={{
+                                top: isScrollAtTop ? '5rem' : 0,
+                                height: mobile ? SUB_NAVBAR_HEIGHT_MOBILE : SUB_NAVBAR_HEIGHT,
+                                transition: `all ease-in-out ${websiteVisible ? 200 : 0}ms`,
+                            }}
+                        >
+                            <SearchBar
+                                show={isScrollAtTop && mobile}
+                                placeholder={tNavbar('search_bar_placeholder')}
+                                onChange={handleChangeSearch}
+                                onKeyDown={handleKeyDownSearch}
+                                onClick={handleClickSearch}
+                                value={search}
+                                options={productOptions}
+                                setOptions={setProductOptions}
+                                setSearch={setSearch}
+                                barHeight={30}
+                            />
+                        </div>
+                    }
+                </div>
+                <div
+                    className={styles.componentContainer}
+                    style={{
+                        paddingTop: `calc(5rem + ${mobile ? SUB_NAVBAR_HEIGHT_MOBILE : SUB_NAVBAR_HEIGHT}px)`,
+                        transition: `all ease-in-out ${websiteVisible ? 200 : 0}ms`,
+                    }}
+                >
+                    {process.env.NEXT_PUBLIC_MAINTENANCE === 'true'
+                        ? <Maintenance></Maintenance>
+                        : children
+                    }
+                    {!adminMode && showMenu &&
+                        <Menu
+                            switchMenu={switchMenu}
+                            menuOpen={menuOpen}
+                        />
+                    }
+                    {adminMode &&
+                        <AdminMenu
+                            open={adminMenuOpen}
+                            setOpen={setAdminMenuOpen}
+                        />
+                    }
+                    {userEmailVerify === false && session &&
+                        <div
+                            style={{
+                                position: 'fixed',
+                                width: '100%',
+                                height: '30px',
+                                bottom: 0,
+                                backgroundColor: 'red',
+                                zIndex: 50,
+                            }}
+                        >
+                        </div>
+                    }
+                </div>
+            </motion.div>
+            <ToastContainer
+                newestOnTop
+                transition={Flip}
+                style={{ color: 'white' }}
+                pauseOnFocusLoss={false}
+            />
+            {loading &&
+                <div>
                     <div
                         style={{
                             position: 'fixed',
-                            width: '100%',
-                            height: '30px',
-                            bottom: 0,
-                            backgroundColor: 'red',
-                            zIndex: 50,
+                            zIndex: 9999,
+                            top: 0,
+                            width: '100vw',
+                            height: '100vh',
+                        }}>
+                    </div>
+                    <motion.div
+                        variants={{
+                            hidden: {
+                                opacity: 0,
+                            },
+                            visible: {
+                                opacity: 1,
+                                transition: {
+                                    duration: 0,
+                                    delay: 0.2,
+                                }
+                            }
+                        }}
+                        initial='hidden'
+                        animate='visible'
+                        style={{
+                            position: 'fixed',
+                            right: '4rem',
+                            bottom: '4rem',
+                            zIndex: 10000,
                         }}
                     >
-                    </div>
-                }
-            </div>
-        </motion.div>
+                        <CircularProgress
+                            variant="determinate"
+                            sx={{
+                                position: 'absolute',
+                                color: '#525252',
+                            }}
+                            size={40}
+                            thickness={4}
+                            value={100}
+                        />
+                        <CircularProgress
+                            disableShrink
+                            size={40}
+                            thickness={4}
+                            sx={{
+                                position: 'absolute',
+                                animationDuration: '750ms',
+                            }}
+                        />
+                    </motion.div>
+                </div>
+            }
+        </AppContext.Provider>
     )
+}
+
+export const useAppContext = () => {
+    const context = useContext(AppContext)
+    if (!context) {
+        throw new Error('useAppContext must be used within a AppProvider');
+    }
+    return context
 }

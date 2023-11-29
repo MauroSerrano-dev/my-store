@@ -3,15 +3,19 @@ import { signInWithPopup, GoogleAuthProvider, signInWithRedirect } from "firebas
 import { showToast } from '@/utils/toasts'
 import { FcGoogle } from 'react-icons/fc'
 import { useTranslation } from 'next-i18next'
+import { useAppContext } from '../contexts/AppContext'
 
 const provider = new GoogleAuthProvider()
 
 export default function GoogleButton(props) {
     const {
-        auth,
-        router,
         text = 'Login with Google'
     } = props
+
+    const {
+        auth,
+        router,
+    } = useAppContext()
 
     const tToasts = useTranslation('toasts').t
 

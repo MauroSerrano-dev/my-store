@@ -14,6 +14,7 @@ import Link from 'next/link'
 import { motion } from 'framer-motion'
 import ArrowForwardIosOutlinedIcon from '@mui/icons-material/ArrowForwardIosOutlined'
 import ColorLensOutlinedIcon from '@mui/icons-material/ColorLensOutlined'
+import { useAppContext } from '../contexts/AppContext'
 
 const OPTIONS = [
     { title: 'Dashboard', type: 'link', href: '/admin', icon: <EqualizerOutlinedIcon /> },
@@ -32,10 +33,13 @@ const OPTIONS = [
 
 export default function AdminMenu(props) {
     const {
-        router,
         open,
         setOpen
     } = props
+
+    const {
+        router,
+    } = useAppContext()
 
     return (
         <motion.div

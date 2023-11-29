@@ -3,7 +3,7 @@
   --primary-dark: #0c5274;
   --primary-light: #56bdf0;
   --primary-semi-dark: #0e75a7;
-  --primaryRGB: 17, 137, 196;
+  --primary-rgb: 17, 137, 196;
   --navbar-color: #1189C4;
 
   --link-color: #1185ed;
@@ -32,7 +32,7 @@
   --toastify-color-success: var(--color-success) !important;
   --toastify-color-error: var(--color-error) !important;
 
-  --bar-height: 5rem;
+  --navbar-height: 5rem;
   --admin-menu-width: 210px;
 }
 
@@ -211,13 +211,13 @@ body::-webkit-scrollbar-track {
 
 .MuiAutocomplete-option:hover,
 .MuiMenuItem-gutters:hover {
-  background-color: rgba(var(--primaryRGB), 0.3) !important;
+  background-color: rgba(var(--primary-rgb), 0.3) !important;
   color: var(--text-black);
 }
 
 .MuiAutocomplete-option[aria-selected="true"],
 .MuiMenuItem-gutters[aria-selected="true"] {
-  background-color: rgba(var(--primaryRGB), 0.6) !important;
+  background-color: rgba(var(--primary-rgb), 0.6) !important;
   color: var(--text-black);
 }
 

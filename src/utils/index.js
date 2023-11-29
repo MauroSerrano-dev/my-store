@@ -3,7 +3,7 @@ import en from 'date-fns/locale/en-US'
 import es from 'date-fns/locale/es'
 import ptBR from 'date-fns/locale/pt-BR'
 import ptPT from 'date-fns/locale/pt'
-import { CART_MAX_ITEMS } from '@/consts';
+import { LIMITS } from '@/consts';
 
 
 export function getObjectsDiff(obj1, obj2) {
@@ -46,7 +46,7 @@ export function mergeProducts(prods1, prods2) {
     return prods1.map(p => {
         const exist = prods2.find(prod => prod.id === p.id && prod.variant_id === p.variant_id)
         if (exist)
-            return { ...p, quantity: Math.min(p.quantity + exist.quantity, CART_MAX_ITEMS) }
+            return { ...p, quantity: Math.min(p.quantity + exist.quantity, LIMITS.cart_items) }
         else
             return p
     }).concat(prods2.filter(prod => !prods1.some(p => p.id === prod.id && p.variant_id === prod.variant_id)))

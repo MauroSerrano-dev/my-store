@@ -1,7 +1,8 @@
-import { InputAdornment, TextField } from '@mui/material';
+import { TextField } from '@mui/material';
 import { useEffect, useState } from 'react';
 import { showToast } from '@/utils/toasts';
 import { useTranslation } from 'next-i18next'
+import { useAppContext } from '../contexts/AppContext';
 
 export default function TextInput(props) {
     const {
@@ -24,12 +25,15 @@ export default function TextInput(props) {
         placeholder,
         value,
         defaultValue,
-        supportsHoverAndPointer,
         disabled,
         limit = 300,
         size,
         type,
     } = props
+
+    const {
+        supportsHoverAndPointer,
+    } = useAppContext()
 
     const tToasts = useTranslation('toasts').t
 

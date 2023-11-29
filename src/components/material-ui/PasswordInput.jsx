@@ -8,11 +8,11 @@ import { motion } from 'framer-motion'
 import { showToast } from '@/utils/toasts';
 import { useTranslation } from 'next-i18next'
 import { LIMITS } from '@/consts';
+import { useAppContext } from '../contexts/AppContext';
 
 export default function PasswordInput(props) {
     const {
         onChange,
-        mobile,
         name = 'password',
         label = 'Password',
         showModalGuide,
@@ -20,7 +20,6 @@ export default function PasswordInput(props) {
         value,
         style,
         autoComplete = 'off',
-        supportsHoverAndPointer,
         dark,
         colorBorderHover = dark ? '#000000' : '#ffffff',
         colorBorder = dark ? '#00000070' : '#ffffff90',
@@ -31,6 +30,11 @@ export default function PasswordInput(props) {
         colorText = dark ? '#000000' : '#ffffff',
         limit = LIMITS.input_password,
     } = props
+
+    const {
+        mobile,
+        supportsHoverAndPointer,
+    } = useAppContext()
 
     const [showPassword, setShowPassword] = useState(false)
     const [focus, setFocus] = useState(false)

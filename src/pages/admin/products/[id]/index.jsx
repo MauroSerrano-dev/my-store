@@ -2,24 +2,19 @@ import styles from '@/styles/admin/products/index.module.css'
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import NoFound404 from '@/components/NoFound404';
 import { isAdmin } from '@/utils/validations';
+import { useAppContext } from '@/components/contexts/AppContext';
 
-export default function ProductsId(props) {
+export default function ProductsId() {
     const {
-        session,
         auth,
-        router,
-        loading
-    } = props
+        session,
+    } = useAppContext()
 
     return (
         session === undefined
             ? <div></div>
             : session === null || !isAdmin(auth)
-                ? <NoFound404
-                    autoRedirect
-                    router={router}
-                    loading={loading}
-                />
+                ? <NoFound404 />
                 : <div className={styles.container}>
                     <header>
                     </header>
