@@ -86,7 +86,6 @@ export default function Signin() {
             fetch('/api/user', options)
                 .then(response => response.json())
                 .then(response => {
-                    console.log(response.status)
                     if (response.status < 300) {
                         login(user.email, user.password)
                     }

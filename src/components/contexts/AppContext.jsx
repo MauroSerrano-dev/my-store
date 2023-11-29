@@ -9,7 +9,7 @@ import Maintenance from "../Maintenance"
 import Menu from "../Menu"
 import { initializeApp } from "firebase/app"
 import { firebaseConfig } from "../../../firebase.config"
-import { getAuth, onAuthStateChanged, signOut } from "firebase/auth"
+import { getAuth, onAuthStateChanged, signInWithEmailAndPassword, signOut } from "firebase/auth"
 import { isAdmin } from "@/utils/validations"
 import { motion } from 'framer-motion'
 import SearchBar from '../SearchBar'
@@ -18,6 +18,7 @@ import Cookies from 'js-cookie'
 import { CART_COOKIE } from '@/consts'
 import { v4 as uuidv4 } from 'uuid'
 import AdminMenu from '../menus/AdminMenu'
+import { showToast } from '@/utils/toasts'
 
 const AppContext = createContext()
 
@@ -182,6 +183,7 @@ export function AppProvider({ children }) {
     }
 
     async function login(email, password) {
+        setShowLoadingScreen(true)
         try {
             const authRes = await signInWithEmailAndPassword(auth, email, password)
             showToast({ type: 'success', msg: tToasts('success_login', { user_name: authRes.user.displayName }) })
@@ -221,6 +223,7 @@ export function AppProvider({ children }) {
     }
 
     function logout() {
+        setShowLoadingScreen(true)
         signOut(auth)
         window.location.href = window.origin
         /* router.push('/')
@@ -256,7 +259,6 @@ export function AppProvider({ children }) {
 
     function updateSession() {
         onAuthStateChanged(auth, (authUser) => {
-            setShowLoadingScreen(true)
             setAuthValidated(true)
             if (authUser) {
                 setUserEmailVerify(authUser.emailVerified)
@@ -400,7 +402,7 @@ export function AppProvider({ children }) {
                 setAdminMenuOpen,
                 logout,
                 showLoadingScreen,
-                setShowLoadingScreen
+                setShowLoadingScreen,
             }}
         >
             <motion.div
