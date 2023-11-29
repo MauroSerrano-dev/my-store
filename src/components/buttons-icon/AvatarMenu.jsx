@@ -23,6 +23,7 @@ export default function AvatarMenu() {
     router,
     supportsHoverAndPointer,
     logout,
+    isUser
   } = useAppContext()
 
   const [open, setOpen] = useState(false)
@@ -82,10 +83,10 @@ export default function AvatarMenu() {
     >
       {supportsHoverAndPointer
         ? <Link
-          href={auth?.currentUser ? '/profile' : '/login'}
+          href={isUser ? '/profile' : '/login'}
           className={`${styles.iconContainer} flex center noUnderline`}
         >
-          {auth?.currentUser
+          {isUser
             ? <PersonOutlineOutlinedIcon
               style={{
                 fontSize: 'calc(var(--navbar-height) * 0.43)',
@@ -104,7 +105,7 @@ export default function AvatarMenu() {
         : <div
           className={`${styles.iconContainer} flex center`}
         >
-          {auth?.currentUser
+          {isUser
             ? <PersonOutlineOutlinedIcon
               style={{
                 fontSize: 'calc(var(--navbar-height) * 0.43)',
@@ -121,11 +122,11 @@ export default function AvatarMenu() {
           }
         </div>
       }
-      {open && auth?.currentUser !== undefined &&
+      {open && isUser !== undefined &&
         <motion.div
           className={styles.contentContainer}
           style={{
-            left: !auth?.currentUser
+            left: !isUser
               ? -223.5
               : ['pt-BR', 'pt-PT'].includes(i18n.language)
                 ? -135.5
@@ -144,7 +145,7 @@ export default function AvatarMenu() {
         >
           <div className={styles.pointer}>
           </div>
-          {auth?.currentUser
+          {isUser
             ? <div
               className={styles.session}
               style={{
