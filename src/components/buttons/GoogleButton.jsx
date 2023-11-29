@@ -15,6 +15,7 @@ export default function GoogleButton(props) {
     const {
         auth,
         router,
+        setShowLoadingScreen,
     } = useAppContext()
 
     const tToasts = useTranslation('toasts').t
@@ -22,6 +23,7 @@ export default function GoogleButton(props) {
     function googleLogin() {
         signInWithPopup(auth, provider)
             .then(response => {
+                setShowLoadingScreen(true)
                 showToast({ type: 'success', msg: tToasts('success_login', { user_name: response.user.displayName }) })
                 router.push('/')
             })

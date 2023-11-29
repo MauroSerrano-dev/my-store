@@ -22,14 +22,14 @@ export default function NoFound404(props) {
 
     useEffect(() => {
         let time
-        if (autoRedirect && showLoadingScreen) {
+        if (autoRedirect && !showLoadingScreen) {
             time = setTimeout(() => {
                 router.push('/')
             }, 3000)
         }
 
         return () => {
-            if (autoRedirect && showLoadingScreen)
+            if (autoRedirect && !showLoadingScreen)
                 clearTimeout(time)
         }
     }, [loading])
