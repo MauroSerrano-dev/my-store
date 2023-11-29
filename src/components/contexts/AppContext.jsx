@@ -46,6 +46,8 @@ export function AppProvider({ children }) {
     const [showLoadingScreen, setShowLoadingScreen] = useState(false)
     const [loading, setLoading] = useState(false)
     const [currencies, setCurrencies] = useState()
+    const [isUser, setIsUser] = useState(false)
+    const [isVisitant, setIsVisitant] = useState(false)
 
     const router = useRouter()
 
@@ -182,28 +184,33 @@ export function AppProvider({ children }) {
         Cookies.remove(CART_COOKIE)
     }
 
-    async function login(email, password) {
+    function login(email, password) {
         setShowLoadingScreen(true)
-        try {
-            const authRes = await signInWithEmailAndPassword(auth, email, password)
-            showToast({ type: 'success', msg: tToasts('success_login', { user_name: authRes.user.displayName }) })
-            router.push('/')
-        } catch (error) {
-            setLoading(false)
-            if (error.code === 'auth/wrong-password') {
-                const providers = await getUserLoginProviders(email)
-                if (providers.includes('password'))
-                    return showToast({ msg: tToasts('wrong_password'), type: 'error' })
-                return showToast({ type: 'error', msg: tToasts('account_exists_with_different_provider', { count: providers.length, provider: providers.map(prov => prov === 'google.com' ? 'Google' : prov)[0] }) })
-            }
-            if (error.code === 'auth/user-not-found')
-                return showToast({ type: 'error', msg: tToasts('user_not_found') })
-            if (error.code === 'auth/invalid-email')
-                return showToast({ type: 'error', msg: tToasts('invalid_email') })
-            if (error.code === 'auth/too-many-requests')
-                return showToast({ type: 'error', msg: tToasts('too_many_requests') })
-            return showToast({ type: 'error', msg: tToasts('default_error') })
-        }
+        signInWithEmailAndPassword(auth, email, password)
+            .then(authRes => {
+                showToast({ type: 'success', msg: tToasts('success_login', { user_name: authRes.user.displayName }) })
+                router.push('/')
+            })
+            .catch(error => {
+                setLoading(false)
+                if (error.code === 'auth/wrong-password') {
+                    getUserLoginProviders(email)
+                        .then(providers => {
+                            if (providers.includes('password'))
+                                return showToast({ msg: tToasts('wrong_password'), type: 'error' })
+                            return showToast({ type: 'error', msg: tToasts('account_exists_with_different_provider', { count: providers.length, provider: providers.map(prov => prov === 'google.com' ? 'Google' : prov)[0] }) })
+                        })
+                        .catch(() => showToast({ type: 'error', msg: tToasts('default_error') }))
+                    return
+                }
+                if (error.code === 'auth/user-not-found')
+                    return showToast({ type: 'error', msg: tToasts('user_not_found') })
+                if (error.code === 'auth/invalid-email')
+                    return showToast({ type: 'error', msg: tToasts('invalid_email') })
+                if (error.code === 'auth/too-many-requests')
+                    return showToast({ type: 'error', msg: tToasts('too_many_requests') })
+                return showToast({ type: 'error', msg: tToasts('default_error') })
+            })
     }
 
     async function getUserLoginProviders(email) {
@@ -225,7 +232,17 @@ export function AppProvider({ children }) {
     function logout() {
         setShowLoadingScreen(true)
         signOut(auth)
-        window.location.href = window.origin
+            .then(() => {
+                setIsUser(false)
+                setIsVisitant(true)
+                setCart()
+                showToast({ type: 'info', msg: 'Volte Sempre' })
+                router.push('/')
+            })
+            .catch(() => {
+                showToast({ type: 'error', msg: tToasts('default_error') })
+            })
+        /* window.location.href = window.origin */
         /* router.push('/')
         setTimeout(() => {
             setSession(null)
@@ -259,6 +276,7 @@ export function AppProvider({ children }) {
 
     function updateSession() {
         onAuthStateChanged(auth, (authUser) => {
+            setIsUser(true)
             setAuthValidated(true)
             if (authUser) {
                 setUserEmailVerify(authUser.emailVerified)
@@ -266,6 +284,7 @@ export function AppProvider({ children }) {
             }
             else {
                 // O usuário fez logout ou não está autenticado
+                setIsVisitant(true)
                 setSession(null)
             }
         })
@@ -403,6 +422,8 @@ export function AppProvider({ children }) {
                 logout,
                 showLoadingScreen,
                 setShowLoadingScreen,
+                isUser,
+                isVisitant,
             }}
         >
             <motion.div

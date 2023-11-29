@@ -15,6 +15,7 @@ export default function PasswordInput(props) {
         onChange,
         name = 'password',
         label = 'Password',
+        hasModal,
         showModalGuide,
         setShowModalGuide,
         value,
@@ -141,7 +142,7 @@ export default function PasswordInput(props) {
                     boxShadow: '0px 1px 1px 0px rgba(0, 0, 0, 0.1), 0px 1px 2px 0px rgba(0, 0, 0, 0.07), 0px 1px 3px 0px rgba(0, 0, 0, 0.05)',
                 }}
             />
-            {(showModalGuide || focus) &&
+            {hasModal && (showModalGuide || focus) &&
                 <motion.div
                     className={styles.modalContainer}
                     style={{

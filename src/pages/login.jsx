@@ -24,6 +24,7 @@ export default function Login() {
         session,
         loading,
         setLoading,
+        isUser,
     } = useAppContext()
 
     const [disableLoginButton, setDisableLoginButton] = useState(false)
@@ -75,7 +76,7 @@ export default function Login() {
     return (
         !authValidated
             ? <div></div>
-            : auth?.currentUser
+            : isUser
                 ? <NoFound404 />
                 : <div className={styles.container}>
                     <header>

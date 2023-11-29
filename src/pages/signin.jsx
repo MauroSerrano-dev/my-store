@@ -24,8 +24,8 @@ export default function Signin() {
         session,
         loading,
         setLoading,
-        auth,
         authValidated,
+        isUser,
     } = useAppContext()
 
     const [reCaptchaSolve, setReCaptchaSolve] = useState(false)
@@ -114,7 +114,7 @@ export default function Signin() {
     return (
         !authValidated
             ? <div></div>
-            : auth?.currentUser
+            : isUser
                 ? <NoFound404 />
                 : <div className={styles.container}>
                     <header>
@@ -189,6 +189,7 @@ export default function Signin() {
                                         <PasswordInput
                                             label={tSignin('Password')}
                                             showModalGuide={showModalPassword}
+                                            hasModal
                                             setShowModalGuide={setShowModalPassword}
                                             onChange={e => handleNewUser(e.target.value, 'password')}
                                             mobile={mobile}

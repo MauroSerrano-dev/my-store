@@ -25,13 +25,13 @@ export default function NavBar(props) {
         setSearch,
         menuOpen,
         switchMenu,
-        adminMode
+        adminMode,
     } = props
 
     const {
         mobile,
-        auth,
         authValidated,
+        isUser,
     } = useAppContext()
 
     const tNavbar = useTranslation('navbar').t
@@ -156,7 +156,7 @@ export default function NavBar(props) {
                             />
                         </motion.div>
                     }
-                    {!adminMode && auth?.currentUser &&
+                    {!adminMode && isUser &&
                         <Link
                             href={'/wishlist'}
                         >
