@@ -17,6 +17,7 @@ import lottie from 'lottie-web';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
 import { useTranslation } from 'next-i18next';
 import { useAppContext } from '@/components/contexts/AppContext'
+const { v4: uuidv4 } = require('uuid')
 
 const QUERIES = {
     h: { title: 'category', show: true, showTitle: true, isFilter: true },
@@ -65,6 +66,7 @@ export default withRouter(() => {
     const [products, setProducts] = useState()
     const [productWidth, setProductWidth] = useState(0)
     const [productsPerLine, setProductsPerLine] = useState(0)
+    const [productsKey, setProductsKey] = useState(0)
     const [lastPage, setLastPage] = useState()
     const [filtersOpen, setFiltersOpen] = useState(false)
     const [filtersOpenDelay, setFiltersOpenDelay] = useState(false)
@@ -110,8 +112,6 @@ export default withRouter(() => {
     }, [windowWidth])
 
     function getProductsByQuery() {
-        setProducts()
-
         const options = {
             method: 'GET',
             headers: {
@@ -127,6 +127,7 @@ export default withRouter(() => {
             .then(response => {
                 setProducts(response.products)
                 setLastPage(response.last_page)
+                setProductsKey(uuidv4())
             })
             .catch(err => console.error(err))
     }
@@ -519,23 +520,21 @@ export default withRouter(() => {
                                     </div>
                                     <h2>No Products Found</h2>
                                 </div>
-                                : products.map((product, i) =>
+                                : products.map(product =>
                                     <Product
-                                        key={i}
+                                        key={`${product.id} ${productsKey}`}
                                         product={product}
                                         width={productWidth}
-                                        inicialVariantId={
-                                            product.variants.find(vari => {
-                                                if (cl && ac)
-                                                    return SEARCH_PRODUCT_COLORS.find(scolor => scolor.color_display.id_string === cl)?.colors.some(color => color.id === vari.color_id) && SEARCH_ART_COLORS.find(scolor => scolor.color_display.id_string === ac)?.id === vari.art.color_id
-                                                if (cl)
-                                                    return SEARCH_PRODUCT_COLORS.find(scolor => scolor.color_display.id_string === cl)?.colors.some(color => color.id === vari.color_id)
-                                                if (ac) {
-                                                    return SEARCH_ART_COLORS.find(scolor => scolor.color_display.id_string === ac)?.id === vari.art.color_id
-                                                }
-                                                return null
-                                            })?.id || null
-                                        }
+                                        inicialVariantId={product.variants.find(vari => {
+                                            if (cl && ac)
+                                                return SEARCH_PRODUCT_COLORS.find(scolor => scolor.color_display.id_string === cl)?.colors.some(color => color.id === vari.color_id) && SEARCH_ART_COLORS.find(scolor => scolor.color_display.id_string === ac)?.id === vari.art.color_id
+                                            if (cl)
+                                                return SEARCH_PRODUCT_COLORS.find(scolor => scolor.color_display.id_string === cl)?.colors.some(color => color.id === vari.color_id)
+                                            if (ac) {
+                                                return SEARCH_ART_COLORS.find(scolor => scolor.color_display.id_string === ac)?.id === vari.art.color_id
+                                            }
+                                            return null
+                                        })?.id || null}
                                     />
                                 )
                         }

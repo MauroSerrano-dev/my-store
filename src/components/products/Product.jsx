@@ -40,13 +40,13 @@ export default function Product(props) {
             }
         },
         style,
-        setSession,
         hideWishlistButton,
         showDeleteButton,
         onDeleteClick,
     } = props
 
     const {
+        setSession,
         session,
         supportsHoverAndPointer,
         userCurrency,
@@ -81,11 +81,6 @@ export default function Product(props) {
         setIsDraggingColors(true)
         document.body.style.cursor = 'grabbing'
     }
-
-    // Isso resolveu um bug ao deletar itens no wishlist
-    useEffect(() => {
-        setCurrentVariant(inicialVariantId ? product.variants.find(vari => vari.id === inicialVariantId) : product.variants[0])
-    }, [product])
 
     function handleDragColorsEnd() {
         setAntVisualBug(false)

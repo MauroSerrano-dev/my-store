@@ -29,7 +29,6 @@ export default withRouter(props => {
         sz,
         productMetaImage,
         urlMeta,
-        setSession,
         location,
     } = props
 
@@ -42,6 +41,7 @@ export default withRouter(props => {
         setCart,
         cart,
         windowWidth,
+        setSession,
     } = useAppContext()
 
     const tToasts = useTranslation('toasts').t
