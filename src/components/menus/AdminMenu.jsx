@@ -12,7 +12,6 @@ import ConfirmationNumberOutlinedIcon from '@mui/icons-material/ConfirmationNumb
 import AdminPanelSettingsOutlinedIcon from '@mui/icons-material/AdminPanelSettingsOutlined'
 import Link from 'next/link'
 import { motion } from 'framer-motion'
-import ArrowForwardIosOutlinedIcon from '@mui/icons-material/ArrowForwardIosOutlined'
 import ColorLensOutlinedIcon from '@mui/icons-material/ColorLensOutlined'
 import { useAppContext } from '../contexts/AppContext'
 
@@ -34,7 +33,6 @@ const OPTIONS = [
 export default function AdminMenu(props) {
     const {
         open,
-        setOpen
     } = props
 
     const {
@@ -48,10 +46,10 @@ export default function AdminMenu(props) {
             animate={open ? 'open' : 'close'}
             variants={{
                 open: {
-                    transform: 'translateX(0%)'
+                    width: 'var(--admin-menu-width-open)',
                 },
                 close: {
-                    transform: 'translateX(-100%)'
+                    width: 'var(--admin-menu-width-close)',
                 }
             }}
         >
@@ -65,24 +63,17 @@ export default function AdminMenu(props) {
                         <p>
                             {option.icon}
                         </p>
-                        <p>
+                        <p
+                            style={{
+                                color: open ? undefined : 'transparent',
+                                transition: 'color ease-in-out 200ms'
+                            }}
+                        >
                             {option.title}
                         </p>
                     </Link>
                 )}
             </div>
-            <button
-                className={styles.buttonOpenClose}
-                onClick={() => setOpen(prev => !prev)}
-            >
-                <ArrowForwardIosOutlinedIcon
-                    sx={{
-                        fontSize: 14,
-                        transform: open ? 'rotateZ(-180deg)' : 'none',
-                        transition: 'transform ease-in-out 200ms 200ms',
-                    }}
-                />
-            </button>
         </motion.div>
     )
 }

@@ -6,15 +6,14 @@ import { isAdmin } from '@/utils/validations';
 import { PRODUCTS_TYPES } from '@/consts';
 import { useTranslation } from 'next-i18next'
 import { useAppContext } from '@/components/contexts/AppContext';
+import { motion } from 'framer-motion';
 
-export default function Products(props) {
-    const {
-        adminMenuOpen
-    } = props
+export default function Products() {
 
     const {
         auth,
         session,
+        adminMenuOpen,
     } = useAppContext()
 
     const tCommon = useTranslation('common').t
@@ -24,12 +23,20 @@ export default function Products(props) {
             ? <div></div>
             : session === null || !isAdmin(auth)
                 ? <NoFound404 />
-                : <div
+                : <motion.div
                     className={styles.container}
                     style={{
-                        paddingRight: adminMenuOpen ? '0rem' : '3rem',
-                        paddingLeft: adminMenuOpen ? '18rem' : '3rem',
-                        transition: 'padding-left ease 300ms',
+                        transition: 'padding-left ease 300ms'
+                    }}
+                    initial='close'
+                    animate={adminMenuOpen ? 'open' : 'close'}
+                    variants={{
+                        open: {
+                            paddingLeft: 'calc(var(--admin-menu-width-open) + 2rem)',
+                        },
+                        close: {
+                            paddingLeft: 'calc(var(--admin-menu-width-close) + 2rem)',
+                        }
                     }}
                 >
                     <header>
@@ -53,7 +60,7 @@ export default function Products(props) {
                             )}
                         </div>
                     </main>
-                </div>
+                </motion.div>
     )
 }
 export async function getServerSideProps({ locale }) {

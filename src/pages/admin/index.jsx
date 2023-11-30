@@ -2,36 +2,39 @@ import styles from '@/styles/admin/index.module.css'
 import NoFound404 from '../../components/NoFound404';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { isAdmin } from '@/utils/validations';
-import { useEffect } from 'react';
 import { useAppContext } from '@/components/contexts/AppContext';
+import { motion } from 'framer-motion';
 
 export default function Admin(props) {
     const {
         total_products,
-        adminMenuOpen,
     } = props
 
     const {
         auth,
         session,
-        setAdminMenuOpen,
+        adminMenuOpen,
     } = useAppContext()
-
-    useEffect(() => {
-        setAdminMenuOpen(true)
-    }, [])
 
     return (
         session === undefined
             ? <div></div>
             : session === null || !isAdmin(auth)
                 ? <NoFound404 />
-                : <div
+                : <motion.div
                     className={styles.container}
                     style={{
-                        paddingRight: adminMenuOpen ? '0rem' : '2rem',
-                        paddingLeft: adminMenuOpen ? 'calc(var(--admin-menu-width) + 2rem)' : '2rem',
-                        transition: 'padding-left ease 300ms',
+                        transition: 'padding-left ease 300ms'
+                    }}
+                    initial='close'
+                    animate={adminMenuOpen ? 'open' : 'close'}
+                    variants={{
+                        open: {
+                            paddingLeft: 'calc(var(--admin-menu-width-open) + 2rem)',
+                        },
+                        close: {
+                            paddingLeft: 'calc(var(--admin-menu-width-close) + 2rem)',
+                        }
                     }}
                 >
                     <header>
@@ -39,7 +42,7 @@ export default function Admin(props) {
                     <main className={styles.main}>
                         <p>Total Products: {total_products}</p>
                     </main>
-                </div>
+                </motion.div>
     )
 }
 export async function getServerSideProps({ locale, req }) {

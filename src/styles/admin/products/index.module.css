@@ -1,6 +1,7 @@
 .container {
     width: 100%;
-    padding-top: 2rem;
+    padding-top: 1rem;
+    padding-right: 2rem;
     --text-color: var(--global-white);
 }
 
@@ -33,7 +34,8 @@
     color: white;
     transition: all ease-in-out 200ms;
 }
-.option p{
+
+.option p {
     transition: all ease-in-out 200ms;
 }
 
