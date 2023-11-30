@@ -26,6 +26,8 @@ export default function NavBar(props) {
         menuOpen,
         switchMenu,
         adminMode,
+        setAdminMenuOpen,
+        adminMenuOpen
     } = props
 
     const {
@@ -42,8 +44,16 @@ export default function NavBar(props) {
                 className={styles.bodyContainer}
             >
                 <div className={styles.leftSide}>
-                    {!adminMode &&
-                        <motion.div
+                    {adminMode
+                        ? <motion.div
+                            initial={false}
+                            animate={adminMenuOpen ? "open" : "closed"}
+                        >
+                            <MenuToggle
+                                toggle={() => setAdminMenuOpen(prev => !prev)}
+                            />
+                        </motion.div>
+                        : <motion.div
                             initial={false}
                             animate={menuOpen ? "open" : "closed"}
                         >

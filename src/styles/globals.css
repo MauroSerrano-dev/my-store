@@ -33,7 +33,8 @@
   --toastify-color-error: var(--color-error) !important;
 
   --navbar-height: 5rem;
-  --admin-menu-width: 210px;
+  --admin-menu-width-open: 200px;
+  --admin-menu-width-close: 70px;
 }
 
 * {

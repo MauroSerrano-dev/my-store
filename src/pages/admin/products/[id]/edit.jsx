@@ -23,16 +23,12 @@ import { isAdmin } from '@/utils/validations';
 import { useTranslation } from 'next-i18next'
 import { useAppContext } from '@/components/contexts/AppContext';
 
-export default withRouter(props => {
-
-    const {
-        setAdminMenuOpen,
-    } = props
-
+export default withRouter(() => {
     const {
         auth,
         router,
         session,
+        setAdminMenuOpen,
     } = useAppContext()
 
     const [product, setProduct] = useState()

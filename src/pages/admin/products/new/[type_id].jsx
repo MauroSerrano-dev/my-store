@@ -40,16 +40,12 @@ const INICIAL_PRODUCT = {
     total_sales: 0,
 }
 
-export default withRouter(props => {
-
-    const {
-        setAdminMenuOpen,
-    } = props
-
+export default withRouter(() => {
     const {
         auth,
         router,
         session,
+        setAdminMenuOpen,
     } = useAppContext()
 
     const [product, setProduct] = useState(INICIAL_PRODUCT)

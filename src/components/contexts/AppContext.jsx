@@ -427,6 +427,7 @@ export function AppProvider({ children }) {
                 isUser,
                 isVisitant,
                 updateSession,
+                adminMenuOpen,
             }}
         >
             <motion.div
@@ -485,6 +486,8 @@ export function AppProvider({ children }) {
                         menuOpen={menuOpen}
                         switchMenu={switchMenu}
                         adminMode={adminMode}
+                        setAdminMenuOpen={setAdminMenuOpen}
+                        adminMenuOpen={adminMenuOpen}
                     />
                     {!adminMode &&
                         <div
@@ -530,7 +533,6 @@ export function AppProvider({ children }) {
                     {adminMode &&
                         <AdminMenu
                             open={adminMenuOpen}
-                            setOpen={setAdminMenuOpen}
                         />
                     }
                     {userEmailVerify === false && session &&
