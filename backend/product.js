@@ -547,21 +547,21 @@ async function cleanPopularityMonth() {
         const productsCollection = collection(db, process.env.COLL_PRODUCTS);
         const querySnapshot = await getDocs(productsCollection);
 
-        const batch = db.batch();
+        querySnapshot.forEach(async (doc) => {
+            const productRef = doc(db, process.env.COLL_PRODUCTS, doc.id);
+            const productDoc = await getDoc(productRef);
 
-        querySnapshot.forEach((doc) => {
-            const productRef = doc.ref;
-            const data = doc.data();
-            const updatedData = { ...data, popularity_month: 0 }; // Atualiza o campo popularity_month para zero
+            if (productDoc.exists()) {
+                const productData = productDoc.data();
+                productData.popularity_month = 0;
 
-            batch.update(productRef, updatedData);
+                await updateDoc(productRef, productData);
+            }
         });
-
-        await batch.commit();
 
         return {
             status: 200,
-            message: 'Popularity month reset for all products!',
+            message: 'Popularity month cleaned successfully!',
         };
     } catch (error) {
         console.error('Error cleaning popularity month:', error);
@@ -578,21 +578,21 @@ async function cleanPopularityYear() {
         const productsCollection = collection(db, process.env.COLL_PRODUCTS);
         const querySnapshot = await getDocs(productsCollection);
 
-        const batch = db.batch();
+        querySnapshot.forEach(async (doc) => {
+            const productRef = doc(db, process.env.COLL_PRODUCTS, doc.id);
+            const productDoc = await getDoc(productRef);
 
-        querySnapshot.forEach((doc) => {
-            const productRef = doc.ref;
-            const data = doc.data();
-            const updatedData = { ...data, popularity_year: 0 }; // Atualiza o campo popularity_year para zero
+            if (productDoc.exists()) {
+                const productData = productDoc.data();
+                productData.popularity_year = 0;
 
-            batch.update(productRef, updatedData);
+                await updateDoc(productRef, productData);
+            }
         });
-
-        await batch.commit();
 
         return {
             status: 200,
-            message: 'Popularity year reset for all products!',
+            message: 'Popularity year cleaned successfully!',
         };
     } catch (error) {
         console.error('Error cleaning popularity year:', error);

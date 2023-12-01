@@ -37,9 +37,9 @@ export default function Cart(props) {
     const [allProducts, setAllProducts] = useState()
     const [outOfStock, setOutOfStock] = useState([])
 
-    const SHIPPING_CONVERTED = Math.ceil(shippingValue * userCurrency?.rate)
+    const SHIPPING_CONVERTED = Math.round(shippingValue * userCurrency?.rate)
 
-    const ITEMS_TOTAL = cart?.products.reduce((acc, product) => acc + ((Math.ceil(product.variant.price * userCurrency?.rate) * product.quantity)), 0)
+    const ITEMS_TOTAL = cart?.products.reduce((acc, product) => acc + ((Math.round(product.variant.price * userCurrency?.rate) * product.quantity)), 0)
 
     const ORDER_TOTAL = SHIPPING_CONVERTED + ITEMS_TOTAL
 
@@ -84,7 +84,7 @@ export default function Cart(props) {
                         provider_id: shippingOption.provider_id,
                         variant: prod.variant,
                         variant_id_printify: typeof prod.variant.id_printify === 'number' ? prod.variant.id_printify : prod.variant.id_printify[shippingOption.provider_id],
-                        price: Math.ceil(prod.variant.price * userCurrency?.rate),
+                        price: Math.round(prod.variant.price * userCurrency?.rate),
                     })
                 }),
                 cancel_url: window.location.href,

@@ -123,11 +123,12 @@ export default withRouter(() => {
                 response.status < 300
                     ? showToast({ type: 'success', msg: response.msg })
                     : showToast({ type: 'error', msg: response.msg })
+                router.push('/admin/products/new')
             })
-            .catch(err => showToast({ type: 'error', msg: err }))
-
-        setDisableCreateButton(false)
-        router.push('/admin/products/new')
+            .catch(err => {
+                setDisableCreateButton(false)
+                showToast({ type: 'error', msg: err })
+            })
     }
 
     function updateProductField(fieldName, newValue) {

@@ -8,25 +8,26 @@ import Cookies from 'js-cookie';
 import { useState } from 'react';
 import { useTranslation } from 'next-i18next';
 import { useAppContext } from '../contexts/AppContext';
+import { showToast } from '@/utils/toasts';
 
 export default function ProductModal(props) {
     const {
         product,
         index,
-        session,
     } = props
 
     const {
         setLoading,
         userCurrency,
         setCart,
+        session,
     } = useAppContext()
 
     const tCommon = useTranslation('common').t
 
-    const PRICE_UNIT = Math.ceil(product.variant.price * userCurrency?.rate) * (product.promotion ? 1 - product.promotion.percentage : 1)
+    const PRICE_UNIT = Math.round(product.variant.price * userCurrency?.rate) * (product.promotion ? 1 - product.promotion.percentage : 1)
 
-    const PRICE = Math.ceil(PRICE_UNIT * product.quantity)
+    const PRICE = Math.round(PRICE_UNIT * product.quantity)
 
     const COLOR = COLORS_POOL[product.variant.color_id]
     const SIZE = SIZES_POOL.find(sz => sz.id === product.variant.size_id)
@@ -61,6 +62,7 @@ export default function ProductModal(props) {
             .catch(err => {
                 setDeleting(false)
                 setLoading(false)
+                showToast({ type: 'error', msg: 'Error Deleting Product From Cart' })
                 console.error(err)
             })
     }

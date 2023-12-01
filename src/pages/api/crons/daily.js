@@ -35,7 +35,7 @@ export default async function handler(req, res) {
 
     const updatedCurrencies = {}
     Object.keys(CURRENCIES).forEach(code => {
-        updatedCurrencies[code] = { ...CURRENCIES[code], rate: response.data.rates[code.toUpperCase()] }
+        updatedCurrencies[code] = { ...CURRENCIES[code], rate: response.data.rates[code.toUpperCase()] + 0.01 }
     })
 
     await updateAllCurrencies(updatedCurrencies)

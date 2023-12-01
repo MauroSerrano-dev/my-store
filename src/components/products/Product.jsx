@@ -335,7 +335,7 @@ export default function Product(props) {
                                     fontSize: width * 0.056
                                 }}
                             >
-                                {userCurrency?.symbol} {(Math.ceil(product.promotion ? product.promotion.min_price_original : product.min_price * userCurrency?.rate) / 100).toFixed(2)}
+                                {userCurrency?.symbol} {(Math.round((product.promotion ? product.promotion.min_price_original : product.min_price) * userCurrency?.rate) / 100).toFixed(2)}
                             </p>
                         }
                         <p
@@ -344,7 +344,7 @@ export default function Product(props) {
                                 fontSize: width * 0.085
                             }}
                         >
-                            {userCurrency?.symbol} {(Math.ceil(product.min_price * userCurrency?.rate) / 100).toFixed(2)}
+                            {userCurrency?.symbol} {(Math.round(product.min_price * userCurrency?.rate) / 100).toFixed(2)}
                         </p>
                     </div>
                     {

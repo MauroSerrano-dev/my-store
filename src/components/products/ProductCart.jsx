@@ -9,6 +9,7 @@ import { useState } from 'react';
 import { useTranslation } from 'next-i18next';
 import Cookies from 'js-cookie';
 import { useAppContext } from '../contexts/AppContext';
+import { showToast } from '@/utils/toasts';
 
 export default function ProductCart(props) {
     const {
@@ -32,9 +33,9 @@ export default function ProductCart(props) {
 
     const SIZE = SIZES_POOL.find(sz => sz.id === product.variant.size_id)
 
-    const PRICE_UNIT = Math.ceil(product.variant.price * userCurrency?.rate) * (product.promotion ? 1 - product.promotion.percentage : 1)
+    const PRICE_UNIT = Math.round(product.variant.price * userCurrency?.rate) * (product.promotion ? 1 - product.promotion.percentage : 1)
 
-    const PRICE = Math.ceil(PRICE_UNIT * product.quantity)
+    const PRICE = Math.round(PRICE_UNIT * product.quantity)
 
     const [deleting, setDeleting] = useState(false)
 
@@ -66,6 +67,7 @@ export default function ProductCart(props) {
             .catch(err => {
                 setDeleting(false)
                 setLoading(false)
+                showToast({ type: 'error', msg: 'Error Deleting Product From Cart' })
                 console.error(err)
             })
     }
