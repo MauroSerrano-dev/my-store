@@ -55,9 +55,9 @@ export default withRouter(props => {
 
     const productCurrentVariant = product?.variants.find(vari => vari.size_id === currentSize?.id && vari.color_id === currentColor?.id)
 
-    const PRODUCT_PRICE = product && userCurrency ? Math.ceil(productCurrentVariant?.price * userCurrency.rate) * (product.promotion ? 1 - product.promotion.percentage : 1) : undefined
+    const PRODUCT_PRICE = product && userCurrency ? Math.round(productCurrentVariant?.price * userCurrency.rate) * (product.promotion ? 1 - product.promotion.percentage : 1) : undefined
 
-    const ORIGINAL_PRICE = product && userCurrency ? Math.ceil(productCurrentVariant?.price * userCurrency.rate) : undefined
+    const ORIGINAL_PRICE = product && userCurrency ? Math.round(productCurrentVariant?.price * userCurrency.rate) : undefined
 
     useEffect(() => {
         setCurrentColor(cl ? cl : COLORS_POOL[product?.colors_ids[0]])
@@ -88,7 +88,7 @@ export default withRouter(props => {
                     provider_id: shippingOption.provider_id,
                     variant: productCurrentVariant,
                     variant_id_printify: typeof productCurrentVariant.id_printify === 'number' ? productCurrentVariant.id_printify : productCurrentVariant.id_printify[shippingOption.provider_id],
-                    price: Math.ceil(productCurrentVariant.price * userCurrency?.rate),
+                    price: Math.round(productCurrentVariant.price * userCurrency?.rate),
                 })],
                 success_url: session ? `${window.location.origin}/orders` : window.location.origin,
                 cancel_url: window.location.href,

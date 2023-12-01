@@ -31,14 +31,15 @@ export function isNewProductValid(product, images) {
         showToast({ msg: 'Printify ids must be unique.', type: 'error' })
         return false
     }
-    if (product.colors.length === 0) {
+    if (product.colors?.length === 0 || product.colors_ids?.length === 0) {
         showToast({ msg: 'Choose at least one color.', type: 'error' })
         return false
     }
-    if (product.sizes.length === 0) {
+    if (product.sizes?.length === 0 || product.sizes_ids?.length === 0) {
         showToast({ msg: 'Choose at least one size.', type: 'error' })
         return false
     }
+    console.log('anal')
     if (Object.values(images).some(imgs => imgs.some(img => img.src === ''))) {
         showToast({ msg: 'Image src missing.', type: 'error' })
         return false

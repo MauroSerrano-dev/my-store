@@ -197,7 +197,6 @@ export default withRouter(() => {
     }
 
     function handleChangePrice(value, sizeId) {
-        console.log(value, sizeId)
         if (sizesChained[product.colors_ids[colorIndex]].includes(sizeId) && isCurrentColorChained())
             changeChainedColorsChainedSizesPrice(value)
         else if (isCurrentColorChained())
@@ -271,52 +270,64 @@ export default withRouter(() => {
 
     async function updateProduct() {
         setDisableUpdateButton(true)
+        try {
+            if (!isNewProductValid(product, images)) {
+                setDisableUpdateButton(false)
+                return
+            }
+            const newMinPrice = product.variants.reduce((acc, vari) => acc < vari.price ? acc : vari.price, product.variants[0].price)
+            const newProduct = {
+                ...product,
+                promotion: product.promotion
+                    ? { ...product.promotion, min_price_original: newMinPrice }
+                    : null,
+                min_price: product.promotion
+                    ? Math.round(newMinPrice * product.promotion.percentage)
+                    : newMinPrice,
+                images: product.colors_ids.reduce((acc, color_id) => acc.concat(images[color_id].map(img => ({ src: img.src, color_id: img.color_id }))), []),
+            }
 
-        if (!isNewProductValid(product, images)) {
+            const diff = getObjectsDiff(newProduct, inicialProduct)
+            const diffKeys = Object.keys(diff)
+
+            if (diffKeys.length === 0) {
+                showToast({ msg: 'No changes made.' })
+                setDisableUpdateButton(false)
+                return
+            }
+
+            const options = {
+                method: 'PATCH',
+                headers: {
+                    'Content-Type': 'application/json',
+                    authorization: process.env.NEXT_PUBLIC_APP_TOKEN,
+                },
+                body: JSON.stringify({
+                    product_id: newProduct.id,
+                    product_new_fields: diffKeys.reduce((acc, diffKey) => ({ ...acc, [diffKey]: newProduct[diffKey] }), {})
+                })
+            }
+            await fetch("/api/product", options)
+                .then(response => response.json())
+                .then(response => {
+                    if (response.status < 300) {
+                        setInicialProduct(newProduct)
+                        showToast({ type: 'success', msg: response.msg })
+                        router.push('/admin/products/edit')
+                    }
+                    else {
+                        showToast({ type: 'error', msg: response.msg })
+                    }
+                })
+                .catch(err => {
+                    setDisableUpdateButton(false)
+                    showToast({ msg: err })
+                })
+        }
+        catch (error) {
             setDisableUpdateButton(false)
-            return
+            console.error('Error updating product', error)
         }
-
-        const newProduct = {
-            ...product,
-            min_price: product.variants.reduce((acc, vari) => acc < vari.price ? acc : vari.price, product.variants[0].price),
-            images: product.colors_ids.reduce((acc, color_id) => acc.concat(images[color_id].map(img => ({ src: img.src, color_id: img.color_id }))), []),
-        }
-
-        const diff = getObjectsDiff(newProduct, inicialProduct)
-        const diffKeys = Object.keys(diff)
-
-        if (diffKeys.length === 0) {
-            showToast({ msg: 'No changes made.' })
-            setDisableUpdateButton(false)
-            return
-        }
-
-        const options = {
-            method: 'PATCH',
-            headers: {
-                'Content-Type': 'application/json',
-                authorization: process.env.NEXT_PUBLIC_APP_TOKEN,
-            },
-            body: JSON.stringify({
-                product_id: newProduct.id,
-                product_new_fields: diffKeys.reduce((acc, diffKey) => ({ ...acc, [diffKey]: newProduct[diffKey] }), {})
-            })
-        }
-        await fetch("/api/product", options)
-            .then(response => response.json())
-            .then(response => {
-                if (response.status < 300) {
-                    setInicialProduct(newProduct)
-                    showToast({ type: 'success', msg: response.msg })
-                    router.push('/admin/products/edit')
-                }
-                else {
-                    showToast({ type: 'error', msg: response.msg })
-                }
-            })
-            .catch(err => showToast({ msg: err }))
-        setDisableUpdateButton(false)
     }
 
     function handleChangeColors(value, i, color) {
