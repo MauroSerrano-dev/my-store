@@ -9,6 +9,7 @@ import { useState } from 'react';
 import { useTranslation } from 'next-i18next';
 import { useAppContext } from '../contexts/AppContext';
 import { showToast } from '@/utils/toasts';
+import { getProductPriceUnit } from '@/utils/prices';
 
 export default function ProductModal(props) {
     const {
@@ -25,7 +26,7 @@ export default function ProductModal(props) {
 
     const tCommon = useTranslation('common').t
 
-    const PRICE_UNIT = Math.round(product.variant.price * userCurrency?.rate) * (product.promotion ? 1 - product.promotion.percentage : 1)
+    const PRICE_UNIT = getProductPriceUnit(product, userCurrency?.rate)
 
     const PRICE = Math.round(PRICE_UNIT * product.quantity)
 
