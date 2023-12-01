@@ -47,8 +47,28 @@ export default function Signin() {
     const tToasts = useTranslation('toasts').t
     const tSignin = useTranslation('login-signin').t
 
-    function handleReCaptchaSuccess() {
-        setReCaptchaSolve(true)
+    function handleReCaptchaSuccess(userToken) {
+        const options = {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                authorization: process.env.NEXT_PUBLIC_APP_TOKEN
+            },
+            body: JSON.stringify({
+                response: userToken,
+                expectedAction: 'signup',
+            }),
+        }
+
+        fetch("/api/google-re-captcha", options)
+            .then(response => response.json())
+            .then(response => {
+                if (response.tokenProperties.valid)
+                    setReCaptchaSolve(true)
+                else
+                    tToasts({ type: 'error', msg: 'Error trying to solve recaptcha' })
+            })
+            .catch(() => tToasts({ type: 'error', msg: 'Error with google recaptcha' }))
     }
 
     function handleReCaptchaError() {
@@ -118,6 +138,7 @@ export default function Signin() {
                 ? <NoFound404 />
                 : <div className={styles.container}>
                     <header>
+                        <script src="https://www.google.com/recaptcha/enterprise.js" async defer></script>
                     </header>
                     <main
                         className={styles.main}

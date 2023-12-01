@@ -15,6 +15,34 @@ export default function ForgotPassword() {
 
     const [reCaptchaSolve, setReCaptchaSolve] = useState(false)
 
+    function handleReCaptchaSuccess(userToken) {
+        const options = {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                authorization: process.env.NEXT_PUBLIC_APP_TOKEN
+            },
+            body: JSON.stringify({
+                response: userToken,
+                expectedAction: 'password_reset',
+            }),
+        }
+
+        fetch("/api/google-re-captcha", options)
+            .then(response => response.json())
+            .then(response => {
+                if (response.tokenProperties.valid)
+                    setReCaptchaSolve(true)
+                else
+                    tToasts({ type: 'error', msg: 'Error trying to solve recaptcha' })
+            })
+            .catch(() => tToasts({ type: 'error', msg: 'Error with google recaptcha' }))
+    }
+
+    function handleReCaptchaError() {
+        setReCaptchaSolve(false)
+    }
+
     async function handleSubmit(event) {
         event.preventDefault();
 
