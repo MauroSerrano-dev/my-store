@@ -101,7 +101,7 @@ async function createNewUserWithCredentials(user) {
         await setDoc(newUserRef, newUser)
 
         // Envie o e-mail de verificação
-        /* sendEmailVerification(authenticatedUser, {
+        sendEmailVerification(authenticatedUser, {
             url: process.env.NEXT_PUBLIC_URL.concat('/email-verification'),
             handleCodeInApp: true,
         })
@@ -110,7 +110,7 @@ async function createNewUserWithCredentials(user) {
             })
             .catch((error) => {
                 console.error("Error sending verification email:", error);
-            }) */
+            })
 
         return newUserRef.id
     } catch (error) {
