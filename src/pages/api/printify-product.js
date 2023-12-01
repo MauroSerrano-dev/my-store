@@ -1,4 +1,3 @@
-// pages/api/getPrintifyProducts.js
 import axios from 'axios'
 import { isTokenValid } from '@/utils/auth'
 
