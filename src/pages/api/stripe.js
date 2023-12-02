@@ -1,5 +1,4 @@
 import { isTokenValid } from "@/utils/auth";
-import { STEPS } from "@/consts";
 import axios from 'axios'
 
 const Stripe = require("stripe");
@@ -91,14 +90,11 @@ export default async function handler(req, res) {
         {
           id: item.id,
           id_printify: item.id_printify,
-          title: item.title,
           description: item.description,
-          image_src: item.image.src,
           variant_id: item.variant.id,
           variant_id_printify: item.variant_id_printify,
           quantity: item.quantity,
           price: item.price,
-          status: STEPS[0].id,
         }
       )
     })

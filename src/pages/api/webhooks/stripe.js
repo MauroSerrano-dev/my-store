@@ -5,6 +5,8 @@ import { createOrder } from '../../../../backend/orders'
 import getRawBody from 'raw-body'
 import { deleteProductsFromWishlist } from '../../../../backend/wishlists'
 import { sendPurchaseConfirmationEmail } from '../../../../backend/email-sender'
+import { getProductsInfo } from '../../../../backend/product'
+import { STEPS } from '@/consts'
 const { v4: uuidv4 } = require('uuid')
 
 const Stripe = require("stripe")
@@ -75,8 +77,8 @@ export default async function handler(req, res) {
                 }
             }
 
-/*             const printifyRes = await axios.post(base_url, body_data, options)
- */
+            const printifyRes = await axios.post(base_url, body_data, options)
+
             const amount_details = {
                 amount_total: data.amount_total,
                 amount_discount: data.total_details.amount_discount,
@@ -86,13 +88,18 @@ export default async function handler(req, res) {
                 currency: data.currency,
             }
 
-/*             await createOrder(
+            await createOrder(
                 {
                     id: orderId,
                     id_printify: printifyRes.data.id,
                     user_id: user_id,
                     stripe_id: data.id,
-                    products: line_items,
+                    products: line_items.map(prod => (
+                        {
+                            ...prod,
+                            status: STEPS[0].id
+                        }
+                    )),
                     customer: {
                         email: data.customer_details.email,
                         name: data.customer_details.name,
@@ -103,14 +110,16 @@ export default async function handler(req, res) {
                     amount: amount_details,
                     shipping_details: data.shipping_details,
                 }
-            ) */
+            )
 
-            await sendPurchaseConfirmationEmail(data.customer_details, line_items, amount_details)
+            const productsInfo = await getProductsInfo(line_items)
+
+            await sendPurchaseConfirmationEmail(data.customer_details, line_items.map((prod, i) => ({ ...prod, ...productsInfo[i] })), amount_details)
 
             if (cart_id) {
                 if (user_id) {
                     await setCartProducts(cart_id, [])
-                    await deleteProductsFromWishlist(user_id, line_items)
+                    await deleteProductsFromWishlist(user_id, line_items.map(prod => prod.id))
                 }
                 else
                     await setCartSessionProducts(cart_id, [])

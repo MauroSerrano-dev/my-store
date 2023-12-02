@@ -1,7 +1,7 @@
 import { isTokenValid } from "@/utils/auth";
 import { deleteProductFromCart } from "../../../../backend/cart";
 import { deleteProductFromCartSession } from "../../../../backend/cart-session";
-import { getCartProductsInfo } from "../../../../backend/product";
+import { getProductsInfo } from "../../../../backend/product";
 
 export default async function handler(req, res) {
     const { authorization, user_id } = req.headers
@@ -18,7 +18,7 @@ export default async function handler(req, res) {
             ? await deleteProductFromCart(cartId, product)
             : await deleteProductFromCartSession(cartId, product)
         if (response.cart?.products) {
-            const prodResponse = await getCartProductsInfo(response.cart.products)
+            const prodResponse = await getProductsInfo(response.cart.products)
             response.cart.products = prodResponse.products
         }
         res.status(response.status).json(response)

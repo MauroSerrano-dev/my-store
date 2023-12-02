@@ -53,7 +53,7 @@ async function sendPurchaseConfirmationEmail(customer_details, products, amount_
                   ${products.map(product => `
                     <tr>
                       <td style="border: 1px solid #ddd; padding: 8px;">
-                        <img src="${product.image_src}" alt="${product.title}" style="width: 50px; height: 50px;">
+                        <img src="${product.image.src}" alt="${product.title}" style="width: 50px; height: 50px;">
                       </td>
                       <td style="border: 1px solid #ddd; padding: 8px;">
                         <strong>${product.title}</strong>
@@ -67,7 +67,30 @@ async function sendPurchaseConfirmationEmail(customer_details, products, amount_
                   <!-- Fim dos dados dos produtos -->
                 </tbody>
                 <tfoot>
-                  <!-- ... Outras linhas do rodapé -->
+                    <tr>
+                        <td colspan="3" style="border: 1px solid #ddd; padding: 8px; text-align: right;">
+                            Order Subtotal:
+                        </td>
+                        <td style="border: 1px solid #ddd; padding: 8px;">
+                            ${amount_details.amount_subtotal}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="3" style="border: 1px solid #ddd; padding: 8px; text-align: right;">
+                            Shipping & Taxes:
+                        </td>
+                        <td style="border: 1px solid #ddd; padding: 8px;">
+                            ${amount_details.amount_shipping}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="3" style="border: 1px solid #ddd; padding: 8px; text-align: right;">
+                            Order Total:
+                        </td>
+                        <td style="border: 1px solid #ddd; padding: 8px;">
+                            ${amount_details.amount_total}
+                        </td>
+                    </tr>
                 </tfoot>
               </table>
             </body>
