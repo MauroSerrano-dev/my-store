@@ -545,8 +545,8 @@ async function cleanPopularityMonth() {
         const productsCollection = collection(db, process.env.COLL_PRODUCTS);
         const querySnapshot = await getDocs(productsCollection);
 
-        querySnapshot.forEach(async (doc) => {
-            const productRef = doc(db, process.env.COLL_PRODUCTS, doc.id);
+        for (const doc of querySnapshot.docs) {
+            const productRef = doc.ref;
             const productDoc = await getDoc(productRef);
 
             if (productDoc.exists()) {
@@ -555,7 +555,7 @@ async function cleanPopularityMonth() {
 
                 await updateDoc(productRef, productData);
             }
-        });
+        }
 
         return {
             status: 200,
@@ -576,8 +576,8 @@ async function cleanPopularityYear() {
         const productsCollection = collection(db, process.env.COLL_PRODUCTS);
         const querySnapshot = await getDocs(productsCollection);
 
-        querySnapshot.forEach(async (doc) => {
-            const productRef = doc(db, process.env.COLL_PRODUCTS, doc.id);
+        for (const doc of querySnapshot.docs) {
+            const productRef = doc.ref;
             const productDoc = await getDoc(productRef);
 
             if (productDoc.exists()) {
@@ -586,7 +586,7 @@ async function cleanPopularityYear() {
 
                 await updateDoc(productRef, productData);
             }
-        });
+        }
 
         return {
             status: 200,
