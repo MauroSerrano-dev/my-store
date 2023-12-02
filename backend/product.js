@@ -77,9 +77,9 @@ async function getAllProducts(props) {
     }
 }
 
-async function getCartProductsInfo(cartProducts) {
+async function getProductsInfo(products) {
     try {
-        if (cartProducts.length === 0) {
+        if (products.length === 0) {
             return {
                 status: 200,
                 message: 'No products found for the provided Cart.',
@@ -88,21 +88,20 @@ async function getCartProductsInfo(cartProducts) {
         }
         const productsCollection = collection(db, process.env.COLL_PRODUCTS)
 
-        const q = query(productsCollection, where('id', 'in', cartProducts.map(prod => prod.id)))
+        const q = query(productsCollection, where('id', 'in', products.map(prod => prod.id)))
 
         const querySnapshot = await getDocs(q)
 
-        const products = querySnapshot.docs.map((doc) => doc.data())
+        const productsResult = querySnapshot.docs.map((doc) => doc.data())
 
-        const productsOneVariant = cartProducts.map(prod => {
-            const product = products.find(p => p.id === prod.id)
+        const productsOneVariant = products.map(prod => {
+            const product = productsResult.find(p => p.id === prod.id)
             const variant = product.variants.find(vari => vari.id === prod.variant_id)
 
             return {
                 ...prod,
                 type_id: product.type_id,
                 title: product.title,
-                description: product.description,
                 promotion: product.promotion,
                 printify_ids: product.printify_ids,
                 blueprint_ids: product.blueprint_ids,
@@ -113,19 +112,18 @@ async function getCartProductsInfo(cartProducts) {
                 },
                 image: product.images.filter(img => img.color_id === variant.color_id)[product.image_showcase_index],
             }
-
         })
 
         return {
             status: 200,
-            message: 'Products retrieved successfully Cart Products Info!',
+            message: 'Products retrieved successfully Products Info!',
             products: productsOneVariant,
         }
     } catch (error) {
-        console.log('Error getting Cart Products Info:', error);
+        console.log('Error getting Products Info:', error);
         return {
             status: 500,
-            message: 'Error getting Cart Products Info.',
+            message: 'Error getting Products Info.',
             products: null,
             error: error,
         };
@@ -613,7 +611,7 @@ export {
     getProductsByTitle,
     updateProduct,
     handleProductsPurchased,
-    getCartProductsInfo,
+    getProductsInfo,
     getAllProductsIds,
     getProductsByIds,
     cleanPopularityMonth,

@@ -109,7 +109,7 @@ async function deleteProductFromWishlist(wishlistId, product) {
     }
 }
 
-async function deleteProductsFromWishlist(user_id, productsToDelete) {
+async function deleteProductsFromWishlist(user_id, productsIdsToDelete) {
     try {
         const wishlistQuery = query(
             collection(db, process.env.COLL_WISHLISTS),
@@ -128,7 +128,7 @@ async function deleteProductsFromWishlist(user_id, productsToDelete) {
         const wishlistDoc = querySnapshot.docs[0];
         const wishlistData = wishlistDoc.data();
 
-        wishlistData.products = wishlistData.products.filter(prod => !productsToDelete.some(product => product.id === prod.id))
+        wishlistData.products = wishlistData.products.filter(prod => !productsIdsToDelete.includes(prod.id))
 
         await updateDoc(wishlistDoc.ref, wishlistData)
 
