@@ -26,7 +26,7 @@ export default function ProductModal(props) {
 
     const tCommon = useTranslation('common').t
 
-    const PRICE_UNIT = getProductPriceUnit(product, userCurrency?.rate)
+    const PRICE_UNIT = getProductPriceUnit(product, product.variant, userCurrency?.rate)
 
     const PRICE = Math.round(PRICE_UNIT * product.quantity)
 

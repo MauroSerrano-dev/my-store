@@ -11,9 +11,9 @@ export default async function handler(req, res) {
         return res.status(401).json({ error: "Invalid authentication." })
 
     if (req.method === "POST") {
-        const { user } = req.body
+        const { user, userLanguage } = req.body
         try {
-            await createNewUserWithCredentials(user)
+            await createNewUserWithCredentials(user, userLanguage)
             res.status(201).json({ status: 201, message: 'user_created' })
         }
         catch (error) {

@@ -21,6 +21,7 @@ import { cartItemModel } from '@/utils/models'
 import SelectorAutocomplete from '@/components/material-ui/SelectorAutocomplete'
 import COUNTRIES_POOL from '../../../public/locales/en/countries.json'
 import { useAppContext } from '@/components/contexts/AppContext'
+import { getProductPriceUnit, getProductPriceWithoutPromotion } from '@/utils/prices'
 
 export default withRouter(props => {
     const {
@@ -57,9 +58,9 @@ export default withRouter(props => {
 
     const productCurrentVariant = product?.variants.find(vari => vari.size_id === currentSize?.id && vari.color_id === currentColor?.id)
 
-    const PRODUCT_PRICE = product && userCurrency ? Math.round(productCurrentVariant?.price * userCurrency.rate) * (product.promotion ? 1 - product.promotion.percentage : 1) : undefined
+    const PRODUCT_PRICE = product && userCurrency && productCurrentVariant ? getProductPriceUnit(product, productCurrentVariant, userCurrency.rate) : undefined
 
-    const ORIGINAL_PRICE = product && userCurrency ? Math.round(productCurrentVariant?.price * userCurrency.rate) : undefined
+    const ORIGINAL_PRICE = product && userCurrency && productCurrentVariant ? getProductPriceWithoutPromotion(product, productCurrentVariant, userCurrency.rate) : undefined
 
     useEffect(() => {
         setCurrentColor(cl ? cl : COLORS_POOL[product?.colors_ids[0]])

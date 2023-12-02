@@ -52,9 +52,11 @@ export default async function handler(req, res) {
                 },
             }
 
-            const nameArr = data.customer_details.name.split(' ')
-            const first_name = nameArr.slice(0, nameArr.length - 1).join(' ')
-            const last_name = nameArr[nameArr.length - 1] || null
+            const fullName = data.shipping_details.name
+            const fullNameArr = data.shipping_details.name.split(' ')
+
+            const first_name = fullNameArr.length <= 1 ? fullName : fullNameArr.slice(0, fullNameArr.length - 1).join(' ')
+            const last_name = fullNameArr.length <= 1 ? '.' : fullNameArr[fullNameArr.length - 1]
 
             const body_data = {
                 external_id: orderId,
@@ -98,10 +100,15 @@ export default async function handler(req, res) {
                     id: orderId,
                     id_printify: printifyRes.data.id,
                     user_id: user_id,
-                    stripe_id: data.id,
+                    stripe_id: data.payment_intent,
                     products: line_items.map(prod => (
                         {
-                            ...prod,
+                            id: prod.id,
+                            id_printify: prod.id,
+                            price: prod.id,
+                            quantity: prod.id,
+                            variant_id: prod.id,
+                            variant_id_printify: prod.id,
                             status: STEPS[0].id
                         }
                     )),

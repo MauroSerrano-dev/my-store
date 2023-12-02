@@ -24,7 +24,7 @@ export default function GoogleButton(props) {
         signInWithPopup(auth, provider)
             .then(response => {
                 setShowLoadingScreen(true)
-                showToast({ type: 'success', msg: tToasts('success_login', { user_name: response.user.displayName }) })
+                showToast({ type: 'success', msg: tToasts('success_login', { user_name: response.user.displayName }), time: 2000 })
                 router.push('/')
             })
             .catch(error => {

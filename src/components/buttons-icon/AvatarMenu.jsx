@@ -35,6 +35,10 @@ export default function AvatarMenu() {
     setOpen(false)
   }
 
+  function handleClickOption() {
+    setOpen(false)
+  }
+
   function handleMouseEnter() {
     if (supportsHoverAndPointer) {
       setOpen(true)
@@ -156,7 +160,7 @@ export default function AvatarMenu() {
                 href={'/profile'}
                 className='noUnderline'
               >
-                <MenuItem>
+                <MenuItem onClick={handleClickOption}>
                   <ListItemIcon>
                     <AccountCircleRoundedIcon fontSize="medium" />
                   </ListItemIcon>
@@ -168,7 +172,7 @@ export default function AvatarMenu() {
                 href={'/orders'}
                 className='noUnderline'
               >
-                <MenuItem>
+                <MenuItem onClick={handleClickOption}>
                   <ListItemIcon>
                     <ShoppingBagOutlinedIcon fontSize="medium" />
                   </ListItemIcon>
@@ -179,7 +183,7 @@ export default function AvatarMenu() {
                 href={'/support'}
                 className='noUnderline'
               >
-                <MenuItem>
+                <MenuItem onClick={handleClickOption}>
                   <ListItemIcon>
                     <SupportAgentIcon fontSize="medium" />
                   </ListItemIcon>
@@ -191,7 +195,7 @@ export default function AvatarMenu() {
                   href={'/admin'}
                   className='noUnderline'
                 >
-                  <MenuItem>
+                  <MenuItem onClick={handleClickOption}>
                     <ListItemIcon>
                       <AdminPanelSettingsRoundedIcon fontSize="medium" />
                     </ListItemIcon>

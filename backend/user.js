@@ -63,7 +63,7 @@ async function getUserById(id) {
     }
 }
 
-async function createNewUserWithCredentials(user) {
+async function createNewUserWithCredentials(user, userLanguage) {
     try {
         // Create a reference to the users collection
         const usersCollection = collection(db, process.env.COLL_USERS)
@@ -101,15 +101,16 @@ async function createNewUserWithCredentials(user) {
         await setDoc(newUserRef, newUser)
 
         // Envie o e-mail de verificação
+        auth.languageCode = userLanguage
         sendEmailVerification(authenticatedUser, {
             url: process.env.NEXT_PUBLIC_URL.concat('/email-verification'),
             handleCodeInApp: true,
         })
             .then(() => {
-                console.log(`Verification email sent to ${authenticatedUser.email}`);
+                console.log(`Verification email sent to ${authenticatedUser.email}`)
             })
             .catch((error) => {
-                console.error("Error sending verification email:", error);
+                console.error("Error sending verification email:", error)
             })
 
         return newUserRef.id

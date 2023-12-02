@@ -94,7 +94,10 @@ export default function Signin() {
                     'Content-Type': 'application/json',
                     authorization: process.env.NEXT_PUBLIC_APP_TOKEN,
                 },
-                body: JSON.stringify({ user: user })
+                body: JSON.stringify({
+                    user: user,
+                    userLanguage: i18n.language
+                })
             }
 
             fetch('/api/user', options)
