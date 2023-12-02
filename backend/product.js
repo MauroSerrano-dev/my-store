@@ -557,6 +557,7 @@ async function cleanPopularityMonth() {
             }
         }
 
+        console.log('Popularity month cleaned successfully!')
         return {
             status: 200,
             message: 'Popularity month cleaned successfully!',
@@ -588,6 +589,7 @@ async function cleanPopularityYear() {
             }
         }
 
+        console.log('Popularity year cleaned successfully!')
         return {
             status: 200,
             message: 'Popularity year cleaned successfully!',
