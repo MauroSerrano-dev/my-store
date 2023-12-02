@@ -8,6 +8,11 @@ initializeApp(firebaseConfig)
 
 const db = getFirestore()
 
+/**
+ * Retrieves a cart by its ID.
+ * @param {string} id - The ID of the cart.
+ * @returns {object} The cart data.
+ */
 async function getCartById(id) {
     const cartRef = doc(db, process.env.COLL_CARTS, id)
 
@@ -26,6 +31,11 @@ async function getCartById(id) {
     }
 }
 
+/**
+ * Retrieves a cart ID by user ID.
+ * @param {string} userId - The ID of the user.
+ * @returns {object} The status and cart ID.
+ */
 async function getCartIdByUserId(userId) {
     try {
         const cartCollection = collection(db, process.env.COLL_CARTS)
@@ -63,6 +73,13 @@ async function getCartIdByUserId(userId) {
     }
 }
 
+/**
+ * Creates a new cart.
+ * @param {string} userId - The ID of the user.
+ * @param {string} cartId - The ID of the cart.
+ * @param {Array} products - The products in the cart.
+ * @returns {string | object} The cart ID or status message if a conflict occurs.
+ */
 async function createCart(userId, cartId, products) {
     try {
         const cartRef = doc(db, process.env.COLL_CARTS, cartId)
@@ -93,6 +110,11 @@ async function createCart(userId, cartId, products) {
     }
 }
 
+/**
+ * Sets the products in a cart.
+ * @param {string} cartId - The ID of the cart.
+ * @param {Array} cartProducts - The products to set in the cart.
+ */
 async function setCartProducts(cartId, cartProducts) {
     const cartRef = doc(db, process.env.COLL_CARTS, cartId)
     const cartDoc = await getDoc(cartRef)
@@ -109,6 +131,12 @@ async function setCartProducts(cartId, cartProducts) {
     }
 }
 
+/**
+ * Adds products to a cart.
+ * @param {string} cartId - The ID of the cart.
+ * @param {Array} cartNewProducts - The new products to add to the cart.
+ * @returns {object} Status and message regarding the cart update.
+ */
 async function addProductsToCart(cartId, cartNewProducts) {
     const cartRef = doc(db, process.env.COLL_CARTS, cartId)
     const cartDoc = await getDoc(cartRef)
@@ -136,6 +164,12 @@ async function addProductsToCart(cartId, cartNewProducts) {
     }
 }
 
+/**
+ * Deletes a product from a cart.
+ * @param {string} cartId - The ID of the cart.
+ * @param {object} product - The product to be removed from the cart.
+ * @returns {object} Status and message regarding the cart update.
+ */
 async function deleteProductFromCart(cartId, product) {
     const userRef = doc(db, process.env.COLL_CARTS, cartId)
     const cartDoc = await getDoc(userRef)
@@ -163,6 +197,15 @@ async function deleteProductFromCart(cartId, product) {
     }
 }
 
+/**
+ * Changes a specific field value in a product within a cart.
+ * @param {string} collectionName - The name of the collection.
+ * @param {string} cartId - The ID of the cart.
+ * @param {object} product - The product to be updated.
+ * @param {string} fieldName - The name of the field to be updated.
+ * @param {any} newValue - The new value for the field.
+ * @returns {object} Status and message regarding the cart update.
+ */
 async function changeProductField(collectionName, cartId, product, fieldName, newValue) {
     try {
         const userRef = doc(db, collectionName, cartId)
@@ -194,6 +237,11 @@ async function changeProductField(collectionName, cartId, product, fieldName, ne
     }
 }
 
+/**
+ * Merges products from a cart session into a user's cart.
+ * @param {string} userId - The ID of the user.
+ * @param {string} cart_cookie_id - The ID of the cart session.
+ */
 async function mergeCarts(userId, cart_cookie_id) {
     try {
         const userCartRes = await getCartIdByUserId(userId)
@@ -220,12 +268,12 @@ async function mergeCarts(userId, cart_cookie_id) {
 }
 
 export {
-    createCart,
-    setCartProducts,
     getCartById,
     getCartIdByUserId,
-    mergeCarts,
+    createCart,
+    setCartProducts,
     addProductsToCart,
     deleteProductFromCart,
     changeProductField,
+    mergeCarts,
 }

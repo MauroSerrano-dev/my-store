@@ -61,27 +61,34 @@ export function AppProvider({ children }) {
     const adminMode = isAdmin(auth) && router.pathname.split('/')[1] === 'admin'
 
     useEffect(() => {
-        handleLoading()
+        handleRouteChangeStart()
 
         getCurrencies()
 
-        function handleLoading() {
+        function handleRouteChangeStart() {
             setLoading(true)
         }
 
-        function handleEndLoading() {
+        function handleRouteChangeComplete() {
+            setLoading(false)
+            setShowLoadingScreen(false)
+            if (auth && auth.currentUser)
+                setUserEmailVerify(auth.currentUser.emailVerified)
+        }
+
+        function handleRouteChangeError() {
             setLoading(false)
             setShowLoadingScreen(false)
         }
 
-        router.events.on("routeChangeStart", handleLoading)
-        router.events.on("routeChangeComplete", handleEndLoading)
-        router.events.on("routeChangeError", handleEndLoading)
+        router.events.on("routeChangeStart", handleRouteChangeStart)
+        router.events.on("routeChangeComplete", handleRouteChangeComplete)
+        router.events.on("routeChangeError", handleRouteChangeError)
 
         return () => {
-            router.events.off("routeChangeStart", handleLoading)
-            router.events.off("routeChangeComplete", handleEndLoading)
-            router.events.off("routeChangeError", handleEndLoading)
+            router.events.off("routeChangeStart", handleRouteChangeStart)
+            router.events.off("routeChangeComplete", handleRouteChangeComplete)
+            router.events.off("routeChangeError", handleRouteChangeError)
         }
     }, [])
 
