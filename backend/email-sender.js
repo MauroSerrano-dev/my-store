@@ -1,112 +1,148 @@
 const nodemailer = require('nodemailer')
 
+function getEmailTemplate(language, orderId) {
+  if (language === 'es') {
+    return {
+      subject: 'Confirmación de Compra',
+      title: '¡Gracias por su compra!',
+      track_link: `Puede <a href="${process.env.NEXT_PUBLIC_URL}/track-order/${orderId}">seguir su pedido aquí</a>.`,
+      order_id: `Su ID de pedido es: ${orderId}`,
+      not_reply: 'Este es un mensaje automatizado. Por favor, no responda a este correo electrónico.',
+      contact_us: `Si tiene alguna pregunta, <a href="${process.env.NEXT_PUBLIC_URL}/contact">contáctenos</a>.`,
+    }
+  }
+  if (language === 'pt-BR') {
+    return {
+      subject: 'Confirmação de Compra',
+      title: 'Obrigado pela sua compra!',
+      track_link: `Você pode <a href="${process.env.NEXT_PUBLIC_URL}/track-order/${orderId}">acompanhar seu pedido aqui</a>.`,
+      order_id: `O ID do seu pedido é: ${orderId}`,
+      not_reply: 'Esta é uma mensagem automática. Por favor, não responda a este e-mail.',
+      contact_us: `Se tiver alguma dúvida, <a href="${process.env.NEXT_PUBLIC_URL}/contact">entre em contato</a>.`,
+    }
+  }
+  if (language === 'pt-PT') {
+    return {
+      subject: 'Confirmação de Compra',
+      title: 'Obrigado pela sua compra!',
+      track_link: `Pode <a href="${process.env.NEXT_PUBLIC_URL}/track-order/${orderId}">acompanhar o seu pedido aqui</a>.`,
+      order_id: `O seu ID de pedido é: ${orderId}`,
+      not_reply: 'Esta é uma mensagem automática. Por favor, não responda a este e-mail.',
+      contact_us: `Se tiver alguma questão, <a href="${process.env.NEXT_PUBLIC_URL}/contact">entre em contato connosco</a>.`,
+    }
+  }
+  return {
+    subject: 'Purchase Confirmation',
+    title: 'Thank you for your purchase!',
+    track_link: `You can <a href="${process.env.NEXT_PUBLIC_URL}/track-order/${orderId}">track your order here</a>.`,
+    order_id: `Your order ID is: ${orderId}`,
+    not_reply: 'This is an automated message. Please do not reply to this email.',
+    contact_us: `If you have any questions, <a href="${process.env.NEXT_PUBLIC_URL}/contact">contact us</a>.`,
+  }
+}
+
 /**
  * Sends a purchase confirmation email to the customer.
  * @param {string} customer_details - The infos of the customer.
- * @param {object} products - Products purchased.
- * @param {string} amount_details - Details of the purchase.
+ * @param {string} orderId - The order ID.
  * @returns {object} Object indicating the status of the email sending process.
  */
-async function sendPurchaseConfirmationEmail(customer_details, products, amount_details) {
-    try {
-        if (!customer_details?.email)
-            return { status: 'error', message: 'Error sending the purchase email, email not provided.' }
+async function sendPurchaseConfirmationEmail(customer_details, orderId, user_language) {
 
-        // SMTP transport configuration
-        const transporter = nodemailer.createTransport({
-            host: process.env.EMAIL_TRANSPORTER_HOST,
-            port: process.env.EMAIL_TRANSPORTER_PORT,
-            secure: true,
-            auth: {
-                user: process.env.ORDERS_EMAIL,
-                pass: process.env.ORDERS_EMAIL_PASSWORD,
-            },
-        });
+  try {
+    if (!customer_details?.email)
+      return { status: 'error', message: 'Error sending the purchase email, email not provided.' }
 
-        // Email details
-        const mailOptions = {
-            from: 'orders@mrfstyles.com',
-            to: customer_details.email,
-            subject: 'Purchase Confirmation',
-            html: `<html>
-            <head>
-              <style>
-                /* Estilos CSS */
-                /* ... Adicione os estilos que desejar */
-              </style>
-            </head>
-            <body>
-              <p>Thank you for your purchase!</p>
-              <h3>Order Details</h3>
-              <table style="border-collapse: collapse; width: 100%;">
-                <thead style="background-color: #f2f2f2;">
-                  <tr>
-                    <th style="border: 1px solid #ddd; padding: 8px;">Product Image</th>
-                    <th style="border: 1px solid #ddd; padding: 8px;">Product</th>
-                    <th style="border: 1px solid #ddd; padding: 8px;">Price</th>
-                    <th style="border: 1px solid #ddd; padding: 8px;">Quantity</th>
-                    <th style="border: 1px solid #ddd; padding: 8px;">Total</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <!-- Substitua os dados dos produtos aqui -->
-                  ${products.map(product => `
-                    <tr>
-                      <td style="border: 1px solid #ddd; padding: 8px;">
-                        <img src="${product.image.src}" alt="${product.title}" style="width: 50px; height: 50px;">
-                      </td>
-                      <td style="border: 1px solid #ddd; padding: 8px;">
-                        <strong>${product.title}</strong>
-                        <p>${product.description}</p> <!-- Include description here -->
-                      </td>
-                      <td style="border: 1px solid #ddd; padding: 8px;">${product.price}</td>
-                      <td style="border: 1px solid #ddd; padding: 8px;">${product.quantity}</td>
-                      <td style="border: 1px solid #ddd; padding: 8px;">${product.price * product.quantity}</td>
-                    </tr>
-                  `).join('')}
-                  <!-- Fim dos dados dos produtos -->
-                </tbody>
-                <tfoot>
-                    <tr>
-                        <td colspan="3" style="border: 1px solid #ddd; padding: 8px; text-align: right;">
-                            Order Subtotal:
-                        </td>
-                        <td style="border: 1px solid #ddd; padding: 8px;">
-                            ${amount_details.amount_subtotal}
-                        </td>
-                    </tr>
-                    <tr>
-                        <td colspan="3" style="border: 1px solid #ddd; padding: 8px; text-align: right;">
-                            Shipping & Taxes:
-                        </td>
-                        <td style="border: 1px solid #ddd; padding: 8px;">
-                            ${amount_details.amount_shipping}
-                        </td>
-                    </tr>
-                    <tr>
-                        <td colspan="3" style="border: 1px solid #ddd; padding: 8px; text-align: right;">
-                            Order Total:
-                        </td>
-                        <td style="border: 1px solid #ddd; padding: 8px;">
-                            ${amount_details.amount_total}
-                        </td>
-                    </tr>
-                </tfoot>
-              </table>
-            </body>
-          </html>`,
-        };
+    // SMTP transport configuration
+    const transporter = nodemailer.createTransport({
+      host: process.env.EMAIL_TRANSPORTER_HOST,
+      port: process.env.EMAIL_TRANSPORTER_PORT,
+      secure: true,
+      auth: {
+        user: process.env.ORDERS_EMAIL,
+        pass: process.env.ORDERS_EMAIL_PASSWORD,
+      },
+    });
 
-        // Sending the email
-        const info = await transporter.sendMail(mailOptions)
-        console.log('Email sent:', info.response)
-        return { status: 'success', message: `Purchase confirmation email sent to ${customer_details.email} successfully!` }
-    } catch (error) {
-        console.error('Error sending email:', error)
-        return { status: 'error', message: 'Error sending the purchase confirmation email.' }
-    }
+    const template = getEmailTemplate(user_language, orderId)
+
+    // Email details
+    const mailOptions = {
+      from: process.env.ORDERS_EMAIL,
+      to: customer_details.email,
+      subject: template.subject,
+      html: `<html>
+      <head>
+        <style>
+          body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+          }
+          .container {
+            width: 80%;
+            margin: 0 auto;
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            text-align: center;
+          }
+          .logo {
+            margin-bottom: 20px;
+          }
+          h1 {
+            color: #1189c4;
+            margin-bottom: 10px;
+          }
+          p {
+            margin-bottom: 8px;
+          }
+          a {
+            color: #1189c4;
+            text-decoration: none;
+          }
+          a:hover {
+            text-decoration: underline;
+          }
+          .footer {
+            margin-top: 20px;
+            padding-top: 10px;
+            border-top: 1px solid #ddd;
+            font-size: 12px;
+            color: #666;
+            text-align: left;
+          }
+        </style>
+      </head>
+      <body>
+        <div class='container'>
+          <a href=${process.env.NEXT_PUBLIC_URL} class="logo">
+            <img src="https://firebasestorage.googleapis.com/v0/b/my-store-4aef7.appspot.com/o/logo_email.png?alt=media&token=4c96e37c-5ad8-4ccf-9cfa-bf650ee8e1d4" alt="Logo" style='width: 200px'>
+          </a>
+          <h1>${template.title}</h1>
+          <p>${template.track_link}</p>
+          <p>${template.order_id}</p>
+          <div class='footer'>
+            <p>${template.not_reply}</p>
+            <p>${template.contact_us}</p>
+          </div>
+        </div>
+      </body>
+    </html>`,
+    };
+
+    // Sending the email
+    const info = await transporter.sendMail(mailOptions)
+    console.log('Email sent:', info.response)
+    return { status: 'success', message: `Purchase confirmation email sent to ${customer_details.email} successfully!` }
+  } catch (error) {
+    console.error('Error sending email:', error)
+    return { status: 'error', message: 'Error sending the purchase confirmation email.' }
+  }
 }
 
 export {
-    sendPurchaseConfirmationEmail,
+  sendPurchaseConfirmationEmail,
 }
