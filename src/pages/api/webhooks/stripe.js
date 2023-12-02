@@ -4,6 +4,7 @@ import { setCartSessionProducts } from '../../../../backend/cart-session'
 import { createOrder } from '../../../../backend/orders'
 import getRawBody from 'raw-body'
 import { deleteProductsFromWishlist } from '../../../../backend/wishlists'
+import { sendPurchaseConfirmationEmail } from '../../../../backend/email-sender'
 const { v4: uuidv4 } = require('uuid')
 
 const Stripe = require("stripe")
@@ -74,9 +75,18 @@ export default async function handler(req, res) {
                 }
             }
 
-            const printifyRes = await axios.post(base_url, body_data, options)
+/*             const printifyRes = await axios.post(base_url, body_data, options)
+ */
+            const amount_details = {
+                amount_total: data.amount_total,
+                amount_discount: data.total_details.amount_discount,
+                amount_subtotal: data.amount_subtotal,
+                amount_shipping: data.total_details.amount_shipping,
+                amount_tax: data.total_details.amount_tax,
+                currency: data.currency,
+            }
 
-            await createOrder(
+/*             await createOrder(
                 {
                     id: orderId,
                     id_printify: printifyRes.data.id,
@@ -90,19 +100,12 @@ export default async function handler(req, res) {
                         tax_exempt: data.customer_details.tax_exempt,
                         tax_ids: data.customer_details.tax_ids,
                     },
-                    amount: {
-                        amount_total: data.amount_total,
-                        amount_discount: data.total_details.amount_discount,
-                        amount_subtotal: data.amount_subtotal,
-                        amount_shipping: data.total_details.amount_shipping,
-                        amount_tax: data.total_details.amount_tax,
-                        currency: data.currency,
-                    },
-                    shipping_details: {
-                        ...data.shipping_details,
-                    },
+                    amount: amount_details,
+                    shipping_details: data.shipping_details,
                 }
-            )
+            ) */
+
+            await sendPurchaseConfirmationEmail(data.customer_details, line_items, amount_details)
 
             if (cart_id) {
                 if (user_id) {

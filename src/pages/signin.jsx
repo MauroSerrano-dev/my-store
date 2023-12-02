@@ -48,6 +48,8 @@ export default function Signin() {
     const tSignin = useTranslation('login-signin').t
 
     function handleReCaptchaSuccess(userToken) {
+        setReCaptchaSolve(true) // está assim devido ao tempo que demora a chamada api para liberar o botão
+
         const options = {
             method: 'POST',
             headers: {
@@ -61,14 +63,6 @@ export default function Signin() {
         }
 
         fetch("/api/google-re-captcha", options)
-            .then(response => response.json())
-            .then(response => {
-                if (response.tokenProperties.valid)
-                    setReCaptchaSolve(true)
-                else
-                    tToasts({ type: 'error', msg: 'Error trying to solve recaptcha' })
-            })
-            .catch(() => tToasts({ type: 'error', msg: 'Error with google recaptcha' }))
     }
 
     function handleReCaptchaError() {

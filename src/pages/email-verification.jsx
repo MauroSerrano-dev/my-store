@@ -5,15 +5,11 @@ import { CircularProgress } from '@mui/material';
 import { showToast } from '@/utils/toasts';
 import { useAppContext } from '@/components/contexts/AppContext';
 
-export default function EmailVerification(props) {
-    const {
-        setUserEmailVerify,
-    } = props
+export default function EmailVerification() {
 
     const {
         auth,
         router,
-        session,
     } = useAppContext()
 
     const [showSpinner, setShowSpinner] = useState(false)
@@ -24,17 +20,15 @@ export default function EmailVerification(props) {
             applyActionCode(auth, router.query.oobCode)
                 .then(() => {
                     showToast({ type: 'success', msg: 'E-mail verificado com sucesso!' })
-                    if (session) {
-                        setUserEmailVerify(true)
-                        router.push('/')
-                    }
-                    else
-                        router.push('/login')
+                    router.push('/')
                 })
                 .catch(() => {
                     showToast({ type: 'error', msg: 'Erro ao verificar o e-mail' })
                     router.push('/')
                 })
+        }
+        else {
+            router.push('/')
         }
     }, [])
 
