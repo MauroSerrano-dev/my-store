@@ -24,6 +24,7 @@ export default async function handler(req, res) {
       cart_id,
       success_url,
       cancel_url,
+      user_language,
     } = req.body
 
     let outOfStock = []
@@ -103,6 +104,7 @@ export default async function handler(req, res) {
       metadata: {
         cart_id: cart_id || '',
         user_id: customer?.id || '',
+        user_language: user_language,
         ...cartMetadata
       },
       payment_method_types: ["card"],
@@ -147,32 +149,3 @@ export default async function handler(req, res) {
     return res.send({ url: session.url })
   }
 }
-
-/* const createOrder = async (customer, data) => {
-  const Items = JSON.parse(customer.metadata.cart)
-
-  const products = Items.map((item) => {
-    return {
-      productId: item.id,
-      quantity: item.cartQuantity,
-    }
-  })
-
-  const newOrder = new Order({
-    userId: customer.metadata.userId,
-    customerId: data.customer,
-    paymentIntentId: data.payment_intent,
-    products,
-    subtotal: data.amount_subtotal,
-    total: data.amount_total,
-    shipping: data.customer_details,
-    payment_status: data.payment_status,
-  })
-
-  try {
-    const savedOrder = await newOrder.save();
-    console.log('Processed Order:', savedOrder);
-  } catch (err) {
-    console.log(err);
-  }
-} */

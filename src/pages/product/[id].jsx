@@ -44,6 +44,8 @@ export default withRouter(props => {
         setSession,
     } = useAppContext()
 
+    const { i18n } = useTranslation()
+
     const tToasts = useTranslation('toasts').t
     const tCommon = useTranslation('common').t
     const tCountries = useTranslation('countries').t
@@ -97,6 +99,7 @@ export default withRouter(props => {
                 shippingCountry: shippingCountry,
                 currency: userCurrency?.code,
                 cart_id: session ? session.cart_id : Cookies.get(CART_COOKIE),
+                user_language: i18n.language,
             })
         }
 

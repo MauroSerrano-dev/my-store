@@ -43,6 +43,8 @@ export default function Cart(props) {
 
     const ORDER_TOTAL = SHIPPING_CONVERTED + ITEMS_TOTAL
 
+    const { i18n } = useTranslation()
+
     const tCommon = useTranslation('common').t
     const tCart = useTranslation('cart').t
     const tCountries = useTranslation('countries').t
@@ -94,6 +96,7 @@ export default function Cart(props) {
                 shippingCountry: shippingCountry,
                 currency: userCurrency?.code,
                 cart_id: session ? session.cart_id : Cookies.get(CART_COOKIE),
+                user_language: i18n.language,
             })
         }
 

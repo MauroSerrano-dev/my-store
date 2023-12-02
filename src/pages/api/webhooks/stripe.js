@@ -5,7 +5,6 @@ import { createOrder } from '../../../../backend/orders'
 import getRawBody from 'raw-body'
 import { deleteProductsFromWishlist } from '../../../../backend/wishlists'
 import { sendPurchaseConfirmationEmail } from '../../../../backend/email-sender'
-import { getProductsInfo } from '../../../../backend/product'
 import { STEPS } from '@/consts'
 const { v4: uuidv4 } = require('uuid')
 
@@ -36,9 +35,11 @@ export default async function handler(req, res) {
 
             const cart_id = metadata.cart_id === '' ? null : metadata.cart_id
             const user_id = metadata.user_id === '' ? null : metadata.user_id
+            const user_language = metadata.user_language === '' ? null : metadata.user_language
 
             delete metadata.cart_id
             delete metadata.user_id
+            delete metadata.user_language
 
             const line_items = Object.keys(metadata).map(key => JSON.parse(metadata[key]))
 
@@ -50,6 +51,10 @@ export default async function handler(req, res) {
                     'Content-Type': 'application/json',
                 },
             }
+
+            const nameArr = data.customer_details.name.split(' ')
+            const first_name = nameArr.slice(0, nameArr.length - 1).join(' ')
+            const last_name = nameArr[nameArr.length - 1] || null
 
             const body_data = {
                 external_id: orderId,
@@ -64,8 +69,8 @@ export default async function handler(req, res) {
                 shipping_method: 1,
                 send_shipping_notification: true,
                 address_to: {
-                    first_name: data.customer_details.name,
-                    last_name: "Serrano",
+                    first_name: first_name,
+                    last_name: last_name,
                     email: data.customer_details.email,
                     phone: data.customer_details.phone,
                     country: data.shipping_details.address.country,
@@ -112,9 +117,7 @@ export default async function handler(req, res) {
                 }
             )
 
-            const productsInfo = await getProductsInfo(line_items)
-
-            await sendPurchaseConfirmationEmail(data.customer_details, line_items.map((prod, i) => ({ ...prod, ...productsInfo[i] })), amount_details)
+            await sendPurchaseConfirmationEmail(data.customer_details, orderId, user_language)
 
             if (cart_id) {
                 if (user_id) {
