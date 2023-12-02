@@ -1,5 +1,11 @@
-export function getProductPriceUnit(product, userCurrencyRate) {
+export function getProductPriceUnit(product, variant, userCurrencyRate) {
     if (product && userCurrencyRate)
-        return Math.round(product.variant.price * userCurrencyRate) * (product.promotion ? 1 - product.promotion.percentage : 1)
+        return Math.round(variant.price * userCurrencyRate) * (product.promotion ? 1 - product.promotion.percentage : 1)
+    return null
+}
+
+export function getProductPriceWithoutPromotion(product, variant, userCurrencyRate) {
+    if (product && userCurrencyRate)
+        return Math.round(variant.price * userCurrencyRate)
     return null
 }

@@ -72,8 +72,6 @@ export function AppProvider({ children }) {
         function handleRouteChangeComplete() {
             setLoading(false)
             setShowLoadingScreen(false)
-            if (auth && auth.currentUser)
-                setUserEmailVerify(auth.currentUser.emailVerified)
         }
 
         function handleRouteChangeError() {
@@ -195,7 +193,7 @@ export function AppProvider({ children }) {
         setShowLoadingScreen(true)
         signInWithEmailAndPassword(auth, email, password)
             .then(authRes => {
-                showToast({ type: 'success', msg: tToasts('success_login', { user_name: authRes.user.displayName }) })
+                showToast({ type: 'success', msg: tToasts('success_login', { user_name: authRes.user.displayName }), time: 2000 })
                 router.push('/')
             })
             .catch(error => {
@@ -435,6 +433,8 @@ export function AppProvider({ children }) {
                 isVisitant,
                 updateSession,
                 adminMenuOpen,
+                userEmailVerify,
+                setUserEmailVerify,
             }}
         >
             <motion.div
@@ -542,19 +542,6 @@ export function AppProvider({ children }) {
                             open={adminMenuOpen}
                         />
                     }
-                    {userEmailVerify === false && session &&
-                        <div
-                            style={{
-                                position: 'fixed',
-                                width: '100%',
-                                height: '30px',
-                                bottom: 0,
-                                backgroundColor: 'red',
-                                zIndex: 50,
-                            }}
-                        >
-                        </div>
-                    }
                 </div>
             </motion.div>
             <ToastContainer
@@ -565,15 +552,16 @@ export function AppProvider({ children }) {
             />
             {loading &&
                 <div>
-                    {/* <div
+                    <div
                         style={{
                             position: 'fixed',
-                            zIndex: 9999,
+                            zIndex: 99999,
                             top: 0,
+                            left: 0,
                             width: '100vw',
                             height: '100vh',
                         }}>
-                    </div> */}
+                    </div>
                     <motion.div
                         variants={{
                             hidden: {

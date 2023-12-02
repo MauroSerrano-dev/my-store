@@ -80,7 +80,7 @@ export default function Order(props) {
                             SHIP TO
                         </p>
                         <p style={{ textAlign: 'start' }}>
-                            {order.customer.name}
+                            {order.shipping_details.name}
                         </p>
                     </div>
                 </div>

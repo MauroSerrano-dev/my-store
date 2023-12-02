@@ -13,7 +13,7 @@ import Selector from '@/components/material-ui/Selector'
 import { useTranslation } from 'next-i18next'
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
 import { useAppContext } from '@/components/contexts/AppContext'
-import { updateEmail, updateProfile } from 'firebase/auth'
+import { sendEmailVerification, updateEmail, updateProfile } from 'firebase/auth'
 
 const TAGS_MIN_LIMIT = 3
 const TAGS_MAX_LIMIT = 8
@@ -24,6 +24,7 @@ export default function Profile() {
         session,
         updateSession,
         auth,
+        userEmailVerify,
     } = useAppContext()
 
     const { i18n } = useTranslation()
@@ -37,6 +38,7 @@ export default function Profile() {
     const [user, setUser] = useState()
     const [currentLanguage, setCurrentLanguage] = useState(i18n.language)
     const [disableSaveButton, setDisableSaveButton] = useState(true)
+    const [verificationEmailSent, setVerificationEmailSent] = useState(false)
 
     useEffect(() => {
         if (session)
@@ -53,6 +55,36 @@ export default function Profile() {
     function handleChangeLanguageSelector(event) {
         setDisableSaveButton(false)
         setCurrentLanguage(event.target.value)
+    }
+
+    function handleSendVerificationEmail() {
+        if (verificationEmailSent === 'custom_msg') {
+            setVerificationEmailSent(true)
+            showToast({ type: 'info', msg: "If you can't find it, please check your span" })
+            return
+        }
+        if (verificationEmailSent) {
+            setVerificationEmailSent('custom_msg')
+            showToast({ type: 'info', msg: 'Verification email already sent' })
+            return
+        }
+        setVerificationEmailSent(true)
+
+        auth.languageCode = i18n.language;
+        sendEmailVerification(auth.currentUser, {
+            url: process.env.NEXT_PUBLIC_URL.concat('/email-verification'),
+            handleCodeInApp: true,
+        })
+            .then(() => {
+                showToast({ type: 'success', msg: `Verification email sent to ${auth.currentUser.email}` })
+            })
+            .catch((error) => {
+                setVerificationEmailSent(false)
+                console.error("Error sending verification email:", error)
+                if (error.code === 'auth/too-many-requests')
+                    return showToast({ type: 'error', msg: tToasts('too_many_requests') })
+                showToast({ type: 'error', msg: "Error sending verification email:" })
+            })
     }
 
     function handleUpdateUser() {
@@ -80,7 +112,6 @@ export default function Profile() {
         const { first_name, last_name } = changes
         updateProfile(auth.currentUser, { displayName: `${first_name || session.first_name || ''} ${last_name || session.last_name || ''}` })
             .then(() => {
-
                 const options = {
                     method: 'PATCH',
                     headers: {
@@ -124,17 +155,37 @@ export default function Profile() {
                         <div className={styles.fieldsHead}>
                             <p className={styles.welcomeTitle}>{tMenu('Welcome')} <b style={{ color: 'var(--primary)' }}>{session.first_name ? session.first_name + ' ' + session.last_name : session.last_name}!</b></p>
                         </div>
+                        <div
+                            style={{
+                                height: 45,
+                                width: '100%',
+                                display: 'flex',
+                                justifyContent: 'center',
+                                alignItems: 'center',
+                                gap: '0.5rem'
+                            }}
+                        >
+                            <p>
+                                <span style={{ fontWeight: 600 }}>{tProfile('E-mail')}:</span> {user.email}
+                            </p>
+                            <p>
+                                {userEmailVerify ? <span style={{ color: 'var(--color-success)', fontWeight: 500 }}>verified</span> : <span style={{ color: 'var(--color-error)', fontWeight: 500 }}>not verified</span>}
+                            </p>
+                            {!userEmailVerify &&
+                                <Button
+                                    variant='contained'
+                                    size='small'
+                                    style={{
+                                        height: '23px'
+                                    }}
+                                    onClick={handleSendVerificationEmail}
+                                >
+                                    Send verification email
+                                </Button>
+                            }
+                        </div>
                         <div className={styles.fieldsBody}>
                             <div className={styles.left}>
-                                <TextInput
-                                    label={tProfile('E-mail')}
-                                    defaultValue={user.email}
-                                    style={{
-                                        width: '100%'
-                                    }}
-                                    onChange={event => handleChanges('email', event.target.value)}
-                                    disabled
-                                />
                                 <TextInput
                                     label={tProfile('first_name')}
                                     defaultValue={user.first_name || ''}

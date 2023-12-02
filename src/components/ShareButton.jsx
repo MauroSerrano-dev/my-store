@@ -100,7 +100,8 @@ export default function ShareButton(props) {
             <div className={styles.iconContainer}>
                 <IosShareRoundedIcon
                     style={{
-                        color: 'var(--global-black)'
+                        color: 'var(--global-black)',
+                        transform: 'translateY(-1px)'
                     }}
                 />
             </div>

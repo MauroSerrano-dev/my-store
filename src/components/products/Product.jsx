@@ -208,12 +208,12 @@ export default function Product(props) {
                         />
                     </div>
                 }
-                {!hideWishlistButton && session && hover && supportsHoverAndPointer &&
+                {!hideWishlistButton && session && supportsHoverAndPointer &&
                     <motion.div
                         className={styles.wishlistButton}
                         onClick={handleWishlist}
                         initial='hidden'
-                        animate='visible'
+                        animate={hover ? 'visible' : 'hidden'}
                         variants={{
                             hidden: {
                                 opacity: 0,

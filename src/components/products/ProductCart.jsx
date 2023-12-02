@@ -34,7 +34,7 @@ export default function ProductCart(props) {
 
     const SIZE = SIZES_POOL.find(sz => sz.id === product.variant.size_id)
 
-    const PRICE_UNIT = getProductPriceUnit(product, userCurrency?.rate)
+    const PRICE_UNIT = getProductPriceUnit(product, product.variant, userCurrency?.rate)
 
     const PRICE = Math.round(PRICE_UNIT * product.quantity)
 

@@ -150,7 +150,7 @@ export default function Menu(props) {
                         />
                         {session &&
                             <div>
-                                {tMenu('Welcome')}! <span style={{ color: 'var(--primary)', fontWeight: '700' }}>{session.first_name ? session.first_name + ' ' + session.last_name : session.last_name}</span>
+                                {tMenu('welcome')} <span style={{ color: 'var(--primary)', fontWeight: '700' }}>{session.first_name ? session.first_name + ' ' + session.last_name : session.last_name}</span>
                             </div>
                         }
                         {session === null &&

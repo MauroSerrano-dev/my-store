@@ -10,6 +10,7 @@ export default function EmailVerification() {
     const {
         auth,
         router,
+        setUserEmailVerify,
     } = useAppContext()
 
     const [showSpinner, setShowSpinner] = useState(false)
@@ -19,6 +20,7 @@ export default function EmailVerification() {
         if (router.query?.oobCode) {
             applyActionCode(auth, router.query.oobCode)
                 .then(() => {
+                    setUserEmailVerify(true)
                     showToast({ type: 'success', msg: 'E-mail verificado com sucesso!' })
                     router.push('/')
                 })
