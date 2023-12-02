@@ -12,6 +12,7 @@ import TextInput from '@/components/material-ui/TextInput'
 import { LoadingButton } from '@mui/lab'
 import { useAppContext } from '@/components/contexts/AppContext'
 import NoFound404 from '@/components/NoFound404'
+import { handleReCaptchaError, handleReCaptchaSuccess } from '@/utils/validations'
 
 export default function Login() {
 
@@ -46,37 +47,18 @@ export default function Login() {
             setDisableLoginButton(false)
     }, [loading])
 
-    function handleReCaptchaSuccess(userToken) {
-        setReCaptchaSolve(true) // está assim devido ao tempo que demora a chamada api para liberar o botão
-
-        const options = {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                authorization: process.env.NEXT_PUBLIC_APP_TOKEN
-            },
-            body: JSON.stringify({
-                response: userToken,
-                expectedAction: 'login',
-            }),
-        }
-
-        fetch("/api/google-re-captcha", options)
-    }
-
-    function handleReCaptchaError() {
-        setReCaptchaSolve(false)
-    }
-
     function handleLogin() {
-        if (reCaptchaSolve) {
-            setLoading(true)
-            setDisableLoginButton(true)
-            login(email, password)
-        }
-        else {
-            showToast({ msg: tToasts('solve_recaptcha') })
-        }
+        if (!reCaptchaSolve)
+            return showToast({ msg: tToasts('solve_recaptcha') })
+
+        if (email === '')
+            return showToast({ msg: 'missing_email' })
+        if (password === '')
+            return showToast({ msg: 'missing_password' })
+
+        setLoading(true)
+        setDisableLoginButton(true)
+        login(email, password)
     }
 
     function handleEmailChange(event) {
@@ -154,10 +136,11 @@ export default function Login() {
                                         <div className='fillWidth center'>
                                             <ReCAPTCHA
                                                 sitekey={process.env.NEXT_PUBLIC_RE_CAPTCHA_KEY}
-                                                onChange={handleReCaptchaSuccess}
-                                                onExpired={handleReCaptchaError}
-                                                onErrored={handleReCaptchaError}
+                                                onChange={userToken => handleReCaptchaSuccess(userToken, setReCaptchaSolve)}
+                                                onExpired={() => handleReCaptchaError(setReCaptchaSolve)}
+                                                onErrored={() => handleReCaptchaError(setReCaptchaSolve)}
                                                 hl={i18n.language}
+                                                className='reCaptcha'
                                             />
                                         </div>
                                     </div>

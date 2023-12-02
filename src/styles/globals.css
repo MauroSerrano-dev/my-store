@@ -91,7 +91,7 @@ li {
 
 div {
   text-align: center;
-  font-family: Montserrat, Arial, sans-serif;
+  font-family: Arial, sans-serif;
   --toastify-text-color-dark: var(--global-white);
 }
 
@@ -142,6 +142,13 @@ span {
 
 .justify-start {
   justify-content: flex-start;
+}
+
+.reCaptcha iframe{
+  position: relative;
+  width: 301.5px;
+  height: 75.5px;
+  border-radius: 0.2rem;
 }
 
 .justify-end {

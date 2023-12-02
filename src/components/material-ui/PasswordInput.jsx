@@ -30,6 +30,7 @@ export default function PasswordInput(props) {
         colorLabelFocus = 'var(--primary)',
         colorText = dark ? '#000000' : '#ffffff',
         limit = LIMITS.input_password,
+        size ='small'
     } = props
 
     const {
@@ -82,7 +83,7 @@ export default function PasswordInput(props) {
 
     return (
         <FormControl
-            size='small'
+            size={size}
             sx={{ width: '100%' }}
             variant="outlined"
         >
@@ -105,6 +106,7 @@ export default function PasswordInput(props) {
                 onMouseEnter={() => setHover(true)}
                 onMouseLeave={() => setHover(false)}
                 label={label}
+                size={size}
                 name={name}
                 autoComplete={autoComplete}
                 value={value}
@@ -116,7 +118,7 @@ export default function PasswordInput(props) {
                             aria-label="toggle password visibility"
                             onClick={() => setShowPassword(prev => !prev)}
                             edge="end"
-                            size='small'
+                            size={size}
                         >
                             {showPassword ? <VisibilityOff /> : <Visibility />}
                         </IconButton>
@@ -145,6 +147,7 @@ export default function PasswordInput(props) {
             {hasModal && (showModalGuide || focus) &&
                 <motion.div
                     className={styles.modalContainer}
+                    onClick={() => setShowModalGuide(false)}
                     style={{
                         right: mobile ? 'auto' : 0,
                         left: mobile ? 0 : 'auto'
