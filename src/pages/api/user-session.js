@@ -34,8 +34,8 @@ export default async function handler(req, res) {
         else {
             const fullName = authUser.displayName.split(' ')
 
-            const firstName = fullName.length <= 1 ? null : fullName.slice(0, fullName.length - 1).join(' ')
-            const lastName = fullName.length <= 1 ? authUser.displayName : fullName[fullName.length - 1]
+            const firstName = fullName.length <= 1 ? authUser.displayName : fullName.slice(0, fullName.length - 1).join(' ')
+            const lastName = fullName.length <= 1 ? null : fullName[fullName.length - 1]
 
             const new_user = {
                 email: authUser.email,
@@ -48,6 +48,7 @@ export default async function handler(req, res) {
             const newUser = await createNewUserWithGoogle(new_user, uid, cart_cookie_id)
             res.status(200).json({
                 ...newUser,
+                wishlist_products_ids: [],
                 id: uid
             })
         }
