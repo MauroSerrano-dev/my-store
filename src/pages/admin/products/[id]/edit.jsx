@@ -495,12 +495,6 @@ export default withRouter(() => {
                                             onChange={event => updateProductField('title', event.target.value)}
                                             colorText={fieldChanged['title'] ? 'var(--color-success)' : 'var(--text-color)'}
                                         />
-                                        <TextInput
-                                            label='Description'
-                                            value={product.description}
-                                            onChange={event => updateProductField('description', event.target.value)}
-                                            colorText={fieldChanged['description'] ? 'var(--color-success)' : 'var(--text-color)'}
-                                        />
                                         <Selector
                                             label='Collection'
                                             options={COLLECTIONS.map(coll => ({ value: coll.id, name: coll.title }))}

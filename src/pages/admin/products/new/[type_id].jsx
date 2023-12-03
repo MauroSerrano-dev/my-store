@@ -25,7 +25,6 @@ import { useAppContext } from '@/components/contexts/AppContext'
 const INICIAL_PRODUCT = {
     id: '',
     title: '',
-    description: '',
     collection_id: '',
     colors: [],
     sizes: [],
@@ -493,15 +492,6 @@ export default withRouter(() => {
                                             label='Title'
                                             value={product.title}
                                             onChange={event => updateProductField('title', event.target.value)}
-                                            style={{
-                                                width: '100%'
-                                            }}
-                                        />
-                                        <TextInput
-                                            colorText='var(--color-success)'
-                                            label='Description'
-                                            value={product.description}
-                                            onChange={event => updateProductField('description', event.target.value)}
                                             style={{
                                                 width: '100%'
                                             }}
