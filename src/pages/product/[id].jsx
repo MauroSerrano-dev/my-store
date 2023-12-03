@@ -215,7 +215,7 @@ export default withRouter(props => {
                     <meta name="keywords" content={product.tags.join(', ')} key='keywords' />
                     <meta property="og:title" content={product.title} key='og:title' />
                     <meta property="og:image:alt" content={product.title} key='og:image:alt' />
-                    <meta property="og:description" content={product.description} key='og:description' />
+                    <meta property="og:description" content={`${tCommon(product.type_id)} ${tCommon(currentColor.title)}`} key='og:description' />
                     <meta property="og:image" itemProp="image" content={productMetaImage} key='og:image' />
                     <meta property="og:type" content="product" key='og:type' />
                     <meta property="og:url" content={urlMeta} key='og:url' />

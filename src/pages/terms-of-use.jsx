@@ -3,129 +3,107 @@ import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
 import Head from 'next/head'
 import Link from 'next/link'
 import { useTranslation } from 'next-i18next';
-
-const titleStyle = {
-    textAlign: 'justify',
-    fontWeight: 700,
-    fontSize: 22,
-}
-
-const pStyle = {
-    textAlign: 'justify',
-    fontWeight: 400,
-    fontSize: 16,
-}
+import styles from '@/styles/pages/terms-of-use.module.css'
 
 export default function TermsOfUse() {
 
     const tTermsOfUse = useTranslation('terms-of-use').t
 
     return (
-        <div className='flex center column'>
+        <div className='flex center column fillWidth'>
             <Head>
             </Head>
             <main
-                style={{
-                    width: '80%'
-                }}
+                className={styles.main}
             >
+                <h1 className={styles.title}>
+                    {process.env.NEXT_PUBLIC_STORE_NAME} {tTermsOfUse('title0')}
+                </h1>
                 <div
                     className='flex column'
                     style={{
-                        '--text-color': 'var(--text-white)',
-                        gap: '2rem',
-                        padding: '2rem 0rem',
+                        gap: '1rem'
                     }}
                 >
-                    <h1>
-                        {process.env.NEXT_PUBLIC_STORE_NAME} {tTermsOfUse('title0')}
-                    </h1>
-                    <div
-                        className='flex column'
-                        style={{
-                            gap: '1rem'
-                        }}
-                    >
-                        <div>
-                            <h2 style={titleStyle}>
-                                1. {tTermsOfUse('title1')}
-                            </h2>
-                            <p style={pStyle}>
-                                {tTermsOfUse('paragraph1')}
-                            </p>
-                        </div>
-                        <div>
-                            <h2 style={titleStyle}>
-                                2. {tTermsOfUse('title2')}
-                            </h2>
-                            <p style={pStyle}>
-                                {tTermsOfUse('paragraph2')}
-                            </p>
-                        </div>
-                        <div>
-                            <h2 style={titleStyle}>
-                                3. {tTermsOfUse('title3')}
-                            </h2>
-                            <p style={pStyle}>
-                                {tTermsOfUse('paragraph3')}
-                            </p>
-                        </div>
-                        <div>
-                            <h2 style={titleStyle}>
-                                4. {tTermsOfUse('title4')}
-                            </h2>
-                            <p style={pStyle}>
-                                {tTermsOfUse('paragraph4')}
-                            </p>
-                        </div>
-                        <div>
-                            <h2 style={titleStyle}>
-                                5. {tTermsOfUse('title5')}
-                            </h2>
-                            <p style={pStyle}>
-                                {tTermsOfUse('paragraph5')}
-                            </p>
-                        </div>
-                        <div>
-                            <h2 style={titleStyle}>
-                                6. {tTermsOfUse('title6')}
-                            </h2>
-                            <p style={pStyle}>
-                                {tTermsOfUse('paragraph6')}
-                            </p>
-                        </div>
-                        <div>
-                            <h2 style={titleStyle}>
-                                7. {tTermsOfUse('title7')}
-                            </h2>
-                            <p style={pStyle}>
-                                {tTermsOfUse('paragraph7')}
-                            </p>
-                        </div>
-                        <div>
-                            <h2 style={titleStyle}>
-                                8. {tTermsOfUse('title8')}
-                            </h2>
-                            <p style={pStyle}>
-                                {tTermsOfUse('paragraph8')}
-                            </p>
-                        </div>
-                        <div>
-                            <h2 style={titleStyle}>
-                                9. {tTermsOfUse('title9')}
-                            </h2>
-                            <p style={pStyle}>
-                                {tTermsOfUse('paragraph9')}
-                            </p>
-                        </div>
-                        <div>
-                            <h2 style={titleStyle}>
-                                10. {tTermsOfUse('title10')}
-                            </h2>
-                            <p style={pStyle}>
-                                {tTermsOfUse('paragraph10')} <Link href={`mailto:${process.env.NEXT_PUBLIC_SUPPORT_EMAIL}`}>{process.env.NEXT_PUBLIC_SUPPORT_EMAIL}</Link>.
-                            </p>
-                        </div>
+                    <div>
+                        <h2 className={styles.titles}>
+                            1. {tTermsOfUse('title1')}
+                        </h2>
+                        <p className={styles.pStyle}>
+                            {tTermsOfUse('paragraph1')}
+                        </p>
+                    </div>
+                    <div>
+                        <h2 className={styles.titles}>
+                            2. {tTermsOfUse('title2')}
+                        </h2>
+                        <p className={styles.pStyle}>
+                            {tTermsOfUse('paragraph2')}
+                        </p>
+                    </div>
+                    <div>
+                        <h2 className={styles.titles}>
+                            3. {tTermsOfUse('title3')}
+                        </h2>
+                        <p className={styles.pStyle}>
+                            {tTermsOfUse('paragraph3')}
+                        </p>
+                    </div>
+                    <div>
+                        <h2 className={styles.titles}>
+                            4. {tTermsOfUse('title4')}
+                        </h2>
+                        <p className={styles.pStyle}>
+                            {tTermsOfUse('paragraph4')}
+                        </p>
+                    </div>
+                    <div>
+                        <h2 className={styles.titles}>
+                            5. {tTermsOfUse('title5')}
+                        </h2>
+                        <p className={styles.pStyle}>
+                            {tTermsOfUse('paragraph5')}
+                        </p>
+                    </div>
+                    <div>
+                        <h2 className={styles.titles}>
+                            6. {tTermsOfUse('title6')}
+                        </h2>
+                        <p className={styles.pStyle}>
+                            {tTermsOfUse('paragraph6')}
+                        </p>
+                    </div>
+                    <div>
+                        <h2 className={styles.titles}>
+                            7. {tTermsOfUse('title7')}
+                        </h2>
+                        <p className={styles.pStyle}>
+                            {tTermsOfUse('paragraph7')}
+                        </p>
+                    </div>
+                    <div>
+                        <h2 className={styles.titles}>
+                            8. {tTermsOfUse('title8')}
+                        </h2>
+                        <p className={styles.pStyle}>
+                            {tTermsOfUse('paragraph8')}
+                        </p>
+                    </div>
+                    <div>
+                        <h2 className={styles.titles}>
+                            9. {tTermsOfUse('title9')}
+                        </h2>
+                        <p className={styles.pStyle}>
+                            {tTermsOfUse('paragraph9')}
+                        </p>
+                    </div>
+                    <div>
+                        <h2 className={styles.titles}>
+                            10. {tTermsOfUse('title10')}
+                        </h2>
+                        <p className={styles.pStyle}>
+                            {tTermsOfUse('paragraph10')} <Link href={`mailto:${process.env.NEXT_PUBLIC_SUPPORT_EMAIL}`}>{process.env.NEXT_PUBLIC_SUPPORT_EMAIL}</Link>.
+                        </p>
                     </div>
                 </div>
             </main>
