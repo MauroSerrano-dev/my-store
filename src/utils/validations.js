@@ -31,3 +31,25 @@ export function isStrongPassword(password) {
 export function isAdmin(auth) {
     return auth?.currentUser && process.env.NEXT_PUBLIC_AUTHORIZED_EMAILS.includes(auth.currentUser.email) && auth.currentUser.emailVerified
 }
+
+export function handleReCaptchaSuccess(userToken, setReCaptchaSolve) {
+    setReCaptchaSolve(true) // está assim devido ao tempo que demora a chamada api para liberar o botão
+
+    const options = {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            authorization: process.env.NEXT_PUBLIC_APP_TOKEN
+        },
+        body: JSON.stringify({
+            response: userToken,
+            expectedAction: 'login',
+        }),
+    }
+
+    fetch("/api/google-re-captcha", options)
+}
+
+export function handleReCaptchaError(setReCaptchaSolve) {
+    setReCaptchaSolve(false)
+}

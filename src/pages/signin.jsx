@@ -6,7 +6,7 @@ import ReCAPTCHA from "react-google-recaptcha"
 import { useEffect, useState } from 'react'
 import { showToast } from '@/utils/toasts'
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
-import { isStrongPassword } from '@/utils/validations'
+import { handleReCaptchaError, handleReCaptchaSuccess, isStrongPassword } from '@/utils/validations'
 import { useTranslation } from 'next-i18next'
 import PasswordInput from '@/components/material-ui/PasswordInput'
 import GoogleButton from '@/components/buttons/GoogleButton'
@@ -47,28 +47,6 @@ export default function Signin() {
     const tToasts = useTranslation('toasts').t
     const tSignin = useTranslation('login-signin').t
 
-    function handleReCaptchaSuccess(userToken) {
-        setReCaptchaSolve(true) // está assim devido ao tempo que demora a chamada api para liberar o botão
-
-        const options = {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                authorization: process.env.NEXT_PUBLIC_APP_TOKEN
-            },
-            body: JSON.stringify({
-                response: userToken,
-                expectedAction: 'signup',
-            }),
-        }
-
-        fetch("/api/google-re-captcha", options)
-    }
-
-    function handleReCaptchaError() {
-        setReCaptchaSolve(false)
-    }
-
     function handleNewUser(value, field) {
         setNewUser(prev => (
             {
@@ -79,53 +57,58 @@ export default function Signin() {
     }
 
     function handleCreateNewUser(user) {
-        if (reCaptchaSolve) {
-            const passValidation = isStrongPassword(user.password)
-            if (passValidation !== true) {
-                showToast({ msg: tToasts(passValidation) })
-                setShowModalPassword(true)
-                return
-            }
-            setLoading(true)
-            setDisableSigninButton(true)
-            const options = {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    authorization: process.env.NEXT_PUBLIC_APP_TOKEN,
-                },
-                body: JSON.stringify({
-                    user: user,
-                    userLanguage: i18n.language
-                })
-            }
+        if (!reCaptchaSolve)
+            return showToast({ msg: tToasts('solve_recaptcha') })
 
-            fetch('/api/user', options)
-                .then(response => response.json())
-                .then(response => {
-                    if (response.status < 300) {
-                        login(user.email, user.password)
-                    }
-                    else if (response.status < 500) {
-                        setLoading(false)
-                        setDisableSigninButton(false)
-                        showToast({ msg: tToasts(response.message) })
-                    }
-                    else {
-                        setLoading(false)
-                        setDisableSigninButton(false)
-                        showToast({ type: 'error', msg: tToasts(response.message) })
-                    }
-                })
-                .catch(() => {
+        if (newUser.first_name === '')
+            return showToast({ msg: 'missing_first_name' })
+        if (newUser.email === '')
+            return showToast({ msg: 'missing_email' })
+        if (newUser.password === '')
+            return showToast({ msg: 'missing_password' })
+
+        const passValidation = isStrongPassword(user.password)
+        if (passValidation !== true) {
+            showToast({ msg: tToasts(passValidation) })
+            setShowModalPassword(true)
+            return
+        }
+        setLoading(true)
+        setDisableSigninButton(true)
+        const options = {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                authorization: process.env.NEXT_PUBLIC_APP_TOKEN,
+            },
+            body: JSON.stringify({
+                user: user,
+                userLanguage: i18n.language
+            })
+        }
+
+        fetch('/api/user', options)
+            .then(response => response.json())
+            .then(response => {
+                if (response.status < 300) {
+                    login(user.email, user.password)
+                }
+                else if (response.status < 500) {
                     setLoading(false)
                     setDisableSigninButton(false)
-                    showToast({ type: 'error', msg: tToasts('error_creating_user') })
-                })
-        }
-        else {
-            showToast({ msg: tToasts('solve_recaptcha') })
-        }
+                    showToast({ msg: tToasts(response.message) })
+                }
+                else {
+                    setLoading(false)
+                    setDisableSigninButton(false)
+                    showToast({ type: 'error', msg: tToasts(response.message) })
+                }
+            })
+            .catch(() => {
+                setLoading(false)
+                setDisableSigninButton(false)
+                showToast({ type: 'error', msg: tToasts('error_creating_user') })
+            })
     }
 
     return (
@@ -216,10 +199,11 @@ export default function Signin() {
                                         />
                                         <ReCAPTCHA
                                             sitekey={process.env.NEXT_PUBLIC_RE_CAPTCHA_KEY}
-                                            onChange={handleReCaptchaSuccess}
-                                            onExpired={handleReCaptchaError}
-                                            onErrored={handleReCaptchaError}
+                                            onChange={userToken => handleReCaptchaSuccess(userToken, setReCaptchaSolve)}
+                                            onExpired={() => handleReCaptchaError(setReCaptchaSolve)}
+                                            onErrored={() => handleReCaptchaError(setReCaptchaSolve)}
                                             hl={i18n.language}
+                                            className='reCaptcha'
                                         />
                                     </div>
                                 </div>
