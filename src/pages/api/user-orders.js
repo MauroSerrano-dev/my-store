@@ -15,6 +15,9 @@ export default async function handler(req, res) {
         const response = await getOrdersByUserId(user_id, start_date, end_date)
         const productsInfoRes = await getProductsInfo(response.orders.reduce((acc, order) => [...acc, ...order.products], []))
 
-        res.status(response.status).json({ ...response, orders: response.orders.map((order, i) => ({ ...order, products: order.products.map(() => productsInfoRes.products.shift()) })) })
+        if (response.status === 200 && productsInfoRes.status === 200)
+            res.status(200).json({ ...response, orders: response.orders.map((order, i) => ({ ...order, products: order.products.map(() => productsInfoRes.products?.shift()) })) })
+        else
+            res.status(500).json({ status: 500, orders: null })
     }
 }
