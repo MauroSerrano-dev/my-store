@@ -1,7 +1,6 @@
 import styles from '@/styles/pages/forgot-password.module.css'
 import Link from 'next/link'
 import { useState } from 'react'
-import { Button } from '@mui/material'
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
 import TextInput from '@/components/material-ui/TextInput'
 import { useAppContext } from '@/components/contexts/AppContext'
@@ -11,6 +10,7 @@ import { useTranslation } from 'next-i18next'
 import { handleReCaptchaError, handleReCaptchaSuccess } from '@/utils/validations'
 import { showToast } from '@/utils/toasts'
 import { sendPasswordResetEmail } from 'firebase/auth'
+import { LoadingButton } from '@mui/lab'
 
 export default function ForgotPassword() {
     const {
@@ -24,14 +24,19 @@ export default function ForgotPassword() {
 
     const [reCaptchaSolve, setReCaptchaSolve] = useState(false)
     const [email, setEmail] = useState('')
+    const [disableButton, setDisableButton] = useState(false)
 
     function handleSubmit() {
         if (!reCaptchaSolve)
             return showToast({ msg: tToasts('solve_recaptcha') })
 
+        setDisableButton(true)
+
         auth.languageCode = i18n.language
         sendPasswordResetEmail(auth, email)
             .then(() => {
+                setEmail('')
+                setDisableButton(false)
                 showToast({ type: 'success', msg: 'Email sent if its a customer' })
             })
             .catch(error => {
@@ -43,6 +48,7 @@ export default function ForgotPassword() {
                     showToast({ type: 'error', msg: tToasts('invalid_email') })
                 else
                     showToast({ type: 'error', msg: 'Erro ao enviar e-mail de redefinição de senha' })
+                setDisableButton(false)
             })
     }
 
@@ -83,6 +89,7 @@ export default function ForgotPassword() {
                                         label='E-Mail'
                                         size='small'
                                         name='email'
+                                        value={email}
                                         onChange={handleChangeEmail}
                                         style={{
                                             width: '93.5%',
@@ -100,7 +107,8 @@ export default function ForgotPassword() {
                                         />
                                     </div>
                                 </div>
-                                <Button
+                                <LoadingButton
+                                    loading={disableButton}
                                     type='submit'
                                     variant='contained'
                                     onClick={handleSubmit}
@@ -113,7 +121,7 @@ export default function ForgotPassword() {
                                     }}
                                 >
                                     Reset Password
-                                </Button>
+                                </LoadingButton>
                             </div>
                             <Link
                                 href='/login'
