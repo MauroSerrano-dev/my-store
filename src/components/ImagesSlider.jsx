@@ -2,6 +2,8 @@ import styles from '@/styles/components/ImagesSlider.module.css'
 import { useRef, useState } from 'react'
 import { motion } from 'framer-motion';
 import { useAppContext } from './contexts/AppContext';
+import Image from 'next/image';
+import { Skeleton } from '@mui/material';
 
 export default function ImagesSlider(props) {
     const {
@@ -30,11 +32,18 @@ export default function ImagesSlider(props) {
 
     const [draggingOffSetTimeOut, setDraggingOffSetTimeOut] = useState()
 
+    const [imageLoad, setImageLoad] = useState(false)
+    const [optionsImageLoad, setOptionsImageLoad] = useState(false)
+
     const [isDragging, setIsDragging] = useState(false)
     const [slideMoving, setSlideMoving] = useState(false)
     const [isDraggingOptions, setIsDraggingOptions] = useState(false)
     const [antVisualBug, setAntVisualBug] = useState(false)
     const [antVisualBugOptions, setAntVisualBugOptions] = useState(false)
+
+    const OPTIONS_HEIGHT = height * 0.25
+    const OPTIONS_PADDING_TOP = width * 0.025
+    const OPTIONS_GAP = width * 0.025
 
     function handleDragStart() {
         setIsDragging(true)
@@ -175,11 +184,40 @@ export default function ImagesSlider(props) {
                             }}
                         >
                             {images.filter(img => img.color_id === cl.id).map((img, j) =>
-                                <img
+                                <div
                                     key={j}
-                                    className={styles.imgView}
-                                    src={img.src}
-                                />
+                                >
+                                    <Image
+                                        priority
+                                        src={img.src}
+                                        quality={100}
+                                        sizes={`${height * 2 / 3}px`}
+                                        alt='product preview'
+                                        width={width}
+                                        height={height}
+                                        style={{
+                                            pointerEvents: 'none',
+                                        }}
+                                        onLoadingComplete={() => {
+                                            if (j === 0)
+                                                setImageLoad(true)
+                                        }}
+                                    />
+                                    {!imageLoad &&
+                                        <Skeleton
+                                            variant="rectangular"
+                                            width={width}
+                                            height={height}
+                                            sx={{
+                                                backgroundColor: 'rgb(50, 50, 50)',
+                                                position: 'absolute',
+                                                top: 0,
+                                                left: 0,
+                                                zIndex: -1,
+                                            }}
+                                        />
+                                    }
+                                </div>
                             )}
                         </div>
                     )}
@@ -189,9 +227,9 @@ export default function ImagesSlider(props) {
                 className={styles.options}
                 ref={optionsRef}
                 style={{
-                    paddingTop: width * 0.025,
+                    paddingTop: OPTIONS_PADDING_TOP,
                     width: width,
-                    height: height * 0.25,
+                    height: OPTIONS_HEIGHT,
                 }}
             >
                 <motion.div
@@ -221,7 +259,7 @@ export default function ImagesSlider(props) {
                             style={{
                                 display: 'flex',
                                 height: '100%',
-                                gap: width * 0.025,
+                                gap: OPTIONS_GAP,
                                 position: i === 0 ? 'relative' : 'absolute',
                                 zIndex: cl.id === currentColor.id ? 1 : 0,
                                 opacity: cl.id === currentColor.id ? 1 : 0,
@@ -236,19 +274,45 @@ export default function ImagesSlider(props) {
                                         pointerEvents: isDraggingOptions ? 'none' : 'auto'
                                     }}
                                 >
-                                    <div
-                                        className={styles.optionShadow}
-                                        style={{
-                                            opacity: currentImgIndex === j
-                                                ? 0
-                                                : undefined
-                                        }}
-                                    >
-                                    </div>
-                                    <img
-                                        className={styles.imgOption}
+                                    {optionsImageLoad &&
+                                        <div
+                                            className={styles.optionShadow}
+                                            style={{
+                                                opacity: currentImgIndex === j
+                                                    ? 0
+                                                    : undefined
+                                            }}
+                                        >
+                                        </div>
+                                    }
+                                    <Image
+                                        priority
                                         src={img.src}
+                                        quality={100}
+                                        key={i}
+                                        sizes={`${OPTIONS_HEIGHT * 2 / 3}px`}
+                                        width={(OPTIONS_HEIGHT - OPTIONS_PADDING_TOP) * 0.9}
+                                        height={OPTIONS_HEIGHT - OPTIONS_PADDING_TOP}
+                                        alt='product image'
+                                        onLoadingComplete={() => {
+                                            if (j === images.filter(img => img.color_id === currentColor.id).length - 1)
+                                                setOptionsImageLoad(true)
+                                        }}
                                     />
+                                    {!optionsImageLoad &&
+                                        <Skeleton
+                                            variant="rectangular"
+                                            width={(OPTIONS_HEIGHT - OPTIONS_PADDING_TOP) * 0.9}
+                                            height={OPTIONS_HEIGHT - OPTIONS_PADDING_TOP}
+                                            sx={{
+                                                backgroundColor: 'rgb(50, 50, 50)',
+                                                position: 'absolute',
+                                                top: 0,
+                                                left: 0,
+                                                zIndex: -1,
+                                            }}
+                                        />
+                                    }
                                 </div>
                             )}
                         </div>
