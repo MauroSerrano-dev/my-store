@@ -18,6 +18,7 @@ export default function AuthHandler() {
         auth,
         router,
         setUserEmailVerify,
+        isUser,
     } = useAppContext()
 
     const [mode, setMode] = useState()
@@ -27,10 +28,6 @@ export default function AuthHandler() {
 
     const tAuth = useTranslation('auth').t
     const tToasts = useTranslation('toasts').t
-
-    useEffect(() => {
-        console.log('eita', auth)
-    }, [auth])
 
     useEffect(() => {
         if (router.query?.mode === 'verifyEmail' && router.query?.oobCode) {
@@ -76,11 +73,17 @@ export default function AuthHandler() {
         confirmPasswordReset(auth, router.query.oobCode, newPassword)
             .then(() => {
                 showToast({ type: 'success', msg: 'Password reset successfully' })
-                router.push('/login')
+                if (isUser)
+                    router.push('/')
+                else
+                    router.push('/login')
             })
             .catch(error => {
                 console.error('Erro ao redefinir a senha:', error)
-                showToast({ type: 'error', msg: 'Error resetting password' })
+                if (error.code === 'auth/expired-action-code')
+                    showToast({ type: 'error', msg: 'Link expirado' })
+                else
+                    showToast({ type: 'error', msg: 'Error resetting password' })
                 setDisableButton(false)
             })
 

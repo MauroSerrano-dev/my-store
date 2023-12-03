@@ -1,0 +1,46 @@
+.main {
+    width: 100%;
+    max-width: 1100px;
+    padding-left: 1rem;
+    padding-right: 1rem;
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+    --text-color: var(--text-white);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
+}
+
+.titles {
+    text-align: justify;
+    font-weight: 700;
+    font-size: 22px;
+}
+
+.pStyle {
+    text-align: justify;
+    font-weight: 400;
+    font-size: 16px;
+}
+
+/* Mobile */
+@media (max-width: 750px) {
+    .main {
+        padding-left: 1rem;
+        padding-right: 1rem;
+    }
+
+    .title {
+        font-size: 28px;
+    }
+
+    .titles {
+        font-size: 18px;
+    }
+
+    .pStyle {
+        font-size: 14px;
+    }
+}
