@@ -298,6 +298,9 @@ export default withRouter(props => {
                                     }
                                 </div>
                                 <div className={styles.colorAndSizeSelectors}>
+                                    <h3 style={{ textAlign: 'start' }}>
+                                        {productCurrentVariant.title}
+                                    </h3>
                                     <div>
                                         <p style={{ textAlign: 'start', fontWeight: '700' }}>
                                             {product.colors_ids.length === 1 ? 'Color' : 'Pick a color'}

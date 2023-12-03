@@ -4,10 +4,6 @@
     justify-content: center;
     align-items: center;
 
-    animation: fadeIn ease-in-out forwards 200ms 200ms;
-
-    opacity: 0;
-
     transition: width ease-in-out 200ms,
         height ease-in-out 200ms;
 }
@@ -63,7 +59,6 @@
     background-color: black;
     opacity: 0.5;
     position: absolute;
-    transition: all ease-in-out 200ms;
 }
 
 /* Enable hover only on non-touch devices */
@@ -74,15 +69,5 @@
 
     .optionShadow:hover {
         opacity: 0;
-    }
-}
-
-@keyframes fadeIn {
-    0% {
-        opacity: 0;
-    }
-
-    100% {
-        opacity: 1;
     }
 }

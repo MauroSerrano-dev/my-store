@@ -24,11 +24,7 @@ export default function SizesSelector(props) {
                         i,
                         option
                     )}
-                    className={styles.button}
-                    style={{
-                        opacity: value.some(size => option.id === size?.id) ? 1 : 0.7,
-                        outline: value.some(size => option.id === size?.id) ? '2px solid var(--primary)' : '1px solid black',
-                    }}
+                    className={`${styles.button} ${value.some(size => option.id === size?.id) ? styles.buttonActive : ''}`}
                 >
                     {option.title}
                 </button>

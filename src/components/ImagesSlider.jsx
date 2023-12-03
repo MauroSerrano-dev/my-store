@@ -32,8 +32,8 @@ export default function ImagesSlider(props) {
 
     const [draggingOffSetTimeOut, setDraggingOffSetTimeOut] = useState()
 
-    const [imageLoad, setImageLoad] = useState(false)
-    const [optionsImageLoad, setOptionsImageLoad] = useState(false)
+    const [imagesLoad, setImagesLoad] = useState([])
+    const [optionsImagesLoad, setOptionsImagesLoad] = useState([])
 
     const [isDragging, setIsDragging] = useState(false)
     const [slideMoving, setSlideMoving] = useState(false)
@@ -186,6 +186,9 @@ export default function ImagesSlider(props) {
                             {images.filter(img => img.color_id === cl.id).map((img, j) =>
                                 <div
                                     key={j}
+                                    style={{
+                                        position: 'relative'
+                                    }}
                                 >
                                     <Image
                                         priority
@@ -197,13 +200,14 @@ export default function ImagesSlider(props) {
                                         height={height}
                                         style={{
                                             pointerEvents: 'none',
+                                            opacity: imagesLoad.includes(j) ? 1 : 0,
+                                            transition: 'opacity ease-in-out 200ms'
                                         }}
                                         onLoadingComplete={() => {
-                                            if (j === 0)
-                                                setImageLoad(true)
+                                            setImagesLoad(prev => [...prev, j])
                                         }}
                                     />
-                                    {!imageLoad &&
+                                    {!imagesLoad.includes(j) &&
                                         <Skeleton
                                             variant="rectangular"
                                             width={width}
@@ -213,7 +217,6 @@ export default function ImagesSlider(props) {
                                                 position: 'absolute',
                                                 top: 0,
                                                 left: 0,
-                                                zIndex: -1,
                                             }}
                                         />
                                     }
@@ -274,17 +277,17 @@ export default function ImagesSlider(props) {
                                         pointerEvents: isDraggingOptions ? 'none' : 'auto'
                                     }}
                                 >
-                                    {optionsImageLoad &&
-                                        <div
-                                            className={styles.optionShadow}
-                                            style={{
-                                                opacity: currentImgIndex === j
-                                                    ? 0
-                                                    : undefined
-                                            }}
-                                        >
-                                        </div>
-                                    }
+                                    <div
+                                        className={styles.optionShadow}
+                                        style={{
+                                            opacity: currentImgIndex !== j && optionsImagesLoad.includes(j)
+                                                ? undefined
+                                                : 0,
+                                            transition: 'opacity ease-in-out 200ms',
+                                            zIndex: 1
+                                        }}
+                                    >
+                                    </div>
                                     <Image
                                         priority
                                         src={img.src}
@@ -294,12 +297,15 @@ export default function ImagesSlider(props) {
                                         width={(OPTIONS_HEIGHT - OPTIONS_PADDING_TOP) * 0.9}
                                         height={OPTIONS_HEIGHT - OPTIONS_PADDING_TOP}
                                         alt='product image'
+                                        style={{
+                                            opacity: optionsImagesLoad.includes(j) ? 1 : 0,
+                                            transition: 'opacity ease-in-out 200ms'
+                                        }}
                                         onLoadingComplete={() => {
-                                            if (j === images.filter(img => img.color_id === currentColor.id).length - 1)
-                                                setOptionsImageLoad(true)
+                                            setOptionsImagesLoad(prev => [...prev, j])
                                         }}
                                     />
-                                    {!optionsImageLoad &&
+                                    {!optionsImagesLoad.includes(j) &&
                                         <Skeleton
                                             variant="rectangular"
                                             width={(OPTIONS_HEIGHT - OPTIONS_PADDING_TOP) * 0.9}
@@ -309,7 +315,6 @@ export default function ImagesSlider(props) {
                                                 position: 'absolute',
                                                 top: 0,
                                                 left: 0,
-                                                zIndex: -1,
                                             }}
                                         />
                                     }
