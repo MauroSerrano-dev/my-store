@@ -45,7 +45,7 @@ export default function Admin(props) {
                 </motion.div>
     )
 }
-export async function getServerSideProps({ locale, req }) {
+export async function getServerSideProps({ locale }) {
 
     const options = {
         method: 'GET',

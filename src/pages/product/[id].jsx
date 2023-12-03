@@ -422,7 +422,7 @@ export default withRouter(props => {
     )
 })
 
-export async function getServerSideProps({ query, locale, resolvedUrl, req }) {
+export async function getServerSideProps({ query, locale, resolvedUrl }) {
     const { id, cl, sz } = query
 
     const options = {
@@ -451,7 +451,7 @@ export async function getServerSideProps({ query, locale, resolvedUrl, req }) {
             product: product || null,
             cl: colorQuery === undefined ? null : colorQuery,
             sz: sizeQuery === undefined ? null : sizeQuery,
-            urlMeta: `${process.env.NEXT_PUBLIC_URL}${resolvedUrl} `,
+            urlMeta: `${process.env.NEXT_PUBLIC_URL}${locale === 'en' ? '' : `/${locale}`}${resolvedUrl} `,
             productMetaImage: !product
                 ? 'https://mrfstyles.com/logos/circle-black.jpg'
                 : colorQuery
