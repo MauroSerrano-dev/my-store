@@ -59,8 +59,13 @@ export default function Orders() {
             .then(response => {
                 if (response.status < 300)
                     setOrders(response.orders)
+                else
+                    setOrders([])
             })
-            .catch(err => console.error(err))
+            .catch(err => {
+                console.error(err)
+                setOrders([])
+            })
     }
 
     function handleSelectYear(event) {

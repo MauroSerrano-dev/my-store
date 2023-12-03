@@ -167,7 +167,9 @@ export default function Menu(props) {
                                 onClick={handleCloseMenu}
                                 className={`${styles.menuItem} noUnderline`}
                             >
-                                {tMenu(option.id)}
+                                <p>
+                                    {tMenu(option.id)}
+                                </p>
                             </Link>
                             : <div
                                 key={i}
@@ -177,12 +179,14 @@ export default function Menu(props) {
                                 }}
                                 className={styles.menuItem}
                             >
-                                {tMenu(option.id)}
-                                {option.type === 'forward' &&
-                                    <IoIosArrowForward
-                                        className={styles.forwardButton}
-                                    />
-                                }
+                                <p>
+                                    {tMenu(option.id)}
+                                    {option.type === 'forward' &&
+                                        <IoIosArrowForward
+                                            className={styles.forwardButton}
+                                        />
+                                    }
+                                </p>
                             </div>
                     )}
                 </motion.div>
@@ -223,24 +227,28 @@ export default function Menu(props) {
                                     onClick={handleCloseMenu}
                                     className={`${styles.menuItem} noUnderline`}
                                 >
-                                    {tCommon(option.id)}
+                                    <p>
+                                        {tCommon(option.id)}
+                                    </p>
                                 </Link>
                                 : <div
                                     key={i}
                                     onClick={() => setOptionMenu(option.value)}
                                     className={styles.menuItem}
                                 >
-                                    {tCommon(option.id)}
-                                    {option.type === 'forward' &&
-                                        <IoIosArrowForward
-                                            className={styles.forwardButton}
-                                        />
-                                    }
+                                    <p>
+                                        {tCommon(option.id)}
+                                        {option.type === 'forward' &&
+                                            <IoIosArrowForward
+                                                className={styles.forwardButton}
+                                            />
+                                        }
+                                    </p>
                                 </div>
                         )}
                     </motion.div>
                 }
             </motion.div>
-        </div>
+        </div >
     )
 }

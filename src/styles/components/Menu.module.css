@@ -23,9 +23,9 @@
 
     height: 100vh;
     width: 350px;
-    
+
     top: 0px;
-    
+
     padding: 3rem 1rem;
 
     overflow: hidden;
@@ -95,11 +95,19 @@
 
     width: 100%;
 
-    padding-bottom: 1rem;
-    padding-top: 1rem;
+    padding-bottom: 0.8rem;
+    padding-top: 0.8rem;
 
     border-bottom: #ababab solid 1px;
     transition: all ease-in-out 200ms;
+}
+
+.menuItem p {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    width: 100%;
 }
 
 .backButton {
@@ -122,10 +130,6 @@
 
 /* Enable hover only on non-touch devices */
 @media (hover: hover) and (pointer: fine) {
-    .menuItem:hover {
-        cursor: pointer;
-    }
-
     .subTitle a:hover {
         color: #444444;
     }
@@ -136,6 +140,7 @@
     }
 
     .menuItem:hover {
+        cursor: pointer;
         font-weight: 600;
     }
 
