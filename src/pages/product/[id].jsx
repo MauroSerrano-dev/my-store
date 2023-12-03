@@ -299,7 +299,7 @@ export default withRouter(props => {
                                 </div>
                                 <div className={styles.colorAndSizeSelectors}>
                                     <h3 style={{ textAlign: 'start' }}>
-                                        {productCurrentVariant.title}
+                                        {tCommon(currentColor.title)} / {currentSize.title}
                                     </h3>
                                     <div>
                                         <p style={{ textAlign: 'start', fontWeight: '700' }}>

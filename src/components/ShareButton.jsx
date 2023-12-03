@@ -7,6 +7,7 @@ import { BsWhatsapp } from "react-icons/bs";
 import { MdOutlineContentCopy } from "react-icons/md";
 import { ImFacebook2 } from "react-icons/im";
 import { useAppContext } from './contexts/AppContext';
+import { motion } from "framer-motion";
 
 export default function ShareButton(props) {
     const {
@@ -107,8 +108,18 @@ export default function ShareButton(props) {
             </div>
             {
                 open &&
-                <div
+                <motion.div
                     className={styles.contentContainer}
+                    initial='hidden'
+                    animate={open ? 'visible' : 'hidden'}
+                    variants={{
+                        hidden: {
+                            opacity: 0,
+                        },
+                        visible: {
+                            opacity: 1,
+                        }
+                    }}
                 >
                     <div className={styles.pointer}>
                     </div>
@@ -149,8 +160,8 @@ export default function ShareButton(props) {
                             {copied ? 'Link Copied!' : 'Copy Link'}
                         </MenuItem>
                     </div>
-                </div>
+                </motion.div>
             }
-        </div >
+        </div>
     )
 }
