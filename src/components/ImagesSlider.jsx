@@ -16,8 +16,11 @@ export default function ImagesSlider(props) {
     } = props
 
     const {
+        windowWidth,
         supportsHoverAndPointer,
     } = useAppContext()
+
+    const fullScreen = width === windowWidth
 
     const carouselRef = useRef(null)
     const optionsRef = useRef(null)
@@ -152,6 +155,7 @@ export default function ImagesSlider(props) {
                 style={{
                     width: width,
                     height: height,
+                    borderRadius: fullScreen ? 0 : '0.3rem',
                 }}
             >
                 <motion.div
@@ -187,7 +191,12 @@ export default function ImagesSlider(props) {
                                 <div
                                     key={j}
                                     style={{
-                                        position: 'relative'
+                                        position: 'relative',
+                                        overflow: 'hidden',
+                                        borderTopLeftRadius: j === 0 && !fullScreen ? '0.3rem' : 0,
+                                        borderBottomLeftRadius: j === 0 ? '0.3rem' : 0,
+                                        borderTopRightRadius: j === images.filter(img => img.color_id === cl.id).length - 1 && !fullScreen ? '0.3rem' : 0,
+                                        borderBottomRightRadius: j === images.filter(img => img.color_id === cl.id).length - 1 ? '0.3rem' : 0,
                                     }}
                                 >
                                     <Image
