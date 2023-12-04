@@ -1,4 +1,5 @@
 import {
+    Timestamp,
     doc,
     getDoc,
     getFirestore,
@@ -32,7 +33,10 @@ async function updateAllCurrencies(updatedCurrencies) {
     try {
         const currRef = doc(db, process.env.COLL_APP_SETTINGS, 'currencies')
 
-        await setDoc(currRef, updatedCurrencies)
+        await setDoc(currRef, {
+            data: updatedCurrencies,
+            updated_at: Timestamp.now()
+        })
 
         console.log('Currencies updated successfuly!')
         return

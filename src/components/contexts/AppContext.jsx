@@ -100,7 +100,7 @@ export function AppProvider({ children }) {
 
         fetch("/api/app-settings/currencies", options)
             .then(response => response.json())
-            .then(response => setCurrencies(response))
+            .then(response => setCurrencies(response.data))
             .catch(err => console.error(err))
     }
 

@@ -153,8 +153,8 @@ export default function Cart(props) {
             const values = getShippingOptions(item.type_id, shippingCountry)
             const result = acc + (
                 typesAlreadyIn.includes(item.type_id)
-                    ? values.add_item * item.quantity
-                    : values.first_item + values.add_item * (item.quantity - 1)
+                    ? (values.add_item * item.quantity) + values.tax
+                    : (values.first_item + values.add_item * (item.quantity - 1)) + values.tax
             )
             typesAlreadyIn.push(item.type_id)
             return result
