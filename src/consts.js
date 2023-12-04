@@ -1935,6 +1935,7 @@ export function getShippingOptions(product_type, country) {
                 provider_id: 29,
                 first_item: 475,
                 add_item: 240,
+                tax: 70,
                 currency: 'usd'
             }
         }
@@ -1975,6 +1976,7 @@ export function getShippingOptions(product_type, country) {
                 provider_id: 87,
                 first_item: 569,
                 add_item: 199,
+                tax: 242,
                 currency: 'usd'
             }
         }

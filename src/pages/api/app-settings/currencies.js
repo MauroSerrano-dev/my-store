@@ -11,7 +11,12 @@ export default async function handler(req, res) {
         return res.status(401).json({ error: "Invalid authentication." })
 
     if (req.method === "GET") {
-        const currencies = await getAllCurrencies()
-        res.status(200).json(currencies)
+        try{
+            const currencies = await getAllCurrencies()
+            res.status(200).json(currencies)
+        }
+        catch {
+            res.status(500).json({})
+        }
     }
 }
