@@ -13,6 +13,7 @@ export default async function handler(req, res) {
 
     if (req.method === "GET") {
         const response = await getOrdersByUserId(user_id, start_date, end_date)
+
         const productsInfoRes = await getProductsInfo(response.orders.reduce((acc, order) => [...acc, ...order.products], []))
 
         if (response.status === 200 && productsInfoRes.status === 200)

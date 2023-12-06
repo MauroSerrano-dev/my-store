@@ -18,7 +18,6 @@ export default function Login() {
 
     const {
         authValidated,
-        auth,
         login,
         mobile,
         router,
@@ -26,6 +25,7 @@ export default function Login() {
         loading,
         setLoading,
         isUser,
+        setBlockInteractions,
     } = useAppContext()
 
     const [disableLoginButton, setDisableLoginButton] = useState(false)
@@ -56,6 +56,7 @@ export default function Login() {
         if (password === '')
             return showToast({ msg: 'missing_password' })
 
+        setBlockInteractions(true)
         setLoading(true)
         setDisableLoginButton(true)
         login(email, password)
@@ -76,7 +77,6 @@ export default function Login() {
                 ? <NoFound404 />
                 : <div className={styles.container}>
                     <header>
-                        <script src="https://www.google.com/recaptcha/enterprise.js" async defer></script>
                     </header>
                     <main className={styles.main}
                         style={{

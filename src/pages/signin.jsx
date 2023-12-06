@@ -26,6 +26,7 @@ export default function Signin() {
         setLoading,
         authValidated,
         isUser,
+        setBlockInteractions,
     } = useAppContext()
 
     const [reCaptchaSolve, setReCaptchaSolve] = useState(false)
@@ -73,6 +74,7 @@ export default function Signin() {
             setShowModalPassword(true)
             return
         }
+        setBlockInteractions(true)
         setLoading(true)
         setDisableSigninButton(true)
         const options = {
@@ -94,17 +96,20 @@ export default function Signin() {
                     login(user.email, user.password)
                 }
                 else if (response.status < 500) {
+                    setBlockInteractions(false)
                     setLoading(false)
                     setDisableSigninButton(false)
                     showToast({ msg: tToasts(response.message) })
                 }
                 else {
+                    setBlockInteractions(false)
                     setLoading(false)
                     setDisableSigninButton(false)
                     showToast({ type: 'error', msg: tToasts(response.message) })
                 }
             })
             .catch(() => {
+                setBlockInteractions(false)
                 setLoading(false)
                 setDisableSigninButton(false)
                 showToast({ type: 'error', msg: tToasts('error_creating_user') })
@@ -118,7 +123,6 @@ export default function Signin() {
                 ? <NoFound404 />
                 : <div className={styles.container}>
                     <header>
-                        <script src="https://www.google.com/recaptcha/enterprise.js" async defer></script>
                     </header>
                     <main
                         className={styles.main}

@@ -1,6 +1,6 @@
 import ProductCart from '@/components/products/ProductCart'
 import styles from '@/styles/pages/cart.module.css'
-import { CART_COOKIE, COLORS_POOL, SIZES_POOL, getShippingOptions } from '@/consts'
+import { CART_COOKIE, COLORS_POOL, DEFAULT_LANGUAGE, SIZES_POOL, getShippingOptions } from '@/consts'
 import COUNTRIES_POOL from '../../public/locales/en/countries.json'
 import { useEffect, useState } from 'react'
 import Selector from '@/components/material-ui/Selector'
@@ -28,6 +28,7 @@ export default function Cart(props) {
         userCurrency,
         cart,
         currencies,
+        setBlockInteractions
     } = useAppContext()
 
     const [disableCheckoutButton, setDisableCheckoutButton] = useState(false)
@@ -63,6 +64,7 @@ export default function Cart(props) {
             showToast({ msg: 'Checkout temporarily disabled' })
             return
         }
+        setBlockInteractions(true)
         setLoading(true)
         setDisableCheckoutButton(true)
         const options = {
@@ -89,7 +91,7 @@ export default function Cart(props) {
                     })
                 }),
                 cancel_url: window.location.href,
-                success_url: session ? `${window.location.origin}/orders` : window.location.origin,
+                success_url: session ? `${window.location.origin}${i18n.language === DEFAULT_LANGUAGE ? '' : `/${i18n.language}`}/orders` : `${window.location.origin}${i18n.language === DEFAULT_LANGUAGE ? '' : `/${i18n.language}`}`,
                 customer: session,
                 shippingValue: SHIPPING_CONVERTED,
                 shippingCountry: shippingCountry,
@@ -103,6 +105,7 @@ export default function Cart(props) {
             .then(response => response.json())
             .then(response => {
                 if (response.outOfStock) {
+                    setBlockInteractions(false)
                     setLoading(false)
                     setDisableCheckoutButton(false)
                     setOutOfStock(response.outOfStock)
@@ -123,6 +126,7 @@ export default function Cart(props) {
                     window.location.href = response.url
             })
             .catch(err => {
+                setBlockInteractions(false)
                 setLoading(false)
                 setDisableCheckoutButton(false)
                 console.error(err)
@@ -171,7 +175,7 @@ export default function Cart(props) {
     }
 
     return (
-        <div className={styles.container} >
+        <div className={styles.container}>
             <header>
             </header>
             {!cart

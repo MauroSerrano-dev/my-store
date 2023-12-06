@@ -3,17 +3,15 @@ import Head from 'next/head'
 import NoFound404 from '../components/NoFound404'
 import TagsSelector from '@/components/material-ui/TagsSelector'
 import { USER_CUSTOMIZE_HOME_PAGE } from '@/consts'
-import LANGUAGES from '../../public/locales/en/languages.json'
 import { Button } from '@mui/material'
 import { useEffect, useState } from 'react'
 import { showToast } from '@/utils/toasts'
 import { convertTimestampToFormatDate, getObjectsDiff } from '@/utils'
 import TextInput from '@/components/material-ui/TextInput'
-import Selector from '@/components/material-ui/Selector'
 import { useTranslation } from 'next-i18next'
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
 import { useAppContext } from '@/components/contexts/AppContext'
-import { sendEmailVerification, updateEmail, updateProfile } from 'firebase/auth'
+import { sendEmailVerification, updateProfile } from 'firebase/auth'
 
 const TAGS_MIN_LIMIT = 3
 const TAGS_MAX_LIMIT = 8
@@ -28,7 +26,6 @@ export default function Profile() {
     } = useAppContext()
 
     const { i18n } = useTranslation()
-    const tLanguages = useTranslation('languages').t
     const tProfile = useTranslation('profile').t
     const tMenu = useTranslation('menu').t
     const tToasts = useTranslation('toasts').t
@@ -50,11 +47,6 @@ export default function Profile() {
     function handleChanges(fieldName, value) {
         setDisableSaveButton(false)
         setUser(prev => ({ ...prev, [fieldName]: value }))
-    }
-
-    function handleChangeLanguageSelector(event) {
-        setDisableSaveButton(false)
-        setCurrentLanguage(event.target.value)
     }
 
     function handleSendVerificationEmail() {
@@ -103,11 +95,6 @@ export default function Profile() {
             return
         }
         setDisableSaveButton(true)
-
-        if (router.locale !== currentLanguage) {
-            const { pathname, asPath, query } = router
-            router.push({ pathname, query }, asPath, { locale: currentLanguage })
-        }
 
         const { first_name, last_name } = changes
         updateProfile(auth.currentUser, { displayName: `${first_name || session.first_name || ''} ${last_name || session.last_name || ''}` })
@@ -202,13 +189,6 @@ export default function Profile() {
                                     }}
                                     onChange={event => handleChanges('last_name', event.target.value)}
                                 />
-                                <Selector
-                                    label={tProfile("Language")}
-                                    options={Object.keys(LANGUAGES).map(lang => ({ value: lang, name: tLanguages(lang) }))}
-                                    value={currentLanguage}
-                                    onChange={handleChangeLanguageSelector}
-                                    size={'medium'}
-                                />
                                 <p className={styles.createAtDate}>{tProfile('customer_since')}: {convertTimestampToFormatDate(session.create_at, i18n.language)}</p>
                             </div>
                             <div className={styles.right}>
@@ -250,7 +230,7 @@ export default function Profile() {
 export async function getServerSideProps({ locale }) {
     return {
         props: {
-            ...(await serverSideTranslations(locale, ['common', 'navbar', 'menu', 'profile', 'languages', 'toasts']))
+            ...(await serverSideTranslations(locale, ['common', 'navbar', 'menu', 'profile', 'toasts']))
         }
     }
 }

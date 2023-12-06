@@ -63,7 +63,6 @@ export default async function handler(req, res) {
       }
     }
 
-
     const line_items = cartItems.map(item => {
       return {
         price_data: {

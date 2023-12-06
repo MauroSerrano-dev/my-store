@@ -48,6 +48,7 @@ export function AppProvider({ children }) {
     const [authValidated, setAuthValidated] = useState(false)
     const [showLoadingScreen, setShowLoadingScreen] = useState(false)
     const [loading, setLoading] = useState(false)
+    const [blockInteractions, setBlockInteractions] = useState(false)
     const [currencies, setCurrencies] = useState()
 
     const router = useRouter()
@@ -71,11 +72,13 @@ export function AppProvider({ children }) {
 
         function handleRouteChangeComplete() {
             setLoading(false)
+            setBlockInteractions(false)
             setShowLoadingScreen(false)
         }
 
         function handleRouteChangeError() {
             setLoading(false)
+            setBlockInteractions(false)
             setShowLoadingScreen(false)
         }
 
@@ -435,6 +438,7 @@ export function AppProvider({ children }) {
                 adminMenuOpen,
                 userEmailVerify,
                 setUserEmailVerify,
+                setBlockInteractions,
             }}
         >
             <motion.div
@@ -550,61 +554,61 @@ export function AppProvider({ children }) {
                 style={{ color: 'white' }}
                 pauseOnFocusLoss={false}
             />
-            {loading &&
-                <div>
-                    <div
-                        style={{
-                            position: 'fixed',
-                            zIndex: 99999,
-                            top: 0,
-                            left: 0,
-                            width: '100vw',
-                            height: '100vh',
-                        }}>
-                    </div>
-                    <motion.div
-                        variants={{
-                            hidden: {
-                                opacity: 0,
-                            },
-                            visible: {
-                                opacity: 1,
-                                transition: {
-                                    duration: 0,
-                                    delay: 0.2,
-                                }
-                            }
-                        }}
-                        initial='hidden'
-                        animate='visible'
-                        style={{
-                            position: 'fixed',
-                            right: '4rem',
-                            bottom: '4rem',
-                            zIndex: 10000,
-                        }}
-                    >
-                        <CircularProgress
-                            variant="determinate"
-                            sx={{
-                                position: 'absolute',
-                                color: '#525252',
-                            }}
-                            size={40}
-                            thickness={4}
-                            value={100}
-                        />
-                        <CircularProgress
-                            disableShrink
-                            size={40}
-                            thickness={4}
-                            sx={{
-                                position: 'absolute',
-                                animationDuration: '750ms',
-                            }}
-                        />
-                    </motion.div>
+            {blockInteractions &&
+                <div
+                    style={{
+                        position: 'fixed',
+                        zIndex: 99999,
+                        top: 0,
+                        left: 0,
+                        width: '100vw',
+                        height: '100vh',
+                    }}>
                 </div>
+            }
+            {loading &&
+                <motion.div
+                    variants={{
+                        hidden: {
+                            opacity: 0,
+                        },
+                        visible: {
+                            opacity: 1,
+                            transition: {
+                                duration: 0,
+                                delay: 0.2,
+                            }
+                        }
+                    }}
+                    initial='hidden'
+                    animate='visible'
+                    style={{
+                        position: 'fixed',
+                        right: '4rem',
+                        bottom: '4rem',
+                        zIndex: 10000,
+                    }}
+                >
+                    <CircularProgress
+                        variant="determinate"
+                        sx={{
+                            position: 'absolute',
+                            color: '#525252',
+                        }}
+                        size={40}
+                        thickness={4}
+                        value={100}
+                    />
+                    <CircularProgress
+                        disableShrink
+                        size={40}
+                        thickness={4}
+                        sx={{
+                            position: 'absolute',
+                            animationDuration: '750ms',
+                        }}
+                    />
+                </motion.div>
             }
         </AppContext.Provider>
     )
