@@ -2,7 +2,7 @@ import styles from '@/styles/pages/profile.module.css'
 import Head from 'next/head'
 import NoFound404 from '../components/NoFound404'
 import TagsSelector from '@/components/material-ui/TagsSelector'
-import { USER_CUSTOMIZE_HOME_PAGE } from '@/consts'
+import { COMMON_TRANSLATES, USER_CUSTOMIZE_HOME_PAGE } from '@/consts'
 import { Button } from '@mui/material'
 import { useEffect, useState } from 'react'
 import { showToast } from '@/utils/toasts'
@@ -230,7 +230,7 @@ export default function Profile() {
 export async function getServerSideProps({ locale }) {
     return {
         props: {
-            ...(await serverSideTranslations(locale, ['common', 'navbar', 'menu', 'profile', 'toasts']))
+            ...(await serverSideTranslations(locale, COMMON_TRANSLATES.concat(['profile'])))
         }
     }
 }

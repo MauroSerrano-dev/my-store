@@ -6,7 +6,7 @@ import CarouselProducts from '@/components/carousels/CarouselProducts'
 import Carousel from '@/components/carousels/Carousel'
 import Link from 'next/link'
 import Image from 'next/image'
-import { DEFAULT_PRODUCTS_TAGS, USER_CUSTOMIZE_HOME_PAGE } from '@/consts'
+import { COMMON_TRANSLATES, DEFAULT_PRODUCTS_TAGS, USER_CUSTOMIZE_HOME_PAGE } from '@/consts'
 import { useTranslation } from 'next-i18next'
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
 import { useAppContext } from '@/components/contexts/AppContext'
@@ -272,7 +272,7 @@ export default function Home() {
 export async function getServerSideProps({ locale }) {
   return {
     props: {
-      ...(await serverSideTranslations(locale, ['common', 'navbar', 'menu', 'footer', 'index', 'products', 'errors', 'toasts']))
+      ...(await serverSideTranslations(locale, COMMON_TRANSLATES.concat(['footer', 'index', 'products', 'errors'])))
     }
   }
 }

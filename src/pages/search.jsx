@@ -6,7 +6,7 @@ import Link from 'next/link'
 import Selector from '@/components/material-ui/Selector'
 import { Checkbox, FormControlLabel, Pagination, PaginationItem } from '@mui/material'
 import Footer from '@/components/Footer'
-import { SEARCH_PRODUCT_COLORS, SEARCH_ART_COLORS, SEARCH_FILTERS } from '@/consts'
+import { SEARCH_PRODUCT_COLORS, SEARCH_ART_COLORS, SEARCH_FILTERS, COMMON_TRANSLATES } from '@/consts'
 import ColorButton from '@/components/ColorButton'
 import Tag from '@/components/material-ui/Tag'
 import CircleIcon from '@mui/icons-material/Circle';
@@ -578,7 +578,7 @@ export default withRouter(() => {
 export async function getServerSideProps({ locale }) {
     return {
         props: {
-            ...(await serverSideTranslations(locale, ['common', 'menu', 'navbar', 'footer', 'toasts']))
+            ...(await serverSideTranslations(locale, COMMON_TRANSLATES.concat(['footer'])))
         }
     }
 }

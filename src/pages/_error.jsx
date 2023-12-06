@@ -5,6 +5,7 @@ import styles from '@/styles/pages/_error.module.css'
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
 import NoFound404 from '@/components/NoFound404'
 import { useAppContext } from '@/components/contexts/AppContext'
+import { COMMON_TRANSLATES } from '@/consts'
 
 function Error({ statusCode }) {
 
@@ -76,7 +77,7 @@ function Error({ statusCode }) {
 export async function getServerSideProps({ locale, res }) {
     return {
         props: {
-            ...(await serverSideTranslations(locale, ['common', 'navbar', 'menu', 'toasts'])),
+            ...(await serverSideTranslations(locale, COMMON_TRANSLATES)),
             statusCode: res.statusCode,
         }
     }

@@ -4,6 +4,7 @@ import Head from 'next/head'
 import Link from 'next/link'
 import { useTranslation } from 'next-i18next';
 import styles from '@/styles/pages/terms-of-use.module.css'
+import { COMMON_TRANSLATES } from '@/consts';
 
 export default function TermsOfUse() {
 
@@ -115,7 +116,7 @@ export default function TermsOfUse() {
 export async function getServerSideProps({ locale }) {
     return {
         props: {
-            ...(await serverSideTranslations(locale, ['common', 'menu', 'navbar', 'footer', 'terms-of-use', 'toasts']))
+            ...(await serverSideTranslations(locale, COMMON_TRANSLATES.concat(['footer', 'terms-of-use'])))
         }
     }
 }

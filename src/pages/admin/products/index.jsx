@@ -3,7 +3,7 @@ import Link from 'next/link'
 import NoFound404 from '../../../components/NoFound404';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { isAdmin } from '@/utils/validations';
-import { PRODUCTS_TYPES } from '@/consts';
+import { COMMON_TRANSLATES, PRODUCTS_TYPES } from '@/consts';
 import { useTranslation } from 'next-i18next'
 import { useAppContext } from '@/components/contexts/AppContext';
 import { motion } from 'framer-motion';
@@ -66,7 +66,7 @@ export default function Products() {
 export async function getServerSideProps({ locale }) {
     return {
         props: {
-            ...(await serverSideTranslations(locale, ['common', 'navbar', 'menu', 'toasts']))
+            ...(await serverSideTranslations(locale, COMMON_TRANSLATES))
         }
     }
 }

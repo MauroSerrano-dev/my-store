@@ -11,6 +11,7 @@ import { handleReCaptchaError, handleReCaptchaSuccess } from '@/utils/validation
 import { showToast } from '@/utils/toasts'
 import { sendPasswordResetEmail } from 'firebase/auth'
 import { LoadingButton } from '@mui/lab'
+import { COMMON_TRANSLATES } from '@/consts'
 
 export default function ForgotPassword() {
     const {
@@ -146,7 +147,7 @@ export default function ForgotPassword() {
 export async function getServerSideProps({ locale }) {
     return {
         props: {
-            ...(await serverSideTranslations(locale, ['common', 'menu', 'navbar', 'toasts']))
+            ...(await serverSideTranslations(locale, COMMON_TRANSLATES))
         }
     }
 }
