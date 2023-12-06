@@ -6,7 +6,7 @@ import { useEffect, useRef, useState } from 'react'
 import styles from '@/styles/pages/wishlist.module.css'
 import { useTranslation } from 'next-i18next';
 import lottie from 'lottie-web';
-import { LIMITS } from '@/consts'
+import { COMMON_TRANSLATES, LIMITS } from '@/consts'
 import NoFound404 from '@/components/NoFound404'
 import { useAppContext } from '@/components/contexts/AppContext'
 
@@ -180,7 +180,7 @@ export default function Wishlist() {
 export async function getServerSideProps({ locale }) {
     return {
         props: {
-            ...(await serverSideTranslations(locale, ['common', 'menu', 'navbar', 'wishlist', 'footer', 'toasts', 'errors']))
+            ...(await serverSideTranslations(locale, COMMON_TRANSLATES.concat(['wishlist', 'footer', 'errors'])))
         }
     }
 }

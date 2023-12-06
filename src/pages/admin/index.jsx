@@ -4,6 +4,7 @@ import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { isAdmin } from '@/utils/validations';
 import { useAppContext } from '@/components/contexts/AppContext';
 import { motion } from 'framer-motion';
+import { COMMON_TRANSLATES } from '@/consts';
 
 export default function Admin(props) {
     const {
@@ -61,7 +62,7 @@ export async function getServerSideProps({ locale }) {
     return {
         props: {
             total_products: products.length,
-            ...(await serverSideTranslations(locale, ['common', 'navbar', 'menu', 'toasts']))
+            ...(await serverSideTranslations(locale, COMMON_TRANSLATES))
         }
     }
 }

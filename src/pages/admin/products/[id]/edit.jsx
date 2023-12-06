@@ -3,7 +3,7 @@ import TextInput from '@/components/material-ui/TextInput';
 import styles from '@/styles/admin/products/edit/id.module.css'
 import { withRouter } from 'next/router'
 import { useEffect, useState } from 'react';
-import { COLLECTIONS, TAGS_POOL, PRODUCTS_TYPES, COLORS_POOL, SIZES_POOL, PROVIDERS_POOL, THEMES_POOL, SEARCH_ART_COLORS } from '@/consts';
+import { COLLECTIONS, TAGS_POOL, PRODUCTS_TYPES, COLORS_POOL, SIZES_POOL, PROVIDERS_POOL, THEMES_POOL, SEARCH_ART_COLORS, COMMON_TRANSLATES } from '@/consts';
 import ColorSelector from '@/components/ColorSelector';
 import SizesSelector from '@/components/SizesSelector';
 import { Button, Checkbox, Slider } from '@mui/material';
@@ -805,7 +805,7 @@ export default withRouter(() => {
 export async function getServerSideProps({ locale }) {
     return {
         props: {
-            ...(await serverSideTranslations(locale, ['common', 'navbar', 'menu', 'toasts']))
+            ...(await serverSideTranslations(locale, COMMON_TRANSLATES))
         }
     }
 }

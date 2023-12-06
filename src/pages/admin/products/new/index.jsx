@@ -3,6 +3,7 @@ import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import NoFound404 from '@/components/NoFound404';
 import { isAdmin } from '@/utils/validations';
 import { useAppContext } from '@/components/contexts/AppContext';
+import { COMMON_TRANSLATES } from '@/consts';
 
 export default function ProductsNew() {
     const {
@@ -26,7 +27,7 @@ export default function ProductsNew() {
 export async function getServerSideProps({ locale }) {
     return {
         props: {
-            ...(await serverSideTranslations(locale, ['common', 'navbar', 'menu', 'toasts']))
+            ...(await serverSideTranslations(locale, COMMON_TRANSLATES))
         }
     }
 }

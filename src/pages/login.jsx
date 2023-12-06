@@ -13,6 +13,7 @@ import { LoadingButton } from '@mui/lab'
 import { useAppContext } from '@/components/contexts/AppContext'
 import NoFound404 from '@/components/NoFound404'
 import { handleReCaptchaError, handleReCaptchaSuccess } from '@/utils/validations'
+import { COMMON_TRANSLATES } from '@/consts'
 
 export default function Login() {
 
@@ -220,7 +221,7 @@ export default function Login() {
 export async function getServerSideProps({ locale }) {
     return {
         props: {
-            ...(await serverSideTranslations(locale, ['common', 'menu', 'navbar', 'toasts', 'login-signin']))
+            ...(await serverSideTranslations(locale, COMMON_TRANSLATES.concat(['login-signin'])))
         }
     }
 }

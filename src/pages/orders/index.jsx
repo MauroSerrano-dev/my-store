@@ -11,6 +11,7 @@ import CarouselProducts from '@/components/carousels/CarouselProducts'
 import Footer from '@/components/Footer'
 import lottie from 'lottie-web';
 import { useAppContext } from '@/components/contexts/AppContext';
+import { COMMON_TRANSLATES } from '@/consts';
 
 export default function Orders() {
     const {
@@ -229,7 +230,7 @@ export default function Orders() {
 export async function getServerSideProps({ locale }) {
     return {
         props: {
-            ...(await serverSideTranslations(locale, ['common', 'navbar', 'menu', 'orders', 'footer', 'toasts']))
+            ...(await serverSideTranslations(locale, COMMON_TRANSLATES.concat(['orders', 'footer'])))
         }
     }
 }

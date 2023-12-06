@@ -10,7 +10,7 @@ import { handleReCaptchaError, handleReCaptchaSuccess, isStrongPassword } from '
 import { useTranslation } from 'next-i18next'
 import PasswordInput from '@/components/material-ui/PasswordInput'
 import GoogleButton from '@/components/buttons/GoogleButton'
-import { LIMITS } from '@/consts'
+import { COMMON_TRANSLATES, LIMITS } from '@/consts'
 import TextInput from '@/components/material-ui/TextInput'
 import { LoadingButton } from '@mui/lab'
 import { useAppContext } from '@/components/contexts/AppContext'
@@ -287,7 +287,7 @@ export default function Signin() {
 export async function getServerSideProps({ locale }) {
     return {
         props: {
-            ...(await serverSideTranslations(locale, ['common', 'menu', 'navbar', 'toasts', 'login-signin']))
+            ...(await serverSideTranslations(locale, COMMON_TRANSLATES.concat(['login-signin'])))
         }
     }
 }

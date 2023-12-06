@@ -1,3 +1,4 @@
+import { COMMON_TRANSLATES } from '@/consts'
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
 
 export default function Contact() {
@@ -11,7 +12,7 @@ export default function Contact() {
 export async function getServerSideProps({ locale }) {
     return {
         props: {
-            ...(await serverSideTranslations(locale, ['common', 'navbar', 'menu', 'toasts']))
+            ...(await serverSideTranslations(locale, COMMON_TRANSLATES))
         }
     }
 }

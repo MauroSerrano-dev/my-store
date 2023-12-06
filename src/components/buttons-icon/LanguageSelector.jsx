@@ -24,13 +24,13 @@ export default function LanguageSelector() {
 
     const [open, setOpen] = useState(false)
     const { i18n } = useTranslation()
+    const tLanguages = useTranslation('languages').t
 
     function handleClickOption(newLanguage) {
         if (router.locale !== newLanguage) {
             const { pathname, asPath, query } = router
             router.push({ pathname, query }, asPath, { locale: newLanguage, scroll: false })
         }
-        setOpen(false)
     }
 
     function handleMouseEnter() {
@@ -112,30 +112,54 @@ export default function LanguageSelector() {
                             minWidth: 165,
                         }}
                     >
-                        <MenuItem onClick={() => handleClickOption('en')}>
+                        <MenuItem
+                            onClick={() => handleClickOption('en')}
+                            style={{
+                                backgroundColor: i18n.language === 'en' ? 'rgba(var(--primary-rgb), 0.3)' : 'transparent',
+                                color: i18n.language === 'en' ? '#000000' : undefined,
+                            }}
+                        >
                             <ListItemIcon>
                                 <LanguageOutlinedIcon style={{ fontSize: 30 }} />
                             </ListItemIcon>
-                            {'English'}
+                            {tLanguages('en')}
                         </MenuItem>
                         <Divider />
-                        <MenuItem onClick={() => handleClickOption('es')}>
+                        <MenuItem
+                            onClick={() => handleClickOption('es')}
+                            style={{
+                                backgroundColor: i18n.language === 'es' ? 'rgba(var(--primary-rgb), 0.3)' : 'transparent',
+                                color: i18n.language === 'es' ? '#000000' : undefined,
+                            }}
+                        >
                             <ListItemIcon>
                                 <CircleFlag countryCode={'es'} height="27" />
                             </ListItemIcon>
-                            {'Spanish'}
+                            {tLanguages('es')}
                         </MenuItem>
-                        <MenuItem onClick={() => handleClickOption('pt-BR')}>
+                        <MenuItem
+                            onClick={() => handleClickOption('pt-BR')}
+                            style={{
+                                backgroundColor: i18n.language === 'pt-BR' ? 'rgba(var(--primary-rgb), 0.3)' : 'transparent',
+                                color: i18n.language === 'pt-BR' ? '#000000' : undefined,
+                            }}
+                        >
                             <ListItemIcon>
                                 <CircleFlag countryCode={'br'} height="27" />
                             </ListItemIcon>
-                            {'Brazillian Portuguese'}
+                            {tLanguages('pt-BR')}
                         </MenuItem>
-                        <MenuItem onClick={() => handleClickOption('pt-PT')}>
+                        <MenuItem
+                            onClick={() => handleClickOption('pt-PT')}
+                            style={{
+                                backgroundColor: i18n.language === 'pt-PT' ? 'rgba(var(--primary-rgb), 0.3)' : 'transparent',
+                                color: i18n.language === 'pt-PT' ? '#000000' : undefined,
+                            }}
+                        >
                             <ListItemIcon>
                                 <CircleFlag countryCode={'pt'} height="27" />
                             </ListItemIcon>
-                            {'Portuguese'}
+                            {tLanguages('pt-PT')}
                         </MenuItem>
                     </div>
                 </motion.div>

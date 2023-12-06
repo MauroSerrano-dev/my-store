@@ -5,6 +5,8 @@ import { ImMug } from "react-icons/im"
 
 export const DEFAULT_LANGUAGE = 'en'
 
+export const COMMON_TRANSLATES = ['common', 'menu', 'navbar', 'toasts', 'languages']
+
 export const CART_COOKIE = 'CART'
 
 export const LIMITS = {
@@ -1852,8 +1854,8 @@ export const PRODUCTS_TYPES = [
             {
                 id: "navy-white-xl",
                 id_printify: {
-                    43:39430,
-                    6:39430,
+                    43: 39430,
+                    6: 39430,
                 },
                 cost: 1782,
                 price: 2970,

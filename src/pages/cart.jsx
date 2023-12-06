@@ -1,6 +1,6 @@
 import ProductCart from '@/components/products/ProductCart'
 import styles from '@/styles/pages/cart.module.css'
-import { CART_COOKIE, COLORS_POOL, DEFAULT_LANGUAGE, SIZES_POOL, getShippingOptions } from '@/consts'
+import { CART_COOKIE, COLORS_POOL, COMMON_TRANSLATES, DEFAULT_LANGUAGE, SIZES_POOL, getShippingOptions } from '@/consts'
 import COUNTRIES_POOL from '../../public/locales/en/countries.json'
 import { useEffect, useState } from 'react'
 import Selector from '@/components/material-ui/Selector'
@@ -319,7 +319,7 @@ export default function Cart(props) {
 
 export async function getServerSideProps({ locale, req }) {
 
-    const translate = await serverSideTranslations(locale, ['common', 'navbar', 'menu', 'cart', 'countries', 'toasts'])
+    const translate = await serverSideTranslations(locale, COMMON_TRANSLATES.concat(['cart', 'countries']))
 
     try {
         const ipAddress = req.headers["x-forwarded-for"]

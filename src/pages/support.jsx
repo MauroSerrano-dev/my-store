@@ -1,4 +1,5 @@
 import Footer from '@/components/Footer'
+import { COMMON_TRANSLATES } from '@/consts'
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
 import Head from 'next/head'
 
@@ -19,7 +20,7 @@ export default function Support() {
 export async function getServerSideProps({ locale }) {
     return {
         props: {
-            ...(await serverSideTranslations(locale, ['common', 'menu', 'navbar', 'footer', 'toasts']))
+            ...(await serverSideTranslations(locale, COMMON_TRANSLATES.concat(['footer'])))
         }
     }
 }
