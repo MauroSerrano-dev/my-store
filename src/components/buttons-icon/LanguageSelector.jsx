@@ -70,8 +70,8 @@ export default function LanguageSelector() {
     }, [supportsHoverAndPointer])
 
     return (
-        <div
-            className={styles.container}
+        <button
+            className={`${styles.container} buttonInvisible`}
             onMouseEnter={handleMouseEnter}
             onMouseLeave={handleMouseLeave}
             onClick={handleOnClick}
@@ -140,6 +140,6 @@ export default function LanguageSelector() {
                     </div>
                 </motion.div>
             }
-        </div>
+        </button>
     )
 }

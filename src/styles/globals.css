@@ -144,7 +144,7 @@ span {
   justify-content: flex-start;
 }
 
-.reCaptcha iframe{
+.reCaptcha iframe {
   position: relative;
   width: 301.5px;
   height: 75.5px;
