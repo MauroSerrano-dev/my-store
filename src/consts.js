@@ -1,7 +1,9 @@
 import { IoShirt } from "react-icons/io5"
-import { GiHoodie } from "react-icons/gi";
-import { PiTShirtFill } from "react-icons/pi";
-import { ImMug } from "react-icons/im";
+import { GiHoodie } from "react-icons/gi"
+import { PiTShirtFill } from "react-icons/pi"
+import { ImMug } from "react-icons/im"
+
+export const DEFAULT_LANGUAGE = 'en'
 
 export const CART_COOKIE = 'CART'
 
@@ -70,6 +72,7 @@ export const COLORS_POOL = {
     392: { id: 392, id_string: 'light-blue', colors: ['#d6e6f7'], title: 'Light Blue' },
     395: { id: 395, id_string: 'maroon', colors: ['#642838'], title: 'Maroon' },
     418: { id: 418, id_string: 'black', colors: ['#000000'], title: 'Black' },
+    420: { id: 420, id_string: "orange", colors: ["#EA5F22"], title: 'Orange' },
     423: { id: 423, id_string: 'red', colors: ['#c62A32'], title: 'Red' },
     424: { id: 424, id_string: 'charcoal', colors: ['#585559'], title: 'Charcoal' },
     425: { id: 425, id_string: 'royal', colors: ['#084f97'], title: 'Royal' },
@@ -97,21 +100,22 @@ export const SEARCH_PRODUCT_COLORS = [
     { id: 5, color_display: { color: '#2b4da4', title: 'Blue', id_string: 'blue' }, colors: [COLORS_POOL[425], COLORS_POOL[1058], COLORS_POOL[392]] },
     { id: 6, color_display: { color: '#1a1f35', title: 'Navy', id_string: 'navy' }, colors: [COLORS_POOL[511], COLORS_POOL[1795]] },
     { id: 7, color_display: { color: '#026539', title: 'Green', id_string: 'green' }, colors: [COLORS_POOL[364], COLORS_POOL[369], COLORS_POOL[1792]] },
+    { id: 8, color_display: { color: '#e0824b', title: 'Orange', id_string: 'orange' }, colors: [COLORS_POOL[420]] },
     { id: 9, color_display: { color: '#c62A32', title: 'Red', id_string: 'red' }, colors: [COLORS_POOL[423], COLORS_POOL[1536], COLORS_POOL[395]] },
     { id: 10, color_display: { color: '#31221d', title: 'Brown', id_string: 'brown' }, colors: [COLORS_POOL[362]] },
 ]
 
 export const SEARCH_ART_COLORS = [
-    { id: 1, color_display: { color: '#000000', title: 'Black', id_string: 'black' }, colors: [COLORS_POOL[418], COLORS_POOL[1750]] },
-    { id: 2, color_display: { color: '#ffffff', title: 'White', id_string: 'white' }, colors: [COLORS_POOL[521], COLORS_POOL[1062]] },
-    { id: 3, color_display: { color: '#525455', title: 'Grey', id_string: 'grey' }, colors: [COLORS_POOL[367], COLORS_POOL[424], COLORS_POOL[1535]] },
-    { id: 4, color_display: { color: '#cacaca', title: 'Light Grey', id_string: 'light-grey' }, colors: [COLORS_POOL[358]] },
-    { id: 5, color_display: { color: '#2b4da4', title: 'Blue', id_string: 'blue' }, colors: [COLORS_POOL[425], COLORS_POOL[1058], COLORS_POOL[392]] },
-    { id: 6, color_display: { color: '#1a1f35', title: 'Navy', id_string: 'navy' }, colors: [COLORS_POOL[511], COLORS_POOL[1795]] },
-    { id: 7, color_display: { color: '#026539', title: 'Green', id_string: 'green' }, colors: [COLORS_POOL[364], COLORS_POOL[369], COLORS_POOL[1792]] },
-    { id: 8, color_display: { color: '#e0824b', title: 'Orange', id_string: 'orange' }, colors: [] },
-    { id: 9, color_display: { color: '#c62A32', title: 'Red', id_string: 'red' }, colors: [COLORS_POOL[423], COLORS_POOL[1536], COLORS_POOL[395]] },
-    { id: 10, color_display: { color: '#31221d', title: 'Brown', id_string: 'brown' }, colors: [COLORS_POOL[362]] },
+    { id: 1, color_display: { color: '#000000', title: 'Black', id_string: 'black' } },
+    { id: 2, color_display: { color: '#ffffff', title: 'White', id_string: 'white' } },
+    { id: 3, color_display: { color: '#525455', title: 'Grey', id_string: 'grey' } },
+    { id: 4, color_display: { color: '#cacaca', title: 'Light Grey', id_string: 'light-grey' } },
+    { id: 5, color_display: { color: '#2b4da4', title: 'Blue', id_string: 'blue' } },
+    { id: 6, color_display: { color: '#1a1f35', title: 'Navy', id_string: 'navy' } },
+    { id: 7, color_display: { color: '#026539', title: 'Green', id_string: 'green' } },
+    { id: 8, color_display: { color: '#e0824b', title: 'Orange', id_string: 'orange' } },
+    { id: 9, color_display: { color: '#c62A32', title: 'Red', id_string: 'red' } },
+    { id: 10, color_display: { color: '#31221d', title: 'Brown', id_string: 'brown' } },
 ]
 
 export const SIZES_POOL = [
@@ -130,6 +134,7 @@ export const PROVIDERS_POOL = {
     27: { id: 27, title: 'Print Geek' },
     28: { id: 28, title: 'District Photo' },
     29: { id: 29, title: 'Monster Digital' },
+    43: { id: 43, title: 'Stoked On Printing' },
     72: { id: 72, title: 'Print Clever' },
     87: { id: 87, title: 'Print Logistic' },
 }
@@ -232,7 +237,7 @@ export const PRODUCTS_TYPES = [
         },
         icon: IoShirt,
         sizes: [14, 15, 16, 17, 18],
-        colors: [521, 418, 358, 362, 364, 369, 392, 424, 425, 511, 423],
+        colors: [521, 418, 358, 362, 364, 369, 392, 424, 425, 511, 420, 423],
         variants: [
             {
                 id: "black-s",
@@ -1459,9 +1464,9 @@ export const PRODUCTS_TYPES = [
         family_id: 'raglan-tees',
         title: 'Raglan Tee',
         color: '#e0824b',
-        providers: [27, 6],
+        providers: [43, 6],
         blueprint_ids: {
-            27: 79,
+            43: 79,
             6: 79,
         },
         icon: PiTShirtFill,
@@ -1470,7 +1475,10 @@ export const PRODUCTS_TYPES = [
         variants: [
             {
                 id: "royal-white-s",
-                id_printify: 33522,
+                id_printify: {
+                    43: 33522,
+                    6: 33522,
+                },
                 cost: 1782,
                 price: 2970,
                 title: "Royal/White / S",
@@ -1480,7 +1488,10 @@ export const PRODUCTS_TYPES = [
             },
             {
                 id: "asphalt-white-s",
-                id_printify: 36255,
+                id_printify: {
+                    43: 39175,
+                    6: 39175,
+                },
                 cost: 1782,
                 price: 2970,
                 title: "Asphalt/White / S",
@@ -1490,7 +1501,10 @@ export const PRODUCTS_TYPES = [
             },
             {
                 id: "red-white-s",
-                id_printify: 36256,
+                id_printify: {
+                    43: 36256,
+                    6: 39211,
+                },
                 cost: 1782,
                 price: 2970,
                 title: "Red/White / S",
@@ -1500,7 +1514,10 @@ export const PRODUCTS_TYPES = [
             },
             {
                 id: "royal-white-m",
-                id_printify: 33523,
+                id_printify: {
+                    43: 33523,
+                    6: 33523,
+                },
                 cost: 1782,
                 price: 2970,
                 title: "Royal/White / M",
@@ -1510,7 +1527,10 @@ export const PRODUCTS_TYPES = [
             },
             {
                 id: "asphalt-white-m",
-                id_printify: 36257,
+                id_printify: {
+                    43: 39253,
+                    6: 39253,
+                },
                 cost: 1782,
                 price: 2970,
                 title: "Asphalt/White / M",
@@ -1520,7 +1540,10 @@ export const PRODUCTS_TYPES = [
             },
             {
                 id: "red-white-m",
-                id_printify: 36258,
+                id_printify: {
+                    43: 36258,
+                    6: 39289,
+                },
                 cost: 1782,
                 price: 2970,
                 title: "Red/White / M",
@@ -1530,7 +1553,10 @@ export const PRODUCTS_TYPES = [
             },
             {
                 id: "royal-white-l",
-                id_printify: 33524,
+                id_printify: {
+                    43: 33524,
+                    6: 33524,
+                },
                 cost: 1782,
                 price: 2970,
                 title: "Royal/White / L",
@@ -1540,7 +1566,10 @@ export const PRODUCTS_TYPES = [
             },
             {
                 id: "asphalt-white-l",
-                id_printify: 36259,
+                id_printify: {
+                    43: 39331,
+                    6: 39331,
+                },
                 cost: 1782,
                 price: 2970,
                 title: "Asphalt/White / L",
@@ -1550,7 +1579,10 @@ export const PRODUCTS_TYPES = [
             },
             {
                 id: "red-white-l",
-                id_printify: 36260,
+                id_printify: {
+                    43: 36260,
+                    6: 39367,
+                },
                 cost: 1782,
                 price: 2970,
                 title: "Red/White / L",
@@ -1560,7 +1592,10 @@ export const PRODUCTS_TYPES = [
             },
             {
                 id: "royal-white-xl",
-                id_printify: 33525,
+                id_printify: {
+                    43: 33525,
+                    6: 33525,
+                },
                 cost: 1782,
                 price: 2970,
                 title: "Royal/White / XL",
@@ -1570,7 +1605,10 @@ export const PRODUCTS_TYPES = [
             },
             {
                 id: "asphalt-white-xl",
-                id_printify: 36261,
+                id_printify: {
+                    43: 39409,
+                    6: 39409,
+                },
                 cost: 1782,
                 price: 2970,
                 title: "Asphalt/White / XL",
@@ -1580,7 +1618,10 @@ export const PRODUCTS_TYPES = [
             },
             {
                 id: "red-white-xl",
-                id_printify: 36262,
+                id_printify: {
+                    43: 36264,
+                    6: 39523,
+                },
                 cost: 1782,
                 price: 2970,
                 title: "Red/White / XL",
@@ -1590,7 +1631,10 @@ export const PRODUCTS_TYPES = [
             },
             {
                 id: "royal-white-2xl",
-                id_printify: 33526,
+                id_printify: {
+                    43: 33526,
+                    6: 33526,
+                },
                 cost: 1993,
                 price: 3322,
                 title: "Royal/White / 2XL",
@@ -1600,7 +1644,10 @@ export const PRODUCTS_TYPES = [
             },
             {
                 id: "asphalt-white-2xl",
-                id_printify: 36263,
+                id_printify: {
+                    43: 39487,
+                    6: 39487,
+                },
                 cost: 1993,
                 price: 3322,
                 title: "Asphalt/White / 2XL",
@@ -1610,7 +1657,10 @@ export const PRODUCTS_TYPES = [
             },
             {
                 id: "red-white-2xl",
-                id_printify: 36264,
+                id_printify: {
+                    43: 36264,
+                    6: 39523,
+                },
                 cost: 1993,
                 price: 3322,
                 title: "Red/White / 2XL",
@@ -1620,7 +1670,10 @@ export const PRODUCTS_TYPES = [
             },
             {
                 id: "white-black-s",
-                id_printify: 39151,
+                id_printify: {
+                    43: 39151,
+                    6: 39151,
+                },
                 cost: 1782,
                 price: 2970,
                 title: "White/Black / S",
@@ -1630,7 +1683,10 @@ export const PRODUCTS_TYPES = [
             },
             {
                 id: "green-white-s",
-                id_printify: 39193,
+                id_printify: {
+                    43: 39193,
+                    6: 39193,
+                },
                 cost: 1782,
                 price: 2970,
                 title: "Green/White / S",
@@ -1640,7 +1696,10 @@ export const PRODUCTS_TYPES = [
             },
             {
                 id: "navy-white-s",
-                id_printify: 39196,
+                id_printify: {
+                    43: 39196,
+                    6: 39196,
+                },
                 cost: 1782,
                 price: 2970,
                 title: "Navy/White / S",
@@ -1650,7 +1709,10 @@ export const PRODUCTS_TYPES = [
             },
             {
                 id: "black-white-s",
-                id_printify: 39217,
+                id_printify: {
+                    43: 39178,
+                    6: 39178,
+                },
                 cost: 1782,
                 price: 2970,
                 title: "Black/White / S",
@@ -1660,7 +1722,10 @@ export const PRODUCTS_TYPES = [
             },
             {
                 id: "white-black-m",
-                id_printify: 39229,
+                id_printify: {
+                    43: 39229,
+                    6: 39229,
+                },
                 cost: 1782,
                 price: 2970,
                 title: "White/Black / M",
@@ -1670,7 +1735,10 @@ export const PRODUCTS_TYPES = [
             },
             {
                 id: "green-white-m",
-                id_printify: 39271,
+                id_printify: {
+                    43: 39271,
+                    6: 39271,
+                },
                 cost: 1782,
                 price: 2970,
                 title: "Green/White / M",
@@ -1680,7 +1748,10 @@ export const PRODUCTS_TYPES = [
             },
             {
                 id: "navy-white-m",
-                id_printify: 39274,
+                id_printify: {
+                    43: 39274,
+                    6: 39274,
+                },
                 cost: 1782,
                 price: 2970,
                 title: "Navy/White / M",
@@ -1689,7 +1760,10 @@ export const PRODUCTS_TYPES = [
                 size_id: 15,
             },
             {
-                id_printify: 39295,
+                id_printify: {
+                    43: 39256,
+                    6: 39256,
+                },
                 cost: 1782,
                 price: 2970,
                 title: "Black/White / M",
@@ -1699,7 +1773,10 @@ export const PRODUCTS_TYPES = [
             },
             {
                 id: "white-black-l",
-                id_printify: 39307,
+                id_printify: {
+                    43: 39307,
+                    6: 39307,
+                },
                 cost: 1782,
                 price: 2970,
                 title: "White/Black / L",
@@ -1709,7 +1786,10 @@ export const PRODUCTS_TYPES = [
             },
             {
                 id: "green-white-l",
-                id_printify: 39349,
+                id_printify: {
+                    43: 39349,
+                    6: 39349,
+                },
                 cost: 1782,
                 price: 2970,
                 title: "Green/White / L",
@@ -1719,7 +1799,10 @@ export const PRODUCTS_TYPES = [
             },
             {
                 id: "navy-white-l",
-                id_printify: 39352,
+                id_printify: {
+                    43: 39352,
+                    6: 39352,
+                },
                 cost: 1782,
                 price: 2970,
                 title: "Navy/White / L",
@@ -1729,7 +1812,10 @@ export const PRODUCTS_TYPES = [
             },
             {
                 id: "black-white-l",
-                id_printify: 39373,
+                id_printify: {
+                    43: 39334,
+                    6: 39334,
+                },
                 cost: 1782,
                 price: 2970,
                 title: "Black/White / L",
@@ -1739,7 +1825,10 @@ export const PRODUCTS_TYPES = [
             },
             {
                 id: "white-black-xl",
-                id_printify: 39385,
+                id_printify: {
+                    43: 39385,
+                    6: 39385,
+                },
                 cost: 1782,
                 price: 2970,
                 title: "White/Black / XL",
@@ -1749,7 +1838,10 @@ export const PRODUCTS_TYPES = [
             },
             {
                 id: "green-white-xl",
-                id_printify: 39427,
+                id_printify: {
+                    43: 39427,
+                    6: 39427,
+                },
                 cost: 1782,
                 price: 2970,
                 title: "Green/White / XL",
@@ -1759,7 +1851,10 @@ export const PRODUCTS_TYPES = [
             },
             {
                 id: "navy-white-xl",
-                id_printify: 39430,
+                id_printify: {
+                    43:39430,
+                    6:39430,
+                },
                 cost: 1782,
                 price: 2970,
                 title: "Navy/White / XL",
@@ -1769,7 +1864,10 @@ export const PRODUCTS_TYPES = [
             },
             {
                 id: "black-white-xl",
-                id_printify: 39451,
+                id_printify: {
+                    43: 39412,
+                    6: 39412,
+                },
                 cost: 1782,
                 price: 2970,
                 title: "Black/White / XL",
@@ -1779,7 +1877,10 @@ export const PRODUCTS_TYPES = [
             },
             {
                 id: "white-black-2xl",
-                id_printify: 39463,
+                id_printify: {
+                    43: 39463,
+                    6: 39463,
+                },
                 cost: 1993,
                 price: 3322,
                 title: "White/Black / 2XL",
@@ -1789,7 +1890,10 @@ export const PRODUCTS_TYPES = [
             },
             {
                 id: "green-white-2xl",
-                id_printify: 39505,
+                id_printify: {
+                    43: 39505,
+                    6: 39505,
+                },
                 cost: 1993,
                 price: 3322,
                 title: "Green/White / 2XL",
@@ -1799,7 +1903,10 @@ export const PRODUCTS_TYPES = [
             },
             {
                 id: "navy-white-2xl",
-                id_printify: 39508,
+                id_printify: {
+                    43: 39508,
+                    6: 39508,
+                },
                 cost: 1993,
                 price: 3322,
                 title: "Navy/White / 2XL",
@@ -1809,7 +1916,10 @@ export const PRODUCTS_TYPES = [
             },
             {
                 id: "black-white-2xl",
-                id_printify: 39529,
+                id_printify: {
+                    43: 39490,
+                    6: 39490,
+                },
                 cost: 1993,
                 price: 3322,
                 title: "Black/White / 2XL",
@@ -1826,8 +1936,8 @@ export const PRODUCTS_TYPES = [
         color: '#bA2326',
         providers: [1, 87],
         blueprint_ids: {
-            1: 1020,
-            87: 68,
+            1: 68,
+            87: 1020,
         },
         icon: ImMug,
         sizes: [1189],
@@ -1923,60 +2033,58 @@ export function getShippingOptions(product_type, country) {
 
     const EU_NORTH_COUNTRIES = ['LV', 'LT', 'NO', 'FI', 'SE', 'EE', 'IS', 'DK', 'CH', 'LI']
 
-    const countryCode = EU_COUNTRIES.includes(country)
-        ? 'EU'
-        : EU_NORTH_COUNTRIES.includes(country)
-            ? 'EUN'
-            : country
-
     if (product_type === 't-shirt') {
-        if (countryCode === 'US') {
+        if (country === 'US') {
             return {
                 provider_id: 29,
                 first_item: 475,
                 add_item: 240,
-                tax: 70,
+                tax: 114,
                 currency: 'usd'
             }
         }
-        if (countryCode === 'CA') {
+        if (country === 'CA') {
             return {
                 provider_id: 29,
                 first_item: 939,
                 add_item: 439,
+                tax: 0,
                 currency: 'usd'
             }
         }
-        if (countryCode === 'PL') {
+        if (country === 'PL') {
             return {
                 provider_id: 87,
                 first_item: 499,
                 add_item: 119,
+                tax: 302,
                 currency: 'usd'
             }
         }
-        if (countryCode === 'GB') {
+        if (country === 'GB') {
             return {
                 provider_id: 72,
                 first_item: 429,
                 add_item: 199,
+                tax: 247,
                 currency: 'usd'
             }
         }
-        if (countryCode === 'AU') {
+        if (country === 'AU') {
             return {
                 provider_id: 29,
                 first_item: 1249,
                 add_item: 499,
+                tax: 0,
                 currency: 'usd'
             }
         }
-        if (countryCode === 'EU') {
+        if (EU_COUNTRIES.includes(country)) {
             return {
                 provider_id: 87,
                 first_item: 569,
                 add_item: 199,
-                tax: 242,
+                tax: 314,
                 currency: 'usd'
             }
         }
@@ -1984,55 +2092,62 @@ export function getShippingOptions(product_type, country) {
             provider_id: 29,
             first_item: 1000,
             add_item: 400,
+            tax: 0,
             currency: 'usd'
         }
     }
     if (product_type === 'hoodie') {
-        if (countryCode === 'US') {
+        if (country === 'US') {
             return {
                 provider_id: 29,
                 first_item: 849,
                 add_item: 209,
+                tax: 162,
                 currency: 'usd'
             }
         }
-        if (countryCode === 'CA') {
+        if (country === 'CA') {
             return {
                 provider_id: 29,
                 first_item: 1269,
                 add_item: 659,
+                tax: 0,
                 currency: 'usd'
             }
         }
-        if (countryCode === 'PL') {
+        if (country === 'PL') {
             return {
                 provider_id: 26,
                 first_item: 699,
                 add_item: 239,
+                tax: 679,
                 currency: 'usd'
             }
         }
-        if (countryCode === 'GB') {
+        if (country === 'GB') {
             return {
                 provider_id: 72,
                 first_item: 759,
                 add_item: 299,
+                tax: 572,
                 currency: 'usd'
             }
         }
-        if (countryCode === 'AU') {
+        if (country === 'AU') {
             return {
                 provider_id: 29,
                 first_item: 2199,
                 add_item: 999,
+                tax: 0,
                 currency: 'usd'
             }
         }
-        if (countryCode === 'EU') {
+        if (EU_COUNTRIES.includes(country)) {
             return {
                 provider_id: 26,
                 first_item: 699,
                 add_item: 239,
+                tax: 669,
                 currency: 'usd'
             }
         }
@@ -2040,111 +2155,134 @@ export function getShippingOptions(product_type, country) {
             provider_id: 29,
             first_item: 1500,
             add_item: 1000,
+            tax: 0,
             currency: 'usd'
         }
     }
     if (product_type === 'raglan-tee') {
-        if (countryCode === 'US') {
+        if (country === 'US') {
             return {
-                provider_id: 27,
-                first_item: 849,
-                add_item: 330,
-                currency: 'usd'
-            }
-        }
-        if (countryCode === 'CA') {
-            return {
-                provider_id: 27,
-                first_item: 679,
+                provider_id: 43,
+                first_item: 519,
                 add_item: 219,
+                tax: 171,
                 currency: 'usd'
             }
         }
-        if (countryCode === 'PL') {
+        if (country === 'CA') {
+            return {
+                provider_id: 43,
+                first_item: 939,
+                add_item: 439,
+                tax: 0,
+                currency: 'usd'
+            }
+        }
+        if (country === 'GB') {
+            return {
+                provider_id: 6,
+                first_item: 479,
+                add_item: 99,
+                tax: 424,
+                currency: 'usd'
+            }
+        }
+        if (country === 'DE') {
+            return {
+                provider_id: 6,
+                first_item: 629,
+                add_item: 119,
+                tax: 550,
+                currency: 'usd'
+            }
+        }
+        if (country === 'AU') {
+            return {
+                provider_id: 43,
+                first_item: 1249,
+                add_item: 499,
+                tax: 0,
+                currency: 'usd'
+            }
+        }
+        if (EU_COUNTRIES.includes(country)) {
             return {
                 provider_id: 6,
                 first_item: 749,
                 add_item: 129,
-                currency: 'usd'
-            }
-        }
-        if (countryCode === 'GB') {
-            return {
-                provider_id: 6,
-                first_item: 398,
-                add_item: 129,
-                currency: 'usd'
-            }
-        }
-        if (countryCode === 'EU') {
-            return {
-                provider_id: 6,
-                first_item: 749,
-                add_item: 129,
+                tax: 550,
                 currency: 'usd'
             }
         }
         return {
-            provider_id: 27,
-            first_item: 1099,
-            add_item: 549,
+            provider_id: 43,
+            first_item: 1000,
+            add_item: 400,
+            tax: 0,
             currency: 'usd'
         }
     }
     if (product_type === 'mug') {
-        if (countryCode === 'US') {
+        if (country === 'US') {
             return {
                 provider_id: 1,
                 first_item: 639,
                 add_item: 400,
+                tax: 92,
                 currency: 'usd'
             }
         }
-        if (countryCode === 'CA') {
+        if (country === 'CA') {
             return {
                 provider_id: 1,
                 first_item: 1489,
                 add_item: 609,
+                tax: 0,
                 currency: 'usd'
             }
         }
-        if (countryCode === 'PL') {
+        if (country === 'PL') {
             return {
                 provider_id: 87,
                 first_item: 659,
                 add_item: 199,
+                tax: 272,
                 currency: 'usd'
             }
         }
-        if (countryCode === 'GB') {
+        if (country === 'GB') {
             return {
                 provider_id: 87,
                 first_item: 729,
                 add_item: 169,
+                tax: 250,
                 currency: 'usd'
             }
         }
-        if (countryCode === 'IE') {
+        if (country === 'IE') {
             return {
                 provider_id: 87,
                 first_item: 729,
                 add_item: 169,
+                tax: 288,
                 currency: 'usd'
             }
         }
-        if (countryCode === 'EU') {
+        if (EU_COUNTRIES.includes(country)) {
             return {
                 provider_id: 87,
                 first_item: 699,
                 add_item: 179,
+                tax: 281,
                 currency: 'usd'
             }
         }
-        if (countryCode === 'EUN') {
+        if (EU_NORTH_COUNTRIES.includes(country)) {
             return {
                 provider_id: 87,
                 first_item: 1029,
                 add_item: 199,
+                tax: 372,
                 currency: 'usd'
             }
         }
@@ -2152,63 +2290,71 @@ export function getShippingOptions(product_type, country) {
             provider_id: 87,
             first_item: 1359,
             add_item: 699,
+            tax: 0,
             currency: 'usd'
         }
     }
     if (product_type === 'mug-c') {
-        if (countryCode === 'US') {
+        if (country === 'US') {
             return {
                 provider_id: 28,
                 first_item: 639,
                 add_item: 359,
+                tax: 86,
                 currency: 'usd'
             }
         }
-        if (countryCode === 'CA') {
+        if (country === 'CA') {
             return {
                 provider_id: 28,
                 first_item: 1149,
                 add_item: 599,
+                tax: 0,
                 currency: 'usd'
             }
         }
-        if (countryCode === 'PL') {
+        if (country === 'PL') {
             return {
                 provider_id: 87,
                 first_item: 659,
                 add_item: 199,
+                tax: 291,
                 currency: 'usd'
             }
         }
-        if (countryCode === 'GB') {
+        if (country === 'GB') {
             return {
                 provider_id: 87,
                 first_item: 729,
                 add_item: 169,
+                tax: 266,
                 currency: 'usd'
             }
         }
-        if (countryCode === 'IE') {
+        if (country === 'IE') {
             return {
                 provider_id: 87,
                 first_item: 729,
                 add_item: 169,
+                tax: 307,
                 currency: 'usd'
             }
         }
-        if (countryCode === 'EU') {
+        if (EU_COUNTRIES.includes(country)) {
             return {
                 provider_id: 87,
                 first_item: 699,
                 add_item: 179,
+                tax: 300,
                 currency: 'usd'
             }
         }
-        if (countryCode === 'EUN') {
+        if (EU_NORTH_COUNTRIES.includes(country)) {
             return {
                 provider_id: 87,
                 first_item: 1029,
                 add_item: 199,
+                tax: 392,
                 currency: 'usd'
             }
         }
@@ -2216,6 +2362,7 @@ export function getShippingOptions(product_type, country) {
             provider_id: 87,
             first_item: 1359,
             add_item: 699,
+            tax: 0,
             currency: 'usd'
         }
     }

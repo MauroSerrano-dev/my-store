@@ -1,6 +1,6 @@
 import { isTokenValid } from "@/utils/auth";
 import { getAllProducts, getProductsByQueries } from "../../../backend/product";
-import { SEARCH_PRODUCT_COLORS, SEARCH_ART_COLORS } from "@/consts";
+import { SEARCH_PRODUCT_COLORS, SEARCH_ART_COLORS, DEFAULT_LANGUAGE } from "@/consts";
 import LANGUAGES from '../../../public/locales/en/languages.json'
 
 export default async function handler(req, res) {
@@ -52,7 +52,7 @@ export default async function handler(req, res) {
                 max: max,
                 order: order,
                 prods_limit: limit,
-                user_language: Object.keys(LANGUAGES).includes(user_language) ? user_language : 'en',
+                user_language: Object.keys(LANGUAGES).includes(user_language) ? user_language : DEFAULT_LANGUAGE,
             })
         }
 

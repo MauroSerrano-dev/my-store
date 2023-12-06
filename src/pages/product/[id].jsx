@@ -5,7 +5,7 @@ import ImagesSlider from '@/components/ImagesSlider'
 import { Button } from '@mui/material'
 import ShoppingCartOutlinedIcon from '@mui/icons-material/ShoppingCartOutlined'
 import CreditCardOutlinedIcon from '@mui/icons-material/CreditCardOutlined'
-import { CART_COOKIE, COLORS_POOL, SIZES_POOL, LIMITS, getShippingOptions } from '@/consts'
+import { CART_COOKIE, COLORS_POOL, SIZES_POOL, LIMITS, getShippingOptions, DEFAULT_LANGUAGE } from '@/consts'
 import Head from 'next/head'
 import ColorSelector from '@/components/ColorSelector'
 import SizesSelector from '@/components/SizesSelector'
@@ -22,6 +22,7 @@ import SelectorAutocomplete from '@/components/material-ui/SelectorAutocomplete'
 import COUNTRIES_POOL from '../../../public/locales/en/countries.json'
 import { useAppContext } from '@/components/contexts/AppContext'
 import { getProductPriceUnit, getProductPriceWithoutPromotion } from '@/utils/prices'
+import Footer from '@/components/Footer'
 
 export default withRouter(props => {
     const {
@@ -381,7 +382,7 @@ export default withRouter(props => {
                         </div>
                         <div className={styles.sectionBody}>
                             <p style={{ textAlign: 'start' }}>
-                                {product.description}
+                                A camiseta traz um novo conceito de conforto casual. Feita com materiais muito macios, essa camiseta é 100% algodão em cores sólidas. Cores mescladas e cinza esportivo incluem poliéster. Os ombros têm twill tape para melhor durabilidade. Não possui costuras laterais. A gola é confeccionada com tricô canelado para evitar danos e enrolamentos.
                             </p>
                         </div>
                     </section>
@@ -418,6 +419,7 @@ export default withRouter(props => {
                         </div>
                     </section>
                 </div>
+                <Footer />
             </div>
             : <NoFound404
                 message='Product not found!'
@@ -450,11 +452,11 @@ export async function getServerSideProps({ query, locale, resolvedUrl }) {
 
     return {
         props: {
-            ...(await serverSideTranslations(locale, ['common', 'navbar', 'menu', 'toasts', 'countries', 'product'])),
+            ...(await serverSideTranslations(locale, ['common', 'navbar', 'menu', 'toasts', 'countries', 'product', 'footer'])),
             product: product || null,
             cl: colorQuery === undefined ? null : colorQuery,
             sz: sizeQuery === undefined ? null : sizeQuery,
-            urlMeta: `${process.env.NEXT_PUBLIC_URL}${locale === 'en' ? '' : `/${locale}`}${resolvedUrl} `,
+            urlMeta: `${process.env.NEXT_PUBLIC_URL}${locale === DEFAULT_LANGUAGE ? '' : `/${locale}`}${resolvedUrl} `,
             productMetaImage: !product
                 ? 'https://mrfstyles.com/logos/circle-black.jpg'
                 : colorQuery

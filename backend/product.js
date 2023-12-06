@@ -84,19 +84,35 @@ async function getProductsInfo(products) {
                 status: 200,
                 message: 'No products found for the provided Cart.',
                 products: [],
-            }
+            };
         }
-        const productsCollection = collection(db, process.env.COLL_PRODUCTS)
 
-        const q = query(productsCollection, where('id', 'in', products.map(prod => prod.id)))
+        const productsCollection = collection(db, process.env.COLL_PRODUCTS);
 
-        const querySnapshot = await getDocs(q)
+        const productIDs = products.map(prod => prod.id);
+        const chunkSize = 30;
+        const chunks = [];
 
-        const productsResult = querySnapshot.docs.map((doc) => doc.data())
+        for (let i = 0; i < productIDs.length; i += chunkSize) {
+            chunks.push(productIDs.slice(i, i + chunkSize));
+        }
+
+        const promises = chunks.map(async chunk => {
+            const q = query(
+                productsCollection,
+                where('id', 'in', chunk)
+            );
+
+            const querySnapshot = await getDocs(q);
+            return querySnapshot.docs.map(doc => doc.data());
+        });
+
+        const chunkResults = await Promise.all(promises);
+        const productsResult = chunkResults.flat();
 
         const productsOneVariant = products.map(prod => {
-            const product = productsResult.find(p => p.id === prod.id)
-            const variant = product.variants.find(vari => vari.id === prod.variant_id)
+            const product = productsResult.find(p => p.id === prod.id);
+            const variant = product.variants.find(vari => vari.id === prod.variant_id);
 
             return {
                 ...prod,
@@ -111,14 +127,14 @@ async function getProductsInfo(products) {
                     size_id: product.variants[0].size_id,
                 },
                 image: product.images.filter(img => img.color_id === variant.color_id)[product.image_showcase_index],
-            }
-        })
+            };
+        });
 
         return {
             status: 200,
             message: 'Products retrieved successfully Products Info!',
             products: productsOneVariant,
-        }
+        };
     } catch (error) {
         console.log('Error getting Products Info:', error);
         return {
@@ -230,11 +246,6 @@ async function getProductsByQueries(props) {
 
         let q = query(productsCollection)
 
-        // Filtre by themes (se presente)
-        if (h) {
-            q = query(q, where("themes", "array-contains-any", h.split(' ')))
-        }
-
         // Filtre by collection (se presente)
         if (c) {
             q = query(q, where("collection_id", "==", c))
@@ -269,6 +280,12 @@ async function getProductsByQueries(props) {
         // Filtre by type (se presente)
         if (v) {
             products = products.filter(prod => v.includes(prod.family_id))
+        }
+
+        // Filtre by themes (se presente)
+        if (h) {
+            const themes = h.split(' ')
+            products = products.filter(prod => prod.themes.some(theme => themes.includes(theme)))
         }
 
         // Filtre by product color (se presente)
@@ -508,27 +525,38 @@ async function getProductsByIds(ids) {
 
         const productsCollection = collection(db, process.env.COLL_PRODUCTS);
 
-        const q = query(productsCollection, where('id', 'in', ids));
+        const chunkSize = 30;
+        const chunks = [];
 
-        const querySnapshot = await getDocs(q);
-
-        const products = querySnapshot.docs.map(doc => doc.data());
-
-        if (products.length > 0) {
-            const orderedProducts = ids.map(id => products.find(product => product.id === id));
-
-            return {
-                status: 200,
-                message: 'Products retrieved successfully by IDs!',
-                products: orderedProducts,
-            };
-        } else {
-            return {
-                status: 200,
-                message: 'No products found for the provided IDs.',
-                products: [],
-            };
+        for (let i = 0; i < ids.length; i += chunkSize) {
+            chunks.push(ids.slice(i, i + chunkSize));
         }
+
+        const promises = chunks.map(async chunk => {
+            const q = query(
+                productsCollection,
+                where('id', 'in', chunk)
+            );
+
+            const querySnapshot = await getDocs(q);
+            return querySnapshot.docs.map(doc => doc.data());
+        });
+
+        const chunkResults = await Promise.all(promises);
+        const mergedResults = chunkResults.flat();
+
+        const products = {};
+        mergedResults.forEach(product => {
+            products[product.id] = product;
+        });
+
+        const orderedProducts = ids.map(id => products[id] || null);
+
+        return {
+            status: 200,
+            message: 'Products retrieved successfully by IDs!',
+            products: orderedProducts,
+        };
     } catch (error) {
         console.log('Error getting products by IDs:', error);
         return {
