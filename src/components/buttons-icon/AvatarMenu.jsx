@@ -16,6 +16,7 @@ import { motion } from 'framer-motion'
 import { isAdmin } from '@/utils/validations'
 import { useAppContext } from '../contexts/AppContext'
 import LoginOutlinedIcon from '@mui/icons-material/LoginOutlined';
+import FavoriteBorderRoundedIcon from '@mui/icons-material/FavoriteBorderRounded';
 
 export default function AvatarMenu() {
   const {
@@ -132,9 +133,13 @@ export default function AvatarMenu() {
           style={{
             left: !isUser
               ? -223.5
-              : ['pt-BR', 'pt-PT'].includes(i18n.language)
-                ? -135.5
-                : -118.5
+              : i18n.language === 'es'
+                ? -147
+                : i18n.language === 'pt-BR'
+                  ? -150.5
+                  : i18n.language === 'pt-PT'
+                    ? -135.5
+                    : -118.5
           }}
           initial='hidden'
           animate='visible'
@@ -152,9 +157,6 @@ export default function AvatarMenu() {
           {isUser
             ? <div
               className={styles.session}
-              style={{
-                minWidth: ['pt-BR', 'pt-PT'].includes(i18n.language) ? 182 : 165,
-              }}
             >
               <Link
                 href={'/profile'}
@@ -177,6 +179,17 @@ export default function AvatarMenu() {
                     <ShoppingBagOutlinedIcon fontSize="medium" />
                   </ListItemIcon>
                   {tNavbar('My Orders')}
+                </MenuItem>
+              </Link>
+              <Link
+                href={'/wishlist'}
+                className='noUnderline'
+              >
+                <MenuItem onClick={handleClickOption}>
+                  <ListItemIcon>
+                    <FavoriteBorderRoundedIcon fontSize="medium" />
+                  </ListItemIcon>
+                  {tNavbar('Wishlist')}
                 </MenuItem>
               </Link>
               <Link
@@ -247,6 +260,6 @@ export default function AvatarMenu() {
           }
         </motion.div>
       }
-    </div>
+    </div >
   )
 }

@@ -2,7 +2,6 @@ import Link from 'next/link'
 import styles from '@/styles/components/NavBar.module.css'
 import Logo from './svgs/Logo';
 import SearchBar from './SearchBar';
-import FavoriteBorderRoundedIcon from '@mui/icons-material/FavoriteBorderRounded';
 import AvatarMenu from './buttons-icon/AvatarMenu';
 import CartIcon from './buttons-icon/CartIcon';
 import SearchRoundedIcon from '@mui/icons-material/SearchRounded';
@@ -11,6 +10,7 @@ import { motion } from "framer-motion";
 import { MenuToggle } from './MenuToggle';
 import { useTranslation } from 'next-i18next';
 import { useAppContext } from './contexts/AppContext';
+import LanguageSelector from './buttons-icon/LanguageSelector';
 
 export default function NavBar(props) {
     const {
@@ -166,38 +166,11 @@ export default function NavBar(props) {
                             />
                         </motion.div>
                     }
-                    {!adminMode && isUser &&
-                        <Link
-                            href={'/wishlist'}
-                        >
-                            <motion.div
-                                className={styles.iconContainer}
-                                initial='hidden'
-                                animate='visible'
-                                variants={{
-                                    hidden: {
-                                        opacity: 0
-                                    },
-                                    visible: {
-                                        opacity: 1
-                                    }
-                                }}
-                            >
-                                <FavoriteBorderRoundedIcon
-                                    style={{
-                                        fontSize: 'calc(var(--navbar-height) * 0.36)',
-                                        color: 'var(--global-white)',
-                                        position: 'relative',
-                                        top: '1px',
-                                    }}
-                                />
-                            </motion.div>
-                        </Link>
-                    }
                     {!adminMode &&
                         <CartIcon />
                     }
                     <AvatarMenu />
+                    <LanguageSelector />
                 </div>
             </div>
         </div>
