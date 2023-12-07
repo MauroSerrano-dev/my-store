@@ -105,12 +105,6 @@ export default async function handler(req, res) {
     })
 
     const session = await stripe.checkout.sessions.create({
-      metadata: {
-        cart_id: cart_id || '',
-        user_id: customer?.id || '',
-        user_language: user_language,
-        ...cartMetadata
-      },
       payment_method_types: ["card"],
       shipping_address_collection: {
         allowed_countries: [shippingCountry],
@@ -153,6 +147,7 @@ export default async function handler(req, res) {
           cart_id: cart_id || '',
           user_id: customer?.id || '',
           user_language: user_language,
+          shippingValue: shippingValue,
           ...cartMetadata
         },
       }
