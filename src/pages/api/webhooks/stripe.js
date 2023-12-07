@@ -143,7 +143,8 @@ export default async function handler(req, res) {
                 }
             )
 
-            await sendPurchaseConfirmationEmail(customer_details.email, orderId, user_language)
+            if (customer_details.email)
+                await sendPurchaseConfirmationEmail(customer_details.email, orderId, user_language)
 
             if (cart_id) {
                 if (user_id) {
