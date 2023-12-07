@@ -106,7 +106,7 @@ export default async function handler(req, res) {
                             status: STEPS[0].id
                         }
                     )),
-                    billing_details: {
+                    user_details: {
                         email: data.billing_details.email,
                         name: data.billing_details.name,
                         phone: data.billing_details.phone,
@@ -119,8 +119,15 @@ export default async function handler(req, res) {
                         currency: data.currency,
                     },
                     shipping_details: {
-                        address: data.shipping.address,
-                        name: data.shipping.name
+                        name: data.shipping.name,
+                        address: {
+                            city: data.shipping.address.city,
+                            country: data.shipping.address.country,
+                            line1: data.shipping.address.line1,
+                            line2: data.shipping.address.line2,
+                            postal_code: data.shipping.address.postal_code,
+                            state: data.shipping.address.state === '' ? null : data.shipping.address.state,
+                        },
                     },
                 }
             )
