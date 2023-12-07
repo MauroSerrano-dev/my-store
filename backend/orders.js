@@ -100,7 +100,7 @@ async function updateProductStatus(order_id_printify, printify_products) {
                 const newStatus = printify_products.find(prod => prod.product_id === product.id_printify && prod.variant_id === product.variant_id_printify)?.status
                 return {
                     ...product,
-                    status: ALLOWED_WEBHOOK_STATUS.some(step => step.id === newStatus)
+                    status: ALLOWED_WEBHOOK_STATUS.some(step => step.id === newStatus) && ALLOWED_WEBHOOK_STATUS.some(step => step.id === product.status)
                         ? newStatus || null
                         : product.status
                 }
@@ -180,10 +180,51 @@ async function getOrderById(orderId) {
     }
 }
 
+async function refundOrderByStripeId(payment_intent, amount_refunded) {
+    try {
+        const ordersCollection = collection(db, process.env.COLL_ORDERS)
+
+        const q = query(ordersCollection, where("id_stripe_payment_intent", "==", payment_intent))
+        const querySnapshot = await getDocs(q)
+
+        if (!querySnapshot.empty) {
+            const orderDoc = querySnapshot.docs[0]
+
+            await updateDoc(
+                orderDoc.ref,
+                {
+                    ...orderDoc,
+                    payment_details: {
+                        ...orderDoc.payment_details,
+                        refund: {
+                            amount: amount_refunded,
+                            refund_at: Timestamp.now(),
+                        },
+                        products: orderDoc.products.map(prod => ({ ...prod, status: 'refunded' }))
+                    }
+                })
+
+            return {
+                status: 200,
+                message: "Order refunded successfully",
+            }
+        } else {
+            return {
+                status: 404,
+                message: `Order with Stripe ID ${payment_intent} not found. Refund fail.`,
+            }
+        }
+    } catch (error) {
+        console.error(`Error refunding order by stripe id: ${error}`)
+        throw new Error(`Error refunding order by stripe id: ${error}`)
+    }
+}
+
 export {
     createOrder,
     getOrdersByUserId,
     updateProductStatus,
     updateOrderField,
     getOrderById,
+    refundOrderByStripeId,
 }
