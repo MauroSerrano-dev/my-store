@@ -205,7 +205,7 @@ export default function ProductCart(props) {
                                 style={{
                                     height: 30,
                                     fontSize: 16,
-                                    width: ['pt-BR', 'pt-PT'].includes(i18n.language)
+                                    width: ['pt-BR', 'pt'].includes(i18n.language)
                                         ? 88
                                         : ['es'].includes(i18n.language)
                                             ? 80
@@ -214,14 +214,14 @@ export default function ProductCart(props) {
                                 styleOption={{
                                     height: 30,
                                     fontSize: 16,
-                                    width: ['pt-BR', 'pt-PT'].includes(i18n.language)
+                                    width: ['pt-BR', 'pt'].includes(i18n.language)
                                         ? 88
                                         : ['es'].includes(i18n.language)
                                             ? 80
                                             : 78
                                 }}
                                 styleLabel={{
-                                    fontSize: ['pt-BR', 'pt-PT'].includes(i18n.language) ? 14 : 16,
+                                    fontSize: ['pt-BR', 'pt'].includes(i18n.language) ? 14 : 16,
                                 }}
                                 options={[
                                     { value: 1, name: '1' },
