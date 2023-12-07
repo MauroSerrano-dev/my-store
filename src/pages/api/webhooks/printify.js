@@ -33,7 +33,7 @@ export default async function handler(req, res) {
             if (orderRes.data.shipments)
                 await updateOrderField(orderPrintifyId, 'shipments', orderRes.data.shipments)
             console.log('çalada', body)
-            console.log('vamos', orderRes)
+            console.log('vamos', orderRes.data)
             res.status(200).json({ message: 'Order status updated!' })
         }
     }
