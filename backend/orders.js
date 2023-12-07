@@ -189,18 +189,18 @@ async function refundOrderByStripeId(payment_intent, amount_refunded) {
 
         if (!querySnapshot.empty) {
             const orderDoc = querySnapshot.docs[0]
+            const orderData = orderDoc.data()
 
             await updateDoc(
                 orderDoc.ref,
                 {
-                    ...orderDoc,
                     payment_details: {
-                        ...orderDoc.payment_details,
+                        ...orderData.payment_details,
                         refund: {
                             amount: amount_refunded,
                             refund_at: Timestamp.now(),
                         },
-                        products: orderDoc.products.map(prod => ({ ...prod, status: 'refunded' }))
+                        products: orderData.products.map(prod => ({ ...prod, status: 'refunded' }))
                     }
                 })
 
