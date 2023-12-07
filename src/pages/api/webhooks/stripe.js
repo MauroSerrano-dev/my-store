@@ -159,6 +159,7 @@ export default async function handler(req, res) {
         }
         else if (type === 'charge.refunded') {
             await refundOrderByStripeId(payment_intent, amount_refunded)
+            res.status(200).json({ message: `Order stripe id ${payment_intent} Refunded. Charge Refunded!` })
         }
     } catch (error) {
         res.status(500).json({ error: `Error on stripe webhook: ${error}` })
