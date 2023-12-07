@@ -137,7 +137,7 @@ export default function AvatarMenu() {
                 ? -147
                 : i18n.language === 'pt-BR'
                   ? -150.5
-                  : i18n.language === 'pt-PT'
+                  : i18n.language === 'pt'
                     ? -135.5
                     : -118.5
           }}

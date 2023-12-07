@@ -66,7 +66,7 @@ export function convertTimestampToFormatDate(timestamp, locale) {
         selectedLocale = ptBR
         model = 'd \'de\' MMMM, yyyy'
     }
-    else if (locale === 'pt-PT') {
+    else if (locale === 'pt') {
         selectedLocale = ptPT
         model = 'd \'de\' MMMM, yyyy'
     }

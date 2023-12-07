@@ -149,14 +149,14 @@ export default function Menu(props) {
                             }}
                         />
                         {session &&
-                            <div>
+                            <p>
                                 {tMenu('welcome')} <span style={{ color: 'var(--primary)', fontWeight: '700' }}>{session.first_name ? session.first_name + ' ' + session.last_name : session.last_name}</span>
-                            </div>
+                            </p>
                         }
                         {session === null &&
-                            <div>
+                            <p>
                                 {tMenu('Hello')}! <Link href={'/login'} onClick={handleCloseMenu} className='noUnderline'>Log in</Link> {tMenu('or')} <Link href={'/signin'} onClick={handleCloseMenu} className='noUnderline'>Sign up</Link>
-                            </div>
+                            </p>
                         }
                     </div>
                     {MENU_OPTIONS.map((option, i) =>

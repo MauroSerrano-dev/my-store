@@ -1,3 +1,4 @@
+import { DEFAULT_LANGUAGE } from "@/consts";
 import { isTokenValid } from "@/utils/auth";
 import axios from 'axios'
 
@@ -56,10 +57,15 @@ export default async function handler(req, res) {
         stripeCustomer = await stripe.customers.create({
           name: `${customer.first_name} ${customer.last_name}`,
           email: customer.email,
+          preferred_locales: [user_language, DEFAULT_LANGUAGE]
         })
       }
+      // Customer exist, update preferred_locales
       else {
-        stripeCustomer = existingCustomer.data[0]
+        const customerId = existingCustomer.data[0].id
+        stripeCustomer = await stripe.customers.update(customerId, {
+          preferred_locales: [user_language, DEFAULT_LANGUAGE]
+        })
       }
     }
 
@@ -141,6 +147,7 @@ export default async function handler(req, res) {
       cancel_url: cancel_url,
       customer: stripeCustomer?.id || undefined,
       /* customer_email: (stripeCustomer || customer)?.email */
+      locale: user_language
     })
 
     // res.redirect(303, session.url)

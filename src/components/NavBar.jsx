@@ -166,11 +166,11 @@ export default function NavBar(props) {
                             />
                         </motion.div>
                     }
+                    <LanguageSelector />
                     {!adminMode &&
                         <CartIcon />
                     }
                     <AvatarMenu />
-                    <LanguageSelector />
                 </div>
             </div>
         </div>

@@ -14,16 +14,16 @@ const stripe = Stripe(process.env.STRIPE_SECRET_KEY)
 export default async function handler(req, res) {
     const sig = req.headers['stripe-signature']
 
-    let event
+    let event = req.body
 
-    try {
+    /* try {
         const rawBody = await getRawBody(req)
         event = stripe.webhooks.constructEvent(rawBody, sig, process.env.STRIPE_WEBHOOK_SECRET)
     }
     catch (error) {
         return res.status(401).json({ error: 'Invalid authentication.' })
     }
-
+ */
     try {
         const type = event.type
         const data = event.data.object
@@ -137,25 +137,20 @@ export default async function handler(req, res) {
 
             res.status(200).json({ message: `Order ${orderId} Created. Checkout Complete!` })
         }
-        else if (type === 'checkout.session.async_payment_succeeded') {
-            res.status(200).json({ message: 'Checkout Async Payment Succeeded!' })
-        }
-        else if (type === 'checkout.session.async_payment_failed') {
-            res.status(200).json({ message: 'Checkout Payment Failed!' })
-        }
-        else if (type === 'checkout.session.expired') {
-            res.status(200).json({ message: 'Checkout Async Session Expired!' })
+        else if (type === 'charge.succeeded') {
+
+            res.status(200).json({ message: 'Charge Succeedded Complete!' })
         }
         else {
-            res.status(200).json({ message: 'Outros eventos!' })
+            res.status(200).json({ message: 'Other Events!' })
         }
     } catch (error) {
         res.status(500).json({ error: `Error on stripe webhook: ${error}` })
     }
 }
 
-export const config = {
+/* export const config = {
     api: {
         bodyParser: false,
     },
-}
+} */

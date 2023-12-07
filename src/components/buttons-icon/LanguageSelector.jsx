@@ -13,7 +13,7 @@ const flagMapping = {
     en: 'en',
     es: 'es',
     'pt-BR': 'br',
-    'pt-PT': 'pt'
+    'pt': 'pt'
 }
 
 export default function LanguageSelector() {
@@ -59,12 +59,12 @@ export default function LanguageSelector() {
         }
 
         if (!supportsHoverAndPointer) {
-            window.addEventListener('scroll', handleCloseMenuOnScroll);
+            window.addEventListener('scroll', handleCloseMenuOnScroll)
         }
 
         return () => {
             if (!supportsHoverAndPointer) {
-                window.removeEventListener('scroll', handleCloseMenuOnScroll);
+                window.removeEventListener('scroll', handleCloseMenuOnScroll)
             }
         }
     }, [supportsHoverAndPointer])
@@ -91,7 +91,13 @@ export default function LanguageSelector() {
                 <motion.div
                     className={styles.contentContainer}
                     style={{
-                        left: -195
+                        left: i18n.language === 'es'
+                            ? -186
+                            : i18n.language === 'pt-BR'
+                                ? -186
+                                : i18n.language === 'pt'
+                                    ? -186
+                                    : -190
                     }}
                     initial='hidden'
                     animate='visible'
@@ -150,16 +156,16 @@ export default function LanguageSelector() {
                             {tLanguages('pt-BR')}
                         </MenuItem>
                         <MenuItem
-                            onClick={() => handleClickOption('pt-PT')}
+                            onClick={() => handleClickOption('pt')}
                             style={{
-                                backgroundColor: i18n.language === 'pt-PT' ? 'rgba(var(--primary-rgb), 0.3)' : 'transparent',
-                                color: i18n.language === 'pt-PT' ? '#000000' : undefined,
+                                backgroundColor: i18n.language === 'pt' ? 'rgba(var(--primary-rgb), 0.3)' : 'transparent',
+                                color: i18n.language === 'pt' ? '#000000' : undefined,
                             }}
                         >
                             <ListItemIcon>
                                 <CircleFlag countryCode={'pt'} height="27" />
                             </ListItemIcon>
-                            {tLanguages('pt-PT')}
+                            {tLanguages('pt')}
                         </MenuItem>
                     </div>
                 </motion.div>

@@ -21,7 +21,7 @@ function getEmailTemplate(language, orderId) {
       contact_us: `Se tiver alguma dúvida, <a href="${process.env.NEXT_PUBLIC_URL}/contact">entre em contato</a>.`,
     }
   }
-  if (language === 'pt-PT') {
+  if (language === 'pt') {
     return {
       subject: 'Confirmação de Compra',
       title: 'Obrigado pela sua compra!',
