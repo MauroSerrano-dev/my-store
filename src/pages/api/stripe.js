@@ -104,6 +104,17 @@ export default async function handler(req, res) {
       )
     })
 
+    const paymentMetadata = {
+      user_language: user_language,
+      shippingValue: shippingValue,
+      ...cartMetadata
+    }
+
+    if (customer)
+      paymentMetadata.user_id = customer.id
+    if (cart_id)
+      paymentMetadata.cart_id = cart_id
+
     const session = await stripe.checkout.sessions.create({
       payment_method_types: ["card"],
       shipping_address_collection: {
@@ -143,13 +154,7 @@ export default async function handler(req, res) {
       /* customer_email: (stripeCustomer || customer)?.email */
       locale: user_language,
       payment_intent_data: {
-        metadata: {
-          cart_id: cart_id || '',
-          user_id: customer?.id || '',
-          user_language: user_language,
-          shippingValue: shippingValue,
-          ...cartMetadata
-        },
+        metadata: paymentMetadata,
       }
     })
 

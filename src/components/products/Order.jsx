@@ -72,7 +72,7 @@ export default function Order(props) {
                             TOTAL
                         </p>
                         <p style={{ textAlign: 'start' }}>
-                            {`${currencies[order.amount.currency].symbol} ${(order.amount.amount_total / 100).toFixed(2)}`}
+                            {`${currencies[order.payment_details.currency].symbol} ${(order.payment_details.amount_total / 100).toFixed(2)}`}
                         </p>
                     </div>
                     <div>

@@ -33,10 +33,10 @@ export default async function handler(req, res) {
 
             const metadata = data.metadata
 
-            const cart_id = metadata.cart_id === '' ? null : metadata.cart_id
-            const user_id = metadata.user_id === '' ? null : metadata.user_id
-            const user_language = metadata.user_language === '' ? null : metadata.user_language
-            const shippingValue = metadata.shippingValue === '' ? null : Number(metadata.shippingValue)
+            const cart_id = metadata.cart_id || null
+            const user_id = metadata.user_id || null
+            const user_language = metadata.user_language || null
+            const shippingValue = metadata.shippingValue || null
 
             delete metadata.cart_id
             delete metadata.user_id
@@ -118,7 +118,7 @@ export default async function handler(req, res) {
                         amount_shipping: shippingValue,
                         currency: data.currency,
                     },
-                    shipping: {
+                    shipping_details: {
                         address: data.shipping.address,
                         name: data.shipping.name
                     },
