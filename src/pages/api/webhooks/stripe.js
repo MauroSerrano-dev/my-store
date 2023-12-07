@@ -36,6 +36,7 @@ export default async function handler(req, res) {
             total_details,
             payment_method_types,
             currency,
+            amount_refunded,
         } = data.object
 
         if (type === 'checkout.session.completed') {
@@ -124,7 +125,7 @@ export default async function handler(req, res) {
                         discount: total_details.amount_discount,
                         shipping: total_details.amount_shipping,
                         tax: total_details.amount_tax,
-                        refunded: null,
+                        refund: null,
                         subtotal: amount_subtotal,
                         currency: currency,
                         payment_methods: payment_method_types
@@ -156,8 +157,8 @@ export default async function handler(req, res) {
             }
             res.status(200).json({ message: `Order ${orderId} Created. Checkout Complete!` })
         }
-        else {
-            res.status(200).json({ message: 'Other Events!' })
+        else if (type === 'charge.refunded') {
+            await refundOrderByStripeId(payment_intent, amount_refunded)
         }
     } catch (error) {
         res.status(500).json({ error: `Error on stripe webhook: ${error}` })
