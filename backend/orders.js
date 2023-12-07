@@ -200,8 +200,8 @@ async function refundOrderByStripeId(payment_intent, amount_refunded) {
                             amount: amount_refunded,
                             refund_at: Timestamp.now(),
                         },
-                        products: orderData.products.map(prod => ({ ...prod, status: 'refunded' }))
-                    }
+                    },
+                    products: orderData.products.map(prod => ({ ...prod, status: 'refunded' }))
                 })
 
             return {
@@ -209,10 +209,8 @@ async function refundOrderByStripeId(payment_intent, amount_refunded) {
                 message: "Order refunded successfully",
             }
         } else {
-            return {
-                status: 404,
-                message: `Order with Stripe ID ${payment_intent} not found. Refund fail.`,
-            }
+            console.error(`Order with Stripe ID ${payment_intent} not found. Refund fail.`)
+            throw new Error(`Order with Stripe ID ${payment_intent} not found. Refund fail.`)
         }
     } catch (error) {
         console.error(`Error refunding order by stripe id: ${error}`)
