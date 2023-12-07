@@ -147,7 +147,15 @@ export default async function handler(req, res) {
       cancel_url: cancel_url,
       customer: stripeCustomer?.id || undefined,
       /* customer_email: (stripeCustomer || customer)?.email */
-      locale: user_language
+      locale: user_language,
+      payment_intent_data: {
+        metadata: {
+          cart_id: cart_id || '',
+          user_id: customer?.id || '',
+          user_language: user_language,
+          ...cartMetadata
+        },
+      }
     })
 
     // res.redirect(303, session.url)
