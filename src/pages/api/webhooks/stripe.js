@@ -36,7 +36,7 @@ export default async function handler(req, res) {
             amount_subtotal,
             total_details,
             payment_method_types,
-            receipt_url,
+            currency,
         } = data.object
 
         if (type === 'checkout.session.completed') {
@@ -98,6 +98,9 @@ export default async function handler(req, res) {
 
             const printifyRes = await axios.post(base_url, body_data, options)
 
+            const stripePaymentIntent = await stripe.paymentIntent.retrieve('ch_3OKn71DsjbohJrrt1PExIL5I')
+            const stripeCharge = await stripe.charges.retrieve(stripePaymentIntent.latest_charge)
+
             await createOrder(
                 {
                     id: orderId,
@@ -105,6 +108,7 @@ export default async function handler(req, res) {
                     user_id: user_id,
                     user_email: customer_details.email,
                     stripe_id: payment_intent,
+                    receipt_url: stripeCharge.receipt_url,
                     products: line_items.map(prod => (
                         {
                             id: prod.id,
@@ -123,7 +127,7 @@ export default async function handler(req, res) {
                         tax: total_details.amount_tax,
                         amount_refunded: null,
                         subtotal: amount_subtotal,
-                        currency: data.currency,
+                        currency: currency,
                         payment_methods: payment_method_types
                     },
                     shipping_details: {
@@ -151,10 +155,6 @@ export default async function handler(req, res) {
                     await setCartSessionProducts(cart_id, [])
             }
             res.status(200).json({ message: `Order ${orderId} Created. Checkout Complete!` })
-        }
-        else if (type === 'charge.succeeded') {
-            await createReceiptUrl(payment_intent, { url: receipt_url })
-            res.status(200).json({ message: 'Charge Succeeded Complete!' })
         }
         else {
             res.status(200).json({ message: 'Other Events!' })
