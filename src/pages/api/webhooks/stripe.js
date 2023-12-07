@@ -106,7 +106,7 @@ export default async function handler(req, res) {
                     id_printify: printifyRes.data.id,
                     user_id: user_id,
                     user_email: customer_details.email,
-                    stripe_id: payment_intent,
+                    id_stripe_payment_intent: payment_intent,
                     receipt_url: stripeCharge.receipt_url,
                     products: line_items.map(prod => (
                         {
@@ -124,7 +124,7 @@ export default async function handler(req, res) {
                         discount: total_details.amount_discount,
                         shipping: total_details.amount_shipping,
                         tax: total_details.amount_tax,
-                        amount_refunded: null,
+                        refunded: null,
                         subtotal: amount_subtotal,
                         currency: currency,
                         payment_methods: payment_method_types
@@ -143,7 +143,8 @@ export default async function handler(req, res) {
                 }
             )
 
-            await sendPurchaseConfirmationEmail(customer_details.email, orderId, user_language)
+            if (customer_details.email)
+                await sendPurchaseConfirmationEmail(customer_details.email, orderId, user_language)
 
             if (cart_id) {
                 if (user_id) {
