@@ -163,37 +163,9 @@ async function updateOrderField(order_id_printify, field_name, value) {
     }
 }
 
-async function updateOrderFieldByStripeId(stripe_id_printify, field_name, value) {
-    try {
-        const ordersCollection = collection(db, process.env.COLL_ORDERS)
-
-        const q = query(ordersCollection, where("stripe_id", "==", stripe_id_printify))
-        const querySnapshot = await getDocs(q)
-
-        if (!querySnapshot.empty) {
-            const orderDoc = querySnapshot.docs[0]
-
-            await updateDoc(orderDoc.ref, { [field_name]: value })
-
-            return {
-                status: 200,
-                message: "Product updated successfully",
-            }
-        } else {
-            return {
-                status: 404,
-                message: `Order with Stripe ID ${stripe_id_printify} not found`,
-            }
-        }
-    } catch (error) {
-        throw new Error(error)
-    }
-}
-
 export {
     createOrder,
     getOrdersByUserId,
     updateProductStatus,
     updateOrderField,
-    updateOrderFieldByStripeId,
 }

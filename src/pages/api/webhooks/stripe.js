@@ -28,7 +28,7 @@ export default async function handler(req, res) {
         const type = event.type
         const data = event.data.object
 
-        if (type === 'checkout.session.completed') {
+        if (type === 'charge.succeeded') {
             const base_url = `https://api.printify.com/v1/shops/${process.env.PRINTIFY_SHOP_ID}/orders.json`
 
             const metadata = data.metadata
@@ -36,10 +36,12 @@ export default async function handler(req, res) {
             const cart_id = metadata.cart_id === '' ? null : metadata.cart_id
             const user_id = metadata.user_id === '' ? null : metadata.user_id
             const user_language = metadata.user_language === '' ? null : metadata.user_language
+            const shippingValue = metadata.shippingValue === '' ? null : Number(metadata.shippingValue)
 
             delete metadata.cart_id
             delete metadata.user_id
             delete metadata.user_language
+            delete metadata.shippingValue
 
             const line_items = Object.keys(metadata).map(key => JSON.parse(metadata[key]))
 
@@ -52,8 +54,8 @@ export default async function handler(req, res) {
                 },
             }
 
-            const fullName = data.shipping_details.name
-            const fullNameArr = data.shipping_details.name.split(' ')
+            const fullName = data.shipping.name
+            const fullNameArr = data.shipping.name.split(' ')
 
             const first_name = fullNameArr.length <= 1 ? fullName : fullNameArr.slice(0, fullNameArr.length - 1).join(' ')
             const last_name = fullNameArr.length <= 1 ? '.' : fullNameArr[fullNameArr.length - 1]
@@ -73,27 +75,18 @@ export default async function handler(req, res) {
                 address_to: {
                     first_name: first_name,
                     last_name: last_name,
-                    email: data.customer_details.email,
-                    phone: data.customer_details.phone,
-                    country: data.shipping_details.address.country,
-                    region: data.shipping_details.address.state === '' ? data.shipping_details.address.country : data.shipping_details.address.state,
-                    address1: data.shipping_details.address.line1,
-                    address2: data.shipping_details.address.line2,
-                    city: data.shipping_details.address.city,
-                    zip: data.shipping_details.address.postal_code
+                    email: data.billing_details.email,
+                    phone: data.shipping.phone,
+                    country: data.shipping.address.country,
+                    region: data.shipping.address.state === '' ? data.shipping.address.country : data.shipping.address.state,
+                    address1: data.shipping.address.line1,
+                    address2: data.shipping.address.line2,
+                    city: data.shipping.address.city,
+                    zip: data.shipping.address.postal_code
                 }
             }
 
             const printifyRes = await axios.post(base_url, body_data, options)
-
-            const amount_details = {
-                amount_total: data.amount_total,
-                amount_discount: data.total_details.amount_discount,
-                amount_subtotal: data.amount_subtotal,
-                amount_shipping: data.total_details.amount_shipping,
-                amount_tax: data.total_details.amount_tax,
-                currency: data.currency,
-            }
 
             await createOrder(
                 {
@@ -101,6 +94,7 @@ export default async function handler(req, res) {
                     id_printify: printifyRes.data.id,
                     user_id: user_id,
                     stripe_id: data.payment_intent,
+                    receipt_url: data.receipt_url,
                     products: line_items.map(prod => (
                         {
                             id: prod.id,
@@ -112,15 +106,22 @@ export default async function handler(req, res) {
                             status: STEPS[0].id
                         }
                     )),
-                    customer: {
-                        email: data.customer_details.email,
-                        name: data.customer_details.name,
-                        phone: data.customer_details.phone,
-                        tax_exempt: data.customer_details.tax_exempt,
-                        tax_ids: data.customer_details.tax_ids,
+                    billing_details: {
+                        email: data.billing_details.email,
+                        name: data.billing_details.name,
+                        phone: data.billing_details.phone,
                     },
-                    amount: amount_details,
-                    shipping_details: data.shipping_details,
+                    payment_details: {
+                        amount_total: data.amount,
+                        amount_refunded: data.amount_refunded,
+                        amount_subtotal: data.amount - shippingValue,
+                        amount_shipping: shippingValue,
+                        currency: data.currency,
+                    },
+                    shipping: {
+                        address: data.shipping.address,
+                        name: data.shipping.name
+                    },
                 }
             )
 
@@ -135,17 +136,6 @@ export default async function handler(req, res) {
                     await setCartSessionProducts(cart_id, [])
             }
             res.status(200).json({ message: `Order ${orderId} Created. Checkout Complete!` })
-        }
-        else if (type === 'charge.succeeded') {
-            try {
-                await updateOrderFieldByStripeId(data.payment_intent, 'receipt_url', data.receipt_url)
-                console.log(`Order ${data.payment_intent} receipt_url updated!`)
-                res.status(200).json({ message: 'Charge Succeedded Complete!' })
-            }
-            catch (error) {
-                console.error(`Error updating order ${data.payment_intent} receipt_url`, error)
-                res.status(500).json({ message: `Error updating order ${data.payment_intent} receipt_url` })
-            }
         }
         else {
             res.status(200).json({ message: 'Other Events!' })
