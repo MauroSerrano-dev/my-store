@@ -97,7 +97,7 @@ export default async function handler(req, res) {
 
             const printifyRes = await axios.post(base_url, body_data, options)
 
-            const stripePaymentIntent = await stripe.paymentIntent.retrieve('ch_3OKn71DsjbohJrrt1PExIL5I')
+            const stripePaymentIntent = await stripe.paymentIntents.retrieve('ch_3OKn71DsjbohJrrt1PExIL5I')
             const stripeCharge = await stripe.charges.retrieve(stripePaymentIntent.latest_charge)
 
             await createOrder(
