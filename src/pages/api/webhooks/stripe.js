@@ -6,7 +6,6 @@ import getRawBody from 'raw-body'
 import { deleteProductsFromWishlist } from '../../../../backend/wishlists'
 import { sendPurchaseConfirmationEmail } from '../../../../backend/email-sender'
 import { STEPS } from '@/consts'
-import { createReceiptUrl } from '../../../../backend/stripe-receipt-url'
 const { v4: uuidv4 } = require('uuid')
 
 const Stripe = require("stripe")
