@@ -186,12 +186,7 @@ async function updateOrderFieldByStripeId(stripe_id_printify, field_name, value)
             }
         }
     } catch (error) {
-        console.error(error);
-        return {
-            status: 500,
-            message: "Error updating product",
-            error: error,
-        }
+        throw new Error(error)
     }
 }
 

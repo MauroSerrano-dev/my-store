@@ -137,8 +137,15 @@ export default async function handler(req, res) {
             res.status(200).json({ message: `Order ${orderId} Created. Checkout Complete!` })
         }
         else if (type === 'charge.succeeded') {
-            await updateOrderFieldByStripeId(data.payment_intent, 'receipt_url', data.receipt_url)
-            res.status(200).json({ message: 'Charge Succeedded Complete!' })
+            try {
+                await updateOrderFieldByStripeId(data.payment_intent, 'receipt_url', data.receipt_url)
+                console.log(`Order ${data.payment_intent} receipt_url updated!`)
+                res.status(200).json({ message: 'Charge Succeedded Complete!' })
+            }
+            catch (error) {
+                console.error(`Error updating order ${data.payment_intent} receipt_url`, error)
+                res.status(500).json({ message: `Error updating order ${data.payment_intent} receipt_url` })
+            }
         }
         else {
             res.status(200).json({ message: 'Other Events!' })
