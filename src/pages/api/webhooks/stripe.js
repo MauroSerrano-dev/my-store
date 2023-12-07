@@ -1,7 +1,7 @@
 import axios from 'axios'
 import { setCartProducts } from '../../../../backend/cart'
 import { setCartSessionProducts } from '../../../../backend/cart-session'
-import { createOrder } from '../../../../backend/orders'
+import { createOrder, updateOrderFieldByStripeId } from '../../../../backend/orders'
 import getRawBody from 'raw-body'
 import { deleteProductsFromWishlist } from '../../../../backend/wishlists'
 import { sendPurchaseConfirmationEmail } from '../../../../backend/email-sender'
@@ -14,16 +14,16 @@ const stripe = Stripe(process.env.STRIPE_SECRET_KEY)
 export default async function handler(req, res) {
     const sig = req.headers['stripe-signature']
 
-    let event = req.body
+    let event
 
-    /* try {
+    try {
         const rawBody = await getRawBody(req)
         event = stripe.webhooks.constructEvent(rawBody, sig, process.env.STRIPE_WEBHOOK_SECRET)
     }
     catch (error) {
         return res.status(401).json({ error: 'Invalid authentication.' })
     }
- */
+
     try {
         const type = event.type
         const data = event.data.object
@@ -134,11 +134,10 @@ export default async function handler(req, res) {
                 else
                     await setCartSessionProducts(cart_id, [])
             }
-
             res.status(200).json({ message: `Order ${orderId} Created. Checkout Complete!` })
         }
         else if (type === 'charge.succeeded') {
-
+            await updateOrderFieldByStripeId(data.payment_intent, 'receipt_url', data.receipt_url)
             res.status(200).json({ message: 'Charge Succeedded Complete!' })
         }
         else {
@@ -149,8 +148,8 @@ export default async function handler(req, res) {
     }
 }
 
-/* export const config = {
+export const config = {
     api: {
         bodyParser: false,
     },
-} */
+}
