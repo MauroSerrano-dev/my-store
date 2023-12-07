@@ -115,12 +115,8 @@ async function addProductsToCartSession(cartId, cartNewProducts) {
             cart: cartData,
         }
     } catch (error) {
-        return {
-            status: 500,
-            message: `Error updating Cart Session ${cartId}: ${error}`,
-            cart: null,
-            error: error,
-        }
+        console.error(`Error setting cart session products: ${error}`)
+        throw new Error(`Error setting cart session products: ${error}`)
     }
 }
 
@@ -159,7 +155,7 @@ async function deleteExpiredCartSessions() {
 
     try {
         const querySnapshot = await getDocs(cartsCollectionRef);
-        
+
         querySnapshot.forEach(async (doc) => {
             const cartData = doc.data();
             if (cartData.expire_at && cartData.expire_at.toMillis() < now.toMillis()) {

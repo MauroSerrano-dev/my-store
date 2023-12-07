@@ -39,11 +39,7 @@ async function createOrder(order) {
             orderId: order.id,
         }
     } catch (error) {
-        return {
-            status: 500,
-            message: 'Error creating order',
-            error: error,
-        }
+        throw new Error(`Error creating order: ${error}`);
     }
 }
 

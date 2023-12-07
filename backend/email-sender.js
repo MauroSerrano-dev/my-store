@@ -43,14 +43,14 @@ function getEmailTemplate(language, orderId) {
 
 /**
  * Sends a purchase confirmation email to the customer.
- * @param {string} customer_details - The infos of the customer.
+ * @param {string} customer_email - Customer email.
  * @param {string} orderId - The order ID.
  * @returns {object} Object indicating the status of the email sending process.
  */
-async function sendPurchaseConfirmationEmail(customer_details, orderId, user_language) {
+async function sendPurchaseConfirmationEmail(customer_email, orderId, user_language) {
 
   try {
-    if (!customer_details?.email)
+    if (!customer_email)
       return { status: 'error', message: 'Error sending the purchase email, email not provided.' }
 
     // SMTP transport configuration
@@ -69,7 +69,7 @@ async function sendPurchaseConfirmationEmail(customer_details, orderId, user_lan
     // Email details
     const mailOptions = {
       from: process.env.ORDERS_EMAIL,
-      to: customer_details.email,
+      to: customer_email,
       subject: template.subject,
       html: `<html>
       <head>
@@ -136,10 +136,9 @@ async function sendPurchaseConfirmationEmail(customer_details, orderId, user_lan
     // Sending the email
     const info = await transporter.sendMail(mailOptions)
     console.log('Email sent:', info.response)
-    return { status: 'success', message: `Purchase confirmation email sent to ${customer_details.email} successfully!` }
+    return { status: 'success', message: `Purchase confirmation email sent to ${customer_email} successfully!` }
   } catch (error) {
-    console.error('Error sending email:', error)
-    return { status: 'error', message: 'Error sending the purchase confirmation email.' }
+    throw new Error(`Error sending purchase confirmation email: ${error}`);
   }
 }
 

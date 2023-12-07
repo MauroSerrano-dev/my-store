@@ -1,7 +1,7 @@
 import axios from 'axios'
 import { setCartProducts } from '../../../../backend/cart'
 import { setCartSessionProducts } from '../../../../backend/cart-session'
-import { createOrder, updateOrderFieldByStripeId } from '../../../../backend/orders'
+import { createOrder } from '../../../../backend/orders'
 import getRawBody from 'raw-body'
 import { deleteProductsFromWishlist } from '../../../../backend/wishlists'
 import { sendPurchaseConfirmationEmail } from '../../../../backend/email-sender'
@@ -125,7 +125,7 @@ export default async function handler(req, res) {
                 }
             )
 
-            await sendPurchaseConfirmationEmail(data.customer_details, orderId, user_language)
+            await sendPurchaseConfirmationEmail(data.billing_details.email, orderId, user_language)
 
             if (cart_id) {
                 if (user_id) {

@@ -139,12 +139,7 @@ async function deleteProductsFromWishlist(user_id, productsIdsToDelete) {
         }
     } catch (error) {
         console.error(`Error deleting products from the wishlist: ${error}`)
-        return {
-            status: 500,
-            message: `Error deleting products from the wishlist: ${error}`,
-            wishlist: null,
-            error: error,
-        }
+        throw new Error(`Error deleting products from the wishlist: ${error}`)
     }
 }
 
