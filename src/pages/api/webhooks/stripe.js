@@ -6,6 +6,7 @@ import getRawBody from 'raw-body'
 import { deleteProductsFromWishlist } from '../../../../backend/wishlists'
 import { sendPurchaseConfirmationEmail } from '../../../../backend/email-sender'
 import { STEPS } from '@/consts'
+import { createReceiptUrl } from '../../../../backend/stripe-receipt-url'
 const { v4: uuidv4 } = require('uuid')
 
 const Stripe = require("stripe")
@@ -25,25 +26,34 @@ export default async function handler(req, res) {
     }
 
     try {
-        const type = event.type
-        const data = event.data.object
+        const { type, data } = event
+        const {
+            customer_details,
+            shipping_details,
+            metadata,
+            payment_intent,
+            amount_total,
+            amount_subtotal,
+            total_details,
+            payment_method_types,
+            receipt_url,
+        } = data.object
 
-        if (type === 'charge.succeeded') {
+        if (type === 'checkout.session.completed') {
             const base_url = `https://api.printify.com/v1/shops/${process.env.PRINTIFY_SHOP_ID}/orders.json`
 
-            const metadata = data.metadata
+            const newMetadata = { ...metadata }
 
-            const cart_id = metadata.cart_id || null
-            const user_id = metadata.user_id || null
-            const user_language = metadata.user_language || null
-            const shippingValue = metadata.shippingValue || null
+            const cart_id = newMetadata.cart_id || null
+            const user_id = newMetadata.user_id || null
+            const user_language = newMetadata.user_language || null
 
-            delete metadata.cart_id
-            delete metadata.user_id
-            delete metadata.user_language
-            delete metadata.shippingValue
+            delete newMetadata.cart_id
+            delete newMetadata.user_id
+            delete newMetadata.user_language
+            delete newMetadata.shippingValue
 
-            const line_items = Object.keys(metadata).map(key => JSON.parse(metadata[key]))
+            const line_items = Object.keys(newMetadata).map(key => JSON.parse(newMetadata[key]))
 
             const orderId = uuidv4()
 
@@ -54,8 +64,8 @@ export default async function handler(req, res) {
                 },
             }
 
-            const fullName = data.shipping.name
-            const fullNameArr = data.shipping.name.split(' ')
+            const fullName = shipping_details.name
+            const fullNameArr = shipping_details.name.split(' ')
 
             const first_name = fullNameArr.length <= 1 ? fullName : fullNameArr.slice(0, fullNameArr.length - 1).join(' ')
             const last_name = fullNameArr.length <= 1 ? '.' : fullNameArr[fullNameArr.length - 1]
@@ -75,14 +85,14 @@ export default async function handler(req, res) {
                 address_to: {
                     first_name: first_name,
                     last_name: last_name,
-                    email: data.billing_details.email,
-                    phone: data.shipping.phone,
-                    country: data.shipping.address.country,
-                    region: data.shipping.address.state === '' ? data.shipping.address.country : data.shipping.address.state,
-                    address1: data.shipping.address.line1,
-                    address2: data.shipping.address.line2,
-                    city: data.shipping.address.city,
-                    zip: data.shipping.address.postal_code
+                    email: customer_details.email,
+                    phone: shipping_details.phone,
+                    country: shipping_details.address.country,
+                    region: shipping_details.address.state === '' ? shipping_details.address.country : shipping_details.address.state,
+                    address1: shipping_details.address.line1,
+                    address2: shipping_details.address.line2,
+                    city: shipping_details.address.city,
+                    zip: shipping_details.address.postal_code
                 }
             }
 
@@ -93,8 +103,8 @@ export default async function handler(req, res) {
                     id: orderId,
                     id_printify: printifyRes.data.id,
                     user_id: user_id,
-                    stripe_id: data.payment_intent,
-                    receipt_url: data.receipt_url,
+                    user_email: customer_details.email,
+                    stripe_id: payment_intent,
                     products: line_items.map(prod => (
                         {
                             id: prod.id,
@@ -106,33 +116,31 @@ export default async function handler(req, res) {
                             status: STEPS[0].id
                         }
                     )),
-                    user_details: {
-                        email: data.billing_details.email,
-                        name: data.billing_details.name,
-                        phone: data.billing_details.phone,
-                    },
                     payment_details: {
-                        amount_total: data.amount,
-                        amount_refunded: data.amount_refunded,
-                        amount_subtotal: data.amount - shippingValue,
-                        amount_shipping: shippingValue,
+                        total: amount_total,
+                        discount: total_details.amount_discount,
+                        shipping: total_details.amount_shipping,
+                        tax: total_details.amount_tax,
+                        amount_refunded: null,
+                        subtotal: amount_subtotal,
                         currency: data.currency,
+                        payment_methods: payment_method_types
                     },
                     shipping_details: {
-                        name: data.shipping.name,
+                        name: shipping_details.name,
                         address: {
-                            city: data.shipping.address.city,
-                            country: data.shipping.address.country,
-                            line1: data.shipping.address.line1,
-                            line2: data.shipping.address.line2,
-                            postal_code: data.shipping.address.postal_code,
-                            state: data.shipping.address.state === '' ? null : data.shipping.address.state,
+                            city: shipping_details.address.city,
+                            country: shipping_details.address.country,
+                            line1: shipping_details.address.line1,
+                            line2: shipping_details.address.line2,
+                            postal_code: shipping_details.address.postal_code,
+                            state: shipping_details.address.state === '' ? null : shipping_details.address.state,
                         },
                     },
                 }
             )
 
-            await sendPurchaseConfirmationEmail(data.billing_details.email, orderId, user_language)
+            await sendPurchaseConfirmationEmail(customer_details.email, orderId, user_language)
 
             if (cart_id) {
                 if (user_id) {
@@ -143,6 +151,10 @@ export default async function handler(req, res) {
                     await setCartSessionProducts(cart_id, [])
             }
             res.status(200).json({ message: `Order ${orderId} Created. Checkout Complete!` })
+        }
+        else if (type === 'charge.succeeded') {
+            await createReceiptUrl(payment_intent, { url: receipt_url })
+            res.status(200).json({ message: 'Charge Succeeded Complete!' })
         }
         else {
             res.status(200).json({ message: 'Other Events!' })

@@ -106,7 +106,6 @@ export default async function handler(req, res) {
 
     const paymentMetadata = {
       user_language: user_language,
-      shippingValue: shippingValue,
       ...cartMetadata
     }
 
