@@ -99,14 +99,15 @@ async function updateProductStatus(order_id_printify, printify_products) {
             const orderDoc = querySnapshot.docs[0]
 
             const orderData = orderDoc.data()
-            const updatedProducts = orderData.products.map(product => (
-                {
+            const updatedProducts = orderData.products.map(product => {
+                const newStatus = printify_products.find(prod => prod.product_id === product.id_printify && prod.variant_id === product.variant_id_printify)?.status
+                return {
                     ...product,
-                    status: ALLOWED_WEBHOOK_STATUS.some(step => step.id === printify_products.find(prod => prod.product_id === product.id_printify && prod.variant_id === product.variant_id)?.status)
-                        ? printify_products.find(prod => prod.product_id === product.id_printify && prod.variant_id === product.variant_id)?.status || null
+                    status: ALLOWED_WEBHOOK_STATUS.some(step => step.id === newStatus)
+                        ? newStatus || null
                         : product.status
                 }
-            ))
+            })
 
             await updateDoc(orderDoc.ref, { products: updatedProducts })
 
