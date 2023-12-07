@@ -59,12 +59,12 @@ export default function LanguageSelector() {
         }
 
         if (!supportsHoverAndPointer) {
-            window.addEventListener('scroll', handleCloseMenuOnScroll);
+            window.addEventListener('scroll', handleCloseMenuOnScroll)
         }
 
         return () => {
             if (!supportsHoverAndPointer) {
-                window.removeEventListener('scroll', handleCloseMenuOnScroll);
+                window.removeEventListener('scroll', handleCloseMenuOnScroll)
             }
         }
     }, [supportsHoverAndPointer])
@@ -91,7 +91,13 @@ export default function LanguageSelector() {
                 <motion.div
                     className={styles.contentContainer}
                     style={{
-                        left: -195
+                        left: i18n.language === 'es'
+                            ? -186
+                            : i18n.language === 'pt-BR'
+                                ? -186
+                                : i18n.language === 'pt-PT'
+                                    ? -186
+                                    : -190
                     }}
                     initial='hidden'
                     animate='visible'

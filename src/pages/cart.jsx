@@ -14,6 +14,7 @@ import axios from 'axios'
 import { cartItemModel } from '@/utils/models'
 import { LoadingButton } from '@mui/lab'
 import { useAppContext } from '@/components/contexts/AppContext'
+import { getProductPriceUnit } from '@/utils/prices'
 
 export default function Cart(props) {
     const {
@@ -39,7 +40,7 @@ export default function Cart(props) {
 
     const SHIPPING_CONVERTED = Math.round(shippingValue * userCurrency?.rate)
 
-    const ITEMS_TOTAL = cart?.products.reduce((acc, product) => acc + ((Math.round(product.variant.price * userCurrency.rate) * product.quantity)), 0)
+    const ITEMS_TOTAL = cart?.products.reduce((acc, product) => acc + ((getProductPriceUnit(product, product.variant, userCurrency?.rate) * product.quantity)), 0)
 
     const ORDER_TOTAL = SHIPPING_CONVERTED + ITEMS_TOTAL
 
