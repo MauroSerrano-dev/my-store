@@ -9,6 +9,7 @@ import {
     where,
     getDocs,
     orderBy,
+    getDoc,
 } from "firebase/firestore"
 import { initializeApp } from 'firebase/app'
 import { firebaseConfig } from "../firebase.config"
@@ -159,9 +160,30 @@ async function updateOrderField(order_id_printify, field_name, value) {
     }
 }
 
+async function getOrderById(orderId) {
+    try {
+        const orderRef = doc(db, process.env.COLL_ORDERS, orderId)
+        const orderDoc = await getDoc(orderRef)
+
+        if (orderDoc.exists()) {
+            const orderData = orderDoc.data()
+            console.log("Order retrieved successfully")
+            return orderData
+        }
+        else {
+            console.log(`Order ${orderId} not found`)
+            return null
+        }
+    } catch (error) {
+        console.error(`Error getting order by id: ${error}`)
+        throw new Error(`Error getting order by id: ${error}`)
+    }
+}
+
 export {
     createOrder,
     getOrdersByUserId,
     updateProductStatus,
     updateOrderField,
+    getOrderById,
 }
