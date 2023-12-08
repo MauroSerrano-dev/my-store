@@ -90,32 +90,16 @@ export default function Order(props) {
                     </p>
                     <div className='flex center row' style={{ gap: '0.5rem' }}>
                         <Button
+                            variant='contained'
                             size='small'
                             color='primary'
+                            sx={{
+                                paddingLeft: '2rem',
+                                paddingRight: '2rem',
+                            }}
                         >
-                            Report Problem
+                            Order Details
                         </Button>
-                        {!order.products.every(prod => prod.status === 'shipment-delivered') && !order.products.every(prod => prod.status === 'canceled') &&
-                            (
-                                order.shipments
-                                    ? <Link
-                                        href={order.shipments[0].url}
-                                        target='_blank'
-                                    >
-                                        <Button
-                                            size='small'
-                                        >
-                                            Track Product
-                                        </Button>
-                                    </Link>
-                                    : <Button
-                                        size='small'
-                                        disabled={true}
-                                    >
-                                        Track Product
-                                    </Button>
-                            )
-                        }
                     </div>
                 </div>
             </div>
@@ -125,7 +109,7 @@ export default function Order(props) {
                         className={styles.product}
                         key={j}
                     >
-                        {product.status !== 'canceled' &&
+                        {product.status !== 'canceled' && product.status !== 'refunded' &&
                             <Stepper
                                 connector={<QontoConnector />}
                             >
@@ -217,6 +201,16 @@ export default function Order(props) {
                                                 textAlign: 'start',
                                             }}>
                                             Canceled
+                                        </p>
+                                    }
+                                    {product.status === 'refunded' &&
+                                        <p
+                                            style={{
+                                                color: 'var(--color-warning)',
+                                                fontSize: 17,
+                                                textAlign: 'start',
+                                            }}>
+                                            Refunded
                                         </p>
                                     }
                                     <p className='text-start' style={{ fontSize: 14 }}>Color: <span style={{ fontWeight: 600 }}>{COLORS_POOL[product.variant.color_id].title}</span></p>

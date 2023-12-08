@@ -1,4 +1,41 @@
 /**
+ * Converts properties of an object into a standardized model for a new user.
+ * @param {Object} props - Properties of the user.
+ * @param {string} props.email - The email of the user.
+ * @param {string} props.first_name - The user's first name.
+ * @param {string} props.last_name - The user's last name.
+ * @param {string} props.cart_id - The user's cart ID.
+ * @param {string} props.wishlist_id - The user's wishlist ID.
+ * @param {Array<string>} props.quests - Tasks that the user must perform.
+ * @param {Array<string>} props.home_page_tags - Home page tags associated with the user.
+ * @param {boolean} props.email_verified - Email verification status of the user.
+ * @returns {Object} - Returns an object representing the model of the new user with corresponding properties.
+ */
+export function newUserModel(props) {
+    const {
+        email,
+        first_name,
+        last_name,
+        cart_id,
+        wishlist_id,
+        quests,
+        home_page_tags,
+        email_verified,
+    } = props
+
+    return {
+        email: email,
+        first_name: first_name,
+        last_name: last_name,
+        cart_id: cart_id,
+        wishlist_id: wishlist_id,
+        quests: quests,
+        home_page_tags: home_page_tags,
+        email_verified: email_verified,
+    }
+}
+
+/**
  * Converts the properties of a cart item into a standardized model.
  * @param {Object} props - Properties of the cart item.
  * @param {string} props.id - The ID of the item.

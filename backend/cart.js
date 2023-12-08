@@ -3,6 +3,7 @@ import { initializeApp } from 'firebase/app'
 import { firebaseConfig } from "../firebase.config"
 import { deleteCartSession, getCartSessionById } from "./cart-session";
 import { mergeProducts } from "@/utils";
+import Error from "next/error";
 
 initializeApp(firebaseConfig)
 

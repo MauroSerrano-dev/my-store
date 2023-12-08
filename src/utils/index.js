@@ -70,6 +70,6 @@ export function convertTimestampToFormatDate(timestamp, locale) {
         selectedLocale = ptPT
         model = 'd \'de\' MMMM, yyyy'
     }
-    
+
     return format(date, model, { locale: selectedLocale })
 }

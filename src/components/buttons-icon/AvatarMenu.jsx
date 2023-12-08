@@ -36,10 +36,6 @@ export default function AvatarMenu() {
     setOpen(false)
   }
 
-  function handleClickOption() {
-    setOpen(false)
-  }
-
   function handleMouseEnter() {
     if (supportsHoverAndPointer) {
       setOpen(true)
@@ -162,7 +158,7 @@ export default function AvatarMenu() {
                 href={'/profile'}
                 className='noUnderline'
               >
-                <MenuItem onClick={handleClickOption}>
+                <MenuItem>
                   <ListItemIcon>
                     <AccountCircleRoundedIcon fontSize="medium" />
                   </ListItemIcon>
@@ -174,7 +170,7 @@ export default function AvatarMenu() {
                 href={'/orders'}
                 className='noUnderline'
               >
-                <MenuItem onClick={handleClickOption}>
+                <MenuItem>
                   <ListItemIcon>
                     <ShoppingBagOutlinedIcon fontSize="medium" />
                   </ListItemIcon>
@@ -185,7 +181,7 @@ export default function AvatarMenu() {
                 href={'/wishlist'}
                 className='noUnderline'
               >
-                <MenuItem onClick={handleClickOption}>
+                <MenuItem>
                   <ListItemIcon>
                     <FavoriteBorderRoundedIcon fontSize="medium" />
                   </ListItemIcon>
@@ -196,7 +192,7 @@ export default function AvatarMenu() {
                 href={'/support'}
                 className='noUnderline'
               >
-                <MenuItem onClick={handleClickOption}>
+                <MenuItem>
                   <ListItemIcon>
                     <SupportAgentIcon fontSize="medium" />
                   </ListItemIcon>
@@ -208,7 +204,7 @@ export default function AvatarMenu() {
                   href={'/admin'}
                   className='noUnderline'
                 >
-                  <MenuItem onClick={handleClickOption}>
+                  <MenuItem>
                     <ListItemIcon>
                       <AdminPanelSettingsRoundedIcon fontSize="medium" />
                     </ListItemIcon>

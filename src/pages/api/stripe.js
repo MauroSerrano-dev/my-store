@@ -156,6 +156,6 @@ export default async function handler(req, res) {
     })
 
     // res.redirect(303, session.url)
-    return res.send({ url: session.url })
+    res.status(200).json({ url: session.url })
   }
 }

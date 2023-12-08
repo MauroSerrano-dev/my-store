@@ -2,6 +2,7 @@ import { doc, getDoc, getFirestore, updateDoc, Timestamp, setDoc, getDocs, query
 import { initializeApp } from 'firebase/app'
 import { firebaseConfig } from "../firebase.config"
 import { mergeProducts } from "@/utils";
+import Error from "next/error";
 
 initializeApp(firebaseConfig)
 

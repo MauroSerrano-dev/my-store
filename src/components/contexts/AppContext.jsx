@@ -19,6 +19,7 @@ import { CART_COOKIE } from '@/consts'
 import { v4 as uuidv4 } from 'uuid'
 import AdminMenu from '../menus/AdminMenu'
 import { showToast } from '@/utils/toasts'
+import Error from 'next/error'
 
 const AppContext = createContext()
 

@@ -337,6 +337,7 @@ async function getProductsByQueries(props) {
         }
 
         if (products.length > 0) {
+            console.log('Products matching queries found successfully!')
             return {
                 status: 200,
                 message: 'Products matching queries found successfully!',
@@ -344,6 +345,7 @@ async function getProductsByQueries(props) {
                 last_page: Math.ceil(products.length / Number(prods_limit))
             }
         } else {
+            console.log('No products found matching the queries.')
             return {
                 status: 200,
                 message: 'No products found matching the queries.',
