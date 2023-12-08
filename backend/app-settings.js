@@ -18,6 +18,7 @@ async function getAllCurrencies() {
         const currDoc = await getDoc(currRef)
 
         if (currDoc.exists()) {
+            console.error("Currencies retrieved successfully.")
             return currDoc.data()
         } else {
             console.error("Currencies document does not exist.")

@@ -21,21 +21,21 @@ export const LIMITS = {
 }
 
 export const STEPS = [
-    { id: 'sending-to-production', title: 'Sending to Production' },
-    { id: 'in-production', title: 'In Production' },
-    { id: 'shipment-in-transit', title: 'Shipment in Transit' },
-    { id: 'shipment-delivered', title: 'Delivered' },
+    'sending-to-production',
+    'in-production',
+    'shipment-in-transit',
+    'shipment-delivered',
 ]
 
 export const STEPS_ATTEMPT = [
-    { id: 'sending-to-production', title: 'Sending to Production' },
-    { id: 'in-production', title: 'In Production' },
-    { id: 'shipment-in-transit', title: 'Shipment in Transit' },
-    { id: 'shipment-delivery-attempt', title: 'Shipment Delivery Attempt' },
-    { id: 'shipment-delivered', title: 'Delivered' },
+    'sending-to-production',
+    'in-production',
+    'shipment-in-transit',
+    'shipment-delivery-attempt',
+    'shipment-delivered',
 ]
 
-export const ALLOWED_WEBHOOK_STATUS = STEPS.concat(STEPS_ATTEMPT).concat({ id: 'canceled', title: 'Canceled' })
+export const ALLOWED_WEBHOOK_STATUS = STEPS.concat(STEPS_ATTEMPT).concat('canceled')
 
 export const DEFAULT_PRODUCTS_TAGS = [
     'music',
