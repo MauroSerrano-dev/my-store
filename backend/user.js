@@ -17,6 +17,8 @@ import { createCart } from "./cart"
 import { getCartSessionById, deleteCartSession } from "./cart-session"
 import { DEFAULT_PRODUCTS_TAGS } from "@/consts"
 import { createWishlist } from "./wishlists"
+import { newUserModel } from "@/utils/models"
+import Error from "next/error"
 const { v4: uuidv4 } = require('uuid')
 
 initializeApp(firebaseConfig)
@@ -85,17 +87,18 @@ async function createNewUserWithCredentials(user, userLanguage) {
         const wishlist_id = uuidv4()
         await createWishlist(newUserRef.id, wishlist_id)
 
-        const newUser = {
+        const newUser = newUserModel({
             email: user.email,
             first_name: user.first_name,
             last_name: user.last_name,
-            cart: [],
-            email_verified: false,
-            home_page_tags: DEFAULT_PRODUCTS_TAGS,
             cart_id: cart_id,
             wishlist_id: wishlist_id,
-            create_at: Timestamp.now(),
-        }
+            quests: [],
+            home_page_tags: DEFAULT_PRODUCTS_TAGS,
+            email_verified: false,
+        })
+
+        newUser.create_at = Timestamp.now()
 
         // Set the document for the new user
         await setDoc(newUserRef, newUser)
@@ -120,13 +123,18 @@ async function createNewUserWithCredentials(user, userLanguage) {
     }
 }
 
-async function createNewUserWithGoogle(user, id, cart_cookie_id) {
+async function createNewUserWithGoogle(authUser, id, cart_cookie_id) {
     try {
         // Verifique se o usuário com o mesmo e-mail já existe
-        const userIdExists = await getUserIdByEmail(user.email)
+        const userIdExists = await getUserIdByEmail(authUser.email)
 
         // Se o usuário não existir, crie um novo
         if (!userIdExists) {
+            const fullName = authUser.displayName.split(' ')
+
+            const firstName = fullName.length <= 1 ? authUser.displayName : fullName.slice(0, fullName.length - 1).join(' ')
+            const lastName = fullName.length <= 1 ? null : fullName[fullName.length - 1]
+
             // Create a reference to the users collection
             const usersCollection = collection(db, process.env.COLL_USERS)
 
@@ -142,12 +150,18 @@ async function createNewUserWithGoogle(user, id, cart_cookie_id) {
             const wishlist_id = uuidv4()
             await createWishlist(newUserRef.id, wishlist_id)
 
-            const newUser = {
-                ...user,
+            const newUser = newUserModel({
+                email: authUser.email,
+                first_name: firstName,
+                last_name: lastName,
                 cart_id: cart_id,
                 wishlist_id: wishlist_id,
-                create_at: Timestamp.now(),
-            }
+                quests: [],
+                home_page_tags: DEFAULT_PRODUCTS_TAGS,
+                email_verified: authUser.emailVerified,
+            })
+
+            newUser.create_at = Timestamp.now()
 
             await setDoc(newUserRef, newUser)
 
@@ -155,7 +169,7 @@ async function createNewUserWithGoogle(user, id, cart_cookie_id) {
 
             return newUser
         } else {
-            console.log(`${user.email} already exists as a user.`)
+            console.log(`${authUser.email} already exists as a user.`)
             return null;
         }
     } catch (error) {
@@ -302,8 +316,35 @@ async function getUserProvidersByEmail(email) {
 
         return providers
     } catch (error) {
-        console.error("Error fetching sign-in methods for email:", error)
-        throw error
+        console.error(`Error fetching sign-in methods for email: ${error}`)
+        throw new Error(`Error fetching sign-in methods for email: ${error}`)
+    }
+}
+
+async function completeQuest(user_id, quest_id) {
+    try {
+        const userRef = doc(db, process.env.COLL_USERS, user_id)
+        const userDoc = await getDoc(userRef)
+
+        if (userDoc.exists()) {
+            const userData = userDoc.data()
+            const { quests } = userData
+
+            // Update the quests array using map to modify the specific quest
+            const updatedQuests = quests.filter(quest => quest !== quest_id)
+
+            // Update the user document with the modified quests array
+            await updateDoc(userRef, { quests: updatedQuests })
+
+            console.log(`Quest ${quest_id} completed for user ${user_id}.`)
+            return updatedQuests
+        } else {
+            console.error(`User ${user_id} not found.`)
+            throw new Error(`User ${user_id} not found.`)
+        }
+    } catch (error) {
+        console.error(`Error completing quest for user ${user_id}: ${error}`)
+        throw new Error(`Error completing quest for user ${user_id}: ${error}`)
     }
 }
 
@@ -317,4 +358,5 @@ export {
     updateUser,
     clearUpdateCounter,
     getUserProvidersByEmail,
+    completeQuest,
 }

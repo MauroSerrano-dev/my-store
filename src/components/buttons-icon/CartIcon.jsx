@@ -1,20 +1,19 @@
 import { useEffect, useState } from 'react'
 import Link from 'next/link'
-import ShoppingCartOutlinedIcon from '@mui/icons-material/ShoppingCartOutlined';
+import ShoppingCartOutlinedIcon from '@mui/icons-material/ShoppingCartOutlined'
 import styles from '@/styles/components/buttons-icon/CartIcon.module.css'
 import { Button } from '@mui/material'
 import ProductModal from '../products/ProductModal'
-import { useTranslation } from 'next-i18next';
+import { useTranslation } from 'next-i18next'
 import { motion } from 'framer-motion'
-import { useAppContext } from '../contexts/AppContext';
+import { useAppContext } from '../contexts/AppContext'
 
 export default function CartIcon() {
     const {
         session,
         supportsHoverAndPointer,
-        userCurrency,
-        setCart,
         cart,
+        router
     } = useAppContext()
 
     const [open, setOpen] = useState(false)
@@ -25,6 +24,10 @@ export default function CartIcon() {
         if (cart && cart.products.length === 0)
             setOpen(false)
     }, [cart])
+
+    useEffect(() => {
+        setOpen(false)
+    }, [router])
 
     return (
         <div
@@ -87,7 +90,6 @@ export default function CartIcon() {
                             className={`${styles.iconContainer} flex center noUnderline`}
                         >
                             <Button
-                                onClick={() => setOpen(false)}
                                 variant='contained'
                                 sx={{
                                     width: '100%',

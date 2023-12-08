@@ -1,3 +1,5 @@
+import Error from 'next/error'
+
 const nodemailer = require('nodemailer')
 
 function getEmailTemplate(language, orderId) {
