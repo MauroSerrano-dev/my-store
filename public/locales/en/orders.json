@@ -3,5 +3,17 @@
     "order_one": "{{count}} order",
     "order_other": "{{count}} orders",
     "placed in": "placed in",
-    "placed in_zero": "found in"
+    "placed in_zero": "found in",
+    "sending-to-production": "Sending to production",
+    "in-production": "In production",
+    "shipment-in-transit": "Shipment in transit",
+    "shipment-delivery-attempt": "Delivery attempt",
+    "shipment-delivered": "Delivered",
+    "canceled": "Canceled",
+    "refunded": "Refunded",
+    "order_placed": "ORDER PLACED",
+    "total": "TOTAL",
+    "ship_to": "SHIP TO",
+    "order_id": "ORDER ID:",
+    "order_details": "ORDER DETAILS"
 }

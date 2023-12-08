@@ -11,15 +11,17 @@
     display: flex;
     flex-direction: row;
     justify-content: space-between;
-    align-items: flex-start;
+    align-items: center;
 
     background-color: #303030;
 
-    padding-bottom: 1rem;
-    padding-left: 0.4rem;
-    padding-right: 0.4rem;
+    height: 5rem;
+    padding-left: 1rem;
+    padding-right: 1rem;
+}
 
-    padding: 1rem;
+.head p {
+    font-weight: 500;
 }
 
 .headLeft {
@@ -33,11 +35,29 @@
     --text-color: #e0e0e0;
 }
 
+.leftBlock {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: flex-start;
+    height: 100%;
+    gap: 0.2rem;
+}
+
 .headRight {
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
     align-items: flex-end;
+}
+
+.rightBlock {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: flex-end;
+    height: 100%;
+    gap: 0.7rem;
 }
 
 .product {
@@ -76,4 +96,61 @@
     align-items: flex-start;
 
     gap: 1rem;
+}
+
+.shipToName {
+    position: relative;
+
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    text-align: start;
+
+    transition: color ease-in-out 150ms;
+}
+
+.shipToName p {
+    transition: color ease-in-out 150ms;
+}
+
+.shipToNameActive {
+    --text-color: var(--primary)
+}
+
+.shipToModalContainer {
+    position: absolute;
+    top: 1.2rem;
+    cursor: default;
+}
+
+.shipToModal {
+    margin-top: 1.2rem;
+    background-color: var(--global-white);
+    --text-color: var(--text-black);
+    border-radius: 0.5rem;
+    padding: 1rem;
+    box-shadow: 0px 2px 4px -1px rgba(0, 0, 0, 0.2), 0px 4px 5px 0px rgba(0, 0, 0, 0.14), 0px 1px 10px 0px rgba(0, 0, 0, 0.12);
+}
+
+.shipToModal p {
+    white-space: nowrap;
+}
+
+.pointer {
+    position: absolute;
+    right: calc(50% - 11.5px);
+    top: 11.5px;
+
+    height: 15px;
+    width: 15px;
+
+    border-top-left-radius: 3px;
+
+    background-color: var(--global-white);
+
+    border-left: rgba(0, 0, 0, 0.2) solid 1px;
+    border-top: rgba(0, 0, 0, 0.2) solid 1px;
+
+    transform: rotateZ(45deg);
 }

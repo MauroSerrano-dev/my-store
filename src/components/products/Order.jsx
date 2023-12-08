@@ -9,6 +9,8 @@ import { PRODUCTS_TYPES, SIZES_POOL, COLORS_POOL, STEPS_ATTEMPT, STEPS } from '@
 import { useTranslation } from 'next-i18next'
 import { convertTimestampToFormatDate } from '@/utils';
 import { useAppContext } from '../contexts/AppContext';
+import KeyboardArrowDownOutlinedIcon from '@mui/icons-material/KeyboardArrowDownOutlined'
+import { useState } from 'react';
 
 export default function Order(props) {
     const {
@@ -18,9 +20,13 @@ export default function Order(props) {
 
     const {
         currencies,
+        supportsHoverAndPointer
     } = useAppContext()
 
     const { i18n } = useTranslation()
+    const tOrders = useTranslation('orders').t
+
+    const [shipToModalOpen, setShipToModalOpen] = useState(false)
 
     const createAt = convertTimestampToFormatDate(order.create_at, i18n.language)
 
@@ -36,6 +42,19 @@ export default function Order(props) {
             borderRadius: 1,
         },
     }))
+
+    function handleShipToMouseEnter() {
+        if (supportsHoverAndPointer)
+            setShipToModalOpen(true)
+    }
+
+    function handleShipToMouseLeave() {
+        setShipToModalOpen(false)
+    }
+
+    function handleShipToOnClick() {
+        setShipToModalOpen(prev => !prev)
+    }
 
     return (
         <motion.div
@@ -59,47 +78,104 @@ export default function Order(props) {
         >
             <div className={styles.head}>
                 <div className={styles.headLeft}>
-                    <div>
+                    <div className={styles.leftBlock}>
                         <p style={{ fontSize: 12, textAlign: 'start' }}>
-                            ORDER PLACED
+                            {tOrders('order_placed')}
                         </p>
                         <p style={{ textAlign: 'start' }}>
                             {createAt}
                         </p>
                     </div>
-                    <div>
+                    <div className={styles.leftBlock}>
                         <p style={{ fontSize: 12, textAlign: 'start' }}>
-                            TOTAL
+                            {tOrders('total')}
                         </p>
                         <p style={{ textAlign: 'start' }}>
                             {`${currencies[order.payment_details.currency].symbol} ${(order.payment_details.total / 100).toFixed(2)}`}
                         </p>
                     </div>
-                    <div>
+                    <div className={styles.leftBlock}>
                         <p style={{ fontSize: 12, textAlign: 'start' }}>
-                            SHIP TO
+                            {tOrders('ship_to')}
                         </p>
-                        <p style={{ textAlign: 'start' }}>
-                            {order.shipping_details.name}
-                        </p>
+                        <div
+                            className={`${styles.shipToName} ${shipToModalOpen ? styles.shipToNameActive : ''}`}
+                            onMouseEnter={handleShipToMouseEnter}
+                            onMouseLeave={handleShipToMouseLeave}
+                            onClick={handleShipToOnClick}
+                        >
+                            <p
+                                style={{
+                                    cursor: 'pointer'
+                                }}
+                            >
+                                {order.shipping_details.name}
+                            </p>
+                            <KeyboardArrowDownOutlinedIcon
+                                style={{
+                                    cursor: 'pointer',
+                                    transition: 'transform ease-in-out 150ms',
+                                    transform: shipToModalOpen
+                                        ? 'rotateZ(180deg)'
+                                        : 'none'
+                                }}
+                            />
+                            {shipToModalOpen &&
+                                <motion.div
+                                    className={styles.shipToModalContainer}
+                                    initial='hidden'
+                                    animate='visible'
+                                    variants={{
+                                        hidden: {
+                                            opacity: 0,
+                                        },
+                                        visible: {
+                                            opacity: 1,
+                                        }
+                                    }}
+                                >
+                                    <div className={styles.pointer}>
+                                    </div>
+                                    <div className={styles.shipToModal}>
+                                        <p style={{ fontWeight: 700 }}>{order.shipping_details.name}</p>
+                                        <p>{order.shipping_details.address.line1}</p>
+                                        {order.shipping_details.address.line2 && <p>{order.shipping_details.address.line2}</p>}
+                                        {order.shipping_details.address.state
+                                            ? <p>{order.shipping_details.address.city}, {order.shipping_details.address.state}, {order.shipping_details.address.country}, {order.shipping_details.address.postal_code}</p>
+                                            : <p>{order.shipping_details.address.city}, {order.shipping_details.address.country} {order.shipping_details.address.postal_code}</p>
+                                        }
+                                    </div>
+                                </motion.div>
+                            }
+                        </div>
                     </div>
                 </div>
                 <div className={styles.headRight}>
-                    <p style={{ fontSize: 12, textAlign: 'start' }}>
-                        ORDER #{order.id}
-                    </p>
-                    <div className='flex center row' style={{ gap: '0.5rem' }}>
-                        <Button
-                            variant='contained'
-                            size='small'
-                            color='primary'
-                            sx={{
-                                paddingLeft: '2rem',
-                                paddingRight: '2rem',
-                            }}
+                    <div className={styles.rightBlock}>
+                        <Link
+                            href={`/orders/${order.id}`}
+                            className='fillWidth noUnderline'
                         >
-                            Order Details
-                        </Button>
+                            <Button
+                                variant='contained'
+                                size='small'
+                                color='primary'
+                                sx={{
+                                    width: '100%',
+                                    fontWeight: 600,
+                                }}
+                            >
+                                {tOrders('order_details')}
+                            </Button>
+                        </Link>
+                        <div className='flex row center' style={{ gap: '0.3rem' }}>
+                            <p style={{ fontSize: 12 }}>
+                                {tOrders('order_id')}
+                            </p>
+                            <p style={{ fontSize: 12 }}>
+                                {order.id}
+                            </p>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -115,14 +191,14 @@ export default function Order(props) {
                             >
                                 {(product.status === 'shipment-delivery-attempt' ? STEPS_ATTEMPT : STEPS).map((step, i) => (
                                     <Step
-                                        key={step.id}
-                                        completed={i <= (product.status === 'shipment-delivery-attempt' ? STEPS_ATTEMPT : STEPS).findIndex(step => step.id === product.status)}
+                                        key={step}
+                                        completed={i <= (product.status === 'shipment-delivery-attempt' ? STEPS_ATTEMPT : STEPS).findIndex(step => step === product.status)}
                                         sx={{
                                             '.MuiSvgIcon-root': {
-                                                color: i <= (product.status === 'shipment-delivery-attempt' ? STEPS_ATTEMPT : STEPS).findIndex(step => step.id === product.status) ? 'var(--primary)' : '#999999',
+                                                color: i <= (product.status === 'shipment-delivery-attempt' ? STEPS_ATTEMPT : STEPS).findIndex(step => step === product.status) ? 'var(--primary)' : '#999999',
                                             },
                                             '.MuiStepIcon-text': {
-                                                fill: i <= (product.status === 'shipment-delivery-attempt' ? STEPS_ATTEMPT : STEPS).findIndex(step => step.id === product.status) ? 'var(--primary)' : 'var(--background-color)',
+                                                fill: i <= (product.status === 'shipment-delivery-attempt' ? STEPS_ATTEMPT : STEPS).findIndex(step => step === product.status) ? 'var(--primary)' : 'var(--background-color)',
                                                 fontWeight: 600,
                                             },
                                         }}
@@ -131,12 +207,12 @@ export default function Order(props) {
                                             sx={{
                                                 '.MuiStepLabel-label': {
                                                     cursor: 'default',
-                                                    color: i <= (product.status === 'shipment-delivery-attempt' ? STEPS_ATTEMPT : STEPS).findIndex(step => step.id === product.status) ? 'var(--primary) !important' : '#999999',
-                                                    fontWeight: i <= (product.status === 'shipment-delivery-attempt' ? STEPS_ATTEMPT : STEPS).findIndex(step => step.id === product.status) ? 600 : 400,
+                                                    color: i <= (product.status === 'shipment-delivery-attempt' ? STEPS_ATTEMPT : STEPS).findIndex(step => step === product.status) ? 'var(--primary) !important' : '#999999',
+                                                    fontWeight: i <= (product.status === 'shipment-delivery-attempt' ? STEPS_ATTEMPT : STEPS).findIndex(step => step === product.status) ? 600 : 400,
                                                 }
                                             }}
                                         >
-                                            {step.title}
+                                            {tOrders(step)}
                                         </StepLabel>
                                     </Step>
                                 ))}
@@ -188,7 +264,7 @@ export default function Order(props) {
                                             }`
                                         }
                                         style={{
-                                            fontWeight: 600
+                                            fontWeight: 500
                                         }}
                                     >
                                         {product.title} ({PRODUCTS_TYPES.find(type => type.id === product.type_id).title})
@@ -200,7 +276,7 @@ export default function Order(props) {
                                                 fontSize: 17,
                                                 textAlign: 'start',
                                             }}>
-                                            Canceled
+                                            {tOrders('canceled')}
                                         </p>
                                     }
                                     {product.status === 'refunded' &&
@@ -210,7 +286,7 @@ export default function Order(props) {
                                                 fontSize: 17,
                                                 textAlign: 'start',
                                             }}>
-                                            Refunded
+                                            {tOrders('refunded')}
                                         </p>
                                     }
                                     <p className='text-start' style={{ fontSize: 14 }}>Color: <span style={{ fontWeight: 600 }}>{COLORS_POOL[product.variant.color_id].title}</span></p>
@@ -224,6 +300,6 @@ export default function Order(props) {
                     </div>
                 )}
             </div>
-        </motion.div >
+        </motion.div>
     )
 }

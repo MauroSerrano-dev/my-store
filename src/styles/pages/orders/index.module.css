@@ -48,13 +48,22 @@
 /* Mobile and Tablet */
 @media (max-width: 1074.5px) {
     .container {
-        padding: 2rem 1rem;
+        padding-top: 2rem;
+        padding-left: 1rem;
+        padding-right: 1rem;
     }
 }
 
 /* Mobile */
 @media (max-width: 800px) {
     .container {
-        padding: 2rem 0rem;
+        padding-top: 2rem;
+        padding-left: 0rem;
+        padding-right: 0rem;
+    }
+
+    .main {
+        padding-left: 1rem;
+        padding-right: 1rem;
     }
 }

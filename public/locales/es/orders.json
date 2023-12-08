@@ -3,5 +3,17 @@
     "order_one": "{{count}} pedido",
     "order_other": "{{count}} pedidos",
     "placed in": "realizado en",
-    "placed in_zero": "encontrado en"
+    "placed in_zero": "encontrado en",
+    "sending-to-production": "Enviando a producción",
+    "in-production": "En producción",
+    "shipment-in-transit": "En tránsito",
+    "shipment-delivery-attempt": "Intento de entrega",
+    "shipment-delivered": "Entregado",
+    "canceled": "Cancelado",
+    "refunded": "Reembolsado",
+    "order_placed": "PEDIDO REALIZADO",
+    "total": "TOTAL",
+    "ship_to": "ENVIAR A",
+    "order_id": "Nº DE PEDIDO:",
+    "order_details": "DETALLES DEL PEDIDO"
 }
