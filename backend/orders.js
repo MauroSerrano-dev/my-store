@@ -25,11 +25,14 @@ async function createOrder(order) {
     try {
         const orderRef = doc(db, process.env.COLL_ORDERS, order.id)
 
+        const now = Timestamp.now()
+
         await setDoc(
             orderRef,
             {
                 ...order,
-                create_at: Timestamp.now(),
+                products: products.map(prod => ({ ...prod, updated_at: now })),
+                create_at: now,
             }
         )
 
@@ -98,12 +101,16 @@ async function updateProductStatus(order_id_printify, printify_products) {
 
             const orderData = orderDoc.data()
             const updatedProducts = orderData.products.map(product => {
-                const newStatus = printify_products.find(prod => prod.product_id === product.id_printify && prod.variant_id === product.variant_id_printify)?.status
+                const newPossibleStatus = printify_products.find(prod => prod.product_id === product.id_printify && prod.variant_id === product.variant_id_printify)?.status
+                const newStatus = ALLOWED_WEBHOOK_STATUS.some(step => step.id === newPossibleStatus) && ALLOWED_WEBHOOK_STATUS.some(step => step.id === product.status)
+                    ? newPossibleStatus || null
+                    : product.status
                 return {
                     ...product,
-                    status: ALLOWED_WEBHOOK_STATUS.some(step => step.id === newStatus) && ALLOWED_WEBHOOK_STATUS.some(step => step.id === product.status)
-                        ? newStatus || null
-                        : product.status
+                    updated_at: newStatus === product.status
+                        ? product.status
+                        : Timestamp.now(),
+                    status: newStatus
                 }
             })
 

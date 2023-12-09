@@ -16,8 +16,6 @@
     justify-content: flex-start;
     align-items: flex-start;
 
-    padding-left: 6rem;
-    padding-right: 6rem;
     padding-top: 2rem;
 
     gap: 1rem;
@@ -31,7 +29,8 @@
     align-items: center;
 
     gap: 0.4rem;
-    padding-left: 0.3rem;
+    padding-left: 6.3rem;
+    transition: padding-left ease-in-out 200ms;
 }
 
 .ordersContainer {
@@ -42,28 +41,45 @@
 
     width: 100%;
 
+    padding-left: 6rem;
+    padding-right: 6rem;
+
     gap: 1.5rem;
+
+    transition: padding-left ease-in-out 200ms, padding-right ease-in-out 200ms;
+}
+
+.carouselContainer {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    padding-left: 6rem;
+    transition: padding-left ease-in-out 200ms;
 }
 
 /* Mobile and Tablet */
 @media (max-width: 1074.5px) {
-    .container {
-        padding-top: 2rem;
+    .top {
+        padding-left: 1.3rem;
+    }
+
+    .ordersContainer {
         padding-left: 1rem;
         padding-right: 1rem;
+    }
+
+    .carouselContainer {
+        padding-left: 1rem;
+    }
+}
+
+/* Medium Mobile */
+@media (max-width: 850px) {
+    .ordersContainer {
+        padding-left: 0rem;
+        padding-right: 0rem;
     }
 }
 
 /* Mobile */
-@media (max-width: 800px) {
-    .container {
-        padding-top: 2rem;
-        padding-left: 0rem;
-        padding-right: 0rem;
-    }
-
-    .main {
-        padding-left: 1rem;
-        padding-right: 1rem;
-    }
-}
+@media (max-width: 800px) {}
