@@ -203,7 +203,7 @@ export default function Orders() {
                             </motion.div>
                         }
                         <div
-                            className='fillWidth flex column'
+                            className={styles.carouselContainer}
                             style={{
                                 gap: '0.5rem'
                             }}
