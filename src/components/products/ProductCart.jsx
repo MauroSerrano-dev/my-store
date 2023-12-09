@@ -29,6 +29,7 @@ export default function ProductCart(props) {
     const { i18n } = useTranslation()
 
     const tCommon = useTranslation('common').t
+    const tColors = useTranslation('colors').t
 
     const COLOR = COLORS_POOL[product.variant.color_id]
 
@@ -193,7 +194,7 @@ export default function ProductCart(props) {
                         </div>
                         <div className={styles.bodyBottom}>
                             <div className='flex column' style={{ fontSize: 13, paddingBottom: '0.7rem' }}>
-                                <p className='text-start'>{tCommon('Color')}: <span style={{ fontWeight: 600 }}>{COLOR.title}</span></p>
+                                <p className='text-start'>{tCommon('Color')}: <span style={{ fontWeight: 600 }}>{tColors(COLOR.id_string)}</span></p>
                                 <p className='text-start'>{tCommon('Size')}: <span style={{ fontWeight: 600 }}>{SIZE.title}</span></p>
                             </div>
                             <Selector
