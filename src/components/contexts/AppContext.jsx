@@ -20,6 +20,8 @@ import { v4 as uuidv4 } from 'uuid'
 import AdminMenu from '../menus/AdminMenu'
 import { showToast } from '@/utils/toasts'
 import Error from 'next/error'
+import CountryConverter from '@/utils/time-zone-country.json'
+import ZoneConverter from '@/utils/country-zone.json'
 
 const AppContext = createContext()
 
@@ -36,6 +38,7 @@ export function AppProvider({ children }) {
     const [session, setSession] = useState()
 
     const [userCurrency, setUserCurrency] = useState()
+    const [userLocation, setUserLocation] = useState()
     const [isScrollAtTop, setIsScrollAtTop] = useState(true)
     const [mobile, setMobile] = useState()
     const [windowWidth, setWindowWidth] = useState()
@@ -302,6 +305,12 @@ export function AppProvider({ children }) {
     }
 
     useEffect(() => {
+        console.log(Intl.DateTimeFormat().resolvedOptions().timeZone)
+        const country = CountryConverter[Intl.DateTimeFormat().resolvedOptions().timeZone]
+        setUserLocation({
+            country: country,
+            zone: ZoneConverter[country],
+        })
         updateSession()
     }, [])
 
@@ -310,7 +319,14 @@ export function AppProvider({ children }) {
             if (Cookies.get('CURR'))
                 setUserCurrency(currencies?.[Cookies.get('CURR')])
             else {
-                setUserCurrency({ code: 'usd', rate: 1, symbol: '$' }) //talvez mudar para moeda da região
+                const country = CountryConverter[Intl.DateTimeFormat().resolvedOptions().timeZone]
+                const zone = Intl.DateTimeFormat().resolvedOptions().timeZone.split('/')[0]
+                const startCurrency = zone === 'Europe'
+                    ? { code: 'eur', rate: 1, symbol: '€' }
+                    : country === 'BR'
+                        ? { code: 'brl', rate: 1, symbol: 'R$' }
+                        : { code: 'usd', rate: 1, symbol: '$' }
+                setUserCurrency(startCurrency)
                 Cookies.set('CURR', 'usd')
             }
         }
@@ -440,6 +456,8 @@ export function AppProvider({ children }) {
                 userEmailVerify,
                 setUserEmailVerify,
                 setBlockInteractions,
+                userLocation,
+                setUserLocation,
             }}
         >
             <motion.div

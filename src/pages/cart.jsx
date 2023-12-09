@@ -10,16 +10,13 @@ import { useTranslation } from 'next-i18next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
 import { showToast } from '@/utils/toasts'
 import SelectorAutocomplete from '@/components/material-ui/SelectorAutocomplete'
-import axios from 'axios'
 import { cartItemModel } from '@/utils/models'
 import { LoadingButton } from '@mui/lab'
 import { useAppContext } from '@/components/contexts/AppContext'
 import { getProductPriceUnit } from '@/utils/prices'
+import ZoneConverter from '@/utils/country-zone.json'
 
-export default function Cart(props) {
-    const {
-        location,
-    } = props
+export default function Cart() {
 
     const {
         getInicialCart,
@@ -29,12 +26,13 @@ export default function Cart(props) {
         userCurrency,
         cart,
         currencies,
-        setBlockInteractions
+        setBlockInteractions,
+        userLocation,
+        setUserLocation,
     } = useAppContext()
 
     const [disableCheckoutButton, setDisableCheckoutButton] = useState(false)
     const [shippingValue, setShippingValue] = useState(0)
-    const [shippingCountry, setShippingCountry] = useState(location?.country || 'US')
     const [allProducts, setAllProducts] = useState()
     const [outOfStock, setOutOfStock] = useState([])
 
@@ -53,7 +51,7 @@ export default function Cart(props) {
 
     useEffect(() => {
         getShippingValue()
-    }, [cart, shippingCountry])
+    }, [cart])
 
     useEffect(() => {
         getAllProducts()
@@ -76,7 +74,7 @@ export default function Cart(props) {
             },
             body: JSON.stringify({
                 cartItems: cart.products.map(prod => {
-                    const shippingOption = getShippingOptions(prod.type_id, shippingCountry)
+                    const shippingOption = getShippingOptions(prod.type_id, userLocation.country)
                     return cartItemModel({
                         id: prod.id,
                         quantity: prod.quantity,
@@ -95,7 +93,7 @@ export default function Cart(props) {
                 success_url: session ? `${window.location.origin}${i18n.language === DEFAULT_LANGUAGE ? '' : `/${i18n.language}`}/orders` : `${window.location.origin}${i18n.language === DEFAULT_LANGUAGE ? '' : `/${i18n.language}`}`,
                 customer: session,
                 shippingValue: SHIPPING_CONVERTED,
-                shippingCountry: shippingCountry,
+                shippingCountry: userLocation.country,
                 currency: userCurrency?.code,
                 cart_id: session ? session.cart_id : Cookies.get(CART_COOKIE),
                 user_language: i18n.language,
@@ -115,7 +113,7 @@ export default function Cart(props) {
                             'out_of_stock',
                             {
                                 count: response.outOfStock.length,
-                                country: tCountries(shippingCountry),
+                                country: tCountries(userLocation.country),
                                 product_title: response.outOfStock[0].title,
                                 variant_title: response.outOfStock[0].variant.title,
                             }
@@ -155,7 +153,7 @@ export default function Cart(props) {
         let typesAlreadyIn = []
 
         value = cart?.products.reduce((acc, item) => {
-            const values = getShippingOptions(item.type_id, shippingCountry)
+            const values = getShippingOptions(item.type_id, userLocation.country)
             const result = acc + (
                 typesAlreadyIn.includes(item.type_id)
                     ? (values.add_item * item.quantity) + values.tax
@@ -166,13 +164,11 @@ export default function Cart(props) {
         }
             , 0
         )
-
         setShippingValue(value)
     }
 
     function handleChangeCountrySelector(event, value) {
-        if (value)
-            setShippingCountry(value.id)
+        setUserLocation({ country: value.id, zone: ZoneConverter[value.id] })
     }
 
     return (
@@ -241,7 +237,7 @@ export default function Cart(props) {
                                                 .sort((a, b) => a.label.localeCompare(b.label, 'en', { sensitivity: 'base' }))
                                         }
                                         label={tCommon('Country')}
-                                        value={{ id: shippingCountry, label: tCountries(shippingCountry) }}
+                                        value={{ id: userLocation.country, label: tCountries(userLocation.country) }}
                                         onChange={handleChangeCountrySelector}
                                         dark
                                         className={styles.countryInput}
@@ -318,30 +314,10 @@ export default function Cart(props) {
     )
 }
 
-export async function getServerSideProps({ locale, req }) {
-
-    const translate = await serverSideTranslations(locale, COMMON_TRANSLATES.concat(['cart', 'countries']))
-
-    try {
-        const ipAddress = req.headers["x-forwarded-for"]
-            ? req.headers["x-forwarded-for"].split(',')[0]
-            : req.connection.remoteAddress
-
-        const response = await axios.get(`https://ipinfo.io/${ipAddress}?token=${process.env.IP_INFO_TOKEN}`)
-
-        return {
-            props: {
-                location: response.data.country && Object.keys(COUNTRIES_POOL).includes(response.data.country) ? response.data : null,
-                ...translate,
-            }
-        }
-    } catch (error) {
-        console.error('Error getting location information:', error)
-        return {
-            props: {
-                location: null,
-                ...translate
-            },
+export async function getServerSideProps({ locale }) {
+    return {
+        props: {
+            ...await serverSideTranslations(locale, COMMON_TRANSLATES.concat(['cart', 'countries'])),
         }
     }
 }

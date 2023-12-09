@@ -3,6 +3,13 @@ import { GiHoodie } from "react-icons/gi"
 import { PiTShirtFill } from "react-icons/pi"
 import { ImMug } from "react-icons/im"
 
+export const languageToCountry = {
+    en: 'en',
+    es: 'es',
+    'pt-BR': 'br',
+    'pt': 'pt'
+}
+
 export const DEFAULT_LANGUAGE = 'en'
 
 export const COMMON_TRANSLATES = ['common', 'menu', 'navbar', 'toasts', 'languages']

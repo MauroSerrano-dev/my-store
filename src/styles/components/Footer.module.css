@@ -24,11 +24,24 @@
 
 .left {
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     justify-content: flex-start;
+
+    gap: 1rem;
 
     width: 50%;
     height: 100%;
+}
+
+.columnsContainer {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+}
+
+.languageContainer {
+    display: flex;
+    justify-content: flex-start;
 }
 
 .right {
@@ -110,6 +123,10 @@
         border-bottom: none;
     }
 
+    .languageContainer {
+        display: flex;
+        justify-content: center;
+    }
 }
 
 /* Mobile */

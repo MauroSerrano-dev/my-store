@@ -4,6 +4,7 @@ import { BsShieldLockFill } from "react-icons/bs";
 import Link from 'next/link';
 import SocialButtons from './SocialButtons';
 import { useTranslation } from 'next-i18next'
+import LanguageSelectorText from './buttons-icon/LanguageSelectorText';
 
 export default function Footer() {
 
@@ -25,38 +26,43 @@ export default function Footer() {
         >
             <div className={styles.top}>
                 <div className={styles.left}>
-                    <div className={styles.column}>
-                        <h3>
-                            {tFooter('Support')}
-                        </h3>
-                        <div>
-                            <a>
-                                {tFooter('Check order status')}
-                            </a>
+                    <div className={styles.columnsContainer}>
+                        <div className={styles.column}>
+                            <h3>
+                                {tFooter('Support')}
+                            </h3>
+                            <div>
+                                <a>
+                                    {tFooter('Check order status')}
+                                </a>
+                            </div>
+                            <div>
+                                <a>
+                                    {tFooter('Help/FAQ')}
+                                </a>
+                            </div>
+                            <div>
+                                <a>
+                                    {tFooter('Contact us')}
+                                </a>
+                            </div>
                         </div>
-                        <div>
-                            <a>
-                                {tFooter('Help/FAQ')}
-                            </a>
-                        </div>
-                        <div>
-                            <a>
-                                {tFooter('Contact us')}
-                            </a>
+                        <div className={styles.column}>
+                            <h3 className="text-start">{tFooter('About us')}</h3>
+                            <div>
+                                <Link href='/privacy-policy'>
+                                    {tFooter('Privacy policy')}
+                                </Link>
+                            </div>
+                            <div>
+                                <Link href='/terms-of-use'>
+                                    {tFooter('Terms of use')}
+                                </Link>
+                            </div>
                         </div>
                     </div>
-                    <div className={styles.column}>
-                        <h3 className="text-start">{tFooter('About us')}</h3>
-                        <div>
-                            <Link href='/privacy-policy'>
-                                {tFooter('Privacy policy')}
-                            </Link>
-                        </div>
-                        <div>
-                            <Link href='/terms-of-use'>
-                                {tFooter('Terms of use')}
-                            </Link>
-                        </div>
+                    <div className={styles.languageContainer}>
+                        <LanguageSelectorText />
                     </div>
                 </div>
                 <div className={styles.right}>
@@ -129,6 +135,6 @@ export default function Footer() {
                     {tFooter('copyright', { year: new Date().getFullYear(), store_name: process.env.NEXT_PUBLIC_STORE_NAME })}
                 </p>
             </div>
-        </footer>
+        </footer >
     )
 }
