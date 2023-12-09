@@ -3,9 +3,23 @@ import { GiHoodie } from "react-icons/gi"
 import { PiTShirtFill } from "react-icons/pi"
 import { ImMug } from "react-icons/im"
 
+export const languageToCountry = {
+    en: 'en',
+    es: 'es',
+    'pt-BR': 'br',
+    'pt': 'pt'
+}
+
 export const DEFAULT_LANGUAGE = 'en'
 
-export const COMMON_TRANSLATES = ['common', 'menu', 'navbar', 'toasts', 'languages']
+export const COMMON_TRANSLATES = [
+    'common',
+    'colors',
+    'menu',
+    'navbar',
+    'toasts',
+    'languages'
+]
 
 export const CART_COOKIE = 'CART'
 
@@ -66,58 +80,58 @@ export const SEARCH_FILTERS = {
 }
 
 export const COLORS_POOL = {
-    358: { id: 358, id_string: 'sport-grey', colors: ['#cacaca'], title: 'Sport Grey' },
-    362: { id: 362, id_string: 'dark-chocolate', colors: ['#31221d'], title: 'Dark Chocolate' },
-    364: { id: 364, id_string: 'military-green', colors: ['#585c3b'], title: 'Military Green' },
-    367: { id: 367, id_string: 'dark-heather', colors: ['#454545'], title: 'Dark Heather' },
-    369: { id: 369, id_string: 'irish-green', colors: ['#129447'], title: 'Irish Green' },
-    392: { id: 392, id_string: 'light-blue', colors: ['#d6e6f7'], title: 'Light Blue' },
-    395: { id: 395, id_string: 'maroon', colors: ['#642838'], title: 'Maroon' },
-    418: { id: 418, id_string: 'black', colors: ['#000000'], title: 'Black' },
-    420: { id: 420, id_string: "orange", colors: ["#EA5F22"], title: 'Orange' },
-    423: { id: 423, id_string: 'red', colors: ['#c62A32'], title: 'Red' },
-    424: { id: 424, id_string: 'charcoal', colors: ['#585559'], title: 'Charcoal' },
-    425: { id: 425, id_string: 'royal', colors: ['#084f97'], title: 'Royal' },
-    511: { id: 511, id_string: 'navy', colors: ['#1a2237'], title: 'Navy' },
-    521: { id: 521, id_string: 'white', colors: ['#ffffff'], title: 'White' },
-    1058: { id: 1058, id_string: 'royal-white', colors: ['#2b4da4', '#ffffff'], title: 'Royal/White' },
-    1062: { id: 1062, id_string: 'black-white', colors: ['#000000', '#ffffff'], title: 'Black/White' },
-    1535: { id: 1535, id_string: 'asphalt-white', colors: ['#525455', '#ffffff'], title: 'Asphalt/White' },
-    1536: { id: 1536, id_string: 'scarlet-white', colors: ['#bA2326', '#ffffff'], title: 'Scarlet/White' },
-    1750: { id: 1750, id_string: 'white-black', colors: ['#ffffff', '#000000'], title: 'White/Black' },
-    1792: { id: 1792, id_string: 'green-white', colors: ['#026539', '#ffffff'], title: 'Green/White' },
-    1795: { id: 1795, id_string: 'navy-white', colors: ['#1a1f35', '#ffffff'], title: 'Navy/White' },
-    2620: { id: 2620, id_string: 'white-m', colors: ['#ffffff'], title: 'White' },
-    2621: { id: 2621, id_string: 'black-m', colors: ['#000000'], title: 'Black' },
-    2662: { id: 2662, id_string: 'blue-m', colors: ['#313da6'], title: 'Blue' },
-    2663: { id: 2663, id_string: 'red-m', colors: ['#cd3f3a'], title: 'Red' },
-    2665: { id: 2665, id_string: 'pink-m', colors: ['#daa2a6'], title: 'Pink' },
+    358: { id: 358, id_string: 'sport-grey', colors: ['#cacaca'] },
+    362: { id: 362, id_string: 'dark-chocolate', colors: ['#31221d'] },
+    364: { id: 364, id_string: 'military-green', colors: ['#585c3b'] },
+    367: { id: 367, id_string: 'dark-heather', colors: ['#454545'] },
+    369: { id: 369, id_string: 'irish-green', colors: ['#129447'] },
+    392: { id: 392, id_string: 'light-blue', colors: ['#d6e6f7'] },
+    395: { id: 395, id_string: 'maroon', colors: ['#642838'] },
+    418: { id: 418, id_string: 'black', colors: ['#000000'] },
+    420: { id: 420, id_string: "orange", colors: ["#EA5F22"] },
+    423: { id: 423, id_string: 'red', colors: ['#c62A32'] },
+    424: { id: 424, id_string: 'charcoal', colors: ['#585559'] },
+    425: { id: 425, id_string: 'royal', colors: ['#084f97'] },
+    511: { id: 511, id_string: 'navy', colors: ['#1a2237'] },
+    521: { id: 521, id_string: 'white', colors: ['#ffffff'] },
+    1058: { id: 1058, id_string: 'royal-white', colors: ['#2b4da4', '#ffffff'] },
+    1062: { id: 1062, id_string: 'black-white', colors: ['#000000', '#ffffff'] },
+    1535: { id: 1535, id_string: 'asphalt-white', colors: ['#525455', '#ffffff'] },
+    1536: { id: 1536, id_string: 'scarlet-white', colors: ['#bA2326', '#ffffff'] },
+    1750: { id: 1750, id_string: 'white-black', colors: ['#ffffff', '#000000'] },
+    1792: { id: 1792, id_string: 'green-white', colors: ['#026539', '#ffffff'] },
+    1795: { id: 1795, id_string: 'navy-white', colors: ['#1a1f35', '#ffffff'] },
+    2620: { id: 2620, id_string: 'white-m', colors: ['#ffffff'] },
+    2621: { id: 2621, id_string: 'black-m', colors: ['#000000'] },
+    2662: { id: 2662, id_string: 'blue-m', colors: ['#313da6'] },
+    2663: { id: 2663, id_string: 'red-m', colors: ['#cd3f3a'] },
+    2665: { id: 2665, id_string: 'pink-m', colors: ['#daa2a6'] },
 }
 
 export const SEARCH_PRODUCT_COLORS = [
-    { id: 1, color_display: { color: '#000000', title: 'Black', id_string: 'black' }, colors: [COLORS_POOL[418], COLORS_POOL[1750]] },
-    { id: 2, color_display: { color: '#ffffff', title: 'White', id_string: 'white' }, colors: [COLORS_POOL[521], COLORS_POOL[1062]] },
-    { id: 3, color_display: { color: '#525455', title: 'Grey', id_string: 'grey' }, colors: [COLORS_POOL[367], COLORS_POOL[424], COLORS_POOL[1535]] },
-    { id: 4, color_display: { color: '#cacaca', title: 'Light Grey', id_string: 'light-grey' }, colors: [COLORS_POOL[358]] },
-    { id: 5, color_display: { color: '#2b4da4', title: 'Blue', id_string: 'blue' }, colors: [COLORS_POOL[425], COLORS_POOL[1058], COLORS_POOL[392]] },
-    { id: 6, color_display: { color: '#1a1f35', title: 'Navy', id_string: 'navy' }, colors: [COLORS_POOL[511], COLORS_POOL[1795]] },
-    { id: 7, color_display: { color: '#026539', title: 'Green', id_string: 'green' }, colors: [COLORS_POOL[364], COLORS_POOL[369], COLORS_POOL[1792]] },
-    { id: 8, color_display: { color: '#e0824b', title: 'Orange', id_string: 'orange' }, colors: [COLORS_POOL[420]] },
-    { id: 9, color_display: { color: '#c62A32', title: 'Red', id_string: 'red' }, colors: [COLORS_POOL[423], COLORS_POOL[1536], COLORS_POOL[395]] },
-    { id: 10, color_display: { color: '#31221d', title: 'Brown', id_string: 'brown' }, colors: [COLORS_POOL[362]] },
+    { id: 1, color_display: { color: '#000000', id_string: 'black' }, colors: [COLORS_POOL[418], COLORS_POOL[1750]] },
+    { id: 2, color_display: { color: '#ffffff', id_string: 'white' }, colors: [COLORS_POOL[521], COLORS_POOL[1062]] },
+    { id: 3, color_display: { color: '#525455', id_string: 'grey' }, colors: [COLORS_POOL[367], COLORS_POOL[424], COLORS_POOL[1535]] },
+    { id: 4, color_display: { color: '#cacaca', id_string: 'light-grey' }, colors: [COLORS_POOL[358]] },
+    { id: 5, color_display: { color: '#2b4da4', id_string: 'blue' }, colors: [COLORS_POOL[425], COLORS_POOL[1058], COLORS_POOL[392]] },
+    { id: 6, color_display: { color: '#1a1f35', id_string: 'navy' }, colors: [COLORS_POOL[511], COLORS_POOL[1795]] },
+    { id: 7, color_display: { color: '#026539', id_string: 'green' }, colors: [COLORS_POOL[364], COLORS_POOL[369], COLORS_POOL[1792]] },
+    { id: 8, color_display: { color: '#e0824b', id_string: 'orange' }, colors: [COLORS_POOL[420]] },
+    { id: 9, color_display: { color: '#c62A32', id_string: 'red' }, colors: [COLORS_POOL[423], COLORS_POOL[1536], COLORS_POOL[395]] },
+    { id: 10, color_display: { color: '#31221d', id_string: 'brown' }, colors: [COLORS_POOL[362]] },
 ]
 
 export const SEARCH_ART_COLORS = [
-    { id: 1, color_display: { color: '#000000', title: 'Black', id_string: 'black' } },
-    { id: 2, color_display: { color: '#ffffff', title: 'White', id_string: 'white' } },
-    { id: 3, color_display: { color: '#525455', title: 'Grey', id_string: 'grey' } },
-    { id: 4, color_display: { color: '#cacaca', title: 'Light Grey', id_string: 'light-grey' } },
-    { id: 5, color_display: { color: '#2b4da4', title: 'Blue', id_string: 'blue' } },
-    { id: 6, color_display: { color: '#1a1f35', title: 'Navy', id_string: 'navy' } },
-    { id: 7, color_display: { color: '#026539', title: 'Green', id_string: 'green' } },
-    { id: 8, color_display: { color: '#e0824b', title: 'Orange', id_string: 'orange' } },
-    { id: 9, color_display: { color: '#c62A32', title: 'Red', id_string: 'red' } },
-    { id: 10, color_display: { color: '#31221d', title: 'Brown', id_string: 'brown' } },
+    { id: 1, color_display: { color: '#000000', id_string: 'black' } },
+    { id: 2, color_display: { color: '#ffffff', id_string: 'white' } },
+    { id: 3, color_display: { color: '#525455', id_string: 'grey' } },
+    { id: 4, color_display: { color: '#cacaca', id_string: 'light-grey' } },
+    { id: 5, color_display: { color: '#2b4da4', id_string: 'blue' } },
+    { id: 6, color_display: { color: '#1a1f35', id_string: 'navy' } },
+    { id: 7, color_display: { color: '#026539', id_string: 'green' } },
+    { id: 8, color_display: { color: '#e0824b', id_string: 'orange' } },
+    { id: 9, color_display: { color: '#c62A32', id_string: 'red' } },
+    { id: 10, color_display: { color: '#31221d', id_string: 'brown' } },
 ]
 
 export const SIZES_POOL = [
@@ -2368,6 +2382,14 @@ export function getShippingOptions(product_type, country) {
             currency: 'usd'
         }
     }
+}
+
+export function getCurrencyByLocation(country, zone) {
+    if (zone === 'Europe')
+        return 'eur'
+    if (country === 'BR')
+        return 'brl'
+    return 'usd'
 }
 
 export const USER_CUSTOMIZE_HOME_PAGE = THEMES_POOL.map(theme => ({ ...theme, query: 'h' })).concat(Object.keys(PRODUCTS_FAMILY).map(id => ({ id: id, query: 'v' }))).sort((a, b) => b.id.toLowerCase() < a.id.toLowerCase() ? 1 : -1)

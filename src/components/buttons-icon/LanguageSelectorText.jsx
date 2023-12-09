@@ -2,15 +2,16 @@ import { useEffect, useState } from 'react'
 import MenuItem from '@mui/material/MenuItem'
 import ListItemIcon from '@mui/material/ListItemIcon'
 import Divider from '@mui/material/Divider'
-import styles from '@/styles/components/buttons-icon/LanguageSelector.module.css'
+import styles from '@/styles/components/buttons-icon/LanguageSelectorText.module.css'
 import { useTranslation } from 'next-i18next'
 import { motion } from 'framer-motion'
 import { useAppContext } from '../contexts/AppContext'
 import { CircleFlag } from 'react-circle-flags'
 import LanguageOutlinedIcon from '@mui/icons-material/LanguageOutlined'
 import { languageToCountry } from '@/consts'
+import Flag from 'react-world-flags'
 
-export default function LanguageSelector() {
+export default function LanguageSelectorText() {
     const {
         router,
         supportsHoverAndPointer,
@@ -70,16 +71,18 @@ export default function LanguageSelector() {
             onMouseLeave={handleMouseLeave}
             onClick={handleOnClick}
             style={{
-                backgroundColor: open ? 'rgba(0, 0, 0, 0.15)' : 'transparent'
+                backgroundColor: open ? 'rgba(0, 0, 0, 0.15)' : 'transparent',
+                outline: open ? 'rgba(255, 255, 255, 1) 1px solid' : 'rgba(255, 255, 255, 0.8) 1px solid'
             }}
         >
             <div
-                className={`${styles.iconContainer} flex center`}
+                className={styles.iconContainer}
             >
                 {i18n.language === 'en'
-                    ? <LanguageOutlinedIcon style={{ fontSize: 30 }} />
-                    : <CircleFlag style={{ pointerEvents: 'none' }} countryCode={languageToCountry[i18n.language]} height="30" />
+                    ? <LanguageOutlinedIcon style={{ fontSize: 21 }} />
+                    : <Flag style={{ pointerEvents: 'none' }} code={languageToCountry[i18n.language]} height={18} />
                 }
+                <p style={{ fontWeight: 600 }}>{tLanguages(i18n.language)}</p>
             </div>
             {open &&
                 <motion.div
@@ -94,17 +97,19 @@ export default function LanguageSelector() {
                             opacity: 1,
                         }
                     }}
-                    style={{
-                        left: i18n.language === 'es'
-                            ? -186
-                            : i18n.language === 'pt-BR'
-                                ? -186
-                                : i18n.language === 'pt'
-                                    ? -186
-                                    : -190
-                    }}
                 >
-                    <div className={styles.pointer}>
+                    <div
+                        className={styles.pointer}
+                        style={{
+                            left: i18n.language === 'es'
+                                ? 17
+                                : i18n.language === 'pt-BR'
+                                    ? 17
+                                    : i18n.language === 'pt'
+                                        ? 17
+                                        : 14
+                        }}
+                    >
                     </div>
                     <div
                         className={styles.session}

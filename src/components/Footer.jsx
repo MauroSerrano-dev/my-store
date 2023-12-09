@@ -4,6 +4,7 @@ import { BsShieldLockFill } from "react-icons/bs";
 import Link from 'next/link';
 import SocialButtons from './SocialButtons';
 import { useTranslation } from 'next-i18next'
+import LanguageSelectorText from './buttons-icon/LanguageSelectorText';
 
 export default function Footer() {
 
@@ -24,7 +25,11 @@ export default function Footer() {
             className={styles.container}
         >
             <div className={styles.top}>
-                <div className={styles.left}>
+                <LanguageSelectorText />
+                <SocialButtons />
+            </div>
+            <div className={styles.middle}>
+                <div className={styles.middleLeft}>
                     <div className={styles.column}>
                         <h3>
                             {tFooter('Support')}
@@ -59,8 +64,7 @@ export default function Footer() {
                         </div>
                     </div>
                 </div>
-                <div className={styles.right}>
-                    <SocialButtons />
+                <div className={styles.middleRight}>
                     <div
                         className={styles.stripeContainer}
                     >
@@ -129,6 +133,6 @@ export default function Footer() {
                     {tFooter('copyright', { year: new Date().getFullYear(), store_name: process.env.NEXT_PUBLIC_STORE_NAME })}
                 </p>
             </div>
-        </footer>
+        </footer >
     )
 }

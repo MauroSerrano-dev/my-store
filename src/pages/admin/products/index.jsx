@@ -63,6 +63,7 @@ export default function Products() {
                 </motion.div>
     )
 }
+
 export async function getServerSideProps({ locale }) {
     return {
         props: {

@@ -25,6 +25,7 @@ export default function ProductModal(props) {
     } = useAppContext()
 
     const tCommon = useTranslation('common').t
+    const tColors = useTranslation('colors').t
 
     const PRICE_UNIT = getProductPriceUnit(product, product.variant, userCurrency?.rate)
 
@@ -112,18 +113,21 @@ export default function ProductModal(props) {
                             : ''
                     }`}
             >
-                <Image
-                    priority
-                    quality={100}
-                    src={product.image.src}
-                    alt={product.title}
-                    width={108 * 0.9}
-                    height={108}
+                <div
                     style={{
-                        width: 'auto',
+                        position: 'relative',
+                        width: 108 * 0.9,
                         height: 108,
                     }}
-                />
+                >
+                    <Image
+                        quality={100}
+                        src={product.image.src}
+                        alt={product.title}
+                        fill
+                        sizes='108px'
+                    />
+                </div>
             </Link>
             <div className={styles.right}>
                 <Link
@@ -143,7 +147,7 @@ export default function ProductModal(props) {
                         {tCommon('Size')}: <span style={{ fontWeight: 500 }}>{SIZE.title}</span>
                     </p>
                     <p>
-                        {tCommon('Color')}: <span style={{ fontWeight: 500 }}>{tCommon(COLOR.title)}</span>
+                        {tCommon('Color')}: <span style={{ fontWeight: 500 }}>{tColors(COLOR.id_string)}</span>
                     </p>
                     <p>
                         {tCommon('Quantity')}: <span style={{ fontWeight: 500 }}>{product.quantity}</span>

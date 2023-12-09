@@ -15,7 +15,7 @@ export default function ColorButton(props) {
         supportsHoverAndPointer,
     } = useAppContext()
 
-    const tCommon = useTranslation('common').t
+    const tColors = useTranslation('colors').t
 
     const buttonStyle = {
         borderRadius: '100%',
@@ -32,7 +32,7 @@ export default function ColorButton(props) {
     return (
         supportsHoverAndPointer
             ? <MyTooltip
-                title={tCommon(color.title)}
+                title={tColors(color.id_string)}
                 arrow
                 backgroundColor='#000000'
                 titleColor='#ffffff'

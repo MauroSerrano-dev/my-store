@@ -52,6 +52,7 @@ export default withRouter(props => {
     const tCommon = useTranslation('common').t
     const tCountries = useTranslation('countries').t
     const tProduct = useTranslation('product').t
+    const tColors = useTranslation('colors').t
 
     const [currentColor, setCurrentColor] = useState(cl ? cl : COLORS_POOL[product?.colors_ids[0]])
     const [currentSize, setCurrentSize] = useState(sz ? sz : SIZES_POOL.find(sz => sz.id === product?.sizes_ids[0]))
@@ -87,7 +88,7 @@ export default withRouter(props => {
                     title: product.title,
                     image: product.images.find(img => img.color_id === productCurrentVariant.color_id),
                     blueprint_ids: product.blueprint_ids,
-                    description: `${tCommon(product.type_id)} ${tCommon(currentColor.title)} / ${currentSize.title}`,
+                    description: `${tCommon(product.type_id)} ${tColors(currentColor.id_string)} / ${currentSize.title}`,
                     id_printify: product.printify_ids[shippingOption.provider_id],
                     provider_id: shippingOption.provider_id,
                     variant: productCurrentVariant,
@@ -216,7 +217,7 @@ export default withRouter(props => {
                     <meta name="keywords" content={product.tags.join(', ')} key='keywords' />
                     <meta property="og:title" content={product.title} key='og:title' />
                     <meta property="og:image:alt" content={product.title} key='og:image:alt' />
-                    <meta property="og:description" content={`${tCommon(product.type_id)} ${tCommon((cl ? cl : COLORS_POOL[product?.colors_ids[0]]).title)}`} key='og:description' />
+                    <meta property="og:description" content={`${tCommon(product.type_id)} ${tColors((cl ? cl : COLORS_POOL[product?.colors_ids[0]]).id_string)}`} key='og:description' />
                     <meta property="og:image" itemProp="image" content={productMetaImage} key='og:image' />
                     <meta property="og:type" content="product" key='og:type' />
                     <meta property="og:url" content={urlMeta} key='og:url' />
@@ -300,7 +301,7 @@ export default withRouter(props => {
                                 </div>
                                 <div className={styles.colorAndSizeSelectors}>
                                     <h3 style={{ textAlign: 'start' }}>
-                                        {tCommon(currentColor.title)} / {currentSize.title}
+                                        {tColors(currentColor.id_string)} / {currentSize.title}
                                     </h3>
                                     <div>
                                         <p style={{ textAlign: 'start', fontWeight: '700' }}>
