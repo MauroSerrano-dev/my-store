@@ -25,48 +25,46 @@ export default function Footer() {
             className={styles.container}
         >
             <div className={styles.top}>
-                <div className={styles.left}>
-                    <div className={styles.columnsContainer}>
-                        <div className={styles.column}>
-                            <h3>
-                                {tFooter('Support')}
-                            </h3>
-                            <div>
-                                <a>
-                                    {tFooter('Check order status')}
-                                </a>
-                            </div>
-                            <div>
-                                <a>
-                                    {tFooter('Help/FAQ')}
-                                </a>
-                            </div>
-                            <div>
-                                <a>
-                                    {tFooter('Contact us')}
-                                </a>
-                            </div>
+                <LanguageSelectorText />
+                <SocialButtons />
+            </div>
+            <div className={styles.middle}>
+                <div className={styles.middleLeft}>
+                    <div className={styles.column}>
+                        <h3>
+                            {tFooter('Support')}
+                        </h3>
+                        <div>
+                            <a>
+                                {tFooter('Check order status')}
+                            </a>
                         </div>
-                        <div className={styles.column}>
-                            <h3 className="text-start">{tFooter('About us')}</h3>
-                            <div>
-                                <Link href='/privacy-policy'>
-                                    {tFooter('Privacy policy')}
-                                </Link>
-                            </div>
-                            <div>
-                                <Link href='/terms-of-use'>
-                                    {tFooter('Terms of use')}
-                                </Link>
-                            </div>
+                        <div>
+                            <a>
+                                {tFooter('Help/FAQ')}
+                            </a>
+                        </div>
+                        <div>
+                            <a>
+                                {tFooter('Contact us')}
+                            </a>
                         </div>
                     </div>
-                    <div className={styles.languageContainer}>
-                        <LanguageSelectorText />
+                    <div className={styles.column}>
+                        <h3 className="text-start">{tFooter('About us')}</h3>
+                        <div>
+                            <Link href='/privacy-policy'>
+                                {tFooter('Privacy policy')}
+                            </Link>
+                        </div>
+                        <div>
+                            <Link href='/terms-of-use'>
+                                {tFooter('Terms of use')}
+                            </Link>
+                        </div>
                     </div>
                 </div>
-                <div className={styles.right}>
-                    <SocialButtons />
+                <div className={styles.middleRight}>
                     <div
                         className={styles.stripeContainer}
                     >

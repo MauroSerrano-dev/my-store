@@ -2,7 +2,10 @@ import styles from '@/styles/components/SocialButtons.module.css'
 import Link from 'next/link'
 import { FaInstagram, FaFacebookSquare } from 'react-icons/fa'
 
-export default function SocialButtons() {
+export default function SocialButtons(props) {
+    const {
+        size = 35
+    } = props
 
     return (
         <div
@@ -12,9 +15,13 @@ export default function SocialButtons() {
                 className={styles.option}
                 href={process.env.NEXT_PUBLIC_STORE_INSTAGRAM}
                 target='_blank'
+                style={{
+                    height: size,
+                    width: size
+                }}
             >
                 <FaInstagram
-                    size={23}
+                    size={size * 0.6}
                     className={styles.icon}
                 />
             </Link>
@@ -22,9 +29,13 @@ export default function SocialButtons() {
                 className={styles.option}
                 href='https://www.facebook.com'
                 target='_blank'
+                style={{
+                    height: size,
+                    width: size
+                }}
             >
                 <FaFacebookSquare
-                    size={23}
+                    size={size * 0.6}
                     className={styles.icon}
                 />
             </Link>
