@@ -31,7 +31,7 @@ async function createOrder(order) {
             orderRef,
             {
                 ...order,
-                products: products.map(prod => ({ ...prod, updated_at: now })),
+                products: order.products.map(prod => ({ ...prod, updated_at: now })),
                 create_at: now,
             }
         )
