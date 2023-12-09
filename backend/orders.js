@@ -26,7 +26,7 @@ async function createOrder(order) {
         const orderRef = doc(db, process.env.COLL_ORDERS, order.id)
 
         const now = Timestamp.now()
-
+        console.log(order)
         await setDoc(
             orderRef,
             {
