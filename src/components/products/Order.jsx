@@ -102,9 +102,9 @@ export default function Order(props) {
                             className={`${styles.shipToName} ${shipToModalOpen ? styles.shipToNameActive : ''}`}
                             onMouseEnter={handleShipToMouseEnter}
                             onMouseLeave={handleShipToMouseLeave}
-                            onClick={handleShipToOnClick}
                         >
                             <p
+                                onClick={handleShipToOnClick}
                                 style={{
                                     cursor: 'pointer'
                                 }}
@@ -112,6 +112,7 @@ export default function Order(props) {
                                 {order.shipping_details.name}
                             </p>
                             <KeyboardArrowDownOutlinedIcon
+                                onClick={handleShipToOnClick}
                                 style={{
                                     cursor: 'pointer',
                                     transition: 'transform ease-in-out 150ms',
@@ -240,7 +241,6 @@ export default function Order(props) {
                                     }}
                                 >
                                     <Image
-                                        priority
                                         quality={100}
                                         src={product.image.src}
                                         sizes={'100px'}

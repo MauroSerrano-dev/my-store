@@ -145,7 +145,6 @@ export default function ProductCart(props) {
                     } `}
             >
                 <Image
-                    priority
                     quality={100}
                     src={product.image.src}
                     alt={product.title}

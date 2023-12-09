@@ -57,7 +57,7 @@ export default function Signin() {
         ))
     }
 
-    function handleCreateNewUser(user) {
+    function handleCreateNewUser() {
         if (!reCaptchaSolve)
             return showToast({ msg: tToasts('solve_recaptcha') })
 
@@ -68,7 +68,7 @@ export default function Signin() {
         if (newUser.password === '')
             return showToast({ msg: 'missing_password' })
 
-        const passValidation = isStrongPassword(user.password)
+        const passValidation = isStrongPassword(newUser.password)
         if (passValidation !== true) {
             showToast({ msg: tToasts(passValidation) })
             setShowModalPassword(true)
@@ -84,7 +84,7 @@ export default function Signin() {
                 authorization: process.env.NEXT_PUBLIC_APP_TOKEN,
             },
             body: JSON.stringify({
-                user: user,
+                user: newUser,
                 userLanguage: i18n.language
             })
         }
@@ -93,7 +93,7 @@ export default function Signin() {
             .then(response => response.json())
             .then(response => {
                 if (response.status < 300) {
-                    login(user.email, user.password)
+                    login(newUser.email, newUser.password)
                 }
                 else if (response.status < 500) {
                     setBlockInteractions(false)
@@ -215,7 +215,7 @@ export default function Signin() {
                                     <LoadingButton
                                         loading={disableSigninButton}
                                         variant='contained'
-                                        onClick={() => handleCreateNewUser(newUser)}
+                                        onClick={handleCreateNewUser}
                                         sx={{
                                             width: '100%',
                                             height: '50px',

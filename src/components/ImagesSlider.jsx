@@ -199,23 +199,29 @@ export default function ImagesSlider(props) {
                                         borderBottomRightRadius: j === images.filter(img => img.color_id === cl.id).length - 1 ? '0.3rem' : 0,
                                     }}
                                 >
-                                    <Image
-                                        priority
-                                        src={img.src}
-                                        quality={100}
-                                        sizes={`${height * 2 / 3}px`}
-                                        alt='product preview'
-                                        width={width}
-                                        height={height}
+                                    <div
                                         style={{
-                                            pointerEvents: 'none',
-                                            opacity: imagesLoad.includes(j) ? 1 : 0,
-                                            transition: 'opacity ease-in-out 200ms'
+                                            position: 'relative',
+                                            width: width,
+                                            height: height,
                                         }}
-                                        onLoadingComplete={() => {
-                                            setImagesLoad(prev => [...prev, j])
-                                        }}
-                                    />
+                                    >
+                                        <Image
+                                            src={img.src}
+                                            quality={100}
+                                            alt='product preview'
+                                            fill
+                                            sizes={`${height * 2 / 3}px`}
+                                            style={{
+                                                pointerEvents: 'none',
+                                                opacity: imagesLoad.includes(j) ? 1 : 0,
+                                                transition: 'opacity ease-in-out 200ms'
+                                            }}
+                                            onLoadingComplete={() => {
+                                                setImagesLoad(prev => [...prev, j])
+                                            }}
+                                        />
+                                    </div>
                                     {!imagesLoad.includes(j) &&
                                         <Skeleton
                                             variant="rectangular"
@@ -297,23 +303,29 @@ export default function ImagesSlider(props) {
                                         }}
                                     >
                                     </div>
-                                    <Image
-                                        priority
-                                        src={img.src}
-                                        quality={100}
-                                        key={i}
-                                        sizes={`${OPTIONS_HEIGHT * 2 / 3}px`}
-                                        width={(OPTIONS_HEIGHT - OPTIONS_PADDING_TOP) * 0.9}
-                                        height={OPTIONS_HEIGHT - OPTIONS_PADDING_TOP}
-                                        alt='product image'
+                                    <div
                                         style={{
-                                            opacity: optionsImagesLoad.includes(j) ? 1 : 0,
-                                            transition: 'opacity ease-in-out 200ms'
+                                            position: 'relative',
+                                            width: (OPTIONS_HEIGHT - OPTIONS_PADDING_TOP) * 0.9,
+                                            height: OPTIONS_HEIGHT - OPTIONS_PADDING_TOP
                                         }}
-                                        onLoadingComplete={() => {
-                                            setOptionsImagesLoad(prev => [...prev, j])
-                                        }}
-                                    />
+                                    >
+                                        <Image
+                                            src={img.src}
+                                            quality={100}
+                                            key={i}
+                                            sizes={`${OPTIONS_HEIGHT * 2 / 3}px`}
+                                            alt='product image'
+                                            fill
+                                            style={{
+                                                opacity: optionsImagesLoad.includes(j) ? 1 : 0,
+                                                transition: 'opacity ease-in-out 200ms'
+                                            }}
+                                            onLoadingComplete={() => {
+                                                setOptionsImagesLoad(prev => [...prev, j])
+                                            }}
+                                        />
+                                    </div>
                                     {!optionsImagesLoad.includes(j) &&
                                         <Skeleton
                                             variant="rectangular"

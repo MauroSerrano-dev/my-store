@@ -20,14 +20,14 @@ export default function CartIcon() {
     const tNavbar = useTranslation('navbar').t
 
     useEffect(() => {
+        setOpen(false)
+    }, [router])
+
+    useEffect(() => {
         // Em caso de deletar ultimo elemento do cart
         if (cart && cart.products.length === 0)
             setOpen(false)
     }, [cart])
-
-    useEffect(() => {
-        setOpen(false)
-    }, [router])
 
     return (
         <div

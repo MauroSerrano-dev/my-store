@@ -45,6 +45,7 @@ export default function Cart() {
     const { i18n } = useTranslation()
 
     const tCommon = useTranslation('common').t
+    const tColors = useTranslation('colors').t
     const tCart = useTranslation('cart').t
     const tCountries = useTranslation('countries').t
     const tToasts = useTranslation('toasts').t
@@ -81,7 +82,7 @@ export default function Cart() {
                         title: prod.title,
                         image: prod.image,
                         blueprint_ids: prod.blueprint_ids,
-                        description: `${tCommon(prod.type_id)} ${tCommon(COLORS_POOL[prod.variant.color_id].title)} / ${tCommon(SIZES_POOL.find(sz => sz.id === prod.variant.size_id).title)}`,
+                        description: `${tCommon(prod.type_id)} ${tColors(COLORS_POOL[prod.variant.color_id].id_string)} / ${tCommon(SIZES_POOL.find(sz => sz.id === prod.variant.size_id).title)}`,
                         id_printify: prod.printify_ids[shippingOption.provider_id],
                         provider_id: shippingOption.provider_id,
                         variant: prod.variant,

@@ -207,7 +207,6 @@ export default function Home() {
                         className={styles.categoryItemImg}
                       >
                         <Image
-                          priority
                           quality={100}
                           src={cat.img}
                           sizes={`${(windowWidth > 420 ? 200 : 130) * 0.8}px`}
