@@ -2,7 +2,6 @@ import styles from '@/styles/components/ImagesSlider.module.css'
 import { useRef, useState } from 'react'
 import { motion } from 'framer-motion';
 import { useAppContext } from './contexts/AppContext';
-import Image from 'next/image';
 import { Skeleton } from '@mui/material';
 
 export default function ImagesSlider(props) {
@@ -28,15 +27,10 @@ export default function ImagesSlider(props) {
     const innerRef = useRef(null)
     const innerOptionsRef = useRef(null)
 
-    const [currentImgIndex, setCurrentImgIndex] = useState(0)
-
     const [carouselAnchor, setCarouselAnchor] = useState(0)
     const [optionAnchor, setOptionAnchor] = useState(0)
 
     const [draggingOffSetTimeOut, setDraggingOffSetTimeOut] = useState()
-
-    const [imagesLoad, setImagesLoad] = useState([])
-    const [optionsImagesLoad, setOptionsImagesLoad] = useState([])
 
     const [isDragging, setIsDragging] = useState(false)
     const [slideMoving, setSlideMoving] = useState(false)
@@ -83,7 +77,6 @@ export default function ImagesSlider(props) {
                 : multiploMaisProximoDeXTranslate
             )
 
-            setCurrentImgIndex(newIndex)
             setSlideMoving(false)
             ensureOptionVisible(newIndex)
         }, 200)
@@ -105,7 +98,6 @@ export default function ImagesSlider(props) {
 
     function handleOptionClick(i) {
         setCarouselAnchor(-width * i)
-        setCurrentImgIndex(i)
         ensureOptionVisible(i)
     }
 
@@ -206,23 +198,18 @@ export default function ImagesSlider(props) {
                                             height: height,
                                         }}
                                     >
-                                        <Image
+                                        <img
                                             src={img.src}
-                                            quality={100}
                                             alt='product preview'
-                                            fill
-                                            sizes={`${height * 2 / 3}px`}
                                             style={{
+                                                width: '100%',
+                                                height: '100%',
                                                 pointerEvents: 'none',
-                                                opacity: imagesLoad.includes(j) ? 1 : 0,
                                                 transition: 'opacity ease-in-out 200ms'
-                                            }}
-                                            onLoadingComplete={() => {
-                                                setImagesLoad(prev => [...prev, j])
                                             }}
                                         />
                                     </div>
-                                    {!imagesLoad.includes(j) &&
+                                    {(!img.src || img.src === '') &&
                                         <Skeleton
                                             variant="rectangular"
                                             width={width}
@@ -295,9 +282,6 @@ export default function ImagesSlider(props) {
                                     <div
                                         className={styles.optionShadow}
                                         style={{
-                                            opacity: currentImgIndex !== j && optionsImagesLoad.includes(j)
-                                                ? undefined
-                                                : 0,
                                             transition: 'opacity ease-in-out 200ms',
                                             zIndex: 1
                                         }}
@@ -310,22 +294,17 @@ export default function ImagesSlider(props) {
                                             height: OPTIONS_HEIGHT - OPTIONS_PADDING_TOP
                                         }}
                                     >
-                                        <Image
+                                        <img
                                             src={img.src}
-                                            quality={100}
-                                            sizes={`${OPTIONS_HEIGHT * 2 / 3}px`}
                                             alt='product image'
-                                            fill
                                             style={{
-                                                opacity: optionsImagesLoad.includes(j) ? 1 : 0,
+                                                width: '100%',
+                                                height: '100%',
                                                 transition: 'opacity ease-in-out 200ms'
-                                            }}
-                                            onLoadingComplete={() => {
-                                                setOptionsImagesLoad(prev => [...prev, j])
                                             }}
                                         />
                                     </div>
-                                    {!optionsImagesLoad.includes(j) &&
+                                    {(!img.src || img.src === '') &&
                                         <Skeleton
                                             variant="rectangular"
                                             width={(OPTIONS_HEIGHT - OPTIONS_PADDING_TOP) * 0.9}

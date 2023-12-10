@@ -1,4 +1,4 @@
-import ImagesSlider from '@/components/ImagesSlider'
+import ImagesSliderEditable from '@/components/ImagesSliderEditable'
 import styles from '@/styles/admin/products/new/type.module.css'
 import { Button, Checkbox, Slider } from '@mui/material'
 import { useEffect, useState } from 'react'
@@ -456,6 +456,10 @@ export default withRouter(() => {
             setProduct(prev => ({ ...prev, id: value }))
     }
 
+    useEffect(() => {
+        console.log(product)
+    }, [product])
+
     return (
         session === undefined
             ? <div></div>
@@ -714,7 +718,7 @@ export default withRouter(() => {
                                                     <h3>
                                                         Preview
                                                     </h3>
-                                                    <ImagesSlider
+                                                    <ImagesSliderEditable
                                                         images={Object.keys(images).reduce((acc, key) => acc.concat(images[key]), [])}
                                                         currentColor={product.colors[colorIndex]}
                                                         colors={product.colors}
