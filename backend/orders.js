@@ -99,17 +99,19 @@ async function updateProductStatus(order_id_printify, printify_products) {
 
             const orderDoc = querySnapshot.docs[0]
 
+            const now = Timestamp.now();
+
             const orderData = orderDoc.data()
             const updatedProducts = orderData.products.map(product => {
                 const newPossibleStatus = printify_products.find(prod => prod.product_id === product.id_printify && prod.variant_id === product.variant_id_printify)?.status
-                const newStatus = ALLOWED_WEBHOOK_STATUS.some(step => step.id === newPossibleStatus) && ALLOWED_WEBHOOK_STATUS.some(step => step.id === product.status)
+                const newStatus = ALLOWED_WEBHOOK_STATUS.some(step => step === newPossibleStatus) && ALLOWED_WEBHOOK_STATUS.some(step => step === product.status)
                     ? newPossibleStatus || null
                     : product.status
                 return {
                     ...product,
-                    updated_at: newStatus === product.status
-                        ? product.status
-                        : Timestamp.now(),
+                    updated_at: newStatus !== product.status
+                        ? now
+                        : product.status,
                     status: newStatus
                 }
             })
