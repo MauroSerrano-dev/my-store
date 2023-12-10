@@ -3,6 +3,7 @@ import { initializeApp } from 'firebase/app'
 import { firebaseConfig } from "../firebase.config"
 import { mergeProducts } from "@/utils";
 import Error from "next/error";
+import { LIMITS } from "@/consts";
 
 initializeApp(firebaseConfig)
 
@@ -98,11 +99,13 @@ async function setCartSessionProducts(cartId, cartProducts) {
 }
 
 async function addProductsToCartSession(cartId, cartNewProducts) {
-    const userRef = doc(db, process.env.COLL_CARTS_SESSION, cartId)
-    const cartDoc = await getDoc(userRef)
-
     try {
+        const userRef = doc(db, process.env.COLL_CARTS_SESSION, cartId)
+        const cartDoc = await getDoc(userRef)
+
         const cartData = cartDoc.data()
+        if (cartData.products.reduce((acc, prod) => acc + prod.quantity, 0) + cartNewProducts.reduce((acc, prod) => acc + prod.quantity, 0) > LIMITS.cart_items)
+            throw new Error({ code: 'max_products' })
 
         cartData.products = mergeProducts(cartData.products, cartNewProducts)
         const now = Timestamp.now()
@@ -110,14 +113,10 @@ async function addProductsToCartSession(cartId, cartNewProducts) {
 
         await updateDoc(userRef, cartData)
 
-        return {
-            status: 200,
-            message: `Cart Session ${cartId} updated successfully!`,
-            cart: cartData,
-        }
+        return cartData
     } catch (error) {
-        console.error(`Error setting cart session products: ${error}`)
-        throw new Error(`Error setting cart session products: ${error}`)
+        console.error(error)
+        throw error
     }
 }
 

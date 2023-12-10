@@ -4,6 +4,7 @@ import es from 'date-fns/locale/es'
 import ptBR from 'date-fns/locale/pt-BR'
 import ptPT from 'date-fns/locale/pt'
 import { LIMITS } from '@/consts';
+import Error from 'next/error';
 
 
 export function getObjectsDiff(obj1, obj2) {
@@ -45,8 +46,12 @@ export function hasRepeatedItems(arr) {
 export function mergeProducts(prods1, prods2) {
     return prods1.map(p => {
         const exist = prods2.find(prod => prod.id === p.id && prod.variant_id === p.variant_id)
-        if (exist)
-            return { ...p, quantity: Math.min(p.quantity + exist.quantity, LIMITS.cart_items) }
+        if (exist) {
+            const newQuantity = p.quantity + exist.quantity
+            if (newQuantity > LIMITS.cart_same_item)
+                throw new Error({ code: 'max_same_products' })
+            return { ...p, quantity: newQuantity }
+        }
         else
             return p
     }).concat(prods2.filter(prod => !prods1.some(p => p.id === prod.id && p.variant_id === prod.variant_id)))

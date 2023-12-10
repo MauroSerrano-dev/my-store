@@ -1,5 +1,6 @@
 {
-    "max_products": "Número máximo de produtos idênticos alcançado",
+    "max_products": "Número máximo de produtos alcançado",
+    "max_same_products": "Número máximo de produtos idênticos alcançado",
     "wishlist_limit": "Número máximo de produtos na wishlist alcançado",
     "out_of_stock_one": "{{product_title}} {{variant_title}} está fora de stock para {{country}}",
     "out_of_stock_other": "{{count}} produtos estão fora de stock para {{country}}",

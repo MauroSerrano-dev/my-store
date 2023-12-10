@@ -14,14 +14,19 @@ export default async function handler(req, res) {
         return res.status(401).json({ error: "Invalid authentication." })
 
     if (req.method === "PATCH") {
-        const response = user_id
-            ? await addProductsToCart(cartId, cartProducts)
-            : await addProductsToCartSession(cartId, cartProducts)
+        try {
+            const cart = user_id
+                ? await addProductsToCart(cartId, cartProducts)
+                : await addProductsToCartSession(cartId, cartProducts)
 
-        if (response.cart?.products) {
-            const prodResponse = await getProductsInfo(response.cart.products)
-            response.cart.products = prodResponse.products
+            if (cart?.products) {
+                const prodResponse = await getProductsInfo(cart.products)
+                cart.products = prodResponse.products
+            }
+            res.status(200).json({ cart: cart })
         }
-        res.status(response.status).json(response)
+        catch (error) {
+            res.status(400).json({ error: error })
+        }
     }
 }

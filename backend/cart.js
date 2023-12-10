@@ -4,6 +4,7 @@ import { firebaseConfig } from "../firebase.config"
 import { deleteCartSession, getCartSessionById } from "./cart-session";
 import { mergeProducts } from "@/utils";
 import Error from "next/error";
+import { LIMITS } from "@/consts";
 
 initializeApp(firebaseConfig)
 
@@ -140,29 +141,23 @@ async function setCartProducts(cartId, cartProducts) {
  * @returns {object} Status and message regarding the cart update.
  */
 async function addProductsToCart(cartId, cartNewProducts) {
-    const cartRef = doc(db, process.env.COLL_CARTS, cartId)
-    const cartDoc = await getDoc(cartRef)
-
     try {
+        const cartRef = doc(db, process.env.COLL_CARTS, cartId)
+        const cartDoc = await getDoc(cartRef)
+
         const cartData = cartDoc.data()
+
+        if (cartData.products.reduce((acc, prod) => acc + prod.quantity, 0) + cartNewProducts.reduce((acc, prod) => acc + prod.quantity, 0) > LIMITS.cart_items)
+            throw new Error({ code: 'max_products' })
 
         cartData.products = mergeProducts(cartData.products, cartNewProducts)
 
         await updateDoc(cartRef, cartData)
 
-        return {
-            status: 200,
-            message: `Cart ${cartId} updated successfully!`,
-            cart: cartData,
-        }
+        return cartData
     } catch (error) {
-        console.error(`Error updating Cart ${cartId}:`, error)
-        return {
-            status: 500,
-            message: `Error updating Cart ${cartId}: ${error}`,
-            cart: null,
-            error: error,
-        }
+        console.error(error)
+        throw error
     }
 }
 
@@ -254,7 +249,9 @@ async function mergeCarts(userId, cart_cookie_id) {
 
             if (cartSession) {
                 await deleteCartSession(cart_cookie_id)
-                await addProductsToCart(userCartId, cartSession.products)
+                const userCart = await getCartById(userCartId)
+                if (userCart.products.reduce((acc, prod) => acc + prod.quantity, 0) + cartSession.products.reduce((acc, prod) => acc + prod.quantity, 0) <= LIMITS.cart_items)
+                    await addProductsToCart(userCartId, cartSession.products)
 
                 console.log(`Cart Session ${cart_cookie_id} merged with cart ${userCartId} successfully.`)
             } else {

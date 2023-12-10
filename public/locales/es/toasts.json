@@ -1,5 +1,6 @@
 {
-    "max_products": "Se ha alcanzado el número máximo de productos idénticos",
+    "max_products": "Se ha alcanzado el número máximo de productos",
+    "max_same_products": "Se ha alcanzado el número máximo de productos idénticos",
     "wishlist_limit": "Se ha alcanzado el número máximo de productos en la lista de deseos",
     "out_of_stock_one": "{{product_title}} {{variant_title}} está agotado para {{country}}",
     "out_of_stock_other": "{{count}} productos están agotados para {{country}}",
