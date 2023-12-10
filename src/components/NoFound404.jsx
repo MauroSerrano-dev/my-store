@@ -56,7 +56,7 @@ export default function NoFound404(props) {
                     zIndex: 9999,
                     top: 0,
                     width: '100vw',
-                    height: '100vh',
+                    height: '100svh',
                 }}>
                 <motion.div
                     variants={{

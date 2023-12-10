@@ -123,7 +123,7 @@ export default function Wishlist() {
                     <div
                         className={styles.pageContainer}
                         style={{
-                            minHeight: wishlist ? '0' : '100vh'
+                            minHeight: wishlist ? '0' : '100svh'
                         }}
                     >
                         <div className={styles.titleContainer}>
