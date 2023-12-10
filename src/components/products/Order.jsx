@@ -25,6 +25,8 @@ export default function Order(props) {
 
     const { i18n } = useTranslation()
     const tOrders = useTranslation('orders').t
+    const tColors = useTranslation('colors').t
+    const tCommon = useTranslation('common').t
 
     const [shipToModalOpen, setShipToModalOpen] = useState(false)
 
@@ -267,7 +269,7 @@ export default function Order(props) {
                                             fontWeight: 500
                                         }}
                                     >
-                                        {product.title} ({PRODUCTS_TYPES.find(type => type.id === product.type_id).title})
+                                        {product.title} ({tCommon(PRODUCTS_TYPES.find(type => type.id === product.type_id).id)})
                                     </Link>
                                     {product.status === 'canceled' &&
                                         <p
@@ -289,7 +291,7 @@ export default function Order(props) {
                                             {tOrders('refunded')}
                                         </p>
                                     }
-                                    <p className='text-start' style={{ fontSize: 14 }}>Color: <span style={{ fontWeight: 600 }}>{COLORS_POOL[product.variant.color_id].title}</span></p>
+                                    <p className='text-start' style={{ fontSize: 14 }}>Color: <span style={{ fontWeight: 600 }}>{tColors(COLORS_POOL[product.variant.color_id].id_string)}</span></p>
                                     <p className='text-start' style={{ fontSize: 14 }}>Size: <span style={{ fontWeight: 600 }}>{SIZES_POOL.find(sz => sz.id === product.variant.size_id).title}</span></p>
                                     <p className='text-start' style={{ fontSize: 14 }}>Quantity: <span style={{ fontWeight: 600 }}>{product.quantity}</span></p>
                                 </div>

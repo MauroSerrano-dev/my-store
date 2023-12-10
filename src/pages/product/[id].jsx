@@ -116,13 +116,7 @@ export default withRouter(props => {
 
     function handleAddToCart() {
         if (cart) {
-
             const prodVariant = product.variants.find(vari => vari.size_id === currentSize.id && vari.color_id === currentColor.id)
-
-            if (cart.products.some(prod => prod.id === product.id && prod.variant_id === prodVariant.id && prod.quantity >= LIMITS.cart_items)) {
-                showToast({ msg: tToasts('max_products'), type: 'error' })
-                return
-            }
 
             setLoading(true)
 
@@ -144,10 +138,17 @@ export default withRouter(props => {
 
             fetch("/api/carts/cart-products", options)
                 .then(response => response.json())
-                .then(response => setCart(response.cart))
-                .catch(err => {
+                .then(response => {
+                    if (response.error) {
+                        showToast({ type: 'error', msg: tToasts(response.error.props.code) })
+                        setLoading(false)
+                    }
+                    else
+                        setCart(response.cart)
+                })
+                .catch(error => {
                     setLoading(false)
-                    console.error(err)
+                    console.error(error)
                 })
         }
     }

@@ -1,6 +1,6 @@
 import ProductCart from '@/components/products/ProductCart'
 import styles from '@/styles/pages/cart.module.css'
-import { CART_COOKIE, COLORS_POOL, COMMON_TRANSLATES, DEFAULT_LANGUAGE, SIZES_POOL, getShippingOptions } from '@/consts'
+import { CART_COOKIE, COLORS_POOL, COMMON_TRANSLATES, DEFAULT_LANGUAGE, LIMITS, SIZES_POOL, getShippingOptions } from '@/consts'
 import COUNTRIES_POOL from '../../public/locales/en/countries.json'
 import { useEffect, useState } from 'react'
 import Selector from '@/components/material-ui/Selector'
@@ -62,6 +62,10 @@ export default function Cart() {
     function handleCheckout() {
         if (process.env.NEXT_PUBLIC_DISABLE_CHECKOUT === 'true') {
             showToast({ msg: 'Checkout temporarily disabled' })
+            return
+        }
+        if (cart.products.reduce((acc, prod) => acc + prod.quantity, 0) > LIMITS.cart_items) {
+            showToast({ msg: 'Cart contains more products than the allowed limit' })
             return
         }
         setBlockInteractions(true)
@@ -169,7 +173,8 @@ export default function Cart() {
     }
 
     function handleChangeCountrySelector(event, value) {
-        setUserLocation({ country: value.id, zone: ZoneConverter[value.id] })
+        if (value?.id)
+            setUserLocation({ country: value.id, zone: ZoneConverter[value.id] })
     }
 
     return (

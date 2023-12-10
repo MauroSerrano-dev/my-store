@@ -1,7 +1,7 @@
 import { isTokenValid } from "@/utils/auth";
-import { mergeCarts } from "../../../backend/cart";
 import { createNewUserWithGoogle, getUserById } from "../../../backend/user";
 import { getWishlistById } from "../../../backend/wishlists";
+import { mergeCarts } from "../../../backend/cart";
 
 export default async function handler(req, res) {
     const { authorization } = req.headers

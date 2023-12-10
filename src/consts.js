@@ -24,7 +24,8 @@ export const COMMON_TRANSLATES = [
 export const CART_COOKIE = 'CART'
 
 export const LIMITS = {
-    cart_items: 10,
+    cart_same_item: 10,
+    cart_items: 20,
     wishlist_products: 60,
     input_email: 50,
     input_first_name: 30,
@@ -3045,7 +3046,7 @@ export function getShippingOptions(product_type, country) {
                 provider_id: 50,
                 first_item: 999,
                 add_item: 249,
-                tax: 0,
+                tax: 191,
                 currency: 'usd'
             }
         }
@@ -3063,7 +3064,7 @@ export function getShippingOptions(product_type, country) {
                 provider_id: 87,
                 first_item: 729,
                 add_item: 239,
-                tax: 0,
+                tax: 460,
                 currency: 'usd'
             }
         }
@@ -3072,7 +3073,7 @@ export function getShippingOptions(product_type, country) {
                 provider_id: 87,
                 first_item: 729,
                 add_item: 239,
-                tax: 0,
+                tax: 529,
                 currency: 'usd'
             }
         }
@@ -3090,7 +3091,7 @@ export function getShippingOptions(product_type, country) {
                 provider_id: 87,
                 first_item: 699,
                 add_item: 239,
-                tax: 0,
+                tax: 547,
                 currency: 'usd'
             }
         }
@@ -3099,7 +3100,7 @@ export function getShippingOptions(product_type, country) {
                 provider_id: 87,
                 first_item: 999,
                 add_item: 239,
-                tax: 0,
+                tax: 642,
                 currency: 'usd'
             }
         }
