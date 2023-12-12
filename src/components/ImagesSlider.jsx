@@ -217,7 +217,7 @@ export default function ImagesSlider(props) {
                                                 opacity: imagesLoad.includes(j) ? 1 : 0,
                                                 transition: 'opacity ease-in-out 200ms'
                                             }}
-                                            onLoadingComplete={() => {
+                                            onLoad={() => {
                                                 setImagesLoad(prev => [...prev, j])
                                             }}
                                         />
@@ -320,7 +320,7 @@ export default function ImagesSlider(props) {
                                                 opacity: optionsImagesLoad.includes(j) ? 1 : 0,
                                                 transition: 'opacity ease-in-out 200ms'
                                             }}
-                                            onLoadingComplete={() => {
+                                            onLoad={() => {
                                                 setOptionsImagesLoad(prev => [...prev, j])
                                             }}
                                         />

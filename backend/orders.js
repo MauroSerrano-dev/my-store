@@ -111,7 +111,7 @@ async function updateProductStatus(order_id_printify, printify_products) {
                     ...product,
                     updated_at: newStatus !== product.status
                         ? now
-                        : product.status,
+                        : product.updated_at,
                     status: newStatus
                 }
             })
