@@ -52,7 +52,7 @@ export default function Cart() {
 
     useEffect(() => {
         getShippingValue()
-    }, [cart])
+    }, [cart, userLocation])
 
     useEffect(() => {
         getAllProducts()

@@ -28,7 +28,6 @@ function Error({ statusCode }) {
     }, [loading])
 
     useEffect(() => {
-        console.log('dsa', router, loading)
         const animation = lottie.loadAnimation({
             container: animationContainer.current,
             renderer: 'svg', // or 'canvas' or 'html'

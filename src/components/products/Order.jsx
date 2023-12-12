@@ -2,10 +2,8 @@ import styles from '@/styles/components/products/Order.module.css'
 import { motion } from "framer-motion";
 import Link from 'next/link';
 import Image from 'next/image';
-import { Button, Step, StepLabel, Stepper } from '@mui/material';
-import styled from '@emotion/styled';
-import StepConnector, { stepConnectorClasses } from '@mui/material/StepConnector';
-import { SIZES_POOL, COLORS_POOL, STEPS_ATTEMPT, STEPS } from '@/consts';
+import { Button} from '@mui/material';
+import { SIZES_POOL, COLORS_POOL } from '@/consts';
 import { useTranslation } from 'next-i18next'
 import { convertTimestampToFormatDate, convertTimestampToFormatDateNoYear } from '@/utils';
 import { useAppContext } from '../contexts/AppContext';
@@ -13,6 +11,7 @@ import KeyboardArrowDownOutlinedIcon from '@mui/icons-material/KeyboardArrowDown
 import { useState } from 'react';
 import ArrowForwardIosOutlinedIcon from '@mui/icons-material/ArrowForwardIosOutlined'
 import ProductTag from '../ProductTag';
+import ProductStepper from './ProductStepper';
 
 export default function Order(props) {
     const {
@@ -33,19 +32,6 @@ export default function Order(props) {
     const [shipToModalOpen, setShipToModalOpen] = useState(false)
 
     const createAt = convertTimestampToFormatDate(order.create_at, i18n.language)
-
-    const QontoConnector = styled(StepConnector)(() => ({
-        [`&.${stepConnectorClasses.completed}`]: {
-            [`& .${stepConnectorClasses.line}`]: {
-                borderColor: 'var(--primary)',
-            },
-        },
-        [`& .${stepConnectorClasses.line}`]: {
-            borderColor: '#999999',
-            borderTopWidth: 2,
-            borderRadius: 1,
-        },
-    }))
 
     function handleShipToMouseEnter() {
         if (supportsHoverAndPointer)
@@ -191,39 +177,7 @@ export default function Order(props) {
                             className={styles.product}
                             key={j}
                         >
-                            {product.status !== 'canceled' && product.status !== 'refunded' &&
-                                <Stepper
-                                    connector={<QontoConnector />}
-                                >
-                                    {(product.status === 'shipment-delivery-attempt' ? STEPS_ATTEMPT : STEPS).map((step, i) => (
-                                        <Step
-                                            key={step}
-                                            completed={i <= (product.status === 'shipment-delivery-attempt' ? STEPS_ATTEMPT : STEPS).findIndex(step => step === product.status)}
-                                            sx={{
-                                                '.MuiSvgIcon-root': {
-                                                    color: i <= (product.status === 'shipment-delivery-attempt' ? STEPS_ATTEMPT : STEPS).findIndex(step => step === product.status) ? 'var(--primary)' : '#999999',
-                                                },
-                                                '.MuiStepIcon-text': {
-                                                    fill: i <= (product.status === 'shipment-delivery-attempt' ? STEPS_ATTEMPT : STEPS).findIndex(step => step === product.status) ? 'var(--primary)' : 'var(--background-color)',
-                                                    fontWeight: 600,
-                                                },
-                                            }}
-                                        >
-                                            <StepLabel
-                                                sx={{
-                                                    '.MuiStepLabel-label': {
-                                                        cursor: 'default',
-                                                        color: i <= (product.status === 'shipment-delivery-attempt' ? STEPS_ATTEMPT : STEPS).findIndex(step => step === product.status) ? 'var(--primary) !important' : '#999999',
-                                                        fontWeight: i <= (product.status === 'shipment-delivery-attempt' ? STEPS_ATTEMPT : STEPS).findIndex(step => step === product.status) ? 600 : 400,
-                                                    }
-                                                }}
-                                            >
-                                                {tOrders(step)}
-                                            </StepLabel>
-                                        </Step>
-                                    ))}
-                                </Stepper>
-                            }
+                            <ProductStepper product={product} />
                             <div className={styles.productInfos}>
                                 <div className={styles.productInfosLeft}>
                                     <Link
