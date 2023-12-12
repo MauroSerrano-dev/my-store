@@ -78,3 +78,25 @@ export function convertTimestampToFormatDate(timestamp, locale) {
 
     return format(date, model, { locale: selectedLocale })
 }
+
+export function convertTimestampToFormatDateNoYear(timestamp, locale) {
+    const date = new Date(timestamp.seconds * 1000 + timestamp.nanoseconds * 0.000001)
+
+    let selectedLocale = en
+    let model = 'MMMM d'
+
+    if (locale === 'es') {
+        selectedLocale = es
+        model = 'd \'de\' MMMM'
+    }
+    else if (locale === 'pt-BR') {
+        selectedLocale = ptBR
+        model = 'd \'de\' MMMM'
+    }
+    else if (locale === 'pt') {
+        selectedLocale = ptPT
+        model = 'd \'de\' MMMM'
+    }
+
+    return format(date, model, { locale: selectedLocale })
+}

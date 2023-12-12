@@ -140,6 +140,11 @@ span {
   text-align: center;
 }
 
+.start {
+  justify-content: flex-start;
+  align-items: flex-start;
+}
+
 .justify-start {
   justify-content: flex-start;
 }
@@ -243,6 +248,14 @@ body::-webkit-scrollbar-track {
 .buttonInvisible {
   background-color: transparent;
   border: none;
+}
+
+.ellipsis {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  width: 100%;
+  text-align: start;
 }
 
 /* Enable hover only on non-touch devices */

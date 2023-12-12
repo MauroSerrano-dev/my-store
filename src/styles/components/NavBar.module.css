@@ -132,6 +132,10 @@
 
 /* Mobile */
 @media (max-width: 550px) {
+    .container {
+        padding-left: 0.7rem;
+        padding-right: 0.7rem;
+    }
     .leftSide {
         width: 60px
     }

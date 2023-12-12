@@ -15,5 +15,6 @@
     "total": "TOTAL",
     "ship_to": "ENVIAR A",
     "order_id": "Nº DE PEDIDO:",
-    "order_details": "DETALLES DEL PEDIDO"
+    "order_details": "DETALLES DEL PEDIDO",
+    "shipping_and_taxes": "Envío e impuestos:"
 }

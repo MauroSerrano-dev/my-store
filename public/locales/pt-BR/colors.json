@@ -14,9 +14,21 @@
     "dark-heather": "Dark Heather",
     "maroon": "Vinho",
     "charcoal": "Carvão",
-    "royal": "Royal",
+    "royal": "Azul Royal",
     "grey": "Cinza",
     "light-grey": "Cinza Claro",
     "brown": "Marrom",
-    "orange": "Laranja"
+    "orange": "Laranja",
+    "royal-white": "Azul Royal / Branco",
+    "black-white": "Preto / Branco",
+    "asphalt-white": "Asfalto / Branco",
+    "scarlet-white": "Escarlate / Branco",
+    "white-black": "Branco / Preto",
+    "green-white": "Verde / Branco",
+    "navy-white": "Azul Marinho / Branco",
+    "white-m": "Branco",
+    "black-m": "Preto",
+    "blue-m": "Azul",
+    "red-m": "Vermelho",
+    "pink-m": "Rosa"
 }
