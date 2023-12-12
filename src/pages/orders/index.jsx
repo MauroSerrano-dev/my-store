@@ -175,10 +175,9 @@ export default function Orders() {
                                 }}
                                 initial='hidden'
                                 animate='visible'
-                                className='fillWidth'
+                                className='flex center fillWidth'
                                 style={{
-                                    paddingTop: '1rem',
-                                    paddingBottom: '3rem'
+                                    height: 400,
                                 }}
                             >
                                 <CircularProgress
@@ -187,13 +186,13 @@ export default function Orders() {
                                         position: 'absolute',
                                         color: '#525252',
                                     }}
-                                    size={60}
+                                    size={80}
                                     thickness={4}
                                     value={100}
                                 />
                                 <CircularProgress
                                     disableShrink
-                                    size={60}
+                                    size={80}
                                     thickness={4}
                                     sx={{
                                         position: 'absolute',

@@ -1,0 +1,18 @@
+.container {
+    display: flex;
+    flex-direction: column;
+
+    width: 100%;
+
+    --text-color: var(--text-white);
+}
+
+.main {
+}
+
+.detailsBody {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: flex-start;
+}

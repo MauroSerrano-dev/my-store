@@ -1,5 +1,6 @@
 import { isTokenValid } from "@/utils/auth";
 import { getOrderById } from "../../../backend/orders";
+import { getProductsInfo } from "../../../backend/product";
 
 export default async function handler(req, res) {
     const { authorization, order_id } = req.headers
@@ -13,8 +14,16 @@ export default async function handler(req, res) {
     if (req.method === "GET") {
         try {
             const order = await getOrderById(order_id)
-            if (order)
-                res.status(200).json({ data: order })
+
+            if (order) {
+                const productsRes = await getProductsInfo(order.products)
+                res.status(200).json({
+                    data: {
+                        ...order,
+                        products: productsRes.products
+                    }
+                })
+            }
             else
                 res.status(404).json({ data: null })
         }

@@ -91,15 +91,12 @@ export default function Footer() {
                                 height: 33,
                             }}
                         >
-                            <Image
+                            <img
                                 src='/payments/stripe.webp'
-                                fill
-                                quality={100}
                                 alt='stripe'
-                                sizes='100%'
                                 style={{
-                                    objectFit: 'cover',
-                                    objectPosition: 'top',
+                                    width: '100%',
+                                    height: '100%',
                                 }}
                             />
                         </Link>
@@ -116,12 +113,13 @@ export default function Footer() {
                                 key={i}
                                 className={styles.paymentMethod}
                             >
-                                <Image
+                                <img
                                     src={method.img}
-                                    fill
-                                    quality={100}
                                     alt={method.alt}
-                                    sizes='100%'
+                                    style={{
+                                        width: '100%',
+                                        height: '100%',
+                                    }}
                                 />
                             </div>
                         )}

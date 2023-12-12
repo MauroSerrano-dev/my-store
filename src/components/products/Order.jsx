@@ -5,12 +5,14 @@ import Image from 'next/image';
 import { Button, Step, StepLabel, Stepper } from '@mui/material';
 import styled from '@emotion/styled';
 import StepConnector, { stepConnectorClasses } from '@mui/material/StepConnector';
-import { PRODUCTS_TYPES, SIZES_POOL, COLORS_POOL, STEPS_ATTEMPT, STEPS } from '@/consts';
+import { SIZES_POOL, COLORS_POOL, STEPS_ATTEMPT, STEPS } from '@/consts';
 import { useTranslation } from 'next-i18next'
-import { convertTimestampToFormatDate } from '@/utils';
+import { convertTimestampToFormatDate, convertTimestampToFormatDateNoYear } from '@/utils';
 import { useAppContext } from '../contexts/AppContext';
 import KeyboardArrowDownOutlinedIcon from '@mui/icons-material/KeyboardArrowDownOutlined'
 import { useState } from 'react';
+import ArrowForwardIosOutlinedIcon from '@mui/icons-material/ArrowForwardIosOutlined'
+import ProductTag from '../ProductTag';
 
 export default function Order(props) {
     const {
@@ -27,7 +29,6 @@ export default function Order(props) {
     const { i18n } = useTranslation()
     const tOrders = useTranslation('orders').t
     const tColors = useTranslation('colors').t
-    const tCommon = useTranslation('common').t
 
     const [shipToModalOpen, setShipToModalOpen] = useState(false)
 
@@ -256,23 +257,26 @@ export default function Order(props) {
                                             }}
                                         />
                                     </Link>
-                                    <div>
-                                        <Link
-                                            href={`/product/${product.id}${product.variant.color_id !== product.default_variant.color_id && product.variant.size_id !== product.default_variant.size_id
-                                                ? `?sz=${SIZES_POOL.find(sz => sz.id === product.variant.size_id).title.toLowerCase()}&cl=${COLORS_POOL[product.variant.color_id].id_string}`
-                                                : product.variant.size_id !== product.default_variant.size_id
-                                                    ? `?sz=${SIZES_POOL.find(sz => sz.id === product.variant.size_id).title.toLowerCase()}`
-                                                    : product.variant.color_id !== product.default_variant.color_id
-                                                        ? `?cl=${COLORS_POOL[product.variant.color_id].id_string}`
-                                                        : ''
-                                                }`
-                                            }
-                                            style={{
-                                                fontWeight: 500
-                                            }}
-                                        >
-                                            {product.title} ({tCommon(PRODUCTS_TYPES.find(type => type.id === product.type_id).id)})
-                                        </Link>
+                                    <div className='flex column start' style={{ gap: 2 }}>
+                                        <div className='flex row center' style={{ gap: 8 }}>
+                                            <Link
+                                                href={`/product/${product.id}${product.variant.color_id !== product.default_variant.color_id && product.variant.size_id !== product.default_variant.size_id
+                                                    ? `?sz=${SIZES_POOL.find(sz => sz.id === product.variant.size_id).title.toLowerCase()}&cl=${COLORS_POOL[product.variant.color_id].id_string}`
+                                                    : product.variant.size_id !== product.default_variant.size_id
+                                                        ? `?sz=${SIZES_POOL.find(sz => sz.id === product.variant.size_id).title.toLowerCase()}`
+                                                        : product.variant.color_id !== product.default_variant.color_id
+                                                            ? `?cl=${COLORS_POOL[product.variant.color_id].id_string}`
+                                                            : ''
+                                                    }`
+                                                }
+                                                style={{
+                                                    fontWeight: 500
+                                                }}
+                                            >
+                                                {product.title}
+                                            </Link>
+                                            <ProductTag product={product} />
+                                        </div>
                                         {product.status === 'canceled' &&
                                             <p
                                                 style={{
@@ -329,12 +333,12 @@ export default function Order(props) {
                     className='fillWidth noUnderline'
                 >
                     <div className={styles.headMobile}>
-                        <div className={styles.headLeft}>
-                        </div>
-                        <div className={styles.headRight}>
-                            <div className={styles.rightBlock}>
-                            </div>
-                        </div>
+                        <p style={{ fontSize: 12, textAlign: 'start' }}>
+                            {tOrders('order_placed')}
+                        </p>
+                        <p style={{ textAlign: 'start' }}>
+                            {createAt}
+                        </p>
                     </div>
                     <div className={styles.body}>
                         {order.products.map((product, i) =>
@@ -343,10 +347,7 @@ export default function Order(props) {
                                 key={i}
                             >
                                 <div
-                                    style={{
-                                        display: 'flex',
-                                        flexDirection: 'row',
-                                    }}
+                                    className='flex row center'
                                 >
                                     <div
                                         style={{
@@ -369,10 +370,13 @@ export default function Order(props) {
                                             }}
                                         />
                                     </div>
-                                    <div>
-                                        <p>{product.title}</p>
-                                        <p>{convertTimestampToFormatDate(product.updated_at, i18n.language)}</p>
+                                    <div className='flex column' style={{ gap: 3, padding: '0rem 1rem', justifyContent: 'center', alignItems: 'flex-start', width: 'calc(100% - 100px)' }}>
+                                        <p className='ellipsis' style={{ fontWeight: 600 }}>{product.title}</p>
+                                        <ProductTag product={product} />
+                                        <p style={{ fontSize: 12, textAlign: 'start' }}>{tOrders(product.status)}</p>
+                                        <p style={{ fontSize: 12, textAlign: 'start' }}>{convertTimestampToFormatDateNoYear(product.updated_at, i18n.language)}</p>
                                     </div>
+                                    <ArrowForwardIosOutlinedIcon />
                                 </div>
                             </div>
                         )}
