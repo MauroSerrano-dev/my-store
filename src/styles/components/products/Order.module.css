@@ -154,3 +154,25 @@
 
     transform: rotateZ(45deg);
 }
+
+.containerMobile {
+    border-top: 1px #777777 solid;
+    border-bottom: 1px #777777 solid;
+
+    overflow: hidden;
+
+    width: 100%;
+}
+
+.headMobile {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+
+    background-color: #303030;
+
+    height: 3rem;
+    padding-left: 1rem;
+    padding-right: 1rem;
+}

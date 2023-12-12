@@ -275,7 +275,7 @@ export default function Product(props) {
                             fill
                             sizes={`${height * 2 / 3}px`}
                             alt={product.title}
-                            onLoadingComplete={() => setImageLoad(true)}
+                            onLoad={() => setImageLoad(true)}
                             style={{
                                 zIndex: currentVariant.color_id === color_id ? 1 : 0,
                                 opacity: currentVariant.color_id === color_id ? 1 : 0,

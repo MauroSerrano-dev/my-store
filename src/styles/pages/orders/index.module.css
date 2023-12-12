@@ -73,13 +73,10 @@
     }
 }
 
-/* Medium Mobile */
+/* Mobile */
 @media (max-width: 850px) {
     .ordersContainer {
         padding-left: 0rem;
         padding-right: 0rem;
     }
 }
-
-/* Mobile */
-@media (max-width: 800px) {}
