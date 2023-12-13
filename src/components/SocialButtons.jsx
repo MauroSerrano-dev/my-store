@@ -27,7 +27,7 @@ export default function SocialButtons(props) {
             </Link>
             <Link
                 className={styles.option}
-                href='https://www.facebook.com'
+                href='https://www.facebook.com/people/MRF-Styles/61554266713724'
                 target='_blank'
                 style={{
                     height: size,

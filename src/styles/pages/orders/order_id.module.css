@@ -79,19 +79,20 @@
 }
 
 .productHead {
-    height: 30px;
+    width: 100%;
+
     border-top: 1px rgba(255, 255, 255, 0.5) solid;
-    padding-top: 12px;
-    padding-bottom: 15px;
-    padding-left: 5px;
-    padding-right: 5px;
+    
+    padding-top: 11px;
+    padding-bottom: 11px;
+    padding-left: 10px;
+    padding-right: 10px;
 }
 
 .productBody {
     display: flex;
     flex-direction: row;
     height: 170px;
-    padding-top: 15px;
 }
 
 .productBodyLeft {
@@ -99,11 +100,14 @@
 }
 
 .productBodyRight {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
     height: 100%;
 }
 
 .productImage {
     position: relative;
-    height: 155px;
-    width: 155px;
+    height: 170px;
+    width: 160px;
 }

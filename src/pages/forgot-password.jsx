@@ -12,6 +12,7 @@ import { showToast } from '@/utils/toasts'
 import { sendPasswordResetEmail } from 'firebase/auth'
 import { LoadingButton } from '@mui/lab'
 import { COMMON_TRANSLATES } from '@/consts'
+import Image from 'next/image'
 
 export default function ForgotPassword() {
     const {
@@ -134,10 +135,22 @@ export default function ForgotPassword() {
                         <div
                             className={styles.right}
                         >
-                            <img
-                                src='/reset_pass.webp'
+                            <div
                                 className={styles.imgRight}
-                            />
+                            >
+                                <Image
+                                    src='/forgot-password_banner.webp'
+                                    alt='reset password banner'
+                                    priority
+                                    quality={100}
+                                    fill
+                                    sizes='100%'
+                                    style={{
+                                        objectFit: 'cover',
+                                        objectPosition: 'top',
+                                    }}
+                                />
+                            </div>
                         </div>
                     </main>
                 </div>
