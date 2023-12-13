@@ -1,0 +1,98 @@
+.container {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+
+    width: 100%;
+    min-height: 100%;
+
+    --text-color: var(--text-white);
+}
+
+.main {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+
+    gap: 1.5rem;
+
+    padding: 1rem 0.5rem;
+
+    width: 100%;
+    min-height: 85%;
+
+    background-image:
+        linear-gradient(-30deg, rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.8)),
+        url('/order-status_background.webp');
+    background-size: cover;
+    background-position: center;
+}
+
+.left {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+
+    height: 480px;
+    width: 50%;
+
+    border-radius: 0.2rem;
+    overflow: hidden;
+
+    padding-top: 4rem;
+
+    padding-left: 6rem;
+
+    gap: 0.5rem;
+
+    transition: all ease-in-out 100ms;
+}
+
+.left p,
+.left h2 {
+    text-align: left;
+}
+
+.leftTitle {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+
+    width: 100%;
+    height: 15%;
+}
+
+.fieldsContainer {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+
+    gap: 0.8rem;
+
+    width: 100%;
+}
+
+.email {
+    font-weight: 600;
+    transition: all ease 200ms;
+}
+
+.email:hover {
+    color: var(--primary);
+    text-decoration: underline var(--primary);
+}
+
+.socials {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start;
+
+    padding-top: 1rem;
+    gap: 0.5rem;
+}

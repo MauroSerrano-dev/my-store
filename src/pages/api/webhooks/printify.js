@@ -33,6 +33,9 @@ export default async function handler(req, res) {
             if (orderRes.data.shipments)
                 await updateOrderField(orderPrintifyId, 'shipments', orderRes.data.shipments)
 
+            if (orderRes.data.printify_connect)
+                await updateOrderField(orderPrintifyId, 'track_details', orderRes.data.printify_connect)
+
             res.status(200).json({ message: 'Order status updated!' })
         }
     }

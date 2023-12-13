@@ -22,7 +22,8 @@ export default function Selector(props) {
         name = 'name',
         style,
         styleLabel,
-        size = 'small'
+        size = 'small',
+        styleForm,
     } = props
 
     const {
@@ -36,6 +37,7 @@ export default function Selector(props) {
         <FormControl
             sx={{
                 width: width ? width : '100%',
+                ...styleForm
             }}
         >
             <InputLabel

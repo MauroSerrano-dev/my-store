@@ -6,12 +6,13 @@ import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
 import Footer from '@/components/Footer'
 import { useAppContext } from '@/components/contexts/AppContext';
 import { COMMON_TRANSLATES } from '@/consts';
-import { convertTimestampToFormatDate } from '@/utils'
+import { convertTimestampToFormatDate, convertTimestampToFormatDateNoYear } from '@/utils'
 import { Button } from '@mui/material'
 import Link from 'next/link'
 import lottie from 'lottie-web';
 import Image from 'next/image'
 import ProductStepper from '@/components/products/ProductStepper'
+import ProductTag from '@/components/ProductTag'
 
 export default function Orders() {
     const {
@@ -146,14 +147,22 @@ export default function Orders() {
                                                     RECIBO
                                                 </Button>
                                             </Link>
-                                            <Button
-                                                variant='contained'
-                                                sx={{
-                                                    width: 230
-                                                }}
-                                            >
-                                                ACOMPANHAR PEDIDO
-                                            </Button>
+                                            {order.track_details && order.status !== 'shipment-delivered' && order.status !== 'canceled' && order.status !== 'refunded' &&
+                                                <Link
+                                                    className='noUnderline'
+                                                    href={order.track_details.url}
+                                                    target='_blank'
+                                                >
+                                                    <Button
+                                                        variant='contained'
+                                                        sx={{
+                                                            width: 230
+                                                        }}
+                                                    >
+                                                        ACOMPANHAR PEDIDO
+                                                    </Button>
+                                                </Link>
+                                            }
                                             <Button
                                                 variant='contained'
                                                 sx={{
@@ -175,11 +184,11 @@ export default function Orders() {
                                                 key={i}
                                                 className={styles.product}
                                             >
-                                                <div className={styles.productHead}>
-                                                    <ProductStepper product={prod} />
-                                                    {prod.status === 'canceled' && <p style={{ color: 'var(--color-error)', fontWeight: 600 }}>{tOrders('canceled')}</p>}
-                                                    {prod.status === 'refunded' && <p style={{ color: 'var(--color-error)', fontWeight: 600 }}>{tOrders('refunded')}</p>}
-                                                </div>
+                                                {prod.status !== 'canceled' && prod.status !== 'refunded' &&
+                                                    <div className={styles.productHead}>
+                                                        <ProductStepper product={prod} />
+                                                    </div>
+                                                }
                                                 <div className={styles.productBody}>
                                                     <div className={styles.productBodyLeft}>
                                                         <div className={styles.productImage}>
@@ -197,7 +206,11 @@ export default function Orders() {
                                                         </div>
                                                     </div>
                                                     <div className={styles.productBodyRight}>
-                                                        <span>{prod.title}</span>
+                                                        <p className='ellipsis' style={{ fontWeight: 600 }}>{prod.title}</p>
+                                                        <ProductTag product={prod} />
+                                                        {prod.status === 'canceled' && <span style={{ color: 'var(--color-error)', fontWeight: 600 }}>{tOrders('canceled')}</span>}
+                                                        {prod.status === 'refunded' && <span style={{ color: 'var(--color-error)', fontWeight: 600 }}>{tOrders('refunded')}</span>}
+                                                        <p style={{ fontSize: 12, textAlign: 'start' }}>Last Update: {convertTimestampToFormatDateNoYear(prod.updated_at, i18n.language)}</p>
                                                     </div>
                                                 </div>
                                             </div>

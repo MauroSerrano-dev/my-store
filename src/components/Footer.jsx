@@ -35,19 +35,14 @@ export default function Footer() {
                             {tFooter('Support')}
                         </h3>
                         <div>
-                            <a>
+                            <Link href='/order-status'>
                                 {tFooter('Check order status')}
-                            </a>
+                            </Link>
                         </div>
                         <div>
-                            <a>
-                                {tFooter('Help/FAQ')}
-                            </a>
-                        </div>
-                        <div>
-                            <a>
+                            <Link href='/contact'>
                                 {tFooter('Contact us')}
-                            </a>
+                            </Link>
                         </div>
                     </div>
                     <div className={styles.column}>

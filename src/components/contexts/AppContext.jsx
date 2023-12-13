@@ -22,6 +22,7 @@ import { showToast } from '@/utils/toasts'
 import Error from 'next/error'
 import CountryConverter from '@/utils/time-zone-country.json'
 import ZoneConverter from '@/utils/country-zone.json'
+import NProgress from 'nprogress'
 
 const AppContext = createContext()
 
@@ -66,15 +67,17 @@ export function AppProvider({ children }) {
     const adminMode = isAdmin(auth) && router.pathname.split('/')[1] === 'admin'
 
     useEffect(() => {
-        handleRouteChangeStart()
-
         getCurrencies()
 
+        NProgress.configure({ showSpinner: false })
+
         function handleRouteChangeStart() {
+            NProgress.start()
             setLoading(true)
         }
 
         function handleRouteChangeComplete() {
+            NProgress.done()
             setLoading(false)
             setBlockInteractions(false)
             setShowLoadingScreen(false)
@@ -576,7 +579,7 @@ export function AppProvider({ children }) {
                         top: 0,
                         left: 0,
                         width: '100vw',
-                        height: '100svh',
+                        height: '100vh',
                     }}>
                 </div>
             }

@@ -6,6 +6,7 @@ import { Montserrat } from 'next/font/google'
 import { appWithTranslation } from 'next-i18next';
 import { Analytics } from '@vercel/analytics/react';
 import { AppProvider } from '@/components/contexts/AppContext';
+import '@/styles/nprogress.css'
 
 const montserrat = Montserrat({
   weight: 'variable',
@@ -58,7 +59,7 @@ function App(props) {
         <meta property="og:image" itemProp="image" content='https://mrfstyles.com/logos/circle-black.jpg' key='og:image' />
 
         <link rel="icon" href="/small-logo-32.ico" key='icon' type="image/x-icon" />
-
+        
         <Script src="https://js.stripe.com/v3/" async></Script>
         {process.env.NODE_ENV === 'production' &&
           <script
