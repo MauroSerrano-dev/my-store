@@ -39,7 +39,6 @@ export default function ImagesSlider(props) {
     const [optionsImagesLoad, setOptionsImagesLoad] = useState([])
 
     const [isDragging, setIsDragging] = useState(false)
-    const [slideMoving, setSlideMoving] = useState(false)
     const [isDraggingOptions, setIsDraggingOptions] = useState(false)
     const [antVisualBug, setAntVisualBug] = useState(false)
     const [antVisualBugOptions, setAntVisualBugOptions] = useState(false)
@@ -50,11 +49,8 @@ export default function ImagesSlider(props) {
 
     function handleDragStart() {
         setIsDragging(true)
-        setSlideMoving(true)
         document.body.style.cursor = 'grabbing'
-        if (slideMoving) {
-            clearTimeout(draggingOffSetTimeOut)
-        }
+        clearTimeout(draggingOffSetTimeOut)
     }
 
     function handleDragOptionsStart() {
@@ -84,7 +80,6 @@ export default function ImagesSlider(props) {
             )
 
             setCurrentImgIndex(newIndex)
-            setSlideMoving(false)
             ensureOptionVisible(newIndex)
         }, 200)
         setDraggingOffSetTimeOut(timeOut)

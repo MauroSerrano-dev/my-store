@@ -13,7 +13,7 @@
     justify-content: space-between;
     align-items: center;
 
-    background-color: #303030;
+    background-color: #474747;
 
     height: 5rem;
     padding-left: 1rem;
@@ -69,6 +69,7 @@
 
     border-top: 1px solid #777777;
     padding: 1rem;
+    background-color: #303030;
 }
 
 .productInfos {

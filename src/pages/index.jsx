@@ -10,6 +10,7 @@ import { COMMON_TRANSLATES, DEFAULT_PRODUCTS_TAGS, USER_CUSTOMIZE_HOME_PAGE } fr
 import { useTranslation } from 'next-i18next'
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
 import { useAppContext } from '@/components/contexts/AppContext'
+import BannerSlider from '@/components/sliders/BannerSlider'
 
 const categories = [
   { id: 'games', url: '/search?h=games', img: 'https://firebasestorage.googleapis.com/v0/b/my-store-4aef7.appspot.com/o/index%2Fgames.webp?alt=media&token=c28521d0-8fd8-45b7-9c80-60feffab7f60&_gl=1*fshtki*_ga*NjQyNzA2OTM1LjE2OTE2NjI4OTU.*_ga_CW55HF8NVT*MTY5NzM2NTMyMy4yMzYuMS4xNjk3MzY1Mzk3LjUxLjAuMA..' },
@@ -90,7 +91,7 @@ export default function Home() {
         <meta property="og:url" content='https://mrfstyles.com' key='og:url' />
       </Head>
       <main className={styles.main}>
-        <Link
+        {/* <Link
           className={`${styles.banner} noUnderline`}
           draggable={false}
           href='/search?c=sound-vibes'
@@ -98,7 +99,7 @@ export default function Home() {
           <Image
             priority
             quality={100}
-            src='https://firebasestorage.googleapis.com/v0/b/my-store-4aef7.appspot.com/o/banners%2Fsound-vibes_bg_no_one.webp?alt=media&token=8e3de05b-74cd-40f5-bcce-74a001868679'
+            src='https://firebasestorage.googleapis.com/v0/b/my-store-4aef7.appspot.com/o/banners%2Fsound-vibes_bg.webp?alt=media&token=56fc01f4-9e4e-4d01-97ee-529bdf99ebd1'
             sizes='100%'
             fill
             alt='banner'
@@ -108,30 +109,16 @@ export default function Home() {
               objectPosition: 'top',
             }}
           />
-          <Image
-            priority
-            quality={100}
-            src='https://firebasestorage.googleapis.com/v0/b/my-store-4aef7.appspot.com/o/banners%2Fsound-vibes_black.webp?alt=media&token=c31cbc85-efa6-4e0e-9f6c-68ccf2b36011'
-            sizes='100%'
-            fill
-            alt='people'
-            draggable={false}
-            style={{
-              objectFit: 'cover',
-              objectPosition: 'top',
-            }}
-          />
-          <Image
-            priority
-            quality={100}
-            src='https://firebasestorage.googleapis.com/v0/b/my-store-4aef7.appspot.com/o/banners%2Fsound-vibes_color.webp?alt=media&token=de2c1a9f-fef1-4214-8539-593e69ac5bdc'
-            sizes='100%'
-            fill
-            draggable={false}
-            alt='t-shirts_colors'
-            className={styles.bannerColors}
-          />
-        </Link>
+        </Link> */}
+        <BannerSlider
+          images={[
+            {
+              src: 'https://firebasestorage.googleapis.com/v0/b/my-store-4aef7.appspot.com/o/banners%2Fsound-vibes_bg.webp?alt=media&token=56fc01f4-9e4e-4d01-97ee-529bdf99ebd1',
+              href: '/search?c=sound-vibes',
+              alt: 'Sound Vibes Collection Banner'
+            },
+          ]}
+        />
         <div className={styles.infos}>
           {/* <div className={styles.infosItem}>
             <LocalShippingOutlinedIcon
@@ -207,6 +194,7 @@ export default function Home() {
                         className={styles.categoryItemImg}
                       >
                         <Image
+                          priority
                           quality={100}
                           src={cat.img}
                           sizes={`${(windowWidth > 420 ? 200 : 130) * 0.8}px`}

@@ -18,7 +18,10 @@
 
     gap: 1.5rem;
 
-    padding: 1rem 0.5rem;
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
 
     width: 100%;
     min-height: 65vh;
@@ -95,4 +98,25 @@
 
     padding-top: 1rem;
     gap: 0.5rem;
+}
+
+.inputAndButton {
+    display: flex;
+    justify-content: center;
+    align-items: center; 
+    gap: 1rem;
+    width: 90%;
+}
+
+/* Mobile and Tablet */
+@media (max-width: 851.5px) {
+    .main {
+        padding-bottom: 0px;
+        padding-left: 0px;
+        padding-right: 0px;
+    }
+
+    .inputAndButton {
+        flex-direction: column;
+    }
 }

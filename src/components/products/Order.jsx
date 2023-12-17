@@ -2,7 +2,7 @@ import styles from '@/styles/components/products/Order.module.css'
 import { motion } from "framer-motion";
 import Link from 'next/link';
 import Image from 'next/image';
-import { Button} from '@mui/material';
+import { Button } from '@mui/material';
 import { SIZES_POOL, COLORS_POOL } from '@/consts';
 import { useTranslation } from 'next-i18next'
 import { convertTimestampToFormatDate, convertTimestampToFormatDateNoYear } from '@/utils';
@@ -17,6 +17,7 @@ export default function Order(props) {
     const {
         order,
         index,
+        hideInfos,
     } = props
 
     const {
@@ -67,110 +68,112 @@ export default function Order(props) {
                 initial='hidden'
                 animate='visible'
             >
-                <div className={styles.head}>
-                    <div className={styles.headLeft}>
-                        <div className={styles.leftBlock}>
-                            <p style={{ fontSize: 12, textAlign: 'start' }}>
-                                {tOrders('order_placed')}
-                            </p>
-                            <p style={{ textAlign: 'start' }}>
-                                {createAt}
-                            </p>
-                        </div>
-                        <div className={styles.leftBlock}>
-                            <p style={{ fontSize: 12, textAlign: 'start' }}>
-                                {tOrders('total')}
-                            </p>
-                            <p style={{ textAlign: 'start' }}>
-                                {`${currencies[order.payment_details.currency].symbol} ${(order.payment_details.total / 100).toFixed(2)}`}
-                            </p>
-                        </div>
-                        <div className={styles.leftBlock}>
-                            <p style={{ fontSize: 12, textAlign: 'start' }}>
-                                {tOrders('ship_to')}
-                            </p>
-                            <div
-                                className={`${styles.shipToName} ${shipToModalOpen ? styles.shipToNameActive : ''}`}
-                                onMouseEnter={handleShipToMouseEnter}
-                                onMouseLeave={handleShipToMouseLeave}
-                            >
-                                <p
-                                    onClick={handleShipToOnClick}
-                                    style={{
-                                        cursor: 'pointer'
-                                    }}
-                                >
-                                    {order.shipping_details.name}
+                {!hideInfos &&
+                    <div className={styles.head}>
+                        <div className={styles.headLeft}>
+                            <div className={styles.leftBlock}>
+                                <p style={{ fontSize: 12, textAlign: 'start' }}>
+                                    {tOrders('order_placed')}
                                 </p>
-                                <KeyboardArrowDownOutlinedIcon
-                                    onClick={handleShipToOnClick}
-                                    style={{
-                                        cursor: 'pointer',
-                                        transition: 'transform ease-in-out 150ms',
-                                        transform: shipToModalOpen
-                                            ? 'rotateZ(180deg)'
-                                            : 'none'
-                                    }}
-                                />
-                                {shipToModalOpen &&
-                                    <motion.div
-                                        className={styles.shipToModalContainer}
-                                        initial='hidden'
-                                        animate='visible'
-                                        variants={{
-                                            hidden: {
-                                                opacity: 0,
-                                            },
-                                            visible: {
-                                                opacity: 1,
-                                            }
+                                <p style={{ textAlign: 'start' }}>
+                                    {createAt}
+                                </p>
+                            </div>
+                            <div className={styles.leftBlock}>
+                                <p style={{ fontSize: 12, textAlign: 'start' }}>
+                                    {tOrders('total')}
+                                </p>
+                                <p style={{ textAlign: 'start' }}>
+                                    {`${currencies[order.payment_details.currency].symbol} ${(order.payment_details.total / 100).toFixed(2)}`}
+                                </p>
+                            </div>
+                            <div className={styles.leftBlock}>
+                                <p style={{ fontSize: 12, textAlign: 'start' }}>
+                                    {tOrders('ship_to')}
+                                </p>
+                                <div
+                                    className={`${styles.shipToName} ${shipToModalOpen ? styles.shipToNameActive : ''}`}
+                                    onMouseEnter={handleShipToMouseEnter}
+                                    onMouseLeave={handleShipToMouseLeave}
+                                >
+                                    <p
+                                        onClick={handleShipToOnClick}
+                                        style={{
+                                            cursor: 'pointer'
                                         }}
                                     >
-                                        <div className={styles.pointer}>
-                                        </div>
-                                        <div className={styles.shipToModal}>
-                                            <p style={{ fontWeight: 700 }}>{order.shipping_details.name}</p>
-                                            <p>{order.shipping_details.address.line1}</p>
-                                            {order.shipping_details.address.line2 && <p>{order.shipping_details.address.line2}</p>}
-                                            {order.shipping_details.address.state
-                                                ? <p>{order.shipping_details.address.city}, {order.shipping_details.address.state}, {order.shipping_details.address.country}, {order.shipping_details.address.postal_code}</p>
-                                                : <p>{order.shipping_details.address.city}, {order.shipping_details.address.country} {order.shipping_details.address.postal_code}</p>
-                                            }
-                                        </div>
-                                    </motion.div>
-                                }
+                                        {order.shipping_details.name}
+                                    </p>
+                                    <KeyboardArrowDownOutlinedIcon
+                                        onClick={handleShipToOnClick}
+                                        style={{
+                                            cursor: 'pointer',
+                                            transition: 'transform ease-in-out 150ms',
+                                            transform: shipToModalOpen
+                                                ? 'rotateZ(180deg)'
+                                                : 'none'
+                                        }}
+                                    />
+                                    {shipToModalOpen &&
+                                        <motion.div
+                                            className={styles.shipToModalContainer}
+                                            initial='hidden'
+                                            animate='visible'
+                                            variants={{
+                                                hidden: {
+                                                    opacity: 0,
+                                                },
+                                                visible: {
+                                                    opacity: 1,
+                                                }
+                                            }}
+                                        >
+                                            <div className={styles.pointer}>
+                                            </div>
+                                            <div className={styles.shipToModal}>
+                                                <p style={{ fontWeight: 700 }}>{order.shipping_details.name}</p>
+                                                <p>{order.shipping_details.address.line1}</p>
+                                                {order.shipping_details.address.line2 && <p>{order.shipping_details.address.line2}</p>}
+                                                {order.shipping_details.address.state
+                                                    ? <p>{order.shipping_details.address.city}, {order.shipping_details.address.state}, {order.shipping_details.address.country}, {order.shipping_details.address.postal_code}</p>
+                                                    : <p>{order.shipping_details.address.city}, {order.shipping_details.address.country} {order.shipping_details.address.postal_code}</p>
+                                                }
+                                            </div>
+                                        </motion.div>
+                                    }
+                                </div>
                             </div>
                         </div>
-                    </div>
-                    <div className={styles.headRight}>
-                        <div className={styles.rightBlock}>
-                            <Link
-                                href={`/orders/${order.id}`}
-                                className='fillWidth noUnderline'
-                            >
-                                <Button
-                                    variant='contained'
-                                    size='small'
-                                    color='primary'
-                                    sx={{
-                                        width: '100%',
-                                        fontWeight: 600,
-                                    }}
+                        <div className={styles.headRight}>
+                            <div className={styles.rightBlock}>
+                                <Link
+                                    href={`/orders/${order.id}`}
+                                    className='fillWidth noUnderline'
                                 >
-                                    {tOrders('order_details')}
-                                </Button>
-                            </Link>
-                            <div className='flex row center' style={{ gap: '0.3rem' }}>
-                                <p style={{ fontSize: 12 }}>
-                                    {tOrders('order_id')}
-                                </p>
-                                <p style={{ fontSize: 12 }}>
-                                    {order.id}
-                                </p>
+                                    <Button
+                                        variant='contained'
+                                        size='small'
+                                        color='primary'
+                                        sx={{
+                                            width: '100%',
+                                            fontWeight: 600,
+                                        }}
+                                    >
+                                        {tOrders('order_details')}
+                                    </Button>
+                                </Link>
+                                <div className='flex row center' style={{ gap: '0.3rem' }}>
+                                    <p style={{ fontSize: 12 }}>
+                                        {tOrders('order_id')}
+                                    </p>
+                                    <p style={{ fontSize: 12 }}>
+                                        {order.id}
+                                    </p>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
+                }
                 <div className={styles.body}>
                     {order.products.map((product, j) =>
                         <div
@@ -282,60 +285,128 @@ export default function Order(props) {
                 initial='hidden'
                 animate='visible'
             >
-                <Link
-                    href={`/orders/${order.id}`}
-                    className='fillWidth noUnderline'
-                >
-                    <div className={styles.headMobile}>
-                        <p style={{ fontSize: 12, textAlign: 'start' }}>
-                            {tOrders('order_placed')}
-                        </p>
-                        <p style={{ textAlign: 'start' }}>
-                            {createAt}
-                        </p>
-                    </div>
-                    <div className={styles.body}>
-                        {order.products.map((product, i) =>
-                            <div
-                                className={styles.product}
-                                key={i}
-                            >
+                {!hideInfos
+                    ? <Link
+                        href={`/orders/${order.id}`}
+                        className='fillWidth noUnderline'
+                    >
+                        <div className={styles.headMobile}>
+                            <p style={{ fontSize: 12, textAlign: 'start' }}>
+                                {tOrders('order_placed')}
+                            </p>
+                            <p style={{ textAlign: 'start' }}>
+                                {createAt}
+                            </p>
+                        </div>
+                        <div className={styles.body}>
+                            {order.products.map((product, i) =>
                                 <div
-                                    className='flex row center'
+                                    className={styles.product}
+                                    key={i}
                                 >
                                     <div
-                                        style={{
-                                            position: 'relative',
-                                            height: 100,
-                                            width: 100,
-                                            borderRadius: 6,
-                                            overflow: 'hidden',
-                                        }}
+                                        className='flex row center'
                                     >
-                                        <Image
-                                            quality={100}
-                                            src={product.image.src}
-                                            sizes={'100px'}
-                                            fill
-                                            alt={product.title}
+                                        <div
                                             style={{
-                                                objectFit: 'cover',
-                                                objectPosition: 'top',
+                                                position: 'relative',
+                                                height: 100,
+                                                width: 100,
+                                                borderRadius: 6,
+                                                overflow: 'hidden',
                                             }}
-                                        />
+                                        >
+                                            <Image
+                                                quality={100}
+                                                src={product.image.src}
+                                                sizes={'100px'}
+                                                fill
+                                                alt={product.title}
+                                                style={{
+                                                    objectFit: 'cover',
+                                                    objectPosition: 'top',
+                                                }}
+                                            />
+                                        </div>
+                                        <div
+                                            className='flex row center' style={{ justifyContent: 'space-between', width: 'calc(100% - 100px)' }}
+                                        >
+                                            <div
+                                                className='flex column'
+                                                style={{ gap: 3, padding: '0rem 1rem', justifyContent: 'center', alignItems: 'flex-start', width: 'calc(100% - 24px)' }}
+                                            >
+                                                <p className='ellipsis' style={{ fontWeight: 600 }}>{product.title}</p>
+                                                <ProductTag product={product} />
+                                                <p style={{ fontSize: 12, textAlign: 'start' }}>{tOrders(product.status)}</p>
+                                                <p style={{ fontSize: 12, textAlign: 'start' }}>{convertTimestampToFormatDateNoYear(product.updated_at, i18n.language)}</p>
+                                            </div>
+                                            <ArrowForwardIosOutlinedIcon />
+                                        </div>
                                     </div>
-                                    <div className='flex column' style={{ gap: 3, padding: '0rem 1rem', justifyContent: 'center', alignItems: 'flex-start', width: 'calc(100% - 100px)' }}>
-                                        <p className='ellipsis' style={{ fontWeight: 600 }}>{product.title}</p>
-                                        <ProductTag product={product} />
-                                        <p style={{ fontSize: 12, textAlign: 'start' }}>{tOrders(product.status)}</p>
-                                        <p style={{ fontSize: 12, textAlign: 'start' }}>{convertTimestampToFormatDateNoYear(product.updated_at, i18n.language)}</p>
-                                    </div>
-                                    <ArrowForwardIosOutlinedIcon />
                                 </div>
-                            </div>
-                        )}
+                            )}
+                        </div>
+                    </Link>
+                    : <div
+                        className='fillWidth'
+                    >
+                        <div className={styles.headMobile}>
+                            <p style={{ fontSize: 12, textAlign: 'start' }}>
+                                {tOrders('order_placed')}
+                            </p>
+                            <p style={{ textAlign: 'start' }}>
+                                {createAt}
+                            </p>
+                        </div>
+                        <div className={styles.body}>
+                            {order.products.map((product, i) =>
+                                <div
+                                    className={styles.product}
+                                    key={i}
+                                >
+                                    <div
+                                        className='flex row center'
+                                    >
+                                        <div
+                                            style={{
+                                                position: 'relative',
+                                                height: 100,
+                                                width: 100,
+                                                borderRadius: 6,
+                                                overflow: 'hidden',
+                                            }}
+                                        >
+                                            <Image
+                                                quality={100}
+                                                src={product.image.src}
+                                                sizes={'100px'}
+                                                fill
+                                                alt={product.title}
+                                                style={{
+                                                    objectFit: 'cover',
+                                                    objectPosition: 'top',
+                                                }}
+                                            />
+                                        </div>
+                                        <div
+                                            className='flex row center' style={{ justifyContent: 'space-between', width: 'calc(100% - 100px)' }}
+                                        >
+                                            <div
+                                                className='flex column'
+                                                style={{ gap: 3, padding: '0rem 1rem', justifyContent: 'center', alignItems: 'flex-start', width: '100%' }}
+                                            >
+                                                <p className='ellipsis' style={{ fontWeight: 600 }}>{product.title}</p>
+                                                <ProductTag product={product} />
+                                                <p style={{ fontSize: 12, textAlign: 'start' }}>{tOrders(product.status)}</p>
+                                                <p style={{ fontSize: 12, textAlign: 'start' }}>{convertTimestampToFormatDateNoYear(product.updated_at, i18n.language)}</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            )}
+                        </div>
                     </div>
-                </Link>
+                }
             </motion.div>
     )
 }

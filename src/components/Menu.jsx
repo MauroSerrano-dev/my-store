@@ -127,7 +127,7 @@ export default function Menu(props) {
                         style={{
                             position: 'absolute',
                             right: '2rem',
-                            bottom: '4rem',
+                            bottom: '5rem',
                             color: 'var(--global-black)',
                             zIndex: 10,
                             fontSize: 16,

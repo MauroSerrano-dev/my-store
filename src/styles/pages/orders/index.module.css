@@ -16,10 +16,10 @@
     justify-content: flex-start;
     align-items: flex-start;
 
-    padding-top: 2rem;
+    padding-top: 1rem;
 
     gap: 1rem;
-    transition: padding ease 200ms;
+    transition: padding ease-in-out 200ms;
 }
 
 .top {
@@ -30,7 +30,7 @@
 
     gap: 0.4rem;
     padding-left: 6.3rem;
-    transition: padding-left ease 200ms;
+    transition: padding-left ease-in-out 200ms;
 }
 
 .ordersContainer {
@@ -46,7 +46,7 @@
 
     gap: 1.5rem;
 
-    transition: padding-left ease 200ms, padding-right ease 200ms;
+    transition: padding-left ease-in-out 200ms, padding-right ease-in-out 200ms;
 }
 
 .carouselContainer {
@@ -55,7 +55,7 @@
     flex-direction: column;
     padding-left: 6rem;
     padding-right: 6rem;
-    transition: padding-left ease 200ms;
+    transition: padding-left ease-in-out 200ms;
 }
 
 /* Mobile and Tablet */

@@ -5,7 +5,7 @@ import { useTranslation } from 'next-i18next'
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
 import Footer from '@/components/Footer'
 import { useAppContext } from '@/components/contexts/AppContext';
-import { COMMON_TRANSLATES } from '@/consts';
+import { COLORS_POOL, COMMON_TRANSLATES, SIZES_POOL } from '@/consts';
 import { convertTimestampToFormatDate, convertTimestampToFormatDateNoYear } from '@/utils'
 import { Button } from '@mui/material'
 import Link from 'next/link'
@@ -19,11 +19,13 @@ export default function Orders() {
         session,
         router,
         currencies,
+        windowWidth,
     } = useAppContext()
 
     const { i18n } = useTranslation()
     const tOrders = useTranslation('orders').t
     const tCountries = useTranslation('countries').t
+    const tColors = useTranslation('colors').t
 
     const [order, setOrder] = useState()
 
@@ -137,11 +139,14 @@ export default function Orders() {
                                                 className='noUnderline'
                                                 href={order.receipt_url}
                                                 target='_blank'
+                                                style={{
+                                                    width: '100%'
+                                                }}
                                             >
                                                 <Button
                                                     variant='contained'
                                                     sx={{
-                                                        width: 230
+                                                        width: '100%'
                                                     }}
                                                 >
                                                     RECIBO
@@ -152,11 +157,14 @@ export default function Orders() {
                                                     className='noUnderline'
                                                     href={order.track_details.url}
                                                     target='_blank'
+                                                    style={{
+                                                        width: '100%'
+                                                    }}
                                                 >
                                                     <Button
                                                         variant='contained'
                                                         sx={{
-                                                            width: 230
+                                                            width: '100%'
                                                         }}
                                                     >
                                                         ACOMPANHAR PEDIDO
@@ -166,7 +174,7 @@ export default function Orders() {
                                             <Button
                                                 variant='contained'
                                                 sx={{
-                                                    width: 230
+                                                    width: '100%'
                                                 }}
                                             >
                                                 OBTER SUPORTE
@@ -184,7 +192,7 @@ export default function Orders() {
                                                 key={i}
                                                 className={styles.product}
                                             >
-                                                {prod.status !== 'canceled' && prod.status !== 'refunded' &&
+                                                {prod.status !== 'canceled' && prod.status !== 'refunded' && windowWidth >= 1075 &&
                                                     <div className={styles.productHead}>
                                                         <ProductStepper product={prod} />
                                                     </div>
@@ -208,8 +216,23 @@ export default function Orders() {
                                                     <div className={styles.productBodyRight}>
                                                         <p className='ellipsis' style={{ fontWeight: 600 }}>{prod.title}</p>
                                                         <ProductTag product={prod} />
+                                                        {(prod.status === 'canceled' || prod.status === 'refunded') || windowWidth < 1075 &&
+                                                            <span
+                                                                style={{
+                                                                    color: (prod.status === 'canceled' || prod.status === 'refunded')
+                                                                        ? 'var(--color-error)'
+                                                                        : 'var(--primary)',
+                                                                    fontWeight: 600,
+                                                                    fontSize: 14
+                                                                }}>
+                                                                {tOrders(prod.status)}
+                                                            </span>
+                                                        }
                                                         {prod.status === 'canceled' && <span style={{ color: 'var(--color-error)', fontWeight: 600 }}>{tOrders('canceled')}</span>}
                                                         {prod.status === 'refunded' && <span style={{ color: 'var(--color-error)', fontWeight: 600 }}>{tOrders('refunded')}</span>}
+                                                        <p className={styles.productItem}>Color: <span style={{ fontWeight: 600 }}>{tColors(COLORS_POOL[prod.variant.color_id].id_string)}</span></p>
+                                                        <p className={styles.productItem}>Size: <span style={{ fontWeight: 600 }}>{SIZES_POOL.find(sz => sz.id === prod.variant.size_id).title}</span></p>
+                                                        <p className={styles.productItem}>Quantity: <span style={{ fontWeight: 600 }}>{prod.quantity}</span></p>
                                                         <p style={{ fontSize: 12, textAlign: 'start' }}>Last Update: {convertTimestampToFormatDateNoYear(prod.updated_at, i18n.language)}</p>
                                                     </div>
                                                 </div>

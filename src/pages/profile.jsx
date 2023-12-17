@@ -143,16 +143,9 @@ export default function Profile() {
                             <p className={styles.welcomeTitle}>{tMenu('Welcome')} <b style={{ color: 'var(--primary)' }}>{session.first_name ? session.first_name + ' ' + session.last_name : session.last_name}!</b></p>
                         </div>
                         <div
-                            style={{
-                                height: 45,
-                                width: '100%',
-                                display: 'flex',
-                                justifyContent: 'center',
-                                alignItems: 'center',
-                                gap: '0.5rem'
-                            }}
+                            className={styles.emailContainer}
                         >
-                            <p>
+                            <p className='ellipsis'>
                                 <span style={{ fontWeight: 600 }}>{tProfile('E-mail')}:</span> {user.email}
                             </p>
                             <p>
