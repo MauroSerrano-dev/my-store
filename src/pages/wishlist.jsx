@@ -24,7 +24,6 @@ export default function Wishlist() {
     const animationContainer = useRef(null)
 
     const tWishlist = useTranslation('wishlist').t
-    const tErrors = useTranslation('errors').t
 
     useEffect(() => {
         if (session)
@@ -157,7 +156,7 @@ export default function Wishlist() {
                                             }}
                                         >
                                         </div>
-                                        <h2>{tErrors('no_products_found')}</h2>
+                                        <h2>{tWishlist('wishlist_empty')}</h2>
                                     </div>
                                     : wishlist?.products.map(product =>
                                         <Product
@@ -180,7 +179,7 @@ export default function Wishlist() {
 export async function getServerSideProps({ locale }) {
     return {
         props: {
-            ...(await serverSideTranslations(locale, COMMON_TRANSLATES.concat(['wishlist', 'footer', 'errors'])))
+            ...(await serverSideTranslations(locale, COMMON_TRANSLATES.concat(['wishlist', 'footer'])))
         }
     }
 }

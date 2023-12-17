@@ -11,7 +11,7 @@
   justify-content: flex-start;
   align-items: center;
 
-  padding-bottom: 2rem;
+  padding-bottom: 1rem;
 }
 
 .banner {
@@ -127,16 +127,6 @@
   width: 100%;
 }
 
-.bannerColors {
-  object-fit: cover;
-  object-position: top;
-  transition: opacity ease-in-out 200ms;
-  animation-name: opacityLoop;
-  animation-duration: 5s;
-  animation-direction: alternate;
-  animation-iteration-count: infinite;
-}
-
 /* Enable hover only on non-touch devices */
 @media (hover: hover) and (pointer: fine) {
   .categoryItem:hover .categoryItemImg {
@@ -196,21 +186,3 @@
 }
 
 @media (prefers-color-scheme: dark) {}
-
-@keyframes opacityLoop {
-  0% {
-    opacity: 0;
-  }
-
-  60% {
-    opacity: 0;
-  }
-
-  70% {
-    opacity: 1;
-  }
-
-  100% {
-    opacity: 1;
-  }
-}

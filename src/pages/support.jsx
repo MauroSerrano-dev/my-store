@@ -6,11 +6,10 @@ import Head from 'next/head'
 export default function Support() {
 
     return (
-        <div className='flex center column'>
+        <div className='flex center column fillWidth'>
             <Head>
             </Head>
             <main>
-
             </main>
             <Footer />
         </div>
