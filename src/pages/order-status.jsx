@@ -7,6 +7,7 @@ import { useEffect, useState } from 'react'
 import { useAppContext } from '@/components/contexts/AppContext'
 import { LoadingButton } from '@mui/lab'
 import Order from '@/components/products/Order'
+import { showToast } from '@/utils/toasts'
 
 export default function OrderStatus() {
 
@@ -36,9 +37,12 @@ export default function OrderStatus() {
             }
         }
 
-        fetch("/api/order", options)
+        fetch("/api/orders/limit-info", options)
             .then(response => response.json())
             .then(response => {
+                if (response.error)
+                    showToast({ type: 'error', msg: response.error })
+                console.log(response.data)
                 setOrder(response.data)
                 setLoading(false)
             })

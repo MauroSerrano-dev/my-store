@@ -14,9 +14,9 @@ export default async function handler(req, res) {
 
     if (req.method === "POST") {
         if (option === 'order_problem') {
-            if (!fields.order_id || fields.order_id === '')
+            if (!fields.order_id)
                 res.status(400).json({ error: 'missing_order_id' })
-            if (!fields.problem_description || fields.problem_description === '')
+            if (!fields.problem_description)
                 res.status(400).json({ error: 'missing_problem_description' })
             const orderData = await getOrderById(fields.order_id)
             if (!orderData)
@@ -24,9 +24,9 @@ export default async function handler(req, res) {
             res.status(200).json({ message: 'deu bom' })
         }
         if (option === 'account_problem') {
-            if (!fields.email || fields.email === '')
+            if (!fields.email)
                 res.status(400).json({ error: 'missing_email' })
-            if (!fields.problem_description || fields.problem_description === '')
+            if (!fields.problem_description)
                 res.status(400).json({ error: 'missing_problem_description' })
             const userId = await getUserIdByEmail(fields.email)
             if (!userId)
@@ -34,9 +34,9 @@ export default async function handler(req, res) {
             res.status(200).json({ message: 'deu bom' })
         }
         if (option === 'other') {
-            if (!fields.subject || fields.subject === '')
+            if (!fields.subject)
                 res.status(400).json({ error: 'missing_subject' })
-            if (!fields.problem_description || fields.problem_description === '')
+            if (!fields.problem_description)
                 res.status(400).json({ error: 'missing_problem_description' })
             res.status(200).json({ message: 'deu bom' })
         }
