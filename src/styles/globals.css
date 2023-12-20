@@ -82,7 +82,6 @@ li,
 span {
   text-align: center;
   color: var(--text-color);
-  line-height: 1.5;
   font-family: Montserrat, Arial, sans-serif;
 }
 
@@ -178,6 +177,11 @@ div {
 
 .text-start {
   text-align: start;
+}
+
+.fill {
+  width: 100%;
+  height: 100%;
 }
 
 .fillWidth {

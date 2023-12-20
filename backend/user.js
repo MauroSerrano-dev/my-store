@@ -354,6 +354,7 @@ export {
     removeEmailVerifiedField,
     checkUserExistsByEmail,
     getUserById,
+    getUserIdByEmail,
     updateField,
     updateUser,
     clearUpdateCounter,
