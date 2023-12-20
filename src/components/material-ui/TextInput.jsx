@@ -29,6 +29,8 @@ export default function TextInput(props) {
         limit = 300,
         size,
         type,
+        multiline,
+        minRows
     } = props
 
     const {
@@ -68,8 +70,10 @@ export default function TextInput(props) {
     return (
         <TextField
             {...params}
+            multiline={multiline}
             inputProps={params ? { ...params.inputProps, value: params.inputProps.value.slice(0, limit) } : undefined}
             type={type}
+            minRows={minRows}
             variant={variant}
             label={label}
             name={name}

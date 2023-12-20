@@ -171,14 +171,20 @@ export default function Orders() {
                                                     </Button>
                                                 </Link>
                                             }
-                                            <Button
-                                                variant='contained'
-                                                sx={{
-                                                    width: '100%'
-                                                }}
+                                            <Link
+                                                aria-label='get support'
+                                                href='/support'
+                                                className='noUnderline fill'
                                             >
-                                                OBTER SUPORTE
-                                            </Button>
+                                                <Button
+                                                    variant='contained'
+                                                    sx={{
+                                                        width: '100%'
+                                                    }}
+                                                >
+                                                    OBTER SUPORTE
+                                                </Button>
+                                            </Link>
                                         </div>
                                     </div>
                                 </div>

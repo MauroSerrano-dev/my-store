@@ -157,7 +157,6 @@ export const PROVIDERS_POOL = {
     29: { id: 29, title: 'Monster Digital' },
     43: { id: 43, title: 'Stoked On Printing' },
     50: { id: 50, title: 'Underground Threads' },
-    72: { id: 72, title: 'Print Clever' },
     87: { id: 87, title: 'Print Logistic' },
 }
 
@@ -251,11 +250,10 @@ export const PRODUCTS_TYPES = [
         family_id: 't-shirts',
         title: 'T-Shirt',
         color: '#1189C4',
-        providers: [29, 87, 72],
+        providers: [29, 87],
         blueprint_ids: {
             29: 145,
             87: 145,
-            72: 145,
         },
         icon: IoShirt,
         sizes: [14, 15, 16, 17, 18],
@@ -818,11 +816,10 @@ export const PRODUCTS_TYPES = [
         family_id: 'hoodies',
         title: 'Hoodie',
         color: '#026539',
-        providers: [29, 26, 72],
+        providers: [29, 26],
         blueprint_ids: {
             29: 77,
             26: 77,
-            72: 77,
         },
         icon: GiHoodie,
         sizes: [14, 15, 16, 17, 18],
@@ -2881,10 +2878,10 @@ export function getShippingOptions(product_type, country) {
         }
         if (country === 'GB') {
             return {
-                provider_id: 72,
-                first_item: 429,
+                provider_id: 87,
+                first_item: 699,
                 add_item: 199,
-                tax: 247,
+                tax: 298,
                 currency: 'usd'
             }
         }
@@ -2944,10 +2941,10 @@ export function getShippingOptions(product_type, country) {
         }
         if (country === 'GB') {
             return {
-                provider_id: 72,
-                first_item: 759,
-                add_item: 299,
-                tax: 572,
+                provider_id: 26,
+                first_item: 729,
+                add_item: 239,
+                tax: 587,
                 currency: 'usd'
             }
         }
