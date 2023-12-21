@@ -16,6 +16,13 @@
     padding-bottom: 2rem;
 }
 
+.mainSuccess {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 73vh;
+}
+
 .mainHead {
     display: flex;
     flex-direction: column;
@@ -33,7 +40,7 @@
     align-items: center;
     gap: 1rem;
 
-    min-height: 52vh;
+    min-height: 55vh;
 }
 
 .innerMainBody {

@@ -208,6 +208,7 @@ export function AppProvider({ children }) {
             })
             .catch(error => {
                 setLoading(false)
+                setBlockInteractions(false)
                 if (error.code === 'auth/wrong-password') {
                     getUserLoginProviders(email)
                         .then(providers => {

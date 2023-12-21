@@ -13,7 +13,7 @@ const montserrat = Montserrat({
   subsets: ['latin'],
 })
 
-const primaryColor = '#1189C4'
+const primaryColor = '#1189c4'
 const successColor = '#52b963'
 const errorColor = '#ed2b2a'
 

@@ -13,7 +13,6 @@ export default async function handler(req, res) {
 
     if (req.method === "GET") {
         try {
-            console.log(order_id)
             const order = await getOrderLimitInfoById(order_id)
 
             if (order) {

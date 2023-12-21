@@ -2,7 +2,9 @@ import Error from 'next/error'
 
 const nodemailer = require('nodemailer')
 
-function getEmailTemplate(language, orderId) {
+const PRIMARY_COLOR = '#1189c4'
+
+function getPurchaseEmailTemplate(language, orderId) {
   if (language === 'es') {
     return {
       subject: 'Confirmación de Compra',
@@ -66,7 +68,7 @@ async function sendPurchaseConfirmationEmail(customer_email, orderId, user_langu
       },
     });
 
-    const template = getEmailTemplate(user_language, orderId)
+    const template = getPurchaseEmailTemplate(user_language, orderId)
 
     // Email details
     const mailOptions = {
@@ -77,7 +79,7 @@ async function sendPurchaseConfirmationEmail(customer_email, orderId, user_langu
       <head>
         <style>
           body {
-            font-family: Arial, sans-serif;
+            font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
             background-color: #f4f4f4;
             margin: 0;
             padding: 0;
@@ -89,20 +91,24 @@ async function sendPurchaseConfirmationEmail(customer_email, orderId, user_langu
             padding: 20px;
             border-radius: 8px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            text-align: center;
+          }
+          .header {
+            border-bottom: 2px solid ${PRIMARY_COLOR};
+            padding-bottom: 10px;
+            margin-bottom: 20px;
           }
           .logo {
             margin-bottom: 20px;
           }
           h1 {
-            color: #1189c4;
+            color: ${PRIMARY_COLOR};
             margin-bottom: 10px;
           }
           p {
             margin-bottom: 8px;
           }
           a {
-            color: #1189c4;
+            color: ${PRIMARY_COLOR};
             text-decoration: none;
           }
           a:hover {
@@ -120,9 +126,11 @@ async function sendPurchaseConfirmationEmail(customer_email, orderId, user_langu
       </head>
       <body>
         <div class='container'>
-          <a href=${process.env.NEXT_PUBLIC_URL} class="logo">
-            <img src="https://firebasestorage.googleapis.com/v0/b/my-store-4aef7.appspot.com/o/logo_email.png?alt=media&token=4c96e37c-5ad8-4ccf-9cfa-bf650ee8e1d4" alt="Logo" style='width: 200px'>
-          </a>
+          <div class='header'>
+            <a href=${process.env.NEXT_PUBLIC_URL} class="logo">
+              <img src=${process.env.EMAIL_LOGO} alt="Logo" style='width: 150px'>
+            </a>
+          </div>
           <h1>${template.title}</h1>
           <p>${template.track_link}</p>
           <p>${template.order_id}</p>
@@ -137,13 +145,150 @@ async function sendPurchaseConfirmationEmail(customer_email, orderId, user_langu
 
     // Sending the email
     const info = await transporter.sendMail(mailOptions)
-    console.log('Email sent:', info.response)
+    console.log('Order Email Sent:', info.response)
     return { status: 'success', message: `Purchase confirmation email sent to ${customer_email} successfully!` }
   } catch (error) {
     throw new Error(`Error sending purchase confirmation email: ${error}`);
   }
 }
 
+function getSupportEmailTemplate(language, customer_problem_description) {
+  if (language === 'es') {
+    return {
+      title: 'Confirmación de Recepción de su Solicitud de Soporte',
+      awaiting_response: 'Nuestro equipo de soporte está analizando su solicitud y se pondrá en contacto con usted en un plazo de 72 horas.',
+      problem_description: `Descripción del problema enviado: "${customer_problem_description}"`,
+      signature: `Atentamente,<br>Equipo de Soporte ${process.env.STORE_FULL_NAME}`,
+    };
+  }
+  if (language === 'pt-BR') {
+    return {
+      title: 'Confirmação de Recebimento do seu Pedido de Suporte',
+      awaiting_response: 'Nossa equipe de suporte está analisando sua solicitação e entrará em contato dentro de 72 horas.',
+      problem_description: `Descrição do problema enviado: "${customer_problem_description}"`,
+      signature: `Atenciosamente,<br>Equipe de Suporte ${process.env.STORE_FULL_NAME}`,
+    };
+  }
+  if (language === 'pt') {
+    return {
+      title: 'Confirmação de Receção do seu Pedido de Suporte',
+      awaiting_response: 'A nossa equipa de suporte está a analisar a sua solicitação e entrará em contacto dentro de 72 horas.',
+      problem_description: `Descrição do problema enviado: "${customer_problem_description}"`,
+      signature: `Com os melhores cumprimentos,<br>Equipa de Suporte ${process.env.STORE_FULL_NAME}`,
+    };
+  }
+  return {
+    title: 'Confirmation of Your Support Request Receipt',
+    awaiting_response: 'Our support team is reviewing your request and will get in touch with you within 72 hours.',
+    problem_description: `Problem description submitted: "${customer_problem_description}"`,
+    signature: `Regards,<br>${process.env.STORE_FULL_NAME} Support Team`,
+  };
+}
+
+/**
+ * Sends a support email to the customer.
+ * @param {string} customer_email - Customer email.
+ * @param {string} customer_problem_description - User problem description.
+ * @param {string} user_language - The language of the user.
+ * @returns {object} Object indicating the status of the email sending process.
+ */
+async function sendSupportEmail(customer_email, subject, customer_problem_description, user_language) {
+  try {
+    if (!customer_email)
+      return { status: 'error', message: 'Error sending the support email, email not provided.' };
+    if (!subject)
+      return { status: 'error', message: 'Error sending the support email, subject not provided.' };
+    if (!customer_problem_description)
+      return { status: 'error', message: 'Error sending the support email, problem description not provided.' };
+
+    // SMTP transport configuration
+    const transporter = nodemailer.createTransport({
+      host: process.env.EMAIL_TRANSPORTER_HOST,
+      port: process.env.EMAIL_TRANSPORTER_PORT,
+      secure: true,
+      auth: {
+        user: process.env.NEXT_PUBLIC_SUPPORT_EMAIL,
+        pass: process.env.SUPPORT_EMAIL_PASSWORD,
+      },
+    });
+
+    const template = getSupportEmailTemplate(user_language, customer_problem_description);
+
+    // Email details
+    const mailOptions = {
+      from: process.env.NEXT_PUBLIC_SUPPORT_EMAIL,
+      to: customer_email,
+      subject: subject,
+      html: `<html>
+      <head>
+        <style>
+          body {
+            font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 20px;
+          }
+          .container {
+            max-width: 600px;
+            margin: 0 auto;
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            text-align: left;
+          }
+          .header {
+            border-bottom: 2px solid ${PRIMARY_COLOR};
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+          }
+          h1 {
+            color: ${PRIMARY_COLOR};
+            font-size: 18px;
+            margin-bottom: 10px;
+          }
+          p {
+            font-size: 14px;
+            line-height: 1.5;
+            margin-bottom: 10px;
+          }
+          .signature {
+            margin-top: 20px;
+            padding-top: 10px;
+            border-top: 1px solid #ddd;
+            font-size: 14px;
+            color: #666;
+          }
+        </style>
+      </head>
+      <body>
+        <div class='container'>
+          <div class='header'>
+            <a href=${process.env.NEXT_PUBLIC_URL} class="logo">
+              <img src=${process.env.EMAIL_LOGO} alt="Logo" style='width: 150px'>
+            </a>
+          </div>
+          <h1>${template.title}</h1>
+          <p>${template.problem_description}</p>
+          <p>${template.awaiting_response}</p>
+          <div class='signature'>
+            <p>${template.signature}</p>
+          </div>
+        </div>
+      </body>
+    </html>`,
+    };
+
+    // Sending the email
+    const info = await transporter.sendMail(mailOptions);
+    console.log('Support Email Sent:', info.response);
+    return { status: 'success', message: `Support email sent to ${customer_email} successfully!` };
+  } catch (error) {
+    throw new Error(`Error sending support email: ${error}`);
+  }
+}
+
 export {
+  sendSupportEmail,
   sendPurchaseConfirmationEmail,
 }
