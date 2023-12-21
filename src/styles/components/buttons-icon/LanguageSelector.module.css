@@ -22,8 +22,7 @@
 
 .contentContainer {
     position: absolute;
-    left: -186px;
-    top: 30px;
+    transform: translateX(-90px) translateY(125px);
 }
 
 .session {
