@@ -98,40 +98,44 @@ export default function Orders() {
                                     <div className={styles.detailsBody}>
                                         <div className={styles.detailsBodyLeft}>
                                             <p style={{ fontWeight: 700 }}>Endereço de entrega</p>
-                                            <p>{order.shipping_details.name}</p>
-                                            <p>{order.shipping_details.address.line1}</p>
-                                            {order.shipping_details.address.line2 && <p>{order.shipping_details.address.line2}</p>}
-                                            {order.shipping_details.address.state
-                                                ? <p>{order.shipping_details.address.city}, {order.shipping_details.address.state}, {order.shipping_details.address.postal_code}</p>
-                                                : <p>{order.shipping_details.address.city} {order.shipping_details.address.postal_code}</p>
-                                            }
-                                            <p>{tCountries(order.shipping_details.address.country)}</p>
+                                            <div className={styles.detailsBodyLeftBody}>
+                                                <p>{order.shipping_details.name}</p>
+                                                <p>{order.shipping_details.address.line1}</p>
+                                                {order.shipping_details.address.line2 && <p>{order.shipping_details.address.line2}</p>}
+                                                {order.shipping_details.address.state
+                                                    ? <p>{order.shipping_details.address.city}, {order.shipping_details.address.state}, {order.shipping_details.address.postal_code}</p>
+                                                    : <p>{order.shipping_details.address.city} {order.shipping_details.address.postal_code}</p>
+                                                }
+                                                <p>{tCountries(order.shipping_details.address.country)}</p>
+                                            </div>
                                         </div>
                                         <div className={styles.detailsBodyRight}>
                                             <p style={{ fontWeight: 700 }}>Resumo do pedido</p>
-                                            <div className={styles.detailsBodyRightItem}>
-                                                <p>Subtotal:</p>
-                                                <p>{currencies[order.payment_details.currency].symbol} {(order.payment_details.subtotal / 100).toFixed(2)}</p>
-                                            </div>
-                                            <div className={styles.detailsBodyRightItem}>
-                                                <p>{tOrders('shipping_and_taxes')}</p>
-                                                <p>{currencies[order.payment_details.currency].symbol} {(order.payment_details.shipping / 100).toFixed(2)}</p>
-                                            </div>
-                                            {!!order.payment_details.discount &&
+                                            <div className={styles.detailsRightItems}>
                                                 <div className={styles.detailsBodyRightItem}>
-                                                    <p>Discount:</p>
-                                                    <p>-{currencies[order.payment_details.currency].symbol} {(order.payment_details.discount / 100).toFixed(2)}</p>
+                                                    <p>Subtotal:</p>
+                                                    <p>{currencies[order.payment_details.currency].symbol} {(order.payment_details.subtotal / 100).toFixed(2)}</p>
                                                 </div>
-                                            }
-                                            {!!order.payment_details.refund &&
                                                 <div className={styles.detailsBodyRightItem}>
-                                                    <p>Refund:</p>
-                                                    <p>-{currencies[order.payment_details.currency].symbol} {(order.payment_details.refund / 100).toFixed(2)}</p>
+                                                    <p>{tOrders('shipping_and_taxes')}</p>
+                                                    <p>{currencies[order.payment_details.currency].symbol} {(order.payment_details.shipping / 100).toFixed(2)}</p>
                                                 </div>
-                                            }
-                                            <div className={styles.detailsBodyRightItem}>
-                                                <p style={{ fontWeight: 600 }}>Total:</p>
-                                                <p style={{ fontWeight: 600 }}>{currencies[order.payment_details.currency].symbol} {((order.payment_details.total - (order.payment_details.refund || 0)) / 100).toFixed(2)}</p>
+                                                {!!order.payment_details.discount &&
+                                                    <div className={styles.detailsBodyRightItem}>
+                                                        <p>Discount:</p>
+                                                        <p>-{currencies[order.payment_details.currency].symbol} {(order.payment_details.discount / 100).toFixed(2)}</p>
+                                                    </div>
+                                                }
+                                                {!!order.payment_details.refund &&
+                                                    <div className={styles.detailsBodyRightItem}>
+                                                        <p>Refund:</p>
+                                                        <p>-{currencies[order.payment_details.currency].symbol} {(order.payment_details.refund / 100).toFixed(2)}</p>
+                                                    </div>
+                                                }
+                                                <div className={styles.detailsBodyRightItem}>
+                                                    <p style={{ fontWeight: 600 }}>Total:</p>
+                                                    <p style={{ fontWeight: 600 }}>{currencies[order.payment_details.currency].symbol} {((order.payment_details.total - (order.payment_details.refund || 0)) / 100).toFixed(2)}</p>
+                                                </div>
                                             </div>
                                         </div>
                                         <div className={styles.detailsBodyButtons}>
@@ -205,7 +209,18 @@ export default function Orders() {
                                                 }
                                                 <div className={styles.productBody}>
                                                     <div className={styles.productBodyLeft}>
-                                                        <div className={styles.productImage}>
+                                                        <Link
+                                                            href={`/product/${prod.id}${prod.variant.color_id !== prod.default_variant.color_id && prod.variant.size_id !== prod.default_variant.size_id
+                                                                ? `?sz=${SIZES_POOL.find(sz => sz.id === prod.variant.size_id).title.toLowerCase()}&cl=${COLORS_POOL[prod.variant.color_id].id_string}`
+                                                                : prod.variant.size_id !== prod.default_variant.size_id
+                                                                    ? `?sz=${SIZES_POOL.find(sz => sz.id === prod.variant.size_id).title.toLowerCase()}`
+                                                                    : prod.variant.color_id !== prod.default_variant.color_id
+                                                                        ? `?cl=${COLORS_POOL[prod.variant.color_id].id_string}`
+                                                                        : ''
+                                                                }`
+                                                            }
+                                                            className={`${styles.productImage} noUnderline`}
+                                                        >
                                                             <Image
                                                                 quality={100}
                                                                 src={prod.image.src}
@@ -217,10 +232,27 @@ export default function Orders() {
                                                                     objectPosition: 'top',
                                                                 }}
                                                             />
-                                                        </div>
+                                                        </Link>
                                                     </div>
                                                     <div className={styles.productBodyRight}>
-                                                        <p className='ellipsis' style={{ fontWeight: 600 }}>{prod.title}</p>
+                                                        <Link
+                                                            href={`/product/${prod.id}${prod.variant.color_id !== prod.default_variant.color_id && prod.variant.size_id !== prod.default_variant.size_id
+                                                                ? `?sz=${SIZES_POOL.find(sz => sz.id === prod.variant.size_id).title.toLowerCase()}&cl=${COLORS_POOL[prod.variant.color_id].id_string}`
+                                                                : prod.variant.size_id !== prod.default_variant.size_id
+                                                                    ? `?sz=${SIZES_POOL.find(sz => sz.id === prod.variant.size_id).title.toLowerCase()}`
+                                                                    : prod.variant.color_id !== prod.default_variant.color_id
+                                                                        ? `?cl=${COLORS_POOL[prod.variant.color_id].id_string}`
+                                                                        : ''
+                                                                }`
+                                                            }
+                                                            className='ellipsis'
+                                                            style={{
+                                                                fontWeight: 600,
+                                                                width: windowWidth <= 650 ? '100%' : 'auto',
+                                                            }}
+                                                        >
+                                                            {prod.title}
+                                                        </Link>
                                                         <ProductTag product={prod} />
                                                         {(prod.status === 'canceled' || prod.status === 'refunded') || windowWidth < 1075 &&
                                                             <span

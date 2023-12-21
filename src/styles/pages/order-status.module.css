@@ -108,6 +108,11 @@
     width: 90%;
 }
 
+.order {
+    width: 100%;
+    max-width: 800px;
+}
+
 /* Mobile and Tablet */
 @media (max-width: 851.5px) {
     .main {

@@ -7,6 +7,8 @@ import { useEffect, useState } from 'react'
 import { useAppContext } from '@/components/contexts/AppContext'
 import { LoadingButton } from '@mui/lab'
 import Order from '@/components/products/Order'
+import { showToast } from '@/utils/toasts'
+import { useTranslation } from 'next-i18next'
 
 export default function OrderStatus() {
 
@@ -19,10 +21,14 @@ export default function OrderStatus() {
     const [order, setOrder] = useState()
     const [loading, setLoading] = useState()
 
+    const tToasts = useTranslation('toasts').t
+
     useEffect(() => {
         setOrder()
-        if (router.query.id)
+        if (router.query.id) {
+            setOrderId(router.query.id)
             getOrder()
+        }
     }, [router])
 
     function getOrder() {
@@ -36,14 +42,16 @@ export default function OrderStatus() {
             }
         }
 
-        fetch("/api/order", options)
+        fetch("/api/orders/limit-info", options)
             .then(response => response.json())
             .then(response => {
+                if (response.error)
+                    showToast({ type: 'error', msg: response.error })
                 setOrder(response.data)
                 setLoading(false)
             })
-            .catch(err => {
-                console.error(err)
+            .catch(() => {
+                showToast({ type: 'error', msg: tToasts('default_error') })
                 setOrder(null)
                 setLoading(false)
             })
@@ -89,12 +97,14 @@ export default function OrderStatus() {
                         Search
                     </LoadingButton>
                 </div>
-                {order &&
-                    <Order
-                        order={order}
-                        hideInfos
-                    />
-                }
+                <div className={styles.order}>
+                    {order &&
+                        <Order
+                            order={order}
+                            hideInfos
+                        />
+                    }
+                </div>
             </main>
             <Footer />
         </div>

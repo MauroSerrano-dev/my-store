@@ -1,10 +1,10 @@
 :root {
-  --primary: #1189C4;
+  --primary: #1189c4;
   --primary-dark: #0c5274;
   --primary-light: #56bdf0;
   --primary-semi-dark: #0e75a7;
   --primary-rgb: 17, 137, 196;
-  --navbar-color: #1189C4;
+  --navbar-color: #1189c4;
 
   --link-color: #1185ed;
 
@@ -13,7 +13,7 @@
   --text-color: var(--text-black);
 
   --color-warning: #ffc05b;
-  --color-info: #1189C4;
+  --color-info: #1189c4;
   --color-success: #52b963;
   --color-error: #ed2b2a;
 

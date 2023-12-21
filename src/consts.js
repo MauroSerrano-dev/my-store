@@ -231,7 +231,7 @@ export const itemsNavBar = [
 ]
 
 export const PRODUCTS_FAMILY = {
-    't-shirts': { id: 't-shirts', color: '#1189C4' },
+    't-shirts': { id: 't-shirts', color: '#1189c4' },
     'hoodies': { id: 'hoodies', color: '#026539' },
     'raglan-tees': { id: 'raglan-tees', color: '#e0824b' },
     'mugs': { id: 'mugs', color: '#bA2326' },
@@ -249,7 +249,7 @@ export const PRODUCTS_TYPES = [
         id: 't-shirt',
         family_id: 't-shirts',
         title: 'T-Shirt',
-        color: '#1189C4',
+        color: '#1189c4',
         providers: [29, 87],
         blueprint_ids: {
             29: 145,

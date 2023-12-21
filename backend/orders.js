@@ -190,6 +190,30 @@ async function getOrderById(orderId) {
     }
 }
 
+async function getOrderLimitInfoById(orderId) {
+    try {
+        const orderRef = doc(db, process.env.COLL_ORDERS, orderId)
+        const orderDoc = await getDoc(orderRef)
+
+        if (orderDoc.exists()) {
+            const orderData = orderDoc.data()
+            console.log("Order info retrieved successfully")
+            return {
+                create_at: orderData.create_at,
+                id: orderData.id,
+                products: orderData.products,
+            }
+        }
+        else {
+            console.log(`Order info ${orderId} not found`)
+            return null
+        }
+    } catch (error) {
+        console.error(`Error getting order info by id: ${error}`)
+        throw new Error(`Error getting order info by id: ${error}`)
+    }
+}
+
 async function refundOrderByStripeId(payment_intent, amount_refunded) {
     try {
         const ordersCollection = collection(db, process.env.COLL_ORDERS)
@@ -234,5 +258,6 @@ export {
     updateProductStatus,
     updateOrderField,
     getOrderById,
+    getOrderLimitInfoById,
     refundOrderByStripeId,
 }
