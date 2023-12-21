@@ -10,7 +10,7 @@
     height: 50px;
 
     background-color: #ffffff;
-    border: none;
+    border: #cccccc solid 1px;
 
     font-weight: 700;
 
@@ -28,13 +28,14 @@
 @media (hover: hover) and (pointer: fine) {
     .providerLogin:hover {
         background-color: #f9f9f9;
-
+        border: #bbbbbb solid 1px;
         box-shadow: 0px 2px 4px -1px rgba(0, 0, 0, 0.2),
             0px 4px 5px 0px rgba(0, 0, 0, 0.14),
             0px 1px 10px 0px rgba(0, 0, 0, 0.12);
     }
 
     .providerLogin:active {
+        border: #cccccc solid 1px;
         box-shadow: 0px 2px 1px -6px rgba(0, 0, 0, 0.2),
             0px 2px 2px 0px rgba(0, 0, 0, 0.14),
             0px 1px 5px 0px rgba(0, 0, 0, 0.12);

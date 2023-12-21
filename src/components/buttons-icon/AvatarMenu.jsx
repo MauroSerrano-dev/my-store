@@ -17,6 +17,7 @@ import { isAdmin } from '@/utils/validations'
 import { useAppContext } from '../contexts/AppContext'
 import LoginOutlinedIcon from '@mui/icons-material/LoginOutlined';
 import FavoriteBorderRoundedIcon from '@mui/icons-material/FavoriteBorderRounded';
+import GoogleButton from '../buttons/GoogleButton'
 
 export default function AvatarMenu() {
   const {
@@ -220,15 +221,25 @@ export default function AvatarMenu() {
               </MenuItem>
             </div>
             : <div className={styles.noSession}>
+              <GoogleButton
+                className='buttonShadow'
+                text='GOOGLE'
+                style={{
+                  height: 38,
+                  zIndex: 10,
+                  boxShadow: 0
+                }}
+              />
               <Link
                 href={'/login'}
                 className='noUnderline fillWidth'
               >
                 <Button
+                  className='buttonShadow'
                   variant='outlined'
                   sx={{
                     width: '100%',
-                    height: '38px',
+                    height: 38,
                     fontWeight: '700',
                     zIndex: 10,
                   }}
@@ -244,7 +255,7 @@ export default function AvatarMenu() {
                   variant='contained'
                   sx={{
                     width: '100%',
-                    height: '38px',
+                    height: 38,
                     fontWeight: '700',
                     zIndex: 10,
                   }}

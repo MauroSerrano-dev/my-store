@@ -96,12 +96,12 @@ export default function LanguageSelector() {
                     }}
                     style={{
                         left: i18n.language === 'es'
-                            ? -186
+                            ? '-186px'
                             : i18n.language === 'pt-BR'
-                                ? -186
+                                ? '-186px'
                                 : i18n.language === 'pt'
-                                    ? -186
-                                    : -190
+                                    ? '-186px'
+                                    : '-190px'
                     }}
                 >
                     <div className={styles.pointer}>

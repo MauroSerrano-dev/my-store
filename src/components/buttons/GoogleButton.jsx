@@ -9,7 +9,9 @@ const provider = new GoogleAuthProvider()
 
 export default function GoogleButton(props) {
     const {
-        text = 'Login with Google'
+        text = 'Login with Google',
+        style,
+        className,
     } = props
 
     const {
@@ -25,7 +27,8 @@ export default function GoogleButton(props) {
             .then(response => {
                 setShowLoadingScreen(true)
                 showToast({ type: 'success', msg: tToasts('success_login', { user_name: response.user.displayName }), time: 2000 })
-                router.push('/')
+                if (router.pathname !== '/')
+                    router.push('/')
             })
             .catch(error => {
                 if (error.code !== 'auth/popup-closed-by-user' && error.code !== 'auth/cancelled-popup-request')
@@ -35,8 +38,11 @@ export default function GoogleButton(props) {
 
     return (
         <button
-            className={styles.providerLogin}
+            className={`${styles.providerLogin} ${className || ''}`}
             onClick={googleLogin}
+            style={{
+                ...style
+            }}
         >
             <FcGoogle
                 size='30px'
