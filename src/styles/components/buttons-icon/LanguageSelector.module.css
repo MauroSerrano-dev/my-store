@@ -22,6 +22,7 @@
 
 .contentContainer {
     position: absolute;
+    left: -186px;
     top: 30px;
 }
 
