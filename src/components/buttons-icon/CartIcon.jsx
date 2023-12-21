@@ -11,15 +11,16 @@ import { useAppContext } from '../contexts/AppContext'
 export default function CartIcon() {
     const {
         session,
+        supportsHoverAndPointer,
         cart,
         router
     } = useAppContext()
-    const supportsHoverAndPointer = true
-    const [open, setOpen] = useState(true)
+
+    const [open, setOpen] = useState(false)
     const tNavbar = useTranslation('navbar').t
 
     useEffect(() => {
-        setOpen(true)
+        setOpen(false)
     }, [router])
 
     useEffect(() => {

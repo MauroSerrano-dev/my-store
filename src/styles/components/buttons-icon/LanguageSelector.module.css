@@ -7,7 +7,7 @@
     height: calc(var(--navbar-height) * 0.51);
     width: calc(var(--navbar-height) * 0.51);
     border-radius: 100%;
-    
+
     cursor: pointer;
 
     transition: all ease-in-out 200ms;
@@ -22,15 +22,17 @@
 
 .contentContainer {
     position: absolute;
-    left: -186px;
     top: 30px;
+    left: -186px;
 }
 
-.session {
+.contentVisible {
     background-color: white;
     border-radius: 0.3rem;
     padding: 1rem 0rem;
     margin-top: 1.5rem;
+
+    width: 232px;
 
     box-shadow: 0px 2px 4px -1px rgba(0, 0, 0, 0.2),
         0px 4px 5px 0px rgba(0, 0, 0, 0.14),

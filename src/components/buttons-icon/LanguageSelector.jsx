@@ -98,10 +98,7 @@ export default function LanguageSelector() {
                     <div className={styles.pointer}>
                     </div>
                     <div
-                        className={styles.session}
-                        style={{
-                            minWidth: 165,
-                        }}
+                        className={styles.contentVisible}
                     >
                         <MenuItem
                             onClick={() => handleClickOption('en')}
