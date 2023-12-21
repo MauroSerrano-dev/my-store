@@ -146,7 +146,7 @@ export default function Profile() {
                             className={styles.emailContainer}
                         >
                             <p className='ellipsis'>
-                                <span style={{ fontWeight: 600 }}>{tProfile('E-mail')}:</span> {user.email}
+                                <span style={{ fontWeight: 600 }}>{tCommon('e-mail')}:</span> {user.email}
                             </p>
                             <p>
                                 {userEmailVerify ? <span style={{ color: 'var(--color-success)', fontWeight: 500 }}>verified</span> : <span style={{ color: 'var(--color-error)', fontWeight: 500 }}>not verified</span>}

@@ -26,7 +26,8 @@ const INICIAL_FIELDS = {
 export default function Support() {
 
     const { i18n } = useTranslation()
-    const tToasts = useTranslation('tToasts').t
+    const tToasts = useTranslation('toasts').t
+    const tCommon = useTranslation('common').t
 
     const [option, setOption] = useState('other')
     const [fields, setFields] = useState(INICIAL_FIELDS)
@@ -167,7 +168,7 @@ export default function Support() {
                                 }}
                             >
                                 <TextInput
-                                    label='Email'
+                                    label={tCommon('e-mail')}
                                     value={fields.email}
                                     limti={LIMITS.input_email}
                                     onChange={event => setFields(prev => ({ ...prev, email: event.target.value }))}
