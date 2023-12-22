@@ -45,7 +45,7 @@
 
     border: rgba(255, 255, 255, 0.6) 1px solid;
     padding: 1rem;
-    border-radius: 0.5rem;
+    border-radius: 0.3rem;
 
     transition: border 200ms ease-in-out;
 }
@@ -135,7 +135,7 @@
 
 .dangerZoneBody {
     width: 100%;
-    border-radius: 0.5rem;
+    border-radius: 0.3rem;
     border: rgba(var(--color-error-rgb), 0.7) 1px solid;
     padding: 1rem;
     transition: border 200ms ease-in-out;

@@ -51,7 +51,8 @@ export default function Cart() {
     const tToasts = useTranslation('toasts').t
 
     useEffect(() => {
-        getShippingValue()
+        if (userLocation)
+            getShippingValue()
     }, [cart, userLocation])
 
     useEffect(() => {
@@ -308,7 +309,7 @@ export default function Cart() {
                                         textTransform: 'none',
                                     }}
                                 >
-                                    {tCart('checkout')}
+                                    {tCommon('checkout')}
                                 </LoadingButton>
                                 <p className={styles.securedText}>
                                     {tCart('Transaction secured by')} <a href='https://stripe.com' target='_blank'>Stripe</a>

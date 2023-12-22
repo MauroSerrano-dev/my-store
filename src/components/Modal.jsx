@@ -5,8 +5,9 @@ import { motion } from "framer-motion"
 export default function Modal(props) {
     const {
         closeModal,
-        content,
         showModalOpacity,
+        children,
+        className
     } = props
 
     useEffect(() => {
@@ -62,8 +63,8 @@ export default function Modal(props) {
                     ease: [.37, .01, 0, 1.02]
                 }}
             >
-                <div className={styles.content}>
-                    {content}
+                <div className={`${styles.content} ${className || ''}`}>
+                    {children}
                 </div>
             </motion.div>
         </motion.div>

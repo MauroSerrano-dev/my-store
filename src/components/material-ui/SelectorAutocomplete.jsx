@@ -27,7 +27,8 @@ export default function SelectorAutocomplete(props) {
         name,
         value,
         size = 'small',
-        className
+        className,
+        popperStyle,
     } = props
 
     return (
@@ -39,15 +40,24 @@ export default function SelectorAutocomplete(props) {
             clearIcon={false}
             size={size}
             className={className}
+            componentsProps={{
+                popupIndicator: {
+                    style: {
+                        color: colorIndicator,
+                        transition: 'all ease-in-out 200ms',
+                    }
+                },
+                popper: {
+                    style: {
+                        ...popperStyle
+                    },
+                }
+            }}
             sx={{
                 ...sx,
                 '.MuiAutocomplete-tag': {
                     backgroundColor: colorTagBg,
                     '--text-color': colorTagText,
-                    transition: 'all ease-in-out 200ms',
-                },
-                '.MuiAutocomplete-popupIndicator': {
-                    color: colorIndicator,
                     transition: 'all ease-in-out 200ms',
                 },
                 '.MuiChip-deleteIcon': {
@@ -58,6 +68,9 @@ export default function SelectorAutocomplete(props) {
                     color: `${colorDeleteHover} !important`,
                     transition: 'all ease-in-out 200ms'
                 },
+                '.css-1s5lphu-MuiPopper-root-MuiAutocomplete-popper': {
+                    zIndex: '3000 !important'
+                }
             }}
             renderInput={params => (
                 <TextInput
