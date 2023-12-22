@@ -1,4 +1,4 @@
-import { doc, getDoc, getFirestore, updateDoc, Timestamp, setDoc, getDocs, query, collection, where } from "firebase/firestore";
+import { doc, getDoc, getFirestore, updateDoc, Timestamp, setDoc, getDocs, query, collection, where, deleteDoc } from "firebase/firestore";
 import { initializeApp } from 'firebase/app'
 import { firebaseConfig } from "../firebase.config"
 import { mergeProducts } from "@/utils";
@@ -144,11 +144,28 @@ async function deleteProductsFromWishlist(user_id, productsIdsToDelete) {
     }
 }
 
+/**
+ * Deletes a wishlist by its ID.
+ * @param {string} wishlistId - The ID of the wishlist to be deleted.
+ */
+async function deleteWishlist(wishlistId) {
+    try {
+        const wishlistRef = doc(db, process.env.COLL_WISHLISTS, wishlistId)
+
+        await deleteDoc(wishlistRef)
+
+        console.log(`Wishlist with ID ${wishlistId} has been deleted successfully.`)
+    } catch (error) {
+        console.error(`Error deleting wishlist with ID ${wishlistId}:`, error)
+        throw new Error(`Error deleting wishlist with ID ${wishlistId}: ${error}`)
+    }
+}
 
 export {
     getWishlistById,
     createWishlist,
     addProductToWishlist,
     deleteProductFromWishlist,
-    deleteProductsFromWishlist
+    deleteProductsFromWishlist,
+    deleteWishlist
 }

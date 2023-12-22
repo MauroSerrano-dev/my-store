@@ -1,5 +1,5 @@
 import { isTokenValid } from "@/utils/auth";
-import { createNewUserWithCredentials, updateUser } from "../../../backend/user"
+import { createNewUserWithCredentials, deleteUser, updateUser } from "../../../backend/user"
 
 export default async function handler(req, res) {
     const { authorization } = req.headers
@@ -32,5 +32,15 @@ export default async function handler(req, res) {
         const { user_id, changes } = req.body
         const response = await updateUser(user_id, changes)
         res.status(response.status).json(response)
+    }
+    else if (req.method === "DELETE") {
+        const { user_id } = req.headers
+        try {
+            await deleteUser(user_id)
+            res.status(200).json({ message: 'user_deleted_successfully' })
+        }
+        catch {
+            res.status(500).json({ error: 'default_error' })
+        }
     }
 }

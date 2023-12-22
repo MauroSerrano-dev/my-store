@@ -1,0 +1,71 @@
+import { useEffect, useState } from 'react'
+import styles from '../styles/components/Modal.module.css'
+import { motion } from "framer-motion"
+
+export default function Modal(props) {
+    const {
+        closeModal,
+        content,
+        showModalOpacity,
+    } = props
+
+    useEffect(() => {
+        document.addEventListener("keydown", handleKeyDown)
+        return () => {
+            document.removeEventListener('resize', handleKeyDown)
+        }
+    }, [])
+
+    function handleKeyDown(event) {
+        if (event.key === 'Escape') {
+            event.preventDefault()
+            closeModal()
+            event.target.blur()
+        }
+    }
+
+    return (
+        <motion.div
+            className={styles.container}
+            initial={{ opacity: 0 }}
+            animate={
+                showModalOpacity
+                    ? { opacity: 1 }
+                    : { opacity: 0 }
+            }
+            transition={{
+                duration: showModalOpacity
+                    ? 0.3
+                    : 0.3,
+                ease: [.62, -0.18, .32, 1.17]
+            }}
+        >
+            <div
+                className={styles.background}
+                onClick={closeModal}
+            >
+            </div>
+            <motion.div
+                className={styles.modal}
+                initial={{
+                    scale: 0.6,
+                    opacity: 0,
+                }}
+                animate={{
+                    scale: showModalOpacity ? 1 : 0.8,
+                    opacity: showModalOpacity ? 1 : 0,
+                }}
+                transition={{
+                    duration: showModalOpacity
+                        ? 0.3
+                        : 0.3,
+                    ease: [.37, .01, 0, 1.02]
+                }}
+            >
+                <div className={styles.content}>
+                    {content}
+                </div>
+            </motion.div>
+        </motion.div>
+    )
+}

@@ -1,12 +1,15 @@
 import {
     Timestamp,
+    arrayUnion,
     doc,
     getDoc,
     getFirestore,
     setDoc,
+    updateDoc,
 } from "firebase/firestore"
 import { initializeApp } from 'firebase/app'
 import { firebaseConfig } from "../firebase.config"
+import Error from "next/error"
 
 initializeApp(firebaseConfig)
 
@@ -47,7 +50,56 @@ async function updateAllCurrencies(updatedCurrencies) {
     }
 }
 
+async function addUserDeleted(email) {
+    try {
+        const settingsRef = doc(db, process.env.COLL_APP_SETTINGS, 'deleted_users');
+
+        const settingsDoc = await getDoc(settingsRef);
+        if (settingsDoc.exists()) {
+            // Se o documento existe, mas o array 'data' não, inicialize-o
+            const settingsData = settingsDoc.data();
+            const updatedData = settingsData.data ? settingsData.data : [];
+
+            await updateDoc(settingsRef, {
+                data: arrayUnion(...updatedData, { email: email, deleted_at: Timestamp.now() })
+            });
+        } else {
+            // Se o documento não existe, crie-o com o array 'data'
+            await setDoc(settingsRef, {
+                data: [{ email: email, deleted_at: Timestamp.now() }]
+            });
+        }
+        console.log('Deleted users updated successfuly!');
+    } catch (error) {
+        console.error("Error adding user to deleted_users:", error);
+        throw new Error(`Error adding user to deleted_users: ${error}`);
+    }
+}
+
+
+async function clearDeletedUsers() {
+    try {
+        const settingsRef = doc(db, process.env.COLL_APP_SETTINGS, 'deleted_users');
+
+        const settingsDoc = await getDoc(settingsRef);
+        if (settingsDoc.exists()) {
+            const data = settingsDoc.data().data;
+            const thirtyDaysAgo = Timestamp.now().seconds - (30 * 24 * 60 * 60);
+
+            const updatedData = data.filter(user => user.deleted_at.seconds > thirtyDaysAgo)
+
+            await updateDoc(settingsRef, { data: updatedData })
+            console.log('Deleted users cleaned successfuly!')
+        }
+    } catch (error) {
+        console.error("Error clearing old deleted users:", error);
+        throw new Error(`Error clearing old deleted users: ${error}`);
+    }
+}
+
 export {
     updateAllCurrencies,
     getAllCurrencies,
+    addUserDeleted,
+    clearDeletedUsers,
 }

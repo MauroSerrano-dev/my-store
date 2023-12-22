@@ -1,0 +1,13 @@
+{
+    "subject": "Subject",
+    "problem_description": "Problem Description",
+    "send": "SEND",
+    "title": "How can we help you?",
+    "order_status": "Consult order status",
+    "order_problem": "Problem with an order",
+    "account_problem": "Problem with my account",
+    "other": "Other",
+    "order_id": "Order ID",
+    "order_status_text": "You can search the order status in: ",
+    "selector_placeholder": "Choose an option"
+}

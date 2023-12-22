@@ -2,7 +2,7 @@ import styles from '@/styles/pages/profile.module.css'
 import Head from 'next/head'
 import NoFound404 from '../components/NoFound404'
 import TagsSelector from '@/components/material-ui/TagsSelector'
-import { COMMON_TRANSLATES, USER_CUSTOMIZE_HOME_PAGE } from '@/consts'
+import { COMMON_TRANSLATES, DEFAULT_LANGUAGE, USER_CUSTOMIZE_HOME_PAGE } from '@/consts'
 import { Button } from '@mui/material'
 import { useEffect, useState } from 'react'
 import { showToast } from '@/utils/toasts'
@@ -12,6 +12,8 @@ import { useTranslation } from 'next-i18next'
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
 import { useAppContext } from '@/components/contexts/AppContext'
 import { sendEmailVerification, updateProfile } from 'firebase/auth'
+import Modal from '@/components/Modal'
+import { LoadingButton } from '@mui/lab'
 
 const TAGS_MIN_LIMIT = 3
 const TAGS_MAX_LIMIT = 8
@@ -23,19 +25,24 @@ export default function Profile() {
         updateSession,
         auth,
         userEmailVerify,
+        windowWidth,
     } = useAppContext()
 
     const { i18n } = useTranslation()
     const tProfile = useTranslation('profile').t
     const tMenu = useTranslation('menu').t
     const tToasts = useTranslation('toasts').t
+    const tCommon = useTranslation('common').t
 
     const starterUser = session ? { ...session } : undefined
 
     const [user, setUser] = useState()
-    const [currentLanguage, setCurrentLanguage] = useState(i18n.language)
+    const [deleteAccountModalOpen, setDeleteAccountModalOpen] = useState(false)
+    const [deleteAccountModalOpacity, setDeleteAccountModalOpacity] = useState(false)
     const [disableSaveButton, setDisableSaveButton] = useState(true)
     const [verificationEmailSent, setVerificationEmailSent] = useState(false)
+    const [deleteTextInput, setDeleteTextInput] = useState('')
+    const [deleteAccButtonLoading, setDeleteAccButtonLoading] = useState(false)
 
     useEffect(() => {
         if (session)
@@ -80,13 +87,12 @@ export default function Profile() {
     }
 
     function handleUpdateUser() {
-
         const changes = {}
 
         Object.keys(getObjectsDiff(starterUser, user)).forEach(key => {
             changes[key] = user[key]
         })
-        if (Object.keys(changes).length === 0 && router.locale === currentLanguage) {
+        if (Object.keys(changes).length === 0 && router.locale === i18n.language) {
             showToast({ msg: tProfile('no_changes_toast') })
             return
         }
@@ -121,11 +127,55 @@ export default function Profile() {
                             showToast({ type: 'error', msg: response.message })
                         }
                     })
-                    .catch(err => {
-                        console.error(err)
+                    .catch(() => {
+                        showToast({ type: 'error', msg: tToasts('default_error') })
                     })
             })
             .catch(() => {
+                showToast({ type: 'error', msg: tToasts('default_error') })
+            })
+    }
+
+    function handleOpenDeleteModal() {
+        setDeleteAccountModalOpacity(true)
+        setTimeout(() => {
+            setDeleteAccountModalOpen(true)
+        }, 300)
+    }
+
+    function handleCloseDeleteModal() {
+        setDeleteAccountModalOpacity(false)
+        setTimeout(() => {
+            setDeleteAccountModalOpen(false)
+        }, 300)
+    }
+
+    function handleDeleteAccount() {
+        setDeleteAccButtonLoading(true)
+
+        const options = {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json',
+                authorization: process.env.NEXT_PUBLIC_APP_TOKEN,
+                user_id: session.id
+            },
+        }
+
+        fetch("/api/user", options)
+            .then(response => response.json())
+            .then(response => {
+                if (response.error) {
+                    showToast({ type: 'error', msg: tToasts(response.error) })
+                    setDeleteAccButtonLoading(false)
+                }
+                else {
+                    showToast({ type: 'success', msg: tToasts(response.message) })
+                    window.location.href = `${window.location.origin}${i18n.language === DEFAULT_LANGUAGE ? '' : `/${i18n.language}`}`
+                }
+            })
+            .catch(() => {
+                setDeleteAccButtonLoading(false)
                 showToast({ type: 'error', msg: tToasts('default_error') })
             })
     }
@@ -142,80 +192,152 @@ export default function Profile() {
                         <div className={styles.fieldsHead}>
                             <p className={styles.welcomeTitle}>{tMenu('Welcome')} <b style={{ color: 'var(--primary)' }}>{session.first_name ? session.first_name + ' ' + session.last_name : session.last_name}!</b></p>
                         </div>
-                        <div
-                            className={styles.emailContainer}
-                        >
-                            <p className='ellipsis'>
-                                <span style={{ fontWeight: 600 }}>{tCommon('e-mail')}:</span> {user.email}
-                            </p>
-                            <p>
-                                {userEmailVerify ? <span style={{ color: 'var(--color-success)', fontWeight: 500 }}>verified</span> : <span style={{ color: 'var(--color-error)', fontWeight: 500 }}>not verified</span>}
-                            </p>
-                            {!userEmailVerify &&
-                                <Button
-                                    variant='contained'
-                                    size='small'
-                                    style={{
-                                        height: '23px'
-                                    }}
-                                    onClick={handleSendVerificationEmail}
-                                >
-                                    Send verification email
-                                </Button>
-                            }
-                        </div>
-                        <div className={styles.fieldsBody}>
-                            <div className={styles.left}>
-                                <TextInput
-                                    label={tProfile('first_name')}
-                                    defaultValue={user.first_name || ''}
-                                    style={{
-                                        width: '100%'
-                                    }}
-                                    onChange={event => handleChanges('first_name', event.target.value)}
-                                />
-                                <TextInput
-                                    label={tProfile('last_name')}
-                                    defaultValue={user.last_name}
-                                    style={{
-                                        width: '100%'
-                                    }}
-                                    onChange={event => handleChanges('last_name', event.target.value)}
-                                />
-                                <p className={styles.createAtDate}>{tProfile('customer_since')}: {convertTimestampToFormatDate(session.create_at, i18n.language)}</p>
+                        <h3 style={{ paddingLeft: '0.3rem' }}>Informations</h3>
+                        <div className={styles.infos}>
+                            <div
+                                className={styles.emailContainer}
+                            >
+                                <p className='ellipsis'>
+                                    <span style={{ fontWeight: 600 }}>{tCommon('e-mail')}:</span> {user.email}
+                                </p>
+                                <p>
+                                    {userEmailVerify ? <span style={{ color: 'var(--color-success)', fontWeight: 500 }}>verified</span> : <span style={{ color: 'var(--color-error)', fontWeight: 500 }}>not verified</span>}
+                                </p>
+                                {!userEmailVerify &&
+                                    <Button
+                                        variant='contained'
+                                        size='small'
+                                        style={{
+                                            height: '23px'
+                                        }}
+                                        onClick={handleSendVerificationEmail}
+                                    >
+                                        Send verification email
+                                    </Button>
+                                }
                             </div>
-                            <div className={styles.right}>
-                                <div className={styles.field}>
-                                    <h3>{tProfile('customize_title')}</h3>
-                                    <p style={{ textAlign: 'start' }}>{tProfile('customize_p_start')}<b>{tProfile('customize_p_middle', { min: TAGS_MIN_LIMIT, max: TAGS_MAX_LIMIT })}</b>{tProfile('customize_p_end')}</p>
-                                    <p>{tProfile('Chosen')}: <b style={{ color: 'var(--primary)' }}>{user.home_page_tags.length}/{TAGS_MAX_LIMIT}</b></p>
-                                    <TagsSelector
-                                        options={USER_CUSTOMIZE_HOME_PAGE.map(theme => theme.id)}
-                                        label={tProfile('Keywords')}
-                                        value={user.home_page_tags}
-                                        sx={{
+                            <div className={styles.fieldsBody}>
+                                <div className={styles.left}>
+                                    <TextInput
+                                        label={tProfile('first_name')}
+                                        defaultValue={user.first_name || ''}
+                                        style={{
                                             width: '100%'
                                         }}
-                                        onChange={(event, value) => {
-                                            if (value.length > TAGS_MAX_LIMIT)
-                                                showToast({ type: 'error', msg: tProfile('max_keywords_toast') })
-                                            else
-                                                handleChanges('home_page_tags', value)
-                                        }}
+                                        onChange={event => handleChanges('first_name', event.target.value)}
                                     />
+                                    <TextInput
+                                        label={tProfile('last_name')}
+                                        defaultValue={user.last_name}
+                                        style={{
+                                            width: '100%'
+                                        }}
+                                        onChange={event => handleChanges('last_name', event.target.value)}
+                                    />
+                                    <p className={styles.createAtDate}>{tProfile('customer_since')}: {convertTimestampToFormatDate(session.create_at, i18n.language)}</p>
+                                </div>
+                                <div className={styles.right}>
+                                    <div className={styles.field}>
+                                        <h3>{tProfile('customize_title')}</h3>
+                                        <p style={{ textAlign: 'start' }}>{tProfile('customize_p_start')}<b>{tProfile('customize_p_middle', { min: TAGS_MIN_LIMIT, max: TAGS_MAX_LIMIT })}</b>{tProfile('customize_p_end')}</p>
+                                        <p>{tProfile('Chosen')}: <b style={{ color: 'var(--primary)' }}>{user.home_page_tags.length}/{TAGS_MAX_LIMIT}</b></p>
+                                        <TagsSelector
+                                            options={USER_CUSTOMIZE_HOME_PAGE.map(theme => theme.id)}
+                                            label={tProfile('Keywords')}
+                                            value={user.home_page_tags}
+                                            sx={{
+                                                width: '100%'
+                                            }}
+                                            onChange={(event, value) => {
+                                                if (value.length > TAGS_MAX_LIMIT)
+                                                    showToast({ type: 'error', msg: tProfile('max_keywords_toast') })
+                                                else
+                                                    handleChanges('home_page_tags', value)
+                                            }}
+                                        />
+                                    </div>
+                                </div>
+                            </div>
+                            <Button
+                                variant='contained'
+                                color='success'
+                                disabled={disableSaveButton}
+                                className={`${styles.saveButton} ${disableSaveButton ? styles.saveDisabled : ''}`}
+                                onClick={handleUpdateUser}
+                            >
+                                {tProfile('Save')}
+                            </Button>
+                        </div>
+                        <div
+                            className={styles.dangerZone}
+                        >
+                            <h3 style={{ paddingLeft: '0.3rem' }}>Danger Zone</h3>
+                            <div className={styles.dangerZoneBody}>
+                                <div className={styles.dangerZoneOption}>
+                                    <div className={styles.dangerZoneOptionLeft}>
+                                        <p style={{ fontWeight: 600 }}>
+                                            Delete account
+                                        </p>
+                                        <p>
+                                            This action is irreversible
+                                        </p>
+                                    </div>
+                                    <Button
+                                        variant='outlined'
+                                        color='error'
+                                        onClick={handleOpenDeleteModal}
+                                    >
+                                        Delete account
+                                    </Button>
                                 </div>
                             </div>
                         </div>
-                        <Button
-                            variant='contained'
-                            color='success'
-                            disabled={disableSaveButton}
-                            className={`${styles.saveButton} ${disableSaveButton ? styles.saveDisabled : ''}`}
-                            onClick={handleUpdateUser}
-                        >
-                            {tProfile('Save')}
-                        </Button>
                     </main>
+                    {deleteAccountModalOpen &&
+                        <Modal
+                            closeModal={handleCloseDeleteModal}
+                            showModalOpacity={deleteAccountModalOpacity}
+                            content={
+                                <div className={styles.modalContent}>
+                                    <div className={styles.modalHead}>
+                                        <h3>
+                                            Delete Account
+                                        </h3>
+                                    </div>
+                                    <div className={styles.modalBody}>
+                                        <ul className={styles.modalBodyList}>
+                                            <li>This action is irreversible.</li>
+                                            <li>To complete the process type "DELETE MY ACCOUNT".</li>
+                                            <li>You will be unable to create a new account with this email for 30 days.</li>
+                                        </ul>
+                                    </div>
+                                    <div className={styles.modalFoot}>
+                                        <TextInput
+                                            dark
+                                            placeholder='DELETE MY ACCOUNT'
+                                            size='small'
+                                            onChange={event => setDeleteTextInput(event.target.value)}
+                                            style={{
+                                                width: windowWidth <= 750 ? '100%' : 'calc(100% - 150px)'
+                                            }}
+                                        />
+                                        <LoadingButton
+                                            loading={deleteAccButtonLoading}
+                                            variant='contained'
+                                            color='error'
+                                            sx={{
+                                                width: windowWidth <= 750 ? '100%' : 120
+                                            }}
+                                            disabled={deleteTextInput !== 'DELETE MY ACCOUNT'}
+                                            onClick={handleDeleteAccount}
+                                        >
+                                            Deletar
+                                        </LoadingButton>
+                                    </div>
+                                </div>
+                            }
+                        />
+                    }
                 </div>
     )
 }
