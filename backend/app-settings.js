@@ -88,7 +88,13 @@ async function clearDeletedUsers() {
 
             const updatedData = data.filter(user => user.deleted_at.seconds > thirtyDaysAgo)
 
-            await updateDoc(settingsRef, { data: updatedData })
+            await updateDoc(
+                settingsRef,
+                {
+                    data: updatedData,
+                    updated_at: Timestamp.now()
+                }
+            )
             console.log('Deleted users cleaned successfuly!')
         }
     } catch (error) {
@@ -97,9 +103,27 @@ async function clearDeletedUsers() {
     }
 }
 
+async function emailIsProhibited(email) {
+    try {
+        const settingsRef = doc(db, process.env.COLL_APP_SETTINGS, 'deleted_users');
+        const settingsDoc = await getDoc(settingsRef);
+
+        if (settingsDoc.exists() && settingsDoc.data().data) {
+            const prohibitedEmails = settingsDoc.data().data.map(item => item.email);
+            return prohibitedEmails.includes(email);
+        }
+        return false;
+    } catch (error) {
+        console.error("Error checking if email is prohibited:", error);
+        throw new Error(`Error checking if email is prohibited: ${error}`);
+    }
+}
+
+
 export {
     updateAllCurrencies,
     getAllCurrencies,
     addUserDeleted,
     clearDeletedUsers,
+    emailIsProhibited,
 }
