@@ -2,11 +2,11 @@ import { useEffect, useState } from 'react'
 import Link from 'next/link'
 import ShoppingCartOutlinedIcon from '@mui/icons-material/ShoppingCartOutlined'
 import styles from '@/styles/components/buttons-icon/CartIcon.module.css'
-import { Button } from '@mui/material'
 import ProductModal from '../products/ProductModal'
 import { useTranslation } from 'next-i18next'
 import { motion } from 'framer-motion'
 import { useAppContext } from '../contexts/AppContext'
+import MyButton from '@/components/material-ui/MyButton';
 
 export default function CartIcon() {
     const {
@@ -89,16 +89,15 @@ export default function CartIcon() {
                             href={`/cart`}
                             className={`${styles.iconContainer} flex center noUnderline`}
                         >
-                            <Button
-                                variant='contained'
-                                sx={{
+                            <MyButton
+                                style={{
                                     width: '100%',
                                     color: '#ffffff',
                                     fontWeight: '700',
                                 }}
                             >
                                 {tNavbar('cart_button')}
-                            </Button>
+                            </MyButton>
                         </Link>
                     </div>
                 </motion.div>

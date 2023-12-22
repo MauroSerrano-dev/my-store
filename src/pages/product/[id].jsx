@@ -2,7 +2,6 @@ import { withRouter } from 'next/router'
 import styles from '@/styles/pages/product/id.module.css'
 import { useEffect, useState } from 'react'
 import ImagesSlider from '@/components/ImagesSlider'
-import { Button } from '@mui/material'
 import ShoppingCartOutlinedIcon from '@mui/icons-material/ShoppingCartOutlined'
 import CreditCardOutlinedIcon from '@mui/icons-material/CreditCardOutlined'
 import { CART_COOKIE, COLORS_POOL, SIZES_POOL, LIMITS, getShippingOptions, DEFAULT_LANGUAGE, COMMON_TRANSLATES } from '@/consts'
@@ -23,6 +22,7 @@ import COUNTRIES_POOL from '../../../public/locales/en/countries.json'
 import { useAppContext } from '@/components/contexts/AppContext'
 import { getProductPriceUnit, getProductPriceWithoutPromotion } from '@/utils/prices'
 import Footer from '@/components/Footer'
+import MyButton from '@/components/material-ui/MyButton'
 
 export default withRouter(props => {
     const {
@@ -304,9 +304,9 @@ export default withRouter(props => {
                                     <h3 style={{ textAlign: 'start' }}>
                                         {tColors(currentColor.id_string)} / {currentSize.title}
                                     </h3>
-                                    <div>
+                                    <div className={styles.colorSelector}>
                                         <p style={{ textAlign: 'start', fontWeight: '700' }}>
-                                            {product.colors_ids.length === 1 ? 'Color' : 'Pick a color'}
+                                            {product.colors_ids.length === 1 ? tCommon('Color') : tProduct('pick_a_color')}
                                         </p>
                                         <ColorSelector
                                             options={product.colors_ids.map(color_id => COLORS_POOL[color_id])}
@@ -318,9 +318,9 @@ export default withRouter(props => {
                                             }}
                                         />
                                     </div>
-                                    <div>
+                                    <div className={styles.sizeSelector}>
                                         <p style={{ textAlign: 'start', fontWeight: '700' }}>
-                                            {product.sizes_ids.length === 1 ? 'Size' : 'Pick a size'}
+                                            {product.sizes_ids.length === 1 ? tCommon('Size') : tProduct('pick_a_size')}
                                         </p>
                                         <SizesSelector
                                             value={[currentSize]}
@@ -350,28 +350,33 @@ export default withRouter(props => {
                             </div>
                             <div className={styles.rightBottom}>
                                 <div className={styles.buyButtons}>
-                                    <Button
-                                        variant='contained'
+                                    <MyButton
                                         onClick={() => handleAddToCart()}
-                                        sx={{
+                                        style={{
+                                            display: 'flex',
+                                            gap: '0.2rem',
                                             width: '100%',
-                                            height: '55px'
+                                            height: '55px',
+                                            fontSize: 18
                                         }}
                                     >
                                         <ShoppingCartOutlinedIcon />
-                                        Add to Cart
-                                    </Button>
-                                    <Button
+                                        {tProduct('add_to_cart')}
+                                    </MyButton>
+                                    <MyButton
                                         variant='outlined'
                                         onClick={() => handleBuyNow()}
-                                        sx={{
+                                        style={{
+                                            display: 'flex',
+                                            gap: '0.2rem',
                                             width: '100%',
-                                            height: '55px'
+                                            height: '55px',
+                                            fontSize: 18
                                         }}
                                     >
                                         <CreditCardOutlinedIcon />
-                                        Buy Now
-                                    </Button>
+                                        {tProduct('buy_now')}
+                                    </MyButton>
                                 </div>
                             </div>
                         </div>
@@ -379,7 +384,7 @@ export default withRouter(props => {
                     <section className={`${styles.section} ${styles.two} `}>
                         <div className={styles.sectionTitle}>
                             <h1 style={{ textAlign: 'start' }}>
-                                Description
+                                {tProduct('description')}
                             </h1>
                         </div>
                         <div className={styles.sectionBody}>
@@ -391,7 +396,7 @@ export default withRouter(props => {
                     <section className={`${styles.section} ${styles.three} `}>
                         <div className={styles.sectionTitle}>
                             <h1 style={{ textAlign: 'start' }}>
-                                Key features
+                                {tProduct('key_features')}
                             </h1>
                         </div>
                         <div className={styles.sectionBody}>
@@ -400,7 +405,7 @@ export default withRouter(props => {
                     <section className={`${styles.section} ${styles.four} `}>
                         <div className={styles.sectionTitle}>
                             <h1 style={{ textAlign: 'start' }}>
-                                Care instructions
+                                {tProduct('care_instructions')}
                             </h1>
                         </div>
                         <div className={styles.sectionBody}>
@@ -414,7 +419,7 @@ export default withRouter(props => {
                     <section className={`${styles.section} ${styles.five} `}>
                         <div className={styles.sectionTitle}>
                             <h1 style={{ textAlign: 'start' }}>
-                                Size guide
+                                {tProduct('size_guide')}
                             </h1>
                         </div>
                         <div className={styles.sectionBody}>

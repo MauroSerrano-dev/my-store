@@ -10,7 +10,6 @@ import AccountCircleRoundedIcon from '@mui/icons-material/AccountCircleRounded'
 import styles from '@/styles/components/buttons-icon/AvatarMenu.module.css'
 import AdminPanelSettingsRoundedIcon from '@mui/icons-material/AdminPanelSettingsRounded'
 import ShoppingBagOutlinedIcon from '@mui/icons-material/ShoppingBagOutlined'
-import { Button } from '@mui/material'
 import { useTranslation } from 'next-i18next'
 import { motion } from 'framer-motion'
 import { isAdmin } from '@/utils/validations'
@@ -18,6 +17,7 @@ import { useAppContext } from '../contexts/AppContext'
 import LoginOutlinedIcon from '@mui/icons-material/LoginOutlined';
 import FavoriteBorderRoundedIcon from '@mui/icons-material/FavoriteBorderRounded';
 import GoogleButton from '../buttons/GoogleButton'
+import MyButton from '@/components/material-ui/MyButton'
 
 export default function AvatarMenu() {
   const {
@@ -129,7 +129,7 @@ export default function AvatarMenu() {
           className={styles.contentContainer}
           style={{
             left: !isUser
-              ? -223.5
+              ? -283.5
               : i18n.language === 'es'
                 ? -147
                 : i18n.language === 'pt-BR'
@@ -223,7 +223,7 @@ export default function AvatarMenu() {
             : <div className={styles.noSession}>
               <GoogleButton
                 className='buttonShadow'
-                text='GOOGLE'
+                text={tNavbar('google_button')}
                 style={{
                   height: 38,
                   zIndex: 10,
@@ -234,34 +234,33 @@ export default function AvatarMenu() {
                 href={'/login'}
                 className='noUnderline fillWidth'
               >
-                <Button
+                <MyButton
                   className='buttonShadow'
                   variant='outlined'
-                  sx={{
+                  style={{
                     width: '100%',
                     height: 38,
                     fontWeight: '700',
                     zIndex: 10,
                   }}
                 >
-                  {tNavbar('LOG_IN')}
-                </Button>
+                  {tNavbar('log_in')}
+                </MyButton>
               </Link>
               <Link
                 href={'/signin'}
                 className='noUnderline fillWidth'
               >
-                <Button
-                  variant='contained'
-                  sx={{
+                <MyButton
+                  style={{
                     width: '100%',
                     height: 38,
                     fontWeight: '700',
                     zIndex: 10,
                   }}
                 >
-                  {tNavbar('SIGN_UP')}
-                </Button>
+                  {tNavbar('sign_up')}
+                </MyButton>
               </Link>
             </div>
           }

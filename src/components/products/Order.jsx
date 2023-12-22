@@ -2,7 +2,6 @@ import styles from '@/styles/components/products/Order.module.css'
 import { motion } from "framer-motion";
 import Link from 'next/link';
 import Image from 'next/image';
-import { Button } from '@mui/material';
 import { SIZES_POOL, COLORS_POOL } from '@/consts';
 import { useTranslation } from 'next-i18next'
 import { convertTimestampToFormatDate, convertTimestampToFormatDateNoYear } from '@/utils';
@@ -12,6 +11,7 @@ import { useState } from 'react';
 import ArrowForwardIosOutlinedIcon from '@mui/icons-material/ArrowForwardIosOutlined'
 import ProductTag from '../ProductTag';
 import ProductStepper from './ProductStepper';
+import MyButton from '@/components/material-ui/MyButton';
 
 export default function Order(props) {
     const {
@@ -150,17 +150,16 @@ export default function Order(props) {
                                     href={`/orders/${order.id}`}
                                     className='fillWidth noUnderline'
                                 >
-                                    <Button
-                                        variant='contained'
+                                    <MyButton
                                         size='small'
                                         color='primary'
-                                        sx={{
+                                        style={{
                                             width: '100%',
                                             fontWeight: 600,
                                         }}
                                     >
                                         {tOrders('order_details')}
-                                    </Button>
+                                    </MyButton>
                                 </Link>
                                 <div className='flex row center' style={{ gap: '0.3rem' }}>
                                     <p style={{ fontSize: 12 }}>

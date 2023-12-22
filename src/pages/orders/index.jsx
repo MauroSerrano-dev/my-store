@@ -215,7 +215,7 @@ export default function Orders() {
                                 <h2
                                     style={{ textAlign: 'start' }}
                                 >
-                                    Explore others products!
+                                    {tOrders('explore_others_products')}
                                 </h2>
                             </div>
                             <div className='fillWidth'>

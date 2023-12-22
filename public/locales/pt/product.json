@@ -1,3 +1,11 @@
 {
-    "ship_to": "Enviar para"
+    "ship_to": "Enviar para",
+    "add_to_cart": "Adicionar ao carrinho",
+    "buy_now": "Comprar agora",
+    "pick_a_color": "Escolha uma cor",
+    "pick_a_size": "Escolha um tamanho",
+    "description": "Descrição",
+    "key_features": "Características principais",
+    "care_instructions": "Instruções de cuidado",
+    "size_guide": "Guia de tamanhos"
 }

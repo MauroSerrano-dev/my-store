@@ -11,5 +11,13 @@
     "Chosen": "Chosen",
     "Keywords": "Keywords",
     "Save": "Save",
-    "customer_since": "Customer since"
+    "customer_since": "Customer since",
+    "delete": "Delete",
+    "DELETE MY ACCOUNT": "DELETE MY ACCOUNT",
+    "action_irreversible": "This action is irreversible.",
+    "to_complete": "To complete the process type",
+    "unable_to_create": "You will be unable to create a new account with this email for 30 days.",
+    "delete_account": "Delete Account",
+    "danger_zone": "Danger Zone",
+    "send_verification_email": "Send verification email"
 }

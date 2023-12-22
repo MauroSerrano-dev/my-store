@@ -1,6 +1,6 @@
 import ImagesSliderEditable from '@/components/ImagesSliderEditable'
 import styles from '@/styles/admin/products/new/type.module.css'
-import { Button, Checkbox, Slider } from '@mui/material'
+import { Checkbox, Slider } from '@mui/material'
 import { useEffect, useState } from 'react'
 import { withRouter } from 'next/router'
 import { COLLECTIONS, TAGS_POOL, THEMES_POOL, PRODUCTS_TYPES, COLORS_POOL, SIZES_POOL, PROVIDERS_POOL, SEARCH_ART_COLORS, COMMON_TRANSLATES } from '@/consts'
@@ -21,6 +21,7 @@ import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
 import TextOutlinedInput from '@/components/material-ui/TextOutlinedInput'
 import { isAdmin } from '@/utils/validations'
 import { useAppContext } from '@/components/contexts/AppContext'
+import MyButton from '@/components/material-ui/MyButton'
 
 const INICIAL_PRODUCT = {
     id: '',
@@ -580,11 +581,11 @@ export default withRouter(() => {
                                                 />
                                                 <div className='flex' style={{ gap: '0.5rem' }}>
                                                     {product.colors.map((color, i) =>
-                                                        <Button
+                                                        <MyButton
                                                             key={i}
                                                             variant={colorsChained.includes(color.id) ? 'contained' : 'outlined'}
                                                             onClick={() => handleChainColor(color.id)}
-                                                            sx={{
+                                                            style={{
                                                                 minWidth: 40,
                                                                 width: 40,
                                                                 height: 40,
@@ -592,7 +593,7 @@ export default withRouter(() => {
                                                             }}
                                                         >
                                                             {colorsChained.includes(color.id) ? <Chain iconSize={25} /> : <BrokeChain iconSize={25} />}
-                                                        </Button>
+                                                        </MyButton>
                                                     )}
                                                 </div>
                                                 {images?.[product?.colors?.[colorIndex]?.id] &&
@@ -640,16 +641,16 @@ export default withRouter(() => {
                                                                         />
                                                                     </div>
                                                                 )}
-                                                                <Button
+                                                                <MyButton
                                                                     variant='outlined'
                                                                     onClick={handleAddNewImage}
-                                                                    sx={{
+                                                                    style={{
                                                                         width: '100%',
                                                                         marginBottom: '1rem'
                                                                     }}
                                                                 >
                                                                     Add New Image
-                                                                </Button>
+                                                                </MyButton>
                                                             </div>
                                                         </div>
                                                         <div
@@ -669,10 +670,10 @@ export default withRouter(() => {
                                                                     }}
                                                                     key={i}
                                                                 >
-                                                                    <Button
+                                                                    <MyButton
                                                                         variant={sizesChained[product.colors[colorIndex].id].includes(size.id) ? 'contained' : 'outlined'}
                                                                         onClick={() => handleChainSize(size.id)}
-                                                                        sx={{
+                                                                        style={{
                                                                             minWidth: 45,
                                                                             width: 45,
                                                                             height: 45,
@@ -680,7 +681,7 @@ export default withRouter(() => {
                                                                         }}
                                                                     >
                                                                         {sizesChained[product.colors[colorIndex].id].includes(size.id) ? <Chain /> : <BrokeChain />}
-                                                                    </Button>
+                                                                    </MyButton>
                                                                     <TextInput
                                                                         colorText='var(--color-success)'
                                                                         label={`${size.title}`}
@@ -726,10 +727,10 @@ export default withRouter(() => {
                                                 </div>
                                             }
                                             <div className='flex row center' style={{ gap: '1rem' }}>
-                                                <Button
+                                                <MyButton
                                                     variant={artColorChained ? 'contained' : 'outlined'}
                                                     onClick={handleChainArtColor}
-                                                    sx={{
+                                                    style={{
                                                         minWidth: 27,
                                                         width: 27,
                                                         height: 27,
@@ -737,7 +738,7 @@ export default withRouter(() => {
                                                     }}
                                                 >
                                                     {artColorChained ? <Chain iconSize={20} /> : <BrokeChain iconSize={20} />}
-                                                </Button>
+                                                </MyButton>
                                                 <h3>
                                                     Art Color
                                                 </h3>
@@ -751,10 +752,10 @@ export default withRouter(() => {
                                                 }}
                                             />
                                             <div className='flex row center' style={{ gap: '1rem' }}>
-                                                <Button
+                                                <MyButton
                                                     variant={artIdChained ? 'contained' : 'outlined'}
                                                     onClick={handleChainArtId}
-                                                    sx={{
+                                                    style={{
                                                         minWidth: 56,
                                                         width: 56,
                                                         height: 56,
@@ -762,7 +763,7 @@ export default withRouter(() => {
                                                     }}
                                                 >
                                                     {artIdChained ? <Chain /> : <BrokeChain />}
-                                                </Button>
+                                                </MyButton>
                                                 <TextInput
                                                     disabled={artIdChained}
                                                     colorText='var(--color-success)'
@@ -777,18 +778,17 @@ export default withRouter(() => {
                                         </div>
                                     </section>
                                 }
-                                <Button
-                                    variant='contained'
+                                <MyButton
                                     onClick={createProduct}
                                     disabled={disableCreateButton}
                                     size='large'
-                                    sx={{
+                                    style={{
                                         width: '100%',
                                         color: '#ffffff',
                                     }}
                                 >
                                     Create Product
-                                </Button>
+                                </MyButton>
                             </div>
                         }
                     </main>

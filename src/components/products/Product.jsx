@@ -1,6 +1,6 @@
 import styles from '@/styles/components/products/Product.module.css'
 import { useEffect, useState, useRef } from 'react'
-import { Button, Skeleton } from '@mui/material'
+import { Skeleton } from '@mui/material'
 import Link from 'next/link'
 import { motion } from "framer-motion"
 import { COLORS_POOL, PRODUCTS_TYPES, LIMITS } from '@/consts'
@@ -11,6 +11,7 @@ import HeartButton from '../buttons-icon/HeartButton'
 import CloseRoundedIcon from '@mui/icons-material/CloseRounded'
 import { showToast } from '@/utils/toasts'
 import { useAppContext } from '../contexts/AppContext'
+import MyButton from '@/components/material-ui/MyButton';
 
 /**
  * @param {object} props - Component props.
@@ -427,10 +428,9 @@ export default function Product(props) {
                                     width: width * 0.7,
                                 }}
                             >
-                                <Button
-                                    variant='contained'
+                                <MyButton
                                     size='small'
-                                    sx={{
+                                    style={{
                                         color: 'var(--text-white)',
                                         width: '100%',
                                         fontSize: width * 0.053,
@@ -438,7 +438,7 @@ export default function Product(props) {
                                     }}
                                 >
                                     {tCommon('more_info_button')}
-                                </Button>
+                                </MyButton>
                             </Link>
                         }
                     </motion.div>

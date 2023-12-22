@@ -16,6 +16,7 @@
     "total": "TOTAL",
     "ship_to": "ENVIAR PARA",
     "order_id": "ID DO PEDIDO:",
-    "order_details": "DETALHES DO PEDIDO",
-    "shipping_and_taxes": "Frete e impostos:"
+    "order_details": "Detalhes do Pedido",
+    "shipping_and_taxes": "Frete e impostos:",
+    "explore_others_products": "Explore outros produtos!"
 }

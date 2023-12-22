@@ -41,9 +41,13 @@
     justify-content: center;
     gap: 2rem;
 
+    width: 100%;
+
     border: rgba(255, 255, 255, 0.6) 1px solid;
     padding: 1rem;
     border-radius: 0.5rem;
+
+    transition: border 200ms ease-in-out;
 }
 
 .emailContainer {
@@ -132,8 +136,9 @@
 .dangerZoneBody {
     width: 100%;
     border-radius: 0.5rem;
-    border: var(--color-error) 1px solid;
+    border: rgba(var(--color-error-rgb), 0.7) 1px solid;
     padding: 1rem;
+    transition: border 200ms ease-in-out;
 }
 
 .dangerZoneOption {
@@ -158,6 +163,8 @@
 }
 
 .modalHead {
+    position: relative;
+
     padding-left: 1rem;
     padding-right: 1rem;
     padding-top: 1rem;
@@ -189,6 +196,17 @@
     height: 15%;
     background-color: #d0d0d0;
     padding: 1rem 2rem;
+}
+
+/* Enable hover only on non-touch devices */
+@media (hover: hover) and (pointer: fine) {
+    .infos:hover {
+        border: rgba(255, 255, 255, 1) 1px solid;
+    }
+
+    .dangerZoneBody:hover {
+        border: rgba(var(--color-error-rgb), 1) 1px solid;
+    }
 }
 
 /* Mobile and Tablet */

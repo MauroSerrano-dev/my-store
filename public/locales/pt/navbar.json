@@ -13,8 +13,9 @@
     "Wishlist": "Wishlist",
     "Admin": "Admin",
     "Logout": "Sair",
-    "cart_button": "Ir para carrinho",
+    "cart_button": "Ir para Carrinho",
     "toggle_label": "Menu",
-    "LOG_IN": "INICIAR SESSÃO",
-    "SIGN_UP": "CRIAR CONTA"
+    "log_in": "Iniciar Sessão",
+    "sign_up": "Criar Conta",
+    "google_button": "Iniciar Sessão com o Google"
 }

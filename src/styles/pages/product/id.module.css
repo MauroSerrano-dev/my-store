@@ -156,6 +156,18 @@
     gap: 1rem;
 }
 
+.colorSelector {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.sizeSelector {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
 .shippingContainer {
     display: flex;
     width: 100%;
