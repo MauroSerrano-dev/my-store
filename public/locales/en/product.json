@@ -1,3 +1,11 @@
 {
-    "ship_to": "Ship To"
+    "ship_to": "Ship To",
+    "add_to_cart": "Add to Cart",
+    "buy_now": "Buy Now",
+    "pick_a_color": "Pick a color",
+    "pick_a_size": "Pick a size",
+    "description": "Description",
+    "key_features": "Key features",
+    "care_instructions": "Care instructions",
+    "size_guide": "Size guide"
 }

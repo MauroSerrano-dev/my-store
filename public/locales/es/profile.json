@@ -18,5 +18,6 @@
     "to_complete": "Para completar el proceso, escriba",
     "unable_to_create": "No podrás crear una nueva cuenta con este correo electrónico durante 30 días.",
     "delete_account": "Eliminar Cuenta",
-    "danger_zone": "Zona de Peligro"
+    "danger_zone": "Zona de Peligro",
+    "send_verification_email": "Enviar correo de verificación"
 }

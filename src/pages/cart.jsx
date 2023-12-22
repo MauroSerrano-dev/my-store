@@ -305,9 +305,10 @@ export default function Cart() {
                                         width: '100%',
                                         color: 'white',
                                         fontWeight: '700',
+                                        textTransform: 'none',
                                     }}
                                 >
-                                    Checkout
+                                    {tCart('checkout')}
                                 </LoadingButton>
                                 <p className={styles.securedText}>
                                     {tCart('Transaction secured by')} <a href='https://stripe.com' target='_blank'>Stripe</a>

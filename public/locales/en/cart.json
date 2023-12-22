@@ -5,5 +5,6 @@
     "items_total": "Items Total",
     "shipping_and_taxes": "Shipping & Taxes",
     "order_total": "Order Total",
-    "Transaction secured by": "Transaction secured by"
+    "Transaction secured by": "Transaction secured by",
+    "checkout": "Checkout"
 }

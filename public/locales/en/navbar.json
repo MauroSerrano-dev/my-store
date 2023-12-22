@@ -15,6 +15,6 @@
     "Logout": "Logout",
     "cart_button": "Go to Cart",
     "toggle_label": "Menu",
-    "LOG_IN": "LOG IN",
-    "SIGN_UP": "SIGN UP"
+    "log_in": "Login",
+    "sign_up": "Sign up"
 }

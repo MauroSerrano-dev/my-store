@@ -3,7 +3,6 @@ import Head from 'next/head'
 import NoFound404 from '../components/NoFound404'
 import TagsSelector from '@/components/material-ui/TagsSelector'
 import { COMMON_TRANSLATES, DEFAULT_LANGUAGE, USER_CUSTOMIZE_HOME_PAGE } from '@/consts'
-import { Button } from '@mui/material'
 import { useEffect, useState } from 'react'
 import { showToast } from '@/utils/toasts'
 import { convertTimestampToFormatDate, getObjectsDiff } from '@/utils'
@@ -15,6 +14,7 @@ import { sendEmailVerification, updateProfile } from 'firebase/auth'
 import Modal from '@/components/Modal'
 import { LoadingButton } from '@mui/lab'
 import { SlClose } from "react-icons/sl";
+import MyButton from '@/components/material-ui/MyButton'
 
 const TAGS_MIN_LIMIT = 3
 const TAGS_MAX_LIMIT = 8
@@ -205,16 +205,15 @@ export default function Profile() {
                                     {userEmailVerify ? <span style={{ color: 'var(--color-success)', fontWeight: 500 }}>verified</span> : <span style={{ color: 'var(--color-error)', fontWeight: 500 }}>not verified</span>}
                                 </p>
                                 {!userEmailVerify &&
-                                    <Button
-                                        variant='contained'
+                                    <MyButton
                                         size='small'
                                         style={{
                                             height: '23px'
                                         }}
                                         onClick={handleSendVerificationEmail}
                                     >
-                                        Send verification email
-                                    </Button>
+                                        {tProfile('send_verification_email')}
+                                    </MyButton>
                                 }
                             </div>
                             <div className={styles.fieldsBody}>
@@ -259,15 +258,14 @@ export default function Profile() {
                                     </div>
                                 </div>
                             </div>
-                            <Button
-                                variant='contained'
+                            <MyButton
                                 color='success'
                                 disabled={disableSaveButton}
                                 className={`${styles.saveButton} ${disableSaveButton ? styles.saveDisabled : ''}`}
                                 onClick={handleUpdateUser}
                             >
                                 {tProfile('Save')}
-                            </Button>
+                            </MyButton>
                         </div>
                         <div
                             className={styles.dangerZone}
@@ -285,13 +283,13 @@ export default function Profile() {
                                             {tProfile('action_irreversible')}
                                         </p>
                                     </div>
-                                    <Button
+                                    <MyButton
                                         variant='outlined'
                                         color='error'
                                         onClick={handleOpenDeleteModal}
                                     >
                                         {tProfile('delete_account')}
-                                    </Button>
+                                    </MyButton>
                                 </div>
                             </div>
                         </div>
@@ -343,7 +341,8 @@ export default function Profile() {
                                             variant='contained'
                                             color='error'
                                             sx={{
-                                                width: windowWidth <= 750 ? '100%' : 120
+                                                width: windowWidth <= 750 ? '100%' : 120,
+                                                textTransform: 'none',
                                             }}
                                             disabled={deleteTextInput !== tProfile('DELETE MY ACCOUNT')}
                                             onClick={handleDeleteAccount}

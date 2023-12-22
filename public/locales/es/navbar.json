@@ -15,6 +15,6 @@
     "Logout": "Cerrar sesión",
     "cart_button": "Ir al Carrito",
     "toggle_label": "Menú",
-    "LOG_IN": "INICIAR SESIÓN",
-    "SIGN_UP": "CREAR CUENTA"
+    "log_in": "Iniciar Sesión",
+    "sign_up": "Crear Cuenta"
 }

@@ -1,5 +1,4 @@
 import styles from '@/styles/pages/signin.module.css'
-import { Button } from '@mui/material'
 import Link from 'next/link'
 import { PiHandshakeLight } from "react-icons/pi"
 import ReCAPTCHA from "react-google-recaptcha"
@@ -15,6 +14,7 @@ import TextInput from '@/components/material-ui/TextInput'
 import { LoadingButton } from '@mui/lab'
 import { useAppContext } from '@/components/contexts/AppContext'
 import NoFound404 from '@/components/NoFound404'
+import MyButton from '@/components/material-ui/MyButton'
 
 export default function Signin() {
     const {
@@ -234,15 +234,16 @@ export default function Signin() {
                                             width: '100%'
                                         }}
                                     >
-                                        <Button
-                                            sx={{
+                                        <MyButton
+                                            variant='text'
+                                            style={{
                                                 width: '100%',
                                                 height: '35px',
                                                 fontWeight: '700',
                                             }}
                                         >
                                             {tSignin('already_have_account')}
-                                        </Button>
+                                        </MyButton>
                                     </Link>
                                 </div>
                             </div>

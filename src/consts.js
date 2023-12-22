@@ -33,6 +33,7 @@ export const LIMITS = {
     input_password: 30,
     input_search_bar: 200,
     input_country: 20,
+    input_min_max: 4,
 }
 
 export const STEPS = [

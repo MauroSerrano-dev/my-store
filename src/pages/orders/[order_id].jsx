@@ -7,12 +7,12 @@ import Footer from '@/components/Footer'
 import { useAppContext } from '@/components/contexts/AppContext';
 import { COLORS_POOL, COMMON_TRANSLATES, SIZES_POOL } from '@/consts';
 import { convertTimestampToFormatDate, convertTimestampToFormatDateNoYear } from '@/utils'
-import { Button } from '@mui/material'
 import Link from 'next/link'
 import lottie from 'lottie-web';
 import Image from 'next/image'
 import ProductStepper from '@/components/products/ProductStepper'
 import ProductTag from '@/components/ProductTag'
+import MyButton from '@/components/material-ui/MyButton'
 
 export default function Orders() {
     const {
@@ -147,14 +147,13 @@ export default function Orders() {
                                                     width: '100%'
                                                 }}
                                             >
-                                                <Button
-                                                    variant='contained'
-                                                    sx={{
-                                                        width: '100%'
+                                                <MyButton
+                                                    style={{
+                                                        width: '100%',
                                                     }}
                                                 >
                                                     RECIBO
-                                                </Button>
+                                                </MyButton>
                                             </Link>
                                             {order.track_details && order.status !== 'shipment-delivered' && order.status !== 'canceled' && order.status !== 'refunded' &&
                                                 <Link
@@ -165,14 +164,12 @@ export default function Orders() {
                                                         width: '100%'
                                                     }}
                                                 >
-                                                    <Button
-                                                        variant='contained'
-                                                        sx={{
-                                                            width: '100%'
+                                                    <MyButton
+                                                        style={{
+                                                            width: '100%',
                                                         }}
-                                                    >
-                                                        ACOMPANHAR PEDIDO
-                                                    </Button>
+                                                    >                                                        ACOMPANHAR PEDIDO
+                                                    </MyButton>
                                                 </Link>
                                             }
                                             <Link
@@ -180,14 +177,12 @@ export default function Orders() {
                                                 href='/support'
                                                 className='noUnderline fill'
                                             >
-                                                <Button
-                                                    variant='contained'
-                                                    sx={{
-                                                        width: '100%'
+                                                <MyButton
+                                                    style={{
+                                                        width: '100%',
                                                     }}
-                                                >
-                                                    OBTER SUPORTE
-                                                </Button>
+                                                >                                                    OBTER SUPORTE
+                                                </MyButton>
                                             </Link>
                                         </div>
                                     </div>

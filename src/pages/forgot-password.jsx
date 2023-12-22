@@ -45,7 +45,7 @@ export default function ForgotPassword() {
                 if (error.code === 'auth/user-not-found')
                     showToast({ type: 'success', msg: 'Email sent if its a customer' })
                 else if (error.code === 'auth/missing-email')
-                    showToast({ type: 'error', msg: 'missing-email' })
+                    showToast({ type: 'error', msg: tToasts('missing_email') })
                 else if (error.code === 'auth/invalid-email')
                     showToast({ type: 'error', msg: tToasts('invalid_email') })
                 else
@@ -120,6 +120,8 @@ export default function ForgotPassword() {
                                         height: '45px',
                                         color: '#ffffff',
                                         fontWeight: '700',
+                                        textTransform: 'none',
+                                        fontSize: 16
                                     }}
                                 >
                                     Reset Password

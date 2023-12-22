@@ -6,7 +6,7 @@ import Link from 'next/link'
 import Selector from '@/components/material-ui/Selector'
 import { Checkbox, FormControlLabel, Pagination, PaginationItem } from '@mui/material'
 import Footer from '@/components/Footer'
-import { SEARCH_PRODUCT_COLORS, SEARCH_ART_COLORS, SEARCH_FILTERS, COMMON_TRANSLATES } from '@/consts'
+import { SEARCH_PRODUCT_COLORS, SEARCH_ART_COLORS, SEARCH_FILTERS, COMMON_TRANSLATES, LIMITS } from '@/consts'
 import ColorButton from '@/components/ColorButton'
 import Tag from '@/components/material-ui/Tag'
 import CircleIcon from '@mui/icons-material/Circle';
@@ -17,6 +17,7 @@ import lottie from 'lottie-web';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
 import { useTranslation } from 'next-i18next';
 import { useAppContext } from '@/components/contexts/AppContext'
+import { showToast } from '@/utils/toasts'
 const { v4: uuidv4 } = require('uuid')
 
 const QUERIES = {
@@ -60,6 +61,7 @@ export default withRouter(() => {
     } = router.query
 
     const { i18n } = useTranslation()
+    const tToasts = useTranslation('toasts').t
 
     const mobile = windowWidth <= 700
 
@@ -70,6 +72,9 @@ export default withRouter(() => {
     const [lastPage, setLastPage] = useState()
     const [filtersOpen, setFiltersOpen] = useState(false)
     const [filtersOpenDelay, setFiltersOpenDelay] = useState(false)
+    const [minInput, setMinInput] = useState('')
+    const [maxInput, setMaxInput] = useState('')
+    const [toastActive, setToastActive] = useState(false)
 
     const productsContainer = useRef(null)
 
@@ -226,6 +231,26 @@ export default withRouter(() => {
         }
     }, [products])
 
+    function handleChangeMinMax(value, field) {
+        if (value.length > LIMITS.input_min_max) {
+            if (!toastActive) {
+                setToastActive(true)
+                showToast({ msg: tToasts('input_limit') })
+                setTimeout(() => {
+                    setToastActive(false)
+                }, 3000)
+            }
+            return
+        }
+
+        if (!Number.isNaN(Number(value))) {
+            if (field === 'min')
+                setMinInput(value)
+            if (field === 'max')
+                setMaxInput(value)
+        }
+    }
+
     return (
         <div className='fillWidth'>
             <main className={styles.main}>
@@ -359,15 +384,34 @@ export default withRouter(() => {
                                     name='min'
                                     placeholder='Min'
                                     spellCheck={false}
+                                    value={minInput}
+                                    onChange={event => handleChangeMinMax(event.target.value, 'min')}
                                 />
                                 <input
                                     name='max'
                                     placeholder='Max'
                                     spellCheck={false}
+                                    value={maxInput}
+                                    onChange={event => handleChangeMinMax(event.target.value, 'max')}
                                 />
-                                <button>
-                                    Go
-                                </button>
+                                <Link
+                                    href={{
+                                        pathname: router.pathname,
+                                        query: minInput && maxInput
+                                            ? getQueries({ min: minInput, max: maxInput })
+                                            : minInput
+                                                ? getQueries({ min: minInput }, ['max'])
+                                                : maxInput
+                                                    ? getQueries({ max: maxInput }, ['min'])
+                                                    : getQueries({}, ['min', 'max'])
+                                    }}
+                                    scroll={false}
+                                    className='noUnderline fill'
+                                >
+                                    <button>
+                                        Go
+                                    </button>
+                                </Link>
                             </div>
                         </div>
                         <div className={styles.filterBlock}>

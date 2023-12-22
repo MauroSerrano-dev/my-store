@@ -15,6 +15,7 @@
     "total": "TOTAL",
     "ship_to": "SHIP TO",
     "order_id": "ORDER ID:",
-    "order_details": "ORDER DETAILS",
-    "shipping_and_taxes": "Shipping & Taxes:"
+    "order_details": "Order Details",
+    "shipping_and_taxes": "Shipping & Taxes:",
+    "explore_others_products": "Explore others products!"
 }
