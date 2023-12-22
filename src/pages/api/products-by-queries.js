@@ -14,16 +14,17 @@ export default async function handler(req, res) {
 
     if (req.method === "GET") {
         const {
-            s,
-            t,
-            h,
-            v,
-            c,
-            cl,
-            ac,
-            p,
-            min,
-            max,
+            s, //search
+            t, //tags
+            h, //theme
+            y, //type
+            v, //family
+            c, //collection
+            cl, //product color
+            ac, //art color
+            p, //número da página
+            min, //preço mínimo
+            max, //preço máximo
             order,
             limit,
             user_language,
@@ -31,7 +32,7 @@ export default async function handler(req, res) {
 
         let response
 
-        if (!s && !t && !h && !v && !c && !cl && !ac && !min && !max) {
+        if (!s && !t && !h && !v && !c && !cl && !ac && !min && !max && !y) {
             response = await getAllProducts({
                 order: order,
                 prods_limit: limit,
@@ -43,11 +44,12 @@ export default async function handler(req, res) {
                 s: s,
                 t: t,
                 h: h,
+                y: y,
                 v: v,
                 c: c,
                 cl: SEARCH_PRODUCT_COLORS.find(color => color.color_display.id_string === cl),
                 ac: SEARCH_ART_COLORS.find(color => color.color_display.id_string === ac),
-                p: p,
+                p: p === 'undefined' ? undefined : p,
                 min: min,
                 max: max,
                 order: order,

@@ -171,7 +171,6 @@ export const MENU_OPTIONS = [
     { id: 'Products', type: 'forward', value: 'products' },
     { id: 'Collections', type: 'forward', value: 'collections' },
     { id: 'Support', type: 'link', href: '/support' },
-    { id: 'About us', type: 'link', href: '/about-us' },
 ]
 
 export const MENU_FORWARD_OPTIONS = {

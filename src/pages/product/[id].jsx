@@ -23,6 +23,10 @@ import { useAppContext } from '@/components/contexts/AppContext'
 import { getProductPriceUnit, getProductPriceWithoutPromotion } from '@/utils/prices'
 import Footer from '@/components/Footer'
 import MyButton from '@/components/material-ui/MyButton'
+import Modal from '@/components/Modal'
+import { SlClose } from 'react-icons/sl'
+import { LoadingButton } from '@mui/lab'
+import ZoneConverter from '@/utils/country-zone.json'
 
 export default withRouter(props => {
     const {
@@ -31,7 +35,6 @@ export default withRouter(props => {
         sz,
         productMetaImage,
         urlMeta,
-        location,
     } = props
 
     const {
@@ -44,6 +47,8 @@ export default withRouter(props => {
         cart,
         windowWidth,
         setSession,
+        userLocation,
+        setUserLocation,
     } = useAppContext()
 
     const { i18n } = useTranslation()
@@ -56,7 +61,10 @@ export default withRouter(props => {
 
     const [currentColor, setCurrentColor] = useState(cl ? cl : COLORS_POOL[product?.colors_ids[0]])
     const [currentSize, setCurrentSize] = useState(sz ? sz : SIZES_POOL.find(sz => sz.id === product?.sizes_ids[0]))
-    const [shippingCountry, setShippingCountry] = useState(location?.country || 'US')
+    const [buyNowModalOpen, setBuyNowModalOpen] = useState(false)
+    const [buyNowModalOpacity, setBuyNowModalOpacity] = useState(false)
+    const [shippingValue, setShippingValue] = useState(0)
+    const [disableCheckoutButton, setDisableCheckoutButton] = useState(false)
 
     const productCurrentVariant = product?.variants.find(vari => vari.size_id === currentSize?.id && vari.color_id === currentColor?.id)
 
@@ -69,12 +77,25 @@ export default withRouter(props => {
         setCurrentSize(sz ? sz : SIZES_POOL.find(sz => sz.id === product?.sizes_ids[0]))
     }, [router])
 
+    useEffect(() => {
+        if (userLocation)
+            getShippingValue()
+    }, [userLocation])
+
+    function getShippingValue() {
+        const shippingOption = getShippingOptions(product.type_id, userLocation.country)
+        setShippingValue(shippingOption.first_item + shippingOption.tax)
+    }
+
     function handleBuyNow() {
         if (process.env.NEXT_PUBLIC_DISABLE_CHECKOUT === 'true') {
             showToast({ msg: 'Checkout temporarily disabled' })
             return
         }
-        const shippingOption = getShippingOptions(product.type_id, shippingCountry)
+
+        setDisableCheckoutButton(true)
+
+        const shippingOption = getShippingOptions(product.type_id, userLocation.country)
         const options = {
             method: 'POST',
             headers: {
@@ -98,8 +119,8 @@ export default withRouter(props => {
                 success_url: session ? `${window.location.origin}/orders` : window.location.origin,
                 cancel_url: window.location.href,
                 customer: session,
-                shippingValue: 10,
-                shippingCountry: shippingCountry,
+                shippingValue: Math.round(shippingValue * userCurrency?.rate),
+                shippingCountry: userLocation.country,
                 currency: userCurrency?.code,
                 cart_id: session ? session.cart_id : Cookies.get(CART_COOKIE),
                 user_language: i18n.language,
@@ -111,7 +132,10 @@ export default withRouter(props => {
             .then(response => {
                 window.location.href = response.url
             })
-            .catch(err => console.error(err))
+            .catch(err => {
+                console.error(err)
+                setDisableCheckoutButton(false)
+            })
     }
 
     function handleAddToCart() {
@@ -154,8 +178,8 @@ export default withRouter(props => {
     }
 
     function handleChangeCountrySelector(event, value) {
-        if (value)
-            setShippingCountry(value.id)
+        if (value?.id)
+            setUserLocation({ country: value.id, zone: ZoneConverter[value.id] })
     }
 
     function handleColorChange(arr, index, color) {
@@ -208,6 +232,20 @@ export default withRouter(props => {
                 ))
                 console.error(err)
             })
+    }
+
+    function handleOpenBuyNowModal() {
+        setBuyNowModalOpacity(true)
+        setTimeout(() => {
+            setBuyNowModalOpen(true)
+        }, 300)
+    }
+
+    function handleCloseBuyNowModal() {
+        setBuyNowModalOpacity(false)
+        setTimeout(() => {
+            setBuyNowModalOpen(false)
+        }, 300)
     }
 
     return (
@@ -329,24 +367,6 @@ export default withRouter(props => {
                                         />
                                     </div>
                                 </div>
-                                <div className={styles.shippingContainer}>
-                                    <p>
-                                        {tProduct('ship_to')}:
-                                    </p>
-                                    <SelectorAutocomplete
-                                        options={
-                                            Object.keys(COUNTRIES_POOL)
-                                                .map(key => ({ id: key, label: tCountries(key) }))
-                                                .sort((a, b) => a.label.localeCompare(b.label, 'en', { sensitivity: 'base' }))
-                                        }
-                                        label={tCommon('Country')}
-                                        value={{ id: shippingCountry, label: tCountries(shippingCountry) }}
-                                        onChange={handleChangeCountrySelector}
-                                        style={{
-                                            width: 210,
-                                        }}
-                                    />
-                                </div>
                             </div>
                             <div className={styles.rightBottom}>
                                 <div className={styles.buyButtons}>
@@ -365,7 +385,7 @@ export default withRouter(props => {
                                     </MyButton>
                                     <MyButton
                                         variant='outlined'
-                                        onClick={() => handleBuyNow()}
+                                        onClick={handleOpenBuyNowModal}
                                         style={{
                                             display: 'flex',
                                             gap: '0.2rem',
@@ -426,6 +446,68 @@ export default withRouter(props => {
                         </div>
                     </section>
                 </div>
+                {buyNowModalOpen &&
+                    <Modal
+                        closeModal={handleCloseBuyNowModal}
+                        showModalOpacity={buyNowModalOpacity}
+                        className={styles.modalContent}
+                    >
+                        <div className={styles.modalHead}>
+                            <h3>{tProduct('ship_to')}</h3>
+                            <button
+                                className='flex buttonInvisible'
+                                onClick={handleCloseBuyNowModal}
+                                style={{
+                                    position: 'absolute',
+                                    right: '1rem',
+                                    top: '1rem',
+                                }}
+                            >
+                                <SlClose
+                                    size={20}
+                                />
+                            </button>
+                        </div>
+                        <div className={styles.modalBody}>
+                            <div className={styles.shippingContainer}>
+                                <SelectorAutocomplete
+                                    options={
+                                        Object.keys(COUNTRIES_POOL)
+                                            .map(key => ({ id: key, label: tCountries(key) }))
+                                            .sort((a, b) => a.label.localeCompare(b.label, 'en', { sensitivity: 'base' }))
+                                    }
+                                    label={tCommon('Country')}
+                                    value={{ id: userLocation.country, label: tCountries(userLocation.country) }}
+                                    onChange={handleChangeCountrySelector}
+                                    dark
+                                    sx={{
+                                        width: 300,
+                                    }}
+                                    popperStyle={{
+                                        zIndex: 2500,
+                                        width: 300,
+                                    }}
+                                />
+                            </div>
+                        </div>
+                        <div className={styles.modalFoot}>
+                            <LoadingButton
+                                loading={disableCheckoutButton}
+                                variant='contained'
+                                size='large'
+                                onClick={handleBuyNow}
+                                sx={{
+                                    width: '100%',
+                                    color: 'white',
+                                    fontWeight: '700',
+                                    textTransform: 'none',
+                                }}
+                            >
+                                {tCommon('checkout')}
+                            </LoadingButton>
+                        </div>
+                    </Modal>
+                }
                 <Footer />
             </div>
             : <NoFound404

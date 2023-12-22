@@ -228,6 +228,7 @@ async function getProductsByQueries(props) {
         s, //search
         t, //tags
         h, //theme
+        y, //type
         v, //family
         c, //collection
         cl, //product color
@@ -278,6 +279,11 @@ async function getProductsByQueries(props) {
         let products = querySnapshot.docs.map(doc => doc.data())
 
         // Filtre by type (se presente)
+        if (y) {
+            products = products.filter(prod => y.includes(prod.type_id))
+        }
+
+        // Filtre by family (se presente)
         if (v) {
             products = products.filter(prod => v.includes(prod.family_id))
         }
@@ -454,7 +460,6 @@ async function handleProductsPurchased(line_items) {
 
             if (productDoc.exists()) {
                 const productData = productDoc.data()
-
                 // Atualize o total_sales no produto
                 productData.total_sales += quantity
 
