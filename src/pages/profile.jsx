@@ -14,6 +14,7 @@ import { useAppContext } from '@/components/contexts/AppContext'
 import { sendEmailVerification, updateProfile } from 'firebase/auth'
 import Modal from '@/components/Modal'
 import { LoadingButton } from '@mui/lab'
+import { SlClose } from "react-icons/sl";
 
 const TAGS_MIN_LIMIT = 3
 const TAGS_MAX_LIMIT = 8
@@ -271,15 +272,17 @@ export default function Profile() {
                         <div
                             className={styles.dangerZone}
                         >
-                            <h3 style={{ paddingLeft: '0.3rem' }}>Danger Zone</h3>
+                            <h3 style={{ paddingLeft: '0.3rem' }}>
+                                {tProfile('danger_zone')}
+                            </h3>
                             <div className={styles.dangerZoneBody}>
                                 <div className={styles.dangerZoneOption}>
                                     <div className={styles.dangerZoneOptionLeft}>
                                         <p style={{ fontWeight: 600 }}>
-                                            Delete account
+                                            {tProfile('delete_account')}
                                         </p>
                                         <p>
-                                            This action is irreversible
+                                            {tProfile('action_irreversible')}
                                         </p>
                                     </div>
                                     <Button
@@ -287,7 +290,7 @@ export default function Profile() {
                                         color='error'
                                         onClick={handleOpenDeleteModal}
                                     >
-                                        Delete account
+                                        {tProfile('delete_account')}
                                     </Button>
                                 </div>
                             </div>
@@ -299,22 +302,36 @@ export default function Profile() {
                             showModalOpacity={deleteAccountModalOpacity}
                             content={
                                 <div className={styles.modalContent}>
-                                    <div className={styles.modalHead}>
+                                    <div className={`${styles.modalHead} noSelection`}>
                                         <h3>
-                                            Delete Account
+                                            {tProfile('delete_account')}
                                         </h3>
+                                        <button
+                                            className='flex buttonInvisible'
+                                            onClick={handleCloseDeleteModal}
+                                            style={{
+                                                position: 'absolute',
+                                                right: '1rem',
+                                                top: '1rem',
+                                            }}
+                                        >
+                                            <SlClose
+                                                size={20}
+                                            />
+                                        </button>
                                     </div>
-                                    <div className={styles.modalBody}>
+                                    <div className={`${styles.modalBody} noSelection`}>
                                         <ul className={styles.modalBodyList}>
-                                            <li>This action is irreversible.</li>
-                                            <li>To complete the process type "DELETE MY ACCOUNT".</li>
-                                            <li>You will be unable to create a new account with this email for 30 days.</li>
+                                            <li>{tProfile('action_irreversible')}</li>
+                                            <li>{tProfile('to_complete')} "<span style={{ color: 'var(--color-error)', fontWeight: 500 }}>{tProfile('DELETE MY ACCOUNT')}</span>".</li>
+                                            <li>{tProfile('unable_to_create')}</li>
                                         </ul>
                                     </div>
                                     <div className={styles.modalFoot}>
                                         <TextInput
+                                            colorBorderFocus='var(--color-error)'
                                             dark
-                                            placeholder='DELETE MY ACCOUNT'
+                                            placeholder={tProfile('DELETE MY ACCOUNT')}
                                             size='small'
                                             onChange={event => setDeleteTextInput(event.target.value)}
                                             style={{
@@ -328,10 +345,10 @@ export default function Profile() {
                                             sx={{
                                                 width: windowWidth <= 750 ? '100%' : 120
                                             }}
-                                            disabled={deleteTextInput !== 'DELETE MY ACCOUNT'}
+                                            disabled={deleteTextInput !== tProfile('DELETE MY ACCOUNT')}
                                             onClick={handleDeleteAccount}
                                         >
-                                            Deletar
+                                            {tProfile('delete')}
                                         </LoadingButton>
                                     </div>
                                 </div>

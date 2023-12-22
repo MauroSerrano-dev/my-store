@@ -11,5 +11,12 @@
     "Chosen": "Escolhido",
     "Keywords": "Palavras-chave",
     "Save": "Salvar",
-    "customer_since": "Cliente desde"
+    "customer_since": "Cliente desde",
+    "delete": "Apagar",
+    "DELETE MY ACCOUNT": "APAGAR A MINHA CONTA",
+    "action_irreversible": "Esta ação é irreversível.",
+    "to_complete": "Para completar o processo, digite",
+    "unable_to_create": "Não poderá criar uma nova conta com este email durante 30 dias.",
+    "delete_account": "Apagar Conta",
+    "danger_zone": "Zona de Perigo"
 }

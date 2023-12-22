@@ -41,6 +41,8 @@
     justify-content: center;
     gap: 2rem;
 
+    width: 100%;
+
     border: rgba(255, 255, 255, 0.6) 1px solid;
     padding: 1rem;
     border-radius: 0.5rem;
@@ -158,6 +160,8 @@
 }
 
 .modalHead {
+    position: relative;
+
     padding-left: 1rem;
     padding-right: 1rem;
     padding-top: 1rem;
