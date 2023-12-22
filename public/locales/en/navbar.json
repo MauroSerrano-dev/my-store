@@ -16,5 +16,6 @@
     "cart_button": "Go to Cart",
     "toggle_label": "Menu",
     "log_in": "Login",
-    "sign_up": "Sign up"
+    "sign_up": "Sign up",
+    "google_button": "Login with Google"
 }

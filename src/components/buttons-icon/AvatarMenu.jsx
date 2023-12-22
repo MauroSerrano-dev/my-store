@@ -129,7 +129,7 @@ export default function AvatarMenu() {
           className={styles.contentContainer}
           style={{
             left: !isUser
-              ? -223.5
+              ? -283.5
               : i18n.language === 'es'
                 ? -147
                 : i18n.language === 'pt-BR'
@@ -223,7 +223,7 @@ export default function AvatarMenu() {
             : <div className={styles.noSession}>
               <GoogleButton
                 className='buttonShadow'
-                text='GOOGLE'
+                text={tNavbar('google_button')}
                 style={{
                   height: 38,
                   zIndex: 10,

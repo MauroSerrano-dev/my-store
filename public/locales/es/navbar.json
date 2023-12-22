@@ -16,5 +16,6 @@
     "cart_button": "Ir al Carrito",
     "toggle_label": "Menú",
     "log_in": "Iniciar Sesión",
-    "sign_up": "Crear Cuenta"
+    "sign_up": "Crear Cuenta",
+    "google_button": "Iniciar Sesión con Google"
 }
