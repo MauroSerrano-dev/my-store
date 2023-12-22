@@ -23,5 +23,6 @@
     "account_exists_with_different_provider_other": "Esta conta deve iniciar sessão com outro provedor",
     "input_limit": "Limite máximo de caracteres atingido.",
     "error_creating_user": "Erro ao criar novo utilizador",
-    "solve_recaptcha": "Por favor, resolva o reCAPTCHA"
+    "solve_recaptcha": "Por favor, resolva o reCAPTCHA",
+    "account_with_this_email_recently_deleted": "Email inválido. Conta com este email foi recentemente apagada"
 }

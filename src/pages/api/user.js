@@ -1,5 +1,6 @@
 import { isTokenValid } from "@/utils/auth";
 import { createNewUserWithCredentials, deleteUser, updateUser } from "../../../backend/user"
+import { emailIsProhibited } from "../../../backend/app-settings";
 
 export default async function handler(req, res) {
     const { authorization } = req.headers
@@ -13,6 +14,8 @@ export default async function handler(req, res) {
     if (req.method === "POST") {
         const { user, userLanguage } = req.body
         try {
+            if (emailIsProhibited(user.email))
+                return res.status(400).json({ status: 400, message: 'account_with_this_email_recently_deleted' })
             await createNewUserWithCredentials(user, userLanguage)
             res.status(201).json({ status: 201, message: 'user_created' })
         }
