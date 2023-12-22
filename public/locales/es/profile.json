@@ -4,7 +4,6 @@
     "no_changes_toast": "No se realizaron cambios.",
     "first_name": "Nombre",
     "last_name": "Apellido",
-    "E-mail": "Correo electrónico",
     "customize_title": "Personaliza tu Página de Inicio",
     "customize_p_start": "Elige ",
     "customize_p_middle": "de {{min}} a {{max}} palabras clave",

@@ -37,6 +37,7 @@ export default function Login() {
     const { i18n } = useTranslation()
     const tLogin = useTranslation('login-signin').t
     const tToasts = useTranslation('toasts').t
+    const tCommon = useTranslation('common').t
 
     useEffect(() => {
         if (session && !loading)
@@ -111,7 +112,7 @@ export default function Login() {
                                     </p>
                                     <div className={styles.fieldsContainer}>
                                         <TextInput
-                                            label={tLogin('E-Mail')}
+                                            label={tCommon('e-mail')}
                                             size='small'
                                             name='email'
                                             onChange={handleEmailChange}

@@ -1,4 +1,4 @@
-import { collection, doc, addDoc, getDoc, getFirestore, updateDoc, Timestamp, getDocs, query, where, setDoc } from "firebase/firestore";
+import { collection, doc, addDoc, getDoc, getFirestore, updateDoc, Timestamp, getDocs, query, where, setDoc, deleteDoc } from "firebase/firestore";
 import { initializeApp } from 'firebase/app'
 import { firebaseConfig } from "../firebase.config"
 import { deleteCartSession, getCartSessionById } from "./cart-session";
@@ -266,6 +266,25 @@ async function mergeCarts(userId, cart_cookie_id) {
     }
 }
 
+/**
+ * Deletes a cart by its ID.
+ * @param {string} cartId - The ID of the cart to be deleted.
+ */
+async function deleteCart(cartId) {
+    try {
+        // Referência para o carrinho na coleção de carrinhos
+        const cartRef = doc(db, process.env.COLL_CARTS, cartId);
+
+        // Exclui o documento do carrinho
+        await deleteDoc(cartRef);
+
+        console.log(`Cart with ID ${cartId} has been deleted successfully.`);
+    } catch (error) {
+        console.error(`Error deleting cart with ID ${cartId}:`, error);
+        throw new Error(`Error deleting cart with ID ${cartId}: ${error}`);
+    }
+}
+
 export {
     getCartById,
     getCartIdByUserId,
@@ -275,4 +294,5 @@ export {
     deleteProductFromCart,
     changeProductField,
     mergeCarts,
+    deleteCart,
 }

@@ -9,17 +9,20 @@ import {
     query,
     updateDoc,
     Timestamp,
+    deleteDoc,
 } from "firebase/firestore"
 import { initializeApp } from "firebase/app"
 import { getAuth, createUserWithEmailAndPassword, sendEmailVerification, fetchSignInMethodsForEmail, updateProfile } from "firebase/auth"
 import { firebaseConfig } from "../firebase.config"
-import { createCart } from "./cart"
+import { createCart, deleteCart } from "./cart"
 import { getCartSessionById, deleteCartSession } from "./cart-session"
 import { DEFAULT_PRODUCTS_TAGS } from "@/consts"
-import { createWishlist } from "./wishlists"
+import { createWishlist, deleteWishlist } from "./wishlists"
 import { newUserModel } from "@/utils/models"
 import Error from "next/error"
+import { addUserDeleted } from "./app-settings"
 const { v4: uuidv4 } = require('uuid')
+const admin = require('firebase-admin');
 
 initializeApp(firebaseConfig)
 
@@ -348,6 +351,24 @@ async function completeQuest(user_id, quest_id) {
     }
 }
 
+async function deleteUser(user_id) {
+    try {
+        await admin.auth().deleteUser(user_id);
+        const userRef = doc(db, process.env.COLL_USERS, user_id)
+        const user = await getUserById(user_id)
+        if (!user)
+            throw new Error('User not found to delete')
+        await deleteCart(user.cart_id)
+        await deleteWishlist(user.wishlist_id)
+        await deleteDoc(userRef)
+        await addUserDeleted(user.email)
+        console.log(`User with ID ${user_id} has been deleted successfully.`)
+    } catch (error) {
+        console.error(`Error deleting user with ID ${user_id}:`, error)
+        throw new Error(`Error deleting user with ID ${user_id}: ${error}`)
+    }
+}
+
 export {
     createNewUserWithCredentials,
     createNewUserWithGoogle,
@@ -360,4 +381,5 @@ export {
     clearUpdateCounter,
     getUserProvidersByEmail,
     completeQuest,
+    deleteUser
 }

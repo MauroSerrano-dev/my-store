@@ -47,6 +47,7 @@ export default function Signin() {
     const { i18n } = useTranslation()
     const tToasts = useTranslation('toasts').t
     const tSignin = useTranslation('login-signin').t
+    const tCommon = useTranslation('common').t
 
     function handleNewUser(value, field) {
         setNewUser(prev => (
@@ -180,7 +181,7 @@ export default function Signin() {
                                             }}
                                         />
                                         <TextInput
-                                            label={tSignin('E-Mail')}
+                                            label={tCommon('e-mail')}
                                             value={newUser.email}
                                             name='email'
                                             size='small'

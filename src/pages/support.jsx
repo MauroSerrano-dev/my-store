@@ -26,15 +26,18 @@ const INICIAL_FIELDS = {
 export default function Support() {
 
     const { i18n } = useTranslation()
-    const tToasts = useTranslation('tToasts').t
+    const tToasts = useTranslation('toasts').t
+    const tCommon = useTranslation('common').t
+    const tSupport = useTranslation('support').t
 
-    const [option, setOption] = useState('other')
+    const [option, setOption] = useState('none')
     const [fields, setFields] = useState(INICIAL_FIELDS)
     const [submiting, setSubmiting] = useState(false)
     const [reCaptchaSolve, setReCaptchaSolve] = useState(false)
     const [showSuccessScreen, setShowSuccessScreen] = useState(false)
 
-    const animationContainer = useRef(null)
+    const animationSuccessContainer = useRef(null)
+    const animationSupportContainer = useRef(null)
 
     function handleSelector(event) {
         resetStates()
@@ -69,9 +72,9 @@ export default function Support() {
             .then(response => response.json())
             .then(response => {
                 if (response.error)
-                    showToast({ type: 'error', msg: response.error })
+                    showToast({ type: 'error', msg: tToasts(response.error) })
                 else {
-                    showToast({ type: 'success', msg: response.message })
+                    showToast({ type: 'success', msg: tToasts(response.message) })
                     setShowSuccessScreen(true)
                 }
                 setSubmiting(false)
@@ -84,13 +87,13 @@ export default function Support() {
 
     useEffect(() => {
         let animation
-        if (animationContainer.current) {
+        if (animationSuccessContainer.current) {
             animation = lottie.loadAnimation({
-                container: animationContainer.current,
+                container: animationSuccessContainer.current,
                 renderer: 'svg',
                 loop: false,
                 autoplay: true,
-                animationData: require('@/utils/animations/successIcon.json'),
+                animationData: require('@/utils/animations/successEmailSent.json'),
             })
         }
 
@@ -100,6 +103,24 @@ export default function Support() {
         }
     }, [showSuccessScreen])
 
+    useEffect(() => {
+        let animation
+        if (animationSupportContainer.current) {
+            animation = lottie.loadAnimation({
+                container: animationSupportContainer.current,
+                renderer: 'svg',
+                loop: false,
+                autoplay: true,
+                animationData: require('@/utils/animations/support.json'),
+            })
+        }
+
+        return () => {
+            if (animation)
+                animation.destroy();
+        }
+    }, [option])
+
     return (
         <div className={styles.container}>
             <Head>
@@ -107,16 +128,19 @@ export default function Support() {
             {showSuccessScreen
                 ? <main className={styles.mainSuccess}>
                     <div
-                        ref={animationContainer}
+                        ref={animationSuccessContainer}
                         style={{
                             height: 300,
                         }}
                     >
                     </div>
+                    <h3>{tSupport('check_your_email')}</h3>
                 </main>
                 : <main className={styles.main}>
                     <div className={styles.mainHead}>
-                        <h1 className={styles.title}>How can we help you?</h1>
+                        <h1 className={styles.title}>
+                            {tSupport('title')}
+                        </h1>
                         <Selector
                             styleForm={{
                                 maxWidth: '290px'
@@ -124,14 +148,40 @@ export default function Support() {
                             onChange={handleSelector}
                             value={option}
                             options={[
-                                { value: 'order_status', name: 'Consult order status' },
-                                { value: 'order_problem', name: 'Problem with an order' },
-                                { value: 'account_problem', name: 'Problem with my account' },
-                                { value: 'other', name: 'Other' },
+                                { value: 'none', name: 'Choose an option' },
+                                { value: 'order_status', name: tSupport('order_status') },
+                                { value: 'order_problem', name: tSupport('order_problem') },
+                                { value: 'account_problem', name: tSupport('account_problem') },
+                                { value: 'other', name: tSupport('other') },
                             ]}
                         />
                     </div>
                     <div className={styles.mainBody}>
+                        {option === 'none' &&
+                            <motion.div
+                                className={styles.innerMainBody}
+                                initial='hidden'
+                                animate='visible'
+                                variants={{
+                                    hidden: {
+                                        opacity: 0,
+                                    },
+                                    visible: {
+                                        opacity: 1,
+                                    }
+                                }}
+                            >
+                                <div
+                                    ref={animationSupportContainer}
+                                    style={{
+                                        height: 600,
+                                        marginTop: -100,
+                                        marginBottom: -100,
+                                        zIndex: -10
+                                    }}
+                                >
+                                </div>
+                            </motion.div>}
                         {option === 'order_status' &&
                             <motion.div
                                 className={styles.innerMainBody}
@@ -146,7 +196,8 @@ export default function Support() {
                                     }
                                 }}
                             >
-                                <p>You can search the order status in <Link href={`${process.env.NEXT_PUBLIC_URL}${i18n.language === DEFAULT_LANGUAGE ? '' : `/${i18n.language}`}/order-status`}>{`${process.env.NEXT_PUBLIC_URL}${i18n.language === DEFAULT_LANGUAGE ? '' : `/${i18n.language}`}/order-status`}</Link></p>
+                                <p>{tSupport('order_status_text')}</p>
+                                <Link href={`${process.env.NEXT_PUBLIC_URL}${i18n.language === DEFAULT_LANGUAGE ? '' : `/${i18n.language}`}/order-status`}>{`${process.env.NEXT_PUBLIC_URL}${i18n.language === DEFAULT_LANGUAGE ? '' : `/${i18n.language}`}/order-status`}</Link>
                             </motion.div>
                         }
                         {option === 'order_problem' &&
@@ -167,18 +218,18 @@ export default function Support() {
                                 }}
                             >
                                 <TextInput
-                                    label='Email'
+                                    label={tCommon('e-mail')}
                                     value={fields.email}
                                     limti={LIMITS.input_email}
                                     onChange={event => setFields(prev => ({ ...prev, email: event.target.value }))}
                                 />
                                 <TextInput
-                                    label='Order ID'
+                                    label={tSupport('order_id')}
                                     value={fields.order_id}
                                     onChange={event => setFields(prev => ({ ...prev, order_id: event.target.value }))}
                                 />
                                 <TextInput
-                                    label='Problem Description'
+                                    label={tSupport('problem_description')}
                                     multiline
                                     minRows={7}
                                     value={fields.problem_description}
@@ -226,13 +277,13 @@ export default function Support() {
                                 }}
                             >
                                 <TextInput
-                                    label='Email'
+                                    label={tCommon('e-mail')}
                                     value={fields.email}
                                     limti={LIMITS.input_email}
                                     onChange={event => setFields(prev => ({ ...prev, email: event.target.value }))}
                                 />
                                 <TextInput
-                                    label='Problem Description'
+                                    label={tSupport('problem_description')}
                                     multiline
                                     minRows={7}
                                     value={fields.problem_description}
@@ -280,19 +331,19 @@ export default function Support() {
                                 }}
                             >
                                 <TextInput
-                                    label='Email'
+                                    label={tCommon('e-mail')}
                                     value={fields.email}
                                     limti={LIMITS.input_email}
                                     onChange={event => setFields(prev => ({ ...prev, email: event.target.value }))}
                                 />
                                 <TextInput
-                                    label='Subject'
-                                    limit={50}
+                                    label={tSupport('subject')}
+                                    limit={35}
                                     value={fields.subject}
                                     onChange={event => setFields(prev => ({ ...prev, subject: event.target.value }))}
                                 />
                                 <TextInput
-                                    label='Problem Description'
+                                    label={tSupport('problem_description')}
                                     multiline
                                     minRows={7}
                                     value={fields.problem_description}
@@ -318,7 +369,7 @@ export default function Support() {
                                         fontWeight: 600,
                                     }}
                                 >
-                                    Send
+                                    {tSupport('send')}
                                 </LoadingButton>
                             </motion.div>
                         }
@@ -332,7 +383,7 @@ export default function Support() {
 export async function getServerSideProps({ locale }) {
     return {
         props: {
-            ...(await serverSideTranslations(locale, COMMON_TRANSLATES.concat(['footer'])))
+            ...(await serverSideTranslations(locale, COMMON_TRANSLATES.concat(['footer', 'support'])))
         }
     }
 }

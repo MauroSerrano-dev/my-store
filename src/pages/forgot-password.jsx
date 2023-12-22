@@ -88,7 +88,7 @@ export default function ForgotPassword() {
                             >
                                 <div className={styles.fieldsContainer}>
                                     <TextInput
-                                        label='E-Mail'
+                                        label='E-mail'
                                         size='small'
                                         name='email'
                                         value={email}

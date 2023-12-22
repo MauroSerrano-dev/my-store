@@ -23,5 +23,12 @@
     "account_exists_with_different_provider_other": "Essa conta deve realizar login com outro provedor",
     "input_limit": "Limite máximo de caracteres atingido",
     "error_creating_user": "Erro ao criar novo usuário",
-    "solve_recaptcha": "Por favor, resolva o reCAPTCHA"
+    "solve_recaptcha": "Por favor, resolva o reCAPTCHA",
+    "missing_email": "E-mail não informado",
+    "missing_problem_description": "Descrição do Problema não informada",
+    "missing_order_id": "ID do pedido não informado",
+    "invalid_order_id": "ID do pedido inválido",
+    "invalid_order_id_for_this_user": "Esse pedido não pertence a esse e-mail",
+    "support_email_sent": "Ticket de suporte criado com sucesso",
+    "missing_subject": "Assunto não informado"
 }

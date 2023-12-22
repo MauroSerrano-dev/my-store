@@ -1,0 +1,13 @@
+{
+    "subject": "Asunto",
+    "problem_description": "Descripción del Problema",
+    "send": "ENVIAR",
+    "title": "¿Cómo podemos ayudarte?",
+    "order_status": "Consultar estado del pedido",
+    "order_problem": "Problema con un pedido",
+    "account_problem": "Problema con mi cuenta",
+    "other": "Otro",
+    "order_id": "ID del Pedido",
+    "order_status_text": "Puedes buscar el estado del pedido en: ",
+    "selector_placeholder": "Elige una opción"
+}
