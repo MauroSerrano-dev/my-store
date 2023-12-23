@@ -1,28 +1,28 @@
-import TagsSelector from '@/components/material-ui/TagsSelector';
-import TextInput from '@/components/material-ui/TextInput';
+import TagsSelector from '@/components/material-ui/TagsSelector'
+import TextInput from '@/components/material-ui/TextInput'
 import styles from '@/styles/admin/products/edit/id.module.css'
 import { withRouter } from 'next/router'
-import { useEffect, useState } from 'react';
-import { COLLECTIONS, TAGS_POOL, PRODUCTS_TYPES, COLORS_POOL, SIZES_POOL, PROVIDERS_POOL, THEMES_POOL, SEARCH_ART_COLORS, COMMON_TRANSLATES } from '@/consts';
-import ColorSelector from '@/components/ColorSelector';
-import SizesSelector from '@/components/SizesSelector';
-import { Checkbox, Slider } from '@mui/material';
-import NoFound404 from '@/components/NoFound404';
-import ClearRoundedIcon from '@mui/icons-material/ClearRounded';
-import Chain from '@/components/svgs/Chain';
-import BrokeChain from '@/components/svgs/BrokeChain';
-import ButtonIcon from '@/components/material-ui/ButtonIcon';
-import ImagesSlider from '@/components/ImagesSlider';
-import { showToast } from '@/utils/toasts';
-import { getObjectsDiff } from '@/utils';
-import Head from 'next/head';
-import Selector from '@/components/material-ui/Selector';
-import { isNewProductValid } from '@/utils/edit-product';
-import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
-import { isAdmin } from '@/utils/validations';
+import { useEffect, useState } from 'react'
+import { COLLECTIONS, TAGS_POOL, PRODUCTS_TYPES, COLORS_POOL, SIZES_POOL, PROVIDERS_POOL, THEMES_POOL, SEARCH_ART_COLORS, COMMON_TRANSLATES } from '@/consts'
+import ColorSelector from '@/components/ColorSelector'
+import SizesSelector from '@/components/SizesSelector'
+import { Checkbox, FormControlLabel, Slider, Switch } from '@mui/material'
+import NoFound404 from '@/components/NoFound404'
+import ClearRoundedIcon from '@mui/icons-material/ClearRounded'
+import Chain from '@/components/svgs/Chain'
+import BrokeChain from '@/components/svgs/BrokeChain'
+import ButtonIcon from '@/components/material-ui/ButtonIcon'
+import ImagesSlider from '@/components/ImagesSlider'
+import { showToast } from '@/utils/toasts'
+import { getObjectsDiff } from '@/utils'
+import Head from 'next/head'
+import Selector from '@/components/material-ui/Selector'
+import { isNewProductValid } from '@/utils/edit-product'
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
+import { isAdmin } from '@/utils/validations'
 import { useTranslation } from 'next-i18next'
-import { useAppContext } from '@/components/contexts/AppContext';
-import MyButton from '@/components/material-ui/MyButton';
+import { useAppContext } from '@/components/contexts/AppContext'
+import MyButton from '@/components/material-ui/MyButton'
 
 export default withRouter(() => {
     const {
@@ -55,7 +55,7 @@ export default withRouter(() => {
 
     useEffect(() => {
         if (router.isReady) {
-            getProductById(router.query.id)
+            getProductById(router.query.prod_id)
         }
     }, [router])
 
@@ -71,7 +71,7 @@ export default withRouter(() => {
             method: 'GET',
             headers: {
                 authorization: process.env.NEXT_PUBLIC_APP_TOKEN,
-                id: id,
+                id: id || '',
             }
         }
         const product = await fetch("/api/product", options)
@@ -314,15 +314,16 @@ export default withRouter(() => {
                     if (response.status < 300) {
                         setInicialProduct(newProduct)
                         showToast({ type: 'success', msg: response.msg })
-                        router.push('/admin/products/edit')
+                        router.push(`/admin/products/${product.type_id}`)
                     }
                     else {
+                        setDisableUpdateButton(false)
                         showToast({ type: 'error', msg: response.msg })
                     }
                 })
-                .catch(err => {
+                .catch(() => {
                     setDisableUpdateButton(false)
-                    showToast({ msg: err })
+                    showToast({ type: 'error', msg: 'default_error' })
                 })
         }
         catch (error) {
@@ -470,10 +471,6 @@ export default withRouter(() => {
         ))
     }
 
-    useEffect(() => {
-        console.log(product)
-    }, [product])
-
     return (
         session === undefined
             ? <div></div>
@@ -485,8 +482,18 @@ export default withRouter(() => {
                     <main className={styles.main}>
                         {product &&
                             <div className={styles.sectionsContainer}>
-                                <section className='flex center fillWidth'>
-                                    <h3>Type: {product.type_id}</h3>
+                                <section className='flex center column fillWidth'>
+                                    <h2>ID: {product.id}</h2>
+                                    <FormControlLabel
+                                        control={
+                                            <Switch
+                                                checked={!product.disabled}
+                                                onChange={event => updateProductField('disabled', !event.target.checked)}
+                                                color='success'
+                                            />
+                                        }
+                                        label="Visible"
+                                    />
                                 </section>
                                 <section className={styles.section}>
                                     <div className={styles.sectionLeft}>

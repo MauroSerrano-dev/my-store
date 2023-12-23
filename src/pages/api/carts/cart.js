@@ -17,7 +17,6 @@ export default async function handler(req, res) {
         const cart = user_id
             ? await getCartById(cart_id)
             : await getCartSessionById(cart_id)
-
         const prodResponse = await getProductsInfo(cart.products)
 
         cart.products = prodResponse.products

@@ -116,7 +116,7 @@ export default withRouter(props => {
                     variant_id_printify: typeof productCurrentVariant.id_printify === 'number' ? productCurrentVariant.id_printify : productCurrentVariant.id_printify[shippingOption.provider_id],
                     price: Math.round(productCurrentVariant.price * userCurrency?.rate),
                 })],
-                success_url: session ? `${window.location.origin}/orders` : window.location.origin,
+                success_url: session ? `${window.location.origin}${i18n.language === DEFAULT_LANGUAGE ? '' : `/${i18n.language}`}/orders` : `${window.location.origin}${i18n.language === DEFAULT_LANGUAGE ? '' : `/${i18n.language}`}`,
                 cancel_url: window.location.href,
                 customer: session,
                 shippingValue: Math.round(shippingValue * userCurrency?.rate),

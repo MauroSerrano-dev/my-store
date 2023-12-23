@@ -35,6 +35,7 @@ export default function Cart() {
     const [shippingValue, setShippingValue] = useState(0)
     const [allProducts, setAllProducts] = useState()
     const [outOfStock, setOutOfStock] = useState([])
+    const [unavailables, setUnavailables] = useState([])
 
     const SHIPPING_CONVERTED = Math.round(shippingValue * userCurrency?.rate)
 
@@ -92,7 +93,7 @@ export default function Cart() {
                         provider_id: shippingOption.provider_id,
                         variant: prod.variant,
                         variant_id_printify: typeof prod.variant.id_printify === 'number' ? prod.variant.id_printify : prod.variant.id_printify[shippingOption.provider_id],
-                        price: Math.round(prod.variant.price * userCurrency?.rate),
+                        price: getProductPriceUnit(prod, prod.variant, userCurrency?.rate),
                     })
                 }),
                 cancel_url: window.location.href,
@@ -122,6 +123,22 @@ export default function Cart() {
                                 country: tCountries(userLocation.country),
                                 product_title: response.outOfStock[0].title,
                                 variant_title: response.outOfStock[0].variant.title,
+                            }
+                        ),
+                        type: 'error'
+                    })
+                }
+                if (response.disabledProducts) {
+                    setBlockInteractions(false)
+                    setLoading(false)
+                    setDisableCheckoutButton(false)
+                    setUnavailables(response.disabledProducts)
+                    showToast({
+                        msg: tToasts(
+                            'disabled_products',
+                            {
+                                count: response.disabledProducts.length,
+                                product_title: response.disabledProducts[0].title,
                             }
                         ),
                         type: 'error'
@@ -213,6 +230,7 @@ export default function Cart() {
                                 {cart.products.map((product, i) =>
                                     <ProductCart
                                         outOfStock={outOfStock.some(prodOut => prodOut.id === product.id && prodOut.variant.id === product.variant.id)}
+                                        unavailable={unavailables.some(prodOut => prodOut.id === product.id && prodOut.variant.id === product.variant.id)}
                                         product={product}
                                         key={i}
                                         index={i}

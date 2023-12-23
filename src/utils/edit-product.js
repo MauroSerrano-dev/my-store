@@ -39,7 +39,6 @@ export function isNewProductValid(product, images) {
         showToast({ msg: 'Choose at least one size.', type: 'error' })
         return false
     }
-    console.log('anal')
     if (Object.values(images).some(imgs => imgs.some(img => img.src === ''))) {
         showToast({ msg: 'Image src missing.', type: 'error' })
         return false

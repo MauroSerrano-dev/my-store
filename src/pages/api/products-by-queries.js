@@ -28,6 +28,7 @@ export default async function handler(req, res) {
             order,
             limit,
             user_language,
+            join_disabled,
         } = req.headers
 
         let response
@@ -54,6 +55,7 @@ export default async function handler(req, res) {
                 max: max,
                 order: order,
                 prods_limit: limit,
+                join_disabled: join_disabled,
                 user_language: Object.keys(LANGUAGES).includes(user_language) ? user_language : DEFAULT_LANGUAGE,
             })
         }

@@ -44,6 +44,10 @@
     height: 100%;
 }
 
+.pageButton {
+    color: var(--text-white) !important;
+}
+
 /* Enable hover only on non-touch devices */
 @media (hover: hover) and (pointer: fine) {
     .option:hover {
@@ -51,6 +55,9 @@
         background-color: rgba(var(--primary-rgb), 0.2);
         color: var(--primary);
         --text-color: var(--primary);
+    }
+    .pageButton:hover {
+        background-color: rgba(255, 255, 255, 0.1) !important;
     }
 }
 

@@ -4,6 +4,8 @@
     "wishlist_limit": "Se ha alcanzado el número máximo de productos en la lista de deseos",
     "out_of_stock_one": "{{product_title}} {{variant_title}} está agotado para {{country}}",
     "out_of_stock_other": "{{count}} productos están agotados para {{country}}",
+    "disabled_products_one": "{{product_title}} no está disponible",
+    "disabled_products_other": "{{count}} productos no están disponibles",
     "password_length": "La contraseña debe tener al menos 8 caracteres",
     "password_lowercase": "La contraseña debe contener al menos una letra minúscula",
     "password_uppercase": "La contraseña debe contener al menos una letra mayúscula",
