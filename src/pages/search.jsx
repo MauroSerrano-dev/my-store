@@ -589,7 +589,7 @@ export default withRouter(() => {
                             count={lastPage}
                             color="primary"
                             page={Number(p)}
-                            renderItem={(item) => (
+                            renderItem={item => (
                                 <PaginationItem
                                     className={`${styles.pageButton} noUnderline`}
                                     component={item.page === Number(p || 1) || item.page === 0 || item.page === lastPage + 1 ? null : Link}

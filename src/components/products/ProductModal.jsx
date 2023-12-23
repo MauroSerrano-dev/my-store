@@ -29,7 +29,7 @@ export default function ProductModal(props) {
 
     const PRICE_UNIT = getProductPriceUnit(product, product.variant, userCurrency?.rate)
 
-    const PRICE = Math.round(PRICE_UNIT * product.quantity)
+    const PRICE = PRICE_UNIT * product.quantity
 
     const COLOR = COLORS_POOL[product.variant.color_id]
     const SIZE = SIZES_POOL.find(sz => sz.id === product.variant.size_id)

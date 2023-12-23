@@ -1,4 +1,4 @@
-import styles from '@/styles/components/products/Product.module.css'
+import styles from '@/styles/components/products/ProductAdmin.module.css'
 import { useEffect, useState, useRef } from 'react'
 import { Skeleton } from '@mui/material'
 import Link from 'next/link'
@@ -7,11 +7,10 @@ import { COLORS_POOL, PRODUCTS_TYPES, LIMITS } from '@/consts'
 import ColorButton from '../ColorButton'
 import Image from 'next/image'
 import { useTranslation } from 'next-i18next'
-import HeartButton from '../buttons-icon/HeartButton'
-import CloseRoundedIcon from '@mui/icons-material/CloseRounded'
 import { showToast } from '@/utils/toasts'
 import { useAppContext } from '../contexts/AppContext'
-import MyButton from '@/components/material-ui/MyButton';
+import MyButton from '@/components/material-ui/MyButton'
+import EditOutlinedIcon from '@mui/icons-material/EditOutlined'
 
 /**
  * @param {object} props - Component props.
@@ -23,7 +22,7 @@ import MyButton from '@/components/material-ui/MyButton';
  * @param {boolean} props.supportsHoverAndPointer - Device supportsHoverAndPointer.
  */
 
-export default function Product(props) {
+export default function ProductAdmin(props) {
     const {
         width = 225,
         isDragging = false,
@@ -95,7 +94,7 @@ export default function Product(props) {
         setAntVisualBug(true)
     }
 
-    const URL = `/product/${product.id}${product.variants[0].id === currentVariant.id ? '' : `?cl=${COLORS_POOL[currentVariant.color_id].id_string}`}`
+    const URL = `/admin/products/${product.type_id}/${product.id}`
 
     function handleMouseUpColor(event, color) {
         event.stopPropagation()
@@ -192,48 +191,26 @@ export default function Product(props) {
             onMouseEnter={handleOnMouseEnter}
             onMouseLeave={handleOnMouseLeave}
         >
+            {!hideWishlistButton && session && supportsHoverAndPointer &&
+                <Link
+                    className={styles.editButton}
+                    href={URL.concat('/edit')}
+                    initial='hidden'
+                    animate={hover ? 'visible' : 'hidden'}
+                >
+                    <EditOutlinedIcon
+                        style={{
+                            color: 'var(--global-white)',
+                            fontSize: width * 0.11,
+                        }}
+                    />
+                </Link>
+            }
             <Link
                 href={URL}
                 className={`${styles.linkContainer} noUnderline`}
                 draggable={false}
             >
-                {showDeleteButton &&
-                    <div
-                        className={styles.wishlistButton}
-                        onClick={onDeleteClick}
-                    >
-                        <CloseRoundedIcon
-                            style={{
-                                fontSize: width * 0.12,
-                            }}
-                        />
-                    </div>
-                }
-                {!hideWishlistButton && session && supportsHoverAndPointer &&
-                    <motion.div
-                        className={styles.wishlistButton}
-                        onClick={handleWishlist}
-                        initial='hidden'
-                        animate={hover ? 'visible' : 'hidden'}
-                        variants={{
-                            hidden: {
-                                opacity: 0,
-                            },
-                            visible: {
-                                opacity: 1,
-                            },
-                        }}
-                    >
-                        <HeartButton
-                            style={{
-                                top: '1px',
-                                color: 'var(--global-white)'
-                            }}
-                            checked={session.wishlist_products_ids.includes(product.id)}
-                            size={width * 0.13}
-                        />
-                    </motion.div>
-                }
                 {supportsHoverAndPointer &&
                     <div
                         className={styles.imgHoverContainer}
@@ -444,6 +421,6 @@ export default function Product(props) {
                     </motion.div>
                 </motion.div>
             }
-        </motion.div >
+        </motion.div>
     )
 }

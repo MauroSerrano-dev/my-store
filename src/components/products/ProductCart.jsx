@@ -17,6 +17,7 @@ export default function ProductCart(props) {
         product,
         index,
         outOfStock,
+        unavailable,
     } = props
 
     const {
@@ -37,7 +38,7 @@ export default function ProductCart(props) {
 
     const PRICE_UNIT = getProductPriceUnit(product, product.variant, userCurrency?.rate)
 
-    const PRICE = Math.round(PRICE_UNIT * product.quantity)
+    const PRICE = PRICE_UNIT * product.quantity
 
     const [deleting, setDeleting] = useState(false)
 
@@ -182,14 +183,22 @@ export default function ProductCart(props) {
                                         OUT OF STOCK
                                     </p>
                                 </div>
-                                : product.promotion &&
-                                <div
-                                    className={styles.promotion}
-                                >
-                                    <p>
-                                        {Math.round(100 * product.promotion.percentage)}% OFF
-                                    </p>
-                                </div>
+                                : unavailable
+                                    ? <div
+                                        className={styles.outOfStock}
+                                    >
+                                        <p>
+                                            UNAVAILABLE
+                                        </p>
+                                    </div>
+                                    : product.promotion &&
+                                    <div
+                                        className={styles.promotion}
+                                    >
+                                        <p>
+                                            {Math.round(100 * product.promotion.percentage)}% OFF
+                                        </p>
+                                    </div>
                             }
                         </div>
                         <div className={styles.bodyBottom}>

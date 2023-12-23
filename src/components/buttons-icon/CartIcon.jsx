@@ -25,7 +25,7 @@ export default function CartIcon() {
 
     useEffect(() => {
         // Em caso de deletar ultimo elemento do cart
-        if (cart && cart.products.length === 0)
+        if (cart && cart.products && cart.products.length === 0)
             setOpen(false)
     }, [cart])
 
@@ -35,7 +35,7 @@ export default function CartIcon() {
             onMouseEnter={() => setOpen(true)}
             onMouseLeave={() => setOpen(false)}
         >
-            <Link
+             <Link
                 href={`/cart`}
                 className={`${styles.iconContainer} flex center noUnderline`}
             >

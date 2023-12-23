@@ -1,6 +1,7 @@
 import { DEFAULT_LANGUAGE } from "@/consts";
 import { isTokenValid } from "@/utils/auth";
 import axios from 'axios'
+import { getDisabledProducts } from "../../../backend/product";
 
 const Stripe = require("stripe");
 
@@ -27,6 +28,13 @@ export default async function handler(req, res) {
       cancel_url,
       user_language,
     } = req.body
+
+
+    const disabledProducts = await getDisabledProducts(cartItems)
+
+    if (disabledProducts.length !== 0) {
+      return res.status(200).json({ disabledProducts: disabledProducts })
+    }
 
     let outOfStock = []
 

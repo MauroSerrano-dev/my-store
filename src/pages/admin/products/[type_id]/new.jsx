@@ -27,6 +27,7 @@ const INICIAL_PRODUCT = {
     id: '',
     title: '',
     collection_id: '',
+    disabled: true,
     colors: [],
     sizes: [],
     images: [],

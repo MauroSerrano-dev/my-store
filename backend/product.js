@@ -17,6 +17,7 @@ import { firebaseConfig } from "../firebase.config"
 import Fuse from 'fuse.js'
 import { POPULARITY_POINTS, PRODUCTS_TYPES, TAGS_POOL, THEMES_POOL } from "@/consts"
 import translate from "translate"
+import Error from "next/error"
 
 initializeApp(firebaseConfig)
 
@@ -238,7 +239,9 @@ async function getProductsByQueries(props) {
         max, //preço máximo
         order = 'popularity',
         prods_limit = '60',
-        user_language = 'en'
+        user_language = 'en',
+        disabled,
+        join_disabled
     } = props
 
     try {
@@ -246,6 +249,15 @@ async function getProductsByQueries(props) {
         const productsCollection = collection(db, process.env.COLL_PRODUCTS)
 
         let q = query(productsCollection)
+
+        if (!join_disabled) {
+            if (disabled) {
+                q = query(q, where("disabled", "==", true))
+            }
+            else {
+                q = query(q, where("disabled", "==", false))
+            }
+        }
 
         // Filtre by collection (se presente)
         if (c) {
@@ -371,8 +383,8 @@ async function getProductsByQueries(props) {
 }
 
 async function getProductById(id) {
-    const productRef = doc(db, process.env.COLL_PRODUCTS, id)
     try {
+        const productRef = doc(db, process.env.COLL_PRODUCTS, id)
         const productDoc = await getDoc(productRef)
 
         if (productDoc.exists()) {
@@ -418,35 +430,22 @@ async function getAllProductPrintifyIds() {
 }
 
 async function updateProduct(product_id, product_new_fields) {
-    if (!product_id || !product_new_fields) {
-        return {
-            status: 400,
-            msg: "Invalid update data",
-        }
-    }
+    if (!product_id || !product_new_fields)
+        throw new Error({ title: 'Invalid update data.', statusCode: 400 })
 
-    if (product_new_fields.variants && product_new_fields.variants.some(vari => vari.price < product_new_fields.variants[0].cost)) {
-        return {
-            status: 400,
-            msg: "Invalid product price.",
-        }
-    }
+    if (product_new_fields.variants && product_new_fields.variants.some(vari => vari.price < product_new_fields.variants[0].cost))
+        throw new Error({ title: 'Invalid product price.', statusCode: 400 })
 
     const productRef = doc(db, process.env.COLL_PRODUCTS, product_id)
 
     try {
         await updateDoc(productRef, product_new_fields)
 
-        return {
-            status: 200,
-            msg: `Product ${product_id} updated successfully!`,
-        }
+        console.log(`Product ${product_id} updated successfully!`)
+        return { message: `Product ${product_id} updated successfully!` }
     } catch (error) {
         console.log("Error updating product:", error)
-        return {
-            status: 500,
-            msg: "An error occurred while updating the product.",
-        }
+        throw new Error({ title: 'An error occurred while updating the product.', statusCode: 500 })
     }
 }
 
@@ -639,6 +638,41 @@ async function cleanPopularityYear() {
     }
 }
 
+/**
+ * Retorna uma lista de produtos desabilitados com base em seus IDs.
+ * 
+ * Esta função recebe um array de IDs de produtos e verifica no banco de dados
+ * quais produtos estão desabilitados. Retorna um array contendo os IDs dos
+ * produtos desabilitados.
+ * 
+ * @param {string[]} productIds - Array de IDs de produtos a serem verificados.
+ * @returns {Promise<string[]>} Um array contendo os IDs dos produtos desabilitados.
+ * @throws {Error} Lança um erro se ocorrer um problema durante a consulta ao banco de dados.
+ */
+async function getDisabledProducts(products) {
+    const productsCollection = collection(db, process.env.COLL_PRODUCTS)
+    const disabledProducts = []
+
+    try {
+        if (!products || products.length === 0) {
+            throw new Error('No product IDs provided.')
+        }
+
+        for (const product of products) {
+            const productRef = doc(productsCollection, product.id)
+            const productDoc = await getDoc(productRef)
+
+            if (productDoc.exists() && productDoc.data().disabled) {
+                disabledProducts.push(product)
+            }
+        }
+
+        return disabledProducts
+    } catch (error) {
+        throw new Error(`Error retrieving disabled products: ${error.message}`)
+    }
+}
+
 export {
     createProduct,
     getProductsByQueries,
@@ -652,5 +686,6 @@ export {
     getAllProductsIds,
     getProductsByIds,
     cleanPopularityMonth,
-    cleanPopularityYear
+    cleanPopularityYear,
+    getDisabledProducts,
 }

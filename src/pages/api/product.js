@@ -1,5 +1,5 @@
 import { isTokenValid } from "@/utils/auth";
-import { getProductById, createProduct, updateProduct } from "../../../backend/product";
+import { getProductById, createProduct, updateProduct, getDisabledProductById } from "../../../backend/product";
 
 export default async function handler(req, res) {
     const { authorization, id } = req.headers
@@ -24,11 +24,13 @@ export default async function handler(req, res) {
         })
     }
     else if (req.method === "PATCH") {
-        const result = await updateProduct(product_id, product_new_fields)
+        try {
+            const result = await updateProduct(product_id, product_new_fields)
 
-        res.status(result.status).json({
-            status: result.status,
-            msg: result.msg,
-        })
+            res.status(200).json({ status: 200, msg: result.message })
+        }
+        catch (error) {
+            res.status(error.props.statusCode || 500).json({ status: error.props.statusCode || 500, msg: 'default_error' })
+        }
     }
 }
