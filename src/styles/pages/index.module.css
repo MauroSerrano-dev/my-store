@@ -68,6 +68,10 @@
   border-radius: 0.5rem;
 }
 
+.categoryItem:active {
+  scale: 0.97;
+}
+
 .categoryItemImg {
   position: relative;
   height: 100%;

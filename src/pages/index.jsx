@@ -172,7 +172,7 @@ export default function Home() {
                           : windowWidth > 420
                             ? 97.5
                             : 84.5,
-                        transition: `all ease-in-out ${session === undefined ? 0 : 200}ms`,
+                        transition: `width ease-in-out ${session === undefined ? 0 : 200}ms, width ease-in-out ${session === undefined ? 0 : 200}ms, scale 100ms ease-out`,
                       }}
                     >
                       <div
