@@ -2,7 +2,9 @@
     width: 100%;
     --text-color: var(--text-white);
 
+    padding-top: 2rem;
     padding-bottom: 2rem;
+    padding-left: var(--admin-menu-width-close);
 }
 
 .sectionsContainer {

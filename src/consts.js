@@ -54,10 +54,10 @@ export const STEPS_ATTEMPT = [
 export const ALLOWED_WEBHOOK_STATUS = STEPS.concat(STEPS_ATTEMPT).concat('canceled')
 
 export const DEFAULT_PRODUCTS_TAGS = [
-    'music',
-    'raglan-tees',
     't-shirts',
     'hoodies',
+    'music',
+    'raglan-tees',
 ]
 
 export const SEARCH_FILTERS = {
@@ -217,6 +217,7 @@ export const THEMES_POOL = [
     { id: 'halloween', title: 'Halloween' },
     { id: 'home', title: 'Home' },
     { id: 'music', title: 'Music' },
+    { id: 'rpg', title: 'RPG' },
     { id: 'zombies', title: 'Zombies' },
 ]
 
@@ -816,14 +817,14 @@ export const PRODUCTS_TYPES = [
         family_id: 'hoodies',
         title: 'Hoodie',
         color: '#026539',
-        providers: [29, 26],
+        providers: [50, 26],
         blueprint_ids: {
-            29: 77,
+            50: 77,
             26: 77,
         },
         icon: GiHoodie,
         sizes: [14, 15, 16, 17, 18],
-        colors: [521, 418, 358, 395, 364, 369, 367, 392, 425, 511, 423],
+        colors: [521, 418, 358, 367, 425, 511, 423],
         variants: [
             {
                 id: "charcoal-s",
@@ -2914,16 +2915,16 @@ export function getShippingOptions(product_type, country) {
     if (product_type === 'hoodie') {
         if (country === 'US') {
             return {
-                provider_id: 29,
-                first_item: 849,
-                add_item: 209,
-                tax: 162,
+                provider_id: 50,
+                first_item: 999,
+                add_item: 249,
+                tax: 238,
                 currency: 'usd'
             }
         }
         if (country === 'CA') {
             return {
-                provider_id: 29,
+                provider_id: 50,
                 first_item: 1269,
                 add_item: 659,
                 tax: 0,
@@ -2950,7 +2951,7 @@ export function getShippingOptions(product_type, country) {
         }
         if (country === 'AU') {
             return {
-                provider_id: 29,
+                provider_id: 50,
                 first_item: 2199,
                 add_item: 999,
                 tax: 0,
@@ -2967,7 +2968,7 @@ export function getShippingOptions(product_type, country) {
             }
         }
         return {
-            provider_id: 29,
+            provider_id: 50,
             first_item: 1500,
             add_item: 1000,
             tax: 0,

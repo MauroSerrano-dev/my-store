@@ -2,7 +2,7 @@ import { hasRepeatedItems } from ".";
 import { showToast } from "./toasts";
 
 export function isNewProductValid(product, images) {
-    const requiredTextFields = [{ id: 'id', title: 'ID' }, { id: 'title', title: 'Title' }, { id: 'description', title: 'Description' }, { id: 'collection_id', title: 'Collection' }]
+    const requiredTextFields = [{ id: 'id', title: 'ID' }, { id: 'title', title: 'Title' }, { id: 'description', title: 'Description' }]
     const hasEmptyTextField = requiredTextFields.some(fieldName => {
         if (product[fieldName.id] === '') {
             showToast({ msg: `${fieldName.title} missing.`, type: 'error' })
@@ -12,17 +12,7 @@ export function isNewProductValid(product, images) {
     })
     if (hasEmptyTextField)
         return false
-    const requiredArrFields = [{ id: 'themes', title: 'Themes' }, { id: 'tags', title: 'Tags' }]
-
-    const hasEmptyArrField = requiredArrFields.some(fieldName => {
-        if (product[fieldName.id].length === 0) {
-            showToast({ msg: `${fieldName.title} missing.`, type: 'error' })
-            return true
-        }
-        return false
-    })
-    if (hasEmptyArrField)
-        return false
+    
     if (Object.values(product.printify_ids).some(id => id === '')) {
         showToast({ msg: 'Some printify id missing.', type: 'error' })
         return false

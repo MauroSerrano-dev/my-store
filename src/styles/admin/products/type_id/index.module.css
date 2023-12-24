@@ -1,0 +1,11 @@
+.container {
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+    width: 100%;
+}
+
+.products {
+    display: flex;
+    flex-direction: row;
+    gap: 1rem;
+}

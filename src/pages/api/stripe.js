@@ -29,7 +29,6 @@ export default async function handler(req, res) {
       user_language,
     } = req.body
 
-
     const disabledProducts = await getDisabledProducts(cartItems)
 
     if (disabledProducts.length !== 0) {

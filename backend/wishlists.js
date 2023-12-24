@@ -62,6 +62,13 @@ async function addProductToWishlist(wishlistId, wishlistNewProduct) {
 
     try {
         const wishlistData = wishlistDoc.data()
+        if (wishlistData.products.some(prod => prod.id === wishlistNewProduct.id)) {
+            return {
+                status: 200,
+                message: `Product is already in Wishlist ${wishlistId}.`,
+                wishlist: wishlistData,
+            }
+        }
 
         wishlistData.products.push(wishlistNewProduct)
 

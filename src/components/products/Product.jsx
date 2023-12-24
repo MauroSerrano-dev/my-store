@@ -319,14 +319,18 @@ export default function Product(props) {
                             }
                         </p>
                     </div>
-                    <p
-                        className={styles.name}
-                        style={{
-                            fontSize: width * 0.07
-                        }}
+                    <div
+                        className={styles.nameContainer}
                     >
-                        {product.title}
-                    </p>
+                        <p
+                            className={styles.name}
+                            style={{
+                                fontSize: width * 0.07
+                            }}
+                        >
+                            {product.title}
+                        </p>
+                    </div>
                     <div className={styles.priceContainer}>
                         {product.promotion &&
                             <p
@@ -444,6 +448,6 @@ export default function Product(props) {
                     </motion.div>
                 </motion.div>
             }
-        </motion.div >
+        </motion.div>
     )
 }

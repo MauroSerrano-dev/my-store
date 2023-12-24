@@ -545,7 +545,7 @@ export function AppProvider({ children }) {
                 <div
                     className={styles.componentContainer}
                     style={{
-                        paddingTop: `calc(5rem + ${mobile ? SUB_NAVBAR_HEIGHT_MOBILE : SUB_NAVBAR_HEIGHT}px)`,
+                        paddingTop: `calc(var(--navbar-height) + ${adminMode ? 0 : mobile ? SUB_NAVBAR_HEIGHT_MOBILE : SUB_NAVBAR_HEIGHT}px)`,
                         transition: `all ease-in-out ${websiteVisible ? 200 : 0}ms`,
                     }}
                 >

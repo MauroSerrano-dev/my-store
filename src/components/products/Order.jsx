@@ -181,84 +181,81 @@ export default function Order(props) {
                         >
                             <ProductStepper product={product} />
                             <div className={styles.productInfos}>
-                                <div className={styles.productInfosLeft}>
-                                    <Link
-                                        href={`/product/${product.id}${product.variant.color_id !== product.default_variant.color_id && product.variant.size_id !== product.default_variant.size_id
-                                            ? `?sz=${SIZES_POOL.find(sz => sz.id === product.variant.size_id).title.toLowerCase()}&cl=${COLORS_POOL[product.variant.color_id].id_string}`
-                                            : product.variant.size_id !== product.default_variant.size_id
-                                                ? `?sz=${SIZES_POOL.find(sz => sz.id === product.variant.size_id).title.toLowerCase()}`
-                                                : product.variant.color_id !== product.default_variant.color_id
-                                                    ? `?cl=${COLORS_POOL[product.variant.color_id].id_string}`
-                                                    : ''
-                                            }`
-                                        }
-                                        className='noUnderline'
+                                <Link
+                                    href={`/product/${product.id}${product.variant.color_id !== product.default_variant.color_id && product.variant.size_id !== product.default_variant.size_id
+                                        ? `?sz=${SIZES_POOL.find(sz => sz.id === product.variant.size_id).title.toLowerCase()}&cl=${COLORS_POOL[product.variant.color_id].id_string}`
+                                        : product.variant.size_id !== product.default_variant.size_id
+                                            ? `?sz=${SIZES_POOL.find(sz => sz.id === product.variant.size_id).title.toLowerCase()}`
+                                            : product.variant.color_id !== product.default_variant.color_id
+                                                ? `?cl=${COLORS_POOL[product.variant.color_id].id_string}`
+                                                : ''
+                                        }`
+                                    }
+                                    className='noUnderline'
+                                    style={{
+                                        position: 'relative',
+                                        height: 100,
+                                        width: 100,
+                                        borderRadius: 6,
+                                        overflow: 'hidden',
+                                    }}
+                                >
+                                    <Image
+                                        quality={100}
+                                        src={product.image.src}
+                                        sizes={'100px'}
+                                        fill
+                                        alt={product.title}
                                         style={{
-                                            position: 'relative',
-                                            height: 100,
-                                            width: 100,
-                                            borderRadius: 6,
-                                            overflow: 'hidden',
+                                            objectFit: 'cover',
+                                            objectPosition: 'top',
                                         }}
-                                    >
-                                        <Image
-                                            quality={100}
-                                            src={product.image.src}
-                                            sizes={'100px'}
-                                            fill
-                                            alt={product.title}
-                                            style={{
-                                                objectFit: 'cover',
-                                                objectPosition: 'top',
-                                            }}
-                                        />
-                                    </Link>
-                                    <div className='flex column start' style={{ gap: 2 }}>
-                                        <div className='flex row center' style={{ gap: 8 }}>
-                                            <Link
-                                                href={`/product/${product.id}${product.variant.color_id !== product.default_variant.color_id && product.variant.size_id !== product.default_variant.size_id
-                                                    ? `?sz=${SIZES_POOL.find(sz => sz.id === product.variant.size_id).title.toLowerCase()}&cl=${COLORS_POOL[product.variant.color_id].id_string}`
-                                                    : product.variant.size_id !== product.default_variant.size_id
-                                                        ? `?sz=${SIZES_POOL.find(sz => sz.id === product.variant.size_id).title.toLowerCase()}`
-                                                        : product.variant.color_id !== product.default_variant.color_id
-                                                            ? `?cl=${COLORS_POOL[product.variant.color_id].id_string}`
-                                                            : ''
-                                                    }`
-                                                }
-                                                style={{
-                                                    fontWeight: 500
-                                                }}
-                                            >
-                                                {product.title}
-                                            </Link>
-                                            <ProductTag product={product} />
-                                        </div>
-                                        {product.status === 'canceled' &&
-                                            <p
-                                                style={{
-                                                    color: 'var(--color-error)',
-                                                    fontSize: 17,
-                                                    textAlign: 'start',
-                                                }}>
-                                                {tOrders('canceled')}
-                                            </p>
-                                        }
-                                        {product.status === 'refunded' &&
-                                            <p
-                                                style={{
-                                                    color: 'var(--color-warning)',
-                                                    fontSize: 17,
-                                                    textAlign: 'start',
-                                                }}>
-                                                {tOrders('refunded')}
-                                            </p>
-                                        }
-                                        <p className='text-start' style={{ fontSize: 14 }}>Color: <span style={{ fontWeight: 600 }}>{tColors(COLORS_POOL[product.variant.color_id].id_string)}</span></p>
-                                        <p className='text-start' style={{ fontSize: 14 }}>Size: <span style={{ fontWeight: 600 }}>{SIZES_POOL.find(sz => sz.id === product.variant.size_id).title}</span></p>
-                                        <p className='text-start' style={{ fontSize: 14 }}>Quantity: <span style={{ fontWeight: 600 }}>{product.quantity}</span></p>
-                                    </div>
-                                </div>
+                                    />
+                                </Link>
                                 <div className={styles.productInfosRight}>
+                                    <div className='flex row center' style={{ gap: 8 }}>
+                                        <Link
+                                            href={`/product/${product.id}${product.variant.color_id !== product.default_variant.color_id && product.variant.size_id !== product.default_variant.size_id
+                                                ? `?sz=${SIZES_POOL.find(sz => sz.id === product.variant.size_id).title.toLowerCase()}&cl=${COLORS_POOL[product.variant.color_id].id_string}`
+                                                : product.variant.size_id !== product.default_variant.size_id
+                                                    ? `?sz=${SIZES_POOL.find(sz => sz.id === product.variant.size_id).title.toLowerCase()}`
+                                                    : product.variant.color_id !== product.default_variant.color_id
+                                                        ? `?cl=${COLORS_POOL[product.variant.color_id].id_string}`
+                                                        : ''
+                                                }`
+                                            }
+                                            className='ellipsis'
+                                            style={{
+                                                fontWeight: 500
+                                            }}
+                                        >
+                                            {product.title}
+                                        </Link>
+                                        <ProductTag product={product} />
+                                    </div>
+                                    {product.status === 'canceled' &&
+                                        <p
+                                            style={{
+                                                color: 'var(--color-error)',
+                                                fontSize: 17,
+                                                textAlign: 'start',
+                                            }}>
+                                            {tOrders('canceled')}
+                                        </p>
+                                    }
+                                    {product.status === 'refunded' &&
+                                        <p
+                                            style={{
+                                                color: 'var(--color-warning)',
+                                                fontSize: 17,
+                                                textAlign: 'start',
+                                            }}>
+                                            {tOrders('refunded')}
+                                        </p>
+                                    }
+                                    <p className='text-start' style={{ fontSize: 14 }}>Color: <span style={{ fontWeight: 600 }}>{tColors(COLORS_POOL[product.variant.color_id].id_string)}</span></p>
+                                    <p className='text-start' style={{ fontSize: 14 }}>Size: <span style={{ fontWeight: 600 }}>{SIZES_POOL.find(sz => sz.id === product.variant.size_id).title}</span></p>
+                                    <p className='text-start' style={{ fontSize: 14 }}>Quantity: <span style={{ fontWeight: 600 }}>{product.quantity}</span></p>
                                 </div>
                             </div>
                         </div>

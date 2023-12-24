@@ -1,6 +1,6 @@
 import TagsSelector from '@/components/material-ui/TagsSelector'
 import TextInput from '@/components/material-ui/TextInput'
-import styles from '@/styles/admin/products/edit/id.module.css'
+import styles from '@/styles/admin/products/type_id/prod_id/edit.module.css'
 import { withRouter } from 'next/router'
 import { useEffect, useState } from 'react'
 import { COLLECTIONS, TAGS_POOL, PRODUCTS_TYPES, COLORS_POOL, SIZES_POOL, PROVIDERS_POOL, THEMES_POOL, SEARCH_ART_COLORS, COMMON_TRANSLATES } from '@/consts'
@@ -23,6 +23,8 @@ import { isAdmin } from '@/utils/validations'
 import { useTranslation } from 'next-i18next'
 import { useAppContext } from '@/components/contexts/AppContext'
 import MyButton from '@/components/material-ui/MyButton'
+import KeyboardArrowLeftOutlinedIcon from '@mui/icons-material/KeyboardArrowLeftOutlined';
+import Link from 'next/link'
 
 export default withRouter(() => {
     const {
@@ -283,7 +285,7 @@ export default withRouter(() => {
                     ? { ...product.promotion, min_price_original: newMinPrice }
                     : null,
                 min_price: product.promotion
-                    ? Math.round(newMinPrice * product.promotion.percentage)
+                    ? Math.round(newMinPrice * (1 - product.promotion.percentage))
                     : newMinPrice,
                 images: product.colors_ids.reduce((acc, color_id) => acc.concat(images[color_id].map(img => ({ src: img.src, color_id: img.color_id }))), []),
             }
@@ -481,9 +483,29 @@ export default withRouter(() => {
                     </Head>
                     <main className={styles.main}>
                         {product &&
+                            <Link
+                                href={`/admin/products/${product.type_id}`}
+                                style={{
+                                    position: 'absolute',
+                                    left: 110,
+                                }}
+                            >
+                                <MyButton
+                                    variant='outlined'
+                                    className='flex center'
+                                >
+                                    <KeyboardArrowLeftOutlinedIcon
+                                        sx={{
+                                            marginLeft: -1.2
+                                        }}
+                                    />
+                                    Back
+                                </MyButton>
+                            </Link>
+                        }
+                        {product &&
                             <div className={styles.sectionsContainer}>
                                 <section className='flex center column fillWidth'>
-                                    <h2>ID: {product.id}</h2>
                                     <FormControlLabel
                                         control={
                                             <Switch
@@ -494,6 +516,7 @@ export default withRouter(() => {
                                         }
                                         label="Visible"
                                     />
+                                    <h2>ID: {product.id}</h2>
                                 </section>
                                 <section className={styles.section}>
                                     <div className={styles.sectionLeft}>

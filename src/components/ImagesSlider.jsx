@@ -202,6 +202,7 @@ export default function ImagesSlider(props) {
                                         }}
                                     >
                                         <Image
+                                            priority
                                             src={img.src}
                                             quality={100}
                                             alt='product preview'
@@ -306,6 +307,7 @@ export default function ImagesSlider(props) {
                                         }}
                                     >
                                         <Image
+                                            priority
                                             src={img.src}
                                             quality={100}
                                             sizes={`${OPTIONS_HEIGHT * 2 / 3}px`}
