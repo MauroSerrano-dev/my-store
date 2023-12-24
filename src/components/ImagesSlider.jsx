@@ -1,5 +1,5 @@
 import styles from '@/styles/components/ImagesSlider.module.css'
-import { useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { motion } from 'framer-motion';
 import { useAppContext } from './contexts/AppContext';
 import Image from 'next/image';
@@ -137,6 +137,10 @@ export default function ImagesSlider(props) {
         }
     }
 
+    useEffect(() => {
+        console.log(imagesLoad)
+    }, [imagesLoad])
+
     return (
         <div
             className={styles.container}
@@ -210,15 +214,15 @@ export default function ImagesSlider(props) {
                                             sizes={`${height * 2 / 3}px`}
                                             style={{
                                                 pointerEvents: 'none',
-                                                opacity: imagesLoad.includes(j) ? 1 : 0,
+                                                opacity: imagesLoad.includes(`${i}${j}`) ? 1 : 0,
                                                 transition: 'opacity ease-in-out 200ms'
                                             }}
                                             onLoad={() => {
-                                                setImagesLoad(prev => [...prev, j])
+                                                setImagesLoad(prev => [...prev, `${i}${j}`])
                                             }}
                                         />
                                     </div>
-                                    {!imagesLoad.includes(j) &&
+                                    {!imagesLoad.includes(`${i}${j}`) &&
                                         <Skeleton
                                             variant="rectangular"
                                             width={width}
@@ -291,7 +295,7 @@ export default function ImagesSlider(props) {
                                     <div
                                         className={styles.optionShadow}
                                         style={{
-                                            opacity: currentImgIndex !== j && optionsImagesLoad.includes(j)
+                                            opacity: currentImgIndex !== j && optionsImagesLoad.includes(`${i}${j}`)
                                                 ? undefined
                                                 : 0,
                                             transition: 'opacity ease-in-out 200ms',
@@ -314,15 +318,15 @@ export default function ImagesSlider(props) {
                                             alt='product image'
                                             fill
                                             style={{
-                                                opacity: optionsImagesLoad.includes(j) ? 1 : 0,
+                                                opacity: optionsImagesLoad.includes(`${i}${j}`) ? 1 : 0,
                                                 transition: 'opacity ease-in-out 200ms'
                                             }}
                                             onLoad={() => {
-                                                setOptionsImagesLoad(prev => [...prev, j])
+                                                setOptionsImagesLoad(prev => [...prev, `${i}${j}`])
                                             }}
                                         />
                                     </div>
-                                    {!optionsImagesLoad.includes(j) &&
+                                    {!optionsImagesLoad.includes(`${i}${j}`) &&
                                         <Skeleton
                                             variant="rectangular"
                                             width={(OPTIONS_HEIGHT - OPTIONS_PADDING_TOP) * 0.9}
