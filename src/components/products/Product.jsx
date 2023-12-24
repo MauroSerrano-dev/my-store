@@ -192,8 +192,8 @@ export default function Product(props) {
             onMouseEnter={handleOnMouseEnter}
             onMouseLeave={handleOnMouseLeave}
         >
-            <div
-                /* href={URL} */
+            <Link
+                href={URL}
                 className={`${styles.linkContainer} noUnderline`}
                 draggable={false}
             >
@@ -369,7 +369,7 @@ export default function Product(props) {
                         </div>
                     }
                 </div>
-            </div>
+            </Link>
             {
                 supportsHoverAndPointer && showButtomHover &&
                 <motion.div
