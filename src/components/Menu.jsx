@@ -9,7 +9,8 @@ import { motion } from "framer-motion";
 import { MENU_FORWARD_OPTIONS, MENU_OPTIONS } from '@/consts';
 import { useTranslation } from 'next-i18next';
 import { useAppContext } from './contexts/AppContext';
-import ArrowBackIosNewOutlinedIcon from '@mui/icons-material/ArrowBackIosNewOutlined';
+import MyButton from './material-ui/MyButton';
+import KeyboardArrowRightOutlinedIcon from '@mui/icons-material/KeyboardArrowRightOutlined';
 
 export default function Menu(props) {
     const {
@@ -122,34 +123,24 @@ export default function Menu(props) {
                     </button>
                 </div>
                 {windowWidth < 420 &&
-                    <button
-                        className='flex center buttonInvisible'
+                    <MyButton
+                        className='flex center'
+                        onClick={handleCloseMenu}
                         style={{
                             position: 'absolute',
-                            right: '2rem',
+                            right: '1.2rem',
                             bottom: '5rem',
-                            color: 'var(--global-black)',
+                            padding: '0.3rem 1.5rem',
                             zIndex: 10,
-                            fontSize: 16,
-                            outline: '2px var(--global-black) solid',
-                            borderRadius: '1rem',
-                            paddingTop: '0.3rem',
-                            paddingBottom: '0.3rem',
-                            paddingLeft: '0.8rem',
-                            paddingRight: '1rem',
-                            fontWeight: 600,
                         }}
-                        onClick={handleCloseMenu}
                     >
-                        <ArrowBackIosNewOutlinedIcon
-                            color='#ffffff'
-                            className='noSelection'
-                            style={{
-                                fontSize: 18
+                        Back
+                        <KeyboardArrowRightOutlinedIcon
+                            sx={{
+                                marginRight: -1.2
                             }}
                         />
-                        <p>BACK</p>
-                    </button>
+                    </MyButton>
                 }
                 <motion.div
                     className={styles.menuBody}

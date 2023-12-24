@@ -37,12 +37,12 @@
     justify-content: space-between;
 
     height: calc(var(--container-height) * 0.9);
-    width: calc(100% - (var(--container-height) * 0.9 * 0.9))
+    width: calc(100% - (var(--container-height) * 0.9 * 0.9));
 }
 
 .rightLeft {
     height: 100%;
-    width: 100%;
+    width: calc(100% - 100px);
 
     display: flex;
     flex-direction: column;
@@ -63,6 +63,7 @@
     align-items: flex-start;
 
     height: 100%;
+    width: 100px;
 
     padding-top: 30px;
 }
@@ -82,14 +83,6 @@
     display: flex;
     width: calc(100% + 70px);
     height: 25px;
-}
-
-.productName a {
-    text-align: start;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    font-weight: 700;
 }
 
 .bodyContainer {
@@ -172,10 +165,6 @@
 
     .inputsContainer {
         flex-direction: column;
-    }
-
-    .rightRight {
-        justify-content: flex-end;
     }
 
     .deleteButton {

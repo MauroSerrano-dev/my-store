@@ -77,17 +77,8 @@
     flex-direction: row;
     justify-content: space-between;
     align-items: flex-start;
-
-    gap: 1rem;
-}
-
-.productInfosLeft {
-    display: flex;
-    flex-direction: row;
-    justify-content: flex-start;
-    align-items: flex-start;
-
-    gap: 1rem;
+    --product-info-gap: 1rem;
+    gap: var(--product-info-gap);
 }
 
 .productInfosRight {
@@ -96,7 +87,9 @@
     justify-content: flex-start;
     align-items: flex-start;
 
-    gap: 1rem;
+    width: calc(100% - 100px - var(--product-info-gap));
+
+    gap: 2px;
 }
 
 .shipToName {

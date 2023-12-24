@@ -27,6 +27,7 @@ import Modal from '@/components/Modal'
 import { SlClose } from 'react-icons/sl'
 import { LoadingButton } from '@mui/lab'
 import ZoneConverter from '@/utils/country-zone.json'
+import ProductTag from '@/components/ProductTag'
 
 export default withRouter(props => {
     const {
@@ -295,7 +296,7 @@ export default withRouter(props => {
                         <div className={styles.right}>
                             <div className={styles.rightTop}>
                                 <div className={styles.titleContainer}>
-                                    <div className='fillWidth flex row' style={{ justifyContent: 'space-between' }}>
+                                    <div className='fillWidth flex row' style={{ justifyContent: 'space-between', height: 35 }}>
                                         <h2>{product.title}</h2>
                                         {session &&
                                             <HeartButton
@@ -303,6 +304,9 @@ export default withRouter(props => {
                                                 onClick={handleWishlist}
                                             />
                                         }
+                                    </div>
+                                    <div style={{ paddingTop: 3, paddingBottom: 8 }}>
+                                        <ProductTag product={product} />
                                     </div>
                                     {product.promotion &&
                                         <div

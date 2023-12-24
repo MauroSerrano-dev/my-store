@@ -14,6 +14,7 @@ import Link from 'next/link'
 import { motion } from 'framer-motion'
 import ColorLensOutlinedIcon from '@mui/icons-material/ColorLensOutlined'
 import { useAppContext } from '../contexts/AppContext'
+import { useState } from 'react'
 
 const OPTIONS = [
     { title: 'Dashboard', type: 'link', href: '/admin', icon: <EqualizerOutlinedIcon /> },
@@ -39,11 +40,13 @@ export default function AdminMenu(props) {
         router,
     } = useAppContext()
 
+    const [hover, setHover] = useState(false)
+
     return (
         <motion.div
             className={styles.container}
             initial='close'
-            animate={open ? 'open' : 'close'}
+            animate={(open || hover) ? 'open' : 'close'}
             variants={{
                 open: {
                     width: 'var(--admin-menu-width-open)',
@@ -52,6 +55,8 @@ export default function AdminMenu(props) {
                     width: 'var(--admin-menu-width-close)',
                 }
             }}
+            onMouseEnter={() => setHover(true)}
+            onMouseLeave={() => setHover(false)}
         >
             <div className={styles.options}>
                 {OPTIONS.map((option, i) =>
@@ -65,7 +70,7 @@ export default function AdminMenu(props) {
                         </p>
                         <p
                             style={{
-                                color: open ? undefined : 'transparent',
+                                color: (open || hover) ? undefined : 'transparent',
                                 transition: 'color ease-in-out 200ms'
                             }}
                         >

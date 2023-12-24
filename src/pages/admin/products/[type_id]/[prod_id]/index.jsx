@@ -1,20 +1,41 @@
-import styles from '@/styles/admin/index.module.css'
-import NoFound404 from '../../components/NoFound404';
+import styles from '@/styles/admin/products/type_id/prod_id/index.module.css'
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
+import NoFound404 from '@/components/NoFound404';
 import { isAdmin } from '@/utils/validations';
 import { useAppContext } from '@/components/contexts/AppContext';
 import { COMMON_TRANSLATES } from '@/consts';
+import { useEffect, useState } from 'react';
 
-export default function Admin(props) {
-    const {
-        total_products,
-    } = props
-
+export default function ProductsId() {
     const {
         auth,
         session,
-        adminMenuOpen,
+        router,
     } = useAppContext()
+
+    const [product, setProduct] = useState()
+
+    useEffect(() => {
+        if (router.isReady) {
+            getProductById(router.query.prod_id)
+        }
+    }, [router])
+
+    async function getProductById(id) {
+        const options = {
+            method: 'GET',
+            headers: {
+                authorization: process.env.NEXT_PUBLIC_APP_TOKEN,
+                id: id || '',
+            }
+        }
+        await fetch("/api/product", options)
+            .then(response => response.json())
+            .then(response => {
+                setProduct(response.product)
+            })
+            .catch(err => console.error(err))
+    }
 
     return (
         session === undefined
@@ -30,27 +51,14 @@ export default function Admin(props) {
                     <header>
                     </header>
                     <main className={styles.main}>
-                        <p>Total Products: {total_products}</p>
+                        {product?.id}
                     </main>
                 </div>
     )
 }
 export async function getServerSideProps({ locale }) {
-
-    const options = {
-        method: 'GET',
-        headers: {
-            authorization: process.env.NEXT_PUBLIC_APP_TOKEN
-        },
-    }
-    const products = await fetch(`${process.env.NEXT_PUBLIC_URL}/api/products/all-products`, options)
-        .then(response => response.json())
-        .then(response => response.products)
-        .catch(err => console.error(err))
-
     return {
         props: {
-            total_products: products.length,
             ...(await serverSideTranslations(locale, COMMON_TRANSLATES))
         }
     }

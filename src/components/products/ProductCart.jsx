@@ -161,14 +161,20 @@ export default function ProductCart(props) {
             <div className={styles.right}>
                 <div className={styles.rightLeft}>
                     <div className={styles.productName}>
-                        <Link href={`/product/${product.id}${COLOR.id !== product.default_variant.color_id && SIZE.id !== product.default_variant.size_id
-                            ? `?sz=${SIZE.title.toLowerCase()}&cl=${COLOR.id_string}`
-                            : SIZE.id !== product.default_variant.size_id
-                                ? `?sz=${SIZE.title.toLowerCase()}`
-                                : COLOR.id !== product.default_variant.color_id
-                                    ? `?cl=${COLOR.id_string}`
-                                    : ''
-                            } `}
+                        <Link
+                            href={`/product/${product.id}${COLOR.id !== product.default_variant.color_id && SIZE.id !== product.default_variant.size_id
+                                ? `?sz=${SIZE.title.toLowerCase()}&cl=${COLOR.id_string}`
+                                : SIZE.id !== product.default_variant.size_id
+                                    ? `?sz=${SIZE.title.toLowerCase()}`
+                                    : COLOR.id !== product.default_variant.color_id
+                                        ? `?cl=${COLOR.id_string}`
+                                        : ''
+                                } `
+                            }
+                            className='ellipsis'
+                            style={{
+                                fontWeight: 600,
+                            }}
                         >
                             {product.title}
                         </Link>

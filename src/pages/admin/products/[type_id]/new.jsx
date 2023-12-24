@@ -1,6 +1,6 @@
 import ImagesSliderEditable from '@/components/ImagesSliderEditable'
-import styles from '@/styles/admin/products/new/type.module.css'
-import { Checkbox, Slider } from '@mui/material'
+import styles from '@/styles/admin/products/type_id/new.module.css'
+import { Checkbox, FormControlLabel, Slider, Switch } from '@mui/material'
 import { useEffect, useState } from 'react'
 import { withRouter } from 'next/router'
 import { COLLECTIONS, TAGS_POOL, THEMES_POOL, PRODUCTS_TYPES, COLORS_POOL, SIZES_POOL, PROVIDERS_POOL, SEARCH_ART_COLORS, COMMON_TRANSLATES } from '@/consts'
@@ -22,6 +22,7 @@ import TextOutlinedInput from '@/components/material-ui/TextOutlinedInput'
 import { isAdmin } from '@/utils/validations'
 import { useAppContext } from '@/components/contexts/AppContext'
 import MyButton from '@/components/material-ui/MyButton'
+import { LoadingButton } from '@mui/lab'
 
 const INICIAL_PRODUCT = {
     id: '',
@@ -55,7 +56,7 @@ export default withRouter(() => {
     const [type, setType] = useState()
     const [colorsChained, setColorsChained] = useState([])
     const [sizesChained, setSizesChained] = useState({})
-    const [disableCreateButton, setDisableCreateButton] = useState(false)
+    const [loadingCreateButton, setLoadingCreateButton] = useState(false)
     const [artIdChained, setArtIdChained] = useState(true)
     const [artColorChained, setArtColorChained] = useState(true)
 
@@ -83,10 +84,10 @@ export default withRouter(() => {
     }, [router])
 
     async function createProduct() {
-        setDisableCreateButton(true)
+        setLoadingCreateButton(true)
 
         if (!isNewProductValid(product, images)) {
-            setDisableCreateButton(false)
+            setLoadingCreateButton(false)
             return
         }
 
@@ -105,6 +106,7 @@ export default withRouter(() => {
                 product: {
                     ...product_copy,
                     id: product.id + '-' + type.id,
+                    collection_id: product.collection_id || null,
                     type_id: type.id,
                     family_id: type.family_id,
                     blueprint_ids: type.blueprint_ids,
@@ -124,10 +126,10 @@ export default withRouter(() => {
                 response.status < 300
                     ? showToast({ type: 'success', msg: response.msg })
                     : showToast({ type: 'error', msg: response.msg })
-                router.push('/admin/products/new')
+                router.push(`/admin/products/${router.query.type_id}`)
             })
             .catch(err => {
-                setDisableCreateButton(false)
+                setLoadingCreateButton(false)
                 showToast({ type: 'error', msg: err })
             })
     }
@@ -458,10 +460,6 @@ export default withRouter(() => {
             setProduct(prev => ({ ...prev, id: value }))
     }
 
-    useEffect(() => {
-        console.log(product)
-    }, [product])
-
     return (
         session === undefined
             ? <div></div>
@@ -473,7 +471,17 @@ export default withRouter(() => {
                     <main className={styles.main}>
                         {type &&
                             <div className={styles.sectionsContainer}>
-                                <section className={styles.section}>
+                                <section className={`${styles.section} ${styles.one}`}>
+                                    <FormControlLabel
+                                        control={
+                                            <Switch
+                                                checked={!product.disabled}
+                                                onChange={event => updateProductField('disabled', !event.target.checked)}
+                                                color='success'
+                                            />
+                                        }
+                                        label="Visible"
+                                    />
                                     <div className='flex center fillWidth'>
                                         <TextOutlinedInput
                                             colorText='var(--color-success)'
@@ -779,9 +787,10 @@ export default withRouter(() => {
                                         </div>
                                     </section>
                                 }
-                                <MyButton
+                                <LoadingButton
                                     onClick={createProduct}
-                                    disabled={disableCreateButton}
+                                    variant='contained'
+                                    loading={loadingCreateButton}
                                     size='large'
                                     style={{
                                         width: '100%',
@@ -789,7 +798,7 @@ export default withRouter(() => {
                                     }}
                                 >
                                     Create Product
-                                </MyButton>
+                                </LoadingButton>
                             </div>
                         }
                     </main>

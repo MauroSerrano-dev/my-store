@@ -1,4 +1,4 @@
-import styles from '@/styles/admin/products/index.module.css'
+import styles from '@/styles/admin/products/type_id/index.module.css'
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import NoFound404 from '@/components/NoFound404';
 import { isAdmin } from '@/utils/validations';
@@ -66,7 +66,12 @@ export default function ProductsId() {
             ? <div></div>
             : session === null || !isAdmin(auth)
                 ? <NoFound404 />
-                : <div className={styles.container}>
+                : <div
+                    className={styles.container}
+                    style={{
+                        paddingLeft: 'calc(var(--admin-menu-width-close) + 2rem)',
+                    }}
+                >
                     <header>
                     </header>
                     <main className={styles.main}>
@@ -79,26 +84,31 @@ export default function ProductsId() {
                                     {product.title}
                                 </ProductAdmin>
                             )}
-                            {products && products?.length !== 0 &&
-                                <Pagination
-                                    size={mobile ? 'small' : 'large'}
-                                    count={lastPage}
-                                    color="primary"
-                                    page={Number(router.query.p || 1)}
-                                    renderItem={item => (
-                                        <PaginationItem
-                                            className={`${styles.pageButton} noUnderline`}
-                                            component={item.page === Number(router.query.p || 1) || item.page === 0 || item.page === lastPage + 1 ? null : Link}
-                                            href={{
-                                                pathname: router.pathname,
-                                                query: item.page === 1 ? getQueries({}, ['p']) : getQueries({ p: item.page })
-                                            }}
-                                            {...item}
-                                        />
-                                    )}
-                                />
-                            }
                         </div>
+                        {products && products?.length !== 0 &&
+                            <Pagination
+                                size={mobile ? 'small' : 'large'}
+                                count={lastPage}
+                                color="primary"
+                                page={Number(router.query.p || 1)}
+                                style={{
+                                    display: 'flex',
+                                    justifyContent: 'center',
+                                    alignItems: 'center'
+                                }}
+                                renderItem={item => (
+                                    <PaginationItem
+                                        className={`${styles.pageButton} noUnderline`}
+                                        component={item.page === Number(router.query.p || 1) || item.page === 0 || item.page === lastPage + 1 ? null : Link}
+                                        href={{
+                                            pathname: router.pathname,
+                                            query: item.page === 1 ? getQueries({}, ['p']) : getQueries({ p: item.page })
+                                        }}
+                                        {...item}
+                                    />
+                                )}
+                            />
+                        }
                         {router.query.type_id &&
                             <Link
                                 href={`/admin/products/${router.query.type_id}/new`}

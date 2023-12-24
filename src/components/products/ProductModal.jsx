@@ -140,7 +140,7 @@ export default function ProductModal(props) {
                                 : ''
                         }`}
                 >
-                    <h6>{product.title}</h6>
+                    <h6 className='ellipsisThree text-start'>{product.title}</h6>
                 </Link>
                 <div className={styles.infos}>
                     <p>
