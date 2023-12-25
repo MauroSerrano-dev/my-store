@@ -2555,7 +2555,8 @@ export function getShippingOptions(product_type, country) {
                 provider_id: 29,
                 first_item: 475,
                 add_item: 240,
-                tax: 114,
+                tax: 104,
+                add_tax: 87,
                 currency: 'usd'
             }
         }
@@ -2565,6 +2566,7 @@ export function getShippingOptions(product_type, country) {
                 first_item: 939,
                 add_item: 439,
                 tax: 0,
+                add_tax: 0,
                 currency: 'usd'
             }
         }
@@ -2574,6 +2576,7 @@ export function getShippingOptions(product_type, country) {
                 first_item: 499,
                 add_item: 119,
                 tax: 302,
+                add_tax: 302,
                 currency: 'usd'
             }
         }
@@ -2583,6 +2586,7 @@ export function getShippingOptions(product_type, country) {
                 first_item: 699,
                 add_item: 199,
                 tax: 298,
+                add_tax: 298,
                 currency: 'usd'
             }
         }
@@ -2592,6 +2596,7 @@ export function getShippingOptions(product_type, country) {
                 first_item: 1249,
                 add_item: 499,
                 tax: 0,
+                add_tax: 0,
                 currency: 'usd'
             }
         }
@@ -2601,6 +2606,7 @@ export function getShippingOptions(product_type, country) {
                 first_item: 569,
                 add_item: 199,
                 tax: 314,
+                add_tax: 314,
                 currency: 'usd'
             }
         }
@@ -2609,6 +2615,7 @@ export function getShippingOptions(product_type, country) {
             first_item: 1000,
             add_item: 400,
             tax: 0,
+            add_tax: 0,
             currency: 'usd'
         }
     }
@@ -2619,6 +2626,7 @@ export function getShippingOptions(product_type, country) {
                 first_item: 999,
                 add_item: 249,
                 tax: 238,
+                add_tax: 238,
                 currency: 'usd'
             }
         }
@@ -2628,6 +2636,7 @@ export function getShippingOptions(product_type, country) {
                 first_item: 1269,
                 add_item: 659,
                 tax: 0,
+                add_tax: 0,
                 currency: 'usd'
             }
         }
@@ -2637,6 +2646,7 @@ export function getShippingOptions(product_type, country) {
                 first_item: 699,
                 add_item: 239,
                 tax: 679,
+                add_tax: 679,
                 currency: 'usd'
             }
         }
@@ -2646,6 +2656,7 @@ export function getShippingOptions(product_type, country) {
                 first_item: 729,
                 add_item: 239,
                 tax: 587,
+                add_tax: 587,
                 currency: 'usd'
             }
         }
@@ -2655,6 +2666,7 @@ export function getShippingOptions(product_type, country) {
                 first_item: 2199,
                 add_item: 999,
                 tax: 0,
+                add_tax: 0,
                 currency: 'usd'
             }
         }
@@ -2664,6 +2676,7 @@ export function getShippingOptions(product_type, country) {
                 first_item: 699,
                 add_item: 239,
                 tax: 669,
+                add_tax: 669,
                 currency: 'usd'
             }
         }
@@ -2672,6 +2685,7 @@ export function getShippingOptions(product_type, country) {
             first_item: 1500,
             add_item: 1000,
             tax: 0,
+            add_tax: 0,
             currency: 'usd'
         }
     }
@@ -2682,6 +2696,7 @@ export function getShippingOptions(product_type, country) {
                 first_item: 519,
                 add_item: 219,
                 tax: 171,
+                add_tax: 171,
                 currency: 'usd'
             }
         }
@@ -2691,6 +2706,7 @@ export function getShippingOptions(product_type, country) {
                 first_item: 939,
                 add_item: 439,
                 tax: 0,
+                add_tax: 0,
                 currency: 'usd'
             }
         }
@@ -2700,6 +2716,7 @@ export function getShippingOptions(product_type, country) {
                 first_item: 479,
                 add_item: 99,
                 tax: 424,
+                add_tax: 424,
                 currency: 'usd'
             }
         }
@@ -2709,6 +2726,7 @@ export function getShippingOptions(product_type, country) {
                 first_item: 629,
                 add_item: 119,
                 tax: 550,
+                add_tax: 550,
                 currency: 'usd'
             }
         }
@@ -2718,6 +2736,7 @@ export function getShippingOptions(product_type, country) {
                 first_item: 1249,
                 add_item: 499,
                 tax: 0,
+                add_tax: 0,
                 currency: 'usd'
             }
         }
@@ -2727,6 +2746,7 @@ export function getShippingOptions(product_type, country) {
                 first_item: 749,
                 add_item: 129,
                 tax: 550,
+                add_tax: 550,
                 currency: 'usd'
             }
         }
@@ -2735,6 +2755,7 @@ export function getShippingOptions(product_type, country) {
             first_item: 1000,
             add_item: 400,
             tax: 0,
+            add_tax: 0,
             currency: 'usd'
         }
     }
@@ -2745,6 +2766,7 @@ export function getShippingOptions(product_type, country) {
                 first_item: 999,
                 add_item: 249,
                 tax: 191,
+                add_tax: 191,
                 currency: 'usd'
             }
         }
@@ -2754,6 +2776,7 @@ export function getShippingOptions(product_type, country) {
                 first_item: 1269,
                 add_item: 659,
                 tax: 0,
+                add_tax: 0,
                 currency: 'usd'
             }
         }
@@ -2763,6 +2786,7 @@ export function getShippingOptions(product_type, country) {
                 first_item: 729,
                 add_item: 239,
                 tax: 460,
+                add_tax: 460,
                 currency: 'usd'
             }
         }
@@ -2772,6 +2796,7 @@ export function getShippingOptions(product_type, country) {
                 first_item: 729,
                 add_item: 239,
                 tax: 529,
+                add_tax: 529,
                 currency: 'usd'
             }
         }
@@ -2781,6 +2806,7 @@ export function getShippingOptions(product_type, country) {
                 first_item: 2199,
                 add_item: 999,
                 tax: 0,
+                add_tax: 0,
                 currency: 'usd'
             }
         }
@@ -2790,6 +2816,7 @@ export function getShippingOptions(product_type, country) {
                 first_item: 699,
                 add_item: 239,
                 tax: 547,
+                add_tax: 547,
                 currency: 'usd'
             }
         }
@@ -2799,6 +2826,7 @@ export function getShippingOptions(product_type, country) {
                 first_item: 999,
                 add_item: 239,
                 tax: 642,
+                add_tax: 642,
                 currency: 'usd'
             }
         }
@@ -2807,6 +2835,7 @@ export function getShippingOptions(product_type, country) {
             first_item: 1500,
             add_item: 1000,
             tax: 0,
+            add_tax: 0,
             currency: 'usd'
         }
     }
@@ -2817,6 +2846,7 @@ export function getShippingOptions(product_type, country) {
                 first_item: 639,
                 add_item: 400,
                 tax: 92,
+                add_tax: 92,
                 currency: 'usd'
             }
         }
@@ -2826,6 +2856,7 @@ export function getShippingOptions(product_type, country) {
                 first_item: 1489,
                 add_item: 609,
                 tax: 0,
+                add_tax: 0,
                 currency: 'usd'
             }
         }
@@ -2835,6 +2866,7 @@ export function getShippingOptions(product_type, country) {
                 first_item: 659,
                 add_item: 199,
                 tax: 272,
+                add_tax: 272,
                 currency: 'usd'
             }
         }
@@ -2844,6 +2876,7 @@ export function getShippingOptions(product_type, country) {
                 first_item: 729,
                 add_item: 169,
                 tax: 250,
+                add_tax: 250,
                 currency: 'usd'
             }
         }
@@ -2853,6 +2886,7 @@ export function getShippingOptions(product_type, country) {
                 first_item: 729,
                 add_item: 169,
                 tax: 288,
+                add_tax: 288,
                 currency: 'usd'
             }
         }
@@ -2862,6 +2896,7 @@ export function getShippingOptions(product_type, country) {
                 first_item: 699,
                 add_item: 179,
                 tax: 281,
+                add_tax: 281,
                 currency: 'usd'
             }
         }
@@ -2871,6 +2906,7 @@ export function getShippingOptions(product_type, country) {
                 first_item: 1029,
                 add_item: 199,
                 tax: 372,
+                add_tax: 372,
                 currency: 'usd'
             }
         }
@@ -2879,6 +2915,7 @@ export function getShippingOptions(product_type, country) {
             first_item: 1359,
             add_item: 699,
             tax: 0,
+            add_tax: 0,
             currency: 'usd'
         }
     }
@@ -2889,6 +2926,7 @@ export function getShippingOptions(product_type, country) {
                 first_item: 639,
                 add_item: 359,
                 tax: 86,
+                add_tax: 86,
                 currency: 'usd'
             }
         }
@@ -2898,6 +2936,7 @@ export function getShippingOptions(product_type, country) {
                 first_item: 1149,
                 add_item: 599,
                 tax: 0,
+                add_tax: 0,
                 currency: 'usd'
             }
         }
@@ -2907,6 +2946,7 @@ export function getShippingOptions(product_type, country) {
                 first_item: 659,
                 add_item: 199,
                 tax: 291,
+                add_tax: 291,
                 currency: 'usd'
             }
         }
@@ -2916,6 +2956,7 @@ export function getShippingOptions(product_type, country) {
                 first_item: 729,
                 add_item: 169,
                 tax: 266,
+                add_tax: 266,
                 currency: 'usd'
             }
         }
@@ -2925,6 +2966,7 @@ export function getShippingOptions(product_type, country) {
                 first_item: 729,
                 add_item: 169,
                 tax: 307,
+                add_tax: 307,
                 currency: 'usd'
             }
         }
@@ -2934,6 +2976,7 @@ export function getShippingOptions(product_type, country) {
                 first_item: 699,
                 add_item: 179,
                 tax: 300,
+                add_tax: 300,
                 currency: 'usd'
             }
         }
@@ -2943,6 +2986,7 @@ export function getShippingOptions(product_type, country) {
                 first_item: 1029,
                 add_item: 199,
                 tax: 392,
+                add_tax: 392,
                 currency: 'usd'
             }
         }
@@ -2951,6 +2995,7 @@ export function getShippingOptions(product_type, country) {
             first_item: 1359,
             add_item: 699,
             tax: 0,
+            add_tax: 0,
             currency: 'usd'
         }
     }

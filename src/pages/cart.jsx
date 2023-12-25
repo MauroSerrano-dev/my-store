@@ -179,8 +179,8 @@ export default function Cart() {
             const values = getShippingOptions(item.type_id, userLocation.country)
             const result = acc + (
                 typesAlreadyIn.includes(item.type_id)
-                    ? (values.add_item * item.quantity) + values.tax
-                    : (values.first_item + values.add_item * (item.quantity - 1)) + values.tax
+                    ? ((values.add_item + values.add_tax) * item.quantity)
+                    : ((values.first_item + values.tax) + ((values.add_item + values.add_tax) * (item.quantity - 1)))
             )
             typesAlreadyIn.push(item.type_id)
             return result
@@ -265,7 +265,12 @@ export default function Cart() {
                                         value={{ id: userLocation.country, label: tCountries(userLocation.country) }}
                                         onChange={handleChangeCountrySelector}
                                         dark
-                                        className={styles.countryInput}
+                                        style={{
+                                            width: 210,
+                                        }}
+                                        popperStyle={{
+                                            width: 210,
+                                        }}
                                     />
                                 </div>
                                 <div className={styles.detailsItem}>
