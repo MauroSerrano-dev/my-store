@@ -6,8 +6,10 @@
     "order_status": "Consultar estado da encomenda",
     "order_problem": "Problema com uma encomenda",
     "account_problem": "Problema com a minha conta",
+    "report_bug": "Reportar um erro no Website",
     "other": "Outro",
     "order_id": "ID da Encomenda",
     "order_status_text": "Pode procurar o estado da encomenda em: ",
-    "selector_placeholder": "Escolha uma opção"
+    "selector_placeholder": "Escolha uma opção",
+    "check_your_email": "Confira o seu e-mail"
 }

@@ -6,6 +6,7 @@
     "order_status": "Consultar status do pedido",
     "order_problem": "Problema com um pedido",
     "account_problem": "Problema com minha conta",
+    "report_bug": "Reportar erro no Website",
     "other": "Outro",
     "order_id": "ID do Pedido",
     "order_status_text": "Você pode pesquisar o status do pedido em: ",

@@ -16,7 +16,6 @@ import { getAuth, createUserWithEmailAndPassword, sendEmailVerification, fetchSi
 import { firebaseConfig } from "../firebase.config"
 import { createCart, deleteCart } from "./cart"
 import { getCartSessionById, deleteCartSession } from "./cart-session"
-import { DEFAULT_PRODUCTS_TAGS } from "@/consts"
 import { createWishlist, deleteWishlist } from "./wishlists"
 import { newUserModel } from "@/utils/models"
 import Error from "next/error"
@@ -96,8 +95,6 @@ async function createNewUserWithCredentials(user, userLanguage) {
             last_name: user.last_name,
             cart_id: cart_id,
             wishlist_id: wishlist_id,
-            quests: [],
-            home_page_tags: DEFAULT_PRODUCTS_TAGS,
             email_verified: false,
         })
 
@@ -159,8 +156,6 @@ async function createNewUserWithGoogle(authUser, id, cart_cookie_id) {
                 last_name: lastName,
                 cart_id: cart_id,
                 wishlist_id: wishlist_id,
-                quests: [],
-                home_page_tags: DEFAULT_PRODUCTS_TAGS,
                 email_verified: authUser.emailVerified,
             })
 

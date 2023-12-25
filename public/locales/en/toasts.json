@@ -26,5 +26,12 @@
     "input_limit": "Maximum character limit reached",
     "error_creating_user": "Error creating new user",
     "solve_recaptcha": "Please solve the reCAPTCHA",
+    "missing_email": "Email not provided",
+    "missing_problem_description": "Problem description not provided",
+    "missing_order_id": "Order ID not provided",
+    "invalid_order_id": "Invalid order ID",
+    "invalid_order_id_for_this_user": "This order does not belong to this email",
+    "support_email_sent": "Support ticket successfully created",
+    "missing_subject": "Subject not provided",
     "account_with_this_email_recently_deleted": "Invalid e-mail. Account with this e-mail was recently deleted"
 }

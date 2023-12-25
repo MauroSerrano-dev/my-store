@@ -193,6 +193,7 @@ function getSubject(subject, language, ticket_id, custom_subject) {
   let options = {
     order_problem: `Technical Assistance: Order Problem - Ticket ID: ${ticket_id} `,
     account_problem: `Technical Assistance: Account Problem - Ticket ID: ${ticket_id} `,
+    report_bug: `Technical Assistance: Error on the Website - Ticket ID: ${ticket_id} `,
     other: `Technical Assistance: ${custom_subject} - Ticket ID: ${ticket_id} `,
   };
 
@@ -200,15 +201,8 @@ function getSubject(subject, language, ticket_id, custom_subject) {
     options = {
       order_problem: `Asistencia Técnica: Problema con un pedido - ID de Ticket: ${ticket_id} `,
       account_problem: `Asistencia Técnica: Problema con mi cuenta - ID de Ticket: ${ticket_id} `,
+      report_bug: `Asistencia Técnica: Error en el Sitio Web - ID de Ticket: ${ticket_id} `,
       other: `Asistencia Técnica: ${custom_subject} - ID de Ticket: ${ticket_id} `,
-    };
-  }
-
-  if (language === 'pt-BR') {
-    options = {
-      order_problem: `Assistência Técnica: Problema com um pedido - ID do Ticket: ${ticket_id}`,
-      account_problem: `Assistência Técnica: Problema com minha conta - ID do Ticket: ${ticket_id}`,
-      other: `Assistência Técnica: ${custom_subject} - ID do Ticket: ${ticket_id}`,
     };
   }
 
@@ -216,7 +210,17 @@ function getSubject(subject, language, ticket_id, custom_subject) {
     options = {
       order_problem: `Assistência Técnica: Problema com uma encomenda - ID do Bilhete: ${ticket_id}`,
       account_problem: `Assistência Técnica: Problema com a minha conta - ID do Bilhete: ${ticket_id}`,
+      report_bug: `Assistência Técnica: Erro no Website - ID do Bilhete: ${ticket_id}`,
       other: `Assistência Técnica: ${custom_subject} - ID do Bilhete: ${ticket_id}`,
+    };
+  }
+
+  if (language === 'pt-BR') {
+    options = {
+      order_problem: `Assistência Técnica: Problema com um pedido - ID do Ticket: ${ticket_id}`,
+      account_problem: `Assistência Técnica: Problema com minha conta - ID do Ticket: ${ticket_id}`,
+      report_bug: `Assistência Técnica: Erro no Website - ID do Ticket: ${ticket_id}`,
+      other: `Assistência Técnica: ${custom_subject} - ID do Ticket: ${ticket_id}`,
     };
   }
 

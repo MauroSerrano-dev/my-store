@@ -27,11 +27,13 @@ export default function TagsSelector(props) {
         options = [],
         name,
         value,
+        disabled
     } = props
 
     return (
         <Autocomplete
             multiple
+            disabled={disabled}
             options={options}
             onChange={onChange}
             value={value}

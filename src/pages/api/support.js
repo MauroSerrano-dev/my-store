@@ -55,6 +55,19 @@ export default async function handler(req, res) {
                 )
                 res.status(200).json({ message: 'support_email_sent' })
             }
+            if (option === 'report_bug') {
+                if (!fields.problem_description)
+                    res.status(400).json({ error: 'missing_problem_description' })
+                await sendSupportEmail(
+                    {
+                        customer_email: fields.email,
+                        subject: option,
+                        customer_problem_description: fields.problem_description,
+                        user_language: user_language,
+                    }
+                )
+                res.status(200).json({ message: 'support_email_sent' })
+            }
             if (option === 'other') {
                 if (!fields.subject)
                     res.status(400).json({ error: 'missing_subject' })

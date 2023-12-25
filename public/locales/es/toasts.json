@@ -26,5 +26,12 @@
     "input_limit": "Se ha alcanzado el límite máximo de caracteres",
     "error_creating_user": "Error al crear nuevo usuario",
     "solve_recaptcha": "Por favor, resuelve el reCAPTCHA",
+    "missing_email": "Correo electrónico no proporcionado",
+    "missing_problem_description": "Descripción del problema no proporcionada",
+    "missing_order_id": "ID de pedido no proporcionado",
+    "invalid_order_id": "ID de pedido inválido",
+    "invalid_order_id_for_this_user": "Este pedido no pertenece a este correo electrónico",
+    "support_email_sent": "Ticket de soporte creado con éxito",
+    "missing_subject": "Asunto no proporcionado",
     "account_with_this_email_recently_deleted": "Correo electrónico inválido. Cuenta con este correo electrónico fue eliminada recientemente"
 }

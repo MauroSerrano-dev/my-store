@@ -204,7 +204,8 @@ export function AppProvider({ children }) {
         signInWithEmailAndPassword(auth, email, password)
             .then(authRes => {
                 showToast({ type: 'success', msg: tToasts('success_login', { user_name: authRes.user.displayName }), time: 2000 })
-                router.push('/')
+                if (router.pathname === '/login' || router.pathname === '/signin')
+                    router.push('/')
             })
             .catch(error => {
                 setLoading(false)
@@ -457,7 +458,8 @@ export function AppProvider({ children }) {
                 setBlockInteractions,
                 userLocation,
                 setUserLocation,
-            }}
+            }
+            }
         >
             <motion.div
                 className={styles.container}
@@ -572,7 +574,8 @@ export function AppProvider({ children }) {
                 style={{ color: 'white' }}
                 pauseOnFocusLoss={false}
             />
-            {blockInteractions &&
+            {
+                blockInteractions &&
                 <div
                     style={{
                         position: 'fixed',
@@ -584,7 +587,8 @@ export function AppProvider({ children }) {
                     }}>
                 </div>
             }
-            {loading &&
+            {
+                loading &&
                 <motion.div
                     variants={{
                         hidden: {
@@ -628,7 +632,7 @@ export function AppProvider({ children }) {
                     />
                 </motion.div>
             }
-        </AppContext.Provider>
+        </AppContext.Provider >
     )
 }
 

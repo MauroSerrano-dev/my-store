@@ -15,6 +15,7 @@ import Modal from '@/components/Modal'
 import { LoadingButton } from '@mui/lab'
 import { SlClose } from "react-icons/sl";
 import MyButton from '@/components/material-ui/MyButton'
+import { FormControlLabel, Switch } from '@mui/material'
 
 const TAGS_MIN_LIMIT = 3
 const TAGS_MAX_LIMIT = 8
@@ -57,6 +58,11 @@ export default function Profile() {
         setUser(prev => ({ ...prev, [fieldName]: value }))
     }
 
+    function handleCustomHomePage(fieldName, value) {
+        setDisableSaveButton(false)
+        setUser(prev => ({ ...prev, custom_home_page: { ...prev.custom_home_page, [fieldName]: value } }))
+    }
+
     function handleSendVerificationEmail() {
         if (verificationEmailSent === 'custom_msg') {
             setVerificationEmailSent(true)
@@ -97,7 +103,7 @@ export default function Profile() {
             showToast({ msg: tProfile('no_changes_toast') })
             return
         }
-        if (user.home_page_tags.length < TAGS_MIN_LIMIT) {
+        if (user.custom_home_page.tags.length < TAGS_MIN_LIMIT) {
             showToast({ type: 'error', msg: 'You must have at least 3 keywords.' })
             return
         }
@@ -238,13 +244,31 @@ export default function Profile() {
                                 </div>
                                 <div className={styles.right}>
                                     <div className={styles.field}>
-                                        <h3>{tProfile('customize_title')}</h3>
+                                        <div className='flex row center'>
+                                            <FormControlLabel
+                                                control={
+                                                    <Switch
+                                                        checked={user.custom_home_page.active}
+                                                        onChange={event => handleCustomHomePage('active', event.target.checked)}
+                                                        color='success'
+                                                    />
+                                                }
+                                                componentsProps={{
+                                                    typography: {
+                                                        fontSize: 18,
+                                                        fontWeight: 700
+                                                    }
+                                                }}
+                                                label={tProfile('customize_title')}
+                                            />
+                                        </div>
                                         <p style={{ textAlign: 'start' }}>{tProfile('customize_p_start')}<b>{tProfile('customize_p_middle', { min: TAGS_MIN_LIMIT, max: TAGS_MAX_LIMIT })}</b>{tProfile('customize_p_end')}</p>
-                                        <p>{tProfile('Chosen')}: <b style={{ color: 'var(--primary)' }}>{user.home_page_tags.length}/{TAGS_MAX_LIMIT}</b></p>
+                                        <p>{tProfile('Chosen')}: <b style={{ color: 'var(--primary)' }}>{user.custom_home_page.tags.length}/{TAGS_MAX_LIMIT}</b></p>
                                         <TagsSelector
+                                            disabled={!user.custom_home_page.active}
                                             options={USER_CUSTOMIZE_HOME_PAGE.map(theme => theme.id)}
                                             label={tProfile('Keywords')}
-                                            value={user.home_page_tags}
+                                            value={user.custom_home_page.tags}
                                             sx={{
                                                 width: '100%'
                                             }}
@@ -252,7 +276,7 @@ export default function Profile() {
                                                 if (value.length > TAGS_MAX_LIMIT)
                                                     showToast({ type: 'error', msg: tProfile('max_keywords_toast') })
                                                 else
-                                                    handleChanges('home_page_tags', value)
+                                                    handleCustomHomePage('tags', value)
                                             }}
                                         />
                                     </div>
