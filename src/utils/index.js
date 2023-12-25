@@ -3,7 +3,7 @@ import en from 'date-fns/locale/en-US'
 import es from 'date-fns/locale/es'
 import ptBR from 'date-fns/locale/pt-BR'
 import ptPT from 'date-fns/locale/pt'
-import { LIMITS } from '@/consts';
+import { LIMITS, PRODUCTS_TYPES } from '@/consts';
 import Error from 'next/error';
 
 
@@ -99,4 +99,12 @@ export function convertTimestampToFormatDateNoYear(timestamp, locale) {
     }
 
     return format(date, model, { locale: selectedLocale })
+}
+
+export function getProductVariantsInfos(product) {
+    return product.variants.map(vari => ({ ...PRODUCTS_TYPES.find(type => type.id === product?.type_id).variants.find(va => va.id === vari.id), ...vari }))
+}
+
+export function getProductVariantInfo(variant, productType) {
+    return { ...PRODUCTS_TYPES.find(type => type.id === productType).variants.find(va => va.id === variant.id), ...variant }
 }

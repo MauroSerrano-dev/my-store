@@ -11,6 +11,7 @@ import { showToast } from '@/utils/toasts'
 import { useAppContext } from '../contexts/AppContext'
 import MyButton from '@/components/material-ui/MyButton'
 import EditOutlinedIcon from '@mui/icons-material/EditOutlined'
+import { getProductVariantsInfos } from '@/utils'
 
 /**
  * @param {object} props - Component props.
@@ -60,7 +61,14 @@ export default function ProductAdmin(props) {
     const productRef = useRef(null)
     const bottomHoverRef = useRef(null)
 
-    const [currentVariant, setCurrentVariant] = useState(inicialVariantId ? product.variants.find(vari => vari.id === inicialVariantId) : product.variants[0])
+    const PRODUCTS_VARIANTS_INFO = getProductVariantsInfos(product)
+
+    const [currentVariant, setCurrentVariant] = useState(
+        inicialVariantId
+            ? PRODUCTS_VARIANTS_INFO.find(vari => vari.id === inicialVariantId)
+            : PRODUCTS_VARIANTS_INFO[0]
+    )
+
     const [isDraggingColors, setIsDraggingColors] = useState(false)
 
     const [imageLoad, setImageLoad] = useState(false)
