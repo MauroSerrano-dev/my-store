@@ -129,12 +129,12 @@ export default function Orders() {
                                                 {!!order.payment_details.refund &&
                                                     <div className={styles.detailsBodyRightItem}>
                                                         <p>Refund:</p>
-                                                        <p>-{currencies[order.payment_details.currency].symbol} {(order.payment_details.refund / 100).toFixed(2)}</p>
+                                                        <p>-{currencies[order.payment_details.currency].symbol} {(order.payment_details.refund.amount / 100).toFixed(2)}</p>
                                                     </div>
                                                 }
                                                 <div className={styles.detailsBodyRightItem}>
                                                     <p style={{ fontWeight: 600 }}>Total:</p>
-                                                    <p style={{ fontWeight: 600 }}>{currencies[order.payment_details.currency].symbol} {((order.payment_details.total - (order.payment_details.refund || 0)) / 100).toFixed(2)}</p>
+                                                    <p style={{ fontWeight: 600 }}>{currencies[order.payment_details.currency].symbol} {((order.payment_details.total - (order.payment_details.refund?.amount || 0)) / 100).toFixed(2)}</p>
                                                 </div>
                                             </div>
                                         </div>
@@ -155,7 +155,7 @@ export default function Orders() {
                                                     RECIBO
                                                 </MyButton>
                                             </Link>
-                                            {order.track_details && order.status !== 'shipment-delivered' && order.status !== 'canceled' && order.status !== 'refunded' &&
+                                            {order.track_details && order.products.some(prod => prod.status !== 'shipment-delivered' && prod.status !== 'canceled' && prod.status !== 'refunded') &&
                                                 <Link
                                                     className='noUnderline'
                                                     href={order.track_details.url}
@@ -168,7 +168,8 @@ export default function Orders() {
                                                         style={{
                                                             width: '100%',
                                                         }}
-                                                    >                                                        ACOMPANHAR PEDIDO
+                                                    >
+                                                        ACOMPANHAR PEDIDO
                                                     </MyButton>
                                                 </Link>
                                             }
@@ -181,7 +182,8 @@ export default function Orders() {
                                                     style={{
                                                         width: '100%',
                                                     }}
-                                                >                                                    OBTER SUPORTE
+                                                >
+                                                    OBTER SUPORTE
                                                 </MyButton>
                                             </Link>
                                         </div>
@@ -249,20 +251,8 @@ export default function Orders() {
                                                             {prod.title}
                                                         </Link>
                                                         <ProductTag product={prod} />
-                                                        {(prod.status === 'canceled' || prod.status === 'refunded') || windowWidth < 1075 &&
-                                                            <span
-                                                                style={{
-                                                                    color: (prod.status === 'canceled' || prod.status === 'refunded')
-                                                                        ? 'var(--color-error)'
-                                                                        : 'var(--primary)',
-                                                                    fontWeight: 600,
-                                                                    fontSize: 14
-                                                                }}>
-                                                                {tOrders(prod.status)}
-                                                            </span>
-                                                        }
                                                         {prod.status === 'canceled' && <span style={{ color: 'var(--color-error)', fontWeight: 600 }}>{tOrders('canceled')}</span>}
-                                                        {prod.status === 'refunded' && <span style={{ color: 'var(--color-error)', fontWeight: 600 }}>{tOrders('refunded')}</span>}
+                                                        {prod.status === 'refunded' && <span style={{ color: 'var(--color-warning)', fontWeight: 600 }}>{tOrders('refunded')}</span>}
                                                         <p className={styles.productItem}>Color: <span style={{ fontWeight: 600 }}>{tColors(COLORS_POOL[prod.variant.color_id].id_string)}</span></p>
                                                         <p className={styles.productItem}>Size: <span style={{ fontWeight: 600 }}>{SIZES_POOL.find(sz => sz.id === prod.variant.size_id).title}</span></p>
                                                         <p className={styles.productItem}>Quantity: <span style={{ fontWeight: 600 }}>{prod.quantity}</span></p>
@@ -290,7 +280,7 @@ export default function Orders() {
                             </div>
                         }
                         <Footer />
-                    </div>
+                    </div >
     )
 }
 

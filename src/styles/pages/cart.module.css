@@ -159,10 +159,6 @@
     font-weight: 700;
 }
 
-.countryInput {
-    width: 210px;
-}
-
 /* Mobile and Tablet */
 @media (max-width: 1074.5px) {
     .main {

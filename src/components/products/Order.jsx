@@ -84,7 +84,7 @@ export default function Order(props) {
                                     {tOrders('total')}
                                 </p>
                                 <p style={{ textAlign: 'start' }}>
-                                    {`${currencies[order.payment_details.currency].symbol} ${(order.payment_details.total / 100).toFixed(2)}`}
+                                    {`${currencies[order.payment_details.currency].symbol} ${((order.payment_details.total - (order.payment_details.refund?.amount || 0)) / 100).toFixed(2)}`}
                                 </p>
                             </div>
                             <div className={styles.leftBlock}>
@@ -239,6 +239,7 @@ export default function Order(props) {
                                                 color: 'var(--color-error)',
                                                 fontSize: 17,
                                                 textAlign: 'start',
+                                                fontWeight: 500,
                                             }}>
                                             {tOrders('canceled')}
                                         </p>
@@ -249,6 +250,7 @@ export default function Order(props) {
                                                 color: 'var(--color-warning)',
                                                 fontSize: 17,
                                                 textAlign: 'start',
+                                                fontWeight: 500,
                                             }}>
                                             {tOrders('refunded')}
                                         </p>
