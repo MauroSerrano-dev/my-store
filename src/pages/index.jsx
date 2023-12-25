@@ -76,7 +76,7 @@ export default function Home() {
 
   async function getProductsFromCategories() {
     //tem que ser na mesma ordem que está no HTML
-    (session?.home_page_tags || DEFAULT_PRODUCTS_TAGS).forEach(async (tag, i) => {
+    (session && session.custom_home_page.active ? session.custom_home_page.tags : DEFAULT_PRODUCTS_TAGS).forEach(async (tag, i) => {
       setStates[i].set(await getProductsByTagOrType(USER_CUSTOMIZE_HOME_PAGE.find(ele => ele.id === tag)))
     })
   }
@@ -232,7 +232,7 @@ export default function Home() {
             </div>
           </div>
           {setStates.map((state, i) =>
-            (session?.home_page_tags || DEFAULT_PRODUCTS_TAGS)[i] &&
+            (session && session.custom_home_page.active ? session.custom_home_page.tags : DEFAULT_PRODUCTS_TAGS)[i] &&
             <div
               className={styles.carouselAndTitle}
               key={i}
@@ -240,7 +240,7 @@ export default function Home() {
               <h2 className={styles.carouselTitle}>
                 {session === undefined
                   ? ''
-                  : tCommon(USER_CUSTOMIZE_HOME_PAGE.find(ele => ele.id === (session?.home_page_tags || DEFAULT_PRODUCTS_TAGS)[i])?.id)
+                  : tCommon(USER_CUSTOMIZE_HOME_PAGE.find(ele => ele.id === (session && session.custom_home_page.active ? session.custom_home_page.tags : DEFAULT_PRODUCTS_TAGS)[i])?.id)
                 }
               </h2>
               <CarouselProducts

@@ -143,7 +143,7 @@ export default function Support() {
                         </h1>
                         <Selector
                             styleForm={{
-                                maxWidth: '290px'
+                                maxWidth: '320px'
                             }}
                             onChange={handleSelector}
                             value={option}
@@ -152,6 +152,7 @@ export default function Support() {
                                 { value: 'order_status', name: tSupport('order_status') },
                                 { value: 'order_problem', name: tSupport('order_problem') },
                                 { value: 'account_problem', name: tSupport('account_problem') },
+                                { value: 'report_bug', name: tSupport('report_bug') },
                                 { value: 'other', name: tSupport('other') },
                             ]}
                         />
@@ -310,6 +311,60 @@ export default function Support() {
                                     }}
                                 >
                                     Send
+                                </LoadingButton>
+                            </motion.div>
+                        }
+                        {option === 'report_bug' &&
+                            <motion.div
+                                className={styles.innerMainBody}
+                                initial='hidden'
+                                animate='visible'
+                                variants={{
+                                    hidden: {
+                                        opacity: 0,
+                                    },
+                                    visible: {
+                                        opacity: 1,
+                                        transition: {
+                                            delay: 0.2,
+                                        }
+                                    }
+                                }}
+                            >
+                                <TextInput
+                                    label={tCommon('e-mail')}
+                                    value={fields.email}
+                                    limti={LIMITS.input_email}
+                                    onChange={event => setFields(prev => ({ ...prev, email: event.target.value }))}
+                                />
+                                <TextInput
+                                    label={tSupport('problem_description')}
+                                    multiline
+                                    minRows={7}
+                                    value={fields.problem_description}
+                                    limit={570}
+                                    onChange={event => setFields(prev => ({ ...prev, problem_description: event.target.value }))}
+                                />
+                                <ReCAPTCHA
+                                    sitekey={process.env.NEXT_PUBLIC_RE_CAPTCHA_KEY}
+                                    onChange={userToken => handleReCaptchaSuccess(userToken, setReCaptchaSolve)}
+                                    onExpired={() => handleReCaptchaError(setReCaptchaSolve)}
+                                    onErrored={() => handleReCaptchaError(setReCaptchaSolve)}
+                                    hl={i18n.language}
+                                    theme="dark"
+                                    className='reCaptcha'
+                                />
+                                <LoadingButton
+                                    variant='contained'
+                                    onClick={submit}
+                                    loading={submiting}
+                                    sx={{
+                                        width: '100%',
+                                        maxWidth: '600px',
+                                        fontWeight: 600,
+                                    }}
+                                >
+                                    {tSupport('send')}
                                 </LoadingButton>
                             </motion.div>
                         }

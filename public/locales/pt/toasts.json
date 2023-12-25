@@ -26,5 +26,12 @@
     "input_limit": "Limite máximo de caracteres atingido.",
     "error_creating_user": "Erro ao criar novo utilizador",
     "solve_recaptcha": "Por favor, resolva o reCAPTCHA",
+    "missing_email": "E-mail não fornecido",
+    "missing_problem_description": "Descrição do problema não fornecida",
+    "missing_order_id": "ID da encomenda não fornecido",
+    "invalid_order_id": "ID da encomenda inválido",
+    "invalid_order_id_for_this_user": "Esta encomenda não pertence a este e-mail",
+    "support_email_sent": "Bilhete de suporte criado com sucesso",
+    "missing_subject": "Assunto não fornecido",
     "account_with_this_email_recently_deleted": "Email inválido. Conta com este email foi recentemente apagada"
 }

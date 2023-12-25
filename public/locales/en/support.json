@@ -6,8 +6,10 @@
     "order_status": "Consult order status",
     "order_problem": "Problem with an order",
     "account_problem": "Problem with my account",
+    "report_bug": "Report an error on the Website",
     "other": "Other",
     "order_id": "Order ID",
     "order_status_text": "You can search the order status in: ",
-    "selector_placeholder": "Choose an option"
+    "selector_placeholder": "Choose an option",
+    "check_your_email": "Check your email"
 }

@@ -27,7 +27,7 @@ export default function GoogleButton(props) {
             .then(response => {
                 setShowLoadingScreen(true)
                 showToast({ type: 'success', msg: tToasts('success_login', { user_name: response.user.displayName }), time: 2000 })
-                if (router.pathname !== '/')
+                if (router.pathname === '/login' || router.pathname === '/signin')
                     router.push('/')
             })
             .catch(error => {

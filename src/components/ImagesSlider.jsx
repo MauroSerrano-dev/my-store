@@ -1,5 +1,5 @@
 import styles from '@/styles/components/ImagesSlider.module.css'
-import { useEffect, useRef, useState } from 'react'
+import { useRef, useState } from 'react'
 import { motion } from 'framer-motion';
 import { useAppContext } from './contexts/AppContext';
 import Image from 'next/image';
@@ -136,10 +136,6 @@ export default function ImagesSlider(props) {
             }
         }
     }
-
-    useEffect(() => {
-        console.log(imagesLoad)
-    }, [imagesLoad])
 
     return (
         <div
