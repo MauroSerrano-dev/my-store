@@ -1,4 +1,4 @@
-import { DEFAULT_LANGUAGE } from "@/consts";
+import { DEFAULT_LANGUAGE, PRODUCTS_TYPES } from "@/consts";
 import { isTokenValid } from "@/utils/auth";
 import axios from 'axios'
 import { getDisabledProducts } from "../../../backend/product";
@@ -38,7 +38,8 @@ export default async function handler(req, res) {
     let outOfStock = []
 
     const asyncRequests = cartItems.map(async item => {
-      const base_url_print = `https://api.printify.com/v1/catalog/blueprints/${item.blueprint_ids[item.provider_id]}/print_providers/${item.provider_id}/variants.json?show-out-of-stock=0`
+      const blueprint_id = PRODUCTS_TYPES.find(type => type.id === item.type_id).blueprint_ids[item.provider_id]
+      const base_url_print = `https://api.printify.com/v1/catalog/blueprints/${blueprint_id}/print_providers/${item.provider_id}/variants.json?show-out-of-stock=0`
       const headers_print = { Authorization: process.env.PRINTIFY_ACCESS_TOKEN }
       const print_res = await axios.get(base_url_print, { headers: headers_print })
       if (print_res.data.variants.every(vari => vari.id !== item.variant_id_printify))

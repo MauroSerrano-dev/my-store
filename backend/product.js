@@ -121,7 +121,6 @@ async function getProductsInfo(products) {
                 title: product.title,
                 promotion: product.promotion,
                 printify_ids: product.printify_ids,
-                blueprint_ids: product.blueprint_ids,
                 variant: variant,
                 default_variant: {
                     color_id: product.variants[0].color_id,

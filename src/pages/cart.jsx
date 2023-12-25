@@ -1,6 +1,6 @@
 import ProductCart from '@/components/products/ProductCart'
 import styles from '@/styles/pages/cart.module.css'
-import { CART_COOKIE, COLORS_POOL, COMMON_TRANSLATES, DEFAULT_LANGUAGE, LIMITS, SIZES_POOL, getShippingOptions } from '@/consts'
+import { CART_COOKIE, COLORS_POOL, COMMON_TRANSLATES, DEFAULT_LANGUAGE, LIMITS, PRODUCTS_TYPES, SIZES_POOL, getShippingOptions } from '@/consts'
 import COUNTRIES_POOL from '../../public/locales/en/countries.json'
 import { useEffect, useState } from 'react'
 import Selector from '@/components/material-ui/Selector'
@@ -87,7 +87,6 @@ export default function Cart() {
                         quantity: prod.quantity,
                         title: prod.title,
                         image: prod.image,
-                        blueprint_ids: prod.blueprint_ids,
                         description: `${tCommon(prod.type_id)} ${tColors(COLORS_POOL[prod.variant.color_id].id_string)} / ${tCommon(SIZES_POOL.find(sz => sz.id === prod.variant.size_id).title)}`,
                         id_printify: prod.printify_ids[shippingOption.provider_id],
                         provider_id: shippingOption.provider_id,

@@ -109,7 +109,6 @@ export default withRouter(() => {
                     collection_id: product.collection_id || null,
                     type_id: type.id,
                     family_id: type.family_id,
-                    blueprint_ids: type.blueprint_ids,
                     title_lower_case: product.title.toLowerCase(),
                     colors_ids: product.colors.map(color => color.id),
                     sizes_ids: SIZES_POOL.map(size => size.id).filter(sz_id => product.sizes.some(sz => sz.id === sz_id)),
