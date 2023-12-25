@@ -52,7 +52,7 @@ export default function Home() {
   ]
 
   useEffect(() => {
-    if (session !== undefined)
+    if (session !== undefined && !productsOne)
       getProductsFromCategories()
   }, [session])
 

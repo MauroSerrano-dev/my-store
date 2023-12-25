@@ -12,7 +12,7 @@
     transition: scale 100ms ease-out;
 }
 
-.container:active {
+.container:has(a:active) {
     scale: 0.97;
 }
 

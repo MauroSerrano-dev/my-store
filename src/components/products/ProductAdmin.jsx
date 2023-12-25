@@ -107,7 +107,7 @@ export default function ProductAdmin(props) {
     function handleMouseUpColor(event, color) {
         event.stopPropagation()
         event.preventDefault()
-        setCurrentVariant(product.variants.find(vari => vari.color_id === color.id))
+        setCurrentVariant(PRODUCTS_VARIANTS_INFO.find(vari => vari.color_id === color.id))
     }
 
     function handleBottomHoverClick(event) {
