@@ -12,9 +12,9 @@ import ClearRoundedIcon from '@mui/icons-material/ClearRounded'
 import Chain from '@/components/svgs/Chain'
 import BrokeChain from '@/components/svgs/BrokeChain'
 import ButtonIcon from '@/components/material-ui/ButtonIcon'
-import ImagesSlider from '@/components/ImagesSlider'
+import ImagesSliderEditable from '@/components/ImagesSliderEditable'
 import { showToast } from '@/utils/toasts'
-import { getObjectsDiff } from '@/utils'
+import { getObjectsDiff, getProductVariantInfo } from '@/utils'
 import Head from 'next/head'
 import Selector from '@/components/material-ui/Selector'
 import { isNewProductValid } from '@/utils/edit-product'
@@ -85,8 +85,9 @@ export default withRouter(() => {
                 setColorsChained(product.colors_ids)
 
             setSizesChained(product.colors_ids.reduce((acc, cl) => ({ ...acc, [cl]: [] }), {}))
-            setInicialProduct(product)
-            setProduct(product)
+
+            setInicialProduct({ ...product, variants: product.variants.map(vari => getProductVariantInfo(vari, product.type_id)) })
+            setProduct({ ...product, variants: product.variants.map(vari => getProductVariantInfo(vari, product.type_id)) })
             setImages(product.images.reduce((acc, image) => acc[image.color_id] === undefined ? { ...acc, [image.color_id]: product.images.filter(img => img.color_id === image.color_id) } : acc, {}))
         }
     }
@@ -281,6 +282,7 @@ export default withRouter(() => {
             const newMinPrice = product.variants.reduce((acc, vari) => acc < vari.price ? acc : vari.price, product.variants[0].price)
             const newProduct = {
                 ...product,
+                variants: product.variants.map(vari => ({ id: vari.id, art: vari.art, sales: vari.sales, price: vari.price })),
                 promotion: product.promotion
                     ? { ...product.promotion, min_price_original: newMinPrice }
                     : null,
@@ -529,7 +531,7 @@ export default withRouter(() => {
                                         <Selector
                                             label='Collection'
                                             options={COLLECTIONS.map(coll => ({ value: coll.id, name: coll.title }))}
-                                            value={product.collection_id}
+                                            value={product.collection_id || ''}
                                             style={{
                                                 height: 56,
                                             }}
@@ -748,7 +750,7 @@ export default withRouter(() => {
                                                 Preview
                                             </h3>
                                             {images?.[product?.colors_ids?.[colorIndex]] &&
-                                                <ImagesSlider
+                                                <ImagesSliderEditable
                                                     images={Object.keys(images).reduce((acc, key) => acc.concat(images[key]), [])}
                                                     currentColor={COLORS_POOL[product.colors_ids[colorIndex]]}
                                                     colors={COLORS}

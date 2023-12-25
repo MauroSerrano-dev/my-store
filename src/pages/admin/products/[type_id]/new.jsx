@@ -109,13 +109,12 @@ export default withRouter(() => {
                     collection_id: product.collection_id || null,
                     type_id: type.id,
                     family_id: type.family_id,
-                    blueprint_ids: type.blueprint_ids,
                     title_lower_case: product.title.toLowerCase(),
                     colors_ids: product.colors.map(color => color.id),
                     sizes_ids: SIZES_POOL.map(size => size.id).filter(sz_id => product.sizes.some(sz => sz.id === sz_id)),
                     min_price: product.variants.reduce((acc, vari) => acc < vari.price ? acc : vari.price, product.variants[0].price),
                     images: product.colors.reduce((acc, color) => acc.concat(images[color.id].map(img => ({ src: img.src, color_id: img.color_id }))), []),
-                    variants: product.variants.map(vari => ({ ...vari, sales: 0 })),
+                    variants: product.variants.map(vari => ({ id: vari.id, art: vari.art, sales: 0, price: vari.price })),
                     promotion: null,
                 }
             })
@@ -166,7 +165,19 @@ export default withRouter(() => {
                         .concat(
                             type.variants
                                 .filter(vari => color.id === vari.color_id && prev.sizes.some(sz => sz.id === vari.size_id))
-                                .map(vari => ({ ...vari, art: { id: artIdChained ? prev.id : '', color_id: artColorChained && prev.variants.length > 0 ? prev.variants[0].art.color_id : null } }))
+                                .map(vari => (
+                                    {
+                                        ...vari,
+                                        price: vari.inicial_price,
+                                        art: {
+                                            id: artIdChained
+                                                ? prev.id : '',
+                                            color_id: artColorChained && prev.variants.length > 0
+                                                ? prev.variants[0].art.color_id
+                                                : null
+                                        }
+                                    }
+                                ))
                         )
                 }
             }
@@ -221,7 +232,19 @@ export default withRouter(() => {
                         .concat(
                             type.variants
                                 .filter(vari => size.id === vari.size_id && prev.colors.some(cl => cl.id === vari.color_id))
-                                .map(vari => ({ ...vari, art: { id: artIdChained ? prev.id : '', color_id: artColorChained && prev.variants.length > 0 ? prev.variants[0].art.color_id : null } }))
+                                .map(vari => (
+                                    {
+                                        ...vari,
+                                        price: vari.inicial_price,
+                                        art: {
+                                            id: artIdChained
+                                                ? prev.id
+                                                : '', color_id: artColorChained && prev.variants.length > 0
+                                                    ? prev.variants[0].art.color_id
+                                                    : null
+                                        }
+                                    }
+                                ))
                         )
                 }
                 // remove size

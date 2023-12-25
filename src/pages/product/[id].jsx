@@ -28,6 +28,7 @@ import { SlClose } from 'react-icons/sl'
 import { LoadingButton } from '@mui/lab'
 import ZoneConverter from '@/utils/country-zone.json'
 import ProductTag from '@/components/ProductTag'
+import { getProductVariantsInfos } from '@/utils'
 
 export default withRouter(props => {
     const {
@@ -67,7 +68,9 @@ export default withRouter(props => {
     const [shippingValue, setShippingValue] = useState(0)
     const [disableCheckoutButton, setDisableCheckoutButton] = useState(false)
 
-    const productCurrentVariant = product?.variants.find(vari => vari.size_id === currentSize?.id && vari.color_id === currentColor?.id)
+    const PRODUCTS_VARIANTS_INFO = getProductVariantsInfos(product)
+
+    const productCurrentVariant = PRODUCTS_VARIANTS_INFO.find(vari => vari.size_id === currentSize?.id && vari.color_id === currentColor?.id)
 
     const PRODUCT_PRICE = product && userCurrency && productCurrentVariant ? getProductPriceUnit(product, productCurrentVariant, userCurrency.rate) : undefined
 
@@ -109,7 +112,6 @@ export default withRouter(props => {
                     quantity: 1,
                     title: product.title,
                     image: product.images.find(img => img.color_id === productCurrentVariant.color_id),
-                    blueprint_ids: product.blueprint_ids,
                     description: `${tCommon(product.type_id)} ${tColors(currentColor.id_string)} / ${currentSize.title}`,
                     id_printify: product.printify_ids[shippingOption.provider_id],
                     provider_id: shippingOption.provider_id,
@@ -141,7 +143,7 @@ export default withRouter(props => {
 
     function handleAddToCart() {
         if (cart) {
-            const prodVariant = product.variants.find(vari => vari.size_id === currentSize.id && vari.color_id === currentColor.id)
+            const prodVariant = PRODUCTS_VARIANTS_INFO.find(vari => vari.size_id === currentSize.id && vari.color_id === currentColor.id)
 
             setLoading(true)
 
