@@ -716,7 +716,7 @@ export default withRouter(() => {
                                                                         {sizesChained[product.colors_ids[colorIndex]].includes(size.id) ? <Chain /> : <BrokeChain />}
                                                                     </MyButton>
                                                                     <TextInput
-                                                                        label={`${size.title}`}
+                                                                        label={size.title}
                                                                         onChange={event => handleChangePrice(isNaN(Number(event.target.value)) ? 0 : Math.abs(Number(event.target.value.slice(0, Math.min(event.target.value.length, 7)))), size.id)}
                                                                         value={product.variants.find(vari => vari.size_id === size.id && vari.color_id === product.colors_ids[colorIndex]).price}
                                                                         style={{

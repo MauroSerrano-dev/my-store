@@ -31,6 +31,7 @@ export default function Home() {
   const tCommon = useTranslation('common').t
   const tIndex = useTranslation('index').t
   const tErrors = useTranslation('errors').t
+  const tCategories = useTranslation('categories').t
 
   const [productsOne, setProductsOne] = useState()
   const [productsTwo, setProductsTwo] = useState()
@@ -188,7 +189,7 @@ export default function Home() {
                           transition: `font-size ease-in-out ${session === undefined ? 0 : 200}ms`
                         }}
                       >
-                        {tCommon(cat.id)}
+                        {tCategories(cat.id)}
                       </span>
                       <div
                         className={styles.categoryItemImg}
@@ -199,7 +200,7 @@ export default function Home() {
                           src={cat.img}
                           sizes={`${(windowWidth > 420 ? 200 : 130) * 0.8}px`}
                           fill
-                          alt={tCommon(cat.id)}
+                          alt={tCategories(cat.id)}
                           style={{
                             objectFit: 'cover',
                           }}
@@ -240,7 +241,7 @@ export default function Home() {
               <h2 className={styles.carouselTitle}>
                 {session === undefined
                   ? ''
-                  : tCommon(USER_CUSTOMIZE_HOME_PAGE.find(ele => ele.id === (session && session.custom_home_page.active ? session.custom_home_page.tags : DEFAULT_PRODUCTS_TAGS)[i])?.id)
+                  : tCategories(USER_CUSTOMIZE_HOME_PAGE.find(ele => ele.id === (session && session.custom_home_page.active ? session.custom_home_page.tags : DEFAULT_PRODUCTS_TAGS)[i])?.id)
                 }
               </h2>
               <CarouselProducts

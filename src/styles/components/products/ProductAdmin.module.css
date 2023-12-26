@@ -12,7 +12,7 @@
     transition: scale 100ms ease-out;
 }
 
-.container:has(a:active) {
+.container:has(.linkContainer:active) {
     scale: 0.97;
 }
 
@@ -179,15 +179,23 @@
         0px 1px 5px 0px rgba(0, 0, 0, 0.12);
 }
 
-.editButton {
+.editButtons {
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
+    gap: 0.3rem;
 
     position: absolute;
     z-index: 10;
     right: 5px;
     top: 5px;
+}
+
+.editButton {
+    display: flex;
+    justify-content: center;
+    align-items: center;
 
     padding: 0.4rem;
 

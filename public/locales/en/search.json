@@ -1,0 +1,23 @@
+{
+    "any-price": "Any Price",
+    "above": "{{currencySymbol}}{{min}} & Above",
+    "up-to": "Up to {{currencySymbol}}{{max}}",
+    "to": "{{currencySymbol}}{{min}} to {{currencySymbol}}{{max}}",
+    "min": "Min",
+    "max": "Max",
+    "min-max-button": "Go",
+    "categories": "Categories",
+    "categories_one": "Category",
+    "most-searched": "Most Searched",
+    "price": "Price",
+    "product-color": "Product Color",
+    "art-color": "Art Color",
+    "popularity": "Popularity",
+    "newest": "Newest",
+    "lowest-price": "Lowest Price",
+    "higher-price": "Higher Price",
+    "filters": "Filters",
+    "filters_one": "Filter",
+    "order-by": "Order By",
+    "no-products-found": "No Products Found"
+}

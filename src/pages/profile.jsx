@@ -5,7 +5,7 @@ import TagsSelector from '@/components/material-ui/TagsSelector'
 import { COMMON_TRANSLATES, DEFAULT_LANGUAGE, USER_CUSTOMIZE_HOME_PAGE } from '@/consts'
 import { useEffect, useState } from 'react'
 import { showToast } from '@/utils/toasts'
-import { convertTimestampToFormatDate, getObjectsDiff } from '@/utils'
+import { convertTimestampToFormatDate, getObjectsDiff, handleCloseModal, handleOpenModal } from '@/utils'
 import TextInput from '@/components/material-ui/TextInput'
 import { useTranslation } from 'next-i18next'
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
@@ -39,8 +39,10 @@ export default function Profile() {
     const starterUser = session ? { ...session } : undefined
 
     const [user, setUser] = useState()
+    
     const [deleteAccountModalOpen, setDeleteAccountModalOpen] = useState(false)
     const [deleteAccountModalOpacity, setDeleteAccountModalOpacity] = useState(false)
+
     const [disableSaveButton, setDisableSaveButton] = useState(true)
     const [verificationEmailSent, setVerificationEmailSent] = useState(false)
     const [deleteTextInput, setDeleteTextInput] = useState('')
@@ -141,20 +143,6 @@ export default function Profile() {
             .catch(() => {
                 showToast({ type: 'error', msg: tToasts('default_error') })
             })
-    }
-
-    function handleOpenDeleteModal() {
-        setDeleteAccountModalOpacity(true)
-        setTimeout(() => {
-            setDeleteAccountModalOpen(true)
-        }, 300)
-    }
-
-    function handleCloseDeleteModal() {
-        setDeleteAccountModalOpacity(false)
-        setTimeout(() => {
-            setDeleteAccountModalOpen(false)
-        }, 300)
     }
 
     function handleDeleteAccount() {
@@ -310,7 +298,7 @@ export default function Profile() {
                                     <MyButton
                                         variant='outlined'
                                         color='error'
-                                        onClick={handleOpenDeleteModal}
+                                        onClick={() => handleOpenModal(setDeleteAccountModalOpen, setDeleteAccountModalOpacity)}
                                     >
                                         {tProfile('delete_account')}
                                     </MyButton>
@@ -320,7 +308,7 @@ export default function Profile() {
                     </main>
                     {deleteAccountModalOpen &&
                         <Modal
-                            closeModal={handleCloseDeleteModal}
+                            closeModal={() => handleCloseModal(setDeleteAccountModalOpen, setDeleteAccountModalOpacity)}
                             showModalOpacity={deleteAccountModalOpacity}
                             className={styles.modalContent}
                         >
@@ -330,7 +318,7 @@ export default function Profile() {
                                 </h3>
                                 <button
                                     className='flex buttonInvisible'
-                                    onClick={handleCloseDeleteModal}
+                                    onClick={() => handleCloseModal(setDeleteAccountModalOpen, setDeleteAccountModalOpacity)}
                                     style={{
                                         position: 'absolute',
                                         right: '1rem',

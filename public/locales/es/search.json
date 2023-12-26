@@ -1,0 +1,23 @@
+{
+    "any-price": "Cualquier Precio",
+    "above": "{{currencySymbol}}{{min}} y más",
+    "up-to": "Hasta {{currencySymbol}}{{max}}",
+    "to": "{{currencySymbol}}{{min}} a {{currencySymbol}}{{max}}",
+    "min": "Mín",
+    "max": "Máx",
+    "min-max-button": "Ir",
+    "categories": "Categorías",
+    "categories_one": "Categoría",
+    "most-searched": "Más Buscados",
+    "price": "Precio",
+    "product-color": "Color del Producto",
+    "art-color": "Color del Arte",
+    "popularity": "Popularidad",
+    "newest": "Más Nuevo",
+    "lowest-price": "Precio Más Bajo",
+    "higher-price": "Precio Más Alto",
+    "filters": "Filtros",
+    "filters_one": "Filtro",
+    "order-by": "Ordenar Por",
+    "no-products-found": "No se Encontraron Productos"
+}

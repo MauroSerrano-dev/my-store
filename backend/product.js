@@ -522,13 +522,8 @@ async function getAllProductsIds() {
 
 async function getProductsByIds(ids) {
     try {
-        if (!ids || ids.length === 0) {
-            return {
-                status: 400,
-                message: 'No product IDs provided.',
-                products: [],
-            };
-        }
+        if (!ids || ids.length === 0)
+            return []
 
         const productsCollection = collection(db, process.env.COLL_PRODUCTS);
 
@@ -555,23 +550,15 @@ async function getProductsByIds(ids) {
         const products = {};
         mergedResults.forEach(product => {
             products[product.id] = product;
-        });
+        })
 
         const orderedProducts = ids.map(id => products[id] || null);
 
-        return {
-            status: 200,
-            message: 'Products retrieved successfully by IDs!',
-            products: orderedProducts,
-        };
+        console.log('Products retrieved successfully by IDs!')
+        return orderedProducts
     } catch (error) {
         console.log('Error getting products by IDs:', error);
-        return {
-            status: 500,
-            message: 'Error getting products by IDs.',
-            products: null,
-            error: error,
-        };
+        throw new Error({ title: 'Error getting products by IDs.', statusCode: 500 })
     }
 }
 

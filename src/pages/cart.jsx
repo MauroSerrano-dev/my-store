@@ -33,7 +33,8 @@ export default function Cart() {
 
     const [disableCheckoutButton, setDisableCheckoutButton] = useState(false)
     const [shippingValue, setShippingValue] = useState(0)
-    const [allProducts, setAllProducts] = useState()
+    const [productsOne, setProductsOne] = useState()
+    const [productsTwo, setProductsTwo] = useState()
     const [outOfStock, setOutOfStock] = useState([])
     const [unavailables, setUnavailables] = useState([])
 
@@ -158,16 +159,24 @@ export default function Cart() {
         const options = {
             method: 'GET',
             headers: {
-                authorization: process.env.NEXT_PUBLIC_APP_TOKEN
+                authorization: process.env.NEXT_PUBLIC_APP_TOKEN,
+                limit: 30,
             },
         }
 
-        const products = await fetch("/api/products/all-products", options)
+        await fetch("/api/products-by-queries", options)
             .then(response => response.json())
-            .then(response => response.products)
+            .then(response => {
+                if (response.products.length > 8) {
+                    setProductsOne(response.products.slice(0, Math.round(response.products.length / 2)))
+                    setProductsTwo(response.products.slice(Math.round(response.products.length / 2), response.products.length))
+                }
+                else {
+                    setProductsOne(response.products)
+                    setProductsTwo(null)
+                }
+            })
             .catch(err => console.error(err))
-
-        setAllProducts(products)
     }
 
     function getShippingValue() {
@@ -205,13 +214,22 @@ export default function Cart() {
                         className={`${styles.main} ${styles.mainEmpty}`}
                     >
                         <div className={styles.emptyTitle}>
-                            <h2><b>Hmmmm....</b> it looks like your cart is empty.</h2>
-                            <h2>Explore some of our <b>best products!</b></h2>
+                            <h2><b>{tCart('hmmm')}</b> {tCart('it_looks')}</h2>
+                            <h2>{tCart('explore')} <b>{tCart('best_products')}</b></h2>
                         </div>
                         <div className='fillWidth'>
-                            <CarouselProducts
-                                products={allProducts}
-                            />
+                            <div className='fillWidth'>
+                                <CarouselProducts
+                                    products={productsOne}
+                                />
+                            </div>
+                            {productsTwo !== null &&
+                                <div className='fillWidth'>
+                                    <CarouselProducts
+                                        products={productsTwo}
+                                    />
+                                </div>
+                            }
                         </div>
                     </main>
                     : <main className={styles.main}>

@@ -7,8 +7,8 @@ import { useAppContext } from '../contexts/AppContext';
 export default function TextOutlinedInput(props) {
     const {
         onChange,
-        name = 'password',
-        label = 'Password',
+        name,
+        label,
         setShowModalGuide,
         value,
         style,

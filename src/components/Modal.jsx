@@ -63,7 +63,7 @@ export default function Modal(props) {
                     ease: [.37, .01, 0, 1.02]
                 }}
             >
-                <div className={`${styles.content} ${className || ''}`}>
+                <div className={className}>
                     {children}
                 </div>
             </motion.div>

@@ -5,5 +5,9 @@
     "items_total": "Total de artículos",
     "shipping_and_taxes": "Envío e impuestos",
     "order_total": "Total del pedido",
-    "Transaction secured by": "Transacción segura por"
+    "Transaction secured by": "Transacción segura por",
+    "hmmm": "Hmm...",
+    "it_looks": "parece que tu carrito está vacío.",
+    "explore": "Explora algunos de nuestros",
+    "best_products": "mejores productos!"
 }
