@@ -1479,6 +1479,7 @@ export const PRODUCTS_TYPES = [
                 size_id: 15,
             },
             {
+                id: "black-white-m",
                 id_printify: {
                     43: 39256,
                     6: 39256,
