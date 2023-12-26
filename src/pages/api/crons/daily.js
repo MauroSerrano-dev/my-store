@@ -1,5 +1,6 @@
 import { clearDeletedUsers, updateAllCurrencies } from '../../../../backend/app-settings'
 import { deleteExpiredCartSessions } from '../../../../backend/cart-session'
+import { removeExpiredPromotions } from '../../../../backend/product'
 
 const axios = require('axios')
 
@@ -45,9 +46,13 @@ export default async function handler(req, res) {
 
         await clearDeletedUsers()
 
+        await removeExpiredPromotions()
+
+        console.log('Daily cron run successfully!')
         res.status(200).json({ message: 'Daily cron run successfully!' })
     }
-    catch {
+    catch (error) {
+        console.error(`Error on daily cron: ${error}`)
         res.status(500).json({ error: 'default_error' })
     }
 }

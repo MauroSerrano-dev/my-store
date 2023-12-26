@@ -19,3 +19,48 @@
     background-color: white;
     padding: 1rem;
 }
+
+.productsPromotionModal {
+    max-height: 300px;
+    overflow-y: auto;
+}
+
+.productPromotionModal {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    padding: 10px 10px;
+
+    width: 550px;
+
+    border-bottom: solid rgba(0, 0, 0, 0.3) 1px;
+}
+
+.productPromotionModalImage {
+    position: relative;
+
+    width: 100px;
+    height: 100px;
+}
+
+.priceDiff {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 20px;
+    font-weight: 500;
+}
+
+.profitContainer {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    font-weight: 500;
+}
+
+.profitValue {
+    color: var(--color-success);
+    font-size: 20px;
+}

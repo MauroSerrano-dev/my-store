@@ -1,6 +1,5 @@
-import { isTokenValid } from "@/utils/auth";
-import { getProductsByIds } from "../../../backend/product";
-import { PRODUCTS_TYPES } from "@/consts";
+import { isTokenValid } from "@/utils/auth"
+import { createPromotionForProducts } from "../../../backend/product"
 
 export default async function handler(req, res) {
     const { authorization } = req.headers
@@ -14,21 +13,11 @@ export default async function handler(req, res) {
 
     if (req.method === "POST") {
         try {
-            const products = await getProductsByIds(products_ids)
-            if (
-                products.some(product => {
-                    const type = PRODUCTS_TYPES.find(type => type.id === product.type_id)
-                    const variants = product.variants.map(variant => ({ ...variant, cost: type.variants.find(vari => vari.id === variant.id).cost }))
-                    return variants.some(vari => vari.cost + 4 >= vari.price * (1 - promotion.percentage))
-                })
-            )
-                res.status(400).json({ error: 'Invalid Promotion Percentage' })
-            if (new Date(promotion.expire_at).getTime() - new Date().getTime() <= 18 * 60 * 60 * 1000)
-                res.status(400).json({ error: 'Invalid Promotion Expire Date' })
-            res.status(200).json({ message: 'deu bom' })
+            await createPromotionForProducts(products_ids, promotion)
+            res.status(200).json({ message: promotion.percentage === 0 ? 'promotion_deleted_successfully' : 'promotion_create_successfully' })
         } catch (error) {
             console.error(`Error in promotion POST: ${error}`)
-            res.status(500).json({ error: 'default_error' })
+            res.status(error?.props?.statusCode || 500).json({ error: error?.props?.title || 'default_error' })
         }
     }
 }

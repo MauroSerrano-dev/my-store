@@ -30,7 +30,7 @@ export default async function handler(req, res) {
             res.status(200).json({ status: 200, msg: result.message })
         }
         catch (error) {
-            res.status(error.props.statusCode || 500).json({ status: error.props.statusCode || 500, msg: 'default_error' })
+            res.status(error?.props?.statusCode || 500).json({ status: error?.props?.statusCode || 500, msg: 'default_error' })
         }
     }
 }

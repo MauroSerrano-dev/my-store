@@ -734,7 +734,7 @@ export default withRouter(() => {
                                                                     <Slider
                                                                         value={product.variants.find(vari => vari.size_id === size.id && vari.color_id === product.colors_ids[colorIndex]).price}
                                                                         min={product.variants[0].cost}
-                                                                        max={product.variants.reduce((acc, vari) => vari.cost > acc.cost ? vari : acc, { cost: 0 }).cost * 3}
+                                                                        max={product.variants.reduce((acc, vari) => vari.cost > acc.cost ? vari : acc, { cost: 0 }).cost * 5}
                                                                         valueLabelDisplay="auto"
                                                                         onChange={event => handleChangePrice(event.target.value, size.id)}
                                                                     />
