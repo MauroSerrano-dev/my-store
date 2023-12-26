@@ -740,7 +740,7 @@ async function removeExpiredPromotions() {
         querySnapshot.forEach((doc) => {
             const product = doc.data();
             if (product.promotion && product.promotion.expire_at) {
-                const expireAt = new Timestamp(product.promotion.expire_at.seconds, product.promotion.expire_at.nanoseconds);
+                const expireAt = product.promotion.expire_at; // expire_at já é um Timestamp
                 const now = Timestamp.now();
 
                 if (expireAt.seconds < now.seconds) {
