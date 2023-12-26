@@ -16,8 +16,8 @@ export default async function handler(req, res) {
         const response = await addProductToWishlist(wishlist_id, product)
 
         if (response.status === 200) {
-            const prodResponse = await getProductsByIds(response.wishlist.products.map(prod => prod.id))
-            response.wishlist.products = prodResponse.products
+            const products = await getProductsByIds(response.wishlist.products.map(prod => prod.id))
+            response.wishlist.products = products
         }
         res.status(response.status).json(response)
     }
@@ -25,8 +25,8 @@ export default async function handler(req, res) {
         const response = await deleteProductFromWishlist(wishlist_id, product)
 
         if (response.status === 200) {
-            const prodResponse = await getProductsByIds(response.wishlist.products.map(prod => prod.id))
-            response.wishlist.products = prodResponse.products
+            const products = await getProductsByIds(response.wishlist.products.map(prod => prod.id))
+            response.wishlist.products = products
         }
         res.status(response.status).json(response)
     }

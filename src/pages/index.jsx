@@ -31,6 +31,7 @@ export default function Home() {
   const tCommon = useTranslation('common').t
   const tIndex = useTranslation('index').t
   const tErrors = useTranslation('errors').t
+  const tCategories = useTranslation('categories').t
 
   const [productsOne, setProductsOne] = useState()
   const [productsTwo, setProductsTwo] = useState()
@@ -188,7 +189,7 @@ export default function Home() {
                           transition: `font-size ease-in-out ${session === undefined ? 0 : 200}ms`
                         }}
                       >
-                        {tCommon(cat.id)}
+                        {tCategories(cat.id)}
                       </span>
                       <div
                         className={styles.categoryItemImg}

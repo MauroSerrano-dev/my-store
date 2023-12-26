@@ -21,7 +21,7 @@ import { showToast } from '@/utils/toasts'
 const { v4: uuidv4 } = require('uuid')
 
 const QUERIES = {
-    h: { title: 'category', show: true, showTitle: true, isFilter: true },
+    h: { title: 'categories', show: true, showTitle: true, isFilter: true },
     min: { title: 'min', show: true, showTitle: true, isFilter: true },
     max: { title: 'max', show: true, showTitle: true, isFilter: true },
     order: { title: 'order by', show: false, showTitle: false, isFilter: false },
@@ -62,6 +62,8 @@ export default withRouter(() => {
 
     const { i18n } = useTranslation()
     const tToasts = useTranslation('toasts').t
+    const tSearch = useTranslation('search').t
+    const tCategories = useTranslation('categories').t
 
     const mobile = windowWidth <= 700
 
@@ -257,11 +259,11 @@ export default withRouter(() => {
                 {!mobile &&
                     <div className={styles.menuFilters}>
                         <div className={styles.filterBlock}>
-                            <h3>{SEARCH_FILTERS.categories.title}</h3>
+                            <h3>{tSearch(SEARCH_FILTERS.categories.id)}</h3>
                             {SEARCH_FILTERS.categories.options.map((theme, i) =>
                                 <FormControlLabel
-                                    name={theme.title}
-                                    label={theme.title}
+                                    name={theme}
+                                    label={tCategories(theme)}
                                     key={i}
                                     sx={{
                                         marginTop: -0.6,
@@ -269,8 +271,8 @@ export default withRouter(() => {
                                     }}
                                     control={
                                         <Checkbox
-                                            checked={themes.includes(theme.id)}
-                                            onChange={e => handleThemesSelect(e.target.checked, theme.id)}
+                                            checked={themes.includes(theme)}
+                                            onChange={e => handleThemesSelect(e.target.checked, theme)}
                                             sx={{
                                                 color: '#ffffff'
                                             }}
@@ -280,10 +282,11 @@ export default withRouter(() => {
                             )}
                         </div>
                         <div className={styles.filterBlock}>
-                            <h3>{SEARCH_FILTERS['most-searched'].title}</h3>
+                            <h3>{tSearch(SEARCH_FILTERS['most-searched'].id)}</h3>
                             {SEARCH_FILTERS['most-searched'].options.map((tag, i) =>
                                 <FormControlLabel
-                                    name={tag.title}
+                                    name={tag}
+                                    label={tCategories(tag)}
                                     key={i}
                                     sx={{
                                         marginTop: -0.6,
@@ -291,33 +294,27 @@ export default withRouter(() => {
                                     }}
                                     control={
                                         <Checkbox
-                                            checked={(t?.split(' ') || []).includes(tag.id)}
-                                            onChange={e => handleMultiSelection('t', t, e.target.checked, tag.id)}
+                                            checked={(t?.split(' ') || []).includes(tag)}
+                                            onChange={e => handleMultiSelection('t', t, e.target.checked, tag)}
                                             sx={{
                                                 color: '#ffffff'
                                             }}
                                         />
                                     }
-                                    label={tag.title}
                                 />
                             )}
                         </div>
                         <div className={styles.filterBlock}>
-                            <h3>Price</h3>
+                            <h3>{tSearch('price')}</h3>
                             <Link
                                 href={{
                                     pathname: router.pathname,
                                     query: getQueries({}, ['min', 'max'])
                                 }}
                                 scroll={false}
-                                className='noUnderline'
-                                style={{
-                                    fontWeight: !min && !max
-                                        ? '700'
-                                        : 400
-                                }}
+                                className={`${!min && !max ? styles.optionActive : ''} noUnderline`}
                             >
-                                Any Price
+                                {tSearch('any-price')}
                             </Link>
                             <Link
                                 href={{
@@ -325,14 +322,9 @@ export default withRouter(() => {
                                     query: getQueries({ max: 15 }, ['min'])
                                 }}
                                 scroll={false}
-                                className='noUnderline'
-                                style={{
-                                    fontWeight: !min && max === '15'
-                                        ? '700'
-                                        : 400
-                                }}
+                                className={`${!min && max === '15' ? styles.optionActive : ''} noUnderline`}
                             >
-                                Up to {userCurrency?.symbol}15
+                                {tSearch('up-to', { currencySymbol: userCurrency?.symbol, max: 15 })}
                             </Link>
                             <Link
                                 href={{
@@ -340,14 +332,9 @@ export default withRouter(() => {
                                     query: getQueries({ min: '15', max: '25' })
                                 }}
                                 scroll={false}
-                                className='noUnderline'
-                                style={{
-                                    fontWeight: min === '15' && max === '25'
-                                        ? '700'
-                                        : 400
-                                }}
+                                className={`${min === '15' && max === '25' ? styles.optionActive : ''} noUnderline`}
                             >
-                                {userCurrency?.symbol}15 to {userCurrency?.symbol}25
+                                {tSearch('to', { currencySymbol: userCurrency?.symbol, min: 15, max: 25 })}
                             </Link>
                             <Link
                                 href={{
@@ -355,14 +342,9 @@ export default withRouter(() => {
                                     query: getQueries({ min: '25', max: '40' })
                                 }}
                                 scroll={false}
-                                className='noUnderline'
-                                style={{
-                                    fontWeight: min === '25' && max === '40'
-                                        ? '700'
-                                        : 400
-                                }}
+                                className={`${min === '25' && max === '40' ? styles.optionActive : ''} noUnderline`}
                             >
-                                {userCurrency?.symbol}25 to {userCurrency?.symbol}40
+                                {tSearch('to', { currencySymbol: userCurrency?.symbol, min: 25, max: 40 })}
                             </Link>
                             <Link
                                 href={{
@@ -370,26 +352,21 @@ export default withRouter(() => {
                                     query: getQueries({ min: '40' }, ['max'])
                                 }}
                                 scroll={false}
-                                className='noUnderline'
-                                style={{
-                                    fontWeight: min === '40' && !max
-                                        ? '700'
-                                        : 400
-                                }}
+                                className={`${min === '40' && !max ? styles.optionActive : ''} noUnderline`}
                             >
-                                {userCurrency?.symbol}40 & Above
+                                {tSearch('above', { currencySymbol: userCurrency?.symbol, min: 40 })}
                             </Link>
                             <div className={styles.priceFilterInputs}>
                                 <input
                                     name='min'
-                                    placeholder='Min'
+                                    placeholder={tSearch('min')}
                                     spellCheck={false}
                                     value={minInput}
                                     onChange={event => handleChangeMinMax(event.target.value, 'min')}
                                 />
                                 <input
                                     name='max'
-                                    placeholder='Max'
+                                    placeholder={tSearch('max')}
                                     spellCheck={false}
                                     value={maxInput}
                                     onChange={event => handleChangeMinMax(event.target.value, 'max')}
@@ -409,13 +386,13 @@ export default withRouter(() => {
                                     className='noUnderline fill'
                                 >
                                     <button>
-                                        Go
+                                        {tSearch('min-max-button')}
                                     </button>
                                 </Link>
                             </div>
                         </div>
                         <div className={styles.filterBlock}>
-                            <h3>Product Color</h3>
+                            <h3>{tSearch('product-color')}</h3>
                             <div className={styles.colorsContainer}>
                                 {SEARCH_PRODUCT_COLORS.map((color, i) =>
                                     <Link
@@ -430,14 +407,14 @@ export default withRouter(() => {
                                     >
                                         <ColorButton
                                             selected={cl === color.color_display.id_string}
-                                            color={{ title: color.color_display.title, colors: [color.color_display.color] }}
+                                            color={{ id_string: color.color_display.id_string, colors: [color.color_display.color] }}
                                         />
                                     </Link>
                                 )}
                             </div>
                         </div>
                         <div className={styles.filterBlock}>
-                            <h3>Art Color</h3>
+                            <h3>{tSearch('art-color')}</h3>
                             <div className={styles.colorsContainer}>
                                 {SEARCH_ART_COLORS.map((color, i) =>
                                     <Link
@@ -452,7 +429,7 @@ export default withRouter(() => {
                                     >
                                         <ColorButton
                                             selected={ac === color.color_display.id_string}
-                                            color={{ title: color.color_display.title, colors: [color.color_display.color] }}
+                                            color={{ id_string: color.color_display.id_string, colors: [color.color_display.color] }}
                                         />
                                     </Link>
                                 )}
@@ -484,14 +461,18 @@ export default withRouter(() => {
                                         fontSize: 20,
                                     }}
                                 >
-                                    Filters <KeyboardArrowDownRoundedIcon style={{ transform: filtersOpen ? 'rotateZ(-180deg)' : 'none', transition: 'ease-in-out 200ms transform' }} />
+                                    {tSearch('filters', { count: 0 })} <KeyboardArrowDownRoundedIcon style={{ transform: filtersOpen ? 'rotateZ(-180deg)' : 'none', transition: 'ease-in-out 200ms transform' }} />
                                 </button>
                                 : <h1
                                     style={{
                                         fontSize: mobile ? 20 : 27
                                     }}
                                 >
-                                    {Object.keys(router.query).filter(key => QUERIES[key].isFilter).length === 0 ? 'All Products' : Object.keys(router.query).filter(key => QUERIES[key].isFilter).length === 1 ? 'Filter' : 'Filters'}
+                                    {
+                                        Object.keys(router.query).filter(key => QUERIES[key].isFilter).length === 0
+                                            ? 'All Products'
+                                            : tSearch('filters', { count: Object.keys(router.query).filter(key => QUERIES[key].isFilter).length })
+                                    }
                                 </h1>
                             }
                             {!mobile &&
@@ -501,7 +482,7 @@ export default withRouter(() => {
                                             key={i}
                                             label={
                                                 QUERIES[key].showTitle
-                                                    ? <span>{QUERIES[key].title}: {value}</span>
+                                                    ? <span>{tSearch(QUERIES[key].title)}: {tCategories(value).toLocaleLowerCase()}</span>
                                                     : key === 'cl'
                                                         ? <span className='flex row center' style={{ gap: '0.2rem' }}>product: {value} <CircleIcon style={{ color: SEARCH_PRODUCT_COLORS.find(cl => cl.color_display.id_string === value).color_display.color }} /></span>
                                                         : key === 'ac'
@@ -516,22 +497,22 @@ export default withRouter(() => {
                         </div>
                         <Selector
                             name='order'
-                            label='Order By'
+                            label={tSearch('order-by')}
                             value={order}
                             options={
                                 min || max
                                     ? [
-                                        { value: 'lowest-price', name: 'Lowest Price' },
-                                        { value: 'higher-price', name: 'Higher Price' },
+                                        { value: 'lowest-price', name: tSearch('lowest-price') },
+                                        { value: 'higher-price', name: tSearch('higher-price') },
                                     ]
                                     : [
-                                        { value: 'popularity', name: 'Popularity' },
-                                        { value: 'newest', name: 'Newest' },
-                                        { value: 'lowest-price', name: 'Lowest Price' },
-                                        { value: 'higher-price', name: 'Higher Price' },
+                                        { value: 'popularity', name: tSearch('popularity') },
+                                        { value: 'newest', name: tSearch('newest') },
+                                        { value: 'lowest-price', name: tSearch('lowest-price') },
+                                        { value: 'higher-price', name: tSearch('higher-price') },
                                     ]
                             }
-                            width={mobile ? '130px' : '170px'}
+                            width={mobile ? '160px' : '190px'}
                             style={{
                                 fontSize: mobile ? '13px' : '16px'
                             }}
@@ -562,7 +543,7 @@ export default withRouter(() => {
                                         className={styles.animationContainer}
                                     >
                                     </div>
-                                    <h2>No Products Found</h2>
+                                    <h2>{tSearch('No Products Found')}</h2>
                                 </div>
                                 : products.map(product =>
                                     <Product
@@ -627,7 +608,7 @@ export default withRouter(() => {
 export async function getServerSideProps({ locale }) {
     return {
         props: {
-            ...(await serverSideTranslations(locale, COMMON_TRANSLATES.concat(['footer'])))
+            ...(await serverSideTranslations(locale, COMMON_TRANSLATES.concat(['search', 'footer'])))
         }
     }
 }

@@ -716,7 +716,7 @@ export default withRouter(() => {
                                                                     </MyButton>
                                                                     <TextInput
                                                                         colorText='var(--color-success)'
-                                                                        label={`${size.title}`}
+                                                                        label={size.title}
                                                                         onChange={event => handleChangePrice(event.target.value, size.id)}
                                                                         value={product.variants.find(vari => vari.size_id === size.id && vari.color_id === product.colors[colorIndex].id).price}
                                                                         style={{

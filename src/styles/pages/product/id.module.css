@@ -204,6 +204,21 @@
     padding: 1rem 2rem;
 }
 
+.unavailable {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    background-color: var(--out-of-stock-bg);
+
+    border-radius: 30rem;
+    font-weight: 700;
+    --text-color: var(--text-white);
+
+    font-size: 13px;
+    padding: 0.2rem 0.6rem;
+}
+
 /* Mobile and Tablet */
 @media (max-width: 1074.5px) {
     .container {

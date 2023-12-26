@@ -1,7 +1,6 @@
 import styles from '@/styles/components/menus/AdminMenu.module.css'
 import EqualizerOutlinedIcon from '@mui/icons-material/EqualizerOutlined'
 import { IoShirt } from "react-icons/io5"
-import SellOutlinedIcon from '@mui/icons-material/SellOutlined'
 import ShoppingBagOutlinedIcon from '@mui/icons-material/ShoppingBagOutlined'
 import LocalShippingOutlinedIcon from '@mui/icons-material/LocalShippingOutlined'
 import GroupOutlinedIcon from '@mui/icons-material/GroupOutlined'
@@ -20,7 +19,6 @@ const OPTIONS = [
     { title: 'Dashboard', type: 'link', href: '/admin', icon: <EqualizerOutlinedIcon /> },
     { title: 'Products', type: 'link', href: '/admin/products', icon: <IoShirt size={20} /> },
     { title: 'Revenue', type: 'link', href: '/admin/revenue', icon: <PaymentsOutlinedIcon /> },
-    { title: 'Promotions', type: 'link', href: '/admin/promotions', icon: <SellOutlinedIcon /> },
     { title: 'Sales', type: 'link', href: '/admin/sales', icon: <ShoppingBagOutlinedIcon /> },
     { title: 'Providers', type: 'link', href: '/admin/providers', icon: <LocalShippingOutlinedIcon /> },
     { title: 'Customers', type: 'link', href: '/admin/customers', icon: <GroupOutlinedIcon /> },

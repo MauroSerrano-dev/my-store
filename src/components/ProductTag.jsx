@@ -12,12 +12,12 @@ export default function ProductTag(props) {
     return (
         <div
             style={{
-                ...style,
                 padding: '0.1rem 0.5rem',
                 fontWeight: 600,
                 fontSize: 13,
                 borderRadius: '30rem',
-                backgroundColor: PRODUCTS_TYPES.find(type => type.id === product.type_id).color
+                backgroundColor: PRODUCTS_TYPES.find(type => type.id === product.type_id).color,
+                ...style,
             }}
         >
             <p>{tCommon(product.type_id)}</p>

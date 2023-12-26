@@ -12,7 +12,7 @@
     transition: scale 100ms ease-out;
 }
 
-.container:has(a:active) {
+.container:has(.linkContainer:active) {
     scale: 0.97;
 }
 
@@ -190,6 +190,32 @@
     top: 5px;
 
     padding: 0.2rem;
+
+    background-color: rgba(0, 0, 0, 0.5);
+    border-radius: 100%;
+
+    transition: background-color ease-in-out 200ms;
+}
+
+.editButtons {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 0.3rem;
+
+    position: absolute;
+    z-index: 10;
+    right: 5px;
+    top: 5px;
+}
+
+.editButton {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    padding: 0.4rem;
 
     background-color: rgba(0, 0, 0, 0.5);
     border-radius: 100%;

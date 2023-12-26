@@ -200,48 +200,48 @@ export default function Product(props) {
             onMouseEnter={handleOnMouseEnter}
             onMouseLeave={handleOnMouseLeave}
         >
+            {!hideWishlistButton && session && supportsHoverAndPointer &&
+                <motion.div
+                    className={styles.wishlistButton}
+                    onClick={handleWishlist}
+                    initial='hidden'
+                    animate={hover ? 'visible' : 'hidden'}
+                    variants={{
+                        hidden: {
+                            opacity: 0,
+                        },
+                        visible: {
+                            opacity: 1,
+                        },
+                    }}
+                >
+                    <HeartButton
+                        style={{
+                            top: '1px',
+                            color: 'var(--global-white)'
+                        }}
+                        checked={session.wishlist_products_ids.includes(product.id)}
+                        size={width * 0.13}
+                    />
+                </motion.div>
+            }
+            {showDeleteButton &&
+                <button
+                    className={`${styles.wishlistButton} buttonInvisible`}
+                    onClick={onDeleteClick}
+                >
+                    <CloseRoundedIcon
+                        style={{
+                            fontSize: width * 0.12,
+                        }}
+                    />
+                </button>
+            }
             <Link
                 href={URL}
                 className={`${styles.linkContainer} noUnderline`}
                 draggable={false}
             >
-                {showDeleteButton &&
-                    <div
-                        className={styles.wishlistButton}
-                        onClick={onDeleteClick}
-                    >
-                        <CloseRoundedIcon
-                            style={{
-                                fontSize: width * 0.12,
-                            }}
-                        />
-                    </div>
-                }
-                {!hideWishlistButton && session && supportsHoverAndPointer &&
-                    <motion.div
-                        className={styles.wishlistButton}
-                        onClick={handleWishlist}
-                        initial='hidden'
-                        animate={hover ? 'visible' : 'hidden'}
-                        variants={{
-                            hidden: {
-                                opacity: 0,
-                            },
-                            visible: {
-                                opacity: 1,
-                            },
-                        }}
-                    >
-                        <HeartButton
-                            style={{
-                                top: '1px',
-                                color: 'var(--global-white)'
-                            }}
-                            checked={session.wishlist_products_ids.includes(product.id)}
-                            size={width * 0.13}
-                        />
-                    </motion.div>
-                }
                 {supportsHoverAndPointer &&
                     <div
                         className={styles.imgHoverContainer}

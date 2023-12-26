@@ -6,6 +6,7 @@ import { SlClose } from "react-icons/sl";
 import { PRODUCTS_TYPES, SEARCH_PRODUCT_COLORS, SEARCH_ART_COLORS, SEARCH_FILTERS } from '@/consts';
 import ColorButton from './ColorButton';
 import { useAppContext } from './contexts/AppContext';
+import { useTranslation } from 'next-i18next';
 
 export default function MenuFilter(props) {
     const {
@@ -37,6 +38,9 @@ export default function MenuFilter(props) {
     } = router
 
     const [searchFocus, setSearchFocus] = useState(false)
+
+    const tSearch = useTranslation('search').t
+    const tCategories = useTranslation('categories').t
 
     useEffect(() => {
         if (open) {
@@ -139,18 +143,18 @@ export default function MenuFilter(props) {
                         </div>
                     </div>
                     <div className={styles.section}>
-                        <h3>{SEARCH_FILTERS.categories.title}</h3>
+                        <h3>{tSearch(SEARCH_FILTERS.categories.id)}</h3>
                         <div className={styles.options}>
                             {SEARCH_FILTERS.categories.options.map((cat, i) =>
                                 <button
                                     className={styles.option}
                                     style={{
-                                        backgroundColor: h?.includes(cat.id) ? 'var(--primary)' : 'var(--filter-tag-color)'
+                                        backgroundColor: h?.includes(cat) ? 'var(--primary)' : 'var(--filter-tag-color)'
                                     }}
-                                    onClick={() => handleThemesSelect(!h?.includes(cat.id), cat.id)}
+                                    onClick={() => handleThemesSelect(!h?.includes(cat), cat)}
                                     key={i}
                                 >
-                                    {cat.title}
+                                    {tCategories(cat)}
                                 </button>
                             )}
                         </div>
@@ -162,12 +166,12 @@ export default function MenuFilter(props) {
                                 <button
                                     className={styles.option}
                                     style={{
-                                        backgroundColor: t?.includes(cat.id) ? 'var(--primary)' : 'var(--filter-tag-color)'
+                                        backgroundColor: t?.includes(cat) ? 'var(--primary)' : 'var(--filter-tag-color)'
                                     }}
-                                    onClick={() => handleMultiSelection('t', t, !t?.includes(cat.id), cat.id)}
+                                    onClick={() => handleMultiSelection('t', t, !t?.includes(cat), cat)}
                                     key={i}
                                 >
-                                    {cat.title}
+                                    {tCategories(cat)}
                                 </button>
                             )}
                         </div>

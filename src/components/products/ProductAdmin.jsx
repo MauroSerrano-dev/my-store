@@ -1,17 +1,17 @@
 import styles from '@/styles/components/products/ProductAdmin.module.css'
 import { useEffect, useState, useRef } from 'react'
-import { Skeleton } from '@mui/material'
+import { Checkbox, Skeleton } from '@mui/material'
 import Link from 'next/link'
 import { motion } from "framer-motion"
-import { COLORS_POOL, PRODUCTS_TYPES, LIMITS } from '@/consts'
+import { COLORS_POOL, PRODUCTS_TYPES } from '@/consts'
 import ColorButton from '../ColorButton'
 import Image from 'next/image'
 import { useTranslation } from 'next-i18next'
-import { showToast } from '@/utils/toasts'
 import { useAppContext } from '../contexts/AppContext'
 import MyButton from '@/components/material-ui/MyButton'
 import EditOutlinedIcon from '@mui/icons-material/EditOutlined'
 import { getProductVariantsInfos } from '@/utils'
+import SellOutlinedIcon from '@mui/icons-material/SellOutlined'
 
 /**
  * @param {object} props - Component props.
@@ -41,14 +41,12 @@ export default function ProductAdmin(props) {
             }
         },
         style,
-        hideWishlistButton,
-        showDeleteButton,
-        onDeleteClick,
+        onPromotionClick,
+        selected,
+        onChangeSelection,
     } = props
 
     const {
-        setSession,
-        session,
         supportsHoverAndPointer,
         userCurrency,
     } = useAppContext()
@@ -136,52 +134,6 @@ export default function ProductAdmin(props) {
         setHover(false)
     }
 
-    function handleWishlist(event) {
-        event.preventDefault()
-
-        const add = !session.wishlist_products_ids.includes(product.id)
-
-        if (add && session.wishlist_products_ids.length >= LIMITS.wishlist_products) {
-            showToast({ msg: tToasts('wishlist_limit'), type: 'error' })
-            return
-        }
-
-        setSession(prevSession => (
-            {
-                ...prevSession,
-                wishlist_products_ids: add
-                    ? session.wishlist_products_ids.concat(product.id)
-                    : session.wishlist_products_ids.filter(prod_id => prod_id !== product.id)
-            }
-        ))
-
-        const options = {
-            method: add ? 'POST' : 'DELETE',
-            headers: {
-                'Content-Type': 'application/json',
-                authorization: process.env.NEXT_PUBLIC_APP_TOKEN
-            },
-            body: JSON.stringify({
-                wishlist_id: session.wishlist_id,
-                product: { id: product.id }
-            }),
-        }
-
-        fetch("/api/wishlists/wishlist-products", options)
-            .then(response => response.json())
-            .catch(err => {
-                setSession(prevSession => (
-                    {
-                        ...prevSession,
-                        wishlist_products_ids: add
-                            ? session.wishlist_products_ids.filter(prod_id => prod_id !== product.id)
-                            : session.wishlist_products_ids.concat(product.id)
-                    }
-                ))
-                console.error(err)
-            })
-    }
-
     return (
         <motion.div
             className={styles.container}
@@ -199,27 +151,58 @@ export default function ProductAdmin(props) {
             onMouseEnter={handleOnMouseEnter}
             onMouseLeave={handleOnMouseLeave}
         >
-            {!hideWishlistButton && session && supportsHoverAndPointer &&
+            <div className={styles.editButtons}>
+                <div
+                    className={styles.editButton}
+                    style={{
+                        width: width * 0.17,
+                        height: width * 0.17,
+                    }}
+                >
+                    <Checkbox
+                        checked={selected}
+                        onChange={onChangeSelection}
+                        sx={{
+                            color: '#ffffff'
+                        }}
+                    >
+                    </Checkbox>
+                </div>
                 <Link
                     className={styles.editButton}
                     href={URL.concat('/edit')}
-                    initial='hidden'
-                    animate={hover ? 'visible' : 'hidden'}
+                    style={{
+                        width: width * 0.17,
+                        height: width * 0.17,
+                    }}
                 >
                     <EditOutlinedIcon
                         style={{
                             color: 'var(--global-white)',
-                            fontSize: width * 0.11,
                         }}
                     />
                 </Link>
-            }
+                <button
+                    className={`${styles.editButton} buttonInvisible`}
+                    style={{
+                        width: width * 0.17,
+                        height: width * 0.17,
+                    }}
+                    onClick={onPromotionClick}
+                >
+                    <SellOutlinedIcon
+                        style={{
+                            color: 'var(--global-white)',
+                        }}
+                    />
+                </button>
+            </div>
             <Link
                 href={URL}
                 className={`${styles.linkContainer} noUnderline`}
                 draggable={false}
             >
-                {supportsHoverAndPointer &&
+                {/* {supportsHoverAndPointer &&
                     <div
                         className={styles.imgHoverContainer}
                         style={{
@@ -244,7 +227,7 @@ export default function ProductAdmin(props) {
                             />
                         )}
                     </div>
-                }
+                } */}
                 <div
                     className={styles.imgContainer}
                     style={{
@@ -255,6 +238,7 @@ export default function ProductAdmin(props) {
                 >
                     {product.colors_ids.map((color_id, i) =>
                         <Image
+                            priority={i === 0}
                             quality={100}
                             key={i}
                             src={product.images.filter(img => img.color_id === color_id)[product.image_showcase_index].src}

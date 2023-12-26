@@ -5,5 +5,9 @@
     "items_total": "Items Total",
     "shipping_and_taxes": "Shipping & Taxes",
     "order_total": "Order Total",
-    "Transaction secured by": "Transaction secured by"
+    "Transaction secured by": "Transaction secured by",
+    "hmmm": "Hmmm...",
+    "it_looks": "it looks like your cart is empty.",
+    "explore": "Explore some of our",
+    "best_products": "best products!"
 }

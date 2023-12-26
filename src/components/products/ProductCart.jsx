@@ -186,7 +186,7 @@ export default function ProductCart(props) {
                                     className={styles.outOfStock}
                                 >
                                     <p>
-                                        OUT OF STOCK
+                                        {tCommon('OUT_OF_STOCK')}
                                     </p>
                                 </div>
                                 : unavailable
@@ -194,7 +194,7 @@ export default function ProductCart(props) {
                                         className={styles.outOfStock}
                                     >
                                         <p>
-                                            UNAVAILABLE
+                                            {tCommon('UNAVAILABLE')}
                                         </p>
                                     </div>
                                     : product.promotion &&

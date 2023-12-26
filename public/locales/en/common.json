@@ -5,16 +5,6 @@
     "hoodie": "Hoodie",
     "raglan-tee": "Raglan Tee",
     "sweatshirt": "Sweatshirt",
-    "t-shirts": "T-Shirts",
-    "mugs": "Mugs",
-    "hoodies": "Hoodies",
-    "raglan-tees": "Raglan Tees",
-    "sweatshirts": "Sweatshirts",
-    "music": "Music",
-    "rpg": "RPG",
-    "christmas": "Christmas",
-    "valentines": "Valentines",
-    "games": "Games",
     "more_info_button": "More Info",
     "Price": "Price",
     "Country": "Country",
@@ -30,5 +20,7 @@
     "at_least_number": "1 number",
     "at_least_characters_long": "6 characters long",
     "e-mail": "E-mail",
-    "checkout": "Checkout"
+    "checkout": "Checkout",
+    "OUT_OF_STOCK": "OUT OF STOCK",
+    "UNAVAILABLE": "UNAVAILABLE"
 }

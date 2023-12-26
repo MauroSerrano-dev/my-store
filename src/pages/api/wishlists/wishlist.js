@@ -12,13 +12,18 @@ export default async function handler(req, res) {
         return res.status(401).json({ error: "Invalid authentication." })
 
     if (req.method === "GET") {
-        const wishlist = await getWishlistById(wishlist_id)
+        try {
+            const wishlist = await getWishlistById(wishlist_id)
 
-        const prodResponse = wishlist ? await getProductsByIds(wishlist.products.map(prod => prod.id)) : null
+            const products = wishlist ? await getProductsByIds(wishlist.products.map(prod => prod.id)) : null
 
-        if (wishlist)
-            wishlist.products = prodResponse.products
+            if (wishlist)
+                wishlist.products = products
 
-        res.status(200).json(wishlist)
+            res.status(200).json(wishlist)
+        }
+        catch {
+            res.status(500).json({ error: 'default_error' })
+        }
     }
 }

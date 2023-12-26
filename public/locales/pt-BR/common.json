@@ -5,16 +5,6 @@
     "hoodie": "Moletom",
     "raglan-tee": "Camisa Raglan",
     "sweatshirt": "Suéter",
-    "t-shirts": "Camisas",
-    "mugs": "Canecas",
-    "hoodies": "Moletons",
-    "raglan-tees": "Camisas Raglan",
-    "sweatshirts": "Suéteres",
-    "music": "Música",
-    "rpg": "RPG",
-    "christmas": "Natal",
-    "valentines": "Namorados",
-    "games": "Games",
     "more_info_button": "Mais Informações",
     "Price": "Preço",
     "Country": "País",
@@ -30,5 +20,7 @@
     "at_least_number": "1 número",
     "at_least_characters_long": "6 caracteres de comprimento",
     "e-mail": "E-mail",
-    "checkout": "Pagar"
+    "checkout": "Pagar",
+    "OUT_OF_STOCK": "FORA DE ESTOQUE",
+    "UNAVAILABLE": "INDISPONÍVEL"
 }

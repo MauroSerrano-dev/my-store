@@ -117,6 +117,11 @@
     transition: width ease-in-out 200ms;
 }
 
+.optionActive {
+    font-weight: 600;
+    color: var(--primary)
+}
+
 /* Enable hover only on non-touch devices */
 @media (hover: hover) and (pointer: fine) {
     .pageButton:hover {

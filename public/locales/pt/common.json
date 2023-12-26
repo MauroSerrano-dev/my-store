@@ -5,16 +5,6 @@
     "hoodie": "Hoodie",
     "raglan-tee": "Camisa Raglan",
     "sweatshirt": "Suéter",
-    "t-shirts": "T-Shirts",
-    "mugs": "Canecas",
-    "hoodies": "Hoodies",
-    "raglan-tees": "Raglan Tees",
-    "sweatshirts": "Suéteres",
-    "music": "Música",
-    "rpg": "RPG",
-    "christmas": "Natal",
-    "valentines": "Valentines",
-    "games": "Games",
     "more_info_button": "Mais Informações",
     "Price": "Preço",
     "Country": "País",
@@ -30,5 +20,7 @@
     "at_least_number": "1 número",
     "at_least_characters_long": "6 caracteres de comprimento",
     "e-mail": "E-mail",
-    "checkout": "Finalizar compra"
+    "checkout": "Finalizar compra",
+    "OUT_OF_STOCK": "FORA DE STOCK",
+    "UNAVAILABLE": "INDISPONÍVEL"
 }

@@ -28,7 +28,7 @@ import { SlClose } from 'react-icons/sl'
 import { LoadingButton } from '@mui/lab'
 import ZoneConverter from '@/utils/country-zone.json'
 import ProductTag from '@/components/ProductTag'
-import { getProductVariantsInfos } from '@/utils'
+import { getProductVariantsInfos, handleCloseModal, handleOpenModal } from '@/utils'
 
 export default withRouter(props => {
     const {
@@ -63,8 +63,10 @@ export default withRouter(props => {
 
     const [currentColor, setCurrentColor] = useState(cl ? cl : COLORS_POOL[product?.colors_ids[0]])
     const [currentSize, setCurrentSize] = useState(sz ? sz : SIZES_POOL.find(sz => sz.id === product?.sizes_ids[0]))
+
     const [buyNowModalOpen, setBuyNowModalOpen] = useState(false)
     const [buyNowModalOpacity, setBuyNowModalOpacity] = useState(false)
+
     const [shippingValue, setShippingValue] = useState(0)
     const [disableCheckoutButton, setDisableCheckoutButton] = useState(false)
 
@@ -237,20 +239,6 @@ export default withRouter(props => {
             })
     }
 
-    function handleOpenBuyNowModal() {
-        setBuyNowModalOpacity(true)
-        setTimeout(() => {
-            setBuyNowModalOpen(true)
-        }, 300)
-    }
-
-    function handleCloseBuyNowModal() {
-        setBuyNowModalOpacity(false)
-        setTimeout(() => {
-            setBuyNowModalOpen(false)
-        }, 300)
-    }
-
     return (
         product && currentColor && currentSize
             ? <div className={styles.container}>
@@ -308,8 +296,24 @@ export default withRouter(props => {
                                         }
                                     </div>
                                     <div style={{ paddingTop: 3, paddingBottom: 8 }}>
-                                        <ProductTag product={product} />
+                                        <ProductTag
+                                            product={product}
+                                            style={{
+                                                fontSize: 16
+                                            }}
+                                        />
                                     </div>
+                                    {product.disabled &&
+                                        <div style={{ paddingTop: 3, paddingBottom: 3 }}>
+                                            <div
+                                                className={styles.unavailable}
+                                            >
+                                                <p>
+                                                    {tCommon('UNAVAILABLE')}
+                                                </p>
+                                            </div>
+                                        </div>
+                                    }
                                     {product.promotion &&
                                         <div
                                             className={styles.promotion}
@@ -375,35 +379,37 @@ export default withRouter(props => {
                                 </div>
                             </div>
                             <div className={styles.rightBottom}>
-                                <div className={styles.buyButtons}>
-                                    <MyButton
-                                        onClick={() => handleAddToCart()}
-                                        style={{
-                                            display: 'flex',
-                                            gap: '0.2rem',
-                                            width: '100%',
-                                            height: '55px',
-                                            fontSize: 18
-                                        }}
-                                    >
-                                        <ShoppingCartOutlinedIcon />
-                                        {tProduct('add_to_cart')}
-                                    </MyButton>
-                                    <MyButton
-                                        variant='outlined'
-                                        onClick={handleOpenBuyNowModal}
-                                        style={{
-                                            display: 'flex',
-                                            gap: '0.2rem',
-                                            width: '100%',
-                                            height: '55px',
-                                            fontSize: 18
-                                        }}
-                                    >
-                                        <CreditCardOutlinedIcon />
-                                        {tProduct('buy_now')}
-                                    </MyButton>
-                                </div>
+                                {!product.disabled &&
+                                    <div className={styles.buyButtons}>
+                                        <MyButton
+                                            onClick={() => handleAddToCart()}
+                                            style={{
+                                                display: 'flex',
+                                                gap: '0.2rem',
+                                                width: '100%',
+                                                height: '55px',
+                                                fontSize: 18
+                                            }}
+                                        >
+                                            <ShoppingCartOutlinedIcon />
+                                            {tProduct('add_to_cart')}
+                                        </MyButton>
+                                        <MyButton
+                                            variant='outlined'
+                                            onClick={() => handleOpenModal(setBuyNowModalOpen, setBuyNowModalOpacity)}
+                                            style={{
+                                                display: 'flex',
+                                                gap: '0.2rem',
+                                                width: '100%',
+                                                height: '55px',
+                                                fontSize: 18
+                                            }}
+                                        >
+                                            <CreditCardOutlinedIcon />
+                                            {tProduct('buy_now')}
+                                        </MyButton>
+                                    </div>
+                                }
                             </div>
                         </div>
                     </section>
@@ -454,7 +460,7 @@ export default withRouter(props => {
                 </div>
                 {buyNowModalOpen &&
                     <Modal
-                        closeModal={handleCloseBuyNowModal}
+                        closeModal={() => handleCloseModal(setBuyNowModalOpen, setBuyNowModalOpacity)}
                         showModalOpacity={buyNowModalOpacity}
                         className={styles.modalContent}
                     >
@@ -462,7 +468,7 @@ export default withRouter(props => {
                             <h3>{tProduct('ship_to')}</h3>
                             <button
                                 className='flex buttonInvisible'
-                                onClick={handleCloseBuyNowModal}
+                                onClick={() => handleCloseModal(setBuyNowModalOpen, setBuyNowModalOpacity)}
                                 style={{
                                     position: 'absolute',
                                     right: '1rem',

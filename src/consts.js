@@ -18,7 +18,8 @@ export const COMMON_TRANSLATES = [
     'menu',
     'navbar',
     'toasts',
-    'languages'
+    'languages',
+    'categories',
 ]
 
 export const CART_COOKIE = 'CART'
@@ -63,20 +64,18 @@ export const DEFAULT_PRODUCTS_TAGS = [
 export const SEARCH_FILTERS = {
     categories: {
         id: 'categories',
-        title: 'Categories',
         options: [
-            { id: 'computer', title: 'Computer' },
-            { id: 'games', title: 'Games' },
-            { id: 'music', title: 'Music' },
+            'computer',
+            'games',
+            'music',
         ]
     },
     'most-searched': {
         id: 'most-searched',
-        title: 'Most Searched',
         options: [
-            { id: 'funny', title: 'Funny' },
-            { id: 'birthday', title: 'Birthday' },
-            { id: 'for-couples', title: 'For Couples' },
+            'funny',
+            'birthday',
+            'for-couples',
         ]
     }
 }
