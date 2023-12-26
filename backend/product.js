@@ -732,30 +732,28 @@ async function createPromotionForProducts(products_ids, promotion) {
  */
 async function removeExpiredPromotions() {
     try {
-        const productsCollection = collection(db, 'yourProductsCollectionName'); // Substitua com o nome da sua coleção de produtos
-        const querySnapshot = await getDocs(productsCollection);
+        const productsCollection = collection(db, process.env.COLL_PRODUCTS)
+        const querySnapshot = await getDocs(productsCollection)
 
-        const updatePromises = [];
+        const updatePromises = []
 
         querySnapshot.forEach((doc) => {
-            const product = doc.data();
+            const product = doc.data()
             if (product.promotion && product.promotion.expire_at) {
-                const expireAt = product.promotion.expire_at; // expire_at já é um Timestamp
-                const now = Timestamp.now();
+                const now = Timestamp.now()
 
-                if (expireAt.seconds < now.seconds) {
-                    // A promoção expirou, atualize o campo para null
-                    updatePromises.push(updateDoc(doc.ref, { promotion: null }));
+                if (product.promotion.expire_at.seconds < now.seconds) {
+                    updatePromises.push(updateDoc(doc.ref, { promotion: null }))
                 }
             }
-        });
+        })
 
-        await Promise.all(updatePromises);
-        console.log('Expired promotions removed successfully.');
-        return { message: 'Expired promotions removed successfully.' };
+        await Promise.all(updatePromises)
+        console.log('Expired promotions removed successfully.')
+        return { message: 'Expired promotions removed successfully.' }
     } catch (error) {
-        console.error('Error removing expired promotions:', error);
-        throw new Error('Error removing expired promotions.');
+        console.error('Error removing expired promotions:', error)
+        throw new Error('Error removing expired promotions.')
     }
 }
 
