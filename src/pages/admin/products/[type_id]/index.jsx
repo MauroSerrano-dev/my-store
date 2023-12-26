@@ -3,7 +3,7 @@ import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import NoFound404 from '@/components/NoFound404';
 import { isAdmin } from '@/utils/validations';
 import { useAppContext } from '@/components/contexts/AppContext';
-import { COMMON_TRANSLATES } from '@/consts';
+import { COMMON_TRANSLATES, PRODUCTS_TYPES } from '@/consts';
 import { useEffect, useState } from 'react';
 import ProductAdmin from '@/components/products/ProductAdmin';
 import { Fab, Pagination, PaginationItem, Slider } from '@mui/material';
@@ -22,6 +22,8 @@ import KeyboardArrowRightOutlinedIcon from '@mui/icons-material/KeyboardArrowRig
 import MyButton from '@/components/material-ui/MyButton';
 import { showToast } from '@/utils/toasts';
 import { useTranslation } from 'next-i18next'
+import Image from 'next/image';
+import { Timestamp } from 'firebase/firestore';
 
 export default function ProductsId() {
     const {
@@ -45,7 +47,7 @@ export default function ProductsId() {
 
     const [creatingPromotion, setCreatingPromotion] = useState(false)
 
-    const [promotion, setPromotion] = useState({ percentage: 15, expire_at: dayjs() })
+    const [promotion, setPromotion] = useState({ percentage: 15, expire_at: dayjs().add(1, 'month') })
 
     const tToasts = useTranslation('toasts').t
 
@@ -86,16 +88,20 @@ export default function ProductsId() {
             },
             body: JSON.stringify({
                 products_ids: productsPromotionModal.map(product => product.id),
-                promotion: { ...promotion, percentage: promotion.percentage / 100 },
+                promotion: { ...promotion, percentage: promotion.percentage / 100, expire_at: Timestamp.fromDate(promotion.expire_at.toDate()) },
             })
         }
         fetch("/api/promotion", options)
             .then(response => response.json())
             .then(response => {
                 if (response.error)
-                    showToast({ type: 'error', msg: response.error })
-                else
-                    showToast({ type: 'success', msg: response.message })
+                    showToast({ type: 'error', msg: tToasts(response.error) })
+                else {
+                    showToast({ type: 'success', msg: tToasts(response.message) })
+                    getProductsByQuery()
+                    setProductsSelected([])
+                    handleClosePromotionModal()
+                }
                 setCreatingPromotion(false)
             })
             .catch(() => {
@@ -132,6 +138,17 @@ export default function ProductsId() {
         setPromotion(prev => ({ ...prev, [fieldName]: value }))
     }
 
+    function handleClosePromotionModal() {
+        setPromotion({ percentage: 15, expire_at: dayjs().add(1, 'month') })
+        handleCloseModal(setProductsPromotionModal, setPromotionModalOpacity, [])
+    }
+
+    function getProfit(product) {
+        const cheapestVariant = product.variants.find(vari => vari.price === (product.promotion ? product.promotion.min_price_original : product.min_price))
+        const futurePrice = (product.promotion ? product.promotion.min_price_original : product.min_price) * (1 - (promotion.percentage / 100))
+        return ((futurePrice - PRODUCTS_TYPES.find(type => type.id === product.type_id).variants.find(vari => vari.id === cheapestVariant.id).cost) / 100).toFixed(2)
+    }
+
     return (
         session === undefined
             ? <div></div>
@@ -148,22 +165,49 @@ export default function ProductsId() {
                     <main className={styles.main}>
                         {productsPromotionModal?.length > 0 &&
                             <Modal
-                                closeModal={() => handleCloseModal(setProductsPromotionModal, setPromotionModalOpacity, [])}
+                                closeModal={handleClosePromotionModal}
                                 showModalOpacity={promotionModalOpacity}
                                 className={styles.promotionModal}
                             >
                                 <div className='flex column'>
                                     <span>Duration: {promotion.expire_at.diff(dayjs().startOf('day'), 'day')} days</span>
-                                    {productsPromotionModal.map((prod, i) =>
-                                        <div
-                                            className='flex center'
-                                            key={i}
-                                        >
-                                            <span>${((prod.promotion ? prod.promotion.min_price_original : prod.min_price) / 100).toFixed(2)}</span>
-                                            <KeyboardArrowRightOutlinedIcon />
-                                            <span>${(((prod.promotion ? prod.promotion.min_price_original : prod.min_price) * (1 - (promotion.percentage / 100)) / 100).toFixed(2))}</span>
-                                        </div>
-                                    )}
+                                    <div className={styles.productsPromotionModal}>
+                                        {productsPromotionModal.map((prod, i) =>
+                                            <div
+                                                className={styles.productPromotionModal}
+                                                key={i}
+                                            >
+                                                <div
+                                                    className={styles.productPromotionModalImage}
+                                                >
+                                                    <Image
+                                                        priority
+                                                        src={prod.images[0].src}
+                                                        quality={100}
+                                                        alt='product'
+                                                        fill
+                                                        sizes='100px'
+                                                        style={{
+                                                            borderRadius: '0.3rem'
+                                                        }}
+                                                    />
+                                                </div>
+                                                <div
+                                                    className={styles.productPromotionModalBody}
+                                                >
+                                                    <div className={styles.priceDiff}>
+                                                        <span style={{ color: 'var(--color-error)' }} >${((prod.promotion ? prod.promotion.min_price_original : prod.min_price) / 100).toFixed(2)}</span>
+                                                        <KeyboardArrowRightOutlinedIcon sx={{ fontSize: 27 }} />
+                                                        <span style={{ color: 'var(--color-success)' }}>${(((prod.promotion ? prod.promotion.min_price_original : prod.min_price) * (1 - (promotion.percentage / 100)) / 100).toFixed(2))}</span>
+                                                    </div>
+                                                </div>
+                                                <div className={styles.profitContainer}>
+                                                    <span style={{ fontSize: 15 }}>Profit</span>
+                                                    <span className={styles.profitValue}>${getProfit(prod)}</span>
+                                                </div>
+                                            </div>
+                                        )}
+                                    </div>
                                 </div>
                                 <div
                                     className='flex center fillWidth'
