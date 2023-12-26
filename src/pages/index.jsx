@@ -200,7 +200,7 @@ export default function Home() {
                           src={cat.img}
                           sizes={`${(windowWidth > 420 ? 200 : 130) * 0.8}px`}
                           fill
-                          alt={tCommon(cat.id)}
+                          alt={tCategories(cat.id)}
                           style={{
                             objectFit: 'cover',
                           }}
@@ -241,7 +241,7 @@ export default function Home() {
               <h2 className={styles.carouselTitle}>
                 {session === undefined
                   ? ''
-                  : tCommon(USER_CUSTOMIZE_HOME_PAGE.find(ele => ele.id === (session && session.custom_home_page.active ? session.custom_home_page.tags : DEFAULT_PRODUCTS_TAGS)[i])?.id)
+                  : tCategories(USER_CUSTOMIZE_HOME_PAGE.find(ele => ele.id === (session && session.custom_home_page.active ? session.custom_home_page.tags : DEFAULT_PRODUCTS_TAGS)[i])?.id)
                 }
               </h2>
               <CarouselProducts
