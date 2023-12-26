@@ -743,7 +743,7 @@ async function removeExpiredPromotions() {
                 const now = Timestamp.now()
 
                 if (product.promotion.expire_at.seconds < now.seconds) {
-                    updatePromises.push(updateDoc(doc.ref, { promotion: null }))
+                    updatePromises.push(updateDoc(doc.ref, { min_price: product.promotion.min_price_original, promotion: null }))
                 }
             }
         })
