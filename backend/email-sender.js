@@ -72,7 +72,7 @@ async function sendPurchaseConfirmationEmail(customer_email, orderId, user_langu
 
     // Email details
     const mailOptions = {
-      from: process.env.ORDERS_EMAIL,
+      from: `"${process.env.STORE_FULL_NAME}" ${process.env.ORDERS_EMAIL}`,
       to: customer_email,
       subject: template.subject,
       html: `<html>
@@ -268,7 +268,7 @@ async function sendSupportEmail(props) {
 
     // Email details
     const mailOptions = {
-      from: process.env.NEXT_PUBLIC_SUPPORT_EMAIL,
+      from: `"${process.env.STORE_FULL_NAME}" ${process.env.NEXT_PUBLIC_SUPPORT_EMAIL}`,
       to: customer_email,
       subject: getSubject(subject, user_language, ticketId, custom_subject),
       html: `<html>
