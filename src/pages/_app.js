@@ -36,9 +36,9 @@ const mainTheme = createTheme({
       contrastText: '#ffffff',
     },
   },
-  typography: {
+/*   typography: {
     fontFamily: 'Montserrat, Arial, sans-serif',
-  },
+  }, */
 })
 
 function App(props) {
