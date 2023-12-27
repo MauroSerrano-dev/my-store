@@ -84,7 +84,7 @@ export default function Home() {
   }
 
   return (
-    <div className={styles.container} onClick={() => showToast({ msg: process.env.NODE_ENV })}>
+    <div className={styles.container} onClick={() => showToast({ msg: process.env.NEXT_PUBLIC_ENV })}>
       <Head>
         <meta property="og:title" content='Main' key='og:title' />
         <meta property="og:image:alt" content='Main' key='og:image:alt' />
