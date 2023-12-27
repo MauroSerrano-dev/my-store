@@ -83,11 +83,6 @@ li,
 span {
   text-align: center;
   color: var(--text-color);
-  /* font-family: Montserrat, Arial, sans-serif; */
-}
-
-a {
-  /* font-family: Montserrat, Arial, sans-serif; */
 }
 
 li {
@@ -96,7 +91,6 @@ li {
 
 div {
   text-align: center;
-  /* font-family: Arial, sans-serif; */
   --toastify-text-color-dark: var(--global-white);
 }
 
@@ -108,8 +102,7 @@ button {
   -webkit-user-select: none;
   -webkit-tap-highlight-color: transparent;
   user-select: none;
-/*   font-family: Montserrat, Arial, sans-serif;
- */}
+}
 
 textarea,
 input,
