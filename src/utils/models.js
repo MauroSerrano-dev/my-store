@@ -42,6 +42,7 @@ export function newUserModel(props) {
  * Converts the properties of a cart item into a standardized model.
  * @param {Object} props - Properties of the cart item.
  * @param {string} props.id - The ID of the item.
+ * @param {string} props.type_id - The type ID of the item.
  * @param {number} props.quantity - The quantity of the item.
  * @param {string} props.title - The title/name of the item.
  * @param {string} props.image - The image URL of the item.
@@ -57,6 +58,7 @@ export function newUserModel(props) {
 export function cartItemModel(props) {
     const {
         id,
+        type_id,
         quantity,
         title,
         image,
@@ -70,6 +72,7 @@ export function cartItemModel(props) {
 
     return {
         id: id,
+        type_id: type_id,
         quantity: quantity,
         title: title,
         image: image,

@@ -30,6 +30,9 @@ const mainTheme = createTheme({
       contrastText: '#ffffff',
     },
   },
+  typography: {
+    fontFamily: 'Montserrat, Arial, sans-serif',
+  },
 })
 
 function App(props) {
@@ -52,14 +55,14 @@ function App(props) {
         <link rel="icon" href="/small-logo-32.ico" key='icon' type="image/x-icon" />
 
         <Script src="https://js.stripe.com/v3/" async></Script>
-        {process.env.NODE_ENV === 'production' &&
+        {process.env.NEXT_PUBLIC_ENV === 'production' &&
           <script
             strategy='afterInteractive'
             async
             src={`https://www.googletagmanager.com/gtag/js?id=${process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS_ID}`}
           />
         }
-        {process.env.NODE_ENV === 'production' &&
+        {process.env.NEXT_PUBLIC_ENV === 'production' &&
           <script
             strategy='afterInteractive'
             dangerouslySetInnerHTML={{
@@ -80,7 +83,7 @@ function App(props) {
           <Component{...pageProps} />
         </AppProvider>
       </ThemeProvider>
-      <Analytics mode={process.env.NODE_ENV} />
+      <Analytics mode={process.env.NEXT_PUBLIC_ENV} />
     </div>
   )
 }

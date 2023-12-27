@@ -85,6 +85,7 @@ export default function Cart() {
                     const shippingOption = getShippingOptions(prod.type_id, userLocation.country)
                     return cartItemModel({
                         id: prod.id,
+                        type_id: prod.type_id,
                         quantity: prod.quantity,
                         title: prod.title,
                         image: prod.image,

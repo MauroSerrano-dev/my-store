@@ -46,6 +46,7 @@ export default withRouter(() => {
     const [fieldChanged, setFieldChanged] = useState({})
 
     const tCommon = useTranslation('common').t
+    const tToasts = useTranslation('toasts').t
 
     const TYPE = PRODUCTS_TYPES.find(type => type.id === product?.type_id)
     const COLORS = product?.colors_ids.map(cl_id => COLORS_POOL[cl_id])
@@ -86,7 +87,7 @@ export default withRouter(() => {
 
             setSizesChained(product.colors_ids.reduce((acc, cl) => ({ ...acc, [cl]: [] }), {}))
 
-            setInicialProduct({ ...product, variants: product.variants.map(vari => getProductVariantInfo(vari, product.type_id)) })
+            setInicialProduct(product)
             setProduct({ ...product, variants: product.variants.map(vari => getProductVariantInfo(vari, product.type_id)) })
             setImages(product.images.reduce((acc, image) => acc[image.color_id] === undefined ? { ...acc, [image.color_id]: product.images.filter(img => img.color_id === image.color_id) } : acc, {}))
         }
@@ -315,14 +316,14 @@ export default withRouter(() => {
             await fetch("/api/product", options)
                 .then(response => response.json())
                 .then(response => {
-                    if (response.status < 300) {
-                        setInicialProduct(newProduct)
-                        showToast({ type: 'success', msg: response.msg })
-                        router.push(`/admin/products/${product.type_id}`)
+                    if (response.error) {
+                        setDisableUpdateButton(false)
+                        showToast({ type: 'error', msg: tToasts(response.error) })
                     }
                     else {
-                        setDisableUpdateButton(false)
-                        showToast({ type: 'error', msg: response.msg })
+                        setInicialProduct(newProduct)
+                        showToast({ type: 'success', msg: tToasts(response.message) })
+                        router.push(`/admin/products/${product.type_id}`)
                     }
                 })
                 .catch(() => {
@@ -333,6 +334,7 @@ export default withRouter(() => {
         catch (error) {
             setDisableUpdateButton(false)
             console.error('Error updating product', error)
+            showToast({ type: 'error', msg: 'default_error' })
         }
     }
 

@@ -434,8 +434,21 @@ async function updateProduct(product_id, product_new_fields) {
     if (!product_id || !product_new_fields)
         throw new Error({ title: 'Invalid update data.', statusCode: 400 })
 
-    if (product_new_fields.variants && product_new_fields.variants.some(vari => vari.price < product_new_fields.variants[0].cost))
-        throw new Error({ title: 'Invalid product price.', statusCode: 400 })
+    const productRes = await getProductById(product_id)
+
+    if (!productRes.product)
+        throw new Error({ title: 'Product not found to update.', statusCode: 404 })
+
+    if (product_new_fields.variants) {
+        const type = PRODUCTS_TYPES.find(type => type.id === productRes.product.type_id)
+
+        const variants = product_new_fields.variants.map(variant => ({
+            ...variant,
+            cost: type.variants.find(vari => vari.id === variant.id).cost
+        }))
+        if (variants.some(vari => vari.cost + 400 >= vari.price * (productRes.product.promotion ? (1 - productRes.product.promotion.percentage) : 1)))
+            throw new Error({ title: 'Invalid product price.', statusCode: 400 })
+    }
 
     const productRef = doc(db, process.env.COLL_PRODUCTS, product_id)
 

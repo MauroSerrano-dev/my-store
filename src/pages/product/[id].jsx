@@ -111,6 +111,7 @@ export default withRouter(props => {
             body: JSON.stringify({
                 cartItems: [cartItemModel({
                     id: product.id,
+                    type_id: product.type_id,
                     quantity: 1,
                     title: product.title,
                     image: product.images.find(img => img.color_id === productCurrentVariant.color_id),
