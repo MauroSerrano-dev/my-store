@@ -28,7 +28,7 @@ import { SlClose } from 'react-icons/sl'
 import { LoadingButton } from '@mui/lab'
 import ZoneConverter from '@/utils/country-zone.json'
 import ProductTag from '@/components/ProductTag'
-import { getProductVariantsInfos, handleCloseModal, handleOpenModal } from '@/utils'
+import { handleCloseModal, handleOpenModal } from '@/utils'
 
 export default withRouter(props => {
     const {
@@ -70,9 +70,7 @@ export default withRouter(props => {
     const [shippingValue, setShippingValue] = useState(0)
     const [disableCheckoutButton, setDisableCheckoutButton] = useState(false)
 
-    const PRODUCTS_VARIANTS_INFO = getProductVariantsInfos(product)
-
-    const productCurrentVariant = PRODUCTS_VARIANTS_INFO.find(vari => vari.size_id === currentSize?.id && vari.color_id === currentColor?.id)
+    const productCurrentVariant = product.variants.find(vari => vari.size_id === currentSize?.id && vari.color_id === currentColor?.id)
 
     const PRODUCT_PRICE = product && userCurrency && productCurrentVariant ? getProductPriceUnit(product, productCurrentVariant, userCurrency.rate) : undefined
 
@@ -146,8 +144,6 @@ export default withRouter(props => {
 
     function handleAddToCart() {
         if (cart) {
-            const prodVariant = PRODUCTS_VARIANTS_INFO.find(vari => vari.size_id === currentSize.id && vari.color_id === currentColor.id)
-
             setLoading(true)
 
             const options = {
@@ -158,7 +154,7 @@ export default withRouter(props => {
                 },
                 body: JSON.stringify({
                     cartId: session ? session.cart_id : Cookies.get(CART_COOKIE),
-                    cartProducts: [{ id: product.id, variant_id: prodVariant.id, quantity: 1 }]
+                    cartProducts: [{ id: product.id, variant_id: productCurrentVariant.id, quantity: 1 }]
                 }),
             }
 

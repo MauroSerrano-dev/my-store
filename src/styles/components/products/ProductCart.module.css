@@ -116,7 +116,7 @@
 
     white-space: nowrap;
 
-    background-color: var(--sold-out-bg);
+    background-color: var(--promotion-bg);
 
     border-radius: 30rem;
     font-weight: 700;

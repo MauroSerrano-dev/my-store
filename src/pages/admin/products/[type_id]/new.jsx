@@ -114,7 +114,7 @@ export default withRouter(() => {
                     sizes_ids: SIZES_POOL.map(size => size.id).filter(sz_id => product.sizes.some(sz => sz.id === sz_id)),
                     min_price: product.variants.reduce((acc, vari) => acc < vari.price ? acc : vari.price, product.variants[0].price),
                     images: product.colors.reduce((acc, color) => acc.concat(images[color.id].map(img => ({ src: img.src, color_id: img.color_id }))), []),
-                    variants: product.variants.map(vari => ({ id: vari.id, art: vari.art, sales: 0, price: vari.price })),
+                    variants: product.variants.map(vari => ({ id: vari.id, art: vari.art, sales: 0, price: vari.price, size_id: vari.size_id, color_id: vari.color_id })),
                     promotion: null,
                 }
             })

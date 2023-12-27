@@ -245,11 +245,12 @@ export default withRouter(() => {
             return
         }
 
-        if (!Number.isNaN(Number(value))) {
+        const valueWithoutSymbol = value.length > 1 ? value.slice(1, value.length) : value
+        if (!Number.isNaN(Number(valueWithoutSymbol))) {
             if (field === 'min')
-                setMinInput(value)
+                setMinInput(valueWithoutSymbol)
             if (field === 'max')
-                setMaxInput(value)
+                setMaxInput(valueWithoutSymbol)
         }
     }
 
@@ -361,14 +362,14 @@ export default withRouter(() => {
                                     name='min'
                                     placeholder={tSearch('min')}
                                     spellCheck={false}
-                                    value={minInput}
+                                    value={`${minInput ? userCurrency?.symbol : ''}${minInput}`}
                                     onChange={event => handleChangeMinMax(event.target.value, 'min')}
                                 />
                                 <input
                                     name='max'
                                     placeholder={tSearch('max')}
                                     spellCheck={false}
-                                    value={maxInput}
+                                    value={`${maxInput ? userCurrency?.symbol : ''}${maxInput}`}
                                     onChange={event => handleChangeMinMax(event.target.value, 'max')}
                                 />
                                 <Link

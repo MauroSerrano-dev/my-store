@@ -14,7 +14,7 @@ import BrokeChain from '@/components/svgs/BrokeChain'
 import ButtonIcon from '@/components/material-ui/ButtonIcon'
 import ImagesSliderEditable from '@/components/ImagesSliderEditable'
 import { showToast } from '@/utils/toasts'
-import { getObjectsDiff, getProductVariantInfo } from '@/utils'
+import { getObjectsDiff } from '@/utils'
 import Head from 'next/head'
 import Selector from '@/components/material-ui/Selector'
 import { isNewProductValid } from '@/utils/edit-product'
@@ -88,7 +88,7 @@ export default withRouter(() => {
             setSizesChained(product.colors_ids.reduce((acc, cl) => ({ ...acc, [cl]: [] }), {}))
 
             setInicialProduct(product)
-            setProduct({ ...product, variants: product.variants.map(vari => getProductVariantInfo(vari, product.type_id)) })
+            setProduct(product)
             setImages(product.images.reduce((acc, image) => acc[image.color_id] === undefined ? { ...acc, [image.color_id]: product.images.filter(img => img.color_id === image.color_id) } : acc, {}))
         }
     }
@@ -283,7 +283,7 @@ export default withRouter(() => {
             const newMinPrice = product.variants.reduce((acc, vari) => acc < vari.price ? acc : vari.price, product.variants[0].price)
             const newProduct = {
                 ...product,
-                variants: product.variants.map(vari => ({ id: vari.id, art: vari.art, sales: vari.sales, price: vari.price })),
+                variants: product.variants.map(vari => ({ id: vari.id, art: vari.art, sales: vari.sales, price: vari.price, size_id: vari.size_id, color_id: vari.color_id })),
                 promotion: product.promotion
                     ? { ...product.promotion, min_price_original: newMinPrice }
                     : null,
