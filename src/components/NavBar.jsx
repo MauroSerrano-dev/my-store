@@ -67,15 +67,12 @@ export default function NavBar(props) {
                             href={'/'}
                             className='fillHeight'
                             aria-label='Home'
-                            legacyBehavior
                             style={{
                                 height: '70%',
                                 paddingTop: '0.4rem',
                             }}
                         >
-                            <a>
-                                <Logo height='100%' />
-                            </a>
+                            <Logo height='100%' />
                         </Link>
                     }
                 </div>

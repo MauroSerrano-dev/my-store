@@ -11,6 +11,7 @@ import { useTranslation } from 'next-i18next'
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
 import { useAppContext } from '@/components/contexts/AppContext'
 import BannerSlider from '@/components/sliders/BannerSlider'
+import { showToast } from '@/utils/toasts'
 
 const categories = [
   { id: 'games', url: '/search?h=games', img: 'https://firebasestorage.googleapis.com/v0/b/my-store-4aef7.appspot.com/o/index%2Fgames.webp?alt=media&token=c28521d0-8fd8-45b7-9c80-60feffab7f60' },
@@ -83,7 +84,7 @@ export default function Home() {
   }
 
   return (
-    <div className={styles.container}>
+    <div className={styles.container} onClick={() => showToast({ msg: process.env.NODE_ENV })}>
       <Head>
         <meta property="og:title" content='Main' key='og:title' />
         <meta property="og:image:alt" content='Main' key='og:image:alt' />

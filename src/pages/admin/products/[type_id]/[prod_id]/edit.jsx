@@ -483,7 +483,7 @@ export default withRouter(() => {
                 : <div className={styles.container}>
                     <Head>
                     </Head>
-                    <main className={styles.main} onClick={() => showToast({ msg: process.env.NODE_ENV })}>
+                    <main className={styles.main}>
                         {product &&
                             <Link
                                 href={`/admin/products/${product.type_id}`}
