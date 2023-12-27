@@ -27,10 +27,11 @@ export default async function handler(req, res) {
         try {
             const result = await updateProduct(product_id, product_new_fields)
 
-            res.status(200).json({ status: 200, msg: result.message })
+            res.status(200).json({ message: result.message })
         }
         catch (error) {
-            res.status(error?.props?.statusCode || 500).json({ status: error?.props?.statusCode || 500, msg: 'default_error' })
+            console.error(`Error in product PATCH: ${error?.props?.title || error}`)
+            res.status(error?.props?.statusCode || 500).json({ error: error?.props?.title || 'default_error' })
         }
     }
 }

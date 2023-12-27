@@ -154,7 +154,7 @@ export default async function handler(req, res) {
       }, */
       line_items: line_items,
       mode: "payment",
-      allow_promotion_codes: true,
+      allow_promotion_codes: false,
       success_url: success_url,
       cancel_url: cancel_url,
       customer: stripeCustomer?.id || undefined,
