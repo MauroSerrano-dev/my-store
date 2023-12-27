@@ -17,6 +17,7 @@ export default function ProductTag(props) {
                 fontSize: 13,
                 borderRadius: '30rem',
                 backgroundColor: PRODUCTS_TYPES.find(type => type.id === product.type_id).color,
+                whiteSpace: 'nowrap',
                 ...style,
             }}
         >

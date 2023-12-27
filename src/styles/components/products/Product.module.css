@@ -71,10 +71,10 @@
     border-bottom-left-radius: 8px;
     border-bottom-right-radius: 8px;
 
-    padding-left: 11%;
-    padding-right: 11%;
+    padding-left: 7%;
+    padding-right: 7%;
 
-    padding-bottom: 3%;
+    padding-bottom: 5%;
 
     z-index: 10;
 
@@ -104,13 +104,23 @@
 
 .priceContainer {
     display: flex;
-    flex-direction: column;
-    justify-content: flex-end;
-    align-items: flex-start;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: flex-end;
+
+    width: 100%;
 
     gap: 0.3rem;
 
     height: 45%;
+}
+
+.prices {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+
+    gap: 0.3rem;
 }
 
 .infoBottomPadding {
@@ -171,6 +181,22 @@
     left: 50%;
 
     transform: translateX(-50%);
+
+    white-space: nowrap;
+
+    box-shadow: 0px 3px 1px -2px rgba(0, 0, 0, 0.2),
+        0px 2px 2px 0px rgba(0, 0, 0, 0.14),
+        0px 1px 5px 0px rgba(0, 0, 0, 0.12);
+}
+
+.promotionContainer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    border-radius: 30rem;
+    font-weight: 700;
+    --text-color: var(--text-white);
 
     white-space: nowrap;
 

@@ -10,7 +10,6 @@ import { useTranslation } from 'next-i18next'
 import { useAppContext } from '../contexts/AppContext'
 import MyButton from '@/components/material-ui/MyButton'
 import EditOutlinedIcon from '@mui/icons-material/EditOutlined'
-import { getProductVariantsInfos } from '@/utils'
 import SellOutlinedIcon from '@mui/icons-material/SellOutlined'
 
 /**
@@ -52,20 +51,13 @@ export default function ProductAdmin(props) {
     } = useAppContext()
 
     const tCommon = useTranslation('common').t
-    const tToasts = useTranslation('toasts').t
 
     const height = width * 10 / 9
 
     const productRef = useRef(null)
     const bottomHoverRef = useRef(null)
 
-    const PRODUCTS_VARIANTS_INFO = getProductVariantsInfos(product)
-
-    const [currentVariant, setCurrentVariant] = useState(
-        inicialVariantId
-            ? PRODUCTS_VARIANTS_INFO.find(vari => vari.id === inicialVariantId)
-            : PRODUCTS_VARIANTS_INFO[0]
-    )
+    const [currentVariant, setCurrentVariant] = useState(inicialVariantId ? product.variants.find(vari => vari.id === inicialVariantId) : product.variants[0])
 
     const [isDraggingColors, setIsDraggingColors] = useState(false)
 
@@ -105,7 +97,7 @@ export default function ProductAdmin(props) {
     function handleMouseUpColor(event, color) {
         event.stopPropagation()
         event.preventDefault()
-        setCurrentVariant(PRODUCTS_VARIANTS_INFO.find(vari => vari.color_id === color.id))
+        setCurrentVariant(currentVariant.find(vari => vari.color_id === color.id))
     }
 
     function handleBottomHoverClick(event) {
@@ -275,16 +267,12 @@ export default function ProductAdmin(props) {
                             fontSize: width < 150 ? width * 0.07 : width * 0.055,
                             height: width < 150 ? '20%' : '17%',
                             top: width < 150 ? '-10%' : '-8.5%',
-                            backgroundColor: product.promotion
-                                ? 'var(--sold-out-bg)'
-                                : PRODUCTS_TYPES.find(type => type.id === product.type_id).color || 'var(--primary)',
+                            backgroundColor: PRODUCTS_TYPES.find(type => type.id === product.type_id).color || 'var(--primary)',
                         }}
                     >
                         <p>
                             {
-                                product.promotion
-                                    ? tCommon(PRODUCTS_TYPES.find(type => type.id === product.type_id).id) + ' ' + Math.round(100 * product.promotion.percentage) + '% OFF'
-                                    : tCommon(PRODUCTS_TYPES.find(type => type.id === product.type_id).id)
+                                tCommon(PRODUCTS_TYPES.find(type => type.id === product.type_id).id)
                             }
                         </p>
                     </div>
@@ -301,24 +289,47 @@ export default function ProductAdmin(props) {
                         </p>
                     </div>
                     <div className={styles.priceContainer}>
-                        {product.promotion &&
+                        <div className={styles.prices}>
+                            {product.promotion &&
+                                <p
+                                    className={styles.oldPrice}
+                                    style={{
+                                        fontSize: width * 0.056
+                                    }}
+                                >
+                                    {userCurrency?.symbol} {(Math.round((product.promotion ? product.promotion.min_price_original : product.min_price) * userCurrency?.rate) / 100).toFixed(2)}
+                                </p>
+                            }
                             <p
-                                className={styles.oldPrice}
+                                className={styles.price}
                                 style={{
-                                    fontSize: width * 0.056
+                                    fontSize: width * 0.085,
                                 }}
                             >
-                                {userCurrency?.symbol} {(Math.round((product.promotion ? product.promotion.min_price_original : product.min_price) * userCurrency?.rate) / 100).toFixed(2)}
+                                {userCurrency?.symbol} {(Math.round(product.min_price * userCurrency?.rate) / 100).toFixed(2)}
                             </p>
+                        </div>
+                        {product.promotion &&
+                            <div
+                                className={styles.promotionContainer}
+                                style={{
+                                    fontSize: width * 0.06,
+                                    paddingTop: width * 0.012,
+                                    paddingBottom: width * 0.015,
+                                    paddingLeft: width * 0.03,
+                                    paddingRight: width * 0.03,
+                                    backgroundColor: product.promotion
+                                        ? 'var(--promotion-bg)'
+                                        : PRODUCTS_TYPES.find(type => type.id === product.type_id).color || 'var(--primary)',
+                                }}
+                            >
+                                <p>
+                                    {
+                                        Math.round(100 * product.promotion.percentage) + '% OFF'
+                                    }
+                                </p>
+                            </div>
                         }
-                        <p
-                            className={styles.price}
-                            style={{
-                                fontSize: width * 0.085
-                            }}
-                        >
-                            {userCurrency?.symbol} {(Math.round(product.min_price * userCurrency?.rate) / 100).toFixed(2)}
-                        </p>
                     </div>
                     {
                         supportsHoverAndPointer &&
