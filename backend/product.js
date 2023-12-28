@@ -18,6 +18,7 @@ import Fuse from 'fuse.js'
 import { POPULARITY_POINTS, PRODUCTS_TYPES, TAGS_POOL, THEMES_POOL } from "@/consts"
 import translate from "translate"
 import Error from "next/error"
+import { getProductVariantsInfos } from "@/utils"
 
 initializeApp(firebaseConfig)
 
@@ -112,8 +113,9 @@ async function getProductsInfo(products) {
         const productsResult = chunkResults.flat();
 
         const productsOneVariant = products.map(prod => {
-            const product = productsResult.find(p => p.id === prod.id);
-            const variant = product.variants.find(vari => vari.id === prod.variant_id);
+            const product = productsResult.find(p => p.id === prod.id)
+            const variants = getProductVariantsInfos(product)
+            const variant = variants.find(vari => vari.id === prod.variant_id)
 
             return {
                 ...prod,
@@ -123,8 +125,8 @@ async function getProductsInfo(products) {
                 printify_ids: product.printify_ids,
                 variant: variant,
                 default_variant: {
-                    color_id: product.variants[0].color_id,
-                    size_id: product.variants[0].size_id,
+                    color_id: variants[0].color_id,
+                    size_id: variants[0].size_id,
                 },
                 image: product.images.filter(img => img.color_id === variant.color_id)[product.image_showcase_index],
             };
