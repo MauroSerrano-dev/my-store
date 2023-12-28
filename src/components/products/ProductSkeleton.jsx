@@ -3,7 +3,7 @@ import { useAppContext } from '../contexts/AppContext'
 
 export default function ProductSkeleton(props) {
     const {
-        productWidth,
+        productWidth = 225,
     } = props
 
     const {

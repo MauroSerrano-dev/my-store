@@ -162,7 +162,7 @@ async function createProduct(product) {
         }
 
         const existInPrintify = await isProductInPrintify(product)
-        
+
         if (!existInPrintify)
             return {
                 status: 400,
@@ -237,6 +237,7 @@ async function getProductsByTitle(s) {
 async function getProductsByQueries(props) {
     const {
         s, //search
+        i, //id
         t, //tags
         h, //theme
         y, //type
@@ -299,6 +300,11 @@ async function getProductsByQueries(props) {
         const querySnapshot = await getDocs(q)
 
         let products = querySnapshot.docs.map(doc => doc.data())
+
+        // Filtre by id (se presente)
+        if (i) {
+            products = products.filter(prod => prod.id.includes(i))
+        }
 
         // Filtre by type (se presente)
         if (y) {

@@ -146,6 +146,30 @@ export default function PrintifyIdPicker(props) {
                     />
                 </div>
             }
+            {chooseOne === undefined &&
+                <div
+                    className={styles.imageSpinner}
+                >
+                    <CircularProgress
+                        variant="determinate"
+                        sx={{
+                            color: '#525252',
+                            position: 'absolute',
+                        }}
+                        size={45}
+                        thickness={4}
+                        value={100}
+                    />
+                    <CircularProgress
+                        disableShrink
+                        size={45}
+                        thickness={4}
+                        sx={{
+                            animationDuration: '750ms',
+                        }}
+                    />
+                </div>
+            }
             <div
                 className='flex'
                 style={{
@@ -175,7 +199,7 @@ export default function PrintifyIdPicker(props) {
             </div>
             <MyButton
                 style={{
-                    height: '100%',
+                    height: 45,
                 }}
                 onClick={handleOpen}
             >
@@ -188,114 +212,116 @@ export default function PrintifyIdPicker(props) {
                     showModalOpacity={modalOpacity}
                     className={styles.modalContent}
                 >
-                    <div className={styles.printProducts}>
-                        {printifyProducts && printifyProducts.map((print_prod, i) =>
-                            <div
-                                className={styles.printProduct}
-                                key={i}
-                            >
-                                <div className={styles.imageContainer}>
-                                    <img
-                                        onClick={() => handleImageClick(print_prod.id)}
-                                        src={print_prod.images[0].src}
-                                        alt={print_prod.title}
-                                        style={{
-                                            width: '100%',
-                                            height: '100%',
-                                        }}
-                                    />
-                                    <img
-                                        onClick={() => handleImageClick(print_prod.id)}
-                                        src={print_prod.images[1].src}
-                                        alt={print_prod.title}
-                                        style={{
-                                            width: '100%',
-                                            height: '100%',
-                                            position: 'absolute',
-                                            left: 0,
-                                            top: 0,
-                                            opacity: imagesFliped.includes(print_prod.id) ? 1 : 0
-                                        }}
-                                    />
-                                </div>
-                                <div className={styles.productBody}>
-                                    <span className='ellipsis'>
-                                        {print_prod.title}
-                                    </span>
-                                    <MyButton
-                                        style={{
-                                            paddingLeft: '2rem',
-                                            paddingRight: '2rem',
-                                        }}
-                                        onClick={() => handleChoose(print_prod)}
-                                    >
-                                        Select
-                                    </MyButton>
-                                </div>
-                            </div>
-                        )}
-                        {!printifyProducts &&
-                            <motion.div
-                                className={styles.loadingSpinner}
-                                initial='hidden'
-                                animate='visible'
-                                variants={{
-                                    hidden: {
-                                        opacity: 0,
-                                    },
-                                    visible: {
-                                        opacity: 1,
-                                    }
-                                }}
-                                transition={{
-                                    duration: 0.3,
-                                }}
-                            >
-                                <CircularProgress
-                                    variant="determinate"
-                                    sx={{
-                                        color: '#525252',
-                                        position: 'absolute',
-                                    }}
-                                    size={120}
-                                    thickness={4}
-                                    value={100}
-                                />
-                                <CircularProgress
-                                    disableShrink
-                                    size={120}
-                                    thickness={4}
-                                    sx={{
-                                        animationDuration: '750ms',
-                                    }}
-                                />
-                            </motion.div>
-                        }
-                        {printifyProducts &&
-                            <div className={styles.modalBottom}>
-                                <Pagination
-                                    onChange={handlePageChange}
-                                    size='small'
-                                    count={modalLastPage}
-                                    color="primary"
-                                    page={Number(modalPage)}
-                                    style={{
-                                        display: 'flex',
-                                        justifyContent: 'center',
-                                        alignItems: 'center'
-                                    }}
-                                    renderItem={item => (
-                                        <PaginationItem
-                                            className={styles.pageButton}
-                                            {...item}
+                    {printifyProducts &&
+                        <div className={styles.printProducts}>
+                            {printifyProducts.map((print_prod, i) =>
+                                <div
+                                    className={styles.printProduct}
+                                    key={i}
+                                >
+                                    <div className={styles.imageContainer}>
+                                        <img
+                                            onClick={() => handleImageClick(print_prod.id)}
+                                            src={print_prod.images[0].src}
+                                            alt={print_prod.title}
+                                            style={{
+                                                width: '100%',
+                                                height: '100%',
+                                            }}
                                         />
-                                    )}
-                                />
-                            </div>
-                        }
-                    </div>
+                                        <img
+                                            onClick={() => handleImageClick(print_prod.id)}
+                                            src={print_prod.images[1].src}
+                                            alt={print_prod.title}
+                                            style={{
+                                                width: '100%',
+                                                height: '100%',
+                                                position: 'absolute',
+                                                left: 0,
+                                                top: 0,
+                                                opacity: imagesFliped.includes(print_prod.id) ? 1 : 0
+                                            }}
+                                        />
+                                    </div>
+                                    <div className={styles.productBody}>
+                                        <span className='ellipsis'>
+                                            {print_prod.title}
+                                        </span>
+                                        <MyButton
+                                            style={{
+                                                paddingLeft: '2rem',
+                                                paddingRight: '2rem',
+                                            }}
+                                            onClick={() => handleChoose(print_prod)}
+                                        >
+                                            Select
+                                        </MyButton>
+                                    </div>
+                                </div>
+                            )}
+                            {printifyProducts &&
+                                <div className={styles.modalBottom}>
+                                    <Pagination
+                                        onChange={handlePageChange}
+                                        size='small'
+                                        count={modalLastPage}
+                                        color="primary"
+                                        page={Number(modalPage)}
+                                        style={{
+                                            display: 'flex',
+                                            justifyContent: 'center',
+                                            alignItems: 'center'
+                                        }}
+                                        renderItem={item => (
+                                            <PaginationItem
+                                                className={styles.pageButton}
+                                                {...item}
+                                            />
+                                        )}
+                                    />
+                                </div>
+                            }
+                        </div>
+                    }
+                    {!printifyProducts &&
+                        <motion.div
+                            className={styles.loadingSpinner}
+                            initial='hidden'
+                            animate='visible'
+                            variants={{
+                                hidden: {
+                                    opacity: 0,
+                                },
+                                visible: {
+                                    opacity: 1,
+                                }
+                            }}
+                            transition={{
+                                duration: 0.3,
+                            }}
+                        >
+                            <CircularProgress
+                                variant="determinate"
+                                sx={{
+                                    color: '#525252',
+                                    position: 'absolute',
+                                }}
+                                size={120}
+                                thickness={4}
+                                value={100}
+                            />
+                            <CircularProgress
+                                disableShrink
+                                size={120}
+                                thickness={4}
+                                sx={{
+                                    animationDuration: '750ms',
+                                }}
+                            />
+                        </motion.div>
+                    }
                 </Modal>
             }
-        </div >
+        </div>
     )
 }

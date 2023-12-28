@@ -561,7 +561,7 @@ export default withRouter(() => {
                                                 provider={provider}
                                                 blueprint_ids={TYPE.blueprint_ids}
                                                 style={{
-                                                    width: '100%'
+                                                    width: '100%',
                                                 }}
                                             />
                                         )}

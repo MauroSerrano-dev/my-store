@@ -22,7 +22,7 @@ async function fetchAllPrintifyProducts() {
             const response = await axios.get(url, { headers: { Authorization: process.env.PRINTIFY_ACCESS_TOKEN } });
             allProducts = allProducts.concat(response.data.data); // Adiciona os produtos da página atual ao array
 
-            if (currentPage >= response.data.last_page) {
+            if (response.data.data.length === 0) {
                 lastPage = true; // Se a página atual for a última, termina o loop
             } else {
                 currentPage++; // Caso contrário, avança para a próxima página
@@ -46,9 +46,9 @@ async function filterNotInPrintify(cartItems) {
     let lastPage = false;
 
     while (!lastPage) {
-        const { data, last_page } = await fetchPrintifyProducts(currentPage);
+        const { data } = await fetchPrintifyProducts(currentPage);
         notInPrintify = notInPrintify.filter(prod => isProductNotInPrintify(data, prod));
-        lastPage = currentPage >= last_page;
+        lastPage = data.length === 0;
         currentPage++;
     }
 
@@ -66,11 +66,11 @@ async function isProductInPrintify(product) {
     let lastPage = false;
 
     while (!lastPage) {
-        const { data, last_page } = await fetchPrintifyProducts(currentPage);
+        const { data } = await fetchPrintifyProducts(currentPage);
         if (isProductInPrintifyData(data, product)) {
             return true;
         }
-        lastPage = currentPage >= last_page;
+        lastPage = data.length === 0;
         currentPage++;
     }
 
@@ -105,7 +105,7 @@ async function getProductFromPrintify(productId) {
 
     const product = allProducts.find(p => p.id === productId)
 
-    return product
+    return product || null
 }
 
 export {

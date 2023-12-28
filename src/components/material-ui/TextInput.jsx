@@ -30,7 +30,8 @@ export default function TextInput(props) {
         size,
         type,
         multiline,
-        minRows
+        minRows,
+        onKeyDown,
     } = props
 
     const {
@@ -117,6 +118,7 @@ export default function TextInput(props) {
             onBlur={() => setFocus(false)}
             onMouseEnter={() => setHover(true)}
             onMouseLeave={() => setHover(false)}
+            onKeyDown={onKeyDown}
         />
     )
 }
