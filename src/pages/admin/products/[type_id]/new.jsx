@@ -23,6 +23,7 @@ import { isAdmin } from '@/utils/validations'
 import { useAppContext } from '@/components/contexts/AppContext'
 import MyButton from '@/components/material-ui/MyButton'
 import { LoadingButton } from '@mui/lab'
+import PrintifyIdPicker from '@/components/PrintifyIdPicker'
 
 const INICIAL_PRODUCT = {
     id: '',
@@ -61,6 +62,7 @@ export default withRouter(() => {
     const [artColorChained, setArtColorChained] = useState(true)
 
     const tCommon = useTranslation('common').t
+    const tToasts = useTranslation('toasts').t
 
     useEffect(() => {
         setAdminMenuOpen(false)
@@ -122,14 +124,19 @@ export default withRouter(() => {
         await fetch("/api/product", options)
             .then(response => response.json())
             .then(response => {
-                response.status < 300
-                    ? showToast({ type: 'success', msg: response.msg })
-                    : showToast({ type: 'error', msg: response.msg })
-                router.push(`/admin/products/${router.query.type_id}`)
+                if (response.status < 300) {
+                    showToast({ type: 'success', msg: response.msg })
+                    router.push(`/admin/products/${router.query.type_id}`)
+                }
+                else {
+                    setLoadingCreateButton(false)
+                    showToast({ type: 'error', msg: response.msg })
+                }
             })
-            .catch(err => {
+            .catch(error => {
+                console.error(error)
                 setLoadingCreateButton(false)
-                showToast({ type: 'error', msg: err })
+                showToast({ type: 'error', msg: tToasts('default_error') })
             })
     }
 
@@ -555,12 +562,13 @@ export default withRouter(() => {
                                     </div>
                                     <div className={styles.sectionRight}>
                                         {type.providers.map(prov_id => PROVIDERS_POOL[prov_id]).map((provider, i) =>
-                                            <TextInput
+                                            <PrintifyIdPicker
+                                                onChoose={productPrintifyId => handlePrintifyId(provider.id, productPrintifyId)}
                                                 key={i}
-                                                colorText='var(--color-success)'
-                                                label={`${provider.title} Printify ID`}
-                                                onChange={event => handlePrintifyId(provider.id, event.target.value)}
                                                 value={product.printify_ids[provider.id]}
+                                                colorText='var(--color-success)'
+                                                provider={provider}
+                                                blueprint_ids={type.blueprint_ids}
                                                 style={{
                                                     width: '100%'
                                                 }}

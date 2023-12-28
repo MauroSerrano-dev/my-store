@@ -115,15 +115,19 @@ export function getProductVariantsInfos(product) {
     return product.variants.map(vari => ({ ...PRODUCTS_TYPES.find(type => type.id === product?.type_id).variants.find(va => va.id === vari.id), ...vari }))
 }
 
+export function getProductVariantInfo(variant, productType) {
+    return { ...PRODUCTS_TYPES.find(type => type.id === productType).variants.find(va => va.id === variant.id), ...variant }
+}
+
 export function handleOpenModal(view, opacity, custom_value) {
     view(custom_value || true)
     opacity(true)
 }
 
-export function handleCloseModal(view, opacity, custom_value, duration = 300) {
+export function handleCloseModal(view, opacity, custom_value) {
     opacity(false)
     setTimeout(() => {
         view(custom_value || false)
         opacity(true)
-    }, duration)
+    }, 300)
 }

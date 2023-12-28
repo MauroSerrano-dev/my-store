@@ -28,12 +28,16 @@ export default function Modal(props) {
     return (
         <motion.div
             className={styles.container}
-            initial={{ opacity: 0 }}
-            animate={
-                showModalOpacity
-                    ? { opacity: 1 }
-                    : { opacity: 0 }
-            }
+            initial='hidden'
+            animate={showModalOpacity ? 'visible' : 'hidden'}
+            variants={{
+                hidden: {
+                    opacity: 0,
+                },
+                visible: {
+                    opacity: 1,
+                }
+            }}
             transition={{
                 duration: showModalOpacity
                     ? 0.3
@@ -48,13 +52,17 @@ export default function Modal(props) {
             </div>
             <motion.div
                 className={styles.modal}
-                initial={{
-                    scale: 0.6,
-                    opacity: 0,
-                }}
-                animate={{
-                    scale: showModalOpacity ? 1 : 0.8,
-                    opacity: showModalOpacity ? 1 : 0,
+                initial='hidden'
+                animate={showModalOpacity ? 'visible' : 'hidden'}
+                variants={{
+                    hidden: {
+                        scale: 0.8,
+                        opacity: 0,
+                    },
+                    visible: {
+                        scale: showModalOpacity ? 1 : 0.8,
+                        opacity: showModalOpacity ? 1 : 0,
+                    }
                 }}
                 transition={{
                     duration: showModalOpacity

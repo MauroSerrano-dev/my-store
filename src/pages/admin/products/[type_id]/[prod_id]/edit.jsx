@@ -14,7 +14,7 @@ import BrokeChain from '@/components/svgs/BrokeChain'
 import ButtonIcon from '@/components/material-ui/ButtonIcon'
 import ImagesSliderEditable from '@/components/ImagesSliderEditable'
 import { showToast } from '@/utils/toasts'
-import { getObjectsDiff } from '@/utils'
+import { getObjectsDiff, getProductVariantInfo } from '@/utils'
 import Head from 'next/head'
 import Selector from '@/components/material-ui/Selector'
 import { isNewProductValid } from '@/utils/edit-product'
@@ -25,6 +25,7 @@ import { useAppContext } from '@/components/contexts/AppContext'
 import MyButton from '@/components/material-ui/MyButton'
 import KeyboardArrowLeftOutlinedIcon from '@mui/icons-material/KeyboardArrowLeftOutlined';
 import Link from 'next/link'
+import PrintifyIdPicker from '@/components/PrintifyIdPicker'
 
 export default withRouter(() => {
     const {
@@ -88,7 +89,7 @@ export default withRouter(() => {
             setSizesChained(product.colors_ids.reduce((acc, cl) => ({ ...acc, [cl]: [] }), {}))
 
             setInicialProduct(product)
-            setProduct(product)
+            setProduct({ ...product, variants: product.variants.map(vari => getProductVariantInfo(vari, product.type_id)) })
             setImages(product.images.reduce((acc, image) => acc[image.color_id] === undefined ? { ...acc, [image.color_id]: product.images.filter(img => img.color_id === image.color_id) } : acc, {}))
         }
     }
@@ -552,11 +553,13 @@ export default withRouter(() => {
                                     </div>
                                     <div className={styles.sectionRight}>
                                         {TYPE.providers.map(prov_id => PROVIDERS_POOL[prov_id]).map((provider, i) =>
-                                            <TextInput
+                                            <PrintifyIdPicker
+                                                onChoose={productPrintifyId => handlePrintifyId(provider.id, productPrintifyId)}
                                                 key={i}
-                                                label={`${provider.title} Printify ID`}
-                                                onChange={event => handlePrintifyId(provider.id, event.target.value)}
                                                 value={product.printify_ids[provider.id]}
+                                                colorText='var(--color-success)'
+                                                provider={provider}
+                                                blueprint_ids={TYPE.blueprint_ids}
                                                 style={{
                                                     width: '100%'
                                                 }}

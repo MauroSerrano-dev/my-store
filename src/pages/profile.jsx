@@ -39,7 +39,7 @@ export default function Profile() {
     const starterUser = session ? { ...session } : undefined
 
     const [user, setUser] = useState()
-    
+
     const [deleteAccountModalOpen, setDeleteAccountModalOpen] = useState(false)
     const [deleteAccountModalOpacity, setDeleteAccountModalOpacity] = useState(false)
 
