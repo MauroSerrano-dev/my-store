@@ -309,27 +309,6 @@ export default function ProductAdmin(props) {
                                 {userCurrency?.symbol} {(Math.round(product.min_price * userCurrency?.rate) / 100).toFixed(2)}
                             </p>
                         </div>
-                        {product.promotion &&
-                            <div
-                                className={styles.promotionContainer}
-                                style={{
-                                    fontSize: width * 0.06,
-                                    paddingTop: width * 0.012,
-                                    paddingBottom: width * 0.015,
-                                    paddingLeft: width * 0.03,
-                                    paddingRight: width * 0.03,
-                                    backgroundColor: product.promotion
-                                        ? 'var(--promotion-bg)'
-                                        : PRODUCTS_TYPES.find(type => type.id === product.type_id).color || 'var(--primary)',
-                                }}
-                            >
-                                <p>
-                                    {
-                                        Math.round(100 * product.promotion.percentage) + '% OFF'
-                                    }
-                                </p>
-                            </div>
-                        }
                     </div>
                     {
                         supportsHoverAndPointer &&
@@ -348,6 +327,29 @@ export default function ProductAdmin(props) {
                         </div>
                     }
                 </div>
+                {product.promotion &&
+                    <div
+                        className={styles.promotionContainer}
+                        style={{
+                            fontSize: width < 190 ? width * 0.07 : width * 0.055,
+                            paddingTop: width * 0.012,
+                            paddingBottom: width * 0.015,
+                            paddingLeft: width * 0.03,
+                            paddingRight: width * 0.03,
+                            top: width * 0.03,
+                            left: width * 0.03,
+                            backgroundColor: product.promotion
+                                ? 'var(--promotion-bg)'
+                                : PRODUCTS_TYPES.find(type => type.id === product.type_id).color || 'var(--primary)',
+                        }}
+                    >
+                        <p>
+                            {
+                                Math.round(100 * product.promotion.percentage) + '% OFF'
+                            }
+                        </p>
+                    </div>
+                }
             </Link>
             {
                 supportsHoverAndPointer && showButtomHover &&

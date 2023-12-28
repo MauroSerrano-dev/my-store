@@ -244,14 +244,11 @@ export default withRouter(() => {
             }
             return
         }
-
-        const valueWithoutSymbol = value.length > 1 ? value.slice(1, value.length) : value
-        if (!Number.isNaN(Number(valueWithoutSymbol))) {
-            if (field === 'min')
-                setMinInput(valueWithoutSymbol)
-            if (field === 'max')
-                setMaxInput(valueWithoutSymbol)
-        }
+        console.log(typeof value, value)
+        if (field === 'min')
+            setMinInput(value)
+        if (field === 'max')
+            setMaxInput(value)
     }
 
     return (
@@ -358,20 +355,34 @@ export default withRouter(() => {
                                 {tSearch('above', { currencySymbol: userCurrency?.symbol, min: 40 })}
                             </Link>
                             <div className={styles.priceFilterInputs}>
-                                <input
-                                    name='min'
-                                    placeholder={tSearch('min')}
-                                    spellCheck={false}
-                                    value={`${minInput ? userCurrency?.symbol : ''}${minInput}`}
-                                    onChange={event => handleChangeMinMax(event.target.value, 'min')}
-                                />
-                                <input
-                                    name='max'
-                                    placeholder={tSearch('max')}
-                                    spellCheck={false}
-                                    value={`${maxInput ? userCurrency?.symbol : ''}${maxInput}`}
-                                    onChange={event => handleChangeMinMax(event.target.value, 'max')}
-                                />
+                                <div className={styles.minMaxPrefix}>
+                                    <span>
+                                        {userCurrency.symbol}
+                                    </span>
+                                    <input
+                                        name='min'
+                                        type='number'
+                                        placeholder={tSearch('min')}
+                                        spellCheck={false}
+                                        value={minInput}
+                                        onChange={event => handleChangeMinMax(event.target.value, 'min')}
+                                        className={styles.minMaxInputs}
+                                    />
+                                </div>
+                                <div className={styles.minMaxPrefix}>
+                                    <span>
+                                        {userCurrency.symbol}
+                                    </span>
+                                    <input
+                                        name='max'
+                                        type='number'
+                                        placeholder={tSearch('max')}
+                                        spellCheck={false}
+                                        value={maxInput}
+                                        onChange={event => handleChangeMinMax(event.target.value, 'max')}
+                                        className={styles.minMaxInputs}
+                                    />
+                                </div>
                                 <Link
                                     href={{
                                         pathname: router.pathname,
@@ -386,7 +397,9 @@ export default withRouter(() => {
                                     scroll={false}
                                     className='noUnderline fill'
                                 >
-                                    <button>
+                                    <button
+                                        className={styles.minMaxButton}
+                                    >
                                         {tSearch('min-max-button')}
                                     </button>
                                 </Link>
