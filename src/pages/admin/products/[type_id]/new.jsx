@@ -24,6 +24,7 @@ import { useAppContext } from '@/components/contexts/AppContext'
 import MyButton from '@/components/material-ui/MyButton'
 import { LoadingButton } from '@mui/lab'
 import PrintifyIdPicker from '@/components/PrintifyIdPicker'
+import ProductPriceInput from '@/components/ProductPriceInput'
 
 const INICIAL_PRODUCT = {
     id: '',
@@ -703,50 +704,16 @@ export default withRouter(() => {
                                                                 {tCommon(product.colors[colorIndex].title)} Price (USD)
                                                             </h3>
                                                             {product.sizes.map((size, i) =>
-                                                                <div
-                                                                    className='flex center fillWidth'
-                                                                    style={{
-                                                                        gap: '1rem'
-                                                                    }}
+                                                                <ProductPriceInput
+                                                                    productType={type.id}
+                                                                    onClickChain={() => handleChainSize(size.id)}
+                                                                    chained={sizesChained[product.colors[colorIndex].id].includes(size.id)}
+                                                                    size={size}
                                                                     key={i}
-                                                                >
-                                                                    <MyButton
-                                                                        variant={sizesChained[product.colors[colorIndex].id].includes(size.id) ? 'contained' : 'outlined'}
-                                                                        onClick={() => handleChainSize(size.id)}
-                                                                        style={{
-                                                                            minWidth: 45,
-                                                                            width: 45,
-                                                                            height: 45,
-                                                                            padding: 0,
-                                                                        }}
-                                                                    >
-                                                                        {sizesChained[product.colors[colorIndex].id].includes(size.id) ? <Chain /> : <BrokeChain />}
-                                                                    </MyButton>
-                                                                    <TextInput
-                                                                        colorText='var(--color-success)'
-                                                                        label={size.title}
-                                                                        onChange={event => handleChangePrice(event.target.value, size.id)}
-                                                                        value={product.variants.find(vari => vari.size_id === size.id && vari.color_id === product.colors[colorIndex].id).price}
-                                                                        style={{
-                                                                            width: 90,
-                                                                        }}
-                                                                        styleInput={{
-                                                                            display: 'flex',
-                                                                            justifyContent: 'center',
-                                                                            alignItems: 'center',
-                                                                            textAlign: 'center',
-                                                                            padding: 0,
-                                                                            height: 45,
-                                                                        }}
-                                                                    />
-                                                                    <Slider
-                                                                        value={product.variants.find(vari => vari.size_id === size.id && vari.color_id === product.colors[colorIndex].id).price}
-                                                                        min={type.variants[0].cost}
-                                                                        max={type.variants.reduce((acc, vari) => vari.cost > acc.cost ? vari : acc, { cost: 0 }).cost * 5}
-                                                                        valueLabelDisplay="auto"
-                                                                        onChange={event => handleChangePrice(event.target.value, size.id)}
-                                                                    />
-                                                                </div>
+                                                                    product={product}
+                                                                    onChangeSlider={event => handleChangePrice(event.target.value, size.id)}
+                                                                    price={product.variants.find(vari => vari.size_id === size.id && vari.color_id === product.colors[colorIndex].id).price}
+                                                                />
                                                             )}
                                                         </div>
                                                     </div>

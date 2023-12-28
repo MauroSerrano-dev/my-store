@@ -4,7 +4,8 @@ import { useTranslation } from 'next-i18next'
 export default function ProductTag(props) {
     const {
         style,
-        product
+        product,
+        promotion,
     } = props
 
     const tCommon = useTranslation('common').t
@@ -16,12 +17,13 @@ export default function ProductTag(props) {
                 fontWeight: 600,
                 fontSize: 13,
                 borderRadius: '30rem',
-                backgroundColor: PRODUCTS_TYPES.find(type => type.id === product.type_id).color,
+                backgroundColor: promotion ? 'var(--promotion-color)' : PRODUCTS_TYPES.find(type => type.id === product.type_id).color,
                 whiteSpace: 'nowrap',
+                '--text-color': 'var(--text-white)',
                 ...style,
             }}
         >
-            <p>{tCommon(product.type_id)}</p>
+            <p>{promotion ? `${promotion.percentage * 100}% OFF` : tCommon(product.type_id)}</p>
         </div>
     )
 }

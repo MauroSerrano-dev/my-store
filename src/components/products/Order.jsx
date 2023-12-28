@@ -9,7 +9,7 @@ import { useAppContext } from '../contexts/AppContext';
 import KeyboardArrowDownOutlinedIcon from '@mui/icons-material/KeyboardArrowDownOutlined'
 import { useState } from 'react';
 import ArrowForwardIosOutlinedIcon from '@mui/icons-material/ArrowForwardIosOutlined'
-import ProductTag from '../ProductTag';
+import ProductTag from './ProductTag';
 import ProductStepper from './ProductStepper';
 import MyButton from '@/components/material-ui/MyButton';
 

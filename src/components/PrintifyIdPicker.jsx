@@ -34,6 +34,8 @@ export default function PrintifyIdPicker(props) {
     useEffect(() => {
         if (value && !chooseOne)
             getInicialProduct()
+        else
+            setChooseOne(null)
     }, [])
 
     useEffect(() => {

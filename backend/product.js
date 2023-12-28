@@ -453,11 +453,9 @@ async function updateProduct(product_id, product_new_fields) {
     if (!productRes.product)
         throw new Error({ title: 'Product not found to update', statusCode: 404 })
 
-    if (product_new_fields.printify_ids) {
-        const existInPrintify = await isProductInPrintify({ ...productRes.product, ...product_new_fields })
-        if (!existInPrintify)
-            throw new Error({ title: 'Invalid printify id', statusCode: 400 })
-    }
+    const existInPrintify = await isProductInPrintify({ ...productRes.product, ...product_new_fields })
+    if (!existInPrintify)
+        throw new Error({ title: 'Invalid printify id', statusCode: 400 })
 
     if (product_new_fields.variants) {
         const type = PRODUCTS_TYPES.find(type => type.id === productRes.product.type_id)

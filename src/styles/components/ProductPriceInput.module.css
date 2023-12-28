@@ -1,0 +1,27 @@
+.container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
+
+    width: 100%;
+}
+
+.profitContainer {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    width: 100px;
+    font-weight: 600;
+}
+
+.originalPrice {
+    text-decoration: line-through;
+    color: rgba(255, 255, 255, 0.5);
+}
+
+.profit {
+    color: var(--color-success)
+}

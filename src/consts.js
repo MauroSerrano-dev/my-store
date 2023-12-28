@@ -828,7 +828,7 @@ export const PRODUCTS_TYPES = [
             {
                 id: "black-s",
                 id_printify: 32918,
-                cost: 2187,
+                cost: 2360,
                 inicial_price: 3645,
                 title: "Black / S",
                 grams: 482,
@@ -838,7 +838,7 @@ export const PRODUCTS_TYPES = [
             {
                 id: "dark-heather-s",
                 id_printify: 32878,
-                cost: 2187,
+                cost: 2360,
                 inicial_price: 3645,
                 title: "Dark Heather / S",
                 grams: 482,
@@ -848,7 +848,7 @@ export const PRODUCTS_TYPES = [
             {
                 id: "navy-s",
                 id_printify: 32894,
-                cost: 2187,
+                cost: 2360,
                 inicial_price: 3645,
                 title: "Navy / S",
                 grams: 482,
@@ -858,7 +858,7 @@ export const PRODUCTS_TYPES = [
             {
                 id: "red-s",
                 id_printify: 33385,
-                cost: 2187,
+                cost: 2360,
                 inicial_price: 3645,
                 title: "Red / S",
                 grams: 482,
@@ -868,7 +868,7 @@ export const PRODUCTS_TYPES = [
             {
                 id: "royal-s",
                 id_printify: 33393,
-                cost: 2187,
+                cost: 2360,
                 inicial_price: 3645,
                 title: "Royal / S",
                 grams: 482,
@@ -878,7 +878,7 @@ export const PRODUCTS_TYPES = [
             {
                 id: "white-s",
                 id_printify: 32910,
-                cost: 2187,
+                cost: 2360,
                 inicial_price: 3645,
                 title: "White / S",
                 grams: 482,
@@ -888,7 +888,7 @@ export const PRODUCTS_TYPES = [
             {
                 id: "sport-grey-s",
                 id_printify: 32902,
-                cost: 2187,
+                cost: 2360,
                 inicial_price: 3645,
                 title: "Sport Grey / S",
                 grams: 482,
@@ -898,7 +898,7 @@ export const PRODUCTS_TYPES = [
             {
                 id: "black-m",
                 id_printify: 32919,
-                cost: 2187,
+                cost: 2360,
                 inicial_price: 3645,
                 title: "Black / M",
                 grams: 485,
@@ -908,7 +908,7 @@ export const PRODUCTS_TYPES = [
             {
                 id: "dark-heather-m",
                 id_printify: 32879,
-                cost: 2187,
+                cost: 2360,
                 inicial_price: 3645,
                 title: "Dark Heather / M",
                 grams: 485,
@@ -918,7 +918,7 @@ export const PRODUCTS_TYPES = [
             {
                 id: "navy-m",
                 id_printify: 32895,
-                cost: 2187,
+                cost: 2360,
                 inicial_price: 3645,
                 title: "Navy / M",
                 grams: 485,
@@ -928,7 +928,7 @@ export const PRODUCTS_TYPES = [
             {
                 id: "red-m",
                 id_printify: 33386,
-                cost: 2187,
+                cost: 2360,
                 inicial_price: 3645,
                 title: "Red / M",
                 grams: 485,
@@ -938,7 +938,7 @@ export const PRODUCTS_TYPES = [
             {
                 id: "royal-m",
                 id_printify: 33394,
-                cost: 2187,
+                cost: 2360,
                 inicial_price: 3645,
                 title: "Royal / M",
                 grams: 485,
@@ -948,7 +948,7 @@ export const PRODUCTS_TYPES = [
             {
                 id: "white-m",
                 id_printify: 32911,
-                cost: 2187,
+                cost: 2360,
                 inicial_price: 3645,
                 title: "White / M",
                 grams: 485,
@@ -958,7 +958,7 @@ export const PRODUCTS_TYPES = [
             {
                 id: "sport-grey-m",
                 id_printify: 32903,
-                cost: 2187,
+                cost: 2360,
                 inicial_price: 3645,
                 title: "Sport Grey / M",
                 grams: 485,
@@ -968,7 +968,7 @@ export const PRODUCTS_TYPES = [
             {
                 id: "black-l",
                 id_printify: 32920,
-                cost: 2187,
+                cost: 2360,
                 inicial_price: 3645,
                 title: "Black / L",
                 grams: 541,
@@ -978,7 +978,7 @@ export const PRODUCTS_TYPES = [
             {
                 id: "dark-heather-l",
                 id_printify: 32880,
-                cost: 2187,
+                cost: 2360,
                 inicial_price: 3645,
                 title: "Dark Heather / L",
                 grams: 541,
@@ -988,7 +988,7 @@ export const PRODUCTS_TYPES = [
             {
                 id: "navy-l",
                 id_printify: 32896,
-                cost: 2187,
+                cost: 2360,
                 inicial_price: 3645,
                 title: "Navy / L",
                 grams: 541,
@@ -998,7 +998,7 @@ export const PRODUCTS_TYPES = [
             {
                 id: "red-l",
                 id_printify: 33387,
-                cost: 2187,
+                cost: 2360,
                 inicial_price: 3645,
                 title: "Red / L",
                 grams: 541,
@@ -1008,7 +1008,7 @@ export const PRODUCTS_TYPES = [
             {
                 id: "royal-l",
                 id_printify: 33395,
-                cost: 2187,
+                cost: 2360,
                 inicial_price: 3645,
                 title: "Royal / L",
                 grams: 541,
@@ -1018,7 +1018,7 @@ export const PRODUCTS_TYPES = [
             {
                 id: "white-l",
                 id_printify: 32912,
-                cost: 2187,
+                cost: 2360,
                 inicial_price: 3645,
                 title: "White / L",
                 grams: 541,
@@ -1028,7 +1028,7 @@ export const PRODUCTS_TYPES = [
             {
                 id: "sport-grey-l",
                 id_printify: 32904,
-                cost: 2187,
+                cost: 2360,
                 inicial_price: 3645,
                 title: "Sport Grey / L",
                 grams: 541,
@@ -1037,9 +1037,8 @@ export const PRODUCTS_TYPES = [
             },
             {
                 id: "black-xl",
-                id: "black-xl",
                 id_printify: 32921,
-                cost: 2187,
+                cost: 2360,
                 inicial_price: 3645,
                 title: "Black / XL",
                 grams: 587,
@@ -1049,7 +1048,7 @@ export const PRODUCTS_TYPES = [
             {
                 id: "dark-heather-xl",
                 id_printify: 32881,
-                cost: 2187,
+                cost: 2360,
                 inicial_price: 3645,
                 title: "Dark Heather / XL",
                 grams: 587,
@@ -1059,7 +1058,7 @@ export const PRODUCTS_TYPES = [
             {
                 id: "navy-xl",
                 id_printify: 32897,
-                cost: 2187,
+                cost: 2360,
                 inicial_price: 3645,
                 title: "Navy / XL",
                 grams: 587,
@@ -1069,7 +1068,7 @@ export const PRODUCTS_TYPES = [
             {
                 id: "red-xl",
                 id_printify: 33388,
-                cost: 2187,
+                cost: 2360,
                 inicial_price: 3645,
                 title: "Red / XL",
                 grams: 587,
@@ -1079,7 +1078,7 @@ export const PRODUCTS_TYPES = [
             {
                 id: "royal-xl",
                 id_printify: 33396,
-                cost: 2187,
+                cost: 2360,
                 inicial_price: 3645,
                 title: "Royal / XL",
                 grams: 587,
@@ -1089,7 +1088,7 @@ export const PRODUCTS_TYPES = [
             {
                 id: "white-xl",
                 id_printify: 32913,
-                cost: 2187,
+                cost: 2360,
                 inicial_price: 3645,
                 title: "White / XL",
                 grams: 587,
@@ -1099,7 +1098,7 @@ export const PRODUCTS_TYPES = [
             {
                 id: "sport-grey-xl",
                 id_printify: 32905,
-                cost: 2187,
+                cost: 2360,
                 inicial_price: 3645,
                 title: "Sport Grey / XL",
                 grams: 587,
@@ -1109,7 +1108,7 @@ export const PRODUCTS_TYPES = [
             {
                 id: "black-2xl",
                 id_printify: 32922,
-                cost: 2396,
+                cost: 2782,
                 inicial_price: 3993,
                 title: "Black / 2XL",
                 grams: 644,
@@ -1119,7 +1118,7 @@ export const PRODUCTS_TYPES = [
             {
                 id: "dark-heather-2xl",
                 id_printify: 32882,
-                cost: 2396,
+                cost: 2782,
                 inicial_price: 3993,
                 title: "Dark Heather / 2XL",
                 grams: 644,
@@ -1129,7 +1128,7 @@ export const PRODUCTS_TYPES = [
             {
                 id: "navy-2xl",
                 id_printify: 32898,
-                cost: 2396,
+                cost: 2782,
                 inicial_price: 3993,
                 title: "Navy / 2XL",
                 grams: 644,
@@ -1139,7 +1138,7 @@ export const PRODUCTS_TYPES = [
             {
                 id: "red-2xl",
                 id_printify: 33389,
-                cost: 2396,
+                cost: 2782,
                 inicial_price: 3993,
                 title: "Red / 2XL",
                 grams: 644,
@@ -1149,7 +1148,7 @@ export const PRODUCTS_TYPES = [
             {
                 id: "royal-2xl",
                 id_printify: 33397,
-                cost: 2396,
+                cost: 2782,
                 inicial_price: 3993,
                 title: "Royal / 2XL",
                 grams: 644,
@@ -1159,7 +1158,7 @@ export const PRODUCTS_TYPES = [
             {
                 id: "white-2xl",
                 id_printify: 32914,
-                cost: 2396,
+                cost: 2782,
                 inicial_price: 3993,
                 title: "White / 2XL",
                 grams: 644,
@@ -1169,7 +1168,7 @@ export const PRODUCTS_TYPES = [
             {
                 id: "sport-grey-2xl",
                 id_printify: 32906,
-                cost: 2396,
+                cost: 2782,
                 inicial_price: 3993,
                 title: "Sport Grey / 2XL",
                 grams: 644,
@@ -1198,7 +1197,7 @@ export const PRODUCTS_TYPES = [
                     43: 33522,
                     6: 33522,
                 },
-                cost: 1782,
+                cost: 1843,
                 inicial_price: 2970,
                 title: "Royal/White / S",
                 grams: 110,
@@ -1211,7 +1210,7 @@ export const PRODUCTS_TYPES = [
                     43: 39175,
                     6: 39175,
                 },
-                cost: 1782,
+                cost: 1843,
                 inicial_price: 2970,
                 title: "Asphalt/White / S",
                 grams: 110,
@@ -1224,7 +1223,7 @@ export const PRODUCTS_TYPES = [
                     43: 36256,
                     6: 39211,
                 },
-                cost: 1782,
+                cost: 1843,
                 inicial_price: 2970,
                 title: "Red/White / S",
                 grams: 110,
@@ -1237,7 +1236,7 @@ export const PRODUCTS_TYPES = [
                     43: 33523,
                     6: 33523,
                 },
-                cost: 1782,
+                cost: 1843,
                 inicial_price: 2970,
                 title: "Royal/White / M",
                 grams: 131,
@@ -1250,7 +1249,7 @@ export const PRODUCTS_TYPES = [
                     43: 39253,
                     6: 39253,
                 },
-                cost: 1782,
+                cost: 1843,
                 inicial_price: 2970,
                 title: "Asphalt/White / M",
                 grams: 131,
@@ -1263,7 +1262,7 @@ export const PRODUCTS_TYPES = [
                     43: 36258,
                     6: 39289,
                 },
-                cost: 1782,
+                cost: 1843,
                 inicial_price: 2970,
                 title: "Red/White / M",
                 grams: 131,
@@ -1276,7 +1275,7 @@ export const PRODUCTS_TYPES = [
                     43: 33524,
                     6: 33524,
                 },
-                cost: 1782,
+                cost: 1843,
                 inicial_price: 2970,
                 title: "Royal/White / L",
                 grams: 158,
@@ -1289,7 +1288,7 @@ export const PRODUCTS_TYPES = [
                     43: 39331,
                     6: 39331,
                 },
-                cost: 1782,
+                cost: 1843,
                 inicial_price: 2970,
                 title: "Asphalt/White / L",
                 grams: 158,
@@ -1302,7 +1301,7 @@ export const PRODUCTS_TYPES = [
                     43: 36260,
                     6: 39367,
                 },
-                cost: 1782,
+                cost: 1843,
                 inicial_price: 2970,
                 title: "Red/White / L",
                 grams: 158,
@@ -1315,7 +1314,7 @@ export const PRODUCTS_TYPES = [
                     43: 33525,
                     6: 33525,
                 },
-                cost: 1782,
+                cost: 1843,
                 inicial_price: 2970,
                 title: "Royal/White / XL",
                 grams: 190,
@@ -1328,7 +1327,7 @@ export const PRODUCTS_TYPES = [
                     43: 39409,
                     6: 39409,
                 },
-                cost: 1782,
+                cost: 1843,
                 inicial_price: 2970,
                 title: "Asphalt/White / XL",
                 grams: 190,
@@ -1341,7 +1340,7 @@ export const PRODUCTS_TYPES = [
                     43: 36264,
                     6: 39523,
                 },
-                cost: 1782,
+                cost: 1843,
                 inicial_price: 2970,
                 title: "Red/White / XL",
                 grams: 190,
@@ -1354,7 +1353,7 @@ export const PRODUCTS_TYPES = [
                     43: 33526,
                     6: 33526,
                 },
-                cost: 1993,
+                cost: 2187,
                 inicial_price: 3322,
                 title: "Royal/White / 2XL",
                 grams: 228,
@@ -1367,7 +1366,7 @@ export const PRODUCTS_TYPES = [
                     43: 39487,
                     6: 39487,
                 },
-                cost: 1993,
+                cost: 2187,
                 inicial_price: 3322,
                 title: "Asphalt/White / 2XL",
                 grams: 228,
@@ -1380,7 +1379,7 @@ export const PRODUCTS_TYPES = [
                     43: 36264,
                     6: 39523,
                 },
-                cost: 1993,
+                cost: 2187,
                 inicial_price: 3322,
                 title: "Red/White / 2XL",
                 grams: 228,
@@ -1393,7 +1392,7 @@ export const PRODUCTS_TYPES = [
                     43: 39151,
                     6: 39151,
                 },
-                cost: 1782,
+                cost: 1843,
                 inicial_price: 2970,
                 title: "White/Black / S",
                 grams: 110,
@@ -1406,7 +1405,7 @@ export const PRODUCTS_TYPES = [
                     43: 39193,
                     6: 39193,
                 },
-                cost: 1782,
+                cost: 1843,
                 inicial_price: 2970,
                 title: "Green/White / S",
                 grams: 110,
@@ -1419,7 +1418,7 @@ export const PRODUCTS_TYPES = [
                     43: 39196,
                     6: 39196,
                 },
-                cost: 1782,
+                cost: 1843,
                 inicial_price: 2970,
                 title: "Navy/White / S",
                 grams: 110,
@@ -1432,7 +1431,7 @@ export const PRODUCTS_TYPES = [
                     43: 39178,
                     6: 39178,
                 },
-                cost: 1782,
+                cost: 1843,
                 inicial_price: 2970,
                 title: "Black/White / S",
                 grams: 110,
@@ -1445,7 +1444,7 @@ export const PRODUCTS_TYPES = [
                     43: 39229,
                     6: 39229,
                 },
-                cost: 1782,
+                cost: 1843,
                 inicial_price: 2970,
                 title: "White/Black / M",
                 grams: 131,
@@ -1458,7 +1457,7 @@ export const PRODUCTS_TYPES = [
                     43: 39271,
                     6: 39271,
                 },
-                cost: 1782,
+                cost: 1843,
                 inicial_price: 2970,
                 title: "Green/White / M",
                 grams: 131,
@@ -1471,7 +1470,7 @@ export const PRODUCTS_TYPES = [
                     43: 39274,
                     6: 39274,
                 },
-                cost: 1782,
+                cost: 1843,
                 inicial_price: 2970,
                 title: "Navy/White / M",
                 grams: 131,
@@ -1484,7 +1483,7 @@ export const PRODUCTS_TYPES = [
                     43: 39256,
                     6: 39256,
                 },
-                cost: 1782,
+                cost: 1843,
                 inicial_price: 2970,
                 title: "Black/White / M",
                 grams: 131,
@@ -1497,7 +1496,7 @@ export const PRODUCTS_TYPES = [
                     43: 39307,
                     6: 39307,
                 },
-                cost: 1782,
+                cost: 1843,
                 inicial_price: 2970,
                 title: "White/Black / L",
                 grams: 158,
@@ -1510,7 +1509,7 @@ export const PRODUCTS_TYPES = [
                     43: 39349,
                     6: 39349,
                 },
-                cost: 1782,
+                cost: 1843,
                 inicial_price: 2970,
                 title: "Green/White / L",
                 grams: 158,
@@ -1523,7 +1522,7 @@ export const PRODUCTS_TYPES = [
                     43: 39352,
                     6: 39352,
                 },
-                cost: 1782,
+                cost: 1843,
                 inicial_price: 2970,
                 title: "Navy/White / L",
                 grams: 158,
@@ -1536,7 +1535,7 @@ export const PRODUCTS_TYPES = [
                     43: 39334,
                     6: 39334,
                 },
-                cost: 1782,
+                cost: 1843,
                 inicial_price: 2970,
                 title: "Black/White / L",
                 grams: 158,
@@ -1549,7 +1548,7 @@ export const PRODUCTS_TYPES = [
                     43: 39385,
                     6: 39385,
                 },
-                cost: 1782,
+                cost: 1843,
                 inicial_price: 2970,
                 title: "White/Black / XL",
                 grams: 190,
@@ -1562,7 +1561,7 @@ export const PRODUCTS_TYPES = [
                     43: 39427,
                     6: 39427,
                 },
-                cost: 1782,
+                cost: 1843,
                 inicial_price: 2970,
                 title: "Green/White / XL",
                 grams: 190,
@@ -1575,7 +1574,7 @@ export const PRODUCTS_TYPES = [
                     43: 39430,
                     6: 39430,
                 },
-                cost: 1782,
+                cost: 1843,
                 inicial_price: 2970,
                 title: "Navy/White / XL",
                 grams: 190,
@@ -1588,7 +1587,7 @@ export const PRODUCTS_TYPES = [
                     43: 39412,
                     6: 39412,
                 },
-                cost: 1782,
+                cost: 1843,
                 inicial_price: 2970,
                 title: "Black/White / XL",
                 grams: 190,
@@ -1601,7 +1600,7 @@ export const PRODUCTS_TYPES = [
                     43: 39463,
                     6: 39463,
                 },
-                cost: 1993,
+                cost: 2187,
                 inicial_price: 3322,
                 title: "White/Black / 2XL",
                 grams: 228,
@@ -1614,7 +1613,7 @@ export const PRODUCTS_TYPES = [
                     43: 39505,
                     6: 39505,
                 },
-                cost: 1993,
+                cost: 2187,
                 inicial_price: 3322,
                 title: "Green/White / 2XL",
                 grams: 228,
@@ -1627,7 +1626,7 @@ export const PRODUCTS_TYPES = [
                     43: 39508,
                     6: 39508,
                 },
-                cost: 1993,
+                cost: 2187,
                 inicial_price: 3322,
                 title: "Navy/White / 2XL",
                 grams: 228,
@@ -1640,7 +1639,7 @@ export const PRODUCTS_TYPES = [
                     43: 39490,
                     6: 39490,
                 },
-                cost: 1993,
+                cost: 2187,
                 inicial_price: 3322,
                 title: "Black/White / 2XL",
                 grams: 228,
@@ -2465,7 +2464,7 @@ export const PRODUCTS_TYPES = [
                     1: 33719,
                     87: 79661,
                 },
-                cost: 634,
+                cost: 639,
                 inicial_price: 1057,
                 title: 'White / 11oz',
                 grams: 460,
@@ -2575,8 +2574,8 @@ export function getShippingOptions(product_type, country) {
                 provider_id: 87,
                 first_item: 499,
                 add_item: 119,
-                tax: 302,
-                add_tax: 302,
+                tax: 302 - 100, //compensar a diferença de preço entre os provedores
+                add_tax: 302 - 100, //compensar a diferença de preço entre os provedores
                 currency: 'usd'
             }
         }
@@ -2585,8 +2584,8 @@ export function getShippingOptions(product_type, country) {
                 provider_id: 87,
                 first_item: 699,
                 add_item: 199,
-                tax: 298,
-                add_tax: 298,
+                tax: 298 - 100, //compensar a diferença de preço entre os provedores
+                add_tax: 298 - 100, //compensar a diferença de preço entre os provedores
                 currency: 'usd'
             }
         }
@@ -2605,8 +2604,8 @@ export function getShippingOptions(product_type, country) {
                 provider_id: 87,
                 first_item: 569,
                 add_item: 199,
-                tax: 314,
-                add_tax: 314,
+                tax: 314 - 100, //compensar a diferença de preço entre os provedores
+                add_tax: 314 - 100, //compensar a diferença de preço entre os provedores
                 currency: 'usd'
             }
         }
@@ -2645,8 +2644,8 @@ export function getShippingOptions(product_type, country) {
                 provider_id: 26,
                 first_item: 699,
                 add_item: 239,
-                tax: 679,
-                add_tax: 679,
+                tax: 679 - 100, //compensar a diferença de preço entre os provedores
+                add_tax: 679 - 100, //compensar a diferença de preço entre os provedores
                 currency: 'usd'
             }
         }
@@ -2655,8 +2654,8 @@ export function getShippingOptions(product_type, country) {
                 provider_id: 26,
                 first_item: 729,
                 add_item: 239,
-                tax: 587,
-                add_tax: 587,
+                tax: 587 - 100, //compensar a diferença de preço entre os provedores
+                add_tax: 587 - 100, //compensar a diferença de preço entre os provedores
                 currency: 'usd'
             }
         }
@@ -2675,8 +2674,8 @@ export function getShippingOptions(product_type, country) {
                 provider_id: 26,
                 first_item: 699,
                 add_item: 239,
-                tax: 669,
-                add_tax: 669,
+                tax: 669 - 100, //compensar a diferença de preço entre os provedores
+                add_tax: 669 - 100, //compensar a diferença de preço entre os provedores
                 currency: 'usd'
             }
         }
@@ -2715,8 +2714,8 @@ export function getShippingOptions(product_type, country) {
                 provider_id: 6,
                 first_item: 479,
                 add_item: 99,
-                tax: 424,
-                add_tax: 424,
+                tax: 424 - 100, //compensar a diferença de preço entre os provedores
+                add_tax: 424 - 100, //compensar a diferença de preço entre os provedores
                 currency: 'usd'
             }
         }
@@ -2725,8 +2724,8 @@ export function getShippingOptions(product_type, country) {
                 provider_id: 6,
                 first_item: 629,
                 add_item: 119,
-                tax: 550,
-                add_tax: 550,
+                tax: 550 - 100, //compensar a diferença de preço entre os provedores
+                add_tax: 550 - 100, //compensar a diferença de preço entre os provedores
                 currency: 'usd'
             }
         }
@@ -2745,8 +2744,8 @@ export function getShippingOptions(product_type, country) {
                 provider_id: 6,
                 first_item: 749,
                 add_item: 129,
-                tax: 550,
-                add_tax: 550,
+                tax: 550 - 100, //compensar a diferença de preço entre os provedores
+                add_tax: 550 - 100, //compensar a diferença de preço entre os provedores
                 currency: 'usd'
             }
         }
@@ -2865,8 +2864,8 @@ export function getShippingOptions(product_type, country) {
                 provider_id: 87,
                 first_item: 659,
                 add_item: 199,
-                tax: 272,
-                add_tax: 272,
+                tax: 272 - 100, //compensar a diferença de preço entre os provedores
+                add_tax: 272 - 100, //compensar a diferença de preço entre os provedores
                 currency: 'usd'
             }
         }
@@ -2875,8 +2874,8 @@ export function getShippingOptions(product_type, country) {
                 provider_id: 87,
                 first_item: 729,
                 add_item: 169,
-                tax: 250,
-                add_tax: 250,
+                tax: 250 - 100, //compensar a diferença de preço entre os provedores
+                add_tax: 250 - 100, //compensar a diferença de preço entre os provedores
                 currency: 'usd'
             }
         }
@@ -2885,8 +2884,8 @@ export function getShippingOptions(product_type, country) {
                 provider_id: 87,
                 first_item: 729,
                 add_item: 169,
-                tax: 288,
-                add_tax: 288,
+                tax: 288 - 100, //compensar a diferença de preço entre os provedores
+                add_tax: 288 - 100, //compensar a diferença de preço entre os provedores
                 currency: 'usd'
             }
         }
@@ -2895,8 +2894,8 @@ export function getShippingOptions(product_type, country) {
                 provider_id: 87,
                 first_item: 699,
                 add_item: 179,
-                tax: 281,
-                add_tax: 281,
+                tax: 281 - 100, //compensar a diferença de preço entre os provedores
+                add_tax: 281 - 100, //compensar a diferença de preço entre os provedores
                 currency: 'usd'
             }
         }
@@ -2905,15 +2904,15 @@ export function getShippingOptions(product_type, country) {
                 provider_id: 87,
                 first_item: 1029,
                 add_item: 199,
-                tax: 372,
-                add_tax: 372,
+                tax: 372 - 100, //compensar a diferença de preço entre os provedores
+                add_tax: 372 - 100, //compensar a diferença de preço entre os provedores
                 currency: 'usd'
             }
         }
         return {
             provider_id: 87,
-            first_item: 1359,
-            add_item: 699,
+            first_item: 1359 - 100, //compensar a diferença de preço entre os provedores
+            add_item: 699 - 100, //compensar a diferença de preço entre os provedores
             tax: 0,
             add_tax: 0,
             currency: 'usd'

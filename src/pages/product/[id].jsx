@@ -27,8 +27,9 @@ import Modal from '@/components/Modal'
 import { SlClose } from 'react-icons/sl'
 import { LoadingButton } from '@mui/lab'
 import ZoneConverter from '@/utils/country-zone.json'
-import ProductTag from '@/components/ProductTag'
+import ProductTag from '@/components/products/ProductTag'
 import { handleCloseModal, handleOpenModal } from '@/utils'
+import TableSize from '@/components/products/TableSize'
 
 export default withRouter(props => {
     const {
@@ -455,6 +456,7 @@ export default withRouter(props => {
                             </h1>
                         </div>
                         <div className={styles.sectionBody}>
+                            <TableSize type={product.type_id} />
                         </div>
                     </section>
                 </div>

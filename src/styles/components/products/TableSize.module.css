@@ -1,0 +1,5 @@
+.tableCell {
+    color: var(--text-white) !important;
+    text-align: end;
+    padding: 16px;
+}
