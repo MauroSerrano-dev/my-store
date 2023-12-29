@@ -788,7 +788,7 @@ async function removeExpiredPromotions() {
     }
 }
 
-async function getSimilarProducts(product_id, limit = 10) {
+async function getSimilarProducts(product_id, limit = 15) {
     const productsCollection = collection(db, process.env.COLL_PRODUCTS);
 
     // Obtenha o produto pelo ID
@@ -805,26 +805,29 @@ async function getSimilarProducts(product_id, limit = 10) {
     const allProductsSnapshot = await getDocs(allProductsQuery);
     let allProducts = allProductsSnapshot.docs.map(doc => doc.data());
 
-    // Filtrar produtos similares
-    let similarProducts = allProducts.filter(p => {
-        return p.id !== product.id &&
-            (p.type_id === product.type_id || p.family_id === product.family_id) &&
-            (p.themes.some(theme => product.themes.includes(theme)) ||
-                p.tags.some(tag => product.tags.includes(tag)));
-    });
+    // Filtrar produtos similares com base em temas ou tags
+    let similarProducts = allProducts.filter(p => p.id !== product.id && 
+        (p.themes.some(theme => product.themes.includes(theme)) ||
+         p.tags.some(tag => product.tags.includes(tag))));
 
-    // Embaralhar a lista de produtos similares
-    similarProducts.sort(() => 0.5 - Math.random());
-
-    // Completar com produtos aleatórios, se necessário
+    // Completar com produtos de mesmo tipo ou family_type, se necessário
     if (similarProducts.length < limit) {
-        allProducts = allProducts.filter(p => p.id !== product.id && !similarProducts.includes(p));
-        allProducts.sort(() => 0.5 - Math.random()); // Embaralhar todos os produtos
-        similarProducts = similarProducts.concat(allProducts.slice(0, limit - similarProducts.length));
+        let additionalProducts = allProducts.filter(p => p.id !== product.id && 
+            !similarProducts.includes(p) &&
+            (p.type_id === product.type_id || p.family_id === product.family_id));
+
+        additionalProducts.sort(() => 0.5 - Math.random()); // Embaralhar
+        similarProducts = similarProducts.concat(additionalProducts.slice(0, limit - similarProducts.length));
     }
 
-    // Verificação final para garantir que o produto original não esteja na lista
-    similarProducts = similarProducts.filter(p => p.id !== product.id);
+    // Completar com produtos aleatórios, se ainda necessário
+    if (similarProducts.length < limit) {
+        let randomProducts = allProducts.filter(p => p.id !== product.id && 
+            !similarProducts.includes(p));
+
+        randomProducts.sort(() => 0.5 - Math.random()); // Embaralhar
+        similarProducts = similarProducts.concat(randomProducts.slice(0, limit - similarProducts.length));
+    }
 
     return similarProducts.slice(0, limit);
 }

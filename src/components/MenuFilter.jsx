@@ -137,7 +137,7 @@ export default function MenuFilter(props) {
                                     onClick={() => handleMultiSelection('v', v, !v?.includes(type.id), type.id)}
                                     key={i}
                                 >
-                                    {type.title}
+                                    {tCategories(type.id)}
                                 </button>
                             )}
                         </div>

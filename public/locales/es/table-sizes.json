@@ -1,0 +1,10 @@
+{
+    "imperial": "Imperial",
+    "metric": "Métrico",
+    "width": "Ancho",
+    "length": "Largo",
+    "sleeve": "Largo de Manga",
+    "sleeve-from": "Longitud de la manga desde el centro de la espalda",
+    "in": "pulg",
+    "cm": "cm"
+}

@@ -3,6 +3,7 @@ import { useAppContext } from '../contexts/AppContext'
 import { useTranslation } from 'next-i18next'
 import Link from 'next/link'
 import styles from '@/styles/components/products/ProductsSelector.module.css'
+import Image from 'next/image'
 
 export default function ProductsSelector(props) {
     const {
@@ -22,9 +23,16 @@ export default function ProductsSelector(props) {
                     key={i}
                     href={`${url}/${type.id}`}
                 >
-                    <type.icon
-                        className={styles.optionIcon}
-                    />
+                    <div className={styles.imageContainer}>
+                        <Image
+                            alt={type.id}
+                            src={type.icon}
+                            fill
+                            sizes='300px'
+                            quality={100}
+                            priority
+                        />
+                    </div>
                     <p>
                         {tCategories(type.family_id).concat(type.id === 'mug-c' ? '-C' : '')}
                     </p>

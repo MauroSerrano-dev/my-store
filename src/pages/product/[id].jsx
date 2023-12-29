@@ -4,12 +4,12 @@ import { useEffect, useState } from 'react'
 import ImagesSlider from '@/components/ImagesSlider'
 import ShoppingCartOutlinedIcon from '@mui/icons-material/ShoppingCartOutlined'
 import CreditCardOutlinedIcon from '@mui/icons-material/CreditCardOutlined'
-import { CART_COOKIE, COLORS_POOL, SIZES_POOL, LIMITS, getShippingOptions, DEFAULT_LANGUAGE, COMMON_TRANSLATES } from '@/consts'
+import { CART_COOKIE, COLORS_POOL, SIZES_POOL, LIMITS, getShippingOptions, DEFAULT_LANGUAGE, COMMON_TRANSLATES, PRODUCTS_TYPES } from '@/consts'
 import Head from 'next/head'
 import ColorSelector from '@/components/ColorSelector'
 import SizesSelector from '@/components/SizesSelector'
 import ShareButton from '@/components/ShareButton'
-import CareInstructionsIcons from '@/components/svgs/CareInstructionsIcons'
+import CareInstructionsIcons from '@/components/products/CareInstructionsIcons'
 import NoFound404 from '../../components/NoFound404'
 import Cookies from 'js-cookie'
 import { useTranslation } from 'next-i18next'
@@ -29,8 +29,9 @@ import { LoadingButton } from '@mui/lab'
 import ZoneConverter from '@/utils/country-zone.json'
 import ProductTag from '@/components/products/ProductTag'
 import { handleCloseModal, handleOpenModal } from '@/utils'
-import TableSize from '@/components/products/TableSize'
+import TableSizes from '@/components/products/TableSizes'
 import CarouselProducts from '@/components/carousels/CarouselProducts'
+import KeyFeatures from '@/components/products/KeyFeatures'
 
 export default withRouter(props => {
     const {
@@ -423,8 +424,8 @@ export default withRouter(props => {
                                 </h1>
                             </div>
                             <div className={styles.sectionBody}>
-                                <p style={{ textAlign: 'start' }}>
-                                    A camiseta traz um novo conceito de conforto casual. Feita com materiais muito macios, essa camiseta é 100% algodão em cores sólidas. Cores mescladas e cinza esportivo incluem poliéster. Os ombros têm twill tape para melhor durabilidade. Não possui costuras laterais. A gola é confeccionada com tricô canelado para evitar danos e enrolamentos.
+                                <p style={{ textAlign: 'justify' }}>
+                                    {tProduct(`description_${product.type_id}`)}
                                 </p>
                             </div>
                         </section>
@@ -435,6 +436,10 @@ export default withRouter(props => {
                                 </h1>
                             </div>
                             <div className={styles.sectionBody}>
+                                <KeyFeatures
+                                    product_type={product.type_id}
+                                    options={PRODUCTS_TYPES.find(type => type.id === product.type_id).key_features}
+                                />
                             </div>
                         </section>
                         <section className={`${styles.section} ${styles.four} `}>
@@ -445,9 +450,7 @@ export default withRouter(props => {
                             </div>
                             <div className={styles.sectionBody}>
                                 <CareInstructionsIcons
-                                    itemSize={mobile ? '33.333%' : '20%'}
-                                    iconSize={50}
-                                    fontSize={mobile ? 10 : 14}
+                                    options={PRODUCTS_TYPES.find(type => type.id === product.type_id).care_instructions}
                                 />
                             </div>
                         </section>
@@ -458,7 +461,7 @@ export default withRouter(props => {
                                 </h1>
                             </div>
                             <div className={styles.sectionBody}>
-                                <TableSize type={product.type_id} />
+                                <TableSizes type={product.type_id} />
                             </div>
                         </section>
                     </div>
@@ -564,7 +567,7 @@ export async function getServerSideProps({ query, locale, resolvedUrl }) {
 
     return {
         props: {
-            ...(await serverSideTranslations(locale, COMMON_TRANSLATES.concat(['countries', 'product', 'footer']))),
+            ...(await serverSideTranslations(locale, COMMON_TRANSLATES.concat(['countries', 'product', 'care-instructions', 'key-features', 'table-sizes', 'footer']))),
             product: product || null,
             cl: colorQuery === undefined ? null : colorQuery,
             sz: sizeQuery === undefined ? null : sizeQuery,

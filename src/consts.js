@@ -1,8 +1,3 @@
-import { IoShirt } from "react-icons/io5"
-import { GiHoodie } from "react-icons/gi"
-import { PiTShirtFill } from "react-icons/pi"
-import { ImMug } from "react-icons/im"
-
 export const languageToCountry = {
     en: 'en',
     es: 'es',
@@ -249,14 +244,15 @@ export const PRODUCTS_TYPES = [
     {
         id: 't-shirt',
         family_id: 't-shirts',
-        title: 'T-Shirt',
         color: '#1189c4',
         providers: [29, 87],
         blueprint_ids: {
             29: 145,
             87: 145,
         },
-        icon: IoShirt,
+        icon: '/svgs/products-types/t-shirt_icon.svg',
+        care_instructions: ['not-dryclean', 'machine-wash-warm', 'not-bleach', 'tumble-dry-low', 'iron-low'],
+        key_features: ['without-side', 'ribbed-knit', 'shoulder-tape', 'fabric'],
         sizes: [14, 15, 16, 17, 18],
         colors: [521, 418, 358, 362, 364, 369, 392, 424, 425, 511, 420, 423],
         variants: [
@@ -815,14 +811,15 @@ export const PRODUCTS_TYPES = [
     {
         id: 'hoodie',
         family_id: 'hoodies',
-        title: 'Hoodie',
         color: '#026539',
         providers: [50, 26],
         blueprint_ids: {
             50: 77,
             26: 77,
         },
-        icon: GiHoodie,
+        icon: '/svgs/products-types/hoodie_icon.svg',
+        care_instructions: ['not-dryclean', 'machine-wash-warm', 'bleach', 'tumble-dry-medium', 'iron-low'],
+        key_features: ['without-side', 'spacious-pockets', 'drawstring-hood', 'cotton-polyester'],
         sizes: [14, 15, 16, 17, 18],
         colors: [521, 418, 358, 367, 425, 511, 423],
         variants: [
@@ -1181,14 +1178,13 @@ export const PRODUCTS_TYPES = [
     {
         id: 'raglan-tee',
         family_id: 'raglan-tees',
-        title: 'Raglan Tee',
         color: '#e0824b',
         providers: [43, 6],
         blueprint_ids: {
             43: 79,
             6: 79,
         },
-        icon: PiTShirtFill,
+        icon: '/svgs/products-types/raglan-tee_icon.svg',
         sizes: [14, 15, 16, 17, 18],
         colors: [1535, 1062, 1792, 1536, 1058, 1795, 1750],
         variants: [
@@ -1652,14 +1648,13 @@ export const PRODUCTS_TYPES = [
     {
         id: 'sweatshirt',
         family_id: 'sweatshirts',
-        title: 'Sweatshirt',
         color: '#009c75',
         providers: [50, 87],
         blueprint_ids: {
             50: 49,
             87: 49,
         },
-        icon: PiTShirtFill,
+        icon: '/svgs/products-types/sweatshirt_icon.svg',
         sizes: [14, 15, 16, 17, 18],
         colors: [521, 451, 418, 421, 358, 416, 367, 392, 425, 511, 433, 423],
         variants: [
@@ -2448,14 +2443,13 @@ export const PRODUCTS_TYPES = [
     {
         id: 'mug',
         family_id: 'mugs',
-        title: 'Mug',
         color: '#bA2326',
         providers: [1, 87],
         blueprint_ids: {
             1: 68,
             87: 1020,
         },
-        icon: ImMug,
+        icon: '/svgs/products-types/mug_icon.svg',
         sizes: [1189],
         colors: [2620],
         variants: [
@@ -2477,14 +2471,13 @@ export const PRODUCTS_TYPES = [
     {
         id: 'mug-c',
         family_id: 'mugs',
-        title: 'Mug',
         color: '#bA2326',
         providers: [28, 87],
         blueprint_ids: {
             28: 635,
             87: 1019,
         },
-        icon: ImMug,
+        icon: '/svgs/products-types/mug-c_icon.svg',
         sizes: [1189],
         colors: [2621, 2662, 2663, 2665],
         variants: [
