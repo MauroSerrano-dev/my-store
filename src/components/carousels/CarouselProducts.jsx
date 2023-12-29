@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { motion } from 'framer-motion';
 import Product from '../products/Product';
 import styles from '@/styles/components/carousels/CarouselProducts.module.css'
@@ -9,6 +9,7 @@ export default function CarouselProducts(props) {
     const {
         products,
         noProductFoundLabel = "No Products Found",
+        similar,
     } = props
 
     const {
@@ -20,6 +21,14 @@ export default function CarouselProducts(props) {
 
     const [isDragging, setIsDragging] = useState(false)
     const [antVisualBug, setAntVisualBug] = useState(false) //você é um gênio
+
+    const [similarityProducts, setSimilarityProducts] = useState()
+
+    useEffect(() => {
+        if (similar) {
+            getProductsSimilarity()
+        }
+    }, [similar])
 
     function handleDragStart() {
         setIsDragging(true)
@@ -46,6 +55,23 @@ export default function CarouselProducts(props) {
                 ? 155
                 : 140
 
+    function getProductsSimilarity() {
+        const options = {
+            method: 'GET',
+            headers: {
+                authorization: process.env.NEXT_PUBLIC_APP_TOKEN,
+                product_id: similar
+            }
+        }
+
+        fetch("/api/products/similar", options)
+            .then(response => response.json())
+            .then(response => {
+                setSimilarityProducts(response.data)
+            })
+            .catch(err => console.error(err))
+    }
+
     return (
         <motion.div
             className={styles.container}
@@ -69,8 +95,8 @@ export default function CarouselProducts(props) {
                     height: productWidth * 1.764,
                 }}
             >
-                {products &&
-                    products.map(prod =>
+                {(products || similarityProducts) &&
+                    (products || similarityProducts).map(prod =>
                         <Product
                             width={productWidth}
                             key={prod.id}
@@ -84,7 +110,7 @@ export default function CarouselProducts(props) {
                     )
                 }
             </motion.div>
-            {!products &&
+            {!(products || similarityProducts) &&
                 <div
                     className={styles.inner}
                     style={{
@@ -103,7 +129,7 @@ export default function CarouselProducts(props) {
                     )}
                 </div>
             }
-            {products?.length === 0 &&
+            {(products || similarityProducts)?.length === 0 &&
                 <h3 style={{ color: 'var(--text-white)' }}>
                     {noProductFoundLabel}
                 </h3>

@@ -30,6 +30,7 @@ import ZoneConverter from '@/utils/country-zone.json'
 import ProductTag from '@/components/products/ProductTag'
 import { handleCloseModal, handleOpenModal } from '@/utils'
 import TableSize from '@/components/products/TableSize'
+import CarouselProducts from '@/components/carousels/CarouselProducts'
 
 export default withRouter(props => {
     const {
@@ -253,275 +254,283 @@ export default withRouter(props => {
                     <meta property="og:type" content="product" key='og:type' />
                     <meta property="og:url" content={urlMeta} key='og:url' />
                 </Head>
-                <div className={styles.productContainer}>
-                    <section className={`${styles.section} ${styles.one} `}>
-                        <div className={styles.left}>
-                            <div
-                                className={styles.sliderContainer}
-                            >
-                                <ShareButton
-                                    link={`${process.env.NEXT_PUBLIC_URL}/product/${product.id}${currentColor.id !== product.colors_ids[0] && currentSize.id !== product.sizes_ids[0]
-                                        ? `?sz=${currentSize.title.toLowerCase()}&cl=${currentColor.id_string}`
-                                        : currentSize.id !== product.sizes_ids[0]
-                                            ? `?sz=${currentSize.title.toLowerCase()}`
-                                            : currentColor.id !== product.colors_ids[0]
-                                                ? `?cl=${currentColor.id_string}`
-                                                : ''
-                                        } `}
-                                    wppMsg={`${product.title} (${currentColor.title})`}
-                                    mobile={mobile}
-                                    style={{
-                                        position: 'absolute',
-                                        top: '2%',
-                                        right: '3%'
-                                    }}
-                                />
-                                <ImagesSlider
-                                    images={product.images}
-                                    colors={product.colors_ids.map(color_id => COLORS_POOL[color_id])}
-                                    currentColor={currentColor}
-                                    width={windowWidth > 1074 ? 450 : windowWidth > 549 ? 450 : windowWidth}
-                                />
+                <main className={styles.main}>
+                    <div className={styles.productContainer}>
+                        <section className={`${styles.section} ${styles.one} `}>
+                            <div className={styles.left}>
+                                <div
+                                    className={styles.sliderContainer}
+                                >
+                                    <ShareButton
+                                        link={`${process.env.NEXT_PUBLIC_URL}/product/${product.id}${currentColor.id !== product.colors_ids[0] && currentSize.id !== product.sizes_ids[0]
+                                            ? `?sz=${currentSize.title.toLowerCase()}&cl=${currentColor.id_string}`
+                                            : currentSize.id !== product.sizes_ids[0]
+                                                ? `?sz=${currentSize.title.toLowerCase()}`
+                                                : currentColor.id !== product.colors_ids[0]
+                                                    ? `?cl=${currentColor.id_string}`
+                                                    : ''
+                                            } `}
+                                        wppMsg={`${product.title} (${currentColor.title})`}
+                                        mobile={mobile}
+                                        style={{
+                                            position: 'absolute',
+                                            top: '2%',
+                                            right: '3%'
+                                        }}
+                                    />
+                                    <ImagesSlider
+                                        images={product.images}
+                                        colors={product.colors_ids.map(color_id => COLORS_POOL[color_id])}
+                                        currentColor={currentColor}
+                                        width={windowWidth > 1074 ? 450 : windowWidth > 549 ? 450 : windowWidth}
+                                    />
+                                </div>
                             </div>
-                        </div>
-                        <div className={styles.right}>
-                            <div className={styles.rightTop}>
-                                <div className={styles.titleContainer}>
-                                    <div className='fillWidth flex row' style={{ justifyContent: 'space-between', height: 35 }}>
-                                        <h2>{product.title}</h2>
-                                        {session &&
-                                            <HeartButton
-                                                checked={session.wishlist_products_ids.includes(product.id)}
-                                                onClick={handleWishlist}
+                            <div className={styles.right}>
+                                <div className={styles.rightTop}>
+                                    <div className={styles.titleContainer}>
+                                        <div className='fillWidth flex row' style={{ justifyContent: 'space-between', height: 35 }}>
+                                            <h2>{product.title}</h2>
+                                            {session &&
+                                                <HeartButton
+                                                    checked={session.wishlist_products_ids.includes(product.id)}
+                                                    onClick={handleWishlist}
+                                                />
+                                            }
+                                        </div>
+                                        <div style={{ paddingTop: 3, paddingBottom: 8 }}>
+                                            <ProductTag
+                                                product={product}
+                                                style={{
+                                                    fontSize: 16
+                                                }}
                                             />
+                                        </div>
+                                        {product.disabled &&
+                                            <div style={{ paddingTop: 3, paddingBottom: 3 }}>
+                                                <div
+                                                    className={styles.unavailable}
+                                                >
+                                                    <p>
+                                                        {tCommon('UNAVAILABLE')}
+                                                    </p>
+                                                </div>
+                                            </div>
                                         }
-                                    </div>
-                                    <div style={{ paddingTop: 3, paddingBottom: 8 }}>
-                                        <ProductTag
-                                            product={product}
-                                            style={{
-                                                fontSize: 16
-                                            }}
-                                        />
-                                    </div>
-                                    {product.disabled &&
-                                        <div style={{ paddingTop: 3, paddingBottom: 3 }}>
+                                        {product.promotion &&
                                             <div
-                                                className={styles.unavailable}
+                                                className={styles.promotion}
                                             >
                                                 <p>
-                                                    {tCommon('UNAVAILABLE')}
+                                                    {Math.round(100 * product.promotion.percentage)}% OFF
                                                 </p>
                                             </div>
-                                        </div>
-                                    }
-                                    {product.promotion &&
-                                        <div
-                                            className={styles.promotion}
-                                        >
-                                            <p>
-                                                {Math.round(100 * product.promotion.percentage)}% OFF
-                                            </p>
-                                        </div>
-                                    }
-                                    {userCurrency &&
-                                        <div className={styles.prices}>
-                                            {product.promotion &&
+                                        }
+                                        {userCurrency &&
+                                            <div className={styles.prices}>
+                                                {product.promotion &&
+                                                    <p
+                                                        style={{
+                                                            color: 'grey',
+                                                            textDecoration: 'line-through',
+                                                            fontSize: '17px',
+                                                        }}
+                                                    >
+                                                        {`${userCurrency.symbol} ${(ORIGINAL_PRICE / 100).toFixed(2)}`}
+                                                    </p>
+                                                }
                                                 <p
                                                     style={{
-                                                        color: 'grey',
-                                                        textDecoration: 'line-through',
-                                                        fontSize: '17px',
+                                                        fontSize: '27px',
+                                                        color: 'var(--primary)',
+                                                        fontWeight: '600',
                                                     }}
                                                 >
-                                                    {`${userCurrency.symbol} ${(ORIGINAL_PRICE / 100).toFixed(2)}`}
+                                                    {`${userCurrency.symbol} ${(PRODUCT_PRICE / 100).toFixed(2)}`}
                                                 </p>
-                                            }
-                                            <p
+                                            </div>
+                                        }
+                                    </div>
+                                    <div className={styles.colorAndSizeSelectors}>
+                                        <h3 style={{ textAlign: 'start' }}>
+                                            {tColors(currentColor.id_string)} / {currentSize.title}
+                                        </h3>
+                                        <div className={styles.colorSelector}>
+                                            <p style={{ textAlign: 'start', fontWeight: '700' }}>
+                                                {product.colors_ids.length === 1 ? tCommon('Color') : tProduct('pick_a_color')}
+                                            </p>
+                                            <ColorSelector
+                                                options={product.colors_ids.map(color_id => COLORS_POOL[color_id])}
+                                                value={[currentColor]}
+                                                onChange={handleColorChange}
+                                                styleButton={{
+                                                    height: mobile ? 35 : 40,
+                                                    width: mobile ? 35 : 40,
+                                                }}
+                                            />
+                                        </div>
+                                        <div className={styles.sizeSelector}>
+                                            <p style={{ textAlign: 'start', fontWeight: '700' }}>
+                                                {product.sizes_ids.length === 1 ? tCommon('Size') : tProduct('pick_a_size')}
+                                            </p>
+                                            <SizesSelector
+                                                value={[currentSize]}
+                                                options={product.sizes_ids.map(size_id => SIZES_POOL.find(sz => sz.id === size_id))}
+                                                onChange={handleSizeChange}
+                                            />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div className={styles.rightBottom}>
+                                    {!product.disabled &&
+                                        <div className={styles.buyButtons}>
+                                            <MyButton
+                                                onClick={() => handleAddToCart()}
                                                 style={{
-                                                    fontSize: '27px',
-                                                    color: 'var(--primary)',
-                                                    fontWeight: '600',
+                                                    display: 'flex',
+                                                    gap: '0.2rem',
+                                                    width: '100%',
+                                                    height: '55px',
+                                                    fontSize: 18
                                                 }}
                                             >
-                                                {`${userCurrency.symbol} ${(PRODUCT_PRICE / 100).toFixed(2)}`}
-                                            </p>
+                                                <ShoppingCartOutlinedIcon />
+                                                {tProduct('add_to_cart')}
+                                            </MyButton>
+                                            <MyButton
+                                                variant='outlined'
+                                                onClick={() => handleOpenModal(setBuyNowModalOpen, setBuyNowModalOpacity)}
+                                                style={{
+                                                    display: 'flex',
+                                                    gap: '0.2rem',
+                                                    width: '100%',
+                                                    height: '55px',
+                                                    fontSize: 18
+                                                }}
+                                            >
+                                                <CreditCardOutlinedIcon />
+                                                {tProduct('buy_now')}
+                                            </MyButton>
                                         </div>
                                     }
                                 </div>
-                                <div className={styles.colorAndSizeSelectors}>
-                                    <h3 style={{ textAlign: 'start' }}>
-                                        {tColors(currentColor.id_string)} / {currentSize.title}
-                                    </h3>
-                                    <div className={styles.colorSelector}>
-                                        <p style={{ textAlign: 'start', fontWeight: '700' }}>
-                                            {product.colors_ids.length === 1 ? tCommon('Color') : tProduct('pick_a_color')}
-                                        </p>
-                                        <ColorSelector
-                                            options={product.colors_ids.map(color_id => COLORS_POOL[color_id])}
-                                            value={[currentColor]}
-                                            onChange={handleColorChange}
-                                            styleButton={{
-                                                height: mobile ? 35 : 40,
-                                                width: mobile ? 35 : 40,
-                                            }}
-                                        />
-                                    </div>
-                                    <div className={styles.sizeSelector}>
-                                        <p style={{ textAlign: 'start', fontWeight: '700' }}>
-                                            {product.sizes_ids.length === 1 ? tCommon('Size') : tProduct('pick_a_size')}
-                                        </p>
-                                        <SizesSelector
-                                            value={[currentSize]}
-                                            options={product.sizes_ids.map(size_id => SIZES_POOL.find(sz => sz.id === size_id))}
-                                            onChange={handleSizeChange}
-                                        />
-                                    </div>
+                            </div>
+                        </section>
+                        <section className={`${styles.section} ${styles.two} `}>
+                            <div className={styles.sectionTitle}>
+                                <h1 style={{ textAlign: 'start' }}>
+                                    {tProduct('description')}
+                                </h1>
+                            </div>
+                            <div className={styles.sectionBody}>
+                                <p style={{ textAlign: 'start' }}>
+                                    A camiseta traz um novo conceito de conforto casual. Feita com materiais muito macios, essa camiseta é 100% algodão em cores sólidas. Cores mescladas e cinza esportivo incluem poliéster. Os ombros têm twill tape para melhor durabilidade. Não possui costuras laterais. A gola é confeccionada com tricô canelado para evitar danos e enrolamentos.
+                                </p>
+                            </div>
+                        </section>
+                        <section className={`${styles.section} ${styles.three} `}>
+                            <div className={styles.sectionTitle}>
+                                <h1 style={{ textAlign: 'start' }}>
+                                    {tProduct('key_features')}
+                                </h1>
+                            </div>
+                            <div className={styles.sectionBody}>
+                            </div>
+                        </section>
+                        <section className={`${styles.section} ${styles.four} `}>
+                            <div className={styles.sectionTitle}>
+                                <h1 style={{ textAlign: 'start' }}>
+                                    {tProduct('care_instructions')}
+                                </h1>
+                            </div>
+                            <div className={styles.sectionBody}>
+                                <CareInstructionsIcons
+                                    itemSize={mobile ? '33.333%' : '20%'}
+                                    iconSize={50}
+                                    fontSize={mobile ? 10 : 14}
+                                />
+                            </div>
+                        </section>
+                        <section className={`${styles.section} ${styles.five} `}>
+                            <div className={styles.sectionTitle}>
+                                <h1 style={{ textAlign: 'start' }}>
+                                    {tProduct('size_guide')}
+                                </h1>
+                            </div>
+                            <div className={styles.sectionBody}>
+                                <TableSize type={product.type_id} />
+                            </div>
+                        </section>
+                    </div>
+                    {buyNowModalOpen &&
+                        <Modal
+                            closeModal={() => handleCloseModal(setBuyNowModalOpen, setBuyNowModalOpacity)}
+                            showModalOpacity={buyNowModalOpacity}
+                            className={styles.modalContent}
+                        >
+                            <div className={styles.modalHead}>
+                                <h3>{tProduct('ship_to')}</h3>
+                                <button
+                                    className='flex buttonInvisible'
+                                    onClick={() => handleCloseModal(setBuyNowModalOpen, setBuyNowModalOpacity)}
+                                    style={{
+                                        position: 'absolute',
+                                        right: '1rem',
+                                        top: '1rem',
+                                    }}
+                                >
+                                    <SlClose
+                                        size={20}
+                                    />
+                                </button>
+                            </div>
+                            <div className={styles.modalBody}>
+                                <div className={styles.shippingContainer}>
+                                    <SelectorAutocomplete
+                                        options={
+                                            Object.keys(COUNTRIES_POOL)
+                                                .map(key => ({ id: key, label: tCountries(key) }))
+                                                .sort((a, b) => a.label.localeCompare(b.label, 'en', { sensitivity: 'base' }))
+                                        }
+                                        label={tCommon('Country')}
+                                        value={{ id: userLocation.country, label: tCountries(userLocation.country) }}
+                                        onChange={handleChangeCountrySelector}
+                                        dark
+                                        sx={{
+                                            width: 300,
+                                        }}
+                                        popperStyle={{
+                                            zIndex: 2500,
+                                            width: 300,
+                                        }}
+                                    />
                                 </div>
                             </div>
-                            <div className={styles.rightBottom}>
-                                {!product.disabled &&
-                                    <div className={styles.buyButtons}>
-                                        <MyButton
-                                            onClick={() => handleAddToCart()}
-                                            style={{
-                                                display: 'flex',
-                                                gap: '0.2rem',
-                                                width: '100%',
-                                                height: '55px',
-                                                fontSize: 18
-                                            }}
-                                        >
-                                            <ShoppingCartOutlinedIcon />
-                                            {tProduct('add_to_cart')}
-                                        </MyButton>
-                                        <MyButton
-                                            variant='outlined'
-                                            onClick={() => handleOpenModal(setBuyNowModalOpen, setBuyNowModalOpacity)}
-                                            style={{
-                                                display: 'flex',
-                                                gap: '0.2rem',
-                                                width: '100%',
-                                                height: '55px',
-                                                fontSize: 18
-                                            }}
-                                        >
-                                            <CreditCardOutlinedIcon />
-                                            {tProduct('buy_now')}
-                                        </MyButton>
-                                    </div>
-                                }
-                            </div>
-                        </div>
-                    </section>
-                    <section className={`${styles.section} ${styles.two} `}>
-                        <div className={styles.sectionTitle}>
-                            <h1 style={{ textAlign: 'start' }}>
-                                {tProduct('description')}
-                            </h1>
-                        </div>
-                        <div className={styles.sectionBody}>
-                            <p style={{ textAlign: 'start' }}>
-                                A camiseta traz um novo conceito de conforto casual. Feita com materiais muito macios, essa camiseta é 100% algodão em cores sólidas. Cores mescladas e cinza esportivo incluem poliéster. Os ombros têm twill tape para melhor durabilidade. Não possui costuras laterais. A gola é confeccionada com tricô canelado para evitar danos e enrolamentos.
-                            </p>
-                        </div>
-                    </section>
-                    <section className={`${styles.section} ${styles.three} `}>
-                        <div className={styles.sectionTitle}>
-                            <h1 style={{ textAlign: 'start' }}>
-                                {tProduct('key_features')}
-                            </h1>
-                        </div>
-                        <div className={styles.sectionBody}>
-                        </div>
-                    </section>
-                    <section className={`${styles.section} ${styles.four} `}>
-                        <div className={styles.sectionTitle}>
-                            <h1 style={{ textAlign: 'start' }}>
-                                {tProduct('care_instructions')}
-                            </h1>
-                        </div>
-                        <div className={styles.sectionBody}>
-                            <CareInstructionsIcons
-                                itemSize={mobile ? '33.333%' : '20%'}
-                                iconSize={50}
-                                fontSize={mobile ? 10 : 14}
-                            />
-                        </div>
-                    </section>
-                    <section className={`${styles.section} ${styles.five} `}>
-                        <div className={styles.sectionTitle}>
-                            <h1 style={{ textAlign: 'start' }}>
-                                {tProduct('size_guide')}
-                            </h1>
-                        </div>
-                        <div className={styles.sectionBody}>
-                            <TableSize type={product.type_id} />
-                        </div>
-                    </section>
-                </div>
-                {buyNowModalOpen &&
-                    <Modal
-                        closeModal={() => handleCloseModal(setBuyNowModalOpen, setBuyNowModalOpacity)}
-                        showModalOpacity={buyNowModalOpacity}
-                        className={styles.modalContent}
-                    >
-                        <div className={styles.modalHead}>
-                            <h3>{tProduct('ship_to')}</h3>
-                            <button
-                                className='flex buttonInvisible'
-                                onClick={() => handleCloseModal(setBuyNowModalOpen, setBuyNowModalOpacity)}
-                                style={{
-                                    position: 'absolute',
-                                    right: '1rem',
-                                    top: '1rem',
-                                }}
-                            >
-                                <SlClose
-                                    size={20}
-                                />
-                            </button>
-                        </div>
-                        <div className={styles.modalBody}>
-                            <div className={styles.shippingContainer}>
-                                <SelectorAutocomplete
-                                    options={
-                                        Object.keys(COUNTRIES_POOL)
-                                            .map(key => ({ id: key, label: tCountries(key) }))
-                                            .sort((a, b) => a.label.localeCompare(b.label, 'en', { sensitivity: 'base' }))
-                                    }
-                                    label={tCommon('Country')}
-                                    value={{ id: userLocation.country, label: tCountries(userLocation.country) }}
-                                    onChange={handleChangeCountrySelector}
-                                    dark
+                            <div className={styles.modalFoot}>
+                                <LoadingButton
+                                    loading={disableCheckoutButton}
+                                    variant='contained'
+                                    size='large'
+                                    onClick={handleBuyNow}
                                     sx={{
-                                        width: 300,
+                                        width: '100%',
+                                        color: 'white',
+                                        fontWeight: '700',
+                                        textTransform: 'none',
                                     }}
-                                    popperStyle={{
-                                        zIndex: 2500,
-                                        width: 300,
-                                    }}
-                                />
+                                >
+                                    {tCommon('checkout')}
+                                </LoadingButton>
                             </div>
-                        </div>
-                        <div className={styles.modalFoot}>
-                            <LoadingButton
-                                loading={disableCheckoutButton}
-                                variant='contained'
-                                size='large'
-                                onClick={handleBuyNow}
-                                sx={{
-                                    width: '100%',
-                                    color: 'white',
-                                    fontWeight: '700',
-                                    textTransform: 'none',
-                                }}
-                            >
-                                {tCommon('checkout')}
-                            </LoadingButton>
-                        </div>
-                    </Modal>
-                }
+                        </Modal>
+                    }
+                    <div className={styles.carousel}>
+                        <h2 className={styles.similarTitle}>Products you might like</h2>
+                        <CarouselProducts
+                            similar={product.id}
+                        />
+                    </div>
+                </main>
                 <Footer />
             </div>
             : <NoFound404

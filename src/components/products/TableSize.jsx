@@ -1,7 +1,8 @@
-import { Table, TableBody, TableCell, TableHead, TableRow } from '@mui/material'
+import { ButtonGroup, Table, TableBody, TableCell, TableHead, TableRow } from '@mui/material'
 import styles from '@/styles/components/products/TableSize.module.css'
 import { useAppContext } from '../contexts/AppContext'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
+import MyButton from '../material-ui/MyButton'
 
 export default function TableSize(props) {
     const {
@@ -13,12 +14,20 @@ export default function TableSize(props) {
     } = useAppContext()
 
     const [unit, setUnit] = useState(userLocation?.country === 'US' ? 'imperial' : 'metric')
+    const [firstTime, setFirstTime] = useState(true)
+
+    useEffect(() => {
+        if (firstTime && userLocation) {
+            setUnit(userLocation?.country === 'US' ? 'imperial' : 'metric')
+            setFirstTime(false)
+        }
+    }, [userLocation])
 
     const symbol = unit === 'imperial' ? 'in' : 'cm'
 
     const SIZES = {
         't-shirt': {
-            head: ['', 'S', 'M', 'L', 'XL', '2XL'],
+            head: ['S', 'M', 'L', 'XL', '2XL'],
             body: [
                 { title: `Width, ${symbol}`, imperial: ['18.00', '20.00', '22.00', '24.00', '26.00'], metric: ['45.72', '50.80', '55.88', '60.96', '66.04'] },
                 { title: `Length, ${symbol}`, imperial: ['28.00', '29.00', '30.00', '31.00', '32.00'], metric: ['71.12', '73.66', '76.20', '78.74', '81.28'] },
@@ -33,6 +42,12 @@ export default function TableSize(props) {
         >
             <TableHead>
                 <TableRow>
+                    <TableCell className={styles.tableCell} align="right">
+                        <ButtonGroup>
+                            <MyButton style={{ width: 90 }} onClick={() => setUnit('imperial')} variant={unit === 'imperial' ? 'contained' : 'outlined'}>imperial</MyButton>
+                            <MyButton style={{ width: 90 }} onClick={() => setUnit('metric')} variant={unit === 'metric' ? 'contained' : 'outlined'}>metric</MyButton>
+                        </ButtonGroup >
+                    </TableCell>
                     {SIZES[type].head.map((hd, i) =>
                         <TableCell key={i} className={styles.tableCell} align="right">{hd}</TableCell>
                     )}
@@ -42,7 +57,6 @@ export default function TableSize(props) {
                 {SIZES[type].body.map((bd, i) =>
                     <TableRow
                         key={i}
-                        sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                     >
                         <TableCell
                             className={styles.tableCell}
@@ -55,7 +69,6 @@ export default function TableSize(props) {
                             <TableCell
                                 key={j}
                                 className={styles.tableCell}
-                                align="right"
                             >
                                 {value}
                             </TableCell>
