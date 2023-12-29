@@ -12,5 +12,11 @@
     "drawstring-hood": "Capuz com cordão",
     "drawstring-hood_description": "Capuz ajustável com cordão da mesma cor",
     "cotton-polyester": "50% algodão, 50% poliéster",
-    "cotton-polyester_description": "Feito de fibras especialmente fiadas que proporcionam grande resistência. As fibras de poliéster são extremamente resilientes à maioria dos produtos químicos, esticamento e encolhimento."
+    "cotton-polyester_description": "Feito de fibras especialmente fiadas que proporcionam grande resistência. As fibras de poliéster são extremamente resilientes à maioria dos produtos químicos, esticamento e encolhimento.",
+    "with-side": "Com costuras laterais",
+    "with-side_description": "Localizadas ao longo dos lados, ajudam a manter a forma da peça por mais tempo e dão suporte estrutural",
+    "polyester": "48% Poliéster",
+    "polyester_description": "As fibras de poliéster são extremamente fortes, resistentes à maioria dos químicos, ao estiramento e à contração",
+    "fiber-composition": "Composição da fibra",
+    "fiber-composition_description": "As cores sólidas e mescladas são 52% algodão, 48% poliéster, as cores tri-blend são 50% poliéster, 25% algodão, 25% rayon."
 }

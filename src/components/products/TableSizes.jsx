@@ -27,23 +27,55 @@ export default function TableSizes(props) {
         }
     }, [userLocation])
 
-    const symbol = unit === 'imperial' ? 'in' : 'cm'
+    const UNITS = {
+        metric: {
+            value: 1,
+            symbol: 'cm'
+        },
+        imperial: {
+            value: 0.3937,
+            symbol: 'in',
+        }
+    }
 
     const SIZES = {
         't-shirt': {
             head: ['S', 'M', 'L', 'XL', '2XL'],
             body: [
-                { title: `${tTableSizes('width')}, ${tTableSizes(symbol)}`, imperial: ['18.00', '20.00', '22.00', '24.00', '26.00'], metric: ['45.72', '50.80', '55.88', '60.96', '66.04'] },
-                { title: `${tTableSizes('length')}, ${tTableSizes(symbol)}`, imperial: ['28.00', '29.00', '30.00', '31.00', '32.00'], metric: ['71.12', '73.66', '76.20', '78.74', '81.28'] },
-                { title: `${tTableSizes('sleeve')}, ${tTableSizes(symbol)}`, imperial: ['8.23', '8.50', '8.74', '9.02', '9.25'], metric: ['20.90', '21.60', '22.20', '22.90', '23.50'] },
+                { title: `${tTableSizes('width')}, ${tTableSizes(UNITS[unit].symbol)}`, metric: [45.72, 50.8, 55.88, 60.96, 66.04] },
+                { title: `${tTableSizes('length')}, ${tTableSizes(UNITS[unit].symbol)}`, metric: [71.12, 73.66, 76.2, 78.74, 81.28] },
+                { title: `${tTableSizes('sleeve')}, ${tTableSizes(UNITS[unit].symbol)}`, metric: [20.9, 21.6, 22.2, 22.9, 23.5] },
             ],
         },
         'hoodie': {
             head: ['S', 'M', 'L', 'XL', '2XL'],
             body: [
-                { title: `${tTableSizes('width')}, ${tTableSizes(symbol)}`, imperial: ['20.08', '22.05', '24.02', '25.98', '27.99'], metric: ['51.00', '56.00', '61.00', '66.00', '71.10'] },
-                { title: `${tTableSizes('length')}, ${tTableSizes(symbol)}`, imperial: ['27.17', '27.95', '29.13', '29.92', '31.10'], metric: ['69.00', '71.00', '74.00', '76.00', '79.00'] },
-                { title: `${tTableSizes('sleeve-from')}, ${tTableSizes(symbol)}`, imperial: ['33.50', '34.50', '35.50', '36.50', '37.50'], metric: ['85.09', '87.63', '90.17', '92.71', '95.25'] },
+                { title: `${tTableSizes('width')}, ${tTableSizes(UNITS[unit].symbol)}`, metric: [51, 56, 61, 66, 71.1] },
+                { title: `${tTableSizes('length')}, ${tTableSizes(UNITS[unit].symbol)}`, metric: [69, 71, 74, 76, 79] },
+                { title: `${tTableSizes('sleeve-from')}, ${tTableSizes(UNITS[unit].symbol)}`, metric: [85.09, 87.63, 90.17, 92.71, 95.25] },
+            ],
+        },
+        'raglan-tee': {
+            head: ['S', 'M', 'L', 'XL', '2XL'],
+            body: [
+                { title: `${tTableSizes('width')}, ${tTableSizes(UNITS[unit].symbol)}`, metric: [44.8, 49.8, 54.9, 60, 65.1] },
+                { title: `${tTableSizes('length')}, ${tTableSizes(UNITS[unit].symbol)}`, metric: [68.9, 71.4, 74, 76.5, 79.1] },
+                { title: `${tTableSizes('sleeve')}, ${tTableSizes(UNITS[unit].symbol)}`, metric: [60.2, 62.1, 64, 65.9, 67.8] },
+            ],
+        },
+        'sweatshirt': {
+            head: ['S', 'M', 'L', 'XL', '2XL'],
+            body: [
+                { title: `${tTableSizes('width')}, ${tTableSizes(UNITS[unit].symbol)}`, metric: [50.8, 55.9, 60.96, 66.04, 71.12] },
+                { title: `${tTableSizes('length')}, ${tTableSizes(UNITS[unit].symbol)}`, metric: [68.58, 71.12, 73.66, 76.2, 78.74] },
+                { title: `${tTableSizes('sleeve-from')}, ${tTableSizes(UNITS[unit].symbol)}`, metric: [85.09, 87.63, 90.17, 92.71, 95.25] },
+            ],
+        },
+        'mug': {
+            head: ['11oz'],
+            body: [
+                { title: `${tTableSizes('height')}, ${tTableSizes(UNITS[unit].symbol)}`, metric: [9.7] },
+                { title: `${tTableSizes('diameter')}, ${tTableSizes(UNITS[unit].symbol)}`, metric: [8.1] },
             ],
         }
     }
@@ -103,13 +135,13 @@ export default function TableSizes(props) {
                             >
                                 {bd.title}
                             </TableCell>
-                            {bd[unit].map((value, j) =>
+                            {bd.metric.map((value, j) =>
                                 <TableCell
                                     key={j}
                                     className={styles.tableCell}
                                     align="right"
                                 >
-                                    {value}
+                                    {(value * UNITS[unit].value).toFixed(2)}
                                 </TableCell>
                             )}
                         </TableRow>

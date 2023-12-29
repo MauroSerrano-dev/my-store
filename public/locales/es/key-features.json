@@ -12,5 +12,11 @@
     "drawstring-hood": "Capucha con cordón",
     "drawstring-hood_description": "Capucha ajustable con cordón tejido del mismo color",
     "cotton-polyester": "50% algodón, 50% poliéster",
-    "cotton-polyester_description": "Hecho de fibras especialmente hiladas que resultan en una gran resistencia. Las fibras de poliéster son extremadamente resistentes a la mayoría de los químicos, al estiramiento y a la contracción."
+    "cotton-polyester_description": "Hecho de fibras especialmente hiladas que resultan en una gran resistencia. Las fibras de poliéster son extremadamente resistentes a la mayoría de los químicos, al estiramiento y a la contracción.",
+    "with-side": "Con costuras laterales",
+    "with-side_description": "Ubicadas a lo largo de los lados, ayudan a mantener la forma de la prenda durante más tiempo y le brindan soporte estructural",
+    "polyester": "48% Poliéster",
+    "polyester_description": "Las fibras de poliéster son extremadamente fuertes, resistentes a la mayoría de los químicos, al estiramiento y a la contracción",
+    "fiber-composition": "Composición de la fibra",
+    "fiber-composition_description": "Los colores sólidos y jaspeados son 52% algodón, 48% poliéster, los colores tri-mezcla son 50% poliéster, 25% algodón, 25% rayón."
 }

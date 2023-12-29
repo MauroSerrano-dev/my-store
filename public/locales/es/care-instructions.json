@@ -1,8 +1,13 @@
 {
     "not-dryclean": "No lavar en seco",
-    "machine-wash-warm": "Lavar a máquina: caliente",
-    "max-temp": "(máx 40C o 105F)",
+    "machine-wash-cold": "Lavado a máquina: frío\n(máx 30C o 90F)",
+    "machine-wash-warm": "Lavado a máquina: caliente\n(máx 40C o 105F)",
+    "bleach": "Usar blanqueador según sea necesario",
     "not-bleach": "No usar blanqueador",
-    "tumble-dry-low": "Secar en secadora: bajo calor",
-    "iron-low": "Planchar, vapor o secar: bajo calor"
+    "non-chlorine": "Sin cloro:\nusar blanqueador según sea necesario",
+    "tumble-dry-low": "Secado en secadora:\nbaja temperatura",
+    "tumble-dry-medium": "Secado en secadora:\nmedio",
+    "iron-low": "Planchar, vapor o secar:\nbaja temperatura",
+    "not-iron": "No planchar",
+    "clean": "Limpie en el lavavajillas o lave a mano con agua tibia y jabón para platos"
 }

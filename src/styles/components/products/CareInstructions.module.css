@@ -17,8 +17,19 @@
     font-size: 14px;
 }
 
+.imageContainer {
+    position: relative;
+    height: 55px;
+    width: 55px;
+}
+
 @media (max-width: 700px) {
     .option {
         width: 33.334%;
+    }
+
+    .imageContainer {
+        height: 42px;
+        width: 42px;
     }
 }

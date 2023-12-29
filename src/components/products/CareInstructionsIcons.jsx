@@ -9,36 +9,6 @@ export default function CareInstructionsIcons(props) {
     } = props
 
     const tCareInstructions = useTranslation('care-instructions').t
-    
-    const imageStyle = {
-        position: 'relative',
-        height: 55,
-        width: 55
-    }
-
-    const OPTIONS = {
-        'not-dryclean': {
-            icon: '/svgs/care-instructions/not-dryclean.svg',
-        },
-        'machine-wash-warm': {
-            icon: '/svgs/care-instructions/machine-wash-warm.svg',
-        },
-        'bleach': {
-            icon: '/svgs/care-instructions/bleach.svg',
-        },
-        'not-bleach': {
-            icon: '/svgs/care-instructions/not-bleach.svg',
-        },
-        'tumble-dry-low': {
-            icon: '/svgs/care-instructions/tumble-dry-low.svg',
-        },
-        'tumble-dry-medium': {
-            icon: '/svgs/care-instructions/tumble-dry-medium.svg',
-        },
-        'iron-low': {
-            icon: '/svgs/care-instructions/iron-low.svg',
-        },
-    }
 
     return (
         <div
@@ -49,16 +19,22 @@ export default function CareInstructionsIcons(props) {
                     className={styles.option}
                     key={i}
                 >
-                    <div style={imageStyle}>
+                    <div
+                        className={styles.imageContainer}
+                    >
                         <Image
                             alt={option}
-                            src={OPTIONS[option].icon}
+                            src={`/svgs/care-instructions/${option}.svg`}
                             fill
                             sizes='55px'
                             quality={100}
                         />
                     </div>
-                    <div>{tCareInstructions(option)}</div>
+                    {tCareInstructions(option).split('\n').map((line, i) => (
+                        <p key={i} style={{ fontSize: 13 }}>
+                            {line}
+                        </p>
+                    ))}
                 </div>
             )}
         </div>

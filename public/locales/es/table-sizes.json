@@ -6,5 +6,7 @@
     "sleeve": "Largo de Manga",
     "sleeve-from": "Longitud de la manga desde el centro de la espalda",
     "in": "pulg",
-    "cm": "cm"
+    "cm": "cm",
+    "height": "Altura",
+    "diameter": "Diámetro"
 }

@@ -43,4 +43,9 @@
     .option {
         width: 100%;
     }
+
+    .imageContainer {
+        height: 60px;
+        width: 60px;
+    }
 }

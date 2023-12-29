@@ -251,8 +251,8 @@ export const PRODUCTS_TYPES = [
             87: 145,
         },
         icon: '/svgs/products-types/t-shirt_icon.svg',
-        care_instructions: ['not-dryclean', 'machine-wash-warm', 'not-bleach', 'tumble-dry-low', 'iron-low'],
         key_features: ['without-side', 'ribbed-knit', 'shoulder-tape', 'fabric'],
+        care_instructions: ['machine-wash-cold', 'not-dryclean', 'not-bleach', 'tumble-dry-low', 'iron-low'],
         sizes: [14, 15, 16, 17, 18],
         colors: [521, 418, 358, 362, 364, 369, 392, 424, 425, 511, 420, 423],
         variants: [
@@ -818,8 +818,8 @@ export const PRODUCTS_TYPES = [
             26: 77,
         },
         icon: '/svgs/products-types/hoodie_icon.svg',
-        care_instructions: ['not-dryclean', 'machine-wash-warm', 'bleach', 'tumble-dry-medium', 'iron-low'],
         key_features: ['without-side', 'spacious-pockets', 'drawstring-hood', 'cotton-polyester'],
+        care_instructions: ['machine-wash-warm', 'not-dryclean', 'bleach', 'tumble-dry-medium', 'iron-low'],
         sizes: [14, 15, 16, 17, 18],
         colors: [521, 418, 358, 367, 425, 511, 423],
         variants: [
@@ -1185,6 +1185,8 @@ export const PRODUCTS_TYPES = [
             6: 79,
         },
         icon: '/svgs/products-types/raglan-tee_icon.svg',
+        key_features: ['with-side', 'polyester', 'ribbed-knit', 'fiber-composition'],
+        care_instructions: ['machine-wash-warm', 'not-dryclean', 'not-bleach', 'tumble-dry-low', 'iron-low'],
         sizes: [14, 15, 16, 17, 18],
         colors: [1535, 1062, 1792, 1536, 1058, 1795, 1750],
         variants: [
@@ -1657,6 +1659,8 @@ export const PRODUCTS_TYPES = [
         icon: '/svgs/products-types/sweatshirt_icon.svg',
         sizes: [14, 15, 16, 17, 18],
         colors: [521, 451, 418, 421, 358, 416, 367, 392, 425, 511, 433, 423],
+        key_features: ['without-side', 'ribbed-knit'],
+        care_instructions: ['machine-wash-cold', 'not-dryclean', 'non-chlorine', 'tumble-dry-low', 'not-iron'],
         variants: [
             {
                 id: "ash-s",
@@ -2450,6 +2454,8 @@ export const PRODUCTS_TYPES = [
             87: 1020,
         },
         icon: '/svgs/products-types/mug_icon.svg',
+        key_features: ['microwave-safe', 'dishwasher-safe'],
+        care_instructions: ['clean'],
         sizes: [1189],
         colors: [2620],
         variants: [
