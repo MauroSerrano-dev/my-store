@@ -115,15 +115,29 @@ export function getProductVariantsInfos(product) {
     return product.variants.map(vari => ({ ...PRODUCTS_TYPES.find(type => type.id === product?.type_id).variants.find(va => va.id === vari.id), ...vari }))
 }
 
+export function getProductVariantInfo(variant, productType) {
+    return { ...PRODUCTS_TYPES.find(type => type.id === productType).variants.find(va => va.id === variant.id), ...variant }
+}
+
 export function handleOpenModal(view, opacity, custom_value) {
     view(custom_value || true)
     opacity(true)
 }
 
-export function handleCloseModal(view, opacity, custom_value, duration = 300) {
+export function handleCloseModal(view, opacity, custom_value) {
     opacity(false)
     setTimeout(() => {
         view(custom_value || false)
         opacity(true)
-    }, duration)
+    }, 300)
+}
+
+export function getVariantProfitBySizeId(product, sizeId, productType) {
+    const futurePrice = product.variants.find(vari => vari.size_id === sizeId).price
+    return ((futurePrice - PRODUCTS_TYPES.find(type => type.id === productType).variants.find(vari => vari.size_id === sizeId).cost) / 100).toFixed(2)
+}
+
+export function getVariantProfitBySizeIdPromotion(product, sizeId, productType) {
+    const futurePrice = product.variants.find(vari => vari.size_id === sizeId).price * (product.promotion ? (1 - product.promotion.percentage) : 1)
+    return ((futurePrice - PRODUCTS_TYPES.find(type => type.id === productType).variants.find(vari => vari.size_id === sizeId).cost) / 100).toFixed(2)
 }

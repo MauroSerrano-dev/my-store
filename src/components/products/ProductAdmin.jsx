@@ -339,7 +339,7 @@ export default function ProductAdmin(props) {
                             top: width * 0.03,
                             left: width * 0.03,
                             backgroundColor: product.promotion
-                                ? 'var(--promotion-bg)'
+                                ? 'var(--promotion-color)'
                                 : PRODUCTS_TYPES.find(type => type.id === product.type_id).color || 'var(--primary)',
                         }}
                     >

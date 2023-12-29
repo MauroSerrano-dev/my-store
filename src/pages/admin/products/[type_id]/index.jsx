@@ -24,6 +24,8 @@ import { showToast } from '@/utils/toasts';
 import { useTranslation } from 'next-i18next'
 import Image from 'next/image';
 import { Timestamp } from 'firebase/firestore';
+import SearchRoundedIcon from '@mui/icons-material/SearchRounded';
+import ProductSkeleton from '@/components/products/ProductSkeleton';
 
 export default function ProductsId() {
     const {
@@ -47,6 +49,8 @@ export default function ProductsId() {
 
     const [creatingPromotion, setCreatingPromotion] = useState(false)
 
+    const [searchInput, setSearchInput] = useState('')
+
     const [promotion, setPromotion] = useState({ percentage: 15, expire_at: dayjs().add(1, 'month') })
 
     const tToasts = useTranslation('toasts').t
@@ -64,6 +68,7 @@ export default function ProductsId() {
                 y: router.query.type_id,
                 p: router.query.p,
                 join_disabled: true,
+                i: searchInput,
             }
         }
 
@@ -147,6 +152,20 @@ export default function ProductsId() {
         const cheapestVariant = product.variants.find(vari => vari.price === (product.promotion ? product.promotion.min_price_original : product.min_price))
         const futurePrice = (product.promotion ? product.promotion.min_price_original : product.min_price) * (1 - (promotion.percentage / 100))
         return ((futurePrice - PRODUCTS_TYPES.find(type => type.id === product.type_id).variants.find(vari => vari.id === cheapestVariant.id).cost) / 100).toFixed(2)
+    }
+
+    function handleSearch() {
+        getProductsByQuery()
+    }
+
+    function handleOnChangeSearch(event) {
+        setSearchInput(event.target.value)
+    }
+
+    function handleOnKeyDownSearch(event) {
+        if (event.key === 'Enter') {
+            handleSearch()
+        }
     }
 
     return (
@@ -295,6 +314,20 @@ export default function ProductsId() {
                             </Modal>
                         }
                         <div className={styles.mainTop}>
+                            <div className='flex row' style={{ gap: '0.5rem' }}>
+                                <TextInput
+                                    size='small'
+                                    value={searchInput}
+                                    onChange={handleOnChangeSearch}
+                                    onKeyDown={handleOnKeyDownSearch}
+                                    label='Product ID'
+                                />
+                                <MyButton
+                                    onClick={handleSearch}
+                                >
+                                    <SearchRoundedIcon />
+                                </MyButton>
+                            </div>
                             <MyButton
                                 onClick={() => handlePromotionClick(productsSelected)}
                             >
@@ -302,17 +335,25 @@ export default function ProductsId() {
                             </MyButton>
                         </div>
                         <div className={styles.products}>
-                            {products?.map(product =>
-                                <ProductAdmin
-                                    selected={productsSelected.some(prod => prod.id === product.id)}
-                                    onChangeSelection={event => handleChangeSelection(event.target.checked, product)}
-                                    onPromotionClick={() => handlePromotionClick([product])}
-                                    key={`${product.id} ${productsKey}`}
-                                    product={product}
-                                >
-                                    {product.title}
-                                </ProductAdmin>
-                            )}
+                            {products
+                                ? products?.map(product =>
+                                    <ProductAdmin
+                                        selected={productsSelected.some(prod => prod.id === product.id)}
+                                        onChangeSelection={event => handleChangeSelection(event.target.checked, product)}
+                                        onPromotionClick={() => handlePromotionClick([product])}
+                                        key={`${product.id} ${productsKey}`}
+                                        product={product}
+                                    >
+                                        {product.title}
+                                    </ProductAdmin>
+                                )
+                                : Array(20).fill(null).map((ske, i) =>
+                                    <ProductSkeleton
+                                        key={i}
+                                    />
+                                )
+                            }
+                            )
                         </div>
                         {products && products?.length !== 0 &&
                             <Pagination

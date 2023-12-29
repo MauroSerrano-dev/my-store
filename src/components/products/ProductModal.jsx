@@ -10,6 +10,7 @@ import { useTranslation } from 'next-i18next';
 import { useAppContext } from '../contexts/AppContext';
 import { showToast } from '@/utils/toasts';
 import { getProductPriceUnit } from '@/utils/prices';
+import ProductTag from './ProductTag';
 
 export default function ProductModal(props) {
     const {
@@ -130,18 +131,26 @@ export default function ProductModal(props) {
                 </div>
             </Link>
             <div className={styles.right}>
-                <Link
-                    href={`/product/${product.id}${COLOR.id !== product.default_variant.color_id && SIZE.id !== product.default_variant.size_id
-                        ? `?sz=${SIZE.title.toLowerCase()}&cl=${COLOR.id_string}`
-                        : SIZE.id !== product.default_variant.size_id
-                            ? `?sz=${SIZE.title.toLowerCase()}`
-                            : COLOR.id !== product.default_variant.color_id
-                                ? `?cl=${COLOR.id_string}`
-                                : ''
-                        }`}
-                >
-                    <h6 className='ellipsisThree text-start'>{product.title}</h6>
-                </Link>
+                <div className='flex column start'>
+                    <Link
+                        href={`/product/${product.id}${COLOR.id !== product.default_variant.color_id && SIZE.id !== product.default_variant.size_id
+                            ? `?sz=${SIZE.title.toLowerCase()}&cl=${COLOR.id_string}`
+                            : SIZE.id !== product.default_variant.size_id
+                                ? `?sz=${SIZE.title.toLowerCase()}`
+                                : COLOR.id !== product.default_variant.color_id
+                                    ? `?cl=${COLOR.id_string}`
+                                    : ''
+                            }`}
+                    >
+                        <p className='ellipsisThree text-start' style={{ fontSize: 12, fontWeight: 700 }}>{product.title}</p>
+                    </Link>
+                    <ProductTag product={product} style={{ fontSize: 11 }} />
+                    {product.promotion &&
+                        <div style={{ paddingTop: 2 }}>
+                            <ProductTag product={product} style={{ fontSize: 11 }} promotion={product.promotion} />
+                        </div>
+                    }
+                </div>
                 <div className={styles.infos}>
                     <p>
                         {tCommon('Size')}: <span style={{ fontWeight: 500 }}>{SIZE.title}</span>
@@ -154,6 +163,11 @@ export default function ProductModal(props) {
                     </p>
                 </div>
                 <div className={styles.priceContainer}>
+                    {product.quantity > 1 &&
+                        <p style={{ fontSize: '10px', color: 'var(--text-black)' }}>
+                            {`${userCurrency?.symbol} ${(PRICE_UNIT / 100).toFixed(2)} ${tCommon('unit', { count: 2 })}`}
+                        </p>
+                    }
                     <p
                         style={{
                             fontWeight: '600',
@@ -162,15 +176,9 @@ export default function ProductModal(props) {
                     >
                         {`${userCurrency?.symbol} ${(PRICE / 100).toFixed(2)}`}
                     </p>
-                    {product.quantity > 1 &&
-                        <p style={{ fontSize: '10px', color: 'var(--text-black)' }}>
-                            {`${userCurrency?.symbol} ${(PRICE_UNIT / 100).toFixed(2)} ${tCommon('unit', { count: 2 })}`}
-                        </p>
-                    }
                 </div>
             </div>
-            {
-                deleting &&
+            {deleting &&
                 <div
                     style={{
                         position: 'absolute',

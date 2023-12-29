@@ -15,10 +15,11 @@ import {
 import { initializeApp } from 'firebase/app'
 import { firebaseConfig } from "../firebase.config"
 import Fuse from 'fuse.js'
-import { POPULARITY_POINTS, PRODUCTS_TYPES, TAGS_POOL, THEMES_POOL } from "@/consts"
+import { LIMITS, POPULARITY_POINTS, PRODUCTS_TYPES, TAGS_POOL, THEMES_POOL } from "@/consts"
 import translate from "translate"
 import Error from "next/error"
 import { getProductVariantsInfos } from "@/utils"
+import { isProductInPrintify } from "./printify"
 
 initializeApp(firebaseConfig)
 
@@ -155,10 +156,18 @@ async function createProduct(product) {
         const docSnapshot = await getDoc(productRef)
         if (docSnapshot.exists()) {
             return {
-                status: 409, // Código de status HTTP 409 Conflict
+                status: 409,
                 msg: `Product ID ${product.id} already exists.`,
             }
         }
+
+        const existInPrintify = await isProductInPrintify(product)
+
+        if (!existInPrintify)
+            return {
+                status: 400,
+                msg: 'Invalid printify id',
+            }
 
         const newProduct = {
             ...product,
@@ -228,6 +237,7 @@ async function getProductsByTitle(s) {
 async function getProductsByQueries(props) {
     const {
         s, //search
+        i, //id
         t, //tags
         h, //theme
         y, //type
@@ -290,6 +300,11 @@ async function getProductsByQueries(props) {
         const querySnapshot = await getDocs(q)
 
         let products = querySnapshot.docs.map(doc => doc.data())
+
+        // Filtre by id (se presente)
+        if (i) {
+            products = products.filter(prod => prod.id.includes(i))
+        }
 
         // Filtre by type (se presente)
         if (y) {
@@ -432,12 +447,15 @@ async function getAllProductPrintifyIds() {
 
 async function updateProduct(product_id, product_new_fields) {
     if (!product_id || !product_new_fields)
-        throw new Error({ title: 'Invalid update data.', statusCode: 400 })
+        throw new Error({ title: 'Invalid update data', statusCode: 400 })
 
     const productRes = await getProductById(product_id)
-
     if (!productRes.product)
-        throw new Error({ title: 'Product not found to update.', statusCode: 404 })
+        throw new Error({ title: 'Product not found to update', statusCode: 404 })
+
+    const existInPrintify = await isProductInPrintify({ ...productRes.product, ...product_new_fields })
+    if (!existInPrintify)
+        throw new Error({ title: 'Invalid printify id', statusCode: 400 })
 
     if (product_new_fields.variants) {
         const type = PRODUCTS_TYPES.find(type => type.id === productRes.product.type_id)
@@ -446,8 +464,8 @@ async function updateProduct(product_id, product_new_fields) {
             ...variant,
             cost: type.variants.find(vari => vari.id === variant.id).cost
         }))
-        if (variants.some(vari => vari.cost + 400 >= vari.price * (productRes.product.promotion ? (1 - productRes.product.promotion.percentage) : 1)))
-            throw new Error({ title: 'Invalid product price.', statusCode: 400 })
+        if (variants.some(vari => vari.cost + LIMITS.min_profit >= vari.price * (productRes.product.promotion ? (1 - productRes.product.promotion.percentage) : 1)))
+            throw new Error({ title: 'Invalid product price', statusCode: 400 })
     }
 
     const productRef = doc(db, process.env.COLL_PRODUCTS, product_id)
@@ -701,7 +719,7 @@ async function createPromotionForProducts(products_ids, promotion) {
                 ...variant,
                 cost: type.variants.find(vari => vari.id === variant.id).cost
             }))
-            if (variants.some(vari => vari.cost + 400 >= vari.price * (1 - promotion.percentage)))
+            if (variants.some(vari => vari.cost + LIMITS.min_profit >= vari.price * (1 - promotion.percentage)))
                 throw new Error({ title: 'Invalid Promotion Percentage', statusCode: 400 })
         })
 
@@ -770,6 +788,47 @@ async function removeExpiredPromotions() {
     }
 }
 
+async function getSimilarProducts(product_id, limit = 10) {
+    const productsCollection = collection(db, process.env.COLL_PRODUCTS);
+
+    // Obtenha o produto pelo ID
+    const productRef = doc(db, process.env.COLL_PRODUCTS, product_id);
+    const productSnapshot = await getDoc(productRef);
+    if (!productSnapshot.exists()) {
+        console.log("Produto não encontrado.");
+        return [];
+    }
+    const product = productSnapshot.data();
+
+    // Obtenha todos os produtos
+    const allProductsQuery = query(productsCollection);
+    const allProductsSnapshot = await getDocs(allProductsQuery);
+    let allProducts = allProductsSnapshot.docs.map(doc => doc.data());
+
+    // Filtrar produtos similares
+    let similarProducts = allProducts.filter(p => {
+        return p.id !== product.id &&
+            (p.type_id === product.type_id || p.family_id === product.family_id) &&
+            (p.themes.some(theme => product.themes.includes(theme)) ||
+                p.tags.some(tag => product.tags.includes(tag)));
+    });
+
+    // Embaralhar a lista de produtos similares
+    similarProducts.sort(() => 0.5 - Math.random());
+
+    // Completar com produtos aleatórios, se necessário
+    if (similarProducts.length < limit) {
+        allProducts = allProducts.filter(p => p.id !== product.id && !similarProducts.includes(p));
+        allProducts.sort(() => 0.5 - Math.random()); // Embaralhar todos os produtos
+        similarProducts = similarProducts.concat(allProducts.slice(0, limit - similarProducts.length));
+    }
+
+    // Verificação final para garantir que o produto original não esteja na lista
+    similarProducts = similarProducts.filter(p => p.id !== product.id);
+
+    return similarProducts.slice(0, limit);
+}
+
 export {
     createProduct,
     getProductsByQueries,
@@ -787,4 +846,5 @@ export {
     getDisabledProducts,
     createPromotionForProducts,
     removeExpiredPromotions,
+    getSimilarProducts
 }

@@ -14,6 +14,7 @@ export default async function handler(req, res) {
 
     if (req.method === "GET") {
         const {
+            i, //id
             s, //search
             t, //tags
             h, //theme
@@ -42,6 +43,7 @@ export default async function handler(req, res) {
         }
         else {
             response = await getProductsByQueries({
+                i: i,
                 s: s,
                 t: t,
                 h: h,

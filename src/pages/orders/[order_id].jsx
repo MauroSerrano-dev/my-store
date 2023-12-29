@@ -11,7 +11,7 @@ import Link from 'next/link'
 import lottie from 'lottie-web';
 import Image from 'next/image'
 import ProductStepper from '@/components/products/ProductStepper'
-import ProductTag from '@/components/ProductTag'
+import ProductTag from '@/components/products/ProductTag'
 import MyButton from '@/components/material-ui/MyButton'
 
 export default function Orders() {

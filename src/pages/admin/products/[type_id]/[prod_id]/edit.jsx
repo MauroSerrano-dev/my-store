@@ -14,7 +14,7 @@ import BrokeChain from '@/components/svgs/BrokeChain'
 import ButtonIcon from '@/components/material-ui/ButtonIcon'
 import ImagesSliderEditable from '@/components/ImagesSliderEditable'
 import { showToast } from '@/utils/toasts'
-import { getObjectsDiff } from '@/utils'
+import { getObjectsDiff, getProductVariantInfo } from '@/utils'
 import Head from 'next/head'
 import Selector from '@/components/material-ui/Selector'
 import { isNewProductValid } from '@/utils/edit-product'
@@ -25,6 +25,8 @@ import { useAppContext } from '@/components/contexts/AppContext'
 import MyButton from '@/components/material-ui/MyButton'
 import KeyboardArrowLeftOutlinedIcon from '@mui/icons-material/KeyboardArrowLeftOutlined';
 import Link from 'next/link'
+import PrintifyIdPicker from '@/components/PrintifyIdPicker'
+import ProductPriceInput from '@/components/ProductPriceInput'
 
 export default withRouter(() => {
     const {
@@ -88,7 +90,7 @@ export default withRouter(() => {
             setSizesChained(product.colors_ids.reduce((acc, cl) => ({ ...acc, [cl]: [] }), {}))
 
             setInicialProduct(product)
-            setProduct(product)
+            setProduct({ ...product, variants: product.variants.map(vari => getProductVariantInfo(vari, product.type_id)) })
             setImages(product.images.reduce((acc, image) => acc[image.color_id] === undefined ? { ...acc, [image.color_id]: product.images.filter(img => img.color_id === image.color_id) } : acc, {}))
         }
     }
@@ -552,13 +554,15 @@ export default withRouter(() => {
                                     </div>
                                     <div className={styles.sectionRight}>
                                         {TYPE.providers.map(prov_id => PROVIDERS_POOL[prov_id]).map((provider, i) =>
-                                            <TextInput
+                                            <PrintifyIdPicker
+                                                onChoose={productPrintifyId => handlePrintifyId(provider.id, productPrintifyId)}
                                                 key={i}
-                                                label={`${provider.title} Printify ID`}
-                                                onChange={event => handlePrintifyId(provider.id, event.target.value)}
                                                 value={product.printify_ids[provider.id]}
+                                                colorText='var(--color-success)'
+                                                provider={provider}
+                                                blueprint_ids={TYPE.blueprint_ids}
                                                 style={{
-                                                    width: '100%'
+                                                    width: '100%',
                                                 }}
                                             />
                                         )}
@@ -698,49 +702,17 @@ export default withRouter(() => {
                                                                 {tCommon(COLORS_POOL[product.colors_ids[colorIndex]].title)} Price (USD)
                                                             </h3>
                                                             {SIZES?.map((size, i) =>
-                                                                <div
-                                                                    className='flex center fillWidth'
-                                                                    style={{
-                                                                        gap: '1rem'
-                                                                    }}
+                                                                <ProductPriceInput
+                                                                    productType={product.type_id}
+                                                                    onClickChain={() => handleChainSize(size.id)}
+                                                                    chained={sizesChained[product.colors_ids[colorIndex]].includes(size.id)}
+                                                                    size={size}
                                                                     key={i}
-                                                                >
-                                                                    <MyButton
-                                                                        variant={sizesChained[product.colors_ids[colorIndex]].includes(size.id) ? 'contained' : 'outlined'}
-                                                                        onClick={() => handleChainSize(size.id)}
-                                                                        style={{
-                                                                            minWidth: 45,
-                                                                            width: 45,
-                                                                            height: 45,
-                                                                            padding: 0,
-                                                                        }}
-                                                                    >
-                                                                        {sizesChained[product.colors_ids[colorIndex]].includes(size.id) ? <Chain /> : <BrokeChain />}
-                                                                    </MyButton>
-                                                                    <TextInput
-                                                                        label={size.title}
-                                                                        onChange={event => handleChangePrice(isNaN(Number(event.target.value)) ? 0 : Math.abs(Number(event.target.value.slice(0, Math.min(event.target.value.length, 7)))), size.id)}
-                                                                        value={product.variants.find(vari => vari.size_id === size.id && vari.color_id === product.colors_ids[colorIndex]).price}
-                                                                        style={{
-                                                                            width: 90,
-                                                                        }}
-                                                                        styleInput={{
-                                                                            display: 'flex',
-                                                                            justifyContent: 'center',
-                                                                            alignItems: 'center',
-                                                                            textAlign: 'center',
-                                                                            padding: 0,
-                                                                            height: 45,
-                                                                        }}
-                                                                    />
-                                                                    <Slider
-                                                                        value={product.variants.find(vari => vari.size_id === size.id && vari.color_id === product.colors_ids[colorIndex]).price}
-                                                                        min={product.variants[0].cost}
-                                                                        max={product.variants.reduce((acc, vari) => vari.cost > acc.cost ? vari : acc, { cost: 0 }).cost * 5}
-                                                                        valueLabelDisplay="auto"
-                                                                        onChange={event => handleChangePrice(event.target.value, size.id)}
-                                                                    />
-                                                                </div>
+                                                                    product={product}
+                                                                    onChangeText={event => handleChangePrice(isNaN(Number(event.target.value)) ? 0 : Math.abs(Number(event.target.value.slice(0, Math.min(event.target.value.length, 7)))), size.id)}
+                                                                    onChangeSlider={event => handleChangePrice(event.target.value, size.id)}
+                                                                    price={product.variants.find(vari => vari.size_id === size.id && vari.color_id === product.colors_ids[colorIndex]).price}
+                                                                />
                                                             )}
                                                         </div>
                                                     </div>

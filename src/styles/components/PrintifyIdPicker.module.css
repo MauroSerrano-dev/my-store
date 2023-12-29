@@ -1,0 +1,109 @@
+.container {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+
+    gap: 0.8rem;
+}
+
+.modalContent {
+    position: relative;
+    height: 450px;
+    width: 700px;
+    background-color: white;
+
+    --text-color: var(--text-black)
+}
+
+.printProducts {
+    overflow: auto;
+    height: 100%;
+    width: 100%;
+}
+
+.printProduct {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    width: 100%;
+
+    padding: 0.5rem 1rem;
+
+    border-bottom: rgba(0, 0, 0, 0.35) solid 1px;
+}
+
+.imageContainer {
+    position: relative;
+    height: 100px;
+    width: 100px;
+}
+
+.imageChooseOne {
+    position: relative;
+    height: 55px;
+    width: 55px;
+
+    border-radius: 0.3rem;
+    overflow: hidden;
+}
+
+.imageSpinner {
+    height: 55px;
+    width: 55px;
+}
+
+.productBody {
+    padding-left: 0.5rem;
+    display: flex;
+    width: calc(100% - 100px);
+
+    font-weight: 600;
+}
+
+.modalBottom {
+    padding-top: 0.8rem;
+    padding-bottom: 0.5rem;
+}
+
+.loadingSpinner {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    padding-top: 18%;
+    height: 100%;
+    width: 100%;
+}
+
+.clearButton {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    position: absolute;
+    right: 0.7rem;
+    top: 50%;
+    transform: translateY(-50%);
+
+    background-color: rgba(255, 255, 255, 0.2);
+    border-radius: 100%;
+    padding: 0.22rem;
+
+    transition: background-color 200ms ease-in-out;
+}
+
+/* Enable hover only on non-touch devices */
+@media (hover: hover) and (pointer: fine) {
+    .imageContainer:hover {
+        cursor: pointer;
+    }
+
+    .imageChooseOne:hover {
+        cursor: pointer;
+    }
+
+    .clearButton:hover {
+        cursor: pointer;
+        background-color: rgba(255, 255, 255, 0.5);
+    }
+}

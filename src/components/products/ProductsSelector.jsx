@@ -12,7 +12,7 @@ export default function ProductsSelector(props) {
     const {
     } = useAppContext()
 
-    const tCommon = useTranslation('common').t
+    const tCategories = useTranslation('categories').t
 
     return (
         <div className={styles.container}>
@@ -26,7 +26,7 @@ export default function ProductsSelector(props) {
                         className={styles.optionIcon}
                     />
                     <p>
-                        {tCommon(type.family_id).concat(type.id === 'mug-c' ? '-C' : '')}
+                        {tCategories(type.family_id).concat(type.id === 'mug-c' ? '-C' : '')}
                     </p>
                 </Link>
             )}
