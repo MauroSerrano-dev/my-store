@@ -15,7 +15,8 @@ export default function ProductPriceInput(props) {
         size,
         price,
         product,
-        productType
+        productType,
+        onChangeText
     } = props
 
     return (
@@ -36,7 +37,7 @@ export default function ProductPriceInput(props) {
             </MyButton>
             <TextInput
                 label={size.title}
-                onChange={event => handleChangePrice(isNaN(Number(event.target.value)) ? 0 : Math.abs(Number(event.target.value.slice(0, Math.min(event.target.value.length, 7)))), size.id)}
+                onChange={onChangeText}
                 value={price}
                 style={{
                     width: 90,

@@ -15,7 +15,7 @@ import {
 import { initializeApp } from 'firebase/app'
 import { firebaseConfig } from "../firebase.config"
 import Fuse from 'fuse.js'
-import { POPULARITY_POINTS, PRODUCTS_TYPES, TAGS_POOL, THEMES_POOL } from "@/consts"
+import { LIMITS, POPULARITY_POINTS, PRODUCTS_TYPES, TAGS_POOL, THEMES_POOL } from "@/consts"
 import translate from "translate"
 import Error from "next/error"
 import { getProductVariantsInfos } from "@/utils"
@@ -464,7 +464,7 @@ async function updateProduct(product_id, product_new_fields) {
             ...variant,
             cost: type.variants.find(vari => vari.id === variant.id).cost
         }))
-        if (variants.some(vari => vari.cost + 400 >= vari.price * (productRes.product.promotion ? (1 - productRes.product.promotion.percentage) : 1)))
+        if (variants.some(vari => vari.cost + LIMITS.min_profit >= vari.price * (productRes.product.promotion ? (1 - productRes.product.promotion.percentage) : 1)))
             throw new Error({ title: 'Invalid product price', statusCode: 400 })
     }
 
@@ -719,7 +719,7 @@ async function createPromotionForProducts(products_ids, promotion) {
                 ...variant,
                 cost: type.variants.find(vari => vari.id === variant.id).cost
             }))
-            if (variants.some(vari => vari.cost + 400 >= vari.price * (1 - promotion.percentage)))
+            if (variants.some(vari => vari.cost + LIMITS.min_profit >= vari.price * (1 - promotion.percentage)))
                 throw new Error({ title: 'Invalid Promotion Percentage', statusCode: 400 })
         })
 

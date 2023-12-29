@@ -709,6 +709,7 @@ export default withRouter(() => {
                                                                     size={size}
                                                                     key={i}
                                                                     product={product}
+                                                                    onChangeText={event => handleChangePrice(isNaN(Number(event.target.value)) ? 0 : Math.abs(Number(event.target.value.slice(0, Math.min(event.target.value.length, 7)))), size.id)}
                                                                     onChangeSlider={event => handleChangePrice(event.target.value, size.id)}
                                                                     price={product.variants.find(vari => vari.size_id === size.id && vari.color_id === product.colors_ids[colorIndex]).price}
                                                                 />
