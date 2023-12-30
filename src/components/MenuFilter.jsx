@@ -35,7 +35,7 @@ export default function MenuFilter(props) {
         v,
         p = '1',
         limit = '60',
-    } = router
+    } = router.query
 
     const [searchFocus, setSearchFocus] = useState(false)
 
@@ -128,18 +128,21 @@ export default function MenuFilter(props) {
                     <div className={styles.section}>
                         <h3>Products</h3>
                         <div className={styles.options}>
-                            {PRODUCTS_TYPES.map((type, i) =>
-                                <button
-                                    className={styles.option}
-                                    style={{
-                                        backgroundColor: v?.includes(type.id) ? 'var(--primary)' : 'var(--filter-tag-color)'
-                                    }}
-                                    onClick={() => handleMultiSelection('v', v, !v?.includes(type.id), type.id)}
-                                    key={i}
-                                >
-                                    {tCategories(type.id)}
-                                </button>
-                            )}
+                            {PRODUCTS_TYPES
+                                .filter((type, index, self) => self.findIndex(t => t.family_id === type.family_id) === index)
+                                .map((type, i) =>
+                                    <button
+                                        className={styles.option}
+                                        style={{
+                                            backgroundColor: v?.split(' ').includes(type.family_id) ? 'var(--primary)' : 'var(--filter-tag-color)'
+                                        }}
+                                        onClick={() => handleMultiSelection('v', v, !v?.includes(type.family_id), type.family_id)}
+                                        key={i}
+                                    >
+                                        {tCategories(type.family_id)}
+                                    </button>
+                                )
+                            }
                         </div>
                     </div>
                     <div className={styles.section}>
