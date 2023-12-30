@@ -163,7 +163,7 @@ export default function Cart() {
             method: 'GET',
             headers: {
                 authorization: process.env.NEXT_PUBLIC_APP_TOKEN,
-                limit: 30,
+                limit: 15,
             },
         }
 

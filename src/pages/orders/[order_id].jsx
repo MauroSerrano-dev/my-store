@@ -155,10 +155,10 @@ export default function Orders() {
                                                     RECIBO
                                                 </MyButton>
                                             </Link>
-                                            {order.track_details && order.products.some(prod => prod.status !== 'shipment-delivered' && prod.status !== 'canceled' && prod.status !== 'refunded') &&
+                                            {order.shipments && order.products.some(prod => prod.status !== 'shipment-delivered' && prod.status !== 'canceled' && prod.status !== 'refunded') &&
                                                 <Link
                                                     className='noUnderline'
-                                                    href={order.track_details.url}
+                                                    href={order.shipments.url}
                                                     target='_blank'
                                                     style={{
                                                         width: '100%'

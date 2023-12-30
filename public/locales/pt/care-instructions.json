@@ -1,0 +1,13 @@
+{
+    "not-dryclean": "Não limpar a seco",
+    "machine-wash-cold": "Lavar à máquina: frio\n(máx 30C ou 90F)",
+    "machine-wash-warm": "Lavar à máquina: quente\n(máx 40C ou 105F)",
+    "bleach": "Usar lixívia conforme necessário",
+    "not-bleach": "Não usar lixívia",
+    "non-chlorine": "Sem cloro:\nusar lixívia conforme necessário",
+    "tumble-dry-low": "Secar na máquina:\nbaixa temperatura",
+    "tumble-dry-medium": "Secar na máquina:\nmédio",
+    "iron-low": "Passar a ferro, vapor ou secar: baixa temperatura",
+    "not-iron": "Não passar a ferro",
+    "clean": "Limpe na máquina de lavar louça ou lave à mão com água morna e detergente para a loiça"
+}

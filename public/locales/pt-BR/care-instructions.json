@@ -1,0 +1,13 @@
+{
+    "not-dryclean": "Não lavar a seco",
+    "machine-wash-cold": "Lavar na máquina: frio\n(máx 30ºC ou 90ºF)",
+    "machine-wash-warm": "Lavar na máquina: quente\n(máx 40ºC ou 105ºF)",
+    "bleach": "Usar alvejante conforme necessário",
+    "not-bleach": "Não usar alvejante",
+    "non-chlorine": "Sem cloro:\nusar alvejante conforme necessário",
+    "tumble-dry-low": "Secar em tambor:\nbaixo calor",
+    "tumble-dry-medium": "Secar em tambor:\nmédio",
+    "iron-low": "Passar, vaporizar ou secar: baixo calor",
+    "not-iron": "Não passar",
+    "clean": "Limpe na lava-louças ou lave à mão com água morna e detergente"
+}

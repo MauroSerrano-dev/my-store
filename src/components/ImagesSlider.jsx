@@ -210,6 +210,7 @@ export default function ImagesSlider(props) {
                                             sizes={`${height * 2 / 3}px`}
                                             style={{
                                                 pointerEvents: 'none',
+                                                objectFit: 'cover',
                                                 opacity: imagesLoad.includes(`${i}${j}`) ? 1 : 0,
                                                 transition: 'opacity ease-in-out 200ms'
                                             }}
@@ -314,6 +315,7 @@ export default function ImagesSlider(props) {
                                             alt='product image'
                                             fill
                                             style={{
+                                                objectFit: 'cover',
                                                 opacity: optionsImagesLoad.includes(`${i}${j}`) ? 1 : 0,
                                                 transition: 'opacity ease-in-out 200ms'
                                             }}

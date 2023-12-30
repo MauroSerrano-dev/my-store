@@ -28,6 +28,12 @@
     height: 100%;
 }
 
+.imageContainer {
+    position: relative;
+    height: 100%;
+    width: 100%;
+}
+
 /* Enable hover only on non-touch devices */
 @media (hover: hover) and (pointer: fine) {
     .option:hover {

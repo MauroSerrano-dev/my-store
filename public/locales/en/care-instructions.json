@@ -1,0 +1,13 @@
+{
+    "not-dryclean": "Do not dryclean",
+    "machine-wash-cold": "Machine wash: cold\n(max 30C or 90F)",
+    "machine-wash-warm": "Machine wash: warm\n(max 40C or 105F)",
+    "bleach": "Bleach as needed",
+    "not-bleach": "Do not bleach",
+    "non-chlorine": "Non-chlorine:\nbleach as needed",
+    "tumble-dry-low": "Tumble dry:\nlow heat",
+    "tumble-dry-medium": "Tumble dry:\nmedium",
+    "iron-low": "Iron, steam or dry:\nlow heat",
+    "not-iron": "Do not iron",
+    "clean": "Clean in dishwasher or wash by hand with warm water and dish soap"
+}

@@ -357,7 +357,7 @@ export default withRouter(() => {
                             <div className={styles.priceFilterInputs}>
                                 <div className={styles.minMaxPrefix}>
                                     <span>
-                                        {userCurrency.symbol}
+                                        {userCurrency?.symbol}
                                     </span>
                                     <input
                                         name='min'
@@ -371,7 +371,7 @@ export default withRouter(() => {
                                 </div>
                                 <div className={styles.minMaxPrefix}>
                                     <span>
-                                        {userCurrency.symbol}
+                                        {userCurrency?.symbol}
                                     </span>
                                     <input
                                         name='max'

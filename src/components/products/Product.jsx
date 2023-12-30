@@ -101,7 +101,7 @@ export default function Product(props) {
     function handleMouseUpColor(event, color) {
         event.stopPropagation()
         event.preventDefault()
-        setCurrentVariant(currentVariant.find(vari => vari.color_id === color.id))
+        setCurrentVariant(product.variants.find(vari => vari.color_id === color.id))
     }
 
     function handleBottomHoverClick(event) {
@@ -254,6 +254,7 @@ export default function Product(props) {
                                 fill
                                 alt={product.title}
                                 style={{
+                                    objectFit: 'cover',
                                     zIndex: currentVariant.color_id === color_id ? 3 : 2,
                                     opacity: currentVariant.color_id === color_id ? 1 : 0,
                                 }}
@@ -280,6 +281,7 @@ export default function Product(props) {
                             alt={product.title}
                             onLoad={() => setImageLoad(true)}
                             style={{
+                                objectFit: 'cover',
                                 zIndex: currentVariant.color_id === color_id ? 1 : 0,
                                 opacity: currentVariant.color_id === color_id ? 1 : 0,
                             }}

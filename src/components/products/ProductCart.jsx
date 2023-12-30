@@ -153,6 +153,7 @@ export default function ProductCart(props) {
                     width={270}
                     height={300}
                     style={{
+                        objectFit: 'cover',
                         width: 'auto',
                         height: 'calc(var(--container-height) * 0.9)',
                     }}

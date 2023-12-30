@@ -46,14 +46,10 @@
 
 html {
   color-scheme: dark;
-  /* min-width: 100vw; */
-  /* min-height: 100vh; */
   overflow-x: hidden;
 }
 
 body {
-  /* min-height: 100vh; */
-  /* min-width: 100vw; */
   background: var(--background-color);
   overflow-x: hidden;
 }

@@ -119,6 +119,35 @@ async function emailIsProhibited(email) {
     }
 }
 
+async function handleStripeWebhookFail(orderId) {
+    try {
+        const ordersInfoRef = doc(db, process.env.COLL_APP_SETTINGS, 'orders_info');
+        const ordersInfoDoc = await getDoc(ordersInfoRef);
+
+        // Se o documento 'orders_info' já existe, atualize-o
+        if (ordersInfoDoc.exists()) {
+            await updateDoc(ordersInfoRef, {
+                orders_failed: arrayUnion({
+                    order_id: orderId,
+                    created_at: Timestamp.now()
+                })
+            });
+        } else {
+            // Se o documento não existe, crie-o com o array 'orders_failed'
+            await setDoc(ordersInfoRef, {
+                orders_failed: [{
+                    order_id: orderId,
+                    created_at: Timestamp.now()
+                }]
+            });
+        }
+
+        console.log('Order failure recorded successfully!');
+    } catch (error) {
+        console.error("Error recording order failure:", error);
+        throw new Error(`Error recording order failure: ${error}`);
+    }
+}
 
 export {
     updateAllCurrencies,
@@ -126,4 +155,5 @@ export {
     addUserDeleted,
     clearDeletedUsers,
     emailIsProhibited,
+    handleStripeWebhookFail,
 }

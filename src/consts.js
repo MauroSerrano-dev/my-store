@@ -1,8 +1,3 @@
-import { IoShirt } from "react-icons/io5"
-import { GiHoodie } from "react-icons/gi"
-import { PiTShirtFill } from "react-icons/pi"
-import { ImMug } from "react-icons/im"
-
 export const languageToCountry = {
     en: 'en',
     es: 'es',
@@ -57,9 +52,9 @@ export const ALLOWED_WEBHOOK_STATUS = STEPS.concat(STEPS_ATTEMPT).concat('cancel
 
 export const DEFAULT_PRODUCTS_TAGS = [
     't-shirts',
-    'hoodies',
+    'games',
     'music',
-    'raglan-tees',
+    'mugs',
 ]
 
 export const SEARCH_FILTERS = {
@@ -249,14 +244,16 @@ export const PRODUCTS_TYPES = [
     {
         id: 't-shirt',
         family_id: 't-shirts',
-        title: 'T-Shirt',
         color: '#1189c4',
         providers: [29, 87],
         blueprint_ids: {
             29: 145,
             87: 145,
         },
-        icon: IoShirt,
+        icon: '/svgs/products-types/t-shirt_icon.svg',
+        key_features: ['without-side', 'ribbed-knit', 'shoulder-tape', 'fabric'],
+        care_instructions: ['machine-wash-cold', 'not-dryclean', 'not-bleach', 'tumble-dry-low', 'iron-low'],
+        metrics: { width: [45.72, 50.8, 55.88, 60.96, 66.04], length: [71.12, 73.66, 76.2, 78.74, 81.28], sleeve: [20.9, 21.6, 22.2, 22.9, 23.5] },
         sizes: [14, 15, 16, 17, 18],
         colors: [521, 418, 358, 362, 364, 369, 392, 424, 425, 511, 420, 423],
         variants: [
@@ -815,14 +812,16 @@ export const PRODUCTS_TYPES = [
     {
         id: 'hoodie',
         family_id: 'hoodies',
-        title: 'Hoodie',
         color: '#026539',
         providers: [50, 26],
         blueprint_ids: {
             50: 77,
             26: 77,
         },
-        icon: GiHoodie,
+        icon: '/svgs/products-types/hoodie_icon.svg',
+        key_features: ['without-side', 'spacious-pockets', 'drawstring-hood', 'cotton-polyester'],
+        care_instructions: ['machine-wash-warm', 'not-dryclean', 'bleach', 'tumble-dry-medium', 'iron-low'],
+        metrics: { width: [51, 56, 61, 66, 71.1], length: [69, 71, 74, 76, 79], 'sleeve-from': [85.09, 87.63, 90.17, 92.71, 95.25] },
         sizes: [14, 15, 16, 17, 18],
         colors: [521, 418, 358, 367, 425, 511, 423],
         variants: [
@@ -1181,14 +1180,16 @@ export const PRODUCTS_TYPES = [
     {
         id: 'raglan-tee',
         family_id: 'raglan-tees',
-        title: 'Raglan Tee',
         color: '#e0824b',
         providers: [43, 6],
         blueprint_ids: {
             43: 79,
             6: 79,
         },
-        icon: PiTShirtFill,
+        icon: '/svgs/products-types/raglan-tee_icon.svg',
+        key_features: ['with-side', 'polyester', 'ribbed-knit', 'fiber-composition'],
+        care_instructions: ['machine-wash-warm', 'not-dryclean', 'not-bleach', 'tumble-dry-low', 'iron-low'],
+        metrics: { width: [44.8, 49.8, 54.9, 60, 65.1], length: [68.9, 71.4, 74, 76.5, 79.1], sleeve: [60.2, 62.1, 64, 65.9, 67.8] },
         sizes: [14, 15, 16, 17, 18],
         colors: [1535, 1062, 1792, 1536, 1058, 1795, 1750],
         variants: [
@@ -1652,16 +1653,18 @@ export const PRODUCTS_TYPES = [
     {
         id: 'sweatshirt',
         family_id: 'sweatshirts',
-        title: 'Sweatshirt',
         color: '#009c75',
         providers: [50, 87],
         blueprint_ids: {
             50: 49,
             87: 49,
         },
-        icon: PiTShirtFill,
+        icon: '/svgs/products-types/sweatshirt_icon.svg',
+        metrics: { width: [50.8, 55.9, 60.96, 66.04, 71.12], length: [68.58, 71.12, 73.66, 76.2, 78.74], 'sleeve-from': [85.09, 87.63, 90.17, 92.71, 95.25] },
         sizes: [14, 15, 16, 17, 18],
         colors: [521, 451, 418, 421, 358, 416, 367, 392, 425, 511, 433, 423],
+        key_features: ['without-side', 'ribbed-knit'],
+        care_instructions: ['machine-wash-cold', 'not-dryclean', 'non-chlorine', 'tumble-dry-low', 'not-iron'],
         variants: [
             {
                 id: "ash-s",
@@ -2448,14 +2451,16 @@ export const PRODUCTS_TYPES = [
     {
         id: 'mug',
         family_id: 'mugs',
-        title: 'Mug',
         color: '#bA2326',
         providers: [1, 87],
         blueprint_ids: {
             1: 68,
             87: 1020,
         },
-        icon: ImMug,
+        icon: '/svgs/products-types/mug_icon.svg',
+        key_features: ['microwave-safe', 'dishwasher-safe'],
+        care_instructions: ['clean'],
+        metrics: { height: [9.7], diameter: [8.1] },
         sizes: [1189],
         colors: [2620],
         variants: [
@@ -2477,14 +2482,16 @@ export const PRODUCTS_TYPES = [
     {
         id: 'mug-c',
         family_id: 'mugs',
-        title: 'Mug',
         color: '#bA2326',
         providers: [28, 87],
         blueprint_ids: {
             28: 635,
             87: 1019,
         },
-        icon: ImMug,
+        icon: '/svgs/products-types/mug-c_icon.svg',
+        key_features: ['microwave-safe', 'dishwasher-safe'],
+        care_instructions: ['clean'],
+        metrics: { height: [9.7], diameter: [8.5] },
         sizes: [1189],
         colors: [2621, 2662, 2663, 2665],
         variants: [

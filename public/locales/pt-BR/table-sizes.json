@@ -1,0 +1,12 @@
+{
+    "imperial": "Imperial",
+    "metric": "Métrico",
+    "width": "Largura",
+    "length": "Comprimento",
+    "sleeve": "Comprimento da Manga",
+    "sleeve-from": "Comprimento da manga a partir do centro das costas",
+    "in": "pol",
+    "cm": "cm",
+    "height": "Altura",
+    "diameter": "Diâmetro"
+}
