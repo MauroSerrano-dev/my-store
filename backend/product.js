@@ -341,7 +341,7 @@ async function getProductsByQueries(props) {
             const translationPromises = []
 
             inicialTags.forEach(word => {
-                const translation = translate(word, { from: user_language, to: "en", engine: "google" })
+                const translation = translate(word, { from: user_language.slice(0, 2), to: "en", engine: "google" })
                 translationPromises.push(translation)
             })
 
@@ -806,13 +806,13 @@ async function getSimilarProducts(product_id, limit = 15) {
     let allProducts = allProductsSnapshot.docs.map(doc => doc.data());
 
     // Filtrar produtos similares com base em temas ou tags
-    let similarProducts = allProducts.filter(p => p.id !== product.id && 
+    let similarProducts = allProducts.filter(p => p.id !== product.id &&
         (p.themes.some(theme => product.themes.includes(theme)) ||
-         p.tags.some(tag => product.tags.includes(tag))));
+            p.tags.some(tag => product.tags.includes(tag))));
 
     // Completar com produtos de mesmo tipo ou family_type, se necessário
     if (similarProducts.length < limit) {
-        let additionalProducts = allProducts.filter(p => p.id !== product.id && 
+        let additionalProducts = allProducts.filter(p => p.id !== product.id &&
             !similarProducts.includes(p) &&
             (p.type_id === product.type_id || p.family_id === product.family_id));
 
@@ -822,7 +822,7 @@ async function getSimilarProducts(product_id, limit = 15) {
 
     // Completar com produtos aleatórios, se ainda necessário
     if (similarProducts.length < limit) {
-        let randomProducts = allProducts.filter(p => p.id !== product.id && 
+        let randomProducts = allProducts.filter(p => p.id !== product.id &&
             !similarProducts.includes(p));
 
         randomProducts.sort(() => 0.5 - Math.random()); // Embaralhar
