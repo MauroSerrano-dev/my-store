@@ -484,7 +484,7 @@ export default withRouter(() => {
                                 >
                                     {
                                         Object.keys(router.query).filter(key => QUERIES[key].isFilter).length === 0
-                                            ? 'All Products'
+                                            ? tSearch('all-products')
                                             : tSearch('filters', { count: Object.keys(router.query).filter(key => QUERIES[key].isFilter).length })
                                     }
                                 </h1>

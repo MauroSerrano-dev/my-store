@@ -19,5 +19,6 @@
     "filters": "Filtros",
     "filters_one": "Filtro",
     "order-by": "Ordenar Por",
-    "no-products-found": "No se Encontraron Productos"
+    "no-products-found": "No se Encontraron Productos",
+    "all-products": "Todos los Productos"
 }
