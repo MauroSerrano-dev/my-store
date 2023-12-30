@@ -165,7 +165,7 @@ export default async function handler(req, res) {
         }
     } catch (error) {
         try {
-            await handleStripeWebhookFail(event?.data?.id)
+            await handleStripeWebhookFail(event?.id)
             res.status(500).json({ message: 'Error on stripe webhook', error: error })
         }
         catch {
