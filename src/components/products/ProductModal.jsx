@@ -127,6 +127,9 @@ export default function ProductModal(props) {
                         alt={product.title}
                         fill
                         sizes='108px'
+                        style={{
+                            objectFit: 'cover',
+                        }}
                     />
                 </div>
             </Link>

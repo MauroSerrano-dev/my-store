@@ -213,6 +213,7 @@ export default function ProductAdmin(props) {
                                 fill
                                 alt={product.title}
                                 style={{
+                                    objectFit: 'cover',
                                     zIndex: currentVariant.color_id === color_id ? 3 : 2,
                                     opacity: currentVariant.color_id === color_id ? 1 : 0,
                                 }}
@@ -239,6 +240,7 @@ export default function ProductAdmin(props) {
                             alt={product.title}
                             onLoad={() => setImageLoad(true)}
                             style={{
+                                objectFit: 'cover',
                                 zIndex: currentVariant.color_id === color_id ? 1 : 0,
                                 opacity: currentVariant.color_id === color_id ? 1 : 0,
                             }}

@@ -18,5 +18,9 @@
     "polyester": "48% Poliéster",
     "polyester_description": "As fibras de poliéster são extremamente fortes, resistentes à maioria dos químicos, ao estiramento e à contração",
     "fiber-composition": "Composição da fibra",
-    "fiber-composition_description": "As cores sólidas e mescladas são 52% algodão, 48% poliéster, as cores tri-blend são 50% poliéster, 25% algodão, 25% rayon."
+    "fiber-composition_description": "As cores sólidas e mescladas são 52% algodão, 48% poliéster, as cores tri-blend são 50% poliéster, 25% algodão, 25% rayon.",
+    "dishwasher-safe": "Adequado para micro-ondas",
+    "dishwasher-safe_description": "Adequado para uso em lava-louças.",
+    "microwave-safe": "Adequado para lava-louças",
+    "microwave-safe_description": "A caneca pode ser colocada de forma segura em um micro-ondas para aquecer alimentos ou líquidos."
 }

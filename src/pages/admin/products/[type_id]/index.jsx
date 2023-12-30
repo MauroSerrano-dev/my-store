@@ -207,6 +207,7 @@ export default function ProductsId() {
                                                         fill
                                                         sizes='100px'
                                                         style={{
+                                                            objectFit: 'cover',
                                                             borderRadius: '0.3rem'
                                                         }}
                                                     />

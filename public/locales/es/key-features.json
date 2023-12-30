@@ -18,5 +18,9 @@
     "polyester": "48% Poliéster",
     "polyester_description": "Las fibras de poliéster son extremadamente fuertes, resistentes a la mayoría de los químicos, al estiramiento y a la contracción",
     "fiber-composition": "Composición de la fibra",
-    "fiber-composition_description": "Los colores sólidos y jaspeados son 52% algodón, 48% poliéster, los colores tri-mezcla son 50% poliéster, 25% algodón, 25% rayón."
+    "fiber-composition_description": "Los colores sólidos y jaspeados son 52% algodón, 48% poliéster, los colores tri-mezcla son 50% poliéster, 25% algodón, 25% rayón.",
+    "dishwasher-safe": "Apto para microondas",
+    "dishwasher-safe_description": "Apto para uso en lavavajillas.",
+    "microwave-safe": "Apto para lavavajillas",
+    "microwave-safe_description": "La taza puede colocarse de forma segura en un microondas para calentar alimentos o líquidos."
 }

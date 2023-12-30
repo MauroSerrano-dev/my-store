@@ -528,7 +528,7 @@ export default withRouter(props => {
                         </Modal>
                     }
                     <div className={styles.carousel}>
-                        <h2 className={styles.similarTitle}>Products you might like</h2>
+                        <h2 className={styles.similarTitle}>{tProduct('similar-products-title')}</h2>
                         <CarouselProducts
                             similar={product.id}
                         />
