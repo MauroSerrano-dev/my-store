@@ -119,24 +119,22 @@ async function emailIsProhibited(email) {
     }
 }
 
-async function handleStripeWebhookFail(orderId) {
+async function handleStripeWebhookFail(callId) {
     try {
         const ordersInfoRef = doc(db, process.env.COLL_APP_SETTINGS, 'orders_info');
         const ordersInfoDoc = await getDoc(ordersInfoRef);
 
-        // Se o documento 'orders_info' já existe, atualize-o
         if (ordersInfoDoc.exists()) {
             await updateDoc(ordersInfoRef, {
                 orders_failed: arrayUnion({
-                    order_id: orderId,
+                    stripe_call_id: callId,
                     created_at: Timestamp.now()
                 })
             });
         } else {
-            // Se o documento não existe, crie-o com o array 'orders_failed'
             await setDoc(ordersInfoRef, {
                 orders_failed: [{
-                    order_id: orderId,
+                    stripe_call_id: callId,
                     created_at: Timestamp.now()
                 }]
             });
