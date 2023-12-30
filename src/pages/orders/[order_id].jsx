@@ -26,6 +26,7 @@ export default function Orders() {
     const tOrders = useTranslation('orders').t
     const tCountries = useTranslation('countries').t
     const tColors = useTranslation('colors').t
+    const tCommon = useTranslation('common').t
 
     const [order, setOrder] = useState()
 
@@ -253,10 +254,10 @@ export default function Orders() {
                                                         <ProductTag product={prod} />
                                                         {prod.status === 'canceled' && <span style={{ color: 'var(--color-error)', fontWeight: 600 }}>{tOrders('canceled')}</span>}
                                                         {prod.status === 'refunded' && <span style={{ color: 'var(--color-warning)', fontWeight: 600 }}>{tOrders('refunded')}</span>}
-                                                        <p className={styles.productItem}>Color: <span style={{ fontWeight: 600 }}>{tColors(COLORS_POOL[prod.variant.color_id].id_string)}</span></p>
-                                                        <p className={styles.productItem}>Size: <span style={{ fontWeight: 600 }}>{SIZES_POOL.find(sz => sz.id === prod.variant.size_id).title}</span></p>
-                                                        <p className={styles.productItem}>Quantity: <span style={{ fontWeight: 600 }}>{prod.quantity}</span></p>
-                                                        <p style={{ fontSize: 12, textAlign: 'start' }}>Last Update: {convertTimestampToFormatDateNoYear(prod.updated_at, i18n.language)}</p>
+                                                        <p className={styles.productItem}>{tCommon('Color')}: <span style={{ fontWeight: 600 }}>{tColors(COLORS_POOL[prod.variant.color_id].id_string)}</span></p>
+                                                        <p className={styles.productItem}>{tCommon('Size')}: <span style={{ fontWeight: 600 }}>{SIZES_POOL.find(sz => sz.id === prod.variant.size_id).title}</span></p>
+                                                        <p className={styles.productItem}>{tCommon('Quantity')}: <span style={{ fontWeight: 600 }}>{prod.quantity}</span></p>
+                                                        <p style={{ fontSize: 12, textAlign: 'start' }}>{tCommon('Last Update')}: {convertTimestampToFormatDateNoYear(prod.updated_at, i18n.language)}</p>
                                                     </div>
                                                 </div>
                                             </div>

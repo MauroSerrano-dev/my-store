@@ -22,5 +22,6 @@
     "e-mail": "Correo electrónico",
     "checkout": "Pagar",
     "OUT_OF_STOCK": "AGOTADO",
-    "UNAVAILABLE": "NO DISPONIBLE"
+    "UNAVAILABLE": "NO DISPONIBLE",
+    "Last Update": "Última Actualización"
 }
