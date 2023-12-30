@@ -85,6 +85,12 @@ export default withRouter(props => {
     }, [router])
 
     useEffect(() => {
+        return () => {
+            console.log('run 1')
+        }
+    }, [])
+
+    useEffect(() => {
         if (userLocation)
             getShippingValue()
     }, [userLocation])

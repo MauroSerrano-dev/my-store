@@ -18,6 +18,7 @@ export default function ImagesSlider(props) {
     const {
         windowWidth,
         supportsHoverAndPointer,
+        router,
     } = useAppContext()
 
     const fullScreen = width === windowWidth
@@ -48,12 +49,20 @@ export default function ImagesSlider(props) {
     const OPTIONS_GAP = width * 0.025
 
     useEffect(() => {
-        setCurrentImgIndex(0)
-        setCarouselAnchor(0)
-        setOptionAnchor(0)
-        setImagesLoad([])
-        setOptionsImagesLoad([])
-    }, [images])
+        function handleRouteChangeStart() {
+            setCurrentImgIndex(0)
+            setCarouselAnchor(0)
+            setOptionAnchor(0)
+            setImagesLoad([])
+            setOptionsImagesLoad([])
+        }
+
+        router.events.on("routeChangeStart", handleRouteChangeStart)
+
+        return () => {
+            router.events.off("routeChangeStart", handleRouteChangeStart)
+        }
+    }, [])
 
     function handleDragStart() {
         setIsDragging(true)
