@@ -26,7 +26,6 @@ export default async function handler(req, res) {
     }
 
     try {
-        dasmdkasmkdm
         const { type, data } = event
         const {
             customer_details,
