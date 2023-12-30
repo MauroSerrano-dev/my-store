@@ -41,6 +41,8 @@ async function getAllProducts(props) {
 
         let q = query(productsCollection)
 
+        q = query(q, where("disabled", "==", false))
+
         const orders = new Map([
             ['popularity', { value: 'popularity', direction: 'desc' }],
             ['newest', { value: 'create_at', direction: 'desc' }],
@@ -789,8 +791,6 @@ async function removeExpiredPromotions() {
 }
 
 async function getSimilarProducts(product_id, limit = 15) {
-    const productsCollection = collection(db, process.env.COLL_PRODUCTS);
-
     // Obtenha o produto pelo ID
     const productRef = doc(db, process.env.COLL_PRODUCTS, product_id);
     const productSnapshot = await getDoc(productRef);
@@ -801,9 +801,7 @@ async function getSimilarProducts(product_id, limit = 15) {
     const product = productSnapshot.data();
 
     // Obtenha todos os produtos
-    const allProductsQuery = query(productsCollection);
-    const allProductsSnapshot = await getDocs(allProductsQuery);
-    let allProducts = allProductsSnapshot.docs.map(doc => doc.data());
+    let allProducts = await getAllActivesProducts();
 
     // Filtrar produtos similares com base em temas ou tags
     let similarProducts = allProducts.filter(p => p.id !== product.id &&
@@ -832,6 +830,26 @@ async function getSimilarProducts(product_id, limit = 15) {
     return similarProducts.slice(0, limit);
 }
 
+async function getAllActivesProducts() {
+    try {
+        const productsCollection = collection(db, process.env.COLL_PRODUCTS);
+
+        // Filtrar produtos com o campo 'disabled' igual a false
+        let q = query(productsCollection, where("disabled", "==", false));
+
+        const querySnapshot = await getDocs(q);
+
+        const activeProducts = querySnapshot.docs.map(doc => doc.data());
+
+        // Retorna um array vazio se não houver produtos ativos
+        return activeProducts.length > 0 ? activeProducts : [];
+    } catch (error) {
+        console.error('Error getting active products:', error);
+        // Lança um erro em caso de falha na obtenção dos produtos
+        throw new Error('Error retrieving active products');
+    }
+}
+
 export {
     createProduct,
     getProductsByQueries,
@@ -849,5 +867,6 @@ export {
     getDisabledProducts,
     createPromotionForProducts,
     removeExpiredPromotions,
-    getSimilarProducts
+    getSimilarProducts,
+    getAllActivesProducts,
 }
