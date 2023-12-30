@@ -26,7 +26,7 @@ export default async function handler(req, res) {
     }
 
     try {
-        fasdadas
+        dasmdkasmkdm
         const { type, data } = event
         const {
             customer_details,
@@ -164,8 +164,13 @@ export default async function handler(req, res) {
             res.status(200).json({ message: `Order stripe id ${payment_intent} Refunded. Charge Refunded!` })
         }
     } catch (error) {
-        await handleStripeWebhookFail(event?.data?.id)
-        res.status(500).json({ message: 'Error on stripe webhook', error: error })
+        try {
+            await handleStripeWebhookFail(event?.id)
+            res.status(500).json({ message: 'Error on stripe webhook', error: error })
+        }
+        catch {
+            res.status(500).json({ message: 'Error on handleStripeWebhookFail', error: error })
+        }
     }
 }
 
