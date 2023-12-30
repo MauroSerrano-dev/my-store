@@ -1,5 +1,5 @@
 import styles from '@/styles/components/ImagesSlider.module.css'
-import { useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { motion } from 'framer-motion';
 import { useAppContext } from './contexts/AppContext';
 import Image from 'next/image';
@@ -46,6 +46,14 @@ export default function ImagesSlider(props) {
     const OPTIONS_HEIGHT = height * 0.25
     const OPTIONS_PADDING_TOP = width * 0.025
     const OPTIONS_GAP = width * 0.025
+
+    useEffect(() => {
+        setCurrentImgIndex(0)
+        setCarouselAnchor(0)
+        setOptionAnchor(0)
+        setImagesLoad([])
+        setOptionsImagesLoad([])
+    }, [images])
 
     function handleDragStart() {
         setIsDragging(true)
