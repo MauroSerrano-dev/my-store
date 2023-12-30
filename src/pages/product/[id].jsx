@@ -85,12 +85,6 @@ export default withRouter(props => {
     }, [router])
 
     useEffect(() => {
-        return () => {
-            console.log('run 1')
-        }
-    }, [])
-
-    useEffect(() => {
         if (userLocation)
             getShippingValue()
     }, [userLocation])
@@ -287,6 +281,7 @@ export default withRouter(props => {
                                     />
                                     <ImagesSlider
                                         images={product.images}
+                                        key={product.id}
                                         colors={product.colors_ids.map(color_id => COLORS_POOL[color_id])}
                                         currentColor={currentColor}
                                         width={windowWidth > 1074 ? 450 : windowWidth > 549 ? 450 : windowWidth}
@@ -536,6 +531,7 @@ export default withRouter(props => {
                     <div className={styles.carousel}>
                         <h2 className={styles.similarTitle}>{tProduct('similar-products-title')}</h2>
                         <CarouselProducts
+                            key={product.id}
                             similar={product.id}
                         />
                     </div>
