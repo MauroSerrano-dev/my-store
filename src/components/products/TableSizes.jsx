@@ -92,7 +92,10 @@ export default function TableSizes(props) {
                                 className={styles.tableCell}
                                 component="th"
                                 scope="row"
-                                style={{ fontWeight: 600 }}
+                                style={{
+                                    fontWeight: 600,
+                                    width: `${100 - (15 * PRODUCT_TYPE.metrics[key].length)}%`,
+                                }}
                             >
                                 {`${tTableSizes(key)}, ${UNITS[unit].symbol}`}
                             </TableCell>
@@ -101,6 +104,9 @@ export default function TableSizes(props) {
                                     key={j}
                                     className={styles.tableCell}
                                     align="right"
+                                    style={{
+                                        width: '15%'
+                                    }}
                                 >
                                     {(value * UNITS[unit].value).toFixed(2)}
                                 </TableCell>
