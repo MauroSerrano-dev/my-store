@@ -22,5 +22,6 @@
     "e-mail": "E-mail",
     "checkout": "Checkout",
     "OUT_OF_STOCK": "OUT OF STOCK",
-    "UNAVAILABLE": "UNAVAILABLE"
+    "UNAVAILABLE": "UNAVAILABLE",
+    "Last Update": "Last Update"
 }
