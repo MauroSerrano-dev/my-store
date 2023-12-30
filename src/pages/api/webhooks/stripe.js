@@ -24,10 +24,9 @@ export default async function handler(req, res) {
     catch (error) {
         return res.status(401).json({ error: 'Invalid authentication.' })
     }
-    const orderId = uuidv4()
 
     try {
-        fsafasdasd
+        fasdadas
         const { type, data } = event
         const {
             customer_details,
@@ -58,6 +57,7 @@ export default async function handler(req, res) {
 
             const line_items = Object.keys(newMetadata).map(key => JSON.parse(newMetadata[key]))
 
+            const orderId = uuidv4()
 
             const options = {
                 headers: {
@@ -164,7 +164,7 @@ export default async function handler(req, res) {
             res.status(200).json({ message: `Order stripe id ${payment_intent} Refunded. Charge Refunded!` })
         }
     } catch (error) {
-        await handleStripeWebhookFail(orderId)
+        await handleStripeWebhookFail(event?.data?.id)
         res.status(500).json({ message: 'Error on stripe webhook', error: error })
     }
 }
