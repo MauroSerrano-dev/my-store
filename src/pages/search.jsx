@@ -6,7 +6,7 @@ import Link from 'next/link'
 import Selector from '@/components/material-ui/Selector'
 import { Checkbox, FormControlLabel, Pagination, PaginationItem } from '@mui/material'
 import Footer from '@/components/Footer'
-import { SEARCH_PRODUCT_COLORS, SEARCH_ART_COLORS, SEARCH_FILTERS, COMMON_TRANSLATES, LIMITS } from '@/consts'
+import { SEARCH_PRODUCT_COLORS, SEARCH_ART_COLORS, SEARCH_FILTERS, COMMON_TRANSLATES, LIMITS, PRODUCTS_TYPES } from '@/consts'
 import ColorButton from '@/components/ColorButton'
 import Tag from '@/components/material-ui/Tag'
 import CircleIcon from '@mui/icons-material/Circle';
@@ -21,7 +21,7 @@ import { showToast } from '@/utils/toasts'
 const { v4: uuidv4 } = require('uuid')
 
 const QUERIES = {
-    h: { title: 'categories', show: true, showTitle: true, isFilter: true },
+    h: { title: 'categories', show: true, showTitle: false, isFilter: true },
     min: { title: 'min', show: true, showTitle: true, isFilter: true },
     max: { title: 'max', show: true, showTitle: true, isFilter: true },
     order: { title: 'order by', show: false, showTitle: false, isFilter: false },
@@ -82,6 +82,7 @@ export default withRouter(() => {
 
     const themes = h?.split(' ') || []
     const tags = t?.split(' ') || []
+    const productsOptions = v?.split(' ') || []
 
     useEffect(() => {
         if (router.isReady)
@@ -158,21 +159,6 @@ export default withRouter(() => {
         }, undefined, { scroll: false })
     }
 
-    function handleThemesSelect(checked, value) {
-        if (checked) {
-            router.push({
-                pathname: router.pathname,
-                query: { ...router.query, 'h': value }
-            }, undefined, { scroll: false })
-        }
-        else {
-            router.push({
-                pathname: router.pathname,
-                query: getQueries({}, 'h')
-            }, undefined, { scroll: false })
-        }
-    }
-
     function handleMultiSelection(queryKey, values, checked, value) {
         const query = values?.split(' ') || []
 
@@ -244,7 +230,6 @@ export default withRouter(() => {
             }
             return
         }
-        console.log(typeof value, value)
         if (field === 'min')
             setMinInput(value)
         if (field === 'max')
@@ -270,7 +255,7 @@ export default withRouter(() => {
                                     control={
                                         <Checkbox
                                             checked={themes.includes(theme)}
-                                            onChange={e => handleThemesSelect(e.target.checked, theme)}
+                                            onChange={e => handleMultiSelection('h', h, e.target.checked, theme)}
                                             sx={{
                                                 color: '#ffffff'
                                             }}
@@ -278,6 +263,31 @@ export default withRouter(() => {
                                     }
                                 />
                             )}
+                        </div>
+                        <div className={styles.filterBlock}>
+                            <h3>{tSearch(SEARCH_FILTERS.categories.id)}</h3>
+                            {PRODUCTS_TYPES
+                                .filter((type, index, self) => self.findIndex(t => t.family_id === type.family_id) === index)
+                                .map((product, i) =>
+                                    <FormControlLabel
+                                        name={product.family_id}
+                                        label={tCategories(product.family_id)}
+                                        key={i}
+                                        sx={{
+                                            marginTop: -0.6,
+                                            marginBottom: -0.6,
+                                        }}
+                                        control={
+                                            <Checkbox
+                                                checked={productsOptions.includes(product.family_id)}
+                                                onChange={e => handleMultiSelection('v', v, e.target.checked, product.family_id)}
+                                                sx={{
+                                                    color: '#ffffff'
+                                                }}
+                                            />
+                                        }
+                                    />
+                                )}
                         </div>
                         <div className={styles.filterBlock}>
                             <h3>{tSearch(SEARCH_FILTERS['most-searched'].id)}</h3>
@@ -292,7 +302,7 @@ export default withRouter(() => {
                                     }}
                                     control={
                                         <Checkbox
-                                            checked={(t?.split(' ') || []).includes(tag)}
+                                            checked={tags.includes(tag)}
                                             onChange={e => handleMultiSelection('t', t, e.target.checked, tag)}
                                             sx={{
                                                 color: '#ffffff'
@@ -301,6 +311,50 @@ export default withRouter(() => {
                                     }
                                 />
                             )}
+                        </div>
+                        <div className={styles.filterBlock}>
+                            <h3>{tSearch('product-color')}</h3>
+                            <div className={styles.colorsContainer}>
+                                {SEARCH_PRODUCT_COLORS.map((color, i) =>
+                                    <Link
+                                        scroll={false}
+                                        href={{
+                                            pathname: router.pathname,
+                                            query: color.color_display.id_string === cl
+                                                ? getQueries({}, ['cl'])
+                                                : getQueries({ cl: color.color_display.id_string })
+                                        }}
+                                        key={i}
+                                    >
+                                        <ColorButton
+                                            selected={cl === color.color_display.id_string}
+                                            color={{ id_string: color.color_display.id_string, colors: [color.color_display.color] }}
+                                        />
+                                    </Link>
+                                )}
+                            </div>
+                        </div>
+                        <div className={styles.filterBlock}>
+                            <h3>{tSearch('art-color')}</h3>
+                            <div className={styles.colorsContainer}>
+                                {SEARCH_ART_COLORS.map((color, i) =>
+                                    <Link
+                                        scroll={false}
+                                        href={{
+                                            pathname: router.pathname,
+                                            query: color.color_display.id_string === ac
+                                                ? getQueries({}, ['ac'])
+                                                : getQueries({ ac: color.color_display.id_string })
+                                        }}
+                                        key={i}
+                                    >
+                                        <ColorButton
+                                            selected={ac === color.color_display.id_string}
+                                            color={{ id_string: color.color_display.id_string, colors: [color.color_display.color] }}
+                                        />
+                                    </Link>
+                                )}
+                            </div>
                         </div>
                         <div className={styles.filterBlock}>
                             <h3>{tSearch('price')}</h3>
@@ -405,50 +459,6 @@ export default withRouter(() => {
                                 </Link>
                             </div>
                         </div>
-                        <div className={styles.filterBlock}>
-                            <h3>{tSearch('product-color')}</h3>
-                            <div className={styles.colorsContainer}>
-                                {SEARCH_PRODUCT_COLORS.map((color, i) =>
-                                    <Link
-                                        scroll={false}
-                                        href={{
-                                            pathname: router.pathname,
-                                            query: color.color_display.id_string === cl
-                                                ? getQueries({}, ['cl'])
-                                                : getQueries({ cl: color.color_display.id_string })
-                                        }}
-                                        key={i}
-                                    >
-                                        <ColorButton
-                                            selected={cl === color.color_display.id_string}
-                                            color={{ id_string: color.color_display.id_string, colors: [color.color_display.color] }}
-                                        />
-                                    </Link>
-                                )}
-                            </div>
-                        </div>
-                        <div className={styles.filterBlock}>
-                            <h3>{tSearch('art-color')}</h3>
-                            <div className={styles.colorsContainer}>
-                                {SEARCH_ART_COLORS.map((color, i) =>
-                                    <Link
-                                        scroll={false}
-                                        href={{
-                                            pathname: router.pathname,
-                                            query: color.color_display.id_string === ac
-                                                ? getQueries({}, ['ac'])
-                                                : getQueries({ ac: color.color_display.id_string })
-                                        }}
-                                        key={i}
-                                    >
-                                        <ColorButton
-                                            selected={ac === color.color_display.id_string}
-                                            color={{ id_string: color.color_display.id_string, colors: [color.color_display.color] }}
-                                        />
-                                    </Link>
-                                )}
-                            </div>
-                        </div>
                     </div>
                 }
                 <div
@@ -460,7 +470,12 @@ export default withRouter(() => {
                     <div
                         className={styles.productsHead}
                     >
-                        <div className='flex row center' style={{ gap: '1rem' }}>
+                        <div
+                            className={styles.productsHeadLeft}
+                            style={{
+                                maxWidth: 'calc(100% - 190px)'
+                            }}
+                        >
                             {mobile
                                 ? <button
                                     className='flex center buttonInvisible'
@@ -475,11 +490,12 @@ export default withRouter(() => {
                                         fontSize: 20,
                                     }}
                                 >
-                                    {tSearch('filters', { count: 0 })} <KeyboardArrowDownRoundedIcon style={{ transform: filtersOpen ? 'rotateZ(-180deg)' : 'none', transition: 'ease-in-out 200ms transform' }} />
+                                    {tSearch('filters', { count: 2 })} <KeyboardArrowDownRoundedIcon style={{ transform: filtersOpen ? 'rotateZ(-180deg)' : 'none', transition: 'ease-in-out 200ms transform' }} />
                                 </button>
                                 : <h1
                                     style={{
-                                        fontSize: mobile ? 20 : 27
+                                        fontSize: mobile ? 20 : 27,
+                                        whiteSpace: 'nowrap'
                                     }}
                                 >
                                     {
@@ -490,18 +506,18 @@ export default withRouter(() => {
                                 </h1>
                             }
                             {!mobile &&
-                                < div className='flex row center' style={{ gap: '0.5rem' }}>
+                                < div className={styles.tagsContainer}>
                                     {Object.keys(router.query).filter(key => QUERIES[key]?.show).map(key => router.query[key].split(' ').map((value, i) =>
                                         <Tag
                                             key={i}
                                             label={
                                                 QUERIES[key].showTitle
-                                                    ? <span>{tSearch(QUERIES[key].title)}: {tCategories(value).toLocaleLowerCase()}</span>
+                                                    ? <span>{tSearch(QUERIES[key].title)}: {tCategories(value).toLowerCase()}</span>
                                                     : key === 'cl'
                                                         ? <span className='flex row center' style={{ gap: '0.2rem' }}>product: {value} <CircleIcon style={{ color: SEARCH_PRODUCT_COLORS.find(cl => cl.color_display.id_string === value).color_display.color }} /></span>
                                                         : key === 'ac'
                                                             ? <span className='flex row center' style={{ gap: '0.2rem' }}>art: {value} <CircleIcon style={{ color: SEARCH_ART_COLORS.find(cl => cl.color_display.id_string === value).color_display.color }} /></span>
-                                                            : value
+                                                            : tCategories(value).toLowerCase()
                                             }
                                             onDelete={() => handleDeleteTag(key, value)}
                                         />
@@ -551,7 +567,7 @@ export default withRouter(() => {
                                 />
                             )
                             : products.length === 0
-                                ? <div className='flex column center fillWidth'>
+                                ? <div className={styles.noProductsContainer}>
                                     <div
                                         ref={animationContainer}
                                         className={styles.animationContainer}
@@ -610,7 +626,6 @@ export default withRouter(() => {
                 onClose={handleCloseFilter}
                 getQueries={getQueries}
                 handleMultiSelection={handleMultiSelection}
-                handleThemesSelect={handleThemesSelect}
             />
             {productWidth &&
                 <Footer />

@@ -320,8 +320,12 @@ async function getProductsByQueries(props) {
 
         // Filtre by themes (se presente)
         if (h) {
-            const themes = h.split(' ')
-            products = products.filter(prod => prod.themes.some(theme => themes.includes(theme)))
+            products = products.filter(prod => prod.themes.some(theme => h.split(' ').includes(theme)))
+        }
+
+        // Filtre by tag (se presente)
+        if (t) {
+            products = products.filter(prod => prod.tags.some(tag => t.split(' ').includes(tag)))
         }
 
         // Filtre by product color (se presente)
@@ -365,11 +369,6 @@ async function getProductsByQueries(props) {
                 || prod.themes.some(theme => tags.includes(theme))
                 || tags.some(tag => prod.title.toLowerCase().includes(tag))
             )
-        }
-
-        // Filtre by tag (se presente)
-        if (t) {
-            products = products.filter(prod => prod.tags.some(tag => t.includes(tag)))
         }
 
         if (products.length > 0) {
