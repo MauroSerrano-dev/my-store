@@ -1,7 +1,7 @@
 import styles from '@/styles/components/MenuFilter.module.css'
 import { motion } from "framer-motion";
 import Link from 'next/link';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { SlClose } from "react-icons/sl";
 import { PRODUCTS_TYPES, SEARCH_PRODUCT_COLORS, SEARCH_ART_COLORS, SEARCH_FILTERS } from '@/consts';
 import ColorButton from './ColorButton';
@@ -15,7 +15,6 @@ export default function MenuFilter(props) {
         onClose,
         getQueries,
         handleMultiSelection,
-        handleThemesSelect,
     } = props
 
     const {
@@ -36,8 +35,6 @@ export default function MenuFilter(props) {
         p = '1',
         limit = '60',
     } = router.query
-
-    const [searchFocus, setSearchFocus] = useState(false)
 
     const tSearch = useTranslation('search').t
     const tCategories = useTranslation('categories').t
@@ -87,46 +84,50 @@ export default function MenuFilter(props) {
                         height: '65%',
                     },
                     visible: {
-                        height: searchFocus ? '100%' : '65%',
-                        bottom: searchFocus ? '0%' : '-35%',
+                        height: '65%',
+                        bottom: '-35%',
                     }
                 }}
             >
                 <div className={styles.inner}>
-                    <div
-                        className={styles.topBody}
+                    <button
+                        className='buttonInvisible'
+                        style={{
+                            position: 'absolute',
+                            top: 8,
+                            right: 10,
+                        }}
                     >
-                        <div
+                        <SlClose
+                            onClick={onClose}
+                            color='#ffffff'
+                            className='noSelection'
                             style={{
-                                width: '100%',
-                                paddingRight: 20,
+                                fontSize: '21px',
+                                cursor: 'pointer',
+                                color: 'var(--global-black)',
                             }}
-                        >
-                            <input
-                                onFocus={() => setSearchFocus(true)}
-                                onBlur={() => setSearchFocus(false)}
-                                style={{
-                                    width: '100%'
-                                }}
-                            />
+                        />
+                    </button>
+                    <div className={styles.section}>
+                        <h3>{tSearch(SEARCH_FILTERS.categories.id)}</h3>
+                        <div className={styles.options}>
+                            {SEARCH_FILTERS.categories.options.map((cat, i) =>
+                                <button
+                                    className={styles.option}
+                                    style={{
+                                        backgroundColor: h?.split(' ').includes(cat) ? 'var(--primary)' : 'var(--filter-tag-color)'
+                                    }}
+                                    onClick={() => handleMultiSelection('h', h, !h?.split(' ').includes(cat), cat)}
+                                    key={i}
+                                >
+                                    {tCategories(cat)}
+                                </button>
+                            )}
                         </div>
-                        <button
-                            className='flex center buttonInvisible'
-                        >
-                            <SlClose
-                                onClick={onClose}
-                                color='#ffffff'
-                                className='noSelection'
-                                style={{
-                                    fontSize: '21px',
-                                    cursor: 'pointer',
-                                    color: 'var(--global-black)',
-                                }}
-                            />
-                        </button>
                     </div>
                     <div className={styles.section}>
-                        <h3>Products</h3>
+                        <h3>{tSearch('products')}</h3>
                         <div className={styles.options}>
                             {PRODUCTS_TYPES
                                 .filter((type, index, self) => self.findIndex(t => t.family_id === type.family_id) === index)
@@ -146,24 +147,7 @@ export default function MenuFilter(props) {
                         </div>
                     </div>
                     <div className={styles.section}>
-                        <h3>{tSearch(SEARCH_FILTERS.categories.id)}</h3>
-                        <div className={styles.options}>
-                            {SEARCH_FILTERS.categories.options.map((cat, i) =>
-                                <button
-                                    className={styles.option}
-                                    style={{
-                                        backgroundColor: h?.includes(cat) ? 'var(--primary)' : 'var(--filter-tag-color)'
-                                    }}
-                                    onClick={() => handleThemesSelect(!h?.includes(cat), cat)}
-                                    key={i}
-                                >
-                                    {tCategories(cat)}
-                                </button>
-                            )}
-                        </div>
-                    </div>
-                    <div className={styles.section}>
-                        <h3>{SEARCH_FILTERS['most-searched'].title}</h3>
+                        <h3>{tSearch(SEARCH_FILTERS['most-searched'].id)}</h3>
                         <div className={styles.options}>
                             {SEARCH_FILTERS['most-searched'].options.map((cat, i) =>
                                 <button
