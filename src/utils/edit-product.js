@@ -12,7 +12,7 @@ export function isNewProductValid(product, images) {
     })
     if (hasEmptyTextField)
         return false
-    
+
     if (Object.values(product.printify_ids).some(id => id === '')) {
         showToast({ msg: 'Some printify id missing.', type: 'error' })
         return false
@@ -29,7 +29,7 @@ export function isNewProductValid(product, images) {
         showToast({ msg: 'Choose at least one size.', type: 'error' })
         return false
     }
-    if (Object.values(images).some(imgs => imgs.some(img => img.src === ''))) {
+    if (Object.values(images).some(imgs => imgs.some(img => typeof img.src === 'string' ? img.src === '' : (img.src.front === '' || img.src.back === '')))) {
         showToast({ msg: 'Image src missing.', type: 'error' })
         return false
     }

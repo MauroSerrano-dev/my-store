@@ -6,7 +6,7 @@ import { useEffect, useState } from 'react'
 import { COLLECTIONS, TAGS_POOL, PRODUCTS_TYPES, COLORS_POOL, SIZES_POOL, PROVIDERS_POOL, THEMES_POOL, SEARCH_ART_COLORS, COMMON_TRANSLATES } from '@/consts'
 import ColorSelector from '@/components/ColorSelector'
 import SizesSelector from '@/components/SizesSelector'
-import { Checkbox, FormControlLabel, Slider, Switch } from '@mui/material'
+import { ButtonGroup, Checkbox, FormControlLabel, Switch } from '@mui/material'
 import NoFound404 from '@/components/NoFound404'
 import ClearRoundedIcon from '@mui/icons-material/ClearRounded'
 import Chain from '@/components/svgs/Chain'
@@ -27,6 +27,9 @@ import KeyboardArrowLeftOutlinedIcon from '@mui/icons-material/KeyboardArrowLeft
 import Link from 'next/link'
 import PrintifyIdPicker from '@/components/PrintifyIdPicker'
 import ProductPriceInput from '@/components/ProductPriceInput'
+import { LoadingButton } from '@mui/lab'
+import Modal from '@/components/Modal'
+import { SlClose } from "react-icons/sl";
 
 export default withRouter(() => {
     const {
@@ -34,6 +37,7 @@ export default withRouter(() => {
         router,
         session,
         setAdminMenuOpen,
+        windowWidth,
     } = useAppContext()
 
     const [product, setProduct] = useState()
@@ -46,6 +50,7 @@ export default withRouter(() => {
     const [artColorChained, setArtColorChained] = useState()
     const [artIdChained, setArtIdChained] = useState()
     const [fieldChanged, setFieldChanged] = useState({})
+    const [viewStatus, setViewStatus] = useState('front')
 
     const tCommon = useTranslation('common').t
     const tToasts = useTranslation('toasts').t
@@ -200,7 +205,17 @@ export default withRouter(() => {
 
     function handleAddNewImage() {
         const colorId = product.colors_ids[colorIndex]
-        setImages(prev => ({ ...prev, [colorId]: prev[colorId].concat({ src: '', variants_id: product.variants.filter(vari => vari.color_id === colorId).map(vari => vari.id), color_id: colorId, hover: false, showcase: false }) }))
+        setImages(prev => ({
+            ...prev,
+            [colorId]: prev[colorId].concat({
+                src: typeof Object.values(product.printify_ids)[0] === 'string'
+                    ? ''
+                    : { front: '', back: '' },
+                color_id: colorId,
+                hover: false,
+                showcase: false
+            })
+        }))
     }
 
     function handleChangePrice(value, sizeId) {
@@ -390,9 +405,15 @@ export default withRouter(() => {
         })
     }
 
-    function updateImageField(fieldname, newValue, index) {
+    function updateImageSrc(newValue, index) {
         const colorId = product.colors_ids[colorIndex]
-        setImages(prev => ({ ...prev, [colorId]: prev[colorId].map((img, i) => index === i ? { ...img, [fieldname]: newValue } : img) }))
+        setImages(prev => ({
+            ...prev,
+            [colorId]: prev[colorId].map((img, i) => index === i
+                ? { ...img, src: typeof img.src === 'string' ? newValue : { ...img.src, [viewStatus]: newValue } }
+                : img
+            )
+        }))
     }
 
     function handleDeleteImageField(index) {
@@ -401,8 +422,13 @@ export default withRouter(() => {
     }
 
 
-    function handlePrintifyId(providerId, newValue) {
-        setProduct(prev => ({ ...prev, printify_ids: { ...prev.printify_ids, [providerId]: newValue } }))
+    function handlePrintifyId(providerId, newValue, artPosition) {
+        setProduct(prev => ({
+            ...prev,
+            printify_ids: typeof Object.values(prev.printify_ids)[0] === 'string'
+                ? { ...prev.printify_ids, [providerId]: newValue }
+                : { ...prev.printify_ids, [providerId]: { ...prev.printify_ids[providerId], [artPosition]: newValue } }
+        }))
     }
 
     function handleChangeSizes(value, i, size) {
@@ -479,6 +505,40 @@ export default withRouter(() => {
         ))
     }
 
+    function handleBackVariant(event) {
+        if (event.target.checked) {
+            if (images)
+                setImages(prev => (
+                    Object.keys(prev).reduce((acc, key) => ({
+                        ...acc,
+                        [key]: [
+                            ...prev[key].map(img => ({ ...img, src: { front: img.src, back: '' } })),
+                        ]
+                    }), {})
+                ))
+            setProduct(prev => ({
+                ...prev,
+                printify_ids: Object.keys(prev.printify_ids).reduce((acc, key) => ({ ...acc, [key]: { front: prev.printify_ids[key], back: '' } }), {})
+            }))
+        }
+        else {
+            if (images)
+                setImages(prev =>
+                    Object.keys(prev).reduce((acc, key) => ({
+                        ...acc,
+                        [key]: prev[key].map(img => ({ ...img, src: img.src.front }))
+                    }), {})
+                )
+            setProduct(prev => ({
+                ...prev,
+                printify_ids: Object.keys(prev.printify_ids).reduce((acc, key) => ({
+                    ...acc,
+                    [key]: prev.printify_ids[key].front
+                }), {})
+            }))
+        }
+    }
+
     return (
         session === undefined
             ? <div></div>
@@ -551,13 +611,19 @@ export default withRouter(() => {
                                                 width: '100%'
                                             }}
                                         />
+                                        <TagsSelector
+                                            options={TAGS_POOL}
+                                            label='Tags'
+                                            value={product.tags}
+                                            onChange={(event, value) => updateProductField('tags', value)}
+                                        />
                                     </div>
                                     <div className={styles.sectionRight}>
                                         {TYPE.providers.map(prov_id => PROVIDERS_POOL[prov_id]).map((provider, i) =>
                                             <PrintifyIdPicker
-                                                onChoose={productPrintifyId => handlePrintifyId(provider.id, productPrintifyId)}
+                                                onChoose={productPrintifyId => handlePrintifyId(provider.id, productPrintifyId, 'front')}
                                                 key={i}
-                                                value={product.printify_ids[provider.id]}
+                                                value={typeof product.printify_ids[provider.id] === 'string' ? product.printify_ids[provider.id] : product.printify_ids[provider.id].front}
                                                 colorText='var(--color-success)'
                                                 provider={provider}
                                                 blueprint_ids={TYPE.blueprint_ids}
@@ -566,12 +632,31 @@ export default withRouter(() => {
                                                 }}
                                             />
                                         )}
-                                        <TagsSelector
-                                            options={TAGS_POOL}
-                                            label='Tags'
-                                            value={product.tags}
-                                            onChange={(event, value) => updateProductField('tags', value)}
-                                        />
+                                        {TYPE.allow_back_variant &&
+                                            <FormControlLabel
+                                                control={
+                                                    <Switch
+                                                        checked={typeof Object.values(product.printify_ids)[0] !== 'string'}
+                                                        onChange={handleBackVariant}
+                                                        color='success'
+                                                    />
+                                                }
+                                                label="Back Variant"
+                                            />
+                                        }
+                                        {typeof Object.values(product.printify_ids)[0] !== 'string' && TYPE.allow_back_variant && TYPE.providers.map(prov_id => PROVIDERS_POOL[prov_id]).map((provider, i) =>
+                                            <PrintifyIdPicker
+                                                onChoose={productPrintifyId => handlePrintifyId(provider.id, productPrintifyId, 'back')}
+                                                key={i}
+                                                value={typeof product.printify_ids[provider.id] === 'string' ? product.printify_ids[provider.id] : product.printify_ids[provider.id].back}
+                                                colorText='var(--color-success)'
+                                                provider={provider}
+                                                blueprint_ids={TYPE.blueprint_ids}
+                                                style={{
+                                                    width: '100%'
+                                                }}
+                                            />
+                                        )}
                                     </div>
                                 </section>
                                 <section
@@ -641,6 +726,32 @@ export default withRouter(() => {
                                                     </div>
                                                     <div>
                                                         <h3>Images</h3>
+                                                        {typeof Object.values(product.printify_ids)[0] !== 'string' &&
+                                                            <ButtonGroup
+                                                                sx={{
+                                                                    width: '100%'
+                                                                }}
+                                                            >
+                                                                <MyButton
+                                                                    variant={viewStatus === 'front' ? 'contained' : 'outlined'}
+                                                                    onClick={() => setViewStatus('front')}
+                                                                    style={{
+                                                                        width: '50%'
+                                                                    }}
+                                                                >
+                                                                    Front
+                                                                </MyButton>
+                                                                <MyButton
+                                                                    variant={viewStatus === 'back' ? 'contained' : 'outlined'}
+                                                                    onClick={() => setViewStatus('back')}
+                                                                    style={{
+                                                                        width: '50%'
+                                                                    }}
+                                                                >
+                                                                    Back
+                                                                </MyButton>
+                                                            </ButtonGroup>
+                                                        }
                                                         {images[product.colors_ids[colorIndex]].length > 0 &&
                                                             <div className='flex row justify-end' style={{ fontSize: '11px', gap: '1rem', width: '100%', paddingRight: '11%' }}>
                                                                 <p>showcase</p>
@@ -655,11 +766,11 @@ export default withRouter(() => {
                                                                 >
                                                                     <TextInput
                                                                         label={`Image ${i + 1}`}
-                                                                        onChange={event => updateImageField('src', event.target.value, i)}
+                                                                        onChange={event => updateImageSrc(event.target.value, i)}
                                                                         style={{
                                                                             width: '70%'
                                                                         }}
-                                                                        value={img.src}
+                                                                        value={typeof img.src === 'string' ? img.src : img.src[viewStatus]}
                                                                     />
                                                                     <Checkbox
                                                                         checked={i === product.image_showcase_index}
@@ -725,7 +836,7 @@ export default withRouter(() => {
                                             </h3>
                                             {images?.[product?.colors_ids?.[colorIndex]] &&
                                                 <ImagesSliderEditable
-                                                    images={Object.keys(images).reduce((acc, key) => acc.concat(images[key]), [])}
+                                                    images={Object.keys(images).reduce((acc, key) => acc.concat(images[key]), []).map(img => ({ ...img, src: typeof img.src === 'string' ? img.src : img.src[viewStatus] }))}
                                                     currentColor={COLORS_POOL[product.colors_ids[colorIndex]]}
                                                     colors={COLORS}
                                                 />
@@ -781,17 +892,17 @@ export default withRouter(() => {
                                         </div>
                                     </section>
                                 }
-                                <MyButton
+                                <LoadingButton
                                     onClick={updateProduct}
-                                    disabled={disableUpdateButton}
+                                    loading={disableUpdateButton}
+                                    variant='contained'
                                     size='large'
-                                    style={{
+                                    sx={{
                                         width: '100%',
-                                        color: '#ffffff',
                                     }}
                                 >
                                     Update Product
-                                </MyButton>
+                                </LoadingButton>
                             </div>
                         }
                         {product === null &&

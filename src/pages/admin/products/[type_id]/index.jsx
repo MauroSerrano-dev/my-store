@@ -354,7 +354,6 @@ export default function ProductsId() {
                                     />
                                 )
                             }
-                            )
                         </div>
                         {products && products?.length !== 0 &&
                             <Pagination

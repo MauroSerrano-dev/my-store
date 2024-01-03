@@ -57,7 +57,9 @@ async function filterNotInPrintify(cartItems) {
 
 function isProductInPrintifyData(printifyProducts, product) {
     return Object.values(product.printify_ids).every(printifyId =>
-        printifyProducts.some(p => p.id === printifyId)
+        typeof printifyId === 'string'
+            ? printifyProducts.some(p => p.id === printifyId)
+            : printifyProducts.some(p => p.id === printifyId.front) && printifyProducts.some(p => p.id === printifyId.back)
     );
 }
 

@@ -45,7 +45,7 @@ export function hasRepeatedItems(arr) {
 
 export function mergeProducts(prods1, prods2) {
     return prods1.map(p => {
-        const exist = prods2.find(prod => prod.id === p.id && prod.variant_id === p.variant_id)
+        const exist = prods2.find(prod => prod.id === p.id && prod.variant_id === p.variant_id && prod.art_position === p.art_position)
         if (exist) {
             const newQuantity = p.quantity + exist.quantity
             if (newQuantity > LIMITS.cart_same_item)
@@ -54,7 +54,7 @@ export function mergeProducts(prods1, prods2) {
         }
         else
             return p
-    }).concat(prods2.filter(prod => !prods1.some(p => p.id === prod.id && p.variant_id === prod.variant_id)))
+    }).concat(prods2.filter(prod => !prods1.some(p => p.id === prod.id && p.variant_id === prod.variant_id && prod.art_position === p.art_position)))
 }
 
 export function convertTimestampToFormatDate(timestamp, locale) {

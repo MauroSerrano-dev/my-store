@@ -245,6 +245,7 @@ export const PRODUCTS_TYPES = [
         id: 't-shirt',
         family_id: 't-shirts',
         color: '#1189c4',
+        allow_back_variant: true,
         providers: [29, 87],
         blueprint_ids: {
             29: 145,
@@ -813,6 +814,7 @@ export const PRODUCTS_TYPES = [
         id: 'hoodie',
         family_id: 'hoodies',
         color: '#026539',
+        allow_back_variant: true,
         providers: [50, 26],
         blueprint_ids: {
             50: 77,
@@ -1181,6 +1183,7 @@ export const PRODUCTS_TYPES = [
         id: 'raglan-tee',
         family_id: 'raglan-tees',
         color: '#e0824b',
+        allow_back_variant: false,
         providers: [43, 6],
         blueprint_ids: {
             43: 79,
@@ -1654,6 +1657,7 @@ export const PRODUCTS_TYPES = [
         id: 'sweatshirt',
         family_id: 'sweatshirts',
         color: '#009c75',
+        allow_back_variant: true,
         providers: [50, 87],
         blueprint_ids: {
             50: 49,
@@ -2452,6 +2456,7 @@ export const PRODUCTS_TYPES = [
         id: 'mug',
         family_id: 'mugs',
         color: '#bA2326',
+        allow_back_variant: false,
         providers: [1, 87],
         blueprint_ids: {
             1: 68,
@@ -2483,6 +2488,7 @@ export const PRODUCTS_TYPES = [
         id: 'mug-c',
         family_id: 'mugs',
         color: '#bA2326',
+        allow_back_variant: false,
         providers: [28, 87],
         blueprint_ids: {
             28: 635,

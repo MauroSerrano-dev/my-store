@@ -9,30 +9,30 @@ function getPurchaseEmailTemplate(language, orderId) {
     return {
       subject: 'Confirmación de Compra',
       title: '¡Gracias por su compra!',
-      track_link: `Puede <a href="${process.env.NEXT_PUBLIC_URL}/order-status?id=${orderId}">seguir su pedido aquí</a>.`,
+      track_link: `Puede <a href="${process.env.NEXT_PUBLIC_URL}/${language}/order-status?id=${orderId}">seguir su pedido aquí</a>.`,
       order_id: `Su ID de pedido es: ${orderId}`,
       not_reply: 'Este es un mensaje automatizado. Por favor, no responda a este correo electrónico.',
-      contact_us: `Si tiene alguna pregunta, <a href="${process.env.NEXT_PUBLIC_URL}/contact">contáctenos</a>.`,
+      contact_us: `Si tiene alguna pregunta, <a href="${process.env.NEXT_PUBLIC_URL}/${language}/contact">contáctenos</a>.`,
     }
   }
   if (language === 'pt-BR') {
     return {
       subject: 'Confirmação de Compra',
       title: 'Obrigado pela sua compra!',
-      track_link: `Você pode <a href="${process.env.NEXT_PUBLIC_URL}/order-status?id=${orderId}">acompanhar seu pedido aqui</a>.`,
+      track_link: `Você pode <a href="${process.env.NEXT_PUBLIC_URL}/${language}/order-status?id=${orderId}">acompanhar seu pedido aqui</a>.`,
       order_id: `O ID do seu pedido é: ${orderId}`,
       not_reply: 'Esta é uma mensagem automática. Por favor, não responda a este e-mail.',
-      contact_us: `Se tiver alguma dúvida, <a href="${process.env.NEXT_PUBLIC_URL}/contact">entre em contato</a>.`,
+      contact_us: `Se tiver alguma dúvida, <a href="${process.env.NEXT_PUBLIC_URL}/${language}/contact">entre em contato</a>.`,
     }
   }
   if (language === 'pt') {
     return {
       subject: 'Confirmação de Compra',
       title: 'Obrigado pela sua compra!',
-      track_link: `Pode <a href="${process.env.NEXT_PUBLIC_URL}/order-status?id=${orderId}">acompanhar o seu pedido aqui</a>.`,
+      track_link: `Pode <a href="${process.env.NEXT_PUBLIC_URL}/${language}/order-status?id=${orderId}">acompanhar o seu pedido aqui</a>.`,
       order_id: `O seu ID da encomenda é: ${orderId}`,
       not_reply: 'Esta é uma mensagem automática. Por favor, não responda a este e-mail.',
-      contact_us: `Se tiver alguma questão, <a href="${process.env.NEXT_PUBLIC_URL}/contact">entre em contato connosco</a>.`,
+      contact_us: `Se tiver alguma questão, <a href="${process.env.NEXT_PUBLIC_URL}/${language}/contact">entre em contato connosco</a>.`,
     }
   }
   return {

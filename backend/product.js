@@ -11,6 +11,7 @@ import {
     setDoc,
     where,
     Timestamp,
+    deleteDoc,
 } from "firebase/firestore"
 import { initializeApp } from 'firebase/app'
 import { firebaseConfig } from "../firebase.config"
@@ -120,18 +121,48 @@ async function getProductsInfo(products) {
             const variants = getProductVariantsInfos(product)
             const variant = variants.find(vari => vari.id === prod.variant_id)
 
+            const art_position = typeof product.printify_ids[0] === 'string'
+                ? null
+                : prod.art_position
+                    ? prod.art_position
+                    : Object.keys(product.printify_ids).reduce((acc, key) =>
+                        Object.keys(product.printify_ids[key]).reduce((acc2, a_position) =>
+                            product.printify_ids[key][a_position] === prod.id_printify ? a_position : acc2
+                            , null
+                        )
+                            ? Object.keys(product.printify_ids[key]).reduce((acc2, a_position) =>
+                                product.printify_ids[key][a_position] === prod.id_printify ? a_position : acc2
+                                , null
+                            )
+                            : acc
+                        , null
+                    )
+
+            const printify_ids = art_position
+                ? Object.keys(product.printify_ids).reduce((acc, key) => ({
+                    ...acc,
+                    [key]: product.printify_ids[key][art_position]
+                }), {})
+                : product.printify_ids
+
+            const visualImage = product.images.filter(img => img.color_id === variant.color_id)[product.image_showcase_index]
+
+            const prodImage = art_position
+                ? { ...visualImage, src: visualImage.src[art_position] }
+                : visualImage
+
             return {
                 ...prod,
                 type_id: product.type_id,
                 title: product.title,
                 promotion: product.promotion,
-                printify_ids: product.printify_ids,
+                printify_ids: printify_ids,
                 variant: variant,
                 default_variant: {
                     color_id: variants[0].color_id,
                     size_id: variants[0].size_id,
                 },
-                image: product.images.filter(img => img.color_id === variant.color_id)[product.image_showcase_index],
+                image: prodImage,
             };
         });
 
@@ -849,6 +880,20 @@ async function getAllActivesProducts() {
     }
 }
 
+async function deleteProduct(id) {
+    try {
+        const productRef = doc(db, process.env.COLL_PRODUCTS, id)
+        const productRes = await getProductById(id)
+        if (!productRes.product)
+            throw new Error('Product not found to delete')
+        await deleteDoc(productRef)
+        console.log(`Product with ID ${id} has been deleted successfully.`)
+    } catch (error) {
+        console.error(`Error deleting product with ID ${id}:`, error)
+        throw new Error(`Error deleting product with ID ${id}: ${error}`)
+    }
+}
+
 export {
     createProduct,
     getProductsByQueries,
@@ -868,4 +913,5 @@ export {
     removeExpiredPromotions,
     getSimilarProducts,
     getAllActivesProducts,
+    deleteProduct,
 }
