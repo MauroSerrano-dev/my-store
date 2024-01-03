@@ -13,6 +13,7 @@ export default function ImagesSlider(props) {
         height = width * 10 / 9,
         colors,
         currentColor,
+        currentPosition,
     } = props
 
     const {
@@ -203,7 +204,7 @@ export default function ImagesSlider(props) {
                                     >
                                         <Image
                                             priority
-                                            src={img.src}
+                                            src={typeof img.src === 'string' ? img.src : img.src.front}
                                             quality={100}
                                             alt='product preview'
                                             fill
@@ -218,6 +219,25 @@ export default function ImagesSlider(props) {
                                                 setImagesLoad(prev => [...prev, `${i}${j}`])
                                             }}
                                         />
+                                        {typeof img.src !== 'string' &&
+                                            <Image
+                                                priority
+                                                src={img.src.back}
+                                                quality={100}
+                                                alt='product preview'
+                                                fill
+                                                sizes={`${height * 2 / 3}px`}
+                                                style={{
+                                                    pointerEvents: 'none',
+                                                    objectFit: 'cover',
+                                                    opacity: imagesLoad.includes(`${i}${j}`) && currentPosition === 'back' ? 1 : 0,
+                                                    transition: 'opacity ease-in-out 200ms'
+                                                }}
+                                                onLoad={() => {
+                                                    setImagesLoad(prev => [...prev, `${i}${j}`])
+                                                }}
+                                            />
+                                        }
                                     </div>
                                     {!imagesLoad.includes(`${i}${j}`) &&
                                         <Skeleton
@@ -309,7 +329,7 @@ export default function ImagesSlider(props) {
                                     >
                                         <Image
                                             priority
-                                            src={img.src}
+                                            src={typeof img.src === 'string' ? img.src : img.src.front}
                                             quality={100}
                                             sizes={`${OPTIONS_HEIGHT * 2 / 3}px`}
                                             alt='product image'
@@ -323,6 +343,24 @@ export default function ImagesSlider(props) {
                                                 setOptionsImagesLoad(prev => [...prev, `${i}${j}`])
                                             }}
                                         />
+                                        {typeof img.src !== 'string' &&
+                                            <Image
+                                                priority
+                                                src={img.src.back}
+                                                quality={100}
+                                                sizes={`${OPTIONS_HEIGHT * 2 / 3}px`}
+                                                alt='product image'
+                                                fill
+                                                style={{
+                                                    objectFit: 'cover',
+                                                    opacity: optionsImagesLoad.includes(`${i}${j}`) && currentPosition === 'back' ? 1 : 0,
+                                                    transition: 'opacity ease-in-out 200ms'
+                                                }}
+                                                onLoad={() => {
+                                                    setOptionsImagesLoad(prev => [...prev, `${i}${j}`])
+                                                }}
+                                            />
+                                        }
                                     </div>
                                     {!optionsImagesLoad.includes(`${i}${j}`) &&
                                         <Skeleton

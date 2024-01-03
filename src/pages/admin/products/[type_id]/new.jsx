@@ -1,6 +1,6 @@
 import ImagesSliderEditable from '@/components/ImagesSliderEditable'
 import styles from '@/styles/admin/products/type_id/new.module.css'
-import { Checkbox, FormControlLabel, Slider, Switch } from '@mui/material'
+import { Checkbox, FormControlLabel, Switch } from '@mui/material'
 import { useEffect, useState } from 'react'
 import { withRouter } from 'next/router'
 import { COLLECTIONS, TAGS_POOL, THEMES_POOL, PRODUCTS_TYPES, COLORS_POOL, SIZES_POOL, PROVIDERS_POOL, SEARCH_ART_COLORS, COMMON_TRANSLATES } from '@/consts'
@@ -61,6 +61,7 @@ export default withRouter(() => {
     const [loadingCreateButton, setLoadingCreateButton] = useState(false)
     const [artIdChained, setArtIdChained] = useState(true)
     const [artColorChained, setArtColorChained] = useState(true)
+    const [viewStatus, setViewStatus] = useState('front')
 
     const tCommon = useTranslation('common').t
     const tToasts = useTranslation('toasts').t
@@ -145,8 +146,13 @@ export default withRouter(() => {
         setProduct(prev => ({ ...prev, [fieldName]: newValue }))
     }
 
-    function handlePrintifyId(providerId, newValue) {
-        setProduct(prev => ({ ...prev, printify_ids: { ...prev.printify_ids, [providerId]: newValue } }))
+    function handlePrintifyId(providerId, newValue, artPosition) {
+        setProduct(prev => ({
+            ...prev,
+            printify_ids: typeof Object.values(prev.printify_ids)[0] === 'string'
+                ? { ...prev.printify_ids, [providerId]: newValue }
+                : { ...prev.printify_ids, [providerId]: { ...prev.printify_ids[providerId], [artPosition]: newValue } }
+        }))
     }
 
     function handleChangeColors(value, i, color) {
@@ -165,7 +171,18 @@ export default withRouter(() => {
                         ? { ...sizesChainedPrev, [color.id]: sizesChainedPrev[Object.keys(sizesChainedPrev).map(ele => Number(ele)).find(cId => colorsChained.includes(cId))] }
                         : { ...sizesChainedPrev, [color.id]: [] }
                 )
-                setImages(prevImgs => ({ ...prevImgs, [color.id]: [{ src: '', color_id: color.id }, { src: '', color_id: color.id }, { src: '', color_id: color.id }, { src: '', color_id: color.id }] }))
+                setImages(prevImgs => {
+                    const inicialImage = { src: typeof Object.values(prev.printify_ids)[0] === 'string' ? '' : { front: '', back: '' }, color_id: color.id }
+                    return {
+                        ...prevImgs,
+                        [color.id]: [
+                            inicialImage,
+                            inicialImage,
+                            inicialImage,
+                            inicialImage
+                        ]
+                    }
+                })
                 return {
                     ...prev,
                     colors: value,
@@ -216,7 +233,17 @@ export default withRouter(() => {
 
     function handleAddNewImage() {
         const colorId = product.colors[colorIndex].id
-        setImages(prev => ({ ...prev, [colorId]: prev[colorId].concat({ src: '', color_id: colorId, hover: false, showcase: false }) }))
+        setImages(prev => ({
+            ...prev,
+            [colorId]: prev[colorId].concat({
+                src: typeof Object.values(product.printify_ids)[0] === 'string'
+                    ? ''
+                    : { front: '', back: '' },
+                color_id: colorId,
+                hover: false,
+                showcase: false
+            })
+        }))
     }
 
     function handleDeleteImageField(index) {
@@ -224,9 +251,15 @@ export default withRouter(() => {
         setImages(prev => ({ ...prev, [colorId]: prev[colorId].filter((img, i) => index !== i) }))
     }
 
-    function updateImageField(fieldname, newValue, index) {
+    function updateImageSrc(newValue, index) {
         const colorId = product.colors[colorIndex].id
-        setImages(prev => ({ ...prev, [colorId]: prev[colorId].map((img, i) => index === i ? { ...img, [fieldname]: newValue } : img) }))
+        setImages(prev => ({
+            ...prev,
+            [colorId]: prev[colorId].map((img, i) => index === i
+                ? { ...img, src: typeof img.src === 'string' ? newValue : { ...img.src, [viewStatus]: newValue } }
+                : img
+            )
+        }))
     }
 
     function handleChangeSizes(value, i, size) {
@@ -491,6 +524,44 @@ export default withRouter(() => {
             setProduct(prev => ({ ...prev, id: value }))
     }
 
+    function handleBackVariant(event) {
+        if (event.target.checked) {
+            if (images)
+                setImages(prev => (
+                    Object.keys(prev).reduce((acc, key) => ({
+                        ...acc,
+                        [key]: [
+                            ...prev[key].map(img => ({ ...img, src: { front: img.src, back: '' } })),
+                        ]
+                    }), {})
+                ))
+            setProduct(prev => ({
+                ...prev,
+                printify_ids: Object.keys(prev.printify_ids).reduce((acc, key) => ({ ...acc, [key]: { front: prev.printify_ids[key], back: '' } }), {})
+            }))
+        }
+        else {
+            if (images)
+                setImages(prev =>
+                    Object.keys(prev).reduce((acc, key) => ({
+                        ...acc,
+                        [key]: prev[key].map(img => ({ ...img, src: img.src.front }))
+                    }), {})
+                )
+            setProduct(prev => ({
+                ...prev,
+                printify_ids: Object.keys(prev.printify_ids).reduce((acc, key) => ({
+                    ...acc,
+                    [key]: prev.printify_ids[key].front
+                }), {})
+            }))
+        }
+    }
+
+    function handleBackView(event) {
+        setViewStatus(event.target.checked ? 'back' : 'front')
+    }
+
     return (
         session === undefined
             ? <div></div>
@@ -560,21 +631,6 @@ export default withRouter(() => {
                                                 width: '100%'
                                             }}
                                         />
-                                    </div>
-                                    <div className={styles.sectionRight}>
-                                        {type.providers.map(prov_id => PROVIDERS_POOL[prov_id]).map((provider, i) =>
-                                            <PrintifyIdPicker
-                                                onChoose={productPrintifyId => handlePrintifyId(provider.id, productPrintifyId)}
-                                                key={i}
-                                                value={product.printify_ids[provider.id]}
-                                                colorText='var(--color-success)'
-                                                provider={provider}
-                                                blueprint_ids={type.blueprint_ids}
-                                                style={{
-                                                    width: '100%'
-                                                }}
-                                            />
-                                        )}
                                         <TagsSelector
                                             options={TAGS_POOL}
                                             label='Tags'
@@ -584,6 +640,46 @@ export default withRouter(() => {
                                                 width: '100%'
                                             }}
                                         />
+                                    </div>
+                                    <div className={styles.sectionRight}>
+                                        {type.providers.map(prov_id => PROVIDERS_POOL[prov_id]).map((provider, i) =>
+                                            <PrintifyIdPicker
+                                                onChoose={productPrintifyId => handlePrintifyId(provider.id, productPrintifyId, 'front')}
+                                                key={i}
+                                                value={typeof product.printify_ids[provider.id] === 'string' ? product.printify_ids[provider.id] : product.printify_ids[provider.id].front}
+                                                colorText='var(--color-success)'
+                                                provider={provider}
+                                                blueprint_ids={type.blueprint_ids}
+                                                style={{
+                                                    width: '100%'
+                                                }}
+                                            />
+                                        )}
+                                        {type.allow_back_variant &&
+                                            <FormControlLabel
+                                                control={
+                                                    <Switch
+                                                        checked={typeof Object.values(product.printify_ids)[0] !== 'string'}
+                                                        onChange={handleBackVariant}
+                                                        color='success'
+                                                    />
+                                                }
+                                                label="Back Variant"
+                                            />
+                                        }
+                                        {typeof Object.values(product.printify_ids)[0] !== 'string' && type.allow_back_variant && type.providers.map(prov_id => PROVIDERS_POOL[prov_id]).map((provider, i) =>
+                                            <PrintifyIdPicker
+                                                onChoose={productPrintifyId => handlePrintifyId(provider.id, productPrintifyId, 'back')}
+                                                key={i}
+                                                value={typeof product.printify_ids[provider.id] === 'string' ? product.printify_ids[provider.id] : product.printify_ids[provider.id].back}
+                                                colorText='var(--color-success)'
+                                                provider={provider}
+                                                blueprint_ids={type.blueprint_ids}
+                                                style={{
+                                                    width: '100%'
+                                                }}
+                                            />
+                                        )}
                                     </div>
                                 </section>
                                 <section className={`${styles.section} ${styles.two}`}>
@@ -641,6 +737,17 @@ export default withRouter(() => {
                                                     <div className='flex column' style={{ gap: '1rem' }}>
                                                         <div>
                                                             <h3>Images</h3>
+                                                            {typeof Object.values(product.printify_ids)[0] !== 'string' &&
+                                                                <div className='flex row center'>
+                                                                    <p>Front</p>
+                                                                    <Switch
+                                                                        checked={viewStatus === 'back'}
+                                                                        onChange={handleBackView}
+                                                                        color='success'
+                                                                    />
+                                                                    <p>Back</p>
+                                                                </div>
+                                                            }
                                                             {images[product.colors[colorIndex].id].length > 0 &&
                                                                 <div className='flex row justify-end' style={{ fontSize: '11px', gap: '1rem', width: '100%', paddingRight: '11%' }}>
                                                                     <p>showcase</p>
@@ -656,11 +763,11 @@ export default withRouter(() => {
                                                                         <TextInput
                                                                             colorText='var(--color-success)'
                                                                             label={`Image ${i + 1}`}
-                                                                            onChange={event => updateImageField('src', event.target.value, i)}
+                                                                            onChange={event => updateImageSrc(event.target.value, i)}
                                                                             style={{
                                                                                 width: '70%'
                                                                             }}
-                                                                            value={img.src}
+                                                                            value={typeof img.src === 'string' ? img.src : img.src[viewStatus]}
                                                                         />
                                                                         <Checkbox
                                                                             checked={i === product.image_showcase_index}
@@ -728,7 +835,7 @@ export default withRouter(() => {
                                                         Preview
                                                     </h3>
                                                     <ImagesSliderEditable
-                                                        images={Object.keys(images).reduce((acc, key) => acc.concat(images[key]), [])}
+                                                        images={Object.keys(images).reduce((acc, key) => acc.concat(images[key]), []).map(img => ({ ...img, src: typeof img.src === 'string' ? img.src : img.src[viewStatus] }))}
                                                         currentColor={product.colors[colorIndex]}
                                                         colors={product.colors}
                                                     />

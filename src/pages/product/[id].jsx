@@ -32,6 +32,7 @@ import { handleCloseModal, handleOpenModal } from '@/utils'
 import TableSizes from '@/components/products/TableSizes'
 import CarouselProducts from '@/components/carousels/CarouselProducts'
 import KeyFeatures from '@/components/products/KeyFeatures'
+import { ButtonGroup } from '@mui/material'
 
 export default withRouter(props => {
     const {
@@ -66,12 +67,14 @@ export default withRouter(props => {
 
     const [currentColor, setCurrentColor] = useState(cl ? cl : COLORS_POOL[product?.colors_ids[0]])
     const [currentSize, setCurrentSize] = useState(sz ? sz : SIZES_POOL.find(sz => sz.id === product?.sizes_ids[0]))
+    const [currentPosition, setCurrentPosition] = useState('front')
 
     const [buyNowModalOpen, setBuyNowModalOpen] = useState(false)
     const [buyNowModalOpacity, setBuyNowModalOpacity] = useState(false)
 
     const [shippingValue, setShippingValue] = useState(0)
     const [disableCheckoutButton, setDisableCheckoutButton] = useState(false)
+
 
     const productCurrentVariant = product.variants.find(vari => vari.size_id === currentSize?.id && vari.color_id === currentColor?.id)
 
@@ -160,7 +163,7 @@ export default withRouter(props => {
                 },
                 body: JSON.stringify({
                     cartId: session ? session.cart_id : Cookies.get(CART_COOKIE),
-                    cartProducts: [{ id: product.id, variant_id: productCurrentVariant.id, quantity: 1 }]
+                    cartProducts: [{ id: product.id, variant_id: productCurrentVariant.id, quantity: 1, art_position: typeof product.images[0].src === 'string' ? null : currentPosition }]
                 }),
             }
 
@@ -284,8 +287,27 @@ export default withRouter(props => {
                                         key={product.id}
                                         colors={product.colors_ids.map(color_id => COLORS_POOL[color_id])}
                                         currentColor={currentColor}
+                                        currentPosition={currentPosition}
                                         width={windowWidth > 1074 ? 450 : windowWidth > 549 ? 450 : windowWidth}
+                                    /* style={{
+                                        opacity: currentPosition === 'front' ? 1 : 0,
+                                        zIndex: currentPosition === 'front' ? 1 : 0
+                                    }} */
                                     />
+                                    {/* {product.images[0].src !== 'string' &&
+                                        <ImagesSlider
+                                            images={product.images.map(img => ({ ...img, src: typeof img.src === 'string' ? img.src : img.src.back }))}
+                                            key={product.id}
+                                            colors={product.colors_ids.map(color_id => COLORS_POOL[color_id])}
+                                            currentColor={currentColor}
+                                            width={windowWidth > 1074 ? 450 : windowWidth > 549 ? 450 : windowWidth}
+                                            style={{
+                                                position: 'absolute',
+                                                opacity: currentPosition === 'back' ? 1 : 0,
+                                                zIndex: currentPosition === 'back' ? 1 : 0
+                                            }}
+                                        />
+                                    } */}
                                 </div>
                             </div>
                             <div className={styles.right}>
@@ -359,7 +381,7 @@ export default withRouter(props => {
                                         </h3>
                                         <div className={styles.colorSelector}>
                                             <p style={{ textAlign: 'start', fontWeight: '700' }}>
-                                                {product.colors_ids.length === 1 ? tCommon('Color') : tProduct('pick_a_color')}
+                                                {product.colors_ids.length === 1 ? tCommon('Color') : tProduct('choose_a_color')}
                                             </p>
                                             <ColorSelector
                                                 options={product.colors_ids.map(color_id => COLORS_POOL[color_id])}
@@ -373,7 +395,7 @@ export default withRouter(props => {
                                         </div>
                                         <div className={styles.sizeSelector}>
                                             <p style={{ textAlign: 'start', fontWeight: '700' }}>
-                                                {product.sizes_ids.length === 1 ? tCommon('Size') : tProduct('pick_a_size')}
+                                                {product.sizes_ids.length === 1 ? tCommon('Size') : tProduct('choose_a_size')}
                                             </p>
                                             <SizesSelector
                                                 value={[currentSize]}
@@ -381,13 +403,44 @@ export default withRouter(props => {
                                                 onChange={handleSizeChange}
                                             />
                                         </div>
+                                        {typeof product.images[0].src !== 'string' &&
+                                            <div className={styles.sizeSelector}>
+                                                <p style={{ textAlign: 'start', fontWeight: '700' }}>
+                                                    {tProduct('choose_art_position')}
+                                                </p>
+                                                <ButtonGroup
+                                                    sx={{
+                                                        width: '100%'
+                                                    }}
+                                                >
+                                                    <MyButton
+                                                        variant={currentPosition === 'front' ? 'contained' : 'outlined'}
+                                                        onClick={() => setCurrentPosition('front')}
+                                                        style={{
+                                                            width: '50%'
+                                                        }}
+                                                    >
+                                                        Front
+                                                    </MyButton>
+                                                    <MyButton
+                                                        variant={currentPosition === 'back' ? 'contained' : 'outlined'}
+                                                        onClick={() => setCurrentPosition('back')}
+                                                        style={{
+                                                            width: '50%'
+                                                        }}
+                                                    >
+                                                        Back
+                                                    </MyButton>
+                                                </ButtonGroup>
+                                            </div>
+                                        }
                                     </div>
                                 </div>
                                 <div className={styles.rightBottom}>
                                     {!product.disabled &&
                                         <div className={styles.buyButtons}>
                                             <MyButton
-                                                onClick={() => handleAddToCart()}
+                                                onClick={handleAddToCart}
                                                 style={{
                                                     display: 'flex',
                                                     gap: '0.2rem',

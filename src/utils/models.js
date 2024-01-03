@@ -65,7 +65,7 @@ export function cartItemModel(props) {
         id_printify,
         provider_id,
         variant,
-        price
+        price,
     } = props
 
     return {

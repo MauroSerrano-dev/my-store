@@ -11,7 +11,6 @@ import { useTranslation } from 'next-i18next'
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
 import { useAppContext } from '@/components/contexts/AppContext'
 import BannerSlider from '@/components/sliders/BannerSlider'
-import { showToast } from '@/utils/toasts'
 
 const categories = [
   { id: 'games', url: '/search?h=games', img: 'https://firebasestorage.googleapis.com/v0/b/my-store-4aef7.appspot.com/o/index%2Fgames.webp?alt=media&token=c28521d0-8fd8-45b7-9c80-60feffab7f60' },
@@ -27,9 +26,9 @@ export default function Home() {
   const {
     session,
     windowWidth,
+    isVisitant,
   } = useAppContext()
 
-  const tCommon = useTranslation('common').t
   const tIndex = useTranslation('index').t
   const tErrors = useTranslation('errors').t
   const tCategories = useTranslation('categories').t
@@ -54,9 +53,16 @@ export default function Home() {
   ]
 
   useEffect(() => {
-    if (session !== undefined && !productsOne)
-      getProductsFromCategories()
+    getProductsFromCategories()
   }, [session])
+
+  async function getProductsFromCategories() {
+    if (session !== undefined && !productsOne) {
+      (session && session.custom_home_page.active ? session.custom_home_page.tags : DEFAULT_PRODUCTS_TAGS).forEach(async (tag, i) => {
+        setStates[i].set(await getProductsByTagOrType(USER_CUSTOMIZE_HOME_PAGE.find(ele => ele.id === tag)))
+      })
+    }
+  }
 
   async function getProductsByTagOrType(tag) {
     const { query, id } = tag
@@ -74,13 +80,6 @@ export default function Home() {
       .catch(err => console.error(err))
 
     return products
-  }
-
-  async function getProductsFromCategories() {
-    //tem que ser na mesma ordem que está no HTML
-    (session && session.custom_home_page.active ? session.custom_home_page.tags : DEFAULT_PRODUCTS_TAGS).forEach(async (tag, i) => {
-      setStates[i].set(await getProductsByTagOrType(USER_CUSTOMIZE_HOME_PAGE.find(ele => ele.id === tag)))
-    })
   }
 
   return (

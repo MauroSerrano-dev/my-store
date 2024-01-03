@@ -28,6 +28,7 @@ export default async function handler(req, res) {
       success_url,
       cancel_url,
       user_language,
+      art_position,
     } = req.body
 
     const notExistingProducts = await filterNotInPrintify(cartItems)
