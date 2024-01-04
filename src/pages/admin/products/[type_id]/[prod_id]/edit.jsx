@@ -603,7 +603,7 @@ export default withRouter(() => {
                                             colorText={fieldChanged['collection'] ? 'var(--color-success)' : 'var(--text-color)'}
                                         />
                                         <TagsSelector
-                                            options={THEMES_POOL.map(theme => theme.id)}
+                                            options={THEMES_POOL}
                                             label='Themes'
                                             value={product.themes}
                                             onChange={(event, value) => updateProductField('themes', value)}

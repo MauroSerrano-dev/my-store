@@ -207,13 +207,13 @@ export const TAGS_POOL = [
 ]
 
 export const THEMES_POOL = [
-    { id: 'computer', title: 'Computer' },
-    { id: 'games', title: 'Games' },
-    { id: 'halloween', title: 'Halloween' },
-    { id: 'home', title: 'Home' },
-    { id: 'music', title: 'Music' },
-    { id: 'rpg', title: 'RPG' },
-    { id: 'zombies', title: 'Zombies' },
+    'computer',
+    'games',
+    'halloween',
+    'home',
+    'music',
+    'rpg',
+    'zombies',
 ]
 
 export const itemsNavBar = [
@@ -3022,4 +3022,4 @@ export function getCurrencyByLocation(country, zone) {
     return 'usd'
 }
 
-export const USER_CUSTOMIZE_HOME_PAGE = THEMES_POOL.map(theme => ({ ...theme, query: 'h' })).concat(Object.keys(PRODUCTS_FAMILY).map(id => ({ id: id, query: 'v' }))).sort((a, b) => b.id.toLowerCase() < a.id.toLowerCase() ? 1 : -1)
+export const USER_CUSTOMIZE_HOME_PAGE = THEMES_POOL.map(theme => ({ id: theme, query: 'h' })).concat(Object.keys(PRODUCTS_FAMILY).map(id => ({ id: id, query: 'v' })))

@@ -33,5 +33,6 @@
     "invalid_order_id_for_this_user": "Esse pedido não pertence a esse e-mail",
     "support_email_sent": "Ticket de suporte criado com sucesso",
     "missing_subject": "Assunto não informado",
-    "account_with_this_email_recently_deleted": "E-mail inválido. Conta com este e-mail foi recentemente excluída"
+    "account_with_this_email_recently_deleted": "E-mail inválido. Conta com este e-mail foi recentemente excluída",
+    "user_deleted_successfully": "Conta excluída com sucesso"
 }

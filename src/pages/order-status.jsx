@@ -22,6 +22,7 @@ export default function OrderStatus() {
     const [loading, setLoading] = useState()
 
     const tToasts = useTranslation('toasts').t
+    const tOrderStatus = useTranslation('order-status').t
 
     useEffect(() => {
         setOrder()
@@ -73,12 +74,14 @@ export default function OrderStatus() {
             <header>
             </header>
             <main className={styles.main}>
-                <h2>Search Order ID</h2>
+                <h2>
+                    {tOrderStatus('title')}
+                </h2>
                 <div
                     className={styles.inputAndButton}
                 >
                     <TextInput
-                        label='Order ID'
+                        label={tOrderStatus('order_id')}
                         value={orderId}
                         onChange={event => setOrderId(event.target.value)}
                         size='small'
@@ -94,7 +97,7 @@ export default function OrderStatus() {
                             width: windowWidth > 851 ? 'auto' : '100%'
                         }}
                     >
-                        Search
+                        {tOrderStatus('search')}
                     </LoadingButton>
                 </div>
                 <div className={styles.order}>
@@ -114,7 +117,7 @@ export default function OrderStatus() {
 export async function getServerSideProps({ locale }) {
     return {
         props: {
-            ...(await serverSideTranslations(locale, COMMON_TRANSLATES.concat(['footer', 'orders'])))
+            ...(await serverSideTranslations(locale, COMMON_TRANSLATES.concat(['order-status', 'footer', 'orders'])))
         }
     }
 }

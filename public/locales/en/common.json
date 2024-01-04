@@ -23,5 +23,7 @@
     "checkout": "Checkout",
     "OUT_OF_STOCK": "OUT OF STOCK",
     "UNAVAILABLE": "UNAVAILABLE",
-    "Last Update": "Last Update"
+    "Last Update": "Last Update",
+    "copy_link": "Copy Link",
+    "link_copied": "Link Copied!"
 }

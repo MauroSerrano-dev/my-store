@@ -3,7 +3,6 @@ import {
     setDoc,
     doc,
     updateDoc,
-    getFirestore,
     Timestamp,
     query,
     where,
@@ -11,15 +10,11 @@ import {
     orderBy,
     getDoc,
 } from "firebase/firestore"
-import { initializeApp } from 'firebase/app'
-import { firebaseConfig } from "../firebase.config"
 import { handleProductsPurchased } from "./product"
 import { ALLOWED_WEBHOOK_STATUS } from "@/consts"
 import Error from "next/error"
+import { db } from "../firebaseInit"
 
-initializeApp(firebaseConfig)
-
-const db = getFirestore()
 
 async function createOrder(order) {
     try {

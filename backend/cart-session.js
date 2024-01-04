@@ -1,13 +1,8 @@
-import { arrayUnion, collection, doc, addDoc, getDoc, getDocs, getFirestore, query, setDoc, updateDoc, where, deleteDoc, Timestamp } from "firebase/firestore";
-import { initializeApp } from 'firebase/app'
-import { firebaseConfig } from "../firebase.config"
+import { collection, doc, getDoc, getDocs, setDoc, updateDoc, deleteDoc, Timestamp } from "firebase/firestore";
 import { mergeProducts } from "@/utils";
 import Error from "next/error";
 import { LIMITS } from "@/consts";
-
-initializeApp(firebaseConfig)
-
-const db = getFirestore()
+import { db } from "../firebaseInit";
 
 async function getCartSessionById(id) {
     try {

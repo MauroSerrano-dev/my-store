@@ -3,7 +3,6 @@ import {
     doc,
     getDoc,
     setDoc,
-    getFirestore,
     getDocs,
     where,
     query,
@@ -11,22 +10,16 @@ import {
     Timestamp,
     deleteDoc,
 } from "firebase/firestore"
-import { initializeApp } from "firebase/app"
-import { getAuth, createUserWithEmailAndPassword, sendEmailVerification, fetchSignInMethodsForEmail, updateProfile } from "firebase/auth"
-import { firebaseConfig } from "../firebase.config"
+import { createUserWithEmailAndPassword, sendEmailVerification, fetchSignInMethodsForEmail, updateProfile } from "firebase/auth"
 import { createCart, deleteCart } from "./cart"
 import { getCartSessionById, deleteCartSession } from "./cart-session"
 import { createWishlist, deleteWishlist } from "./wishlists"
 import { newUserModel } from "@/utils/models"
 import Error from "next/error"
 import { addUserDeleted } from "./app-settings"
+import { auth, db } from "../firebaseInit"
 const { v4: uuidv4 } = require('uuid')
-const admin = require('firebase-admin');
-
-initializeApp(firebaseConfig)
-
-const db = getFirestore()
-const auth = getAuth()
+const admin = require('../firebaseAdminInit');
 
 async function getUserIdByEmail(email) {
     try {

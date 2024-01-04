@@ -32,9 +32,9 @@ export default function Profile() {
 
     const { i18n } = useTranslation()
     const tProfile = useTranslation('profile').t
-    const tMenu = useTranslation('menu').t
     const tToasts = useTranslation('toasts').t
     const tCommon = useTranslation('common').t
+    const tCategories = useTranslation('categories').t
 
     const starterUser = session ? { ...session } : undefined
 
@@ -185,9 +185,9 @@ export default function Profile() {
                     </Head>
                     <main className={styles.userContainer}>
                         <div className={styles.fieldsHead}>
-                            <p className={styles.welcomeTitle}>{tMenu('Welcome')} <b style={{ color: 'var(--primary)' }}>{session.first_name ? session.first_name + ' ' + session.last_name : session.last_name}!</b></p>
+                            <p className={styles.welcomeTitle}>{tProfile('welcome')} <span style={{ color: 'var(--primary)' }}>{session.first_name ? session.first_name + ' ' + session.last_name : session.last_name}!</span></p>
                         </div>
-                        <h3 style={{ paddingLeft: '0.3rem' }}>Informations</h3>
+                        <h3 style={{ paddingLeft: '0.3rem' }}>{tProfile('information_block_title')}</h3>
                         <div className={styles.infos}>
                             <div
                                 className={styles.emailContainer}
@@ -254,9 +254,9 @@ export default function Profile() {
                                         <p>{tProfile('Chosen')}: <b style={{ color: 'var(--primary)' }}>{user.custom_home_page.tags.length}/{TAGS_MAX_LIMIT}</b></p>
                                         <TagsSelector
                                             disabled={!user.custom_home_page.active}
-                                            options={USER_CUSTOMIZE_HOME_PAGE.map(theme => theme.id)}
+                                            options={USER_CUSTOMIZE_HOME_PAGE.sort((a, b) => tCategories(b.id).toLowerCase() < tCategories(a.id).toLowerCase() ? 1 : -1).map(theme => ({ id: theme.id, label: tCategories(theme.id).toLowerCase() }))}
                                             label={tProfile('Keywords')}
-                                            value={user.custom_home_page.tags}
+                                            value={user.custom_home_page.tags.map(tg => ({ id: tg, label: tCategories(tg).toLowerCase() }))}
                                             sx={{
                                                 width: '100%'
                                             }}
@@ -264,7 +264,7 @@ export default function Profile() {
                                                 if (value.length > TAGS_MAX_LIMIT)
                                                     showToast({ type: 'error', msg: tProfile('max_keywords_toast') })
                                                 else
-                                                    handleCustomHomePage('tags', value)
+                                                    handleCustomHomePage('tags', value.map(tg => tg.id))
                                             }}
                                         />
                                     </div>

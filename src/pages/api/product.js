@@ -1,5 +1,5 @@
 import { isTokenValid } from "@/utils/auth";
-import { getProductById, createProduct, updateProduct, deleteProduct } from "../../../backend/product";
+import { getProductById, createProduct, updateProduct } from "../../../backend/product";
 
 export default async function handler(req, res) {
     const { authorization, id } = req.headers
@@ -32,15 +32,6 @@ export default async function handler(req, res) {
         catch (error) {
             console.error(`Error in product PATCH: ${error?.props?.title || error}`)
             res.status(error?.props?.statusCode || 500).json({ error: error?.props?.title || 'default_error' })
-        }
-    }
-    else if (req.method === "DELETE") {
-        try {
-            await deleteProduct(id)
-            res.status(200).json({ message: 'product_deleted_successfully' })
-        }
-        catch {
-            res.status(500).json({ error: 'default_error' })
         }
     }
 }

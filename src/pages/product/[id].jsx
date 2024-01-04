@@ -289,25 +289,7 @@ export default withRouter(props => {
                                         currentColor={currentColor}
                                         currentPosition={currentPosition}
                                         width={windowWidth > 1074 ? 450 : windowWidth > 549 ? 450 : windowWidth}
-                                    /* style={{
-                                        opacity: currentPosition === 'front' ? 1 : 0,
-                                        zIndex: currentPosition === 'front' ? 1 : 0
-                                    }} */
                                     />
-                                    {/* {product.images[0].src !== 'string' &&
-                                        <ImagesSlider
-                                            images={product.images.map(img => ({ ...img, src: typeof img.src === 'string' ? img.src : img.src.back }))}
-                                            key={product.id}
-                                            colors={product.colors_ids.map(color_id => COLORS_POOL[color_id])}
-                                            currentColor={currentColor}
-                                            width={windowWidth > 1074 ? 450 : windowWidth > 549 ? 450 : windowWidth}
-                                            style={{
-                                                position: 'absolute',
-                                                opacity: currentPosition === 'back' ? 1 : 0,
-                                                zIndex: currentPosition === 'back' ? 1 : 0
-                                            }}
-                                        />
-                                    } */}
                                 </div>
                             </div>
                             <div className={styles.right}>

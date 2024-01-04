@@ -33,5 +33,6 @@
     "invalid_order_id_for_this_user": "This order does not belong to this email",
     "support_email_sent": "Support ticket successfully created",
     "missing_subject": "Subject not provided",
-    "account_with_this_email_recently_deleted": "Invalid e-mail. Account with this e-mail was recently deleted"
+    "account_with_this_email_recently_deleted": "Invalid e-mail. Account with this e-mail was recently deleted",
+    "user_deleted_successfully": "Account deleted successfully"
 }

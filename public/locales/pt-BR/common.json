@@ -23,5 +23,7 @@
     "checkout": "Pagar",
     "OUT_OF_STOCK": "FORA DE ESTOQUE",
     "UNAVAILABLE": "INDISPONÍVEL",
-    "Last Update": "Última Atualização"
+    "Last Update": "Última Atualização",
+    "copy_link": "Copiar Link",
+    "link_copied": "Link Copiado!"
 }

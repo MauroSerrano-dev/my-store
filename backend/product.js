@@ -6,25 +6,18 @@ import {
     getDocs,
     orderBy,
     limit,
-    getFirestore,
     query,
     setDoc,
     where,
     Timestamp,
-    deleteDoc,
 } from "firebase/firestore"
-import { initializeApp } from 'firebase/app'
-import { firebaseConfig } from "../firebase.config"
 import Fuse from 'fuse.js'
 import { LIMITS, POPULARITY_POINTS, PRODUCTS_TYPES, TAGS_POOL, THEMES_POOL } from "@/consts"
 import translate from "translate"
 import Error from "next/error"
 import { getProductVariantsInfos } from "@/utils"
 import { isProductInPrintify } from "./printify"
-
-initializeApp(firebaseConfig)
-
-const db = getFirestore()
+import { db } from "../firebaseInit"
 
 async function getAllProducts(props) {
     const {
@@ -384,7 +377,7 @@ async function getProductsByQueries(props) {
 
             searchArr = inicialTags.concat(await Promise.all(translationPromises))
 
-            const fuse = new Fuse(TAGS_POOL.concat(THEMES_POOL.map(theme => theme.id).concat(PRODUCTS_TYPES.map(type => type.id))), { threshold: 0.4 })
+            const fuse = new Fuse(TAGS_POOL.concat(THEMES_POOL.concat(PRODUCTS_TYPES.map(type => type.id))), { threshold: 0.4 })
 
             const tags = inicialTags.concat(searchArr.map(tag => {
                 const fuseRes = fuse.search(tag)
@@ -880,20 +873,6 @@ async function getAllActivesProducts() {
     }
 }
 
-async function deleteProduct(id) {
-    try {
-        const productRef = doc(db, process.env.COLL_PRODUCTS, id)
-        const productRes = await getProductById(id)
-        if (!productRes.product)
-            throw new Error('Product not found to delete')
-        await deleteDoc(productRef)
-        console.log(`Product with ID ${id} has been deleted successfully.`)
-    } catch (error) {
-        console.error(`Error deleting product with ID ${id}:`, error)
-        throw new Error(`Error deleting product with ID ${id}: ${error}`)
-    }
-}
-
 export {
     createProduct,
     getProductsByQueries,
@@ -913,5 +892,4 @@ export {
     removeExpiredPromotions,
     getSimilarProducts,
     getAllActivesProducts,
-    deleteProduct,
 }
