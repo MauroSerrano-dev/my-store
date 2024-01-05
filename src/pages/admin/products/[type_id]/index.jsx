@@ -206,7 +206,7 @@ export default function ProductsId() {
                                                 >
                                                     <Image
                                                         priority
-                                                        src={prod.images[0].src}
+                                                        src={typeof prod.images[0].src === 'string' ? prod.images[0].src : prod.images[0].src.front}
                                                         quality={100}
                                                         alt='product'
                                                         fill

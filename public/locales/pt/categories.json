@@ -7,11 +7,13 @@
     "t-shirts": "T-Shirts",
     "mugs": "Canecas",
     "hoodies": "Hoodies",
-    "long-sleeves": "Mangas Compridas",
     "sweatshirts": "Suéteres",
     "computer": "Computador",
     "funny": "Engraçado",
     "birthday": "Aniversário",
     "for-couples": "Para Casais",
-    "socks": "Meias"
+    "socks": "Meias",
+    "long-sleeve": "Manga Comprida",
+    "raglan-tees": "Raglan Tees",
+    "promotion": "Promoções"
 }

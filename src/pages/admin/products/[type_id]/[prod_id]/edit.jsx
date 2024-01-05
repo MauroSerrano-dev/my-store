@@ -28,8 +28,6 @@ import Link from 'next/link'
 import PrintifyIdPicker from '@/components/PrintifyIdPicker'
 import ProductPriceInput from '@/components/ProductPriceInput'
 import { LoadingButton } from '@mui/lab'
-import Modal from '@/components/Modal'
-import { SlClose } from "react-icons/sl";
 
 export default withRouter(() => {
     const {
@@ -37,7 +35,6 @@ export default withRouter(() => {
         router,
         session,
         setAdminMenuOpen,
-        windowWidth,
     } = useAppContext()
 
     const [product, setProduct] = useState()
@@ -286,6 +283,7 @@ export default withRouter(() => {
     }
 
     function updateProductField(fieldName, newValue) {
+        console.log(fieldName, newValue)
         setFieldChanged(prev => ({ ...prev, [fieldName]: true }))
         setProduct(prev => ({ ...prev, [fieldName]: newValue }))
     }
@@ -486,7 +484,7 @@ export default withRouter(() => {
     function handleChainArtId() {
         setArtIdChained(prev => {
             if (!prev) //connecting
-                setProduct(prod => ({ ...prod, variants: prod.variants.map(vari => ({ ...vari, art: { ...vari.art, id: prod.id } })) }))
+                setProduct(prod => ({ ...prod, variants: prod.variants.map(vari => ({ ...vari, art: { ...vari.art, id: prod.id.slice(0, prod.id.length - prod.type_id.length - 1) } })) }))
             else //disconnecting
                 setProduct(prod => ({ ...prod, variants: prod.variants.map(vari => ({ ...vari, art: { ...vari.art, id: null } })) }))
             return !prev
@@ -497,10 +495,7 @@ export default withRouter(() => {
         setProduct(prev => (
             {
                 ...prev,
-                variants: prev.variants.map(vari => vari.color_id === prev.colors_ids[colorIndex]
-                    ? { ...vari, art: { ...vari.art, id: event.target.value } }
-                    : vari
-                )
+                variants: prev.variants.map(vari => ({ ...vari, art: { ...vari.art, id: event.target.value } }))
             }
         ))
     }
@@ -594,12 +589,12 @@ export default withRouter(() => {
                                         />
                                         <Selector
                                             label='Collection'
-                                            options={COLLECTIONS.map(coll => ({ value: coll.id, name: coll.title }))}
-                                            value={product.collection_id || ''}
+                                            options={[{ id: 'none', title: 'None' }].concat(COLLECTIONS).map(coll => ({ value: coll.id, name: coll.title }))}
+                                            value={product.collection_id || 'none'}
                                             style={{
                                                 height: 56,
                                             }}
-                                            onChange={event => updateProductField('collection_id', event.target.value)}
+                                            onChange={event => updateProductField('collection_id', event.target.value === 'none' ? null : event.target.value)}
                                             colorText={fieldChanged['collection'] ? 'var(--color-success)' : 'var(--text-color)'}
                                         />
                                         <TagsSelector

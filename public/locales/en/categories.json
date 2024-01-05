@@ -7,11 +7,13 @@
     "t-shirts": "T-Shirts",
     "mugs": "Mugs",
     "hoodies": "Hoodies",
-    "long-sleeves": "Long Sleeves",
     "sweatshirts": "Sweatshirts",
     "computer": "Computer",
     "funny": "Funny",
     "birthday": "Birthday",
     "for-couples": "For Couples",
-    "socks": "Socks"
+    "socks": "Socks",
+    "long-sleeve": "Long Sleeve",
+    "raglan-tees": "Raglan Tees",
+    "promotion": "Promotions"
 }

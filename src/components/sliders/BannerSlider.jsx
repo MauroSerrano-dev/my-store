@@ -28,6 +28,8 @@ export default function BannerSlider(props) {
     const [draggingOffSetTimeOut, setDraggingOffSetTimeOut] = useState()
     const [autoSetTimeOut, setAutoSetTimeOut] = useState()
 
+    const [optionsImagesLoad, setOptionsImagesLoad] = useState([])
+
     const [isDragging, setIsDragging] = useState(false)
     const [antVisualBug, setAntVisualBug] = useState(false)
 
@@ -97,39 +99,39 @@ export default function BannerSlider(props) {
                 ...style,
             }}
         >
-            {images.length > 1
-                ? <motion.div
-                    className={styles.view}
-                    ref={carouselRef}
+            <motion.div
+                className={styles.view}
+                ref={carouselRef}
+            >
+                <motion.div
+                    className={styles.inner}
+                    ref={innerRef}
+                    dragConstraints={carouselRef.current ? carouselRef : { right: 0, left: 0 }}
+                    initial={{ x: 0 }}
+                    animate={{ x: carouselAnchor }}
+                    transition={{ type: 'spring', stiffness: 2000, damping: 400 }}
+                    drag={images.length > 1 ? 'x' : false}
+                    dragElastic={0.25}
+                    dragTransition={{ power: supportsHoverAndPointer ? 0.04 : 0.25, timeConstant: 200 }}
+                    onDragStart={handleDragStart}
+                    onDragEnd={handleDragEnd}
+                    onMouseDown={handleMouseDown}
+                    onTouchStart={handleMouseDown}
+                    style={{
+                        cursor: isDragging ? 'grabbing' : 'grab',
+                    }}
                 >
-                    <motion.div
-                        className={styles.inner}
-                        ref={innerRef}
-                        dragConstraints={carouselRef.current ? carouselRef : { right: 0, left: 0 }}
-                        initial={{ x: 0 }}
-                        animate={{ x: carouselAnchor }}
-                        transition={{ type: 'spring', stiffness: 2000, damping: 400 }}
-                        drag="x"
-                        dragElastic={0.25}
-                        dragTransition={{ power: supportsHoverAndPointer ? 0.04 : 0.25, timeConstant: 200 }}
-                        onDragStart={handleDragStart}
-                        onDragEnd={handleDragEnd}
-                        onMouseDown={handleMouseDown}
-                        onTouchStart={handleMouseDown}
-                        style={{
-                            cursor: isDragging ? 'grabbing' : 'grab',
-                        }}
-                    >
-                        {images.map((img, i) =>
-                            <Link
-                                className={`${styles.bannerImage} noUnderline`}
-                                draggable={false}
-                                href={img.href}
-                                key={i}
-                                style={{
-                                    pointerEvents: isDragging ? 'none' : 'auto'
-                                }}
-                            >
+                    {images.map((img, i) =>
+                        <Link
+                            className={`${styles.bannerImage} noUnderline`}
+                            draggable={false}
+                            href={img.href}
+                            key={i}
+                            style={{
+                                pointerEvents: isDragging ? 'none' : 'auto'
+                            }}
+                        >
+                            <div className=' relative fill'>
                                 <Image
                                     priority
                                     quality={100}
@@ -141,49 +143,45 @@ export default function BannerSlider(props) {
                                     style={{
                                         objectFit: 'cover',
                                         objectPosition: 'top',
+                                        opacity: optionsImagesLoad.includes(i) ? 1 : 0,
                                     }}
+                                    onLoad={() => setOptionsImagesLoad(prev => prev.concat(i))}
                                 />
-                            </Link>
-                        )}
-                    </motion.div>
-                    <div className={styles.options}>
-                        {images.length > 1 && images.map((img, i) =>
-                            <button
-                                key={i}
-                                className={`${styles.option} buttonInvisible`}
-                                onClick={() => handleOptionClick(i)}
-                            >
-                                <div
-                                    className={styles.optionCircle}
-                                    style={{
-                                        backgroundColor: currentImgIndex === i ? 'rgba(255, 255, 255, 1)' : 'rgba(255, 255, 255, 0.5)'
-                                    }}
-                                >
-                                </div>
-                            </button>
-                        )}
-                    </div>
+                                {!optionsImagesLoad.includes(i) &&
+                                    <Skeleton
+                                        variant="rectangular"
+                                        width='100%'
+                                        height='100%'
+                                        sx={{
+                                            backgroundColor: 'rgb(50, 50, 50)',
+                                            position: 'absolute',
+                                            top: 0,
+                                            left: 0,
+                                        }}
+                                    />
+                                }
+                            </div>
+                        </Link>
+                    )}
                 </motion.div>
-                : <Link
-                    className={`${styles.bannerImage} noUnderline`}
-                    draggable={false}
-                    href={images[0].href}
-                >
-                    <Image
-                        priority
-                        quality={100}
-                        src={images[0].src}
-                        sizes='100%'
-                        fill
-                        alt={images[0].alt}
-                        draggable={false}
-                        style={{
-                            objectFit: 'cover',
-                            objectPosition: 'top',
-                        }}
-                    />
-                </Link>
-            }
+                <div className={styles.options}>
+                    {images.length > 1 && images.map((img, i) =>
+                        <button
+                            key={i}
+                            className={`${styles.option} buttonInvisible`}
+                            onClick={() => handleOptionClick(i)}
+                        >
+                            <div
+                                className={styles.optionCircle}
+                                style={{
+                                    backgroundColor: currentImgIndex === i ? 'rgba(255, 255, 255, 1)' : 'rgba(255, 255, 255, 0.5)'
+                                }}
+                            >
+                            </div>
+                        </button>
+                    )}
+                </div>
+            </motion.div>
         </div>
     )
 }

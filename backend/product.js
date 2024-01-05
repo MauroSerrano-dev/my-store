@@ -477,7 +477,6 @@ async function updateProduct(product_id, product_new_fields) {
     const productRes = await getProductById(product_id)
     if (!productRes.product)
         throw new Error({ title: 'Product not found to update', statusCode: 404 })
-
     const existInPrintify = await isProductInPrintify({ ...productRes.product, ...product_new_fields })
     if (!existInPrintify)
         throw new Error({ title: 'Invalid printify id', statusCode: 400 })
@@ -761,9 +760,23 @@ async function createPromotionForProducts(products_ids, promotion) {
             const productRef = doc(productsCollection, product.id)
             const min_price_original = product.promotion?.min_price_original ? product.promotion.min_price_original : product.min_price
             if (promotion.percentage === 0)
-                await updateDoc(productRef, { min_price: min_price_original, promotion: null })
+                await updateDoc(
+                    productRef,
+                    {
+                        min_price: min_price_original,
+                        promotion: null,
+                        tags: product.tags.filter(tag => tag !== 'promotion')
+                    }
+                )
             else
-                await updateDoc(productRef, { min_price: min_price_original * (1 - promotion.percentage), promotion: { ...promotion, min_price_original: min_price_original } })
+                await updateDoc(
+                    productRef,
+                    {
+                        min_price: min_price_original * (1 - promotion.percentage),
+                        promotion: { ...promotion, min_price_original: min_price_original },
+                        tags: product.tags.concat('promotion')
+                    }
+                )
         })
 
         // Waits for all the update promises to complete
@@ -873,6 +886,39 @@ async function getAllActivesProducts() {
     }
 }
 
+async function getProductsAnalytics() {
+    try {
+        const productsCollection = collection(db, process.env.COLL_PRODUCTS);
+
+        // Criando uma consulta para a coleção de produtos
+        const q = query(productsCollection);
+
+        // Executando a consulta e obtendo os documentos
+        const querySnapshot = await getDocs(q);
+
+        // Inicializando contadores
+        let activeCount = 0;
+        let disabledCount = 0;
+
+        // Contando os produtos ativos e desativados
+        querySnapshot.docs.forEach(doc => {
+            if (doc.data().disabled) {
+                disabledCount++;
+            } else {
+                activeCount++;
+            }
+        });
+
+        return {
+            active: activeCount,
+            disabled: disabledCount
+        };
+    } catch (error) {
+        console.error('Error getting products analytics:', error);
+        throw new Error('Error retrieving products analytics');
+    }
+}
+
 export {
     createProduct,
     getProductsByQueries,
@@ -892,4 +938,5 @@ export {
     removeExpiredPromotions,
     getSimilarProducts,
     getAllActivesProducts,
+    getProductsAnalytics,
 }

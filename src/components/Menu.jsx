@@ -249,7 +249,7 @@ export default function Menu(props) {
                                     className={`${styles.menuItem} noUnderline`}
                                 >
                                     <p>
-                                        {optionMenuDelay === 'products' ? tCategories(option.id) : option.id}
+                                        {['products', 'most-searched'].includes(optionMenuDelay) ? tCategories(option.id) : option.id}
                                     </p>
                                 </Link>
                                 : <div
@@ -258,7 +258,7 @@ export default function Menu(props) {
                                     className={styles.menuItem}
                                 >
                                     <p>
-                                        {optionMenuDelay === 'products' ? tCategories(option.id) : option.id}
+                                        {['products', 'most-searched'].includes(optionMenuDelay) ? tCategories(option.id) : option.id}
                                         {option.type === 'forward' &&
                                             <IoIosArrowForward
                                                 className={styles.forwardButton}

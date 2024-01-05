@@ -88,13 +88,13 @@ export default function Selector(props) {
                 {
                     options.map((option, i) =>
                         <MenuItem
-                            value={option.value || option}
+                            value={option.value === undefined ? option : option.value}
                             key={i}
                             sx={{
                                 ...styleOption
                             }}
                         >
-                            {option.name || option}
+                            {option.name === undefined ? option : option.name}
                         </MenuItem>
                     )
                 }

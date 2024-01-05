@@ -155,7 +155,7 @@ export default function SearchBar(props) {
                                 animate='visible'
                             >
                                 <img
-                                    src={option.images[0].src}
+                                    src={typeof option.images[0].src === 'string' ? option.images[0].src : option.images[0].src.front}
                                 />
                                 <p>{option.title}</p>
                             </motion.div>

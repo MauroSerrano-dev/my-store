@@ -81,10 +81,6 @@ export default withRouter(() => {
 
     const productsContainer = useRef(null)
 
-    const themes = h?.split(' ') || []
-    const tags = t?.split(' ') || []
-    const productsOptions = v?.split(' ') || []
-
     useEffect(() => {
         if (router.isReady && userCurrency)
             getProductsByQuery()
@@ -269,37 +265,16 @@ export default withRouter(() => {
             <main className={styles.main}>
                 {!mobile &&
                     <div className={styles.menuFilters}>
-                        <div className={styles.filterBlock}>
-                            <h3>{tSearch(SEARCH_FILTERS.categories.id)}</h3>
-                            {SEARCH_FILTERS.categories.options.map((theme, i) =>
-                                <FormControlLabel
-                                    name={theme}
-                                    label={tCategories(theme)}
-                                    key={i}
-                                    sx={{
-                                        marginTop: -0.6,
-                                        marginBottom: -0.6,
-                                    }}
-                                    control={
-                                        <Checkbox
-                                            checked={themes.includes(theme)}
-                                            onChange={e => handleMultiSelection('h', h, e.target.checked, theme)}
-                                            sx={{
-                                                color: '#ffffff'
-                                            }}
-                                        />
-                                    }
-                                />
-                            )}
-                        </div>
-                        <div className={styles.filterBlock}>
-                            <h3>{tSearch(SEARCH_FILTERS.categories.id)}</h3>
-                            {PRODUCTS_TYPES
-                                .filter((type, index, self) => self.findIndex(t => t.family_id === type.family_id) === index)
-                                .map((product, i) =>
+                        {SEARCH_FILTERS.map((filter, i) =>
+                            <div
+                                className={styles.filterBlock}
+                                key={i}
+                            >
+                                <h3>{tSearch(filter.id)}</h3>
+                                {filter.options.map((option, i) =>
                                     <FormControlLabel
-                                        name={product.family_id}
-                                        label={tCategories(product.family_id)}
+                                        name={option}
+                                        label={tCategories(option)}
                                         key={i}
                                         sx={{
                                             marginTop: -0.6,
@@ -307,8 +282,8 @@ export default withRouter(() => {
                                         }}
                                         control={
                                             <Checkbox
-                                                checked={productsOptions.includes(product.family_id)}
-                                                onChange={e => handleMultiSelection('v', v, e.target.checked, product.family_id)}
+                                                checked={(router.query[filter.query]?.split(' ') || []).includes(option)}
+                                                onChange={e => handleMultiSelection(filter.query, router.query[filter.query], e.target.checked, option)}
                                                 sx={{
                                                     color: '#ffffff'
                                                 }}
@@ -316,30 +291,8 @@ export default withRouter(() => {
                                         }
                                     />
                                 )}
-                        </div>
-                        <div className={styles.filterBlock}>
-                            <h3>{tSearch(SEARCH_FILTERS['most-searched'].id)}</h3>
-                            {SEARCH_FILTERS['most-searched'].options.map((tag, i) =>
-                                <FormControlLabel
-                                    name={tag}
-                                    label={tCategories(tag)}
-                                    key={i}
-                                    sx={{
-                                        marginTop: -0.6,
-                                        marginBottom: -0.6,
-                                    }}
-                                    control={
-                                        <Checkbox
-                                            checked={tags.includes(tag)}
-                                            onChange={e => handleMultiSelection('t', t, e.target.checked, tag)}
-                                            sx={{
-                                                color: '#ffffff'
-                                            }}
-                                        />
-                                    }
-                                />
-                            )}
-                        </div>
+                            </div>
+                        )}
                         <div className={styles.filterBlock}>
                             <h3>{tSearch('product-color')}</h3>
                             <div className={styles.colorsContainer}>

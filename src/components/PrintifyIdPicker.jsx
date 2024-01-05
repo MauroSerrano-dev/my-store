@@ -207,8 +207,7 @@ export default function PrintifyIdPicker(props) {
             >
                 Search
             </MyButton>
-            {
-                modalOpen &&
+            {modalOpen &&
                 <Modal
                     closeModal={handleClose}
                     showModalOpacity={modalOpacity}

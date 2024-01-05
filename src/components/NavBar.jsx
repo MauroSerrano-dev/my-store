@@ -5,7 +5,7 @@ import SearchBar from './SearchBar';
 import AvatarMenu from './buttons-icon/AvatarMenu';
 import CartIcon from './buttons-icon/CartIcon';
 import SearchRoundedIcon from '@mui/icons-material/SearchRounded';
-import { itemsNavBar } from '@/consts';
+import { NAVBAR_ITEMS } from '@/consts';
 import { motion } from "framer-motion";
 import { MenuToggle } from './MenuToggle';
 import { useTranslation } from 'next-i18next';
@@ -37,6 +37,7 @@ export default function NavBar(props) {
     } = useAppContext()
 
     const tNavbar = useTranslation('navbar').t
+    const tCategories = useTranslation('categories').t
 
     return (
         <div className={styles.container}>
@@ -118,15 +119,15 @@ export default function NavBar(props) {
                                     : '100%',
                             }}
                         >
-                            {itemsNavBar.map((item, i) =>
+                            {NAVBAR_ITEMS.map((option, i) =>
                                 <Link
                                     key={i}
-                                    href={`/search?v=${item.value}`}
-                                    aria-label={item.value}
+                                    href={`/search?${option.query}=${option.id}`}
+                                    aria-label={option.id}
                                     className={`noUnderline fillHeight flex center ${styles.titleLink}`}
                                 >
                                     <p className={styles.title}>
-                                        {tNavbar(item.title)}
+                                        {tCategories(option.id).toUpperCase()}
                                     </p>
                                 </Link>
                             )}

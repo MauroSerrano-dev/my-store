@@ -54,7 +54,6 @@ export const ALLOWED_WEBHOOK_STATUS = STEPS.concat(STEPS_ATTEMPT).concat('cancel
 
 export const DEFAULT_PRODUCTS_TAGS = [
     't-shirts',
-    'long-sleeves',
     'games',
     'music',
     'mugs',
@@ -67,24 +66,73 @@ export const CURRENCIES = {
     usd: { code: 'usd', symbol: '$', search_options: [{ max: '20' }, { min: '20', max: '30' }, { min: '30', max: '50' }, { min: '50' }] },
 }
 
-export const SEARCH_FILTERS = {
-    categories: {
+export const NAVBAR_ITEMS = [
+    { id: 't-shirts', query: 'v' },
+    { id: 'hoodies', query: 'v' },
+    { id: 'mugs', query: 'v' },
+    { id: 'sweatshirts', query: 'v' },
+    { id: 'long-sleeve', query: 't' },
+    { id: 'promotion', query: 't' },
+]
+
+export const TAGS_POOL = [
+    'baseball',
+    'bed',
+    'couples',
+    'funny',
+    'glitch',
+    'guitar',
+    'hood',
+    'long-sleeve',
+    'pillow',
+    'raglan',
+    'rock',
+    'tee',
+]
+
+export const THEMES_POOL = [
+    'computer',
+    'games',
+    'halloween',
+    'home',
+    'music',
+    'rpg',
+    'zombies',
+]
+
+export const SEARCH_FILTERS = [
+    {
         id: 'categories',
+        query: 'h',
         options: [
             'computer',
             'games',
             'music',
         ]
     },
-    'most-searched': {
-        id: 'most-searched',
+    {
+        id: 'products',
+        query: 'v',
         options: [
+            't-shirts',
+            'hoodies',
+            'raglan-tees',
+            'sweatshirts',
+            'mugs',
+        ]
+    },
+    {
+        id: 'most-searched',
+        query: 't',
+        options: [
+            'promotion',
+            'long-sleeve',
             'funny',
             'birthday',
             'for-couples',
         ]
     }
-}
+]
 
 export const COLORS_POOL = {
     358: { id: 358, id_string: 'sport-grey', colors: ['#cacaca'] },
@@ -167,81 +215,43 @@ export const PROVIDERS_POOL = {
     87: { id: 87, title: 'Print Logistic' },
 }
 
+export const MENU_OPTIONS = [
+    { id: 'home', type: 'link', href: '/' },
+    { id: 'products', type: 'forward', value: 'products' },
+    { id: 'collections', type: 'forward', value: 'collections' },
+    { id: 'most-searched', type: 'forward', value: 'most-searched' },
+    { id: 'contacts', type: 'link', href: '/contact' },
+    { id: 'support', type: 'link', href: '/support' },
+]
+
 export const COLLECTIONS = [
     { id: 'sound-vibes', title: 'Sound Vibes', color: '#252c5e' },
     { id: 'gamer-life', title: 'Gamer Life', color: null },
 ]
 
-export const MENU_OPTIONS = [
-    { id: 'Home', type: 'link', href: '/' },
-    { id: 'Products', type: 'forward', value: 'products' },
-    { id: 'Collections', type: 'forward', value: 'collections' },
-    { id: 'Support', type: 'link', href: '/support' },
-]
-
 export const MENU_FORWARD_OPTIONS = {
     products: [
         { id: 't-shirts', type: 'link', href: '/search?v=t-shirts' },
+        { id: 'raglan-tees', type: 'link', href: '/search?v=raglan-tees' },
         { id: 'hoodies', type: 'link', href: '/search?v=hoodies' },
+        { id: 'sweatshirts', type: 'link', href: '/search?v=sweatshirts' },
+        { id: 'mugs', type: 'link', href: '/search?v=mugs' },
     ],
-    possibleProducts: [
-        { id: 'T-Shirts', type: 'link', href: '/search?v=t-shirts' },
-        { id: 'Hoodies', type: 'link', href: '/search?v=hoodies' },
-        { id: 'Long Sleeves', type: 'link', href: '/search?v=long+sleeves' },
-        { id: 'Socks', type: 'link', href: '/search?v=socks' },
-        { id: 'Mugs', type: 'link', href: '/search?v=mugs' },
-        { id: 'Phone Cases', type: 'link', href: '/search?v=phone+cases' },
-        { id: 'Pillows', type: 'link', href: '/search?v=pillows' },
-        { id: 'Bottles & Tumblers', type: 'link', href: '/search?v=bottles+tumblers' },
-        { id: 'Hats', type: 'link', href: '/search?v=hats' },
-        { id: 'Blankets', type: 'link', href: '/search?v=blankets' },
-        { id: 'Poster', type: 'link', href: '/search?v=poster' },
-        { id: 'Apron', type: 'link', href: '/search?v=apron' },
-        { id: 'Towels', type: 'link', href: '/search?v=towels' },
-        { id: 'Shoes', type: 'link', href: '/search?v=shoes' },
-        { id: 'Tank Tops', type: 'link', href: '/search?v=tank+tops' },
-        { id: 'Bottoms', type: 'link', href: '/search?v=bottoms' },
-    ],
-    collections: COLLECTIONS.map(coll => ({ id: coll.title, type: 'link', href: `/search?c=${coll.id}` }))
+    collections: COLLECTIONS.map(coll => ({ id: coll.title, type: 'link', href: `/search?c=${coll.id}` })),
+    'most-searched': [
+        { id: 'promotion', type: 'link', href: '/search?t=promotion' },
+        { id: 'long-sleeve', type: 'link', href: '/search?t=long-sleeve' },
+        { id: 'funny', type: 'link', href: '/search?t=funny' },
+        { id: 'for-couples', type: 'link', href: '/search?t=for-couples' },
+    ]
 }
-
-export const TAGS_POOL = [
-    'bed',
-    'couples',
-    'funny',
-    'glitch',
-    'guitar',
-    'hoodie',
-    'pillow',
-    'raglan-long-sleeve',
-    'rock',
-]
-
-export const THEMES_POOL = [
-    'computer',
-    'games',
-    'halloween',
-    'home',
-    'music',
-    'rpg',
-    'zombies',
-]
-
-export const itemsNavBar = [
-    { value: 't-shirts', title: 'T-SHIRTS' },
-    { value: 'hoodies', title: 'HOODIES' },
-    { value: 'mugs', title: 'MUGS' },
-    { value: 'bags', title: 'BAGS' },
-    { value: 'accessories', title: 'ACCESSORIES' },
-    { value: 'pillows', title: 'PILLOWS' },
-    { value: 'socks', title: 'SOCKS' },
-]
 
 export const PRODUCTS_FAMILY = {
     't-shirts': { id: 't-shirts', color: '#1189c4' },
     'hoodies': { id: 'hoodies', color: '#026539' },
-    'long-sleeves': { id: 'long-sleeves', color: '#e0824b' },
     'mugs': { id: 'mugs', color: '#bA2326' },
+    'sweatshirts': { id: 'sweatshirts', color: '#000000' },
+    'socks': { id: 'sweatshirts', color: '#000000' },
 }
 
 export const POPULARITY_POINTS = {
@@ -263,6 +273,7 @@ export const PRODUCTS_TYPES = [
             87: 145,
         },
         icon: '/svgs/products-types/t-shirt_icon.svg',
+        inicial_tags: [],
         key_features: ['without-side', 'ribbed-knit', 'shoulder-tape', 'fabric'],
         care_instructions: ['machine-wash-cold', 'not-dryclean', 'not-bleach', 'tumble-dry-low', 'iron-low'],
         metrics: { width: [45.72, 50.8, 55.88, 60.96, 66.04], length: [71.12, 73.66, 76.2, 78.74, 81.28], sleeve: [20.9, 21.6, 22.2, 22.9, 23.5] },
@@ -822,8 +833,8 @@ export const PRODUCTS_TYPES = [
         ],
     },
     {
-        id: 'long-sleeve',
-        family_id: 'long-sleeves',
+        id: 't-shirt-long-sleeve',
+        family_id: 't-shirts',
         color: '#365486',
         allow_back_variant: true,
         providers: [39, 87],
@@ -831,7 +842,8 @@ export const PRODUCTS_TYPES = [
             39: 80,
             87: 80,
         },
-        icon: '/svgs/products-types/long-sleeve_icon.svg',
+        icon: '/svgs/products-types/t-shirt-long-sleeve_icon.svg',
+        inicial_tags: ['long-sleeve'],
         key_features: ['without-side', 'ribbed-knit', 'shoulder-tape', 'fiber-composition', 'fabric'],
         care_instructions: ['machine-wash-cold', 'not-dryclean', 'bleach', 'tumble-dry-medium', 'not-iron'],
         metrics: { width: [45.70, 50.80, 55.90, 60.90, 66.00], length: [71.10, 73.60, 76.20, 78.70, 81.30], sleeve: [63.50, 64.80, 66.00, 67.30, 68.60] },
@@ -1111,8 +1123,8 @@ export const PRODUCTS_TYPES = [
         ],
     },
     {
-        id: 'raglan-long-sleeve',
-        family_id: 'long-sleeves',
+        id: 'raglan-tee-long-sleeve',
+        family_id: 'raglan-tees',
         color: '#e0824b',
         allow_back_variant: false,
         providers: [43, 6],
@@ -1120,7 +1132,8 @@ export const PRODUCTS_TYPES = [
             43: 79,
             6: 79,
         },
-        icon: '/svgs/products-types/raglan-long-sleeve_icon.svg',
+        icon: '/svgs/products-types/raglan-tee-long-sleeve_icon.svg',
+        inicial_tags: ['long-sleeve', 'raglan', 'tee', 'baseball'],
         key_features: ['with-side', 'polyester', 'ribbed-knit', 'fiber-composition'],
         care_instructions: ['machine-wash-warm', 'not-dryclean', 'not-bleach', 'tumble-dry-low', 'iron-low'],
         metrics: { width: [44.8, 49.8, 54.9, 60, 65.1], length: [68.9, 71.4, 74, 76.5, 79.1], sleeve: [60.2, 62.1, 64, 65.9, 67.8] },
@@ -1595,6 +1608,7 @@ export const PRODUCTS_TYPES = [
             87: 49,
         },
         icon: '/svgs/products-types/sweatshirt_icon.svg',
+        inicial_tags: ['long-sleeve'],
         metrics: { width: [50.8, 55.9, 60.96, 66.04, 71.12], length: [68.58, 71.12, 73.66, 76.2, 78.74], 'sleeve-from': [85.09, 87.63, 90.17, 92.71, 95.25] },
         sizes: [14, 15, 16, 17, 18],
         colors: [521, 451, 418, 421, 358, 416, 367, 392, 425, 511, 433, 423],
@@ -2394,6 +2408,7 @@ export const PRODUCTS_TYPES = [
             26: 77,
         },
         icon: '/svgs/products-types/hoodie_icon.svg',
+        inicial_tags: ['long-sleeve', 'hood'],
         key_features: ['without-side', 'spacious-pockets', 'drawstring-hood', 'cotton-polyester'],
         care_instructions: ['machine-wash-warm', 'not-dryclean', 'bleach', 'tumble-dry-medium', 'iron-low'],
         metrics: { width: [51, 56, 61, 66, 71.1], length: [69, 71, 74, 76, 79], 'sleeve-from': [85.09, 87.63, 90.17, 92.71, 95.25] },
@@ -2762,6 +2777,7 @@ export const PRODUCTS_TYPES = [
             1: 376,
         },
         icon: '/svgs/products-types/socks_icon.svg',
+        inicial_tags: [],
         key_features: ['fleece-lining', 'crew-length'],
         care_instructions: ['machine-wash-cold', 'not-dryclean', 'not-bleach', 'dry-flat', 'not-iron'],
         metrics: { total_length: [33, 39, 41], width: [10, 10, 10] },
@@ -2811,6 +2827,7 @@ export const PRODUCTS_TYPES = [
             87: 1020,
         },
         icon: '/svgs/products-types/mug_icon.svg',
+        inicial_tags: [],
         key_features: ['microwave-safe', 'dishwasher-safe'],
         care_instructions: ['clean'],
         metrics: { height: [9.7], diameter: [8.1] },
@@ -2843,6 +2860,7 @@ export const PRODUCTS_TYPES = [
             87: 1019,
         },
         icon: '/svgs/products-types/mug-c_icon.svg',
+        inicial_tags: [],
         key_features: ['microwave-safe', 'dishwasher-safe'],
         care_instructions: ['clean'],
         metrics: { height: [9.7], diameter: [8.5] },
@@ -3050,7 +3068,7 @@ export function getShippingOptions(product_type, country) {
             currency: 'usd'
         }
     }
-    if (product_type === 'long-sleeve') {
+    if (product_type === 't-shirt-long-sleeve') {
         if (country === 'US') {
             return {
                 provider_id: 39,
@@ -3130,7 +3148,7 @@ export function getShippingOptions(product_type, country) {
             currency: 'usd'
         }
     }
-    if (product_type === 'raglan-long-sleeve') {
+    if (product_type === 'raglan-tee-long-sleeve') {
         if (country === 'US') {
             return {
                 provider_id: 43,

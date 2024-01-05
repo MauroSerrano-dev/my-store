@@ -1,10 +1,11 @@
 {
-    "Home": "Início",
-    "Products": "Produtos",
-    "Collections": "Coleções",
-    "Support": "Suporte",
-    "About us": "Sobre nós",
+    "home": "Início",
+    "products": "Produtos",
+    "collections": "Coleções",
+    "support": "Suporte",
     "welcome": "Bem vindo(a)!",
-    "Hello": "Olá",
-    "or": "ou"
+    "hello": "Olá",
+    "or": "ou",
+    "contacts": "Contactos",
+    "most-searched": "Mais Pesquisados"
 }
