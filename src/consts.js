@@ -823,7 +823,7 @@ export const PRODUCTS_TYPES = [
     {
         id: 'long-sleeve',
         family_id: 'long-sleeves',
-        color: '#1189c4',
+        color: '#365486',
         allow_back_variant: true,
         providers: [39, 87],
         blueprint_ids: {
