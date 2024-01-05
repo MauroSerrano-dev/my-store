@@ -12,4 +12,7 @@ module.exports = {
     ],
   },
   reactStrictMode: false,
+  experimental: {
+    optimizeFonts: false,
+  },
 }
