@@ -79,6 +79,28 @@ export function convertTimestampToFormatDate(timestamp, locale) {
     return format(date, model, { locale: selectedLocale })
 }
 
+export function convertTimestampToFormatDateSeconds(timestamp, locale) {
+    const date = new Date(timestamp.seconds * 1000 + timestamp.nanoseconds * 0.000001);
+
+    let selectedLocale = en;
+    let model = 'PPpp'; // Formato padrão para 'en'
+
+    if (locale === 'es') {
+        selectedLocale = es;
+        model = 'd \'de\' MMMM \'de\' yyyy, HH:mm:ss'; // Formato para espanhol
+    }
+    else if (locale === 'pt-BR') {
+        selectedLocale = ptBR;
+        model = 'd \'de\' MMMM \'de\' yyyy, HH:mm:ss'; // Formato para português do Brasil
+    }
+    else if (locale === 'pt') {
+        selectedLocale = ptPT;
+        model = 'd \'de\' MMMM \'de\' yyyy, HH:mm:ss'; // Formato para português de Portugal
+    }
+
+    return format(date, model, { locale: selectedLocale });
+}
+
 export function convertTimestampToFormatDateNoYear(timestamp, locale) {
     const date = new Date(timestamp.seconds * 1000 + timestamp.nanoseconds * 0.000001)
 

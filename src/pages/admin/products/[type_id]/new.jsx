@@ -29,7 +29,7 @@ import ProductPriceInput from '@/components/ProductPriceInput'
 const INICIAL_PRODUCT = {
     id: '',
     title: '',
-    collection_id: '',
+    collection_id: null,
     disabled: true,
     colors: [],
     sizes: [],
@@ -79,7 +79,8 @@ export default withRouter(() => {
                     {
                         ...prev,
                         printify_ids: tp.providers.reduce((acc, prov_id) => ({ ...acc, [prov_id]: '' }), {}),
-                        sizes: SIZES_POOL.filter(sz => tp.sizes.includes(sz.id))
+                        sizes: SIZES_POOL.filter(sz => tp.sizes.includes(sz.id)),
+                        tags: tp.inicial_tags,
                     }
                 ))
                 setType(tp)
@@ -110,7 +111,7 @@ export default withRouter(() => {
                 product: {
                     ...product_copy,
                     id: product.id + '-' + type.id,
-                    collection_id: product.collection_id || null,
+                    collection_id: product.collection_id,
                     type_id: type.id,
                     family_id: type.family_id,
                     title_lower_case: product.title.toLowerCase(),
@@ -490,10 +491,7 @@ export default withRouter(() => {
         setProduct(prev => (
             {
                 ...prev,
-                variants: prev.variants.map(vari => vari.color_id === prev.colors[colorIndex].id
-                    ? { ...vari, art: { ...vari.art, id: event.target.value } }
-                    : vari
-                )
+                variants: prev.variants.map(vari => ({ ...vari, art: { ...vari.art, id: event.target.value } }))
             }
         ))
     }
@@ -614,13 +612,13 @@ export default withRouter(() => {
                                         />
                                         <Selector
                                             label='Collection'
-                                            options={COLLECTIONS.map(coll => ({ value: coll.id, name: coll.title }))}
-                                            value={product.collection_id}
+                                            options={[{ id: 'none', title: 'None' }].concat(COLLECTIONS).map(coll => ({ value: coll.id, name: coll.title }))}
+                                            value={product.collection_id || 'none'}
                                             style={{
                                                 height: 56,
                                                 color: 'var(--color-success)'
                                             }}
-                                            onChange={event => updateProductField('collection_id', event.target.value)}
+                                            onChange={event => updateProductField('collection_id', event.target.value === 'none' ? null : event.target.value)}
                                         />
                                         <TagsSelector
                                             options={THEMES_POOL}

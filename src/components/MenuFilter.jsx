@@ -110,51 +110,25 @@ export default function MenuFilter(props) {
                             }}
                         />
                     </button>
-                    <div className={styles.section}>
-                        <h3>{tSearch(SEARCH_FILTERS.categories.id)}</h3>
-                        <div className={styles.options}>
-                            {SEARCH_FILTERS.categories.options.map((cat, i) =>
-                                <button
-                                    className={`${styles.option} ${h?.split(' ').includes(cat) ? styles.optionActive : ''}`}
-                                    onClick={() => handleMultiSelection('h', h, !h?.split(' ').includes(cat), cat)}
-                                    key={i}
-                                >
-                                    {tCategories(cat)}
-                                </button>
-                            )}
-                        </div>
-                    </div>
-                    <div className={styles.section}>
-                        <h3>{tSearch('products')}</h3>
-                        <div className={styles.options}>
-                            {PRODUCTS_TYPES
-                                .filter((type, index, self) => self.findIndex(t => t.family_id === type.family_id) === index)
-                                .map((type, i) =>
+                    {SEARCH_FILTERS.map((filter, i) =>
+                        <div
+                            className={styles.section}
+                            key={i}
+                        >
+                            <h3>{tSearch(filter.id)}</h3>
+                            <div className={styles.options}>
+                                {filter.options.map((option, i) =>
                                     <button
-                                        className={`${styles.option} ${v?.split(' ').includes(type.family_id) ? styles.optionActive : ''}`}
-                                        onClick={() => handleMultiSelection('v', v, !v?.includes(type.family_id), type.family_id)}
+                                        className={`${styles.option} ${router.query[filter.query]?.split(' ').includes(option) ? styles.optionActive : ''}`}
+                                        onClick={() => handleMultiSelection(filter.query, router.query[filter.query], !router.query[filter.query]?.split(' ').includes(option), option)}
                                         key={i}
                                     >
-                                        {tCategories(type.family_id)}
+                                        {tCategories(option)}
                                     </button>
-                                )
-                            }
+                                )}
+                            </div>
                         </div>
-                    </div>
-                    <div className={styles.section}>
-                        <h3>{tSearch(SEARCH_FILTERS['most-searched'].id)}</h3>
-                        <div className={styles.options}>
-                            {SEARCH_FILTERS['most-searched'].options.map((cat, i) =>
-                                <button
-                                    className={`${styles.option} ${t?.includes(cat) ? styles.optionActive : ''}`}
-                                    onClick={() => handleMultiSelection('t', t, !t?.includes(cat), cat)}
-                                    key={i}
-                                >
-                                    {tCategories(cat)}
-                                </button>
-                            )}
-                        </div>
-                    </div>
+                    )}
                     <div className={styles.section}>
                         <h3>Product Color</h3>
                         <div className={styles.options}>

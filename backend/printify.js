@@ -55,23 +55,18 @@ async function filterNotInPrintify(cartItems) {
     return notInPrintify;
 }
 
-function isProductInPrintifyData(printifyProducts, product) {
-    return Object.values(product.printify_ids).every(printifyId =>
-        typeof printifyId === 'string'
-            ? printifyProducts.some(p => p.id === printifyId)
-            : printifyProducts.some(p => p.id === printifyId.front) && printifyProducts.some(p => p.id === printifyId.back)
-    );
-}
-
 async function isProductInPrintify(product) {
     let currentPage = 1;
     let lastPage = false;
+    let printify_ids = typeof Object.values(product.printify_ids)[0] === 'string'
+        ? Object.values(product.printify_ids)
+        : Object.values(product.printify_ids).reduce((acc, ids) => acc.concat(Object.values(ids)), [])
 
     while (!lastPage) {
         const { data } = await fetchPrintifyProducts(currentPage);
-        if (isProductInPrintifyData(data, product)) {
-            return true;
-        }
+        printify_ids = printify_ids.filter(id => !data.map(print_prod => print_prod.id).includes(id))
+        if (printify_ids.length === 0)
+            return true
         lastPage = data.length === 0;
         currentPage++;
     }

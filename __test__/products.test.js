@@ -23,6 +23,7 @@ describe('Product Types Tests', () => {
       expect(type).toHaveProperty('providers');
       expect(type).toHaveProperty('blueprint_ids');
       expect(type).toHaveProperty('icon');
+      expect(type).toHaveProperty('inicial_tags');
       expect(type).toHaveProperty('key_features');
       expect(type).toHaveProperty('care_instructions');
       expect(type).toHaveProperty('metrics');

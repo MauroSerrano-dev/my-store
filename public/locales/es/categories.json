@@ -7,11 +7,13 @@
     "t-shirts": "Camisetas",
     "mugs": "Tazas",
     "hoodies": "Sudaderas con capucha",
-    "long-sleeves": "Mangas Largas",
     "sweatshirts": "Sudaderas",
     "computer": "Computadora",
     "funny": "Divertido",
     "birthday": "Cumpleaños",
     "for-couples": "Para Parejas",
-    "socks": "Calcetines"
+    "socks": "Calcetines",
+    "long-sleeve": "Manga Larga",
+    "raglan-tees": "Camisetas Raglán",
+    "promotion": "Promociones"
 }

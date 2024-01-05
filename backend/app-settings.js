@@ -5,9 +5,33 @@ import {
     getDoc,
     setDoc,
     updateDoc,
+    collection,
+    getDocs,
 } from "firebase/firestore"
 import Error from "next/error"
 import { db } from "../firebaseInit"
+
+async function getAppSettings() {
+    try {
+        const settingsCollectionRef = collection(db, process.env.COLL_APP_SETTINGS);
+
+        // Executando a consulta para obter todos os documentos na coleção de configurações
+        const querySnapshot = await getDocs(settingsCollectionRef);
+
+        const allSettings = querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+
+        if (allSettings.length > 0) {
+            console.log('Settings collections retrieved successfully.');
+            return allSettings;
+        } else {
+            console.log('No settings found in the collection.');
+            return [];
+        }
+    } catch (error) {
+        console.error('Error retrieving settings collections:', error);
+        throw new Error(`Error retrieving settings collections: ${error}`);
+    }
+}
 
 async function getAllCurrencies() {
     try {
@@ -142,6 +166,7 @@ async function handleStripeWebhookFail(callId) {
 }
 
 export {
+    getAppSettings,
     updateAllCurrencies,
     getAllCurrencies,
     addUserDeleted,
