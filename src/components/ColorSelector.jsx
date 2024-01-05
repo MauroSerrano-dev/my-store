@@ -1,4 +1,4 @@
-import ColorButton from './ColorButton';
+import ColorButton from './ColorButton'
 
 export default function ColorSelector(props) {
     const {
