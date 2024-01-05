@@ -3,6 +3,7 @@
     "metric": "Métrico",
     "width": "Largura",
     "length": "Comprimento",
+    "total_length": "Comprimento Total",
     "sleeve": "Comprimento da Manga",
     "sleeve-from": "Comprimento da manga a partir do centro das costas",
     "in": "pol",

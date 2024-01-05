@@ -65,12 +65,17 @@ export default function ProductsId() {
             method: 'GET',
             headers: {
                 authorization: process.env.NEXT_PUBLIC_APP_TOKEN,
-                y: router.query.type_id,
-                p: router.query.p,
                 join_disabled: true,
-                i: searchInput,
             }
         }
+        if (router.query.type_id === 'all')
+            options.headers.all = router.query.type_id
+        if (router.query.type_id)
+            options.headers.y = router.query.type_id
+        if (router.query.p)
+            options.headers.p = router.query.p
+        if (searchInput)
+            options.headers.i = searchInput
 
         fetch("/api/products-by-queries", options)
             .then(response => response.json())
@@ -379,7 +384,7 @@ export default function ProductsId() {
                                 )}
                             />
                         }
-                        {router.query.type_id &&
+                        {PRODUCTS_TYPES.find(tp => tp.id === router.query.type_id) &&
                             <Link
                                 href={`/admin/products/${router.query.type_id}/new`}
                                 style={{

@@ -70,9 +70,11 @@ export default function Home() {
       method: 'GET',
       headers: {
         authorization: process.env.NEXT_PUBLIC_APP_TOKEN,
-        [query]: id
       }
     }
+
+    if (query && id)
+      options.headers[query] = id
 
     const products = await fetch("/api/products-by-queries", options)
       .then(response => response.json())

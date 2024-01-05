@@ -15,6 +15,10 @@
     gap: 0.5rem;
 }
 
+.options {
+    width: 700px;
+}
+
 .pageButton {
     color: var(--text-white) !important;
 }

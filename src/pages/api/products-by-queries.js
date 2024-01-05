@@ -24,6 +24,7 @@ export default async function handler(req, res) {
             cl, //product color
             ac, //art color
             p, //número da página
+            all, //call all products
             min, //preço mínimo
             max, //preço máximo
             order,
@@ -34,7 +35,7 @@ export default async function handler(req, res) {
 
         let response
 
-        if (!s && !t && !h && !v && !c && !cl && !ac && !min && !max && !y) {
+        if (all || (!i && !s && !t && !h && !v && !c && !cl && !ac && !min && !max && !y)) {
             response = await getAllProducts({
                 order: order,
                 prods_limit: limit,
@@ -52,7 +53,7 @@ export default async function handler(req, res) {
                 c: c,
                 cl: SEARCH_PRODUCT_COLORS.find(color => color.color_display.id_string === cl),
                 ac: SEARCH_ART_COLORS.find(color => color.color_display.id_string === ac),
-                p: p === 'undefined' ? undefined : p,
+                p: p,
                 min: min,
                 max: max,
                 order: order,

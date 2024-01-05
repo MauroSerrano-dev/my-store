@@ -303,12 +303,12 @@ async function getProductsByQueries(props) {
 
         // Filtre by max price (se presente)
         if (min) {
-            q = query(q, where("min_price", ">=", parseFloat(min.concat('00'))))
+            q = query(q, where("min_price", ">=", parseFloat(min) * 100))
         }
 
         // Filtre by min price (se presente)
         if (max) {
-            q = query(q, where("min_price", "<=", parseFloat(max.concat('00'))))
+            q = query(q, where("min_price", "<=", parseFloat(max) * 100))
         }
 
         const orders = new Map([

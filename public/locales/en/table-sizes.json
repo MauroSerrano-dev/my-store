@@ -3,6 +3,7 @@
     "metric": "Metric",
     "width": "Width",
     "length": "Length",
+    "total_length": "Total Length",
     "sleeve": "Sleeve Length",
     "sleeve-from": "Sleeve length from center back",
     "in": "in",

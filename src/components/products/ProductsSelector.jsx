@@ -1,5 +1,4 @@
 import { PRODUCTS_TYPES } from '@/consts'
-import { useAppContext } from '../contexts/AppContext'
 import { useTranslation } from 'next-i18next'
 import Link from 'next/link'
 import styles from '@/styles/components/products/ProductsSelector.module.css'
@@ -10,10 +9,7 @@ export default function ProductsSelector(props) {
         url = ''
     } = props
 
-    const {
-    } = useAppContext()
-
-    const tCategories = useTranslation('categories').t
+    const tCommon = useTranslation('common').t
 
     return (
         <div className={styles.container}>
@@ -34,10 +30,18 @@ export default function ProductsSelector(props) {
                         />
                     </div>
                     <p>
-                        {tCategories(type.family_id).concat(type.id === 'mug-c' ? '-C' : '')}
+                        {tCommon(type.id)}
                     </p>
                 </Link>
             )}
+            <Link
+                className={`${styles.option} ${styles.optionAll} noUnderline`}
+                href={`${url}/all`}
+            >
+                <p>
+                    All
+                </p>
+            </Link>
         </div>
     )
 }

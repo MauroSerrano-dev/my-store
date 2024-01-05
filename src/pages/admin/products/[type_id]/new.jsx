@@ -900,7 +900,6 @@ export default withRouter(() => {
                                     size='large'
                                     style={{
                                         width: '100%',
-                                        color: '#ffffff',
                                     }}
                                 >
                                     Create Product

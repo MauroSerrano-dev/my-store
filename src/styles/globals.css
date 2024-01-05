@@ -98,6 +98,7 @@ button {
   -webkit-user-select: none;
   -webkit-tap-highlight-color: transparent;
   user-select: none;
+  font-family: '__Montserrat_cce811', '__Montserrat_Fallback_cce811';
 }
 
 textarea,
