@@ -19,5 +19,7 @@
     "unable_to_create": "You will be unable to create a new account with this email for 30 days.",
     "delete_account": "Delete Account",
     "danger_zone": "Danger Zone",
-    "send_verification_email": "Send verification email"
+    "send_verification_email": "Send verification email",
+    "information_block_title": "Informations",
+    "welcome": "Welcome"
 }

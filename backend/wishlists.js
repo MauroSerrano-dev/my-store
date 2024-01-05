@@ -1,12 +1,6 @@
-import { doc, getDoc, getFirestore, updateDoc, Timestamp, setDoc, getDocs, query, collection, where, deleteDoc } from "firebase/firestore";
-import { initializeApp } from 'firebase/app'
-import { firebaseConfig } from "../firebase.config"
-import { mergeProducts } from "@/utils";
+import { doc, getDoc, updateDoc, Timestamp, setDoc, getDocs, query, collection, where, deleteDoc } from "firebase/firestore";
 import Error from "next/error";
-
-initializeApp(firebaseConfig)
-
-const db = getFirestore()
+import { db } from "../firebaseInit";
 
 async function getWishlistById(id) {
     const wishlistRef = doc(db, process.env.COLL_WISHLISTS, id)

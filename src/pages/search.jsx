@@ -6,7 +6,7 @@ import Link from 'next/link'
 import Selector from '@/components/material-ui/Selector'
 import { Checkbox, FormControlLabel, Pagination, PaginationItem } from '@mui/material'
 import Footer from '@/components/Footer'
-import { SEARCH_PRODUCT_COLORS, SEARCH_ART_COLORS, SEARCH_FILTERS, COMMON_TRANSLATES, LIMITS, PRODUCTS_TYPES } from '@/consts'
+import { SEARCH_PRODUCT_COLORS, SEARCH_ART_COLORS, SEARCH_FILTERS, COMMON_TRANSLATES, LIMITS, PRODUCTS_TYPES, CURRENCIES } from '@/consts'
 import ColorButton from '@/components/ColorButton'
 import Tag from '@/components/material-ui/Tag'
 import CircleIcon from '@mui/icons-material/Circle';
@@ -46,9 +46,11 @@ export default withRouter(() => {
     } = useAppContext()
 
     const {
+        i,
         s,
         t,
         h,
+        y,
         c,
         min,
         max,
@@ -69,7 +71,6 @@ export default withRouter(() => {
 
     const [products, setProducts] = useState()
     const [productWidth, setProductWidth] = useState(0)
-    const [productsPerLine, setProductsPerLine] = useState(0)
     const [productsKey, setProductsKey] = useState(0)
     const [lastPage, setLastPage] = useState()
     const [filtersOpen, setFiltersOpen] = useState(false)
@@ -85,9 +86,9 @@ export default withRouter(() => {
     const productsOptions = v?.split(' ') || []
 
     useEffect(() => {
-        if (router.isReady)
+        if (router.isReady && userCurrency)
             getProductsByQuery()
-    }, [router])
+    }, [router, userCurrency])
 
     useEffect(() => {
         function handleResize() {
@@ -124,11 +125,38 @@ export default withRouter(() => {
             method: 'GET',
             headers: {
                 authorization: process.env.NEXT_PUBLIC_APP_TOKEN,
-                limit: limit,
-                user_language: i18n.language,
-                ...router.query,
             }
         }
+        if (limit)
+            options.headers.limit = limit
+        if (i18n.language)
+            options.headers.user_language = i18n.language
+        if (p)
+            options.headers.p = p
+        if (i)
+            options.headers.i = i
+        if (s)
+            options.headers.s = s
+        if (t)
+            options.headers.t = t
+        if (h)
+            options.headers.h = h
+        if (y)
+            options.headers.y = y
+        if (v)
+            options.headers.v = v
+        if (c)
+            options.headers.c = c
+        if (cl)
+            options.headers.cl = cl
+        if (ac)
+            options.headers.ac = ac
+        if (min)
+            options.headers.min = Number(min / userCurrency.rate)
+        if (max)
+            options.headers.max = Number(max / userCurrency.rate)
+        if (order)
+            options.headers.order = order
 
         fetch("/api/products-by-queries", options)
             .then(response => response.json())
@@ -368,46 +396,24 @@ export default withRouter(() => {
                             >
                                 {tSearch('any-price')}
                             </Link>
-                            <Link
-                                href={{
-                                    pathname: router.pathname,
-                                    query: getQueries({ max: 15 }, ['min'])
-                                }}
-                                scroll={false}
-                                className={`${!min && max === '15' ? styles.optionActive : ''} noUnderline`}
-                            >
-                                {tSearch('up-to', { currencySymbol: userCurrency?.symbol, max: 15 })}
-                            </Link>
-                            <Link
-                                href={{
-                                    pathname: router.pathname,
-                                    query: getQueries({ min: '15', max: '25' })
-                                }}
-                                scroll={false}
-                                className={`${min === '15' && max === '25' ? styles.optionActive : ''} noUnderline`}
-                            >
-                                {tSearch('to', { currencySymbol: userCurrency?.symbol, min: 15, max: 25 })}
-                            </Link>
-                            <Link
-                                href={{
-                                    pathname: router.pathname,
-                                    query: getQueries({ min: '25', max: '40' })
-                                }}
-                                scroll={false}
-                                className={`${min === '25' && max === '40' ? styles.optionActive : ''} noUnderline`}
-                            >
-                                {tSearch('to', { currencySymbol: userCurrency?.symbol, min: 25, max: 40 })}
-                            </Link>
-                            <Link
-                                href={{
-                                    pathname: router.pathname,
-                                    query: getQueries({ min: '40' }, ['max'])
-                                }}
-                                scroll={false}
-                                className={`${min === '40' && !max ? styles.optionActive : ''} noUnderline`}
-                            >
-                                {tSearch('above', { currencySymbol: userCurrency?.symbol, min: 40 })}
-                            </Link>
+                            {userCurrency && CURRENCIES[userCurrency.code].search_options.map((option, i) =>
+                                <Link
+                                    key={i}
+                                    href={{
+                                        pathname: router.pathname,
+                                        query: getQueries(option, ['max', 'min'].filter(ele => !Object.keys(option).includes(ele)))
+                                    }}
+                                    scroll={false}
+                                    className={`${option.min === min && option.max === max ? styles.optionActive : ''} noUnderline`}
+                                >
+                                    {!option.min && option.max
+                                        ? tSearch('up-to', { currencySymbol: userCurrency?.symbol, max: option.max })
+                                        : option.min && option.max
+                                            ? tSearch('to', { currencySymbol: userCurrency?.symbol, min: option.min, max: option.max })
+                                            : tSearch('above', { currencySymbol: userCurrency?.symbol, min: option.min })
+                                    }
+                                </Link>
+                            )}
                             <div className={styles.priceFilterInputs}>
                                 <div className={styles.minMaxPrefix}>
                                     <span>
@@ -506,7 +512,7 @@ export default withRouter(() => {
                                 </h1>
                             }
                             {!mobile &&
-                                < div className={styles.tagsContainer}>
+                                <div className={styles.tagsContainer}>
                                     {Object.keys(router.query).filter(key => QUERIES[key]?.show).map(key => router.query[key].split(' ').map((value, i) =>
                                         <Tag
                                             key={i}
@@ -619,7 +625,7 @@ export default withRouter(() => {
                         />
                     }
                 </div>
-            </main>
+            </main >
             <MenuFilter
                 show={mobile && filtersOpenDelay}
                 open={filtersOpen}
@@ -630,7 +636,7 @@ export default withRouter(() => {
             {productWidth &&
                 <Footer />
             }
-        </div>
+        </div >
     )
 })
 

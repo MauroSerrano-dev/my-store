@@ -3,7 +3,7 @@ import { motion } from "framer-motion";
 import Link from 'next/link';
 import { useEffect } from 'react';
 import { SlClose } from "react-icons/sl";
-import { PRODUCTS_TYPES, SEARCH_PRODUCT_COLORS, SEARCH_ART_COLORS, SEARCH_FILTERS } from '@/consts';
+import { PRODUCTS_TYPES, SEARCH_PRODUCT_COLORS, SEARCH_ART_COLORS, SEARCH_FILTERS, CURRENCIES } from '@/consts';
 import ColorButton from './ColorButton';
 import { useAppContext } from './contexts/AppContext';
 import { useTranslation } from 'next-i18next';
@@ -19,6 +19,7 @@ export default function MenuFilter(props) {
 
     const {
         router,
+        userCurrency,
     } = useAppContext()
 
     const {
@@ -114,10 +115,7 @@ export default function MenuFilter(props) {
                         <div className={styles.options}>
                             {SEARCH_FILTERS.categories.options.map((cat, i) =>
                                 <button
-                                    className={styles.option}
-                                    style={{
-                                        backgroundColor: h?.split(' ').includes(cat) ? 'var(--primary)' : 'var(--filter-tag-color)'
-                                    }}
+                                    className={`${styles.option} ${h?.split(' ').includes(cat) ? styles.optionActive : ''}`}
                                     onClick={() => handleMultiSelection('h', h, !h?.split(' ').includes(cat), cat)}
                                     key={i}
                                 >
@@ -133,10 +131,7 @@ export default function MenuFilter(props) {
                                 .filter((type, index, self) => self.findIndex(t => t.family_id === type.family_id) === index)
                                 .map((type, i) =>
                                     <button
-                                        className={styles.option}
-                                        style={{
-                                            backgroundColor: v?.split(' ').includes(type.family_id) ? 'var(--primary)' : 'var(--filter-tag-color)'
-                                        }}
+                                        className={`${styles.option} ${v?.split(' ').includes(type.family_id) ? styles.optionActive : ''}`}
                                         onClick={() => handleMultiSelection('v', v, !v?.includes(type.family_id), type.family_id)}
                                         key={i}
                                     >
@@ -151,10 +146,7 @@ export default function MenuFilter(props) {
                         <div className={styles.options}>
                             {SEARCH_FILTERS['most-searched'].options.map((cat, i) =>
                                 <button
-                                    className={styles.option}
-                                    style={{
-                                        backgroundColor: t?.includes(cat) ? 'var(--primary)' : 'var(--filter-tag-color)'
-                                    }}
+                                    className={`${styles.option} ${t?.includes(cat) ? styles.optionActive : ''}`}
                                     onClick={() => handleMultiSelection('t', t, !t?.includes(cat), cat)}
                                     key={i}
                                 >
@@ -167,21 +159,19 @@ export default function MenuFilter(props) {
                         <h3>Product Color</h3>
                         <div className={styles.options}>
                             {SEARCH_PRODUCT_COLORS.map((color, i) =>
-                                <Link
-                                    scroll={false}
-                                    href={{
-                                        pathname: router.pathname,
-                                        query: color.color_display.id_string === cl
-                                            ? getQueries({}, ['cl'])
-                                            : getQueries({ cl: color.color_display.id_string })
-                                    }}
+                                <ColorButton
                                     key={i}
-                                >
-                                    <ColorButton
-                                        selected={cl === color.color_display.id_string}
-                                        color={{ title: color.color_display.title, colors: [color.color_display.color] }}
-                                    />
-                                </Link>
+                                    selected={cl === color.color_display.id_string}
+                                    color={{ title: color.color_display.title, colors: [color.color_display.color] }}
+                                    onClick={() =>
+                                        router.push({
+                                            pathname: router.pathname,
+                                            query: color.color_display.id_string === cl
+                                                ? getQueries({}, ['cl'])
+                                                : getQueries({ cl: color.color_display.id_string })
+                                        }, undefined, { scroll: false })
+                                    }
+                                />
                             )}
                         </div>
                     </div>
@@ -189,21 +179,59 @@ export default function MenuFilter(props) {
                         <h3>Art Color</h3>
                         <div className={styles.options}>
                             {SEARCH_ART_COLORS.map((color, i) =>
-                                <Link
-                                    scroll={false}
-                                    href={{
-                                        pathname: router.pathname,
-                                        query: color.color_display.id_string === ac
-                                            ? getQueries({}, ['ac'])
-                                            : getQueries({ ac: color.color_display.id_string })
-                                    }}
+                                <ColorButton
                                     key={i}
+                                    selected={ac === color.color_display.id_string}
+                                    color={{ title: color.color_display.title, colors: [color.color_display.color] }}
+                                    onClick={() =>
+                                        router.push({
+                                            pathname: router.pathname,
+                                            query: color.color_display.id_string === ac
+                                                ? getQueries({}, ['ac'])
+                                                : getQueries({ ac: color.color_display.id_string })
+                                        }, undefined, { scroll: false })
+                                    }
+                                />
+                            )}
+                        </div>
+                    </div>
+                    <div className={styles.section}>
+                        <h3>{tSearch('price')}</h3>
+                        <div className={styles.options}>
+                            <button
+                                className={`${styles.option} ${!min && !max ? styles.optionActive : ''}`}
+                                onClick={() => {
+                                    if (min || max) {
+                                        router.push({
+                                            pathname: router.pathname,
+                                            query: getQueries({}, ['min', 'max'])
+                                        }, undefined, { scroll: false })
+                                    }
+                                }}
+                            >
+                                {tSearch('any-price')}
+                            </button>
+                            {userCurrency && CURRENCIES[userCurrency.code].search_options.map((option, i) =>
+                                <button
+                                    key={i}
+                                    onClick={() =>
+                                        router.push({
+                                            pathname: router.pathname,
+                                            query: option.min === min && option.max === max
+                                                ? getQueries({}, ['min', 'max'])
+                                                : getQueries(option, ['min', 'max'].filter(ele => !Object.keys(option).includes(ele)))
+                                        }, undefined, { scroll: false })
+                                    }
+                                    className={`${styles.option} ${option.min === min && option.max === max ? styles.optionActive : ''}`}
+
                                 >
-                                    <ColorButton
-                                        selected={ac === color.color_display.id_string}
-                                        color={{ title: color.color_display.title, colors: [color.color_display.color] }}
-                                    />
-                                </Link>
+                                    {!option.min && option.max
+                                        ? tSearch('up-to', { currencySymbol: userCurrency?.symbol, max: option.max })
+                                        : option.min && option.max
+                                            ? tSearch('to', { currencySymbol: userCurrency?.symbol, min: option.min, max: option.max })
+                                            : tSearch('above', { currencySymbol: userCurrency?.symbol, min: option.min })
+                                    }
+                                </button>
                             )}
                         </div>
                     </div>

@@ -3,7 +3,8 @@
     "mug": "Caneca",
     "mug-c": "Caneca",
     "hoodie": "Moletom",
-    "raglan-tee": "Camisa Raglan",
+    "raglan-long-sleeve": "Manga Longa Raglan",
+    "long-sleeve": "Manga Longa",
     "sweatshirt": "Suéter",
     "more_info_button": "Mais Informações",
     "Price": "Preço",
@@ -23,5 +24,8 @@
     "checkout": "Pagar",
     "OUT_OF_STOCK": "FORA DE ESTOQUE",
     "UNAVAILABLE": "INDISPONÍVEL",
-    "Last Update": "Última Atualização"
+    "Last Update": "Última Atualização",
+    "copy_link": "Copiar Link",
+    "link_copied": "Link Copiado!",
+    "socks": "Meias"
 }

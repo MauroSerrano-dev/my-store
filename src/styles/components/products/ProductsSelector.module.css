@@ -1,22 +1,39 @@
 
 .container {
     display: flex;
+    justify-content: center;
+    align-items: center;
     gap: 1rem;
+
+    width: 100%;
+
+    flex-wrap: wrap;
 }
 
 .option {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    
     outline: 2px solid white;
     border-radius: 0.5rem;
 
     height: 200px;
     width: 200px;
 
-    padding: 2rem;
-
     font-weight: 600;
 
     color: white;
     transition: all ease-in-out 200ms;
+}
+
+.optionAll {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    font-size: 60px;
 }
 
 .option p {
@@ -30,8 +47,8 @@
 
 .imageContainer {
     position: relative;
-    height: 100%;
-    width: 100%;
+    height: 80%;
+    width: 80%;
 }
 
 /* Enable hover only on non-touch devices */

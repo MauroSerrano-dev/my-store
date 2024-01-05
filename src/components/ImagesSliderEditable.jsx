@@ -27,13 +27,14 @@ export default function ImagesSlider(props) {
     const innerRef = useRef(null)
     const innerOptionsRef = useRef(null)
 
+    const [currentImgIndex, setCurrentImgIndex] = useState(0)
+
     const [carouselAnchor, setCarouselAnchor] = useState(0)
     const [optionAnchor, setOptionAnchor] = useState(0)
 
     const [draggingOffSetTimeOut, setDraggingOffSetTimeOut] = useState()
 
     const [isDragging, setIsDragging] = useState(false)
-    const [slideMoving, setSlideMoving] = useState(false)
     const [isDraggingOptions, setIsDraggingOptions] = useState(false)
     const [antVisualBug, setAntVisualBug] = useState(false)
     const [antVisualBugOptions, setAntVisualBugOptions] = useState(false)
@@ -44,11 +45,8 @@ export default function ImagesSlider(props) {
 
     function handleDragStart() {
         setIsDragging(true)
-        setSlideMoving(true)
         document.body.style.cursor = 'grabbing'
-        if (slideMoving) {
-            clearTimeout(draggingOffSetTimeOut)
-        }
+        clearTimeout(draggingOffSetTimeOut)
     }
 
     function handleDragOptionsStart() {
@@ -77,7 +75,7 @@ export default function ImagesSlider(props) {
                 : multiploMaisProximoDeXTranslate
             )
 
-            setSlideMoving(false)
+            setCurrentImgIndex(newIndex)
             ensureOptionVisible(newIndex)
         }, 200)
         setDraggingOffSetTimeOut(timeOut)
@@ -98,6 +96,7 @@ export default function ImagesSlider(props) {
 
     function handleOptionClick(i) {
         setCarouselAnchor(-width * i)
+        setCurrentImgIndex(i)
         ensureOptionVisible(i)
     }
 
@@ -282,6 +281,9 @@ export default function ImagesSlider(props) {
                                     <div
                                         className={styles.optionShadow}
                                         style={{
+                                            opacity: currentImgIndex !== j
+                                                ? undefined
+                                                : 0,
                                             transition: 'opacity ease-in-out 200ms',
                                             zIndex: 1
                                         }}

@@ -3,7 +3,8 @@
     "mug": "Taza",
     "mug-c": "Taza",
     "hoodie": "Sudadera con capucha",
-    "raglan-tee": "Camiseta Raglan",
+    "raglan-long-sleeve": "Manga Larga Raglán",
+    "long-sleeve": "Manga Larga",
     "sweatshirt": "Sudadera",
     "more_info_button": "Más Información",
     "Price": "Precio",
@@ -23,5 +24,8 @@
     "checkout": "Pagar",
     "OUT_OF_STOCK": "AGOTADO",
     "UNAVAILABLE": "NO DISPONIBLE",
-    "Last Update": "Última Actualización"
+    "Last Update": "Última Actualización",
+    "copy_link": "Copiar Enlace",
+    "link_copied": "¡Enlace Copiado!",
+    "socks": "Calcetines"
 }

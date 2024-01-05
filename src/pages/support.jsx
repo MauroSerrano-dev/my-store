@@ -256,7 +256,7 @@ export default function Support() {
                                         fontWeight: 600,
                                     }}
                                 >
-                                    Send
+                                    {tSupport('send')}
                                 </LoadingButton>
                             </motion.div>
                         }
@@ -310,7 +310,7 @@ export default function Support() {
                                         fontWeight: 600,
                                     }}
                                 >
-                                    Send
+                                    {tSupport('send')}
                                 </LoadingButton>
                             </motion.div>
                         }

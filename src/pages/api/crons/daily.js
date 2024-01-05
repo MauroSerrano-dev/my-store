@@ -1,15 +1,9 @@
+import { CURRENCIES } from '@/consts'
 import { clearDeletedUsers, updateAllCurrencies } from '../../../../backend/app-settings'
 import { deleteExpiredCartSessions } from '../../../../backend/cart-session'
 import { removeExpiredPromotions } from '../../../../backend/product'
 
 const axios = require('axios')
-
-const CURRENCIES = {
-    brl: { code: 'brl', symbol: 'R$' },
-    gbp: { code: 'gbp', symbol: '£' },
-    eur: { code: 'eur', symbol: '€' },
-    usd: { code: 'usd', symbol: '$' },
-}
 
 export default async function handler(req, res) {
     const { authorization } = req.headers

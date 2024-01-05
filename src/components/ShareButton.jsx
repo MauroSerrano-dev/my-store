@@ -8,6 +8,7 @@ import { MdOutlineContentCopy } from "react-icons/md";
 import { ImFacebook2 } from "react-icons/im";
 import { useAppContext } from './contexts/AppContext';
 import { motion } from "framer-motion";
+import { useTranslation } from 'next-i18next';
 
 export default function ShareButton(props) {
     const {
@@ -21,13 +22,14 @@ export default function ShareButton(props) {
         supportsHoverAndPointer,
     } = useAppContext()
 
+    const tCommon = useTranslation('common').t
+
     const link_replace = link.replaceAll('+', '%2B').replaceAll('&', '%26')
 
     const [open, setOpen] = useState(false)
     const [copied, setCopied] = useState(false)
 
     function handleCopy() {
-        console.log(link)
         navigator.clipboard.writeText(link)
         setCopied(true)
     }
@@ -157,7 +159,7 @@ export default function ShareButton(props) {
                             <ListItemIcon>
                                 <MdOutlineContentCopy size={23} />
                             </ListItemIcon>
-                            {copied ? 'Link Copied!' : 'Copy Link'}
+                            {copied ? tCommon('link_copied') : tCommon('copy_link')}
                         </MenuItem>
                     </div>
                 </motion.div>

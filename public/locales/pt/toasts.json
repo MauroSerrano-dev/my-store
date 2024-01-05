@@ -33,5 +33,6 @@
     "invalid_order_id_for_this_user": "Esta encomenda não pertence a este e-mail",
     "support_email_sent": "Bilhete de suporte criado com sucesso",
     "missing_subject": "Assunto não fornecido",
-    "account_with_this_email_recently_deleted": "Email inválido. Conta com este email foi recentemente apagada"
+    "account_with_this_email_recently_deleted": "Email inválido. Conta com este email foi recentemente apagada",
+    "user_deleted_successfully": "Conta apagada com sucesso"
 }

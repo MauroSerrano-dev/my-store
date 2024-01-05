@@ -3,17 +3,11 @@ import {
     arrayUnion,
     doc,
     getDoc,
-    getFirestore,
     setDoc,
     updateDoc,
 } from "firebase/firestore"
-import { initializeApp } from 'firebase/app'
-import { firebaseConfig } from "../firebase.config"
 import Error from "next/error"
-
-initializeApp(firebaseConfig)
-
-const db = getFirestore()
+import { db } from "../firebaseInit"
 
 async function getAllCurrencies() {
     try {

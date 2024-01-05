@@ -3,6 +3,7 @@
     "metric": "Métrico",
     "width": "Ancho",
     "length": "Largo",
+    "total_length": "Largo Total",
     "sleeve": "Largo de Manga",
     "sleeve-from": "Longitud de la manga desde el centro de la espalda",
     "in": "pulg",

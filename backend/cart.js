@@ -1,14 +1,9 @@
-import { collection, doc, addDoc, getDoc, getFirestore, updateDoc, Timestamp, getDocs, query, where, setDoc, deleteDoc } from "firebase/firestore";
-import { initializeApp } from 'firebase/app'
-import { firebaseConfig } from "../firebase.config"
+import { collection, doc, getDoc, updateDoc, Timestamp, getDocs, query, where, setDoc, deleteDoc } from "firebase/firestore";
 import { deleteCartSession, getCartSessionById } from "./cart-session";
 import { mergeProducts } from "@/utils";
 import Error from "next/error";
 import { LIMITS } from "@/consts";
-
-initializeApp(firebaseConfig)
-
-const db = getFirestore()
+import { db } from "../firebaseInit";
 
 /**
  * Retrieves a cart by its ID.

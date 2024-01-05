@@ -27,9 +27,11 @@ export default function Products() {
                     </header>
                     <main className={styles.main}>
                         <h2>Products Types</h2>
-                        <ProductsSelector
-                            url='/admin/products'
-                        />
+                        <div className={styles.options}>
+                            <ProductsSelector
+                                url='/admin/products'
+                            />
+                        </div>
                     </main>
                 </div>
     )

@@ -623,7 +623,7 @@ export default withRouter(() => {
                                             onChange={event => updateProductField('collection_id', event.target.value)}
                                         />
                                         <TagsSelector
-                                            options={THEMES_POOL.map(theme => theme.id)}
+                                            options={THEMES_POOL}
                                             label='Themes'
                                             value={product.themes}
                                             onChange={(event, value) => updateProductField('themes', value)}
@@ -900,7 +900,6 @@ export default withRouter(() => {
                                     size='large'
                                     style={{
                                         width: '100%',
-                                        color: '#ffffff',
                                     }}
                                 >
                                     Create Product

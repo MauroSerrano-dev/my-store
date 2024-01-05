@@ -27,7 +27,6 @@ export default function Menu(props) {
     const [optionMenuDelay, setOptionMenuDelay] = useState()
 
     const tMenu = useTranslation('menu').t
-    const tCommon = useTranslation('common').t
     const tCategories = useTranslation('categories').t
 
     function handleCloseMenu() {

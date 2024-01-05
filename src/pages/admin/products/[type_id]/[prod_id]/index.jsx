@@ -26,9 +26,12 @@ export default function ProductsId() {
             method: 'GET',
             headers: {
                 authorization: process.env.NEXT_PUBLIC_APP_TOKEN,
-                id: id || '',
             }
         }
+
+        if (id)
+            options.headers.id = id
+
         await fetch("/api/product", options)
             .then(response => response.json())
             .then(response => {

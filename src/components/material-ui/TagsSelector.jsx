@@ -37,6 +37,7 @@ export default function TagsSelector(props) {
             options={options}
             onChange={onChange}
             value={value}
+            isOptionEqualToValue={(option, value) => (option.id || option) === (value.id || value)}
             sx={{
                 ...sx,
                 '.MuiAutocomplete-tag': {

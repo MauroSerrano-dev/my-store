@@ -3,7 +3,8 @@
     "mug": "Mug",
     "mug-c": "Mug",
     "hoodie": "Hoodie",
-    "raglan-tee": "Raglan Tee",
+    "raglan-long-sleeve": "Raglan Long Sleeve",
+    "long-sleeve": "Long Sleeve",
     "sweatshirt": "Sweatshirt",
     "more_info_button": "More Info",
     "Price": "Price",
@@ -23,5 +24,8 @@
     "checkout": "Checkout",
     "OUT_OF_STOCK": "OUT OF STOCK",
     "UNAVAILABLE": "UNAVAILABLE",
-    "Last Update": "Last Update"
+    "Last Update": "Last Update",
+    "copy_link": "Copy Link",
+    "link_copied": "Link Copied!",
+    "socks": "Socks"
 }
