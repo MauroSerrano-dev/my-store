@@ -76,7 +76,7 @@ export default withRouter(props => {
     const [disableCheckoutButton, setDisableCheckoutButton] = useState(false)
 
 
-    const productCurrentVariant = product.variants.find(vari => vari.size_id === currentSize?.id && vari.color_id === currentColor?.id)
+    const productCurrentVariant = product?.variants.find(vari => vari.size_id === currentSize?.id && vari.color_id === currentColor?.id)
 
     const PRODUCT_PRICE = product && userCurrency && productCurrentVariant ? getProductPriceUnit(product, productCurrentVariant, userCurrency.rate) : undefined
 
@@ -88,7 +88,7 @@ export default withRouter(props => {
     }, [router])
 
     useEffect(() => {
-        if (userLocation)
+        if (userLocation && product)
             getShippingValue()
     }, [userLocation])
 

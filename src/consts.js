@@ -54,6 +54,7 @@ export const ALLOWED_WEBHOOK_STATUS = STEPS.concat(STEPS_ATTEMPT).concat('cancel
 
 export const DEFAULT_PRODUCTS_TAGS = [
     't-shirts',
+    'long-sleeves',
     'games',
     'music',
     'mugs',
