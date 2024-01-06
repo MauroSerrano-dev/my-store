@@ -132,7 +132,7 @@ export default function ProductsId() {
 
     function handlePromotionClick(products) {
         if (products.length === 0)
-            return showToast({ msg: 'No products selected' })
+            return showToast({ msg: tToasts('no_products_selected') })
         handleOpenModal(setProductsPromotionModal, setPromotionModalOpacity, products)
     }
 

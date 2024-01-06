@@ -128,12 +128,12 @@ export default withRouter(() => {
             .then(response => response.json())
             .then(response => {
                 if (response.status < 300) {
-                    showToast({ type: 'success', msg: response.msg })
+                    showToast({ type: 'success', msg: tToasts(response.msg) })
                     router.push(`/admin/products/${router.query.type_id}`)
                 }
                 else {
                     setLoadingCreateButton(false)
-                    showToast({ type: 'error', msg: response.msg })
+                    showToast({ type: 'error', msg: tToasts(response.msg) })
                 }
             })
             .catch(error => {

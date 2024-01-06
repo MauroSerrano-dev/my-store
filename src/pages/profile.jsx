@@ -68,12 +68,12 @@ export default function Profile() {
     function handleSendVerificationEmail() {
         if (verificationEmailSent === 'custom_msg') {
             setVerificationEmailSent(true)
-            showToast({ type: 'info', msg: "If you can't find it, please check your span" })
+            showToast({ type: 'info', msg: tToasts('if_you_cant_find_email') })
             return
         }
         if (verificationEmailSent) {
             setVerificationEmailSent('custom_msg')
-            showToast({ type: 'info', msg: 'Verification email already sent' })
+            showToast({ type: 'info', msg: tToasts('verification_email_already_sent') })
             return
         }
         setVerificationEmailSent(true)
@@ -84,14 +84,14 @@ export default function Profile() {
             handleCodeInApp: true,
         })
             .then(() => {
-                showToast({ type: 'success', msg: `Verification email sent to ${auth.currentUser.email}` })
+                showToast({ type: 'success', msg: tToasts('verification_email_sent_to', { user_email: auth.currentUser.email }) })
             })
             .catch((error) => {
                 setVerificationEmailSent(false)
                 console.error("Error sending verification email:", error)
                 if (error.code === 'auth/too-many-requests')
                     return showToast({ type: 'error', msg: tToasts('too_many_requests') })
-                showToast({ type: 'error', msg: "Error sending verification email:" })
+                showToast({ type: 'error', msg: tToasts("error_sending_verification_email") })
             })
     }
 
@@ -102,11 +102,11 @@ export default function Profile() {
             changes[key] = user[key]
         })
         if (Object.keys(changes).length === 0 && router.locale === i18n.language) {
-            showToast({ msg: tProfile('no_changes_toast') })
+            showToast({ msg: tToasts('no_changes_made') })
             return
         }
         if (user.custom_home_page.tags.length < TAGS_MIN_LIMIT) {
-            showToast({ type: 'error', msg: 'You must have at least 3 keywords.' })
+            showToast({ type: 'error', msg: tToasts('must_have_at_least_keywords', { min: TAGS_MIN_LIMIT }) })
             return
         }
         setDisableSaveButton(true)
@@ -129,11 +129,11 @@ export default function Profile() {
                     .then(response => response.json())
                     .then(response => {
                         if (response.status === 200) {
-                            showToast({ type: 'success', msg: response.message })
+                            showToast({ type: 'success', msg: tToasts(response.message) })
                             updateSession()
                         }
                         else {
-                            showToast({ type: 'error', msg: response.message })
+                            showToast({ type: 'error', msg: tToasts(response.message) })
                         }
                     })
                     .catch(() => {
@@ -262,7 +262,7 @@ export default function Profile() {
                                             }}
                                             onChange={(event, value) => {
                                                 if (value.length > TAGS_MAX_LIMIT)
-                                                    showToast({ type: 'error', msg: tProfile('max_keywords_toast') })
+                                                    showToast({ type: 'error', msg: tToasts('max_keywords') })
                                                 else
                                                     handleCustomHomePage('tags', value.map(tg => tg.id))
                                             }}

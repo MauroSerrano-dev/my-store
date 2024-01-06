@@ -64,11 +64,11 @@ export default function Cart() {
 
     function handleCheckout() {
         if (process.env.NEXT_PUBLIC_DISABLE_CHECKOUT === 'true') {
-            showToast({ msg: 'Checkout temporarily disabled' })
+            showToast({ msg: 'checkout_temporarily_disabled' })
             return
         }
         if (cart.products.reduce((acc, prod) => acc + prod.quantity, 0) > LIMITS.cart_items) {
-            showToast({ msg: 'Cart contains more products than the allowed limit' })
+            showToast({ msg: 'cart_contains_more_than_limit' })
             return
         }
         setBlockInteractions(true)
@@ -252,7 +252,7 @@ export default function Cart() {
                                         outOfStock={outOfStock.some(prodOut => prodOut.id === product.id && prodOut.variant.id === product.variant.id)}
                                         unavailable={unavailables.some(prodOut => prodOut.id === product.id && prodOut.variant.id === product.variant.id)}
                                         product={product}
-                                        key={i}
+                                        key={`${product.id}${product.variant.id}`}
                                         index={i}
                                     />
                                 )}

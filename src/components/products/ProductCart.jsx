@@ -11,6 +11,7 @@ import Cookies from 'js-cookie';
 import { useAppContext } from '../contexts/AppContext';
 import { showToast } from '@/utils/toasts';
 import { getProductPriceUnit } from '@/utils/prices';
+import MyTooltip from '../MyTooltip';
 
 export default function ProductCart(props) {
     const {
@@ -70,7 +71,7 @@ export default function ProductCart(props) {
             .catch(err => {
                 setDeleting(false)
                 setLoading(false)
-                showToast({ type: 'error', msg: 'Error Deleting Product From Cart' })
+                showToast({ type: 'error', msg: 'error_deleting_product_from_cart' })
                 console.error(err)
             })
     }
@@ -118,23 +119,31 @@ export default function ProductCart(props) {
                     y: 20,
                 },
                 visible: {
-                    opacity: 1,
+                    opacity: deleting ? 0.7 : 1,
                     y: 0,
-                    transition: {
-                        duration: 0.3,
-                        delay: 0.3 * (index <= 2 ? index : 3),
-                    }
                 }
+            }}
+            transition={{
+                duration: deleting ? 0.1 : 0.3,
+                delay: deleting ? 0 : 0.3 * (index <= 2 ? index : 3),
+
             }}
             initial='hidden'
             animate='visible'
+            style={{
+                pointerEvents: deleting ? 'none' : 'auto'
+            }}
         >
-            <button
-                onClick={() => handleDeleteCartProduct()}
-                className={`${styles.deleteButton} buttonInvisible`}
+            <MyTooltip
+                title={tCommon('remove_from_cart')}
             >
-                <SlClose />
-            </button>
+                <button
+                    onClick={() => handleDeleteCartProduct()}
+                    className={`${styles.deleteButton} buttonInvisible`}
+                >
+                    <SlClose />
+                </button>
+            </MyTooltip>
             <Link
                 className={styles.imageContainer}
                 href={`/product/${product.id}${COLOR.id !== product.default_variant.color_id && SIZE.id !== product.default_variant.size_id
@@ -269,20 +278,6 @@ export default function ProductCart(props) {
                     }
                 </div>
             </div>
-            {
-                deleting &&
-                <div
-                    style={{
-                        position: 'absolute',
-                        left: 0,
-                        top: 0,
-                        backgroundColor: 'rgba(255, 255, 255, 0.2)',
-                        width: '100%',
-                        height: '100%',
-                    }}
-                >
-                </div>
-            }
         </motion.div>
     )
 }

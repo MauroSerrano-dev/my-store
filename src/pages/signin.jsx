@@ -63,11 +63,11 @@ export default function Signin() {
             return showToast({ msg: tToasts('solve_recaptcha') })
 
         if (newUser.first_name === '')
-            return showToast({ msg: 'missing_first_name' })
+            return showToast({ msg: tToasts('missing_first_name') })
         if (newUser.email === '')
-            return showToast({ msg: 'missing_email' })
+            return showToast({ msg: tToasts('missing_email') })
         if (newUser.password === '')
-            return showToast({ msg: 'missing_password' })
+            return showToast({ msg: tToasts('missing_password') })
 
         const passValidation = isStrongPassword(newUser.password)
         if (passValidation !== true) {

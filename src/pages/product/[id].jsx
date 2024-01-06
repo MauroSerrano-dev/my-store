@@ -99,7 +99,7 @@ export default withRouter(props => {
 
     function handleBuyNow() {
         if (process.env.NEXT_PUBLIC_DISABLE_CHECKOUT === 'true') {
-            showToast({ msg: 'Checkout temporarily disabled' })
+            showToast({ msg: tToasts('checkout_temporarily_disabled') })
             return
         }
 
@@ -205,7 +205,7 @@ export default withRouter(props => {
         const add = !session.wishlist_products_ids.includes(product.id)
 
         if (add && session.wishlist_products_ids.length >= LIMITS.wishlist_products) {
-            showToast({ msg: tToasts('wishlist_limit'), type: 'error' })
+            showToast({ type: 'error', msg: tToasts('wishlist_limit') })
             return
         }
 
@@ -232,7 +232,14 @@ export default withRouter(props => {
 
         fetch("/api/wishlists/wishlist-products", options)
             .then(response => response.json())
-            .catch(err => {
+            .then(response => {
+                if (response.error) {
+                    throw response.error
+                }
+            })
+            .catch(error => {
+                console.error(error)
+                showToast({ type: 'error', msg: tToasts(error) })
                 setSession(prevSession => (
                     {
                         ...prevSession,
@@ -241,7 +248,6 @@ export default withRouter(props => {
                             : session.wishlist_products_ids.concat(product.id)
                     }
                 ))
-                console.error(err)
             })
     }
 

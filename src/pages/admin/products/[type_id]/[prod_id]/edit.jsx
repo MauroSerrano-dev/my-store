@@ -312,7 +312,7 @@ export default withRouter(() => {
             const diffKeys = Object.keys(diff)
 
             if (diffKeys.length === 0) {
-                showToast({ msg: 'No changes made.' })
+                showToast({ msg: tToasts('no_changes_made') })
                 setDisableUpdateButton(false)
                 return
             }
@@ -343,13 +343,13 @@ export default withRouter(() => {
                 })
                 .catch(() => {
                     setDisableUpdateButton(false)
-                    showToast({ type: 'error', msg: 'default_error' })
+                    showToast({ type: 'error', msg: tToasts('default_error') })
                 })
         }
         catch (error) {
             setDisableUpdateButton(false)
             console.error('Error updating product', error)
-            showToast({ type: 'error', msg: 'default_error' })
+            showToast({ type: 'error', msg: tToasts('default_error') })
         }
     }
 

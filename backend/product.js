@@ -366,8 +366,6 @@ async function getProductsByQueries(props) {
         if (s) {
             const inicialTags = s.split(' ')
 
-            let searchArr = inicialTags
-
             const translationPromises = []
 
             inicialTags.forEach(word => {
@@ -375,7 +373,7 @@ async function getProductsByQueries(props) {
                 translationPromises.push(translation)
             })
 
-            searchArr = inicialTags.concat(await Promise.all(translationPromises))
+            const searchArr = inicialTags.concat(await Promise.all(translationPromises))
 
             const fuse = new Fuse(TAGS_POOL.concat(THEMES_POOL.concat(PRODUCTS_TYPES.map(type => type.id))), { threshold: 0.4 })
 
@@ -450,23 +448,6 @@ async function getProductById(id) {
             product: null,
             error: error
         }
-    }
-}
-
-async function getAllProductPrintifyIds() {
-    const productsCollection = collection(db, process.env.COLL_PRODUCTS)
-    const querySnapshot = await getDocs(productsCollection)
-
-    const productPrintifyIds = []
-
-    querySnapshot.forEach((doc) => {
-        const productData = doc.data()
-        productPrintifyIds.push(productData.id_printify)
-    })
-
-    return {
-        msg: 'All product Printify IDs retrieved successfully!',
-        printifyIds: productPrintifyIds
     }
 }
 
@@ -881,7 +862,6 @@ async function getAllActivesProducts() {
         return activeProducts.length > 0 ? activeProducts : [];
     } catch (error) {
         console.error('Error getting active products:', error);
-        // Lança um erro em caso de falha na obtenção dos produtos
         throw new Error('Error retrieving active products');
     }
 }
@@ -923,7 +903,6 @@ export {
     createProduct,
     getProductsByQueries,
     getProductById,
-    getAllProductPrintifyIds,
     getAllProducts,
     getProductsByTitle,
     updateProduct,

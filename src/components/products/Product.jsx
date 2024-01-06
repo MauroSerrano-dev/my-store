@@ -12,11 +12,11 @@ import CloseRoundedIcon from '@mui/icons-material/CloseRounded'
 import { showToast } from '@/utils/toasts'
 import { useAppContext } from '../contexts/AppContext'
 import MyButton from '@/components/material-ui/MyButton';
+import MyTooltip from '../MyTooltip'
 
 /**
  * @param {object} props - Component props.
  * @param {object} props.product - Product props.
- * @param {object} props.motionVariants - Component motionVariants.
  * @param {object} props.style - Product style.
  * @param {string} props.width - Component width.
  * @param {boolean} props.responsive - Responsive width.
@@ -29,21 +29,10 @@ export default function Product(props) {
         isDragging = false,
         product,
         inicialVariantId,
-        motionVariants = {
-            hidden: {
-                opacity: 0,
-            },
-            visible: {
-                opacity: 1,
-                transition: {
-                    duration: 0.2,
-                }
-            }
-        },
         style,
         hideWishlistButton,
         showDeleteButton,
-        onDeleteClick,
+        deleteFromWishlistCallback,
     } = props
 
     const {
@@ -66,6 +55,8 @@ export default function Product(props) {
     const [isDraggingColors, setIsDraggingColors] = useState(false)
 
     const [imageLoad, setImageLoad] = useState(false)
+
+    const [deleting, setDeleting] = useState(false)
 
     const [antVisualBug, setAntVisualBug] = useState(false)
 
@@ -144,8 +135,8 @@ export default function Product(props) {
             {
                 ...prevSession,
                 wishlist_products_ids: add
-                    ? session.wishlist_products_ids.concat(product.id)
-                    : session.wishlist_products_ids.filter(prod_id => prod_id !== product.id)
+                    ? prevSession.wishlist_products_ids.concat(product.id)
+                    : prevSession.wishlist_products_ids.filter(prod_id => prod_id !== product.id)
             }
         ))
 
@@ -163,16 +154,57 @@ export default function Product(props) {
 
         fetch("/api/wishlists/wishlist-products", options)
             .then(response => response.json())
-            .catch(err => {
+            .then(response => {
+                if (response.error) {
+                    throw response.error
+                }
+            })
+            .catch(error => {
+                console.error(error)
+                showToast({ type: 'error', msg: tToasts(error) })
                 setSession(prevSession => (
                     {
                         ...prevSession,
                         wishlist_products_ids: add
-                            ? session.wishlist_products_ids.filter(prod_id => prod_id !== product.id)
-                            : session.wishlist_products_ids.concat(product.id)
+                            ? prevSession.wishlist_products_ids.filter(prod_id => prod_id !== product.id)
+                            : prevSession.wishlist_products_ids.concat(product.id)
                     }
                 ))
-                console.error(err)
+            })
+    }
+
+    function handleRemoveFromWishlist(event) {
+        event.preventDefault()
+
+        setDeleting(true)
+
+        const options = {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json',
+                authorization: process.env.NEXT_PUBLIC_APP_TOKEN
+            },
+            body: JSON.stringify({
+                wishlist_id: session.wishlist_id,
+                product: { id: product.id }
+            }),
+        }
+
+        fetch("/api/wishlists/wishlist-products", options)
+            .then(response => response.json())
+            .then(response => {
+                if (response.error) {
+                    throw response.error
+                }
+                else {
+                    setSession(prev => ({ ...prev, wishlist_products_ids: response.data.products.map(prod => prod.id) }))
+                    deleteFromWishlistCallback(response.data)
+                }
+            })
+            .catch(error => {
+                console.error(error)
+                showToast({ type: 'error', msg: tToasts(error) })
+                setDeleting(false)
             })
     }
 
@@ -180,15 +212,30 @@ export default function Product(props) {
         <motion.div
             className={styles.container}
             initial='hidden'
-            animate='visible'
-            variants={motionVariants}
+            animate={deleting ? 'deleting' : 'visible'}
+            variants={{
+                hidden: {
+                    opacity: 0,
+                },
+                visible: {
+                    opacity: 1,
+                },
+                deleting: {
+                    opacity: 0.5
+                }
+            }}
+            transition={{
+                duration: 0.2,
+            }}
             ref={productRef}
             style={{
                 height: width * 1.575,
                 width: width,
                 marginBottom: supportsHoverAndPointer ? width * 0.2 : 0,
                 textDecoration: 'none',
-                ...style
+                pointerEvents: deleting ? 'none' : 'auto',
+                opacity: 0.5,
+                ...style,
             }}
             onMouseEnter={handleOnMouseEnter}
             onMouseLeave={handleOnMouseLeave}
@@ -219,16 +266,20 @@ export default function Product(props) {
                 </motion.div>
             }
             {showDeleteButton &&
-                <button
-                    className={`${styles.wishlistButton} buttonInvisible`}
-                    onClick={onDeleteClick}
+                <MyTooltip
+                    title={tCommon('remove_from_wishlist')}
                 >
-                    <CloseRoundedIcon
-                        style={{
-                            fontSize: width * 0.12,
-                        }}
-                    />
-                </button>
+                    <button
+                        className={`${styles.wishlistButton} buttonInvisible`}
+                        onClick={handleRemoveFromWishlist}
+                    >
+                        <CloseRoundedIcon
+                            style={{
+                                fontSize: width * 0.12,
+                            }}
+                        />
+                    </button>
+                </MyTooltip>
             }
             <Link
                 href={URL}
@@ -402,14 +453,13 @@ export default function Product(props) {
                     </div>
                 }
             </Link>
-            {
-                supportsHoverAndPointer && showButtomHover &&
+            {supportsHoverAndPointer && showButtomHover &&
                 <motion.div
                     onClick={handleBottomHoverClick}
                     className={styles.bottomHover}
                     ref={bottomHoverRef}
                     initial='hidden'
-                    animate={!isDragging && (hover || (isDraggingColors && scrollColorsActive)) ? 'visible' : 'hidden'}
+                    animate={!deleting && !isDragging && (hover || (isDraggingColors && scrollColorsActive)) ? 'visible' : 'hidden'}
                     variants={{
                         hidden: {
                             bottom: 0,

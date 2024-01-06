@@ -54,9 +54,9 @@ export default function Login() {
             return showToast({ msg: tToasts('solve_recaptcha') })
 
         if (email === '')
-            return showToast({ msg: 'missing_email' })
+            return showToast({ msg: tToasts('missing_email') })
         if (password === '')
-            return showToast({ msg: 'missing_password' })
+            return showToast({ msg: tToasts('missing_password') })
 
         setBlockInteractions(true)
         setLoading(true)
