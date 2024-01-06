@@ -15,7 +15,6 @@ import SellOutlinedIcon from '@mui/icons-material/SellOutlined'
 /**
  * @param {object} props - Component props.
  * @param {object} props.product - Product props.
- * @param {object} props.motionVariants - Component motionVariants.
  * @param {object} props.style - Product style.
  * @param {string} props.width - Component width.
  * @param {boolean} props.responsive - Responsive width.
@@ -28,17 +27,6 @@ export default function ProductAdmin(props) {
         isDragging = false,
         product,
         inicialVariantId,
-        motionVariants = {
-            hidden: {
-                opacity: 0,
-            },
-            visible: {
-                opacity: 1,
-                transition: {
-                    duration: 0.2,
-                }
-            }
-        },
         style,
         onPromotionClick,
         selected,
@@ -131,7 +119,17 @@ export default function ProductAdmin(props) {
             className={styles.container}
             initial='hidden'
             animate='visible'
-            variants={motionVariants}
+            variants={{
+                hidden: {
+                    opacity: 0,
+                },
+                visible: {
+                    opacity: 1,
+                },
+            }}
+            transition={{
+                duration: 0.2,
+            }}
             ref={productRef}
             style={{
                 height: width * 1.575,
@@ -194,37 +192,6 @@ export default function ProductAdmin(props) {
                 className={`${styles.linkContainer} noUnderline`}
                 draggable={false}
             >
-                {/* {supportsHoverAndPointer &&
-                    <div
-                        className={styles.imgHoverContainer}
-                        style={{
-                            zIndex: 2,
-                            pointerEvents: 'none',
-                            width: width,
-                            height: height
-                        }}
-                    >
-                        {product.colors_ids.map((color_id, i) =>
-                            <Image
-                                quality={100}
-                                key={i}
-                                src={
-                                    typeof product.images.filter(img => img.color_id === color_id)[product.image_hover_index].src === 'string'
-                                        ? product.images.filter(img => img.color_id === color_id)[product.image_hover_index].src
-                                        : product.images.filter(img => img.color_id === color_id)[product.image_hover_index].src.front
-                                }
-                                sizes={`${height * 2 / 3}px`}
-                                fill
-                                alt={product.title}
-                                style={{
-                                    objectFit: 'cover',
-                                    zIndex: currentVariant.color_id === color_id ? 3 : 2,
-                                    opacity: currentVariant.color_id === color_id ? 1 : 0,
-                                }}
-                            />
-                        )}
-                    </div>
-                } */}
                 <div
                     className={styles.imgContainer}
                     style={{
@@ -361,8 +328,7 @@ export default function ProductAdmin(props) {
                     </div>
                 }
             </Link>
-            {
-                supportsHoverAndPointer && showButtomHover &&
+            {supportsHoverAndPointer && showButtomHover &&
                 <motion.div
                     onClick={handleBottomHoverClick}
                     className={styles.bottomHover}

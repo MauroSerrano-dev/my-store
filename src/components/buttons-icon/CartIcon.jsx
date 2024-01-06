@@ -78,7 +78,7 @@ export default function CartIcon() {
                                 {cart.products.map((product, i) =>
                                     <ProductModal
                                         product={product}
-                                        key={i}
+                                        key={`${product.id}${product.variant.id}`}
                                         index={i}
                                         setOpen={setOpen}
                                     />

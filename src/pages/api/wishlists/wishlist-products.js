@@ -13,21 +13,29 @@ export default async function handler(req, res) {
         return res.status(401).json({ error: "Invalid authentication." })
 
     if (req.method === "POST") {
-        const response = await addProductToWishlist(wishlist_id, product)
+        try {
+            const wishlist = await addProductToWishlist(wishlist_id, product)
 
-        if (response.status === 200) {
-            const products = await getProductsByIds(response.wishlist.products.map(prod => prod.id))
-            response.wishlist.products = products
+            const products = await getProductsByIds(wishlist.products.map(prod => prod.id))
+            wishlist.products = products
+
+            res.status(200).json({ data: wishlist })
+        } catch (error) {
+            console.error(`Error in /api/wishlists/wishlist-products POST: ${error?.props?.title || error}`)
+            res.status(error?.props?.statusCode || 500).json({ error: error?.props?.title || 'error_adding_product_to_wishlist' })
         }
-        res.status(response.status).json(response)
     }
     else if (req.method === "DELETE") {
-        const response = await deleteProductFromWishlist(wishlist_id, product)
+        try {
+            const wishlist = await deleteProductFromWishlist(wishlist_id, product)
 
-        if (response.status === 200) {
-            const products = await getProductsByIds(response.wishlist.products.map(prod => prod.id))
-            response.wishlist.products = products
+            const products = await getProductsByIds(wishlist.products.map(prod => prod.id))
+            wishlist.products = products
+
+            res.status(200).json({ data: wishlist })
+        } catch (error) {
+            console.error(`Error in /api/wishlists/wishlist-products DELETE: ${error?.props?.title || error}`)
+            res.status(error?.props?.statusCode || 500).json({ error: error?.props?.title || 'error_removing_product_from_wishlist' })
         }
-        res.status(response.status).json(response)
     }
 }

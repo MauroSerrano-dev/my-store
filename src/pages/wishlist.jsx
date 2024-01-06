@@ -13,8 +13,6 @@ import { useAppContext } from '@/components/contexts/AppContext'
 export default function Wishlist() {
     const {
         session,
-        setLoading,
-        setSession,
         windowWidth,
     } = useAppContext()
 
@@ -69,34 +67,8 @@ export default function Wishlist() {
             .catch(err => console.error(err))
     }
 
-    function handleDeleteClick(event, product_id) {
-        event.preventDefault()
-
-        setLoading(true)
-
-        const options = {
-            method: 'DELETE',
-            headers: {
-                'Content-Type': 'application/json',
-                authorization: process.env.NEXT_PUBLIC_APP_TOKEN
-            },
-            body: JSON.stringify({
-                wishlist_id: session.wishlist_id,
-                product: { id: product_id }
-            }),
-        }
-
-        fetch("/api/wishlists/wishlist-products", options)
-            .then(response => response.json())
-            .then(response => {
-                setSession(prev => ({ ...prev, wishlist_products_ids: response.wishlist.products.map(prod => prod.id) }))
-                setWishlist(response.wishlist)
-                setLoading(false)
-            })
-            .catch(err => {
-                setLoading(false)
-                console.error(err)
-            })
+    function deleteFromWishlistCallback(wishlist) {
+        setWishlist(wishlist)
     }
 
     useEffect(() => {
@@ -165,7 +137,7 @@ export default function Wishlist() {
                                             width={productWidth}
                                             hideWishlistButton
                                             showDeleteButton
-                                            onDeleteClick={event => handleDeleteClick(event, product.id)}
+                                            deleteFromWishlistCallback={deleteFromWishlistCallback}
                                         />
                                     )
                             }

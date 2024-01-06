@@ -39,17 +39,17 @@ export default function ForgotPassword() {
             .then(() => {
                 setEmail('')
                 setDisableButton(false)
-                showToast({ type: 'success', msg: 'Email sent if its a customer' })
+                showToast({ type: 'success', msg: tToasts('email_sent_if_its_user') })
             })
             .catch(error => {
                 if (error.code === 'auth/user-not-found')
-                    showToast({ type: 'success', msg: 'Email sent if its a customer' })
+                    showToast({ type: 'success', msg: tToasts('email_sent_if_its_user') })
                 else if (error.code === 'auth/missing-email')
                     showToast({ type: 'error', msg: tToasts('missing_email') })
                 else if (error.code === 'auth/invalid-email')
                     showToast({ type: 'error', msg: tToasts('invalid_email') })
                 else
-                    showToast({ type: 'error', msg: 'Erro ao enviar e-mail de redefinição de senha' })
+                    showToast({ type: 'error', msg: tToasts('error_senting_reset_password_email') })
                 setDisableButton(false)
             })
     }

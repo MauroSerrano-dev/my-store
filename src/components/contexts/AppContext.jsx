@@ -45,7 +45,6 @@ export function AppProvider({ children }) {
     const [windowWidth, setWindowWidth] = useState()
     const [websiteVisible, setWebsiteVisible] = useState(false)
     const [search, setSearch] = useState('')
-    const [productOptions, setProductOptions] = useState([])
     const [supportsHoverAndPointer, setSupportsHoverAndPointer] = useState()
     const [menuOpen, setMenuOpen] = useState(false)
     const [showMenu, setShowMenu] = useState(false)
@@ -255,18 +254,12 @@ export function AppProvider({ children }) {
                 setCart()
                 setUserEmailVerify(false)
                 setSession(null)
-                showToast({ type: 'info', msg: 'Volte Sempre' })
+                showToast({ type: 'info', msg: 'always-welcome' })
                 router.push('/')
             })
             .catch(() => {
                 showToast({ type: 'error', msg: tToasts('default_error') })
             })
-        /* window.location.href = window.origin */
-        /* router.push('/')
-        setTimeout(() => {
-            setSession(null)
-            signOut(auth)
-        }, 1000) */
     }
 
     useEffect(() => {
@@ -374,7 +367,6 @@ export function AppProvider({ children }) {
     function handleChangeSearch(event) {
         const search = event.target.value
         setSearch(search)
-        getSearchProducts(search)
     }
 
     function handleClickSearch() {
@@ -388,26 +380,8 @@ export function AppProvider({ children }) {
         }
     }
 
-    async function getSearchProducts(s) {
-        const options = {
-            method: 'GET',
-            headers: {
-                authorization: process.env.NEXT_PUBLIC_APP_TOKEN,
-                s: s,
-            }
-        }
-
-        const products = await fetch("/api/products-by-title", options)
-            .then(response => response.json())
-            .then(response => response.products)
-            .catch(err => console.error(err))
-
-        setProductOptions(products)
-    }
-
     useEffect(() => {
         setSearch(router?.query?.s ? router.query.s : '')
-        setProductOptions([])
     }, [router])
 
     useEffect(() => {
@@ -458,8 +432,9 @@ export function AppProvider({ children }) {
                 setBlockInteractions,
                 userLocation,
                 setUserLocation,
-            }
-            }
+                search,
+                setSearch,
+            }}
         >
             <motion.div
                 className={styles.container}
@@ -508,12 +483,8 @@ export function AppProvider({ children }) {
                         isScrollAtTop={isScrollAtTop}
                         setIsScrollAtTop={setIsScrollAtTop}
                         handleChangeSearch={handleChangeSearch}
-                        search={search}
-                        productOptions={productOptions}
-                        setProductOptions={setProductOptions}
                         handleClickSearch={handleClickSearch}
                         handleKeyDownSearch={handleKeyDownSearch}
-                        setSearch={setSearch}
                         menuOpen={menuOpen}
                         switchMenu={switchMenu}
                         adminMode={adminMode}
@@ -535,10 +506,6 @@ export function AppProvider({ children }) {
                                 onChange={handleChangeSearch}
                                 onKeyDown={handleKeyDownSearch}
                                 onClick={handleClickSearch}
-                                value={search}
-                                options={productOptions}
-                                setOptions={setProductOptions}
-                                setSearch={setSearch}
                                 barHeight={30}
                             />
                         </div>

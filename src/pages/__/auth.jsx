@@ -46,11 +46,11 @@ export default function AuthHandler() {
             applyActionCode(auth, router.query.oobCode)
                 .then(() => {
                     setUserEmailVerify(true)
-                    showToast({ type: 'success', msg: 'E-mail verificado com sucesso!' })
+                    showToast({ type: 'success', msg: tToasts('email_verified') })
                     router.push('/')
                 })
                 .catch(() => {
-                    showToast({ type: 'error', msg: 'Erro ao verificar o e-mail' })
+                    showToast({ type: 'error', msg: tToasts('error_verifying_email') })
                     router.push('/')
                 })
         }
@@ -72,18 +72,18 @@ export default function AuthHandler() {
 
         confirmPasswordReset(auth, router.query.oobCode, newPassword)
             .then(() => {
-                showToast({ type: 'success', msg: 'Password reset successfully' })
+                showToast({ type: 'success', msg: tToasts('password_reset_successfully') })
                 if (isUser)
                     router.push('/')
                 else
                     router.push('/login')
             })
             .catch(error => {
-                console.error('Erro ao redefinir a senha:', error)
+                console.error('Error resetting password:', error)
                 if (error.code === 'auth/expired-action-code')
-                    showToast({ type: 'error', msg: 'Link expirado' })
+                    showToast({ type: 'error', msg: tToasts('expired_link') })
                 else
-                    showToast({ type: 'error', msg: 'Error resetting password' })
+                    showToast({ type: 'error', msg: tToasts('error_resetting_password') })
                 setDisableButton(false)
             })
 

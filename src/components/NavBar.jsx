@@ -16,13 +16,10 @@ export default function NavBar(props) {
     const {
         isScrollAtTop,
         setIsScrollAtTop,
-        search,
-        productOptions,
         handleChangeSearch,
         setProductOptions,
         handleClickSearch,
         handleKeyDownSearch,
-        setSearch,
         menuOpen,
         switchMenu,
         adminMode,
@@ -33,7 +30,6 @@ export default function NavBar(props) {
     const {
         mobile,
         authValidated,
-        isUser,
     } = useAppContext()
 
     const tNavbar = useTranslation('navbar').t
@@ -101,10 +97,7 @@ export default function NavBar(props) {
                                 onChange={handleChangeSearch}
                                 onKeyDown={handleKeyDownSearch}
                                 onClick={handleClickSearch}
-                                value={search}
-                                options={productOptions}
                                 setOptions={setProductOptions}
-                                setSearch={setSearch}
                             />
                     }
                     {!adminMode && !mobile &&

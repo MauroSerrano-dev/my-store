@@ -47,7 +47,7 @@ export default function OrderStatus() {
             .then(response => response.json())
             .then(response => {
                 if (response.error)
-                    showToast({ type: 'error', msg: response.error })
+                    showToast({ type: 'error', msg: tToasts(response.error) })
                 setOrder(response.data)
                 setLoading(false)
             })

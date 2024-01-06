@@ -57,30 +57,20 @@ async function addProductToWishlist(wishlistId, wishlistNewProduct) {
     try {
         const wishlistData = wishlistDoc.data()
         if (wishlistData.products.some(prod => prod.id === wishlistNewProduct.id)) {
-            return {
-                status: 200,
-                message: `Product is already in Wishlist ${wishlistId}.`,
-                wishlist: wishlistData,
-            }
+            console.log(`Product is already in Wishlist ${wishlistId}.`)
+            return wishlistData
         }
 
         wishlistData.products.push(wishlistNewProduct)
 
         await updateDoc(wishlistRef, wishlistData)
 
-        return {
-            status: 200,
-            message: `Wishlist ${wishlistId} updated successfully!`,
-            wishlist: wishlistData,
-        }
+        console.log(`Wishlist ${wishlistId} updated successfully!`)
+        return wishlistData
+
     } catch (error) {
         console.error(`Error updating wishlist ${wishlistId}:`, error)
-        return {
-            status: 500,
-            message: `Error updating wishlist ${wishlistId}: ${error}`,
-            wishlist: null,
-            error: error,
-        }
+        throw new Error(`Error updating wishlist ${wishlistId}`)
     }
 }
 
@@ -95,19 +85,11 @@ async function deleteProductFromWishlist(wishlistId, product) {
 
         await updateDoc(wishlistRef, wishlistData)
 
-        return {
-            status: 200,
-            message: `Wishlist ${wishlistId} updated successfully!`,
-            wishlist: wishlistData,
-        }
+        console.log(`Wishlist ${wishlistId} updated successfully!`)
+        return wishlistData
     } catch (error) {
-        console.error(`Error Deleting Product from wishlist ${wishlistId}: ${error}`)
-        return {
-            status: 500,
-            message: `Error Deleting Product from wishlist ${wishlistId}: ${error}`,
-            wishlist: null,
-            error: error,
-        }
+        console.error(`Error Deleting Product from wishlist ${wishlistId}:`, error)
+        throw new Error(`Error Deleting Product from wishlist ${wishlistId}`)
     }
 }
 

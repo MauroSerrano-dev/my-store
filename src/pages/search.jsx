@@ -31,7 +31,7 @@ const QUERIES = {
     cl: { title: 'product color', show: true, showTitle: false, isFilter: true },
     ac: { title: 'art color', show: true, showTitle: false, isFilter: true },
     p: { title: 'page', show: false, showTitle: false, isFilter: false },
-    s: { title: 'search', show: false, showTitle: false, isFilter: true },
+    s: { title: 'search', show: true, showTitle: false, isFilter: true },
     l: { title: 'language', show: false, showTitle: false, isFilter: false },
     limit: { title: 'limit', show: false, showTitle: false, isFilter: false },
 }
@@ -203,9 +203,10 @@ export default withRouter(() => {
     }
 
     function handleDeleteTag(queryName, value) {
+        console.log(queryName, value)
         router.push({
             pathname: router.pathname,
-            query: router.query[queryName].split(' ').length === 1
+            query: router.query[queryName].split(' ').filter((ele, i, arr) => arr.indexOf(ele) === i).length === 1
                 ? getQueries({}, [queryName])
                 : { ...router.query, [queryName]: router.query[queryName].split(' ').filter(queryValue => queryValue !== value).join(' ') }
         }, undefined, { scroll: false })
@@ -460,13 +461,13 @@ export default withRouter(() => {
                                     {
                                         Object.keys(router.query).filter(key => QUERIES[key].isFilter).length === 0
                                             ? tSearch('all-products')
-                                            : tSearch('filters', { count: Object.keys(router.query).filter(key => QUERIES[key].isFilter).length })
+                                            : tSearch('filters', { count: Object.keys(router.query).filter(key => QUERIES[key].show).reduce((acc, key) => acc.concat(router.query[key].split(' ')), []).filter((ele, i, arr) => arr.indexOf(ele) === i).length })
                                     }
                                 </h1>
                             }
                             {!mobile &&
                                 <div className={styles.tagsContainer}>
-                                    {Object.keys(router.query).filter(key => QUERIES[key]?.show).map(key => router.query[key].split(' ').map((value, i) =>
+                                    {Object.keys(router.query).filter(key => QUERIES[key]?.show).map(key => router.query[key].split(' ').filter((ele, i, arr) => arr.indexOf(ele) === i).map((value, i) =>
                                         <Tag
                                             key={i}
                                             label={

@@ -1,5 +1,12 @@
 import axios from 'axios'
 
+/**
+ * Fetches a specific page of products from Printify.
+ * 
+ * @param {number} page - The page number to fetch products from.
+ * @returns {Promise<Object>} A promise that resolves to the data of the fetched products.
+ * @throws {Error} Throws an error if the request fails.
+ */
 async function fetchPrintifyProducts(page) {
     const url = `${`https://api.printify.com/v1/shops/${process.env.PRINTIFY_SHOP_ID}/products.json`}?page=${page}`;
     try {
@@ -11,6 +18,12 @@ async function fetchPrintifyProducts(page) {
     }
 }
 
+/**
+ * Fetches all products across all pages from Printify.
+ * 
+ * @returns {Promise<Array>} A promise that resolves to an array of all products.
+ * @throws {Error} Throws an error if any request fails.
+ */
 async function fetchAllPrintifyProducts() {
     let currentPage = 1;
     let lastPage = false;
@@ -36,10 +49,12 @@ async function fetchAllPrintifyProducts() {
     return allProducts; // Retorna todos os produtos de todas as páginas
 }
 
-function isProductNotInPrintify(printifyProducts, product) {
-    return !printifyProducts.some(p => p.id === product.id_printify && p.variants.some(v => v.id === product.variant.id_printify))
-}
-
+/**
+ * Filters out cart items that are not available in Printify products.
+ * 
+ * @param {Array} cartItems - An array of cart items to be checked against Printify products.
+ * @returns {Promise<Array>} A promise that resolves to an array of cart items not available in Printify.
+ */
 async function filterNotInPrintify(cartItems) {
     let notInPrintify = [...cartItems];
     let currentPage = 1;
@@ -47,7 +62,7 @@ async function filterNotInPrintify(cartItems) {
 
     while (!lastPage) {
         const { data } = await fetchPrintifyProducts(currentPage);
-        notInPrintify = notInPrintify.filter(prod => isProductNotInPrintify(data, prod));
+        notInPrintify = notInPrintify.filter(prod => !data.some(p => p.id === prod.id_printify && p.variants.some(v => v.id === prod.variant.id_printify)));
         lastPage = data.length === 0;
         currentPage++;
     }
@@ -55,6 +70,12 @@ async function filterNotInPrintify(cartItems) {
     return notInPrintify;
 }
 
+/**
+ * Checks if a product is available in Printify.
+ * 
+ * @param {Object} product - The product object to check.
+ * @returns {Promise<boolean>} A promise that resolves to a boolean indicating if the product is available in Printify.
+ */
 async function isProductInPrintify(product) {
     let currentPage = 1;
     let lastPage = false;
@@ -74,20 +95,26 @@ async function isProductInPrintify(product) {
     return false;
 }
 
+/**
+ * Fetches filtered Printify products based on provider and blueprint IDs.
+ * 
+ * @param {string} provider_id - The provider ID to filter products by.
+ * @param {string} blueprint_id - The blueprint ID to filter products by.
+ * @param {number} limit - The maximum number of products to return. `Default: 30`
+ * @param {number} pageNumber - The page number to fetch products from. `Default: 1`
+ * @returns {Promise<Object>} A promise that resolves to an object containing filtered products and pagination data.
+ */
 async function fetchFilteredPrintifyProducts(provider_id, blueprint_id, limit = 30, pageNumber = 1) {
     const allProducts = await fetchAllPrintifyProducts();
 
-    // Filtrando produtos com base no blueprint_id e provider_id
     const filteredProducts = allProducts.filter(product =>
         product.blueprint_id === blueprint_id &&
         product.print_provider_id === provider_id
     )
 
-    // Calculando a última página
     const totalFiltered = filteredProducts.length;
     const lastPageNumber = Math.ceil(totalFiltered / limit);
 
-    // Selecionando produtos para a página atual
     const startIndex = (pageNumber - 1) * limit;
     const selectedProducts = filteredProducts.slice(startIndex, startIndex + limit);
 
@@ -97,6 +124,12 @@ async function fetchFilteredPrintifyProducts(provider_id, blueprint_id, limit = 
     };
 }
 
+/**
+ * Fetches a specific product from Printify by its product ID.
+ * 
+ * @param {string} productId - The ID of the product to fetch.
+ * @returns {Promise<Object|null>} A promise that resolves to the product object if found, or null if not found.
+ */
 async function getProductFromPrintify(productId) {
     const allProducts = await fetchAllPrintifyProducts()
 
