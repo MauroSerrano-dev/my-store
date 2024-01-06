@@ -286,6 +286,16 @@ export default function ProductAdmin(props) {
                                 {userCurrency?.symbol} {(Math.round(product.min_price * userCurrency?.rate) / 100).toFixed(2)}
                             </p>
                         </div>
+                        <div
+                            className={styles.statusIndicator}
+                            style={{
+                                backgroundColor: product.disabled ? 'var(--color-error)' : 'var(--color-success)',
+                                width: width * 0.08,
+                                height: width * 0.08,
+                                borderRadius: '100%',
+                            }}
+                        >
+                        </div>
                     </div>
                     {
                         supportsHoverAndPointer &&
