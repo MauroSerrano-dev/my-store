@@ -61,9 +61,6 @@ async function getUserIdByEmail(email) {
 
 async function createNewUserWithCredentials(user, userLanguage) {
     try {
-        // Create a reference to the users collection
-        const usersCollection = collection(db, process.env.NEXT_PUBLIC_COLL_USERS)
-
         // Create a session for the new user and return the session ID
         const { user: authenticatedUser } = await createUserWithEmailAndPassword(auth, user.email, user.password)
 
@@ -73,7 +70,7 @@ async function createNewUserWithCredentials(user, userLanguage) {
         })
 
         // Add the new user to the collection with password encryption
-        const newUserRef = doc(usersCollection, authenticatedUser.uid)
+        const newUserRef = doc(db, process.env.NEXT_PUBLIC_COLL_USERS, authenticatedUser.uid)
 
         const cart_id = uuidv4()
         await createCart(newUserRef.id, cart_id, [])

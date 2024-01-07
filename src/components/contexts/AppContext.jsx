@@ -15,7 +15,7 @@ import { motion } from 'framer-motion'
 import SearchBar from '../SearchBar'
 import { CircularProgress } from '@mui/material'
 import Cookies from 'js-cookie'
-import { CART_COOKIE, getCurrencyByLocation } from '@/consts'
+import { CART_COOKIE, LIMITS, getCurrencyByLocation } from '@/consts'
 import { v4 as uuidv4 } from 'uuid'
 import AdminMenu from '../menus/AdminMenu'
 import { showToast } from '@/utils/toasts'
@@ -23,6 +23,11 @@ import Error from 'next/error'
 import CountryConverter from '@/utils/time-zone-country.json'
 import ZoneConverter from '@/utils/country-zone.json'
 import NProgress from 'nprogress'
+import { createNewUserWithGoogle, getUserById } from '../../../frontend/user'
+import { addProductToWishlist, deleteProductFromWishlist, getWishlistById } from '../../../frontend/wishlists'
+import { getCartById } from '../../../frontend/cart'
+import { getProductsInfo } from '../../../frontend/product'
+import { auth } from '../../../firebaseInit'
 
 const AppContext = createContext()
 
@@ -32,11 +37,12 @@ const MOBILE_LIMIT = 1075
 
 export function AppProvider({ children }) {
 
-    const [cart, setCart] = useState()
     const [isUser, setIsUser] = useState(false)
     const [isVisitant, setIsVisitant] = useState(false)
     const [userEmailVerify, setUserEmailVerify] = useState()
     const [session, setSession] = useState()
+    const [cart, setCart] = useState()
+    const [wishlist, setWishlist] = useState()
 
     const [userCurrency, setUserCurrency] = useState()
     const [userLocation, setUserLocation] = useState()
@@ -59,9 +65,6 @@ export function AppProvider({ children }) {
 
     const tNavbar = useTranslation('navbar').t
     const tToasts = useTranslation('toasts').t
-
-    const firebaseApp = initializeApp(firebaseConfig)
-    const auth = getAuth(firebaseApp)
 
     const adminMode = isAdmin(auth) && router.pathname.split('/')[1] === 'admin'
 
@@ -113,9 +116,9 @@ export function AppProvider({ children }) {
             .catch(err => console.error(err))
     }
 
-    useEffect(() => {
-        getInicialCart()
-    }, [session])
+    /*     useEffect(() => {
+            getInicialCart()
+        }, [session]) */
 
     useEffect(() => {
         if (cart !== undefined)
@@ -203,6 +206,35 @@ export function AppProvider({ children }) {
             })
             .catch(err => console.error(err))
         Cookies.remove(CART_COOKIE)
+    }
+
+    async function handleLogin2(authUser) {
+        try {
+            const user = await getUserById(authUser.uid)
+            if (user) {
+                setSession(user)
+                const cart = await getCartById(user.cart_id)
+                const products = await getProductsInfo(cart.products)
+                setCart({ ...cart, products: products })
+                const wishlist = await getWishlistById(user.wishlist_id)
+                setWishlist(wishlist)
+            }
+            else {
+                const newUser = await createNewUserWithGoogle(authUser)
+                /* await deleteCartSession(Cookies.get(CART_COOKIE)) */
+                setSession(newUser)
+                const cart = await getCartById(newUser.cart_id)
+                const products = await getProductsInfo(cart.products)
+                setCart({ ...cart, products: products })
+                const wishlist = await getWishlistById(newUser.wishlist_id)
+                setWishlist(wishlist)
+            }
+            Cookies.remove(CART_COOKIE)
+        }
+        catch (error) {
+            console.error(error)
+            showToast({ type: 'error', msg: tToasts('error_getting_session') })
+        }
     }
 
     function login(email, password) {
@@ -299,7 +331,7 @@ export function AppProvider({ children }) {
             if (authUser) {
                 setIsUser(true)
                 setUserEmailVerify(authUser.emailVerified)
-                handleLogin(authUser)
+                handleLogin2(authUser)
             }
             else {
                 // O usuário fez logout ou não está autenticado
@@ -406,6 +438,37 @@ export function AppProvider({ children }) {
         }
     }, [menuOpen])
 
+    async function handleWishlistClick(productId) {
+        const prevWishlist = { ...wishlist }
+        try {
+            const add = !wishlist.products.some(prod => prod.id === productId)
+
+            if (add && wishlist.products.length >= LIMITS.wishlist_products) {
+                showToast({ type: 'error', msg: tToasts('wishlist_limit') })
+                return
+            }
+
+            setWishlist(prev => (
+                {
+                    ...prev,
+                    products: add
+                        ? prev.products.concat({ id: productId })
+                        : prev.products.filter(prod => prod.id !== productId)
+                }
+            ))
+
+            add
+                ? await addProductToWishlist(wishlist.id, { id: productId })
+                : await deleteProductFromWishlist(wishlist.id, { id: productId })
+
+        }
+        catch (error) {
+            setWishlist(prevWishlist)
+            if (error?.props?.title)
+                showToast({ type: error?.props?.type || 'error', msg: tToasts(error.props.title) })
+        }
+    }
+
     return (
         <AppContext.Provider
             value={{
@@ -421,8 +484,6 @@ export function AppProvider({ children }) {
                 supportsHoverAndPointer,
                 handleChangeCurrency,
                 userCurrency,
-                setCart,
-                cart,
                 currencies,
                 windowWidth,
                 getInicialCart,
@@ -441,6 +502,11 @@ export function AppProvider({ children }) {
                 setUserLocation,
                 search,
                 setSearch,
+                cart,
+                setCart,
+                wishlist,
+                setWishlist,
+                handleWishlistClick,
             }}
         >
             <motion.div

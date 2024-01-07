@@ -59,7 +59,6 @@ export default withRouter(() => {
         ac,
         v,
         p = '1',
-        limit = '60',
     } = router.query
 
     const { i18n } = useTranslation()
@@ -123,8 +122,6 @@ export default withRouter(() => {
                 authorization: process.env.NEXT_PUBLIC_APP_TOKEN,
             }
         }
-        if (limit)
-            options.headers.limit = limit
         if (i18n.language)
             options.headers.user_language = i18n.language
         if (p)

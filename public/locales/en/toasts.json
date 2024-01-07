@@ -66,5 +66,6 @@
     "image_src_missing": "Image src not provided",
     "art_color_missing": "Art Color not provided",
     "art_id_missing": "Art ID not provided",
-    "error_getting_session": "Error getting session"
+    "error_getting_session": "Error getting session",
+    "product_already_in_wishlist": "Product is already in Wishlist"
 }

@@ -12,6 +12,7 @@ import { showToast } from '@/utils/toasts';
 import { getProductPriceUnit } from '@/utils/prices';
 import ProductTag from './ProductTag';
 import MyTooltip from '../MyTooltip';
+import { deleteProductFromCart } from '../../../frontend/cart';
 
 export default function ProductModal(props) {
     const {
@@ -20,14 +21,15 @@ export default function ProductModal(props) {
     } = props
 
     const {
-        setLoading,
         userCurrency,
         setCart,
         session,
+        cart,
     } = useAppContext()
 
     const tCommon = useTranslation('common').t
     const tColors = useTranslation('colors').t
+    const tToasts = useTranslation('toasts').t
 
     const PRICE_UNIT = getProductPriceUnit(product, product.variant, userCurrency?.rate)
 
@@ -38,37 +40,19 @@ export default function ProductModal(props) {
 
     const [deleting, setDeleting] = useState(false)
 
-    function handleDeleteCartProduct() {
-        setDeleting(true)
-
-        const options = {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                authorization: process.env.NEXT_PUBLIC_APP_TOKEN
-            },
-            body: JSON.stringify({
-                cartId: session ? session.cart_id : Cookies.get(CART_COOKIE),
-                product: { id: product.id, variant_id: product.variant.id }
-            }),
+    async function handleDeleteProductFromCart() {
+        try {
+            setDeleting(true)
+            session
+                ? await deleteProductFromCart(cart.id, product)
+                : await deleteProductFromCartSession(cart.id, product)
+            setCart(prev => ({ ...prev, products: prev.products.filter(prod => prod.id !== product.id || prod.variant.id !== product.variant.id) }))
         }
-
-        if (session) {
-            options.headers.user_id = session.id
+        catch (error) {
+            setDeleting(false)
+            if (error?.props?.title)
+                showToast({ type: error?.props?.type || 'error', msg: tToasts(error.props.title) })
         }
-
-        fetch("/api/carts/delete-cart-product", options)
-            .then(response => response.json())
-            .then(response => {
-                setDeleting(false)
-                setCart(response.cart)
-            })
-            .catch(err => {
-                setDeleting(false)
-                setLoading(false)
-                showToast({ type: 'error', msg: 'error_deleting_product_from_cart' })
-                console.error(err)
-            })
     }
 
     return (
@@ -110,7 +94,7 @@ export default function ProductModal(props) {
                     }}
                 >
                     <SlClose
-                        onClick={() => handleDeleteCartProduct()}
+                        onClick={handleDeleteProductFromCart}
                         color='#ffffff'
                         style={{
                             fontSize: '15px',

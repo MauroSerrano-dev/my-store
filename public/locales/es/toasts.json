@@ -66,5 +66,6 @@
     "image_src_missing": "Fuente de imagen no proporcionada",
     "art_color_missing": "Color del arte no proporcionada",
     "art_id_missing": "ID del arte no proporcionado",
-    "error_getting_session": "Error al obtener la sesión"
+    "error_getting_session": "Error al obtener la sesión",
+    "product_already_in_wishlist": "El producto ya está en la Lista de Deseos"
 }

@@ -81,3 +81,31 @@ export function cartItemModel(props) {
         price: price,
     }
 }
+
+export function productInfo(props) {
+    const {
+        id,
+        art_position,
+        quantity,
+        type_id,
+        title,
+        promotion,
+        printify_ids,
+        variant,
+        default_variant,
+        image,
+    } = props
+
+    return {
+        id: id,
+        art_position: art_position,
+        quantity: quantity,
+        type_id: type_id,
+        title: title,
+        promotion: promotion,
+        printify_ids: printify_ids,
+        variant: variant,
+        default_variant: default_variant,
+        image: image,
+    }
+}

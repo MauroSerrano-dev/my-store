@@ -11,7 +11,7 @@ import { db } from "../firebaseInit";
  * @returns {object} The cart data.
  */
 async function getCartById(id) {
-    const cartRef = doc(db, process.env.COLL_CARTS, id)
+    const cartRef = doc(db, process.env.NEXT_PUBLIC_COLL_CARTS, id)
 
     try {
         const cartDoc = await getDoc(cartRef)
@@ -35,7 +35,7 @@ async function getCartById(id) {
  */
 async function getCartIdByUserId(userId) {
     try {
-        const cartCollection = collection(db, process.env.COLL_CARTS)
+        const cartCollection = collection(db, process.env.NEXT_PUBLIC_COLL_CARTS)
 
         let q = query(
             cartCollection,
@@ -79,7 +79,7 @@ async function getCartIdByUserId(userId) {
  */
 async function createCart(userId, cartId, products) {
     try {
-        const cartRef = doc(db, process.env.COLL_CARTS, cartId)
+        const cartRef = doc(db, process.env.NEXT_PUBLIC_COLL_CARTS, cartId)
 
         const docSnapshot = await getDoc(cartRef)
 
@@ -113,7 +113,7 @@ async function createCart(userId, cartId, products) {
  * @param {Array} cartProducts - The products to set in the cart.
  */
 async function setCartProducts(cartId, cartProducts) {
-    const cartRef = doc(db, process.env.COLL_CARTS, cartId)
+    const cartRef = doc(db, process.env.NEXT_PUBLIC_COLL_CARTS, cartId)
     const cartDoc = await getDoc(cartRef)
 
     try {
@@ -137,7 +137,7 @@ async function setCartProducts(cartId, cartProducts) {
  */
 async function addProductsToCart(cartId, cartNewProducts) {
     try {
-        const cartRef = doc(db, process.env.COLL_CARTS, cartId)
+        const cartRef = doc(db, process.env.NEXT_PUBLIC_COLL_CARTS, cartId)
         const cartDoc = await getDoc(cartRef)
 
         const cartData = cartDoc.data()
@@ -163,7 +163,7 @@ async function addProductsToCart(cartId, cartNewProducts) {
  * @returns {object} Status and message regarding the cart update.
  */
 async function deleteProductFromCart(cartId, product) {
-    const userRef = doc(db, process.env.COLL_CARTS, cartId)
+    const userRef = doc(db, process.env.NEXT_PUBLIC_COLL_CARTS, cartId)
     const cartDoc = await getDoc(userRef)
 
     try {
@@ -268,7 +268,7 @@ async function mergeCarts(userId, cart_cookie_id) {
 async function deleteCart(cartId) {
     try {
         // Referência para o carrinho na coleção de carrinhos
-        const cartRef = doc(db, process.env.COLL_CARTS, cartId);
+        const cartRef = doc(db, process.env.NEXT_PUBLIC_COLL_CARTS, cartId);
 
         // Exclui o documento do carrinho
         await deleteDoc(cartRef);

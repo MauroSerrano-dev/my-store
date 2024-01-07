@@ -31,7 +31,7 @@ async function getAllProducts(props) {
             p: '1',
         }
     try {
-        const productsCollection = collection(db, process.env.COLL_PRODUCTS)
+        const productsCollection = collection(db, process.env.NEXT_PUBLIC_COLL_PRODUCTS)
 
         let q = query(productsCollection)
 
@@ -86,7 +86,7 @@ async function getProductsInfo(products) {
             };
         }
 
-        const productsCollection = collection(db, process.env.COLL_PRODUCTS);
+        const productsCollection = collection(db, process.env.NEXT_PUBLIC_COLL_PRODUCTS);
 
         const productIDs = products.map(prod => prod.id);
         const chunkSize = 30;
@@ -176,7 +176,7 @@ async function getProductsInfo(products) {
 }
 
 async function createProduct(product) {
-    const productRef = doc(db, process.env.COLL_PRODUCTS, product.id)
+    const productRef = doc(db, process.env.NEXT_PUBLIC_COLL_PRODUCTS, product.id)
 
     try {
         const docSnapshot = await getDoc(productRef)
@@ -224,7 +224,7 @@ async function getProductsByTitle(s) {
         }
         const searchQuery = s.toLowerCase()
         // Crie uma consulta base
-        const productsCollection = collection(db, process.env.COLL_PRODUCTS)
+        const productsCollection = collection(db, process.env.NEXT_PUBLIC_COLL_PRODUCTS)
         let q = query(productsCollection)
 
         q = query(q, where('title_lower_case', ">=", searchQuery))
@@ -283,7 +283,7 @@ async function getProductsByQueries(props) {
 
     try {
         // Crie uma consulta base
-        const productsCollection = collection(db, process.env.COLL_PRODUCTS)
+        const productsCollection = collection(db, process.env.NEXT_PUBLIC_COLL_PRODUCTS)
 
         let q = query(productsCollection)
 
@@ -423,7 +423,7 @@ async function getProductsByQueries(props) {
 
 async function getProductById(id) {
     try {
-        const productRef = doc(db, process.env.COLL_PRODUCTS, id)
+        const productRef = doc(db, process.env.NEXT_PUBLIC_COLL_PRODUCTS, id)
         const productDoc = await getDoc(productRef)
 
         if (productDoc.exists()) {
@@ -473,7 +473,7 @@ async function updateProduct(product_id, product_new_fields) {
             throw new Error({ title: 'Invalid product price', statusCode: 400 })
     }
 
-    const productRef = doc(db, process.env.COLL_PRODUCTS, product_id)
+    const productRef = doc(db, process.env.NEXT_PUBLIC_COLL_PRODUCTS, product_id)
 
     try {
         await updateDoc(productRef, product_new_fields)
@@ -491,7 +491,7 @@ async function handleProductsPurchased(line_items) {
         for (const lineItem of line_items) {
             const { id, variant_id, quantity } = lineItem
 
-            const productRef = doc(db, process.env.COLL_PRODUCTS, id)
+            const productRef = doc(db, process.env.NEXT_PUBLIC_COLL_PRODUCTS, id)
             const productDoc = await getDoc(productRef)
 
             if (productDoc.exists()) {
@@ -534,7 +534,7 @@ async function handleProductsPurchased(line_items) {
 
 async function getAllProductsIds() {
     try {
-        const productsCollection = collection(db, process.env.COLL_PRODUCTS);
+        const productsCollection = collection(db, process.env.NEXT_PUBLIC_COLL_PRODUCTS);
         const q = query(productsCollection);
 
         const querySnapshot = await getDocs(q);
@@ -561,7 +561,7 @@ async function getProductsByIds(ids) {
         if (!ids || ids.length === 0)
             return []
 
-        const productsCollection = collection(db, process.env.COLL_PRODUCTS);
+        const productsCollection = collection(db, process.env.NEXT_PUBLIC_COLL_PRODUCTS);
 
         const chunkSize = 30;
         const chunks = [];
@@ -600,7 +600,7 @@ async function getProductsByIds(ids) {
 
 async function cleanPopularityMonth() {
     try {
-        const productsCollection = collection(db, process.env.COLL_PRODUCTS);
+        const productsCollection = collection(db, process.env.NEXT_PUBLIC_COLL_PRODUCTS);
         const querySnapshot = await getDocs(productsCollection);
 
         for (const doc of querySnapshot.docs) {
@@ -632,7 +632,7 @@ async function cleanPopularityMonth() {
 
 async function cleanPopularityYear() {
     try {
-        const productsCollection = collection(db, process.env.COLL_PRODUCTS);
+        const productsCollection = collection(db, process.env.NEXT_PUBLIC_COLL_PRODUCTS);
         const querySnapshot = await getDocs(productsCollection);
 
         for (const doc of querySnapshot.docs) {
@@ -674,7 +674,7 @@ async function cleanPopularityYear() {
  * @throws {Error} Lança um erro se ocorrer um problema durante a consulta ao banco de dados.
  */
 async function getDisabledProducts(products) {
-    const productsCollection = collection(db, process.env.COLL_PRODUCTS)
+    const productsCollection = collection(db, process.env.NEXT_PUBLIC_COLL_PRODUCTS)
     const disabledProducts = []
 
     try {
@@ -732,7 +732,7 @@ async function createPromotionForProducts(products_ids, promotion) {
             throw new Error({ title: 'Invalid Promotion Expire Date', statusCode: 400 })
 
         // Reference to the products collection in Firestore
-        const productsCollection = collection(db, process.env.COLL_PRODUCTS)
+        const productsCollection = collection(db, process.env.NEXT_PUBLIC_COLL_PRODUCTS)
 
         promotion.expire_at = new Timestamp(promotion.expire_at.seconds, promotion.expire_at.nanoseconds)
 
@@ -782,7 +782,7 @@ async function createPromotionForProducts(products_ids, promotion) {
  */
 async function removeExpiredPromotions() {
     try {
-        const productsCollection = collection(db, process.env.COLL_PRODUCTS)
+        const productsCollection = collection(db, process.env.NEXT_PUBLIC_COLL_PRODUCTS)
         const querySnapshot = await getDocs(productsCollection)
 
         const updatePromises = []
@@ -809,7 +809,7 @@ async function removeExpiredPromotions() {
 
 async function getSimilarProducts(product_id, limit = 15) {
     // Obtenha o produto pelo ID
-    const productRef = doc(db, process.env.COLL_PRODUCTS, product_id);
+    const productRef = doc(db, process.env.NEXT_PUBLIC_COLL_PRODUCTS, product_id);
     const productSnapshot = await getDoc(productRef);
     if (!productSnapshot.exists()) {
         console.log("Produto não encontrado.");
@@ -849,7 +849,7 @@ async function getSimilarProducts(product_id, limit = 15) {
 
 async function getAllActivesProducts() {
     try {
-        const productsCollection = collection(db, process.env.COLL_PRODUCTS);
+        const productsCollection = collection(db, process.env.NEXT_PUBLIC_COLL_PRODUCTS);
 
         // Filtrar produtos com o campo 'disabled' igual a false
         let q = query(productsCollection, where("disabled", "==", false));
@@ -868,7 +868,7 @@ async function getAllActivesProducts() {
 
 async function getProductsAnalytics() {
     try {
-        const productsCollection = collection(db, process.env.COLL_PRODUCTS);
+        const productsCollection = collection(db, process.env.NEXT_PUBLIC_COLL_PRODUCTS);
 
         // Criando uma consulta para a coleção de produtos
         const q = query(productsCollection);

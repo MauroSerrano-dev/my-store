@@ -40,6 +40,8 @@ export default function Product(props) {
         session,
         supportsHoverAndPointer,
         userCurrency,
+        wishlist,
+        handleWishlistClick,
     } = useAppContext()
 
     const tCommon = useTranslation('common').t
@@ -121,58 +123,6 @@ export default function Product(props) {
         setHover(false)
     }
 
-    function handleWishlist(event) {
-        event.preventDefault()
-
-        const add = !session.wishlist_products_ids.includes(product.id)
-
-        if (add && session.wishlist_products_ids.length >= LIMITS.wishlist_products) {
-            showToast({ msg: tToasts('wishlist_limit'), type: 'error' })
-            return
-        }
-
-        setSession(prevSession => (
-            {
-                ...prevSession,
-                wishlist_products_ids: add
-                    ? prevSession.wishlist_products_ids.concat(product.id)
-                    : prevSession.wishlist_products_ids.filter(prod_id => prod_id !== product.id)
-            }
-        ))
-
-        const options = {
-            method: add ? 'POST' : 'DELETE',
-            headers: {
-                'Content-Type': 'application/json',
-                authorization: process.env.NEXT_PUBLIC_APP_TOKEN
-            },
-            body: JSON.stringify({
-                wishlist_id: session.wishlist_id,
-                product: { id: product.id }
-            }),
-        }
-
-        fetch("/api/wishlists/wishlist-products", options)
-            .then(response => response.json())
-            .then(response => {
-                if (response.error) {
-                    throw response.error
-                }
-            })
-            .catch(error => {
-                console.error(error)
-                showToast({ type: 'error', msg: tToasts(error) })
-                setSession(prevSession => (
-                    {
-                        ...prevSession,
-                        wishlist_products_ids: add
-                            ? prevSession.wishlist_products_ids.filter(prod_id => prod_id !== product.id)
-                            : prevSession.wishlist_products_ids.concat(product.id)
-                    }
-                ))
-            })
-    }
-
     function handleRemoveFromWishlist(event) {
         event.preventDefault()
 
@@ -240,10 +190,10 @@ export default function Product(props) {
             onMouseEnter={handleOnMouseEnter}
             onMouseLeave={handleOnMouseLeave}
         >
-            {!hideWishlistButton && session && supportsHoverAndPointer &&
+            {!hideWishlistButton && session && wishlist && supportsHoverAndPointer &&
                 <motion.div
                     className={styles.wishlistButton}
-                    onClick={handleWishlist}
+                    onClick={() => handleWishlistClick(product.id)}
                     initial='hidden'
                     animate={hover ? 'visible' : 'hidden'}
                     variants={{
@@ -260,7 +210,7 @@ export default function Product(props) {
                             top: '1px',
                             color: 'var(--global-white)'
                         }}
-                        checked={session.wishlist_products_ids.includes(product.id)}
+                        checked={wishlist.products.some(prod => prod.id === product.id)}
                         size={width * 0.13}
                     />
                 </motion.div>
