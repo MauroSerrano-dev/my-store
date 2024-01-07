@@ -193,7 +193,14 @@ export function AppProvider({ children }) {
         }
         fetch("/api/user-session", options)
             .then(response => response.json())
-            .then(response => setSession(response))
+            .then(response => {
+                if (response.error) {
+                    showToast({ type: 'error', msg: tToasts('error_getting_session') })
+                    logout()
+                }
+                else
+                    setSession(response)
+            })
             .catch(err => console.error(err))
         Cookies.remove(CART_COOKIE)
     }
@@ -254,7 +261,7 @@ export function AppProvider({ children }) {
                 setCart()
                 setUserEmailVerify(false)
                 setSession(null)
-                showToast({ type: 'info', msg: 'always-welcome' })
+                showToast({ type: 'info', msg: tToasts('always_welcome') })
                 router.push('/')
             })
             .catch(() => {

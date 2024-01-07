@@ -81,6 +81,15 @@ export default withRouter(() => {
                         printify_ids: tp.providers.reduce((acc, prov_id) => ({ ...acc, [prov_id]: '' }), {}),
                         sizes: SIZES_POOL.filter(sz => tp.sizes.includes(sz.id)),
                         tags: tp.inicial_tags,
+                        variants: tp.variants.map(vari => ({
+                            id: vari.id,
+                            active: false,
+                            color_id: vari.color_id,
+                            size_id: vari.size_id,
+                            price: vari.inicial_price,
+                            sales: 0,
+                            art: null,
+                        })),
                     }
                 ))
                 setType(tp)
@@ -91,7 +100,7 @@ export default withRouter(() => {
     async function createProduct() {
         setLoadingCreateButton(true)
 
-        if (!isNewProductValid(product, images)) {
+        if (!isNewProductValid(product, images, tToasts)) {
             setLoadingCreateButton(false)
             return
         }
@@ -119,7 +128,7 @@ export default withRouter(() => {
                     sizes_ids: SIZES_POOL.map(size => size.id).filter(sz_id => product.sizes.some(sz => sz.id === sz_id)),
                     min_price: product.variants.reduce((acc, vari) => acc < vari.price ? acc : vari.price, product.variants[0].price),
                     images: product.colors.reduce((acc, color) => acc.concat(images[color.id].map(img => ({ src: img.src, color_id: img.color_id }))), []),
-                    variants: product.variants.map(vari => ({ id: vari.id, art: vari.art, sales: 0, price: vari.price, size_id: vari.size_id, color_id: vari.color_id })),
+                    variants: product.variants,
                     promotion: null,
                 }
             })
@@ -187,24 +196,23 @@ export default withRouter(() => {
                 return {
                     ...prev,
                     colors: value,
-                    variants: prev.variants
-                        .concat(
-                            type.variants
-                                .filter(vari => color.id === vari.color_id && prev.sizes.some(sz => sz.id === vari.size_id))
-                                .map(vari => (
-                                    {
-                                        ...vari,
-                                        price: vari.inicial_price,
-                                        art: {
-                                            id: artIdChained
-                                                ? prev.id : '',
-                                            color_id: artColorChained && prev.variants.length > 0
-                                                ? prev.variants[0].art.color_id
-                                                : null
-                                        }
-                                    }
-                                ))
-                        )
+                    variants: prev.variants.map(vari =>
+                        color.id === vari.color_id && prev.sizes.some(sz => sz.id === vari.size_id)
+                            ? {
+                                ...vari,
+                                active: true,
+                                price: vari.price,
+                                art: {
+                                    id: artIdChained
+                                        ? prev.id
+                                        : '',
+                                    color_id: artColorChained && prev.variants.filter(variant => variant.active).length > 0
+                                        ? prev.variants.filter(variant => variant.active)[0].art.color_id
+                                        : null
+                                }
+                            }
+                            : vari
+                    )
                 }
             }
             // remove color
@@ -221,8 +229,11 @@ export default withRouter(() => {
                 return {
                     ...prev,
                     colors: value,
-                    variants: prev.variants
-                        .filter(vari => value.some(cl => cl.id === vari.color_id))
+                    variants: prev.variants.map(vari =>
+                        color.id === vari.color_id
+                            ? { ...vari, active: false, art: null }
+                            : vari
+                    )
                 }
             }
         })
@@ -270,31 +281,33 @@ export default withRouter(() => {
                 ? {
                     ...prev,
                     sizes: value,
-                    variants: prev.variants
-                        .concat(
-                            type.variants
-                                .filter(vari => size.id === vari.size_id && prev.colors.some(cl => cl.id === vari.color_id))
-                                .map(vari => (
-                                    {
-                                        ...vari,
-                                        price: vari.inicial_price,
-                                        art: {
-                                            id: artIdChained
-                                                ? prev.id
-                                                : '', color_id: artColorChained && prev.variants.length > 0
-                                                    ? prev.variants[0].art.color_id
-                                                    : null
-                                        }
-                                    }
-                                ))
-                        )
+                    variants: prev.variants.map(vari =>
+                        size.id === vari.size_id && prev.colors.some(cl => cl.id === vari.color_id)
+                            ? {
+                                ...vari,
+                                active: true,
+                                price: vari.price,
+                                art: {
+                                    id: artIdChained
+                                        ? prev.id
+                                        : '',
+                                    color_id: artColorChained && prev.variants.filter(variant => variant.active).length > 0
+                                        ? prev.variants.filter(variant => variant.active)[0].art.color_id
+                                        : null,
+                                }
+                            }
+                            : vari
+                    )
                 }
                 // remove size
                 : {
                     ...prev,
                     sizes: value,
-                    variants: prev.variants
-                        .filter(vari => value.some(sz => sz.id === vari.size_id))
+                    variants: prev.variants.map(vari =>
+                        size.id === vari.size_id
+                            ? { ...vari, active: false, art: null }
+                            : vari
+                    )
                 }
 
         )
@@ -857,7 +870,7 @@ export default withRouter(() => {
                                                 </h3>
                                             </div>
                                             <ColorSelector
-                                                value={[SEARCH_ART_COLORS.map(cl => ({ id: cl.id, colors: [cl.color_display.color], title: cl.color_display.title })).find(scl => scl.id === product.variants.find(vari => vari.color_id === product.colors[colorIndex].id).art.color_id)]}
+                                                value={[SEARCH_ART_COLORS.map(cl => ({ id: cl.id, colors: [cl.color_display.color], title: cl.color_display.title })).find(scl => scl.id === product.variants.filter(variant => variant.active).find(vari => vari.color_id === product.colors[colorIndex].id).art.color_id)]}
                                                 options={SEARCH_ART_COLORS.map(cl => ({ id: cl.id, colors: [cl.color_display.color], title: cl.color_display.title }))}
                                                 onChange={handleArtColor}
                                                 style={{
@@ -881,7 +894,7 @@ export default withRouter(() => {
                                                     disabled={artIdChained}
                                                     colorText='var(--color-success)'
                                                     label='Art ID'
-                                                    value={product.variants.find(vari => vari.color_id === product.colors[colorIndex].id).art.id || ''}
+                                                    value={product.variants.filter(variant => variant.active).find(vari => vari.color_id === product.colors[colorIndex].id).art.id || ''}
                                                     onChange={handleArtId}
                                                     style={{
                                                         width: '100%'

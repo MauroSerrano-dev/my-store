@@ -65,5 +65,6 @@
     "choose_at_least_one_size": "Elige al menos una talla",
     "image_src_missing": "Fuente de imagen no proporcionada",
     "art_color_missing": "Color del arte no proporcionada",
-    "art_id_missing": "ID del arte no proporcionado"
+    "art_id_missing": "ID del arte no proporcionado",
+    "error_getting_session": "Error al obtener la sesión"
 }

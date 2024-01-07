@@ -17,14 +17,30 @@ import { createWishlist, deleteWishlist } from "./wishlists"
 import { newUserModel } from "@/utils/models"
 import Error from "next/error"
 import { addUserDeleted } from "./app-settings"
-import { auth, db } from "../firebaseInit"
 const { v4: uuidv4 } = require('uuid')
 const admin = require('../firebaseAdminInit');
+import { db } from "../firebaseInit";
+
+async function getUserById(id) {
+    try {
+        const userDocRef = doc(db, process.env.NEXT_PUBLIC_COLL_USERS, id)
+
+        const userDoc = await getDoc(userDocRef)
+
+        if (userDoc.exists())
+            return userDoc.data()
+        else
+            return null
+    } catch (error) {
+        console.error("Erro ao obter usuário pelo ID:", error)
+        throw error
+    }
+}
 
 async function getUserIdByEmail(email) {
     try {
         // Create a reference to the users collection
-        const usersCollection = collection(db, process.env.COLL_USERS);
+        const usersCollection = collection(db, process.env.NEXT_PUBLIC_COLL_USERS);
 
         // Query the user with the provided email
         const q = query(usersCollection, where("email", "==", email));
@@ -43,27 +59,10 @@ async function getUserIdByEmail(email) {
     }
 }
 
-async function getUserById(id) {
-    try {
-        const userDocRef = doc(db, process.env.COLL_USERS, id)
-
-        const userDoc = await getDoc(userDocRef)
-
-        if (userDoc.exists()) {
-            return userDoc.data()
-        } else {
-            return null
-        }
-    } catch (error) {
-        console.error("Erro ao obter usuário pelo ID:", error)
-        throw error
-    }
-}
-
 async function createNewUserWithCredentials(user, userLanguage) {
     try {
         // Create a reference to the users collection
-        const usersCollection = collection(db, process.env.COLL_USERS)
+        const usersCollection = collection(db, process.env.NEXT_PUBLIC_COLL_USERS)
 
         // Create a session for the new user and return the session ID
         const { user: authenticatedUser } = await createUserWithEmailAndPassword(auth, user.email, user.password)
@@ -129,7 +128,7 @@ async function createNewUserWithGoogle(authUser, id, cart_cookie_id) {
             const lastName = fullName.length <= 1 ? null : fullName[fullName.length - 1]
 
             // Create a reference to the users collection
-            const usersCollection = collection(db, process.env.COLL_USERS)
+            const usersCollection = collection(db, process.env.NEXT_PUBLIC_COLL_USERS)
 
             // Add the new user to the collection with password encryption
             const newUserRef = doc(usersCollection, id)
@@ -171,7 +170,7 @@ async function createNewUserWithGoogle(authUser, id, cart_cookie_id) {
 
 async function checkUserExistsByEmail(email) {
     try {
-        const usersCollection = collection(db, process.env.COLL_USERS);
+        const usersCollection = collection(db, process.env.NEXT_PUBLIC_COLL_USERS);
 
         // Crie uma consulta para verificar se há um documento com o mesmo email
         const q = query(usersCollection, where("email", "==", email));
@@ -191,7 +190,7 @@ async function checkUserExistsByEmail(email) {
 
 async function removeEmailVerifiedField(userId) {
     try {
-        const userRef = doc(db, process.env.COLL_USERS, userId); // Adjust the path accordingly
+        const userRef = doc(db, process.env.NEXT_PUBLIC_COLL_USERS, userId); // Adjust the path accordingly
 
         // Get the existing user data
         const userDoc = await getDoc(userRef)
@@ -213,7 +212,7 @@ async function removeEmailVerifiedField(userId) {
 
 async function updateField(userId, fieldName, value) {
     try {
-        const userRef = doc(db, process.env.COLL_USERS, userId)
+        const userRef = doc(db, process.env.NEXT_PUBLIC_COLL_USERS, userId)
         const userDoc = await getDoc(userRef)
 
         if (userDoc.exists()) {
@@ -239,7 +238,7 @@ async function updateField(userId, fieldName, value) {
 
 async function updateUser(userId, changes) {
     try {
-        const userRef = doc(db, process.env.COLL_USERS, userId)
+        const userRef = doc(db, process.env.NEXT_PUBLIC_COLL_USERS, userId)
         const userDoc = await getDoc(userRef)
 
         if (userDoc.exists()) {
@@ -268,7 +267,7 @@ async function updateUser(userId, changes) {
 
 async function clearUpdateCounter() {
     try {
-        const usersCollection = collection(db, process.env.COLL_USERS)
+        const usersCollection = collection(db, process.env.NEXT_PUBLIC_COLL_USERS)
         const usersQuery = query(usersCollection)
         const userDocs = await getDocs(usersQuery)
 
@@ -278,7 +277,7 @@ async function clearUpdateCounter() {
             const userData = userDoc.data()
             userData.update_counter = Timestamp.now()
 
-            const userRef = doc(db, process.env.COLL_USERS, userDoc.id)
+            const userRef = doc(db, process.env.NEXT_PUBLIC_COLL_USERS, userDoc.id)
 
             updatePromises.push(setDoc(userRef, userData))
         })
@@ -314,7 +313,7 @@ async function getUserProvidersByEmail(email) {
 
 async function completeQuest(user_id, quest_id) {
     try {
-        const userRef = doc(db, process.env.COLL_USERS, user_id)
+        const userRef = doc(db, process.env.NEXT_PUBLIC_COLL_USERS, user_id)
         const userDoc = await getDoc(userRef)
 
         if (userDoc.exists()) {
@@ -342,7 +341,7 @@ async function completeQuest(user_id, quest_id) {
 async function deleteUser(user_id) {
     try {
         await admin.auth().deleteUser(user_id);
-        const userRef = doc(db, process.env.COLL_USERS, user_id)
+        const userRef = doc(db, process.env.NEXT_PUBLIC_COLL_USERS, user_id)
         const user = await getUserById(user_id)
         if (!user)
             throw new Error('User not found to delete')
