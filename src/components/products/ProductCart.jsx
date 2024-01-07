@@ -2,7 +2,7 @@ import styles from '@/styles/components/products/ProductCart.module.css'
 import { SlClose } from "react-icons/sl";
 import { motion } from "framer-motion";
 import Link from 'next/link';
-import { SIZES_POOL, COLORS_POOL, CART_COOKIE } from '@/consts';
+import { SIZES_POOL, COLORS_POOL, CART_COOKIE, CART_LOCAL_STORAGE } from '@/consts';
 import Image from 'next/image';
 import Selector from '../material-ui/Selector';
 import { useState } from 'react';
@@ -14,6 +14,7 @@ import { getProductPriceUnit } from '@/utils/prices';
 import MyTooltip from '../MyTooltip';
 import { deleteProductFromCart } from '../../../frontend/cart';
 import ProductTag from './ProductTag';
+import { isSameProduct } from '@/utils';
 
 export default function ProductCart(props) {
     const {
@@ -49,15 +50,19 @@ export default function ProductCart(props) {
     async function handleDeleteProductFromCart() {
         try {
             setDeleting(true)
-            session
-                ? await deleteProductFromCart(cart.id, product)
-                : await deleteProductFromCartSession(cart.id, product)
-            setCart(prev => ({ ...prev, products: prev.products.filter(prod => prod.id !== product.id || prod.variant.id !== product.variant.id) }))
+            if (session) {
+                await deleteProductFromCart(cart.id, product)
+            }
+            else {
+                const visitantCart = JSON.parse(localStorage.getItem(CART_LOCAL_STORAGE))
+                localStorage.setItem(CART_LOCAL_STORAGE, JSON.stringify({ ...visitantCart, products: visitantCart.products.filter(prod => !isSameProduct(prod, product)) }))
+            }
+            setCart(prev => ({ ...prev, products: prev.products.filter(prod => !isSameProduct(prod, product)) }))
         }
         catch (error) {
+            console.error(error)
             setDeleting(false)
-            if (error?.props?.title)
-                showToast({ type: error?.props?.type || 'error', msg: tToasts(error.props.title) })
+            showToast({ type: error?.props?.type || 'error', msg: tToasts(error?.props?.title || 'default_error') })
         }
     }
 
@@ -140,7 +145,7 @@ export default function ProductCart(props) {
             >
                 <Image
                     quality={100}
-                    src={product.image.src}
+                    src={product.image_src}
                     alt={product.title}
                     width={270}
                     height={300}

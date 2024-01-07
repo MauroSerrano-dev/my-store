@@ -7,15 +7,13 @@ import 'react-toastify/dist/ReactToastify.css'
 import NavBar from "../NavBar"
 import Maintenance from "../Maintenance"
 import Menu from "../Menu"
-import { initializeApp } from "firebase/app"
-import { firebaseConfig } from "../../../firebase.config"
-import { getAuth, onAuthStateChanged, signInWithEmailAndPassword, signOut } from "firebase/auth"
+import { onAuthStateChanged, signInWithEmailAndPassword, signOut } from "firebase/auth"
 import { isAdmin } from "@/utils/validations"
 import { motion } from 'framer-motion'
 import SearchBar from '../SearchBar'
 import { CircularProgress } from '@mui/material'
 import Cookies from 'js-cookie'
-import { CART_COOKIE, LIMITS, getCurrencyByLocation } from '@/consts'
+import { CART_COOKIE, CART_LOCAL_STORAGE, LIMITS, getCurrencyByLocation } from '@/consts'
 import { v4 as uuidv4 } from 'uuid'
 import AdminMenu from '../menus/AdminMenu'
 import { showToast } from '@/utils/toasts'
@@ -116,10 +114,6 @@ export function AppProvider({ children }) {
             .catch(err => console.error(err))
     }
 
-    /*     useEffect(() => {
-            getInicialCart()
-        }, [session]) */
-
     useEffect(() => {
         if (cart !== undefined)
             setLoading(false)
@@ -135,26 +129,24 @@ export function AppProvider({ children }) {
         })
     }
 
-    function getInicialCart() {
-        if (session !== undefined) {
-            if (session) {
-                getCartFromApi(session.cart_id)
+    function getInicialCart2() {
+        if (session) {
+            getCartFromApi(session.cart_id)
+        }
+        else if (session === null) {
+            const cart_id = Cookies.get(CART_COOKIE)
+            if (cart_id) {
+                getCartFromApi(cart_id)
             }
             else {
-                const cart_id = Cookies.get(CART_COOKIE)
-                if (cart_id) {
-                    getCartFromApi(cart_id)
-                }
-                else {
-                    const new_cart_id = uuidv4()
-                    getCartFromApi(new_cart_id)
-                    Cookies.set(CART_COOKIE, new_cart_id)
-                }
+                const new_cart_id = uuidv4()
+                getCartFromApi(new_cart_id)
+                Cookies.set(CART_COOKIE, new_cart_id)
             }
         }
     }
 
-    function getCartFromApi(cart_id) {
+    function getCartFromApi2(cart_id) {
         const options = {
             method: 'GET',
             headers: {
@@ -176,12 +168,38 @@ export function AppProvider({ children }) {
             })
     }
 
+    async function getInicialCart() {
+        try {
+            if (session === undefined)
+                return
+            if (session) {
+                const userCart = await getCartById(session.cart_id)
+                const products = await getProductsInfo(userCart.products)
+                setCart({ ...cart, products: products })
+            }
+            else {
+                const visitantCart = JSON.parse(localStorage.getItem(CART_LOCAL_STORAGE))
+                if (visitantCart) {
+                    const products = await getProductsInfo(visitantCart.products)
+                    setCart({ ...visitantCart, products: products })
+                }
+                else {
+                    localStorage.setItem(CART_LOCAL_STORAGE, JSON.stringify({ products: [] }))
+                    setCart({ products: [] })
+                }
+            }
+        }
+        catch (error) {
+            showToast({ type: error?.props?.type || 'error', msg: tToasts(error?.props?.title || 'default_error') })
+        }
+    }
+
     function handleChangeCurrency(newCurrencyCode) {
         Cookies.set('CURR', newCurrencyCode)
         setUserCurrency(currencies?.[newCurrencyCode])
     }
 
-    function handleLogin(authUser) {
+    function handleLogin2(authUser) {
         const options = {
             method: 'POST',
             headers: {
@@ -208,7 +226,7 @@ export function AppProvider({ children }) {
         Cookies.remove(CART_COOKIE)
     }
 
-    async function handleLogin2(authUser) {
+    async function handleLogin(authUser) {
         try {
             const user = await getUserById(authUser.uid)
             if (user) {
@@ -331,14 +349,35 @@ export function AppProvider({ children }) {
             if (authUser) {
                 setIsUser(true)
                 setUserEmailVerify(authUser.emailVerified)
-                handleLogin2(authUser)
+                handleLogin(authUser)
             }
             else {
                 // O usuário fez logout ou não está autenticado
                 setIsVisitant(true)
                 setSession(null)
+                getCartSession()
             }
         })
+    }
+
+    async function getCartSession() {
+        try {
+            const visitantCart = JSON.parse(localStorage.getItem(CART_LOCAL_STORAGE))
+            if (visitantCart) {
+                const products = await getProductsInfo(visitantCart.products)
+
+                setCart({ ...visitantCart, products: products })
+            }
+            else {
+                const newCartJson = JSON.stringify({ products: [] })
+                setCart(newCartJson)
+                localStorage.setItem(CART_LOCAL_STORAGE, newCartJson)
+            }
+
+        }
+        catch (error) {
+            showToast({ type: error?.props?.type || 'error', msg: tToasts(error?.props?.title || 'default_error') })
+        }
     }
 
     useEffect(() => {
@@ -464,8 +503,7 @@ export function AppProvider({ children }) {
         }
         catch (error) {
             setWishlist(prevWishlist)
-            if (error?.props?.title)
-                showToast({ type: error?.props?.type || 'error', msg: tToasts(error.props.title) })
+            showToast({ type: error?.props?.type || 'error', msg: tToasts(error?.props?.title || 'default_error') })
         }
     }
 
@@ -486,7 +524,6 @@ export function AppProvider({ children }) {
                 userCurrency,
                 currencies,
                 windowWidth,
-                getInicialCart,
                 setAdminMenuOpen,
                 logout,
                 showLoadingScreen,
@@ -507,6 +544,7 @@ export function AppProvider({ children }) {
                 wishlist,
                 setWishlist,
                 handleWishlistClick,
+                getInicialCart,
             }}
         >
             <motion.div

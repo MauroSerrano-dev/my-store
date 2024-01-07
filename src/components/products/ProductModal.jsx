@@ -2,9 +2,8 @@ import styles from '@/styles/components/products/ProductModal.module.css'
 import { SlClose } from "react-icons/sl";
 import { motion } from "framer-motion";
 import Link from 'next/link';
-import { SIZES_POOL, COLORS_POOL, CART_COOKIE } from '@/consts';
+import { SIZES_POOL, COLORS_POOL, CART_LOCAL_STORAGE } from '@/consts';
 import Image from 'next/image';
-import Cookies from 'js-cookie';
 import { useState } from 'react';
 import { useTranslation } from 'next-i18next';
 import { useAppContext } from '../contexts/AppContext';
@@ -13,6 +12,7 @@ import { getProductPriceUnit } from '@/utils/prices';
 import ProductTag from './ProductTag';
 import MyTooltip from '../MyTooltip';
 import { deleteProductFromCart } from '../../../frontend/cart';
+import { isSameProduct } from '@/utils';
 
 export default function ProductModal(props) {
     const {
@@ -43,15 +43,19 @@ export default function ProductModal(props) {
     async function handleDeleteProductFromCart() {
         try {
             setDeleting(true)
-            session
-                ? await deleteProductFromCart(cart.id, product)
-                : await deleteProductFromCartSession(cart.id, product)
-            setCart(prev => ({ ...prev, products: prev.products.filter(prod => prod.id !== product.id || prod.variant.id !== product.variant.id) }))
+            if (session) {
+                await deleteProductFromCart(cart.id, product)
+            }
+            else {
+                const visitantCart = JSON.parse(localStorage.getItem(CART_LOCAL_STORAGE))
+                localStorage.setItem(CART_LOCAL_STORAGE, JSON.stringify({ ...visitantCart, products: visitantCart.products.filter(prod => !isSameProduct(prod, product)) }))
+            }
+            setCart(prev => ({ ...prev, products: prev.products.filter(prod => !isSameProduct(prod, product)) }))
         }
         catch (error) {
+            console.error(error)
             setDeleting(false)
-            if (error?.props?.title)
-                showToast({ type: error?.props?.type || 'error', msg: tToasts(error.props.title) })
+            showToast({ type: error?.props?.type || 'error', msg: tToasts(error?.props?.title || 'default_error') })
         }
     }
 
@@ -123,7 +127,7 @@ export default function ProductModal(props) {
                 >
                     <Image
                         quality={100}
-                        src={product.image.src}
+                        src={product.image_src}
                         alt={product.title}
                         fill
                         sizes='108px'

@@ -21,6 +21,8 @@ export const COMMON_TRANSLATES = [
 
 export const CART_COOKIE = 'CART'
 
+export const CART_LOCAL_STORAGE = 'visitant-cart'
+
 export const LIMITS = {
     cart_same_item: 10,
     cart_items: 20,

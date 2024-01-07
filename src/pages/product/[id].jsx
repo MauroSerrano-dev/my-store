@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react'
 import ImagesSlider from '@/components/ImagesSlider'
 import ShoppingCartOutlinedIcon from '@mui/icons-material/ShoppingCartOutlined'
 import CreditCardOutlinedIcon from '@mui/icons-material/CreditCardOutlined'
-import { CART_COOKIE, COLORS_POOL, SIZES_POOL, LIMITS, getShippingOptions, DEFAULT_LANGUAGE, COMMON_TRANSLATES, PRODUCTS_TYPES } from '@/consts'
+import { CART_COOKIE, COLORS_POOL, SIZES_POOL, LIMITS, getShippingOptions, DEFAULT_LANGUAGE, COMMON_TRANSLATES, PRODUCTS_TYPES, CART_LOCAL_STORAGE } from '@/consts'
 import Head from 'next/head'
 import ColorSelector from '@/components/ColorSelector'
 import SizesSelector from '@/components/SizesSelector'
@@ -34,7 +34,7 @@ import CarouselProducts from '@/components/carousels/CarouselProducts'
 import KeyFeatures from '@/components/products/KeyFeatures'
 import { ButtonGroup } from '@mui/material'
 import { addProductsToCart } from '../../../frontend/cart'
-import { addProductToWishlist, deleteProductFromWishlist } from '../../../frontend/wishlists'
+import { addProductsToVisitantCart } from '../../../frontend/visitant-cart'
 
 export default withRouter(props => {
     const {
@@ -166,9 +166,14 @@ export default withRouter(props => {
                         ? null
                         : currentPosition
                 }
-                session
-                    ? await addProductsToCart(session.cart_id, [newProduct])
-                    : await addProductsToCartSession(Cookies.get(CART_COOKIE), [newProduct])
+
+                if (session) {
+                    await addProductsToCart(session.cart_id, [newProduct])
+                }
+                else {
+                    const newVisitantCart = addProductsToVisitantCart(JSON.parse(localStorage.getItem(CART_LOCAL_STORAGE)), [newProduct])
+                    localStorage.setItem(CART_LOCAL_STORAGE, JSON.stringify(newVisitantCart))
+                }
 
                 const newProductFullInfo = productInfo(
                     {
@@ -186,9 +191,12 @@ export default withRouter(props => {
                             color_id: product.colors_ids[0],
                             size_id: product.sizes_ids[0],
                         },
-                        image: product.images.find(img => img.color_id === productCurrentVariant.color_id),
+                        image_src: typeof product.images[0].src === 'string'
+                            ? product.images.find(img => img.color_id === productCurrentVariant.color_id).src
+                            : product.images.find(img => img.color_id === productCurrentVariant.color_id).src[currentPosition],
                     }
                 )
+
                 setCart(prev => (
                     {
                         ...prev,
@@ -215,56 +223,6 @@ export default withRouter(props => {
 
     function handleSizeChange(arr, index, size) {
         setCurrentSize(size)
-    }
-
-    function handleWishlist() {
-        const add = !session.wishlist_products_ids.includes(product.id)
-
-        if (add && session.wishlist_products_ids.length >= LIMITS.wishlist_products) {
-            showToast({ type: 'error', msg: tToasts('wishlist_limit') })
-            return
-        }
-
-        setSession(prevSession => (
-            {
-                ...prevSession,
-                wishlist_products_ids: add
-                    ? session.wishlist_products_ids.concat(product.id)
-                    : session.wishlist_products_ids.filter(prod_id => prod_id !== product.id)
-            }
-        ))
-
-        const options = {
-            method: add ? 'POST' : 'DELETE',
-            headers: {
-                'Content-Type': 'application/json',
-                authorization: process.env.NEXT_PUBLIC_APP_TOKEN
-            },
-            body: JSON.stringify({
-                wishlist_id: session.wishlist_id,
-                product: { id: product.id }
-            }),
-        }
-
-        fetch("/api/wishlists/wishlist-products", options)
-            .then(response => response.json())
-            .then(response => {
-                if (response.error) {
-                    throw response.error
-                }
-            })
-            .catch(error => {
-                console.error(error)
-                showToast({ type: 'error', msg: tToasts(error) })
-                setSession(prevSession => (
-                    {
-                        ...prevSession,
-                        wishlist_products_ids: add
-                            ? session.wishlist_products_ids.filter(prod_id => prod_id !== product.id)
-                            : session.wishlist_products_ids.concat(product.id)
-                    }
-                ))
-            })
     }
 
     return (

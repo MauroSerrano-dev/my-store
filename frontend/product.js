@@ -1,5 +1,7 @@
 import {
     collection,
+    doc,
+    getDoc,
     getDocs,
     orderBy,
     query,
@@ -71,10 +73,6 @@ async function getProductsInfo(products) {
 
             const visualImage = product.images.filter(img => img.color_id === variant.color_id)[product.image_showcase_index]
 
-            const prodImage = art_position
-                ? { ...visualImage, src: visualImage.src[art_position] }
-                : visualImage
-
             return productInfo(
                 {
                     id: prod.id,
@@ -89,7 +87,9 @@ async function getProductsInfo(products) {
                         color_id: variants[0].color_id,
                         size_id: variants[0].size_id,
                     },
-                    image: prodImage,
+                    image_src: art_position
+                        ? visualImage.src[art_position]
+                        : visualImage.src,
                 }
             )
         });
@@ -175,22 +175,22 @@ async function getProductsByQueries(props) {
 
         // Filtre by type (se presente)
         if (y) {
-            products = products.filter(prod => y.some(type => type === prod.type_id))
+            products = products.filter(prod => y.split(' ').some(type => type === prod.type_id))
         }
 
         // Filtre by family (se presente)
         if (v) {
-            products = products.filter(prod => v.some(family_id => family_id === prod.family_id))
+            products = products.filter(prod => v.split(' ').some(family_id => family_id === prod.family_id))
         }
 
         // Filtre by themes (se presente)
         if (h) {
-            products = products.filter(prod => prod.themes.some(theme => h.includes(theme)))
+            products = products.filter(prod => prod.themes.some(theme => h.split(' ').includes(theme)))
         }
 
         // Filtre by tag (se presente)
         if (t) {
-            products = products.filter(prod => prod.tags.some(tag => t.includes(tag)))
+            products = products.filter(prod => prod.tags.some(tag => t.split(' ').includes(tag)))
         }
 
         // Filtre by product color (se presente)
@@ -301,8 +301,75 @@ async function getAllProducts(props) {
     }
 }
 
+async function getAllActivesProducts() {
+    try {
+        const productsCollection = collection(db, process.env.NEXT_PUBLIC_COLL_PRODUCTS);
+
+        // Filtrar produtos com o campo 'disabled' igual a false
+        let q = query(productsCollection, where("disabled", "==", false));
+
+        const querySnapshot = await getDocs(q);
+
+        const activeProducts = querySnapshot.docs.map(doc => doc.data());
+
+        // Retorna um array vazio se não houver produtos ativos
+        return activeProducts.length > 0 ? activeProducts : [];
+    } catch (error) {
+        console.error('Error getting active products:', error);
+        throw new Error('Error retrieving active products');
+    }
+}
+
+async function getSimilarProducts(product_id, limit = 16) {
+    try {
+
+        const productRef = doc(db, process.env.NEXT_PUBLIC_COLL_PRODUCTS, product_id);
+        const productSnapshot = await getDoc(productRef);
+        if (!productSnapshot.exists()) {
+            console.log("Produto não encontrado.");
+            return [];
+        }
+        const product = productSnapshot.data();
+
+        // Obtenha todos os produtos
+        let allProducts = await getAllActivesProducts();
+
+        // Filtrar produtos similares com base em temas ou tags
+        let similarProducts = allProducts.filter(p => p.id !== product.id &&
+            (p.themes.some(theme => product.themes.includes(theme)) ||
+                p.tags.some(tag => product.tags.includes(tag))));
+
+        // Completar com produtos de mesmo tipo ou family_type, se necessário
+        if (similarProducts.length < limit) {
+            let additionalProducts = allProducts.filter(p => p.id !== product.id &&
+                !similarProducts.includes(p) &&
+                (p.type_id === product.type_id || p.family_id === product.family_id));
+
+            additionalProducts.sort(() => 0.5 - Math.random()); // Embaralhar
+            similarProducts = similarProducts.concat(additionalProducts.slice(0, limit - similarProducts.length));
+        }
+
+        // Completar com produtos aleatórios, se ainda necessário
+        if (similarProducts.length < limit) {
+            let randomProducts = allProducts.filter(p => p.id !== product.id &&
+                !similarProducts.includes(p));
+
+            randomProducts.sort(() => 0.5 - Math.random()); // Embaralhar
+            similarProducts = similarProducts.concat(randomProducts.slice(0, limit - similarProducts.length));
+        }
+
+        return similarProducts.slice(0, limit);
+    }
+    catch (error) {
+        console.error('Error getting similar products:', error)
+        throw new Error({ title: error?.props?.title || 'default_error', type: error?.props?.type || 'error' })
+    }
+}
+
 export {
     getProductsInfo,
     getProductsByQueries,
     getAllProducts,
+    getSimilarProducts,
+    getAllActivesProducts,
 }

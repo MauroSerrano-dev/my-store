@@ -23,6 +23,7 @@ async function getCartById(id) {
         const cartDoc = await getDoc(cartRef)
 
         if (cartDoc.exists()) {
+            console.log({ id: cartDoc.id, ...cartDoc.data() })
             return { id: cartDoc.id, ...cartDoc.data() };
         } else {
             console.log("Cart not found")
@@ -30,7 +31,7 @@ async function getCartById(id) {
         }
     } catch (error) {
         console.error('Error getting cart by ID:', error)
-        throw new Error('Error getting cart by ID')
+        throw new Error({ title: error?.props?.title || 'default_error', type: error?.props?.type || 'error' })
     }
 }
 
@@ -52,11 +53,11 @@ async function createCart(userId, products = []) {
 
         const docRef = await addDoc(cartsCollectionRef, newCart);
 
-        console.log(`Cart created with ID: ${docRef.id}`);
+        console.log('Cart created');
         return docRef.id
     } catch (error) {
         console.error('Error creating cart:', error)
-        throw new Error(`Error creating cart: ${error.message}`);
+        throw new Error({ title: error?.props?.title || 'default_error', type: error?.props?.type || 'error' })
     }
 }
 
@@ -94,18 +95,18 @@ async function addProductsToCart(cartId, cartNewProducts) {
  * @returns {object} Status and message regarding the cart update.
  */
 async function deleteProductFromCart(cartId, product) {
-    const userRef = doc(db, process.env.NEXT_PUBLIC_COLL_CARTS, cartId)
-    const cartDoc = await getDoc(userRef)
+    const cartRef = doc(db, process.env.NEXT_PUBLIC_COLL_CARTS, cartId)
+    const cartDoc = await getDoc(cartRef)
 
     try {
         const cartData = cartDoc.data()
 
         cartData.products = cartData.products.filter(prod => prod.id !== product.id || prod.variant_id !== product.variant.id)
 
-        await updateDoc(userRef, cartData)
+        await updateDoc(cartRef, cartData)
 
         console.log('Cart updated successfully!')
-        return cartData
+        return { id: cartDoc.id, ...cartData }
     } catch (error) {
         console.error('Error Deleting Product from Cart:', error)
         throw new Error({ title: error?.props?.title || 'error_deleting_product_from_cart', type: error?.props?.type || 'error' })

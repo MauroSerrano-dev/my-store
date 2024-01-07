@@ -807,7 +807,7 @@ async function removeExpiredPromotions() {
     }
 }
 
-async function getSimilarProducts(product_id, limit = 15) {
+async function getSimilarProducts(product_id, limit = 16) {
     // Obtenha o produto pelo ID
     const productRef = doc(db, process.env.NEXT_PUBLIC_COLL_PRODUCTS, product_id);
     const productSnapshot = await getDoc(productRef);

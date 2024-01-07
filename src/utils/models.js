@@ -93,7 +93,7 @@ export function productInfo(props) {
         printify_ids,
         variant,
         default_variant,
-        image,
+        image_src,
     } = props
 
     return {
@@ -106,6 +106,6 @@ export function productInfo(props) {
         printify_ids: printify_ids,
         variant: variant,
         default_variant: default_variant,
-        image: image,
+        image_src: image_src,
     }
 }

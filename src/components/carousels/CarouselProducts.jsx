@@ -4,6 +4,9 @@ import Product from '../products/Product';
 import styles from '@/styles/components/carousels/CarouselProducts.module.css'
 import ProductSkeleton from '../products/ProductSkeleton'
 import { useAppContext } from '../contexts/AppContext';
+import { getSimilarProducts } from '../../../frontend/product';
+import { showToast } from '@/utils/toasts';
+import { useTranslation } from 'next-i18next'
 
 export default function CarouselProducts(props) {
     const {
@@ -16,6 +19,8 @@ export default function CarouselProducts(props) {
         supportsHoverAndPointer,
         windowWidth,
     } = useAppContext()
+
+    const tToasts = useTranslation('toasts').t
 
     const carouselRef = useRef(null)
 
@@ -55,21 +60,14 @@ export default function CarouselProducts(props) {
                 ? 155
                 : 140
 
-    function getProductsSimilarity() {
-        const options = {
-            method: 'GET',
-            headers: {
-                authorization: process.env.NEXT_PUBLIC_APP_TOKEN,
-                product_id: similar
-            }
+    async function getProductsSimilarity() {
+        try {
+            const products = await getSimilarProducts(similar)
+            setSimilarityProducts(products)
         }
-
-        fetch("/api/products/similar", options)
-            .then(response => response.json())
-            .then(response => {
-                setSimilarityProducts(response.data)
-            })
-            .catch(err => console.error(err))
+        catch (error) {
+            showToast({ type: error?.props?.type || 'error', msg: tToasts(error?.props?.title || 'default_error') })
+        }
     }
 
     return (
