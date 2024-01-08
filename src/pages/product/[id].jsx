@@ -132,7 +132,9 @@ export default withRouter(props => {
                     },
                     price: Math.round(productCurrentVariant.price * userCurrency?.rate),
                 })],
-                success_url: session ? `${window.location.origin}${i18n.language === DEFAULT_LANGUAGE ? '' : `/${i18n.language}`}/orders` : `${window.location.origin}${i18n.language === DEFAULT_LANGUAGE ? '' : `/${i18n.language}`}`,
+                success_url: session
+                    ? `${window.location.origin}${i18n.language === DEFAULT_LANGUAGE ? '' : `/${i18n.language}`}/orders`
+                    : `${window.location.origin}${i18n.language === DEFAULT_LANGUAGE ? '' : `/${i18n.language}`}/?refresh-cart`,
                 cancel_url: window.location.href,
                 customer: session,
                 shippingValue: Math.round(shippingValue * userCurrency?.rate),
