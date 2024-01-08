@@ -96,7 +96,7 @@ async function getProductsInfo(products) {
 
         return productsOneVariant
     } catch (error) {
-        console.log('Error getting Products Info:', error);
+        console.error('Error getting Products Info:', error);
         throw new Error(`Error getting Products Info: ${error.message}`);
     }
 }

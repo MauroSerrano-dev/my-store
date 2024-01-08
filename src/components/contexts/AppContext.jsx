@@ -413,10 +413,10 @@ export function AppProvider({ children }) {
         }
     }, [menuOpen])
 
-    async function handleWishlistClick(productId) {
+    async function handleWishlistClick(productId, toAdd) {
         const prevWishlist = { ...wishlist }
         try {
-            const add = !wishlist.products.some(prod => prod.id === productId)
+            const add = toAdd || !wishlist.products.some(prod => prod.id === productId)
 
             if (add && wishlist.products.length >= LIMITS.wishlist_products) {
                 showToast({ type: 'error', msg: tToasts('wishlist_limit') })

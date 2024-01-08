@@ -593,7 +593,7 @@ async function getProductsByIds(ids) {
         console.log('Products retrieved successfully by IDs!')
         return orderedProducts
     } catch (error) {
-        console.log('Error getting products by IDs:', error);
+        console.error('Error getting products by IDs:', error);
         throw new Error({ title: 'Error getting products by IDs.', statusCode: 500 })
     }
 }

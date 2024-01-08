@@ -3,11 +3,7 @@ import {
     getDoc,
     updateDoc,
     Timestamp,
-    getDocs,
-    query,
     collection,
-    where,
-    deleteDoc,
     addDoc
 } from "firebase/firestore";
 import { db } from "../firebaseInit";
