@@ -6,10 +6,10 @@ export default async function handler(req, res) {
     const { product, product_id, product_new_fields } = req.body
 
     if (!authorization)
-        return res.status(401).json({ error: "Invalid authentication." })
+        return res.status(401).json({ error: "Invalid authentication" })
 
     if (!isTokenValid(authorization, process.env.APP_SECRET_KEY))
-        return res.status(401).json({ error: "Invalid authentication." })
+        return res.status(401).json({ error: "Invalid authentication" })
 
     if (req.method === "GET") {
         const result = await getProductById(id)

@@ -1,6 +1,5 @@
 import { CURRENCIES } from '@/consts'
 import { clearDeletedUsers, updateAllCurrencies } from '../../../../backend/app-settings'
-import { deleteExpiredCartSessions } from '../../../../backend/cart-session'
 import { removeExpiredPromotions } from '../../../../backend/product'
 
 const axios = require('axios')
@@ -9,13 +8,13 @@ export default async function handler(req, res) {
     const { authorization } = req.headers
 
     if (!authorization) {
-        console.error("Invalid authentication.")
-        return res.status(401).json({ error: "Invalid authentication." })
+        console.error("Invalid authentication")
+        return res.status(401).json({ error: "Invalid authentication" })
     }
 
     if (authorization !== `Bearer ${process.env.CRON_SECRET}`) {
-        console.error("Invalid authentication.")
-        return res.status(401).json({ error: "Invalid authentication." })
+        console.error("Invalid authentication")
+        return res.status(401).json({ error: "Invalid authentication" })
     }
 
     try {
@@ -35,8 +34,6 @@ export default async function handler(req, res) {
         })
 
         await updateAllCurrencies(updatedCurrencies)
-
-        await deleteExpiredCartSessions()
 
         await clearDeletedUsers()
 

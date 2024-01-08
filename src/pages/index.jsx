@@ -11,6 +11,8 @@ import { useTranslation } from 'next-i18next'
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
 import { useAppContext } from '@/components/contexts/AppContext'
 import BannerSlider from '@/components/sliders/BannerSlider'
+import { getProductsByQueries } from '../../frontend/product'
+import { showToast } from '@/utils/toasts'
 
 const categories = [
   { id: 'games', url: '/search?h=games', img: 'https://firebasestorage.googleapis.com/v0/b/my-store-4aef7.appspot.com/o/index%2Fgames.webp?alt=media&token=c28521d0-8fd8-45b7-9c80-60feffab7f60' },
@@ -26,12 +28,13 @@ export default function Home() {
   const {
     session,
     windowWidth,
-    isVisitant,
   } = useAppContext()
 
   const tIndex = useTranslation('index').t
   const tErrors = useTranslation('errors').t
   const tCategories = useTranslation('categories').t
+  const tToasts = useTranslation('toasts').t
+  const { i18n } = useTranslation()
 
   const [productsOne, setProductsOne] = useState()
   const [productsTwo, setProductsTwo] = useState()
@@ -65,23 +68,19 @@ export default function Home() {
   }
 
   async function getProductsByTagOrType(tag) {
-    const { query, id } = tag
-    const options = {
-      method: 'GET',
-      headers: {
-        authorization: process.env.NEXT_PUBLIC_APP_TOKEN,
-      }
+    try {
+      const { query, id } = tag
+      const response = await getProductsByQueries({
+        [query]: id,
+        prods_limit: 15,
+        user_language: i18n.language
+      })
+
+      return response.products
     }
-
-    if (query && id)
-      options.headers[query] = id
-
-    const products = await fetch("/api/products-by-queries", options)
-      .then(response => response.json())
-      .then(response => response.products)
-      .catch(err => console.error(err))
-
-    return products
+    catch (error) {
+      showToast({ type: error?.props?.type || 'error', msg: tToasts(error?.props?.title || 'default_error') })
+    }
   }
 
   return (
@@ -94,25 +93,6 @@ export default function Home() {
         <meta property="og:url" content='https://mrfstyles.com' key='og:url' />
       </Head>
       <main className={styles.main}>
-        {/* <Link
-          className={`${styles.banner} noUnderline`}
-          draggable={false}
-          href='/search?c=sound-vibes'
-        >
-          <Image
-            priority
-            quality={100}
-            src='https://firebasestorage.googleapis.com/v0/b/my-store-4aef7.appspot.com/o/banners%2Fsound-vibes_bg.webp?alt=media&token=56fc01f4-9e4e-4d01-97ee-529bdf99ebd1'
-            sizes='100%'
-            fill
-            alt='banner'
-            draggable={false}
-            style={{
-              objectFit: 'cover',
-              objectPosition: 'top',
-            }}
-          />
-        </Link> */}
         <BannerSlider
           images={[
             {
@@ -122,25 +102,6 @@ export default function Home() {
             },
           ]}
         />
-        <div className={styles.infos}>
-          {/* <div className={styles.infosItem}>
-            <LocalShippingOutlinedIcon
-              sx={{
-                scale: '1.3'
-              }}
-            />
-            <p>Fast Shipping</p>
-          </div>
-          <div className={styles.infosItem}>
-            <Inventory2OutlinedIcon
-              sx={{
-                scale: '1.3'
-              }}
-            />
-            <p>Free Shipping</p>
-          </div> */
-          }
-        </div>
         <div
           className={styles.body}
         >

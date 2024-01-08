@@ -2,7 +2,7 @@ import styles from '@/styles/components/products/ProductCart.module.css'
 import { SlClose } from "react-icons/sl";
 import { motion } from "framer-motion";
 import Link from 'next/link';
-import { SIZES_POOL, COLORS_POOL, CART_COOKIE } from '@/consts';
+import { SIZES_POOL, COLORS_POOL, CART_COOKIE, CART_LOCAL_STORAGE } from '@/consts';
 import Image from 'next/image';
 import Selector from '../material-ui/Selector';
 import { useState } from 'react';
@@ -12,6 +12,9 @@ import { useAppContext } from '../contexts/AppContext';
 import { showToast } from '@/utils/toasts';
 import { getProductPriceUnit } from '@/utils/prices';
 import MyTooltip from '../MyTooltip';
+import { deleteProductFromCart } from '../../../frontend/cart';
+import ProductTag from './ProductTag';
+import { isSameProduct } from '@/utils';
 
 export default function ProductCart(props) {
     const {
@@ -23,8 +26,8 @@ export default function ProductCart(props) {
 
     const {
         session,
-        setLoading,
         userCurrency,
+        cart,
         setCart,
     } = useAppContext()
 
@@ -32,6 +35,7 @@ export default function ProductCart(props) {
 
     const tCommon = useTranslation('common').t
     const tColors = useTranslation('colors').t
+    const tToasts = useTranslation('toasts').t
 
     const COLOR = COLORS_POOL[product.variant.color_id]
 
@@ -43,41 +47,26 @@ export default function ProductCart(props) {
 
     const [deleting, setDeleting] = useState(false)
 
-    function handleDeleteCartProduct() {
-        setLoading(true)
-        setDeleting(true)
-        const options = {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                authorization: process.env.NEXT_PUBLIC_APP_TOKEN
-            },
-            body: JSON.stringify({
-                cartId: session ? session.cart_id : Cookies.get(CART_COOKIE),
-                product: { id: product.id, variant_id: product.variant.id }
-            }),
+    async function handleDeleteProductFromCart() {
+        try {
+            setDeleting(true)
+            if (session) {
+                await deleteProductFromCart(cart.id, product)
+            }
+            else {
+                const visitantCart = JSON.parse(localStorage.getItem(CART_LOCAL_STORAGE))
+                localStorage.setItem(CART_LOCAL_STORAGE, JSON.stringify({ ...visitantCart, products: visitantCart.products.filter(prod => !isSameProduct(prod, product)) }))
+            }
+            setCart(prev => ({ ...prev, products: prev.products.filter(prod => !isSameProduct(prod, product)) }))
         }
-
-        if (session) {
-            options.headers.user_id = session.id
+        catch (error) {
+            console.error(error)
+            setDeleting(false)
+            showToast({ type: error?.props?.type || 'error', msg: tToasts(error?.props?.title || 'default_error') })
         }
-
-        fetch("/api/carts/delete-cart-product", options)
-            .then(response => response.json())
-            .then(response => {
-                setDeleting(false)
-                setCart(response.cart)
-            })
-            .catch(err => {
-                setDeleting(false)
-                setLoading(false)
-                showToast({ type: 'error', msg: 'error_deleting_product_from_cart' })
-                console.error(err)
-            })
     }
 
     function handleChangeQuantity(event) {
-        setLoading(true)
         setDeleting(true)
 
         const options = {
@@ -105,7 +94,6 @@ export default function ProductCart(props) {
             })
             .catch(err => {
                 setDeleting(false)
-                setLoading(false)
                 console.error(err)
             })
     }
@@ -138,7 +126,7 @@ export default function ProductCart(props) {
                 title={tCommon('remove_from_cart')}
             >
                 <button
-                    onClick={() => handleDeleteCartProduct()}
+                    onClick={handleDeleteProductFromCart}
                     className={`${styles.deleteButton} buttonInvisible`}
                 >
                     <SlClose />
@@ -157,7 +145,7 @@ export default function ProductCart(props) {
             >
                 <Image
                     quality={100}
-                    src={product.image.src}
+                    src={product.image_src}
                     alt={product.title}
                     width={270}
                     height={300}
@@ -191,6 +179,7 @@ export default function ProductCart(props) {
                     </div>
                     <div className={styles.bodyContainer}>
                         <div className={styles.bodyTop}>
+                            <ProductTag product={product} />
                             {outOfStock
                                 ? <div
                                     className={styles.outOfStock}

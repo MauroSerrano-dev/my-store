@@ -2,9 +2,8 @@ import styles from '@/styles/components/products/ProductModal.module.css'
 import { SlClose } from "react-icons/sl";
 import { motion } from "framer-motion";
 import Link from 'next/link';
-import { SIZES_POOL, COLORS_POOL, CART_COOKIE } from '@/consts';
+import { SIZES_POOL, COLORS_POOL, CART_LOCAL_STORAGE } from '@/consts';
 import Image from 'next/image';
-import Cookies from 'js-cookie';
 import { useState } from 'react';
 import { useTranslation } from 'next-i18next';
 import { useAppContext } from '../contexts/AppContext';
@@ -12,6 +11,8 @@ import { showToast } from '@/utils/toasts';
 import { getProductPriceUnit } from '@/utils/prices';
 import ProductTag from './ProductTag';
 import MyTooltip from '../MyTooltip';
+import { deleteProductFromCart } from '../../../frontend/cart';
+import { isSameProduct } from '@/utils';
 
 export default function ProductModal(props) {
     const {
@@ -20,14 +21,15 @@ export default function ProductModal(props) {
     } = props
 
     const {
-        setLoading,
         userCurrency,
         setCart,
         session,
+        cart,
     } = useAppContext()
 
     const tCommon = useTranslation('common').t
     const tColors = useTranslation('colors').t
+    const tToasts = useTranslation('toasts').t
 
     const PRICE_UNIT = getProductPriceUnit(product, product.variant, userCurrency?.rate)
 
@@ -38,37 +40,23 @@ export default function ProductModal(props) {
 
     const [deleting, setDeleting] = useState(false)
 
-    function handleDeleteCartProduct() {
-        setDeleting(true)
-
-        const options = {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                authorization: process.env.NEXT_PUBLIC_APP_TOKEN
-            },
-            body: JSON.stringify({
-                cartId: session ? session.cart_id : Cookies.get(CART_COOKIE),
-                product: { id: product.id, variant_id: product.variant.id }
-            }),
+    async function handleDeleteProductFromCart() {
+        try {
+            setDeleting(true)
+            if (session) {
+                await deleteProductFromCart(cart.id, product)
+            }
+            else {
+                const visitantCart = JSON.parse(localStorage.getItem(CART_LOCAL_STORAGE))
+                localStorage.setItem(CART_LOCAL_STORAGE, JSON.stringify({ ...visitantCart, products: visitantCart.products.filter(prod => !isSameProduct(prod, product)) }))
+            }
+            setCart(prev => ({ ...prev, products: prev.products.filter(prod => !isSameProduct(prod, product)) }))
         }
-
-        if (session) {
-            options.headers.user_id = session.id
+        catch (error) {
+            console.error(error)
+            setDeleting(false)
+            showToast({ type: error?.props?.type || 'error', msg: tToasts(error?.props?.title || 'default_error') })
         }
-
-        fetch("/api/carts/delete-cart-product", options)
-            .then(response => response.json())
-            .then(response => {
-                setDeleting(false)
-                setCart(response.cart)
-            })
-            .catch(err => {
-                setDeleting(false)
-                setLoading(false)
-                showToast({ type: 'error', msg: 'error_deleting_product_from_cart' })
-                console.error(err)
-            })
     }
 
     return (
@@ -110,7 +98,7 @@ export default function ProductModal(props) {
                     }}
                 >
                     <SlClose
-                        onClick={() => handleDeleteCartProduct()}
+                        onClick={handleDeleteProductFromCart}
                         color='#ffffff'
                         style={{
                             fontSize: '15px',
@@ -139,7 +127,7 @@ export default function ProductModal(props) {
                 >
                     <Image
                         quality={100}
-                        src={product.image.src}
+                        src={product.image_src}
                         alt={product.title}
                         fill
                         sizes='108px'

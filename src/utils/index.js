@@ -6,7 +6,6 @@ import ptPT from 'date-fns/locale/pt'
 import { LIMITS, PRODUCTS_TYPES } from '@/consts';
 import Error from 'next/error';
 
-
 export function getObjectsDiff(obj1, obj2) {
     const differentFields = {};
 
@@ -43,18 +42,22 @@ export function hasRepeatedItems(arr) {
     return false
 }
 
+export function isSameProduct(prod1, prod2) {
+    return prod1.id === prod2.id && (prod1.variant?.id || prod1.variant_id) === (prod2.variant?.id || prod2.variant_id) && prod1.art_position === prod2.art_position
+}
+
 export function mergeProducts(prods1, prods2) {
     return prods1.map(p => {
-        const exist = prods2.find(prod => prod.id === p.id && prod.variant_id === p.variant_id && prod.art_position === p.art_position)
+        const exist = prods2.find(prod => isSameProduct(prod, p))
         if (exist) {
             const newQuantity = p.quantity + exist.quantity
             if (newQuantity > LIMITS.cart_same_item)
-                throw new Error({ code: 'max_same_products' })
+                throw new Error({ title: 'max_same_products', type: 'warning' })
             return { ...p, quantity: newQuantity }
         }
         else
             return p
-    }).concat(prods2.filter(prod => !prods1.some(p => p.id === prod.id && p.variant_id === prod.variant_id && prod.art_position === p.art_position)))
+    }).concat(prods2.filter(prod => !prods1.some(p => p.id === prod.id && (p.variant ? (p.variant.id === prod.variant.id) : (p.variant_id === prod.variant_id)) && p.art_position === prod.art_position)))
 }
 
 export function convertTimestampToFormatDate(timestamp, locale) {

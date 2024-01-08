@@ -35,7 +35,7 @@ export default function CartIcon() {
             onMouseEnter={() => setOpen(true)}
             onMouseLeave={() => setOpen(false)}
         >
-             <Link
+            <Link
                 href={`/cart`}
                 className={`${styles.iconContainer} flex center noUnderline`}
             >
@@ -78,7 +78,7 @@ export default function CartIcon() {
                                 {cart.products.map((product, i) =>
                                     <ProductModal
                                         product={product}
-                                        key={`${product.id}${product.variant.id}`}
+                                        key={`${product.id}-${product.variant.id}-${product.art_position || ''}`}
                                         index={i}
                                         setOpen={setOpen}
                                     />

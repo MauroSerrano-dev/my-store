@@ -15,11 +15,11 @@ import { LoadingButton } from '@mui/lab'
 import { useAppContext } from '@/components/contexts/AppContext'
 import { getProductPriceUnit } from '@/utils/prices'
 import ZoneConverter from '@/utils/country-zone.json'
+import { getAllProducts } from '../../frontend/product'
 
 export default function Cart() {
 
     const {
-        getInicialCart,
         session,
         setLoading,
         handleChangeCurrency,
@@ -29,6 +29,7 @@ export default function Cart() {
         setBlockInteractions,
         userLocation,
         setUserLocation,
+        getInicialCart,
     } = useAppContext()
 
     const [disableCheckoutButton, setDisableCheckoutButton] = useState(false)
@@ -37,6 +38,7 @@ export default function Cart() {
     const [productsTwo, setProductsTwo] = useState()
     const [outOfStock, setOutOfStock] = useState([])
     const [unavailables, setUnavailables] = useState([])
+    const [inicialCartAlreadyCalled, setInicialCartAlreadyCalled] = useState(false)
 
     const SHIPPING_CONVERTED = Math.round(shippingValue * userCurrency?.rate)
 
@@ -58,9 +60,13 @@ export default function Cart() {
     }, [cart, userLocation])
 
     useEffect(() => {
-        getAllProducts()
-        getInicialCart()
-    }, [])
+        if (!inicialCartAlreadyCalled) {
+            getInicialCart()
+            setInicialCartAlreadyCalled(true)
+        }
+        if (!cart || cart.products.length === 0)
+            getProducts()
+    }, [cart])
 
     function handleCheckout() {
         if (process.env.NEXT_PUBLIC_DISABLE_CHECKOUT === 'true') {
@@ -158,28 +164,24 @@ export default function Cart() {
             })
     }
 
-    async function getAllProducts() {
-        const options = {
-            method: 'GET',
-            headers: {
-                authorization: process.env.NEXT_PUBLIC_APP_TOKEN,
-                limit: 15,
-            },
-        }
-
-        await fetch("/api/products-by-queries", options)
-            .then(response => response.json())
-            .then(response => {
-                if (response.products.length > 8) {
-                    setProductsOne(response.products.slice(0, Math.round(response.products.length / 2)))
-                    setProductsTwo(response.products.slice(Math.round(response.products.length / 2), response.products.length))
-                }
-                else {
-                    setProductsOne(response.products)
-                    setProductsTwo(null)
-                }
+    async function getProducts() {
+        try {
+            const response = await getAllProducts({
+                prods_limit: 16,
             })
-            .catch(err => console.error(err))
+
+            if (response.products.length > 8) {
+                setProductsOne(response.products.slice(0, Math.round(response.products.length / 2)))
+                setProductsTwo(response.products.slice(Math.round(response.products.length / 2), response.products.length))
+            }
+            else {
+                setProductsOne(response.products)
+                setProductsTwo(null)
+            }
+        }
+        catch (error) {
+            showToast({ type: error?.props?.type || 'error', msg: tToasts(error?.props?.title || 'default_error') })
+        }
     }
 
     function getShippingValue() {
@@ -252,7 +254,7 @@ export default function Cart() {
                                         outOfStock={outOfStock.some(prodOut => prodOut.id === product.id && prodOut.variant.id === product.variant.id)}
                                         unavailable={unavailables.some(prodOut => prodOut.id === product.id && prodOut.variant.id === product.variant.id)}
                                         product={product}
-                                        key={`${product.id}${product.variant.id}`}
+                                        key={`${product.id}-${product.variant.id}-${product.art_position || ''}`}
                                         index={i}
                                     />
                                 )}

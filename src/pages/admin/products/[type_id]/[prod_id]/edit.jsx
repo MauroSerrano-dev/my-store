@@ -291,7 +291,7 @@ export default withRouter(() => {
     async function updateProduct() {
         setDisableUpdateButton(true)
         try {
-            if (!isNewProductValid(product, images)) {
+            if (!isNewProductValid(product, images, tToasts)) {
                 setDisableUpdateButton(false)
                 return
             }

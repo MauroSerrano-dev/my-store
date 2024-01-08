@@ -18,6 +18,7 @@ import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
 import { useTranslation } from 'next-i18next';
 import { useAppContext } from '@/components/contexts/AppContext'
 import { showToast } from '@/utils/toasts'
+import { getProductsByQueries } from '../../frontend/product'
 const { v4: uuidv4 } = require('uuid')
 
 const QUERIES = {
@@ -59,7 +60,6 @@ export default withRouter(() => {
         ac,
         v,
         p = '1',
-        limit = '60',
     } = router.query
 
     const { i18n } = useTranslation()
@@ -116,52 +116,33 @@ export default withRouter(() => {
         }
     }, [windowWidth])
 
-    function getProductsByQuery() {
-        const options = {
-            method: 'GET',
-            headers: {
-                authorization: process.env.NEXT_PUBLIC_APP_TOKEN,
-            }
-        }
-        if (limit)
-            options.headers.limit = limit
-        if (i18n.language)
-            options.headers.user_language = i18n.language
-        if (p)
-            options.headers.p = p
-        if (i)
-            options.headers.i = i
-        if (s)
-            options.headers.s = s
-        if (t)
-            options.headers.t = t
-        if (h)
-            options.headers.h = h
-        if (y)
-            options.headers.y = y
-        if (v)
-            options.headers.v = v
-        if (c)
-            options.headers.c = c
-        if (cl)
-            options.headers.cl = cl
-        if (ac)
-            options.headers.ac = ac
-        if (min)
-            options.headers.min = Number(min / userCurrency.rate)
-        if (max)
-            options.headers.max = Number(max / userCurrency.rate)
-        if (order)
-            options.headers.order = order
-
-        fetch("/api/products-by-queries", options)
-            .then(response => response.json())
-            .then(response => {
-                setProducts(response.products)
-                setLastPage(response.last_page)
-                setProductsKey(uuidv4())
+    async function getProductsByQuery() {
+        try {
+            const response = await getProductsByQueries({
+                i: i,
+                s: s,
+                t: t,
+                h: h,
+                y: y,
+                v: v,
+                c: c,
+                cl: SEARCH_PRODUCT_COLORS.find(color => color.color_display.id_string === cl),
+                ac: SEARCH_ART_COLORS.find(color => color.color_display.id_string === ac),
+                p: p,
+                min: min,
+                max: min,
+                order: order,
+                prods_limit: 15,
+                user_language: i18n.language,
             })
-            .catch(err => console.error(err))
+
+            setProducts(response.products)
+            setLastPage(response.last_page)
+            setProductsKey(uuidv4())
+        }
+        catch (error) {
+            showToast({ type: error?.props?.type || 'error', msg: tToasts(error?.props?.title || 'default_error') })
+        }
     }
 
     function getQueries(newQueries, deleteQueries) {

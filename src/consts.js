@@ -5,6 +5,8 @@ export const languageToCountry = {
     'pt': 'pt'
 }
 
+export const INICIAL_VISITANT_CART = { products: [] }
+
 export const DEFAULT_LANGUAGE = 'en'
 
 export const DEFAULT_CURRENCY = 'usd'
@@ -20,6 +22,8 @@ export const COMMON_TRANSLATES = [
 ]
 
 export const CART_COOKIE = 'CART'
+
+export const CART_LOCAL_STORAGE = 'visitant-cart'
 
 export const LIMITS = {
     cart_same_item: 10,
@@ -83,6 +87,7 @@ export const TAGS_POOL = [
     'glitch',
     'guitar',
     'hood',
+    'short-sleeve',
     'long-sleeve',
     'pillow',
     'raglan',
@@ -273,7 +278,7 @@ export const PRODUCTS_TYPES = [
             87: 145,
         },
         icon: '/svgs/products-types/t-shirt_icon.svg',
-        inicial_tags: [],
+        inicial_tags: ['short-sleeve'],
         key_features: ['without-side', 'ribbed-knit', 'shoulder-tape', 'fabric'],
         care_instructions: ['machine-wash-cold', 'not-dryclean', 'not-bleach', 'tumble-dry-low', 'iron-low'],
         metrics: { width: [45.72, 50.8, 55.88, 60.96, 66.04], length: [71.12, 73.66, 76.2, 78.74, 81.28], sleeve: [20.9, 21.6, 22.2, 22.9, 23.5] },
@@ -3072,9 +3077,9 @@ export function getShippingOptions(product_type, country) {
         if (country === 'US') {
             return {
                 provider_id: 39,
-                first_item: 475,
+                first_item: 447,
                 add_item: 240,
-                tax: 104,
+                tax: 116,
                 add_tax: 87,
                 currency: 'usd'
             }
@@ -3124,7 +3129,7 @@ export function getShippingOptions(product_type, country) {
                 provider_id: 87,
                 first_item: 569,
                 add_item: 199,
-                tax: 314 - 100, //compensar a diferença de preço entre os provedores
+                tax: 431 - 100, //compensar a diferença de preço entre os provedores
                 add_tax: 314 - 100, //compensar a diferença de preço entre os provedores
                 currency: 'usd'
             }

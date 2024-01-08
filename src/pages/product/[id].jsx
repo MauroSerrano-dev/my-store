@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react'
 import ImagesSlider from '@/components/ImagesSlider'
 import ShoppingCartOutlinedIcon from '@mui/icons-material/ShoppingCartOutlined'
 import CreditCardOutlinedIcon from '@mui/icons-material/CreditCardOutlined'
-import { CART_COOKIE, COLORS_POOL, SIZES_POOL, LIMITS, getShippingOptions, DEFAULT_LANGUAGE, COMMON_TRANSLATES, PRODUCTS_TYPES } from '@/consts'
+import { CART_COOKIE, COLORS_POOL, SIZES_POOL, LIMITS, getShippingOptions, DEFAULT_LANGUAGE, COMMON_TRANSLATES, PRODUCTS_TYPES, CART_LOCAL_STORAGE, INICIAL_VISITANT_CART } from '@/consts'
 import Head from 'next/head'
 import ColorSelector from '@/components/ColorSelector'
 import SizesSelector from '@/components/SizesSelector'
@@ -16,7 +16,7 @@ import { useTranslation } from 'next-i18next'
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
 import { showToast } from '@/utils/toasts'
 import HeartButton from '@/components/buttons-icon/HeartButton'
-import { cartItemModel } from '@/utils/models'
+import { cartItemModel, productInfo } from '@/utils/models'
 import SelectorAutocomplete from '@/components/material-ui/SelectorAutocomplete'
 import COUNTRIES_POOL from '../../../public/locales/en/countries.json'
 import { useAppContext } from '@/components/contexts/AppContext'
@@ -28,11 +28,13 @@ import { SlClose } from 'react-icons/sl'
 import { LoadingButton } from '@mui/lab'
 import ZoneConverter from '@/utils/country-zone.json'
 import ProductTag from '@/components/products/ProductTag'
-import { handleCloseModal, handleOpenModal } from '@/utils'
+import { handleCloseModal, handleOpenModal, mergeProducts } from '@/utils'
 import TableSizes from '@/components/products/TableSizes'
 import CarouselProducts from '@/components/carousels/CarouselProducts'
 import KeyFeatures from '@/components/products/KeyFeatures'
 import { ButtonGroup } from '@mui/material'
+import { addProductsToCart } from '../../../frontend/cart'
+import { addProductsToVisitantCart } from '../../../frontend/visitant-cart'
 
 export default withRouter(props => {
     const {
@@ -55,6 +57,8 @@ export default withRouter(props => {
         setSession,
         userLocation,
         setUserLocation,
+        wishlist,
+        handleWishlistClick,
     } = useAppContext()
 
     const { i18n } = useTranslation()
@@ -74,7 +78,6 @@ export default withRouter(props => {
 
     const [shippingValue, setShippingValue] = useState(0)
     const [disableCheckoutButton, setDisableCheckoutButton] = useState(false)
-
 
     const productCurrentVariant = product?.variants.find(vari => vari.size_id === currentSize?.id && vari.color_id === currentColor?.id)
 
@@ -151,40 +154,61 @@ export default withRouter(props => {
             })
     }
 
-    function handleAddToCart() {
-        if (cart) {
-            setLoading(true)
+    async function handleAddToCart() {
+        try {
+            if (cart) {
+                setLoading(true)
+                const newProduct = {
+                    id: product.id,
+                    variant_id: productCurrentVariant.id,
+                    quantity: 1,
+                    art_position: typeof product.images[0].src === 'string'
+                        ? null
+                        : currentPosition
+                }
 
-            const options = {
-                method: 'PATCH',
-                headers: {
-                    'Content-Type': 'application/json',
-                    authorization: process.env.NEXT_PUBLIC_APP_TOKEN
-                },
-                body: JSON.stringify({
-                    cartId: session ? session.cart_id : Cookies.get(CART_COOKIE),
-                    cartProducts: [{ id: product.id, variant_id: productCurrentVariant.id, quantity: 1, art_position: typeof product.images[0].src === 'string' ? null : currentPosition }]
-                }),
-            }
+                if (session) {
+                    await addProductsToCart(session.cart_id, [newProduct])
+                }
+                else {
+                    const localData = localStorage.getItem(CART_LOCAL_STORAGE)
+                    const newVisitantCart = addProductsToVisitantCart(localData ? JSON.parse(localData) : INICIAL_VISITANT_CART, [newProduct])
+                    localStorage.setItem(CART_LOCAL_STORAGE, JSON.stringify(newVisitantCart))
+                }
 
-            if (session) {
-                options.headers.user_id = session.id
-            }
-
-            fetch("/api/carts/cart-products", options)
-                .then(response => response.json())
-                .then(response => {
-                    if (response.error) {
-                        showToast({ type: 'error', msg: tToasts(response.error.props.code) })
-                        setLoading(false)
+                const newProductFullInfo = productInfo(
+                    {
+                        id: product.id,
+                        art_position: typeof product.images[0].src === 'string'
+                            ? null
+                            : currentPosition,
+                        quantity: 1,
+                        type_id: product.type_id,
+                        title: product.title,
+                        promotion: product.promotion,
+                        printify_ids: product.printify_ids,
+                        variant: productCurrentVariant,
+                        default_variant: {
+                            color_id: product.colors_ids[0],
+                            size_id: product.sizes_ids[0],
+                        },
+                        image_src: typeof product.images[0].src === 'string'
+                            ? product.images.find(img => img.color_id === productCurrentVariant.color_id).src
+                            : product.images.find(img => img.color_id === productCurrentVariant.color_id).src[currentPosition],
                     }
-                    else
-                        setCart(response.cart)
-                })
-                .catch(error => {
-                    setLoading(false)
-                    console.error(error)
-                })
+                )
+
+                setCart(prev => (
+                    {
+                        ...prev,
+                        products: mergeProducts(prev.products, [newProductFullInfo])
+                    }
+                ))
+            }
+        }
+        catch (error) {
+            setLoading(false)
+            showToast({ type: error?.props?.type || 'error', msg: tToasts(error?.props?.title || 'default_error') })
         }
     }
 
@@ -199,56 +223,6 @@ export default withRouter(props => {
 
     function handleSizeChange(arr, index, size) {
         setCurrentSize(size)
-    }
-
-    function handleWishlist() {
-        const add = !session.wishlist_products_ids.includes(product.id)
-
-        if (add && session.wishlist_products_ids.length >= LIMITS.wishlist_products) {
-            showToast({ type: 'error', msg: tToasts('wishlist_limit') })
-            return
-        }
-
-        setSession(prevSession => (
-            {
-                ...prevSession,
-                wishlist_products_ids: add
-                    ? session.wishlist_products_ids.concat(product.id)
-                    : session.wishlist_products_ids.filter(prod_id => prod_id !== product.id)
-            }
-        ))
-
-        const options = {
-            method: add ? 'POST' : 'DELETE',
-            headers: {
-                'Content-Type': 'application/json',
-                authorization: process.env.NEXT_PUBLIC_APP_TOKEN
-            },
-            body: JSON.stringify({
-                wishlist_id: session.wishlist_id,
-                product: { id: product.id }
-            }),
-        }
-
-        fetch("/api/wishlists/wishlist-products", options)
-            .then(response => response.json())
-            .then(response => {
-                if (response.error) {
-                    throw response.error
-                }
-            })
-            .catch(error => {
-                console.error(error)
-                showToast({ type: 'error', msg: tToasts(error) })
-                setSession(prevSession => (
-                    {
-                        ...prevSession,
-                        wishlist_products_ids: add
-                            ? session.wishlist_products_ids.filter(prod_id => prod_id !== product.id)
-                            : session.wishlist_products_ids.concat(product.id)
-                    }
-                ))
-            })
     }
 
     return (
@@ -303,10 +277,10 @@ export default withRouter(props => {
                                     <div className={styles.titleContainer}>
                                         <div className='fillWidth flex row' style={{ justifyContent: 'space-between', height: 35 }}>
                                             <h2>{product.title}</h2>
-                                            {session &&
+                                            {session && wishlist &&
                                                 <HeartButton
-                                                    checked={session.wishlist_products_ids.includes(product.id)}
-                                                    onClick={handleWishlist}
+                                                    checked={wishlist.products.some(prod => prod.id === product.id)}
+                                                    onClick={() => handleWishlistClick(product.id)}
                                                 />
                                             }
                                         </div>
