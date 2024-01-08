@@ -277,6 +277,10 @@ body::-webkit-scrollbar-track {
   text-overflow: ellipsis;
 }
 
+.pageButton {
+  color: var(--text-white) !important;
+}
+
 .buttonShadow {
   box-shadow: 0px 2px 1px -1px rgba(0, 0, 0, 0.15),
     0px 1px 1px 0px rgba(0, 0, 0, 0.1),
@@ -292,6 +296,10 @@ body::-webkit-scrollbar-track {
 
   .noUnderline:hover {
     text-decoration: none;
+  }
+
+  .pageButton:hover {
+    background-color: rgba(255, 255, 255, 0.1) !important;
   }
 }
 

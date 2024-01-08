@@ -8,34 +8,16 @@ import {
     query,
     updateDoc,
     Timestamp,
-    deleteDoc,
 } from "firebase/firestore"
 import { createUserWithEmailAndPassword, sendEmailVerification, fetchSignInMethodsForEmail, updateProfile } from "firebase/auth"
-import { createCart, deleteCart } from "./cart"
-import { getCartSessionById, deleteCartSession } from "./cart-session"
-import { createWishlist, deleteWishlist } from "./wishlists"
+import { createCart } from "./cart"
+import { createWishlist } from "./wishlists"
 import { newUserModel } from "@/utils/models"
 import Error from "next/error"
 import { addUserDeleted } from "./app-settings"
 const { v4: uuidv4 } = require('uuid')
 const admin = require('../firebaseAdminInit');
 import { db } from "../firebaseInit";
-
-async function getUserById(id) {
-    try {
-        const userDocRef = doc(db, process.env.NEXT_PUBLIC_COLL_USERS, id)
-
-        const userDoc = await getDoc(userDocRef)
-
-        if (userDoc.exists())
-            return userDoc.data()
-        else
-            return null
-    } catch (error) {
-        console.error("Erro ao obter usuário pelo ID:", error)
-        throw error
-    }
-}
 
 async function getUserIdByEmail(email) {
     try {
@@ -112,59 +94,6 @@ async function createNewUserWithCredentials(user, userLanguage) {
     }
 }
 
-async function createNewUserWithGoogle(authUser, id, cart_cookie_id) {
-    try {
-        // Verifique se o usuário com o mesmo e-mail já existe
-        const userIdExists = await getUserIdByEmail(authUser.email)
-
-        // Se o usuário não existir, crie um novo
-        if (!userIdExists) {
-            const fullName = authUser.displayName.split(' ')
-
-            const firstName = fullName.length <= 1 ? authUser.displayName : fullName.slice(0, fullName.length - 1).join(' ')
-            const lastName = fullName.length <= 1 ? null : fullName[fullName.length - 1]
-
-            // Create a reference to the users collection
-            const usersCollection = collection(db, process.env.NEXT_PUBLIC_COLL_USERS)
-
-            // Add the new user to the collection with password encryption
-            const newUserRef = doc(usersCollection, id)
-
-            const cartSession = await getCartSessionById(cart_cookie_id)
-            await deleteCartSession(cart_cookie_id)
-
-            const cart_id = uuidv4()
-            await createCart(newUserRef.id, cart_id, cartSession ? cartSession.products : [])
-
-            const wishlist_id = uuidv4()
-            await createWishlist(newUserRef.id, wishlist_id)
-
-            const newUser = newUserModel({
-                email: authUser.email,
-                first_name: firstName,
-                last_name: lastName,
-                cart_id: cart_id,
-                wishlist_id: wishlist_id,
-                email_verified: authUser.emailVerified,
-            })
-
-            newUser.create_at = Timestamp.now()
-
-            await setDoc(newUserRef, newUser)
-
-            console.log(`${newUser.email} has been added as a new user.`)
-
-            return newUser
-        } else {
-            console.log(`${authUser.email} already exists as a user.`)
-            return null;
-        }
-    } catch (error) {
-        console.error("Error creating a new user and session:", error);
-        throw error;
-    }
-}
-
 async function checkUserExistsByEmail(email) {
     try {
         const usersCollection = collection(db, process.env.NEXT_PUBLIC_COLL_USERS);
@@ -233,35 +162,6 @@ async function updateField(userId, fieldName, value) {
     }
 }
 
-async function updateUser(userId, changes) {
-    try {
-        const userRef = doc(db, process.env.NEXT_PUBLIC_COLL_USERS, userId)
-        const userDoc = await getDoc(userRef)
-
-        if (userDoc.exists()) {
-            const userData = userDoc.data()
-
-            await updateDoc(userRef, { ...userData, ...changes })
-
-            return {
-                status: 200,
-                message: 'Profile updated successfully!',
-            }
-        } else {
-            return {
-                status: 404,
-                message: 'User not found.',
-            }
-        }
-    } catch (error) {
-        return {
-            status: 500,
-            message: 'Error updating profile.',
-            error: error,
-        }
-    }
-}
-
 async function clearUpdateCounter() {
     try {
         const usersCollection = collection(db, process.env.NEXT_PUBLIC_COLL_USERS)
@@ -297,17 +197,6 @@ async function clearUpdateCounter() {
     }
 }
 
-async function getUserProvidersByEmail(email) {
-    try {
-        const providers = await fetchSignInMethodsForEmail(auth, email)
-
-        return providers
-    } catch (error) {
-        console.error(`Error fetching sign-in methods for email: ${error}`)
-        throw new Error(`Error fetching sign-in methods for email: ${error}`)
-    }
-}
-
 async function completeQuest(user_id, quest_id) {
     try {
         const userRef = doc(db, process.env.NEXT_PUBLIC_COLL_USERS, user_id)
@@ -337,33 +226,49 @@ async function completeQuest(user_id, quest_id) {
 
 async function deleteUser(user_id) {
     try {
-        await admin.auth().deleteUser(user_id);
-        const userRef = doc(db, process.env.NEXT_PUBLIC_COLL_USERS, user_id)
-        const user = await getUserById(user_id)
-        if (!user)
-            throw new Error('User not found to delete')
-        await deleteCart(user.cart_id)
-        await deleteWishlist(user.wishlist_id)
-        await deleteDoc(userRef)
+        const userRef = admin.firestore().doc(`${process.env.NEXT_PUBLIC_COLL_USERS}/${user_id}`)
+
+        const userDoc = await userRef.get()
+
+        if (!userDoc.exists)
+            throw new Error({ title: 'user_not_found', type: 'error' })
+
+        const user = userDoc.data()
+
+        const cartRef = admin.firestore().doc(`${process.env.NEXT_PUBLIC_COLL_CARTS}/${user.cart_id}`)
+
+        const cartDoc = await cartRef.get()
+
+        if (!cartDoc.exists)
+            throw new Error({ title: 'cart_not_found', type: 'error' })
+
+        const wishlistRef = admin.firestore().doc(`${process.env.NEXT_PUBLIC_COLL_WISHLISTS}/${user.wishlist_id}`)
+
+        const wishlistDoc = await wishlistRef.get()
+        if (!wishlistDoc.exists)
+            throw new Error({ title: 'wishlist_not_found', type: 'error' })
+
+        await admin.auth().deleteUser(user_id)
+        await userRef.delete()
+        await cartRef.delete()
+        await wishlistRef.delete()
+
         await addUserDeleted(user.email)
+
         console.log(`User with ID ${user_id} has been deleted successfully.`)
     } catch (error) {
         console.error(`Error deleting user with ID ${user_id}:`, error)
-        throw new Error(`Error deleting user with ID ${user_id}: ${error}`)
+        throw new Error({ title: error?.props?.title || 'default_error', type: error?.props?.type || 'error' })
     }
 }
 
 export {
     createNewUserWithCredentials,
-    createNewUserWithGoogle,
     removeEmailVerifiedField,
     checkUserExistsByEmail,
-    getUserById,
     getUserIdByEmail,
     updateField,
-    updateUser,
     clearUpdateCounter,
-    getUserProvidersByEmail,
     completeQuest,
     deleteUser
 }

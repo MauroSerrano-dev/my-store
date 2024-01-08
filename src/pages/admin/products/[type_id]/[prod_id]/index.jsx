@@ -1,16 +1,15 @@
 import styles from '@/styles/admin/products/type_id/prod_id/index.module.css'
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import NoFound404 from '@/components/NoFound404';
-import { isAdmin } from '@/utils/validations';
 import { useAppContext } from '@/components/contexts/AppContext';
 import { COMMON_TRANSLATES } from '@/consts';
 import { useEffect, useState } from 'react';
 
 export default function ProductsId() {
     const {
-        auth,
         session,
         router,
+        isAdmin,
     } = useAppContext()
 
     const [product, setProduct] = useState()
@@ -43,7 +42,7 @@ export default function ProductsId() {
     return (
         session === undefined
             ? <div></div>
-            : session === null || !isAdmin(auth)
+            : session === null || !isAdmin
                 ? <NoFound404 />
                 : <div
                     className={styles.container}

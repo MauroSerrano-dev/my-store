@@ -3,11 +3,7 @@ import {
     getDoc,
     updateDoc,
     Timestamp,
-    getDocs,
-    query,
     collection,
-    where,
-    deleteDoc,
     addDoc
 } from "firebase/firestore";
 import { db } from "../firebaseInit";
@@ -46,7 +42,7 @@ async function createWishlist(userId) {
 
         const docRef = await addDoc(wishlistsCollectionRef, newWishlist)
 
-        console.log(`Wishlist created with ID: ${docRef.id}`)
+        console.log('Wishlist created')
         return docRef.id
     } catch (error) {
         console.error('Error creating wishlist:', error)

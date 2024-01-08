@@ -111,10 +111,6 @@
     max-width: 100%;
 }
 
-.pageButton {
-    color: var(--text-white) !important;
-}
-
 .noProductsContainer {
     display: flex;
     flex-direction: column;
@@ -176,13 +172,6 @@
 
 .minMaxButton:active {
     scale: 0.92;
-}
-
-/* Enable hover only on non-touch devices */
-@media (hover: hover) and (pointer: fine) {
-    .pageButton:hover {
-        background-color: rgba(255, 255, 255, 0.1) !important;
-    }
 }
 
 /* Mobile */

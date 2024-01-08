@@ -1,176 +1,98 @@
-import {
-    Timestamp,
-    arrayUnion,
-    doc,
-    getDoc,
-    setDoc,
-    updateDoc,
-    collection,
-    getDocs,
-} from "firebase/firestore"
 import Error from "next/error"
-import { db } from "../firebaseInit"
-
-async function getAppSettings() {
-    try {
-        const settingsCollectionRef = collection(db, process.env.COLL_APP_SETTINGS);
-
-        // Executando a consulta para obter todos os documentos na coleção de configurações
-        const querySnapshot = await getDocs(settingsCollectionRef);
-
-        const allSettings = querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-
-        if (allSettings.length > 0) {
-            console.log('Settings collections retrieved successfully.');
-            return allSettings;
-        } else {
-            console.log('No settings found in the collection.');
-            return [];
-        }
-    } catch (error) {
-        console.error('Error retrieving settings collections:', error);
-        throw new Error(`Error retrieving settings collections: ${error}`);
-    }
-}
-
-async function getAllCurrencies() {
-    try {
-        const currRef = doc(db, process.env.COLL_APP_SETTINGS, 'currencies')
-        const currDoc = await getDoc(currRef)
-
-        if (currDoc.exists()) {
-            console.error("Currencies retrieved successfully.")
-            return currDoc.data()
-        } else {
-            console.error("Currencies document does not exist.")
-            return null
-        }
-    } catch (error) {
-        console.error("Error retrieving currencies:", error)
-        return null
-    }
-}
+const admin = require('../firebaseAdminInit')
 
 async function updateAllCurrencies(updatedCurrencies) {
     try {
-        const currRef = doc(db, process.env.COLL_APP_SETTINGS, 'currencies')
+        const currRef = admin.firestore().doc(`${process.env.NEXT_PUBLIC_COLL_APP_SETTINGS}/currencies`)
 
-        await setDoc(currRef, {
+        await currRef.set({
             data: updatedCurrencies,
-            updated_at: Timestamp.now()
+            updated_at: admin.firestore.Timestamp.now()
         })
 
-        console.log('Currencies updated successfuly!')
+        console.log('Currencies updated successfully!')
         return
     } catch (error) {
-        console.error("Error updating currencies:", error)
-        return null
+        console.error('Error updating currencies:', error)
+        throw new Error({ title: error?.props?.title || 'default_error', type: error?.props?.type || 'error' })
     }
 }
 
 async function addUserDeleted(email) {
     try {
-        const settingsRef = doc(db, process.env.COLL_APP_SETTINGS, 'deleted_users');
+        const settingsRef = admin.firestore().doc(`app_settings/deleted_users`);
 
-        const settingsDoc = await getDoc(settingsRef);
-        if (settingsDoc.exists()) {
-            // Se o documento existe, mas o array 'data' não, inicialize-o
-            const settingsData = settingsDoc.data();
-            const updatedData = settingsData.data ? settingsData.data : [];
-
-            await updateDoc(settingsRef, {
-                data: arrayUnion(...updatedData, { email: email, deleted_at: Timestamp.now() })
+        const settingsDoc = await settingsRef.get();
+        if (settingsDoc.exists) {
+            await settingsRef.update({
+                data: admin.firestore.FieldValue.arrayUnion({ email: email, deleted_at: admin.firestore.Timestamp.now() })
             });
         } else {
-            // Se o documento não existe, crie-o com o array 'data'
-            await setDoc(settingsRef, {
-                data: [{ email: email, deleted_at: Timestamp.now() }]
+            await settingsRef.set({
+                data: [{ email: email, deleted_at: admin.firestore.Timestamp.now() }]
             });
         }
-        console.log('Deleted users updated successfuly!');
+        console.log('Deleted users updated successfully!');
     } catch (error) {
-        console.error("Error adding user to deleted_users:", error);
-        throw new Error(`Error adding user to deleted_users: ${error}`);
+        console.error('Error adding user to deleted_users:', error)
+        throw new Error({ title: error?.props?.title || 'default_error', type: error?.props?.type || 'error' })
     }
 }
-
 
 async function clearDeletedUsers() {
     try {
-        const settingsRef = doc(db, process.env.COLL_APP_SETTINGS, 'deleted_users');
+        const settingsRef = admin.firestore().doc(`${process.env.NEXT_PUBLIC_COLL_APP_SETTINGS}/deleted_users`);
 
-        const settingsDoc = await getDoc(settingsRef);
-        if (settingsDoc.exists()) {
+        const settingsDoc = await settingsRef.get();
+        if (settingsDoc.exists) {
             const data = settingsDoc.data().data;
-            const thirtyDaysAgo = Timestamp.now().seconds - (30 * 24 * 60 * 60);
+            const thirtyDaysAgo = admin.firestore.Timestamp.now().seconds - (30 * 24 * 60 * 60);
 
-            const updatedData = data.filter(user => user.deleted_at.seconds > thirtyDaysAgo)
+            const updatedData = data.filter(user => user.deleted_at.seconds > thirtyDaysAgo);
 
-            await updateDoc(
-                settingsRef,
-                {
-                    data: updatedData,
-                    updated_at: Timestamp.now()
-                }
-            )
-            console.log('Deleted users cleaned successfuly!')
+            await settingsRef.update({
+                data: updatedData,
+                updated_at: admin.firestore.Timestamp.now()
+            });
+            console.log('Deleted users cleaned successfully!');
         }
     } catch (error) {
         console.error("Error clearing old deleted users:", error);
-        throw new Error(`Error clearing old deleted users: ${error}`);
-    }
-}
-
-async function emailIsProhibited(email) {
-    try {
-        const settingsRef = doc(db, process.env.COLL_APP_SETTINGS, 'deleted_users');
-        const settingsDoc = await getDoc(settingsRef);
-
-        if (settingsDoc.exists() && settingsDoc.data().data) {
-            const prohibitedEmails = settingsDoc.data().data.map(item => item.email);
-            return prohibitedEmails.includes(email);
-        }
-        return false;
-    } catch (error) {
-        console.error("Error checking if email is prohibited:", error);
-        throw new Error(`Error checking if email is prohibited: ${error}`);
+        throw new Error({ title: error?.props?.title || 'default_error', type: error?.props?.type || 'error' })
     }
 }
 
 async function handleStripeWebhookFail(callId) {
     try {
-        const ordersInfoRef = doc(db, process.env.COLL_APP_SETTINGS, 'orders_info');
-        const ordersInfoDoc = await getDoc(ordersInfoRef);
+        const ordersInfoRef = admin.firestore().doc('app_settings/orders_info');
+        const ordersInfoDoc = await ordersInfoRef.get();
 
-        if (ordersInfoDoc.exists()) {
-            await updateDoc(ordersInfoRef, {
-                orders_failed: arrayUnion({
+        if (ordersInfoDoc.exists) {
+            await ordersInfoRef.update({
+                orders_failed: admin.firestore.FieldValue.arrayUnion({
                     stripe_call_id: callId,
-                    created_at: Timestamp.now()
+                    created_at: admin.firestore.Timestamp.now()
                 })
             });
         } else {
-            await setDoc(ordersInfoRef, {
+            await ordersInfoRef.set({
                 orders_failed: [{
                     stripe_call_id: callId,
-                    created_at: Timestamp.now()
+                    created_at: admin.firestore.Timestamp.now()
                 }]
             });
         }
 
-        console.log('Order failure recorded successfully!');
+        console.log('Order failure recorded successfully!')
     } catch (error) {
-        console.error("Error recording order failure:", error);
-        throw new Error(`Error recording order failure: ${error}`);
+        console.error('Error recording order failure:', error);
+        throw new Error({ title: error?.props?.title || 'default_error', type: error?.props?.type || 'error' })
     }
 }
 
 export {
-    getAppSettings,
     updateAllCurrencies,
-    getAllCurrencies,
     addUserDeleted,
     clearDeletedUsers,
-    emailIsProhibited,
     handleStripeWebhookFail,
 }

@@ -1,7 +1,6 @@
 import styles from '@/styles/admin/products/type_id/index.module.css'
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import NoFound404 from '@/components/NoFound404';
-import { isAdmin } from '@/utils/validations';
 import { useAppContext } from '@/components/contexts/AppContext';
 import { COMMON_TRANSLATES, PRODUCTS_TYPES } from '@/consts';
 import { useEffect, useState } from 'react';
@@ -26,14 +25,15 @@ import Image from 'next/image';
 import { Timestamp } from 'firebase/firestore';
 import SearchRoundedIcon from '@mui/icons-material/SearchRounded';
 import ProductSkeleton from '@/components/products/ProductSkeleton';
+import { getAllProducts, getProductsByQueries } from '../../../../../frontend/product';
 
 export default function ProductsId() {
     const {
-        auth,
         session,
         router,
         windowWidth,
-        userLocation
+        userLocation,
+        isAdmin
     } = useAppContext()
 
     const mobile = windowWidth <= 700
@@ -60,31 +60,27 @@ export default function ProductsId() {
             getProductsByQuery()
     }, [router])
 
-    function getProductsByQuery() {
-        const options = {
-            method: 'GET',
-            headers: {
-                authorization: process.env.NEXT_PUBLIC_APP_TOKEN,
-                join_disabled: true,
-            }
-        }
-        if (router.query.type_id === 'all')
-            options.headers.all = router.query.type_id
-        if (router.query.type_id)
-            options.headers.y = router.query.type_id
-        if (router.query.p)
-            options.headers.p = router.query.p
-        if (searchInput)
-            options.headers.i = searchInput
+    async function getProductsByQuery() {
+        try {
+            const response = router.query.type_id === 'all'
+                ? await getAllProducts({
+                    p: router.query.p,
+                    join_disabled: true,
+                })
+                : await getProductsByQueries({
+                    y: router.query.type_id,
+                    i: searchInput.toLowerCase(),
+                    p: router.query.p,
+                    join_disabled: true,
+                })
 
-        fetch("/api/products-by-queries", options)
-            .then(response => response.json())
-            .then(response => {
-                setProducts(response.products)
-                setLastPage(response.last_page)
-                setProductsKey(uuidv4())
-            })
-            .catch(err => console.error(err))
+            setProducts(response.products)
+            setLastPage(response.last_page)
+            setProductsKey(uuidv4())
+        }
+        catch (error) {
+            showToast({ type: error?.props?.type || 'error', msg: tToasts(error?.props?.title || 'default_error') })
+        }
     }
 
     function createPromotion() {
@@ -176,7 +172,7 @@ export default function ProductsId() {
     return (
         session === undefined
             ? <div></div>
-            : session === null || !isAdmin(auth)
+            : session === null || !isAdmin
                 ? <NoFound404 />
                 : <div
                     className={styles.container}
@@ -369,11 +365,11 @@ export default function ProductsId() {
                                 style={{
                                     display: 'flex',
                                     justifyContent: 'center',
-                                    alignItems: 'center'
+                                    alignItems: 'center',
                                 }}
                                 renderItem={item => (
                                     <PaginationItem
-                                        className={`${styles.pageButton} noUnderline`}
+                                        className='pageButton noUnderline'
                                         component={item.page === Number(router.query.p || 1) || item.page === 0 || item.page === lastPage + 1 ? null : Link}
                                         href={{
                                             pathname: router.pathname,

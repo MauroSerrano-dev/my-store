@@ -32,11 +32,11 @@ export default function Product(props) {
         style,
         hideWishlistButton,
         showDeleteButton,
-        deleteFromWishlistCallback,
     } = props
 
     const {
         setSession,
+        setWishlist,
         session,
         supportsHoverAndPointer,
         userCurrency,
@@ -45,7 +45,6 @@ export default function Product(props) {
     } = useAppContext()
 
     const tCommon = useTranslation('common').t
-    const tToasts = useTranslation('toasts').t
 
     const height = width * 10 / 9
 
@@ -123,39 +122,12 @@ export default function Product(props) {
         setHover(false)
     }
 
-    function handleRemoveFromWishlist(event) {
-        event.preventDefault()
-
+    async function handleRemoveFromWishlist() {
         setDeleting(true)
 
-        const options = {
-            method: 'DELETE',
-            headers: {
-                'Content-Type': 'application/json',
-                authorization: process.env.NEXT_PUBLIC_APP_TOKEN
-            },
-            body: JSON.stringify({
-                wishlist_id: session.wishlist_id,
-                product: { id: product.id }
-            }),
-        }
-
-        fetch("/api/wishlists/wishlist-products", options)
-            .then(response => response.json())
-            .then(response => {
-                if (response.error) {
-                    throw response.error
-                }
-                else {
-                    setSession(prev => ({ ...prev, wishlist_products_ids: response.data.products.map(prod => prod.id) }))
-                    deleteFromWishlistCallback(response.data)
-                }
-            })
-            .catch(error => {
-                console.error(error)
-                showToast({ type: 'error', msg: tToasts(error) })
-                setDeleting(false)
-            })
+        await handleWishlistClick(product.id, false)
+        setWishlist(prev => ({ ...prev, products: prev.products.filter(prod => prod.id !== product.id) }))
+        setDeleting(false)
     }
 
     return (

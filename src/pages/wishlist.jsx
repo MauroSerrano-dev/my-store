@@ -9,24 +9,28 @@ import lottie from 'lottie-web';
 import { COMMON_TRANSLATES, LIMITS } from '@/consts'
 import NoFound404 from '@/components/NoFound404'
 import { useAppContext } from '@/components/contexts/AppContext'
+import { getProductsByIds } from '../../backend/product'
+import { showToast } from '@/utils/toasts'
 
 export default function Wishlist() {
     const {
         session,
         windowWidth,
+        wishlist
     } = useAppContext()
 
-    const [wishlist, setWishlist] = useState()
+    const [wishlistProducts, setWishlistProducts] = useState()
     const [productWidth, setProductWidth] = useState(0)
     const productsContainer = useRef(null)
     const animationContainer = useRef(null)
 
     const tWishlist = useTranslation('wishlist').t
+    const tToasts = useTranslation('toasts').t
 
     useEffect(() => {
-        if (session)
+        if (wishlist)
             getWishlist()
-    }, [session])
+    }, [wishlist])
 
     useEffect(() => {
         function handleResize() {
@@ -52,23 +56,14 @@ export default function Wishlist() {
         }
     }, [windowWidth, session])
 
-    function getWishlist() {
-        const options = {
-            method: 'GET',
-            headers: {
-                authorization: process.env.NEXT_PUBLIC_APP_TOKEN,
-                wishlist_id: session.wishlist_id,
-            },
+    async function getWishlist() {
+        try {
+            const prods = await getProductsByIds(wishlist.products.map(p => p.id))
+            setWishlistProducts({ ...wishlist, products: prods })
         }
-
-        fetch("/api/wishlists/wishlist", options)
-            .then(response => response.json())
-            .then(response => setWishlist(response))
-            .catch(err => console.error(err))
-    }
-
-    function deleteFromWishlistCallback(wishlist) {
-        setWishlist(wishlist)
+        catch (error) {
+            showToast({ type: error?.props?.type || 'error', msg: tToasts(error?.props?.title || 'default_error') })
+        }
     }
 
     useEffect(() => {
@@ -83,7 +78,7 @@ export default function Wishlist() {
         return () => {
             animation.destroy()
         }
-    }, [wishlist])
+    }, [wishlistProducts])
 
     return (
         session === undefined
@@ -94,16 +89,16 @@ export default function Wishlist() {
                     <div
                         className={styles.pageContainer}
                         style={{
-                            minHeight: wishlist ? '0' : '100vh'
+                            minHeight: wishlistProducts ? '0' : '100vh'
                         }}
                     >
                         <div className={styles.titleContainer}>
                             <h1>
                                 {tWishlist('wishlist_title')}
                             </h1>
-                            {wishlist &&
+                            {wishlistProducts &&
                                 <p>
-                                    {wishlist.products.length}/{LIMITS.wishlist_products}
+                                    {wishlistProducts.products.length}/{LIMITS.wishlist_products}
                                 </p>
                             }
                         </div>
@@ -111,14 +106,14 @@ export default function Wishlist() {
                             className={styles.products}
                             ref={productsContainer}
                         >
-                            {!wishlist
+                            {!wishlistProducts
                                 ? Array(20).fill(null).map((ske, i) =>
                                     <ProductSkeleton
                                         key={i}
                                         productWidth={productWidth}
                                     />
                                 )
-                                : wishlist?.products.length === 0
+                                : wishlistProducts?.products.length === 0
                                     ? <div className='flex column center fillWidth'>
                                         <div
                                             ref={animationContainer}
@@ -130,14 +125,13 @@ export default function Wishlist() {
                                         </div>
                                         <h2>{tWishlist('wishlist_empty')}</h2>
                                     </div>
-                                    : wishlist?.products.map(product =>
+                                    : wishlistProducts?.products.map(product =>
                                         <Product
                                             key={product.id}
                                             product={product}
                                             width={productWidth}
                                             hideWishlistButton
                                             showDeleteButton
-                                            deleteFromWishlistCallback={deleteFromWishlistCallback}
                                         />
                                     )
                             }

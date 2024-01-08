@@ -19,7 +19,6 @@ import Head from 'next/head'
 import Selector from '@/components/material-ui/Selector'
 import { isNewProductValid } from '@/utils/edit-product'
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
-import { isAdmin } from '@/utils/validations'
 import { useTranslation } from 'next-i18next'
 import { useAppContext } from '@/components/contexts/AppContext'
 import MyButton from '@/components/material-ui/MyButton'
@@ -31,10 +30,10 @@ import { LoadingButton } from '@mui/lab'
 
 export default withRouter(() => {
     const {
-        auth,
         router,
         session,
         setAdminMenuOpen,
+        isAdmin,
     } = useAppContext()
 
     const [product, setProduct] = useState()
@@ -537,7 +536,7 @@ export default withRouter(() => {
     return (
         session === undefined
             ? <div></div>
-            : session === null || !isAdmin(auth)
+            : session === null || !isAdmin
                 ? <NoFound404 />
                 : <div className={styles.container}>
                     <Head>

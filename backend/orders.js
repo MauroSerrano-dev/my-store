@@ -18,7 +18,7 @@ import { db } from "../firebaseInit"
 
 async function createOrder(order) {
     try {
-        const orderRef = doc(db, process.env.COLL_ORDERS, order.id)
+        const orderRef = doc(db, process.env.NEXT_PUBLIC_COLL_ORDERS, order.id)
 
         const now = Timestamp.now()
 
@@ -45,7 +45,7 @@ async function createOrder(order) {
 
 async function getOrdersByUserId(userId, startDate, endDate) {
     try {
-        const ordersCollection = collection(db, process.env.COLL_ORDERS);
+        const ordersCollection = collection(db, process.env.NEXT_PUBLIC_COLL_ORDERS);
         let q = query(
             ordersCollection,
             where("user_id", "==", userId)
@@ -85,7 +85,7 @@ async function getOrdersByUserId(userId, startDate, endDate) {
 
 async function updateProductStatus(order_id_printify, printify_products) {
     try {
-        const ordersCollection = collection(db, process.env.COLL_ORDERS)
+        const ordersCollection = collection(db, process.env.NEXT_PUBLIC_COLL_ORDERS)
 
         const q = query(ordersCollection, where("id_printify", "==", order_id_printify))
         const querySnapshot = await getDocs(q)
@@ -135,7 +135,7 @@ async function updateProductStatus(order_id_printify, printify_products) {
 
 async function updateOrderField(order_id_printify, field_name, value) {
     try {
-        const ordersCollection = collection(db, process.env.COLL_ORDERS)
+        const ordersCollection = collection(db, process.env.NEXT_PUBLIC_COLL_ORDERS)
 
         const q = query(ordersCollection, where("id_printify", "==", order_id_printify))
         const querySnapshot = await getDocs(q)
@@ -167,7 +167,7 @@ async function updateOrderField(order_id_printify, field_name, value) {
 
 async function getOrderById(orderId) {
     try {
-        const orderRef = doc(db, process.env.COLL_ORDERS, orderId)
+        const orderRef = doc(db, process.env.NEXT_PUBLIC_COLL_ORDERS, orderId)
         const orderDoc = await getDoc(orderRef)
 
         if (orderDoc.exists()) {
@@ -187,7 +187,7 @@ async function getOrderById(orderId) {
 
 async function getOrderLimitInfoById(orderId) {
     try {
-        const orderRef = doc(db, process.env.COLL_ORDERS, orderId)
+        const orderRef = doc(db, process.env.NEXT_PUBLIC_COLL_ORDERS, orderId)
         const orderDoc = await getDoc(orderRef)
 
         if (orderDoc.exists()) {
@@ -211,7 +211,7 @@ async function getOrderLimitInfoById(orderId) {
 
 async function refundOrderByStripeId(payment_intent, amount_refunded) {
     try {
-        const ordersCollection = collection(db, process.env.COLL_ORDERS)
+        const ordersCollection = collection(db, process.env.NEXT_PUBLIC_COLL_ORDERS)
 
         const q = query(ordersCollection, where("id_stripe_payment_intent", "==", payment_intent))
         const querySnapshot = await getDocs(q)

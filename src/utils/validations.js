@@ -28,10 +28,6 @@ export function isStrongPassword(password) {
     return true;
 }
 
-export function isAdmin(auth) {
-    return auth?.currentUser && process.env.NEXT_PUBLIC_AUTHORIZED_EMAILS.includes(auth.currentUser.email) && auth.currentUser.emailVerified
-}
-
 export function handleReCaptchaSuccess(userToken, setReCaptchaSolve) {
     setReCaptchaSolve(true) // está assim devido ao tempo que demora a chamada api para liberar o botão
 

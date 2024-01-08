@@ -2,24 +2,6 @@ import { doc, getDoc, updateDoc, Timestamp, setDoc, getDocs, query, collection, 
 import Error from "next/error";
 import { db } from "../firebaseInit";
 
-async function getWishlistById(id) {
-    const wishlistRef = doc(db, process.env.COLL_WISHLISTS, id)
-
-    try {
-        const wishlistDoc = await getDoc(wishlistRef)
-
-        if (wishlistDoc.exists()) {
-            return wishlistDoc.data()
-        } else {
-            console.log("Wishlist not found")
-            return null
-        }
-    } catch (error) {
-        console.error("Error getting wishlist by ID:", error)
-        return null
-    }
-}
-
 async function createWishlist(userId, wishlistId) {
     try {
         const wishlistRef = doc(db, process.env.COLL_WISHLISTS, wishlistId)
@@ -47,49 +29,6 @@ async function createWishlist(userId, wishlistId) {
     } catch (error) {
         console.error("Error creating wishlist:", error)
         return null
-    }
-}
-
-async function addProductToWishlist(wishlistId, wishlistNewProduct) {
-    const wishlistRef = doc(db, process.env.COLL_WISHLISTS, wishlistId)
-    const wishlistDoc = await getDoc(wishlistRef)
-
-    try {
-        const wishlistData = wishlistDoc.data()
-        if (wishlistData.products.some(prod => prod.id === wishlistNewProduct.id)) {
-            console.log(`Product is already in Wishlist ${wishlistId}.`)
-            return wishlistData
-        }
-
-        wishlistData.products.push(wishlistNewProduct)
-
-        await updateDoc(wishlistRef, wishlistData)
-
-        console.log(`Wishlist ${wishlistId} updated successfully!`)
-        return wishlistData
-
-    } catch (error) {
-        console.error(`Error updating wishlist ${wishlistId}:`, error)
-        throw new Error(`Error updating wishlist ${wishlistId}`)
-    }
-}
-
-async function deleteProductFromWishlist(wishlistId, product) {
-    const wishlistRef = doc(db, process.env.COLL_WISHLISTS, wishlistId)
-    const wishlistDoc = await getDoc(wishlistRef)
-
-    try {
-        const wishlistData = wishlistDoc.data()
-
-        wishlistData.products = wishlistData.products.filter(prod => prod.id !== product.id)
-
-        await updateDoc(wishlistRef, wishlistData)
-
-        console.log(`Wishlist ${wishlistId} updated successfully!`)
-        return wishlistData
-    } catch (error) {
-        console.error(`Error Deleting Product from wishlist ${wishlistId}:`, error)
-        throw new Error(`Error Deleting Product from wishlist ${wishlistId}`)
     }
 }
 
@@ -127,28 +66,7 @@ async function deleteProductsFromWishlist(user_id, productsIdsToDelete) {
     }
 }
 
-/**
- * Deletes a wishlist by its ID.
- * @param {string} wishlistId - The ID of the wishlist to be deleted.
- */
-async function deleteWishlist(wishlistId) {
-    try {
-        const wishlistRef = doc(db, process.env.COLL_WISHLISTS, wishlistId)
-
-        await deleteDoc(wishlistRef)
-
-        console.log(`Wishlist with ID ${wishlistId} has been deleted successfully.`)
-    } catch (error) {
-        console.error(`Error deleting wishlist with ID ${wishlistId}:`, error)
-        throw new Error(`Error deleting wishlist with ID ${wishlistId}: ${error}`)
-    }
-}
-
 export {
-    getWishlistById,
     createWishlist,
-    addProductToWishlist,
-    deleteProductFromWishlist,
     deleteProductsFromWishlist,
-    deleteWishlist
 }

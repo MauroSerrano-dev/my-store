@@ -67,5 +67,7 @@
     "art_color_missing": "Art Color not provided",
     "art_id_missing": "Art ID not provided",
     "error_getting_session": "Error getting session",
-    "product_already_in_wishlist": "Product is already in Wishlist"
+    "product_already_in_wishlist": "Product is already in Wishlist",
+    "user_updated": "Profile updated successfully!",
+    "invalid_profile_attribute": "Invalid profile attribute"
 }
