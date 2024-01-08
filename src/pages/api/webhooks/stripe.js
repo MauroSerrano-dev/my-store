@@ -1,6 +1,5 @@
 import axios from 'axios'
 import { setCartProducts } from '../../../../backend/cart'
-import { setCartSessionProducts } from '../../../../backend/cart-session'
 import { createOrder, refundOrderByStripeId } from '../../../../backend/orders'
 import getRawBody from 'raw-body'
 import { deleteProductsFromWishlist } from '../../../../backend/wishlists'
@@ -153,8 +152,6 @@ export default async function handler(req, res) {
                     await setCartProducts(cart_id, [])
                     await deleteProductsFromWishlist(user_id, line_items.map(prod => prod.id))
                 }
-                else
-                    await setCartSessionProducts(cart_id, [])
             }
             res.status(200).json({ message: `Order ${orderId} Created. Checkout Complete!` })
         }

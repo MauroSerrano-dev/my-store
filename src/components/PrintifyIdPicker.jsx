@@ -275,7 +275,7 @@ export default function PrintifyIdPicker(props) {
                                         }}
                                         renderItem={item => (
                                             <PaginationItem
-                                                className={styles.pageButton}
+                                                className='pageButton'
                                                 {...item}
                                             />
                                         )}

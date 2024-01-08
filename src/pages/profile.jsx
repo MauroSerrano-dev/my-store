@@ -2,7 +2,7 @@ import styles from '@/styles/pages/profile.module.css'
 import Head from 'next/head'
 import NoFound404 from '../components/NoFound404'
 import TagsSelector from '@/components/material-ui/TagsSelector'
-import { COMMON_TRANSLATES, DEFAULT_LANGUAGE, USER_CUSTOMIZE_HOME_PAGE } from '@/consts'
+import { COMMON_TRANSLATES, DEFAULT_LANGUAGE, LIMITS, USER_CUSTOMIZE_HOME_PAGE } from '@/consts'
 import { useEffect, useState } from 'react'
 import { showToast } from '@/utils/toasts'
 import { convertTimestampToFormatDate, getObjectsDiff, handleCloseModal, handleOpenModal } from '@/utils'
@@ -16,6 +16,7 @@ import { LoadingButton } from '@mui/lab'
 import { SlClose } from "react-icons/sl";
 import MyButton from '@/components/material-ui/MyButton'
 import { FormControlLabel, Switch } from '@mui/material'
+import { updateUser } from '../../frontend/user'
 
 const TAGS_MIN_LIMIT = 3
 const TAGS_MAX_LIMIT = 8
@@ -24,10 +25,10 @@ export default function Profile() {
     const {
         router,
         session,
-        updateSession,
         auth,
         userEmailVerify,
         windowWidth,
+        setSession,
     } = useAppContext()
 
     const { i18n } = useTranslation()
@@ -95,84 +96,93 @@ export default function Profile() {
             })
     }
 
-    function handleUpdateUser() {
-        const changes = {}
+    async function handleUpdateUser() {
+        try {
+            const changes = {}
 
-        Object.keys(getObjectsDiff(starterUser, user)).forEach(key => {
-            changes[key] = user[key]
-        })
-        if (Object.keys(changes).length === 0 && router.locale === i18n.language) {
-            showToast({ msg: tToasts('no_changes_made') })
-            return
-        }
-        if (user.custom_home_page.tags.length < TAGS_MIN_LIMIT) {
-            showToast({ type: 'error', msg: tToasts('must_have_at_least_keywords', { min: TAGS_MIN_LIMIT }) })
-            return
-        }
-        setDisableSaveButton(true)
+            Object.keys(getObjectsDiff(starterUser, user)).forEach(key => {
+                changes[key] = user[key]
+            })
+            if (Object.keys(changes).length === 0 && router.locale === i18n.language) {
+                showToast({ msg: tToasts('no_changes_made') })
+                return
+            }
+            if (user.custom_home_page.active && user.custom_home_page.tags.length < TAGS_MIN_LIMIT) {
+                showToast({ msg: tToasts('must_have_at_least_keywords', { min: TAGS_MIN_LIMIT }) })
+                return
+            }
+            setDisableSaveButton(true)
 
-        const { first_name, last_name } = changes
-        updateProfile(auth.currentUser, { displayName: `${first_name || session.first_name || ''} ${last_name || session.last_name || ''}` })
-            .then(() => {
-                const options = {
-                    method: 'PATCH',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        authorization: process.env.NEXT_PUBLIC_APP_TOKEN
-                    },
-                    body: JSON.stringify({
-                        user_id: session.id,
-                        changes: changes,
-                    })
-                }
-                fetch("/api/user", options)
-                    .then(response => response.json())
-                    .then(response => {
-                        if (response.status === 200) {
-                            showToast({ type: 'success', msg: tToasts(response.message) })
-                            updateSession()
-                        }
-                        else {
-                            showToast({ type: 'error', msg: tToasts(response.message) })
-                        }
-                    })
-                    .catch(() => {
-                        showToast({ type: 'error', msg: tToasts('default_error') })
-                    })
-            })
-            .catch(() => {
-                showToast({ type: 'error', msg: tToasts('default_error') })
-            })
+            const { first_name, last_name } = changes
+            await updateProfile(auth.currentUser, { displayName: `${first_name || session.first_name || ''} ${last_name || session.last_name || ''}` })
+            const updatedUser = await updateUser(session.id, changes)
+            setSession(updatedUser)
+            showToast({ type: 'success', msg: tToasts('user_updated') })
+        }
+        catch (error) {
+            if (!error?.props)
+                console.error(error)
+            if (error?.code === 'auth/invalid-profile-attribute')
+                showToast({ type: 'error', msg: tToasts('invalid_profile_attribute') })
+            else
+                showToast({ type: error?.props?.type || 'error', msg: tToasts(error?.props?.title || 'default_error') })
+            setDisableSaveButton(false)
+        }
     }
 
     function handleDeleteAccount() {
-        setDeleteAccButtonLoading(true)
+        if (deleteTextInput === tProfile('DELETE MY ACCOUNT')) {
+            setDeleteAccButtonLoading(true)
 
-        const options = {
-            method: 'DELETE',
-            headers: {
-                'Content-Type': 'application/json',
-                authorization: process.env.NEXT_PUBLIC_APP_TOKEN,
-                user_id: session.id
-            },
-        }
+            const options = {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json',
+                    authorization: process.env.NEXT_PUBLIC_APP_TOKEN,
+                    user_id: session.id
+                },
+            }
 
-        fetch("/api/user", options)
-            .then(response => response.json())
-            .then(response => {
-                if (response.error) {
-                    showToast({ type: 'error', msg: tToasts(response.error) })
+            fetch("/api/user", options)
+                .then(response => response.json())
+                .then(response => {
+                    if (response.error) {
+                        showToast({ type: response?.type || 'error', msg: tToasts(response.error) })
+                        setDeleteAccButtonLoading(false)
+                    }
+                    else {
+                        showToast({ type: 'success', msg: tToasts(response.message) })
+                        window.location.href = `${window.location.origin}${i18n.language === DEFAULT_LANGUAGE ? '' : `/${i18n.language}`}`
+                    }
+                })
+                .catch(error => {
+                    console.error(error)
+                    showToast({ type: 'error', msg: tToasts('default_error') })
                     setDeleteAccButtonLoading(false)
-                }
-                else {
-                    showToast({ type: 'success', msg: tToasts(response.message) })
-                    window.location.href = `${window.location.origin}${i18n.language === DEFAULT_LANGUAGE ? '' : `/${i18n.language}`}`
-                }
-            })
-            .catch(() => {
+                })
+        }
+    }
+
+    /*     async function handleDeleteAccount() {
+            try {
+                setDeleteAccButtonLoading(true)
+    
+                await deleteUser(session.id)
+                showToast({ type: 'success', msg: tToasts('user_deleted_successfully') })
+                window.location.href = `${window.location.origin}${i18n.language === DEFAULT_LANGUAGE ? '' : `/${i18n.language}`}`
+            }
+            catch (error) {
+                if (!error?.props)
+                    console.error(error)
+                showToast({ type: error?.props?.type || 'error', msg: tToasts(error?.props?.title || 'default_error') })
                 setDeleteAccButtonLoading(false)
-                showToast({ type: 'error', msg: tToasts('default_error') })
-            })
+            }
+        } */
+
+    function handleKeyDownDelete(event) {
+        if (event.key === 'Enter') {
+            handleDeleteAccount()
+        }
     }
 
     return (
@@ -213,20 +223,22 @@ export default function Profile() {
                             <div className={styles.fieldsBody}>
                                 <div className={styles.left}>
                                     <TextInput
+                                        value={user.first_name}
+                                        onChange={event => handleChanges('first_name', event.target.value)}
+                                        limit={LIMITS.input_first_name}
                                         label={tProfile('first_name')}
-                                        defaultValue={user.first_name || ''}
                                         style={{
                                             width: '100%'
                                         }}
-                                        onChange={event => handleChanges('first_name', event.target.value)}
                                     />
                                     <TextInput
+                                        value={user.last_name}
+                                        onChange={event => handleChanges('last_name', event.target.value)}
+                                        limit={LIMITS.input_last_name}
                                         label={tProfile('last_name')}
-                                        defaultValue={user.last_name}
                                         style={{
                                             width: '100%'
                                         }}
-                                        onChange={event => handleChanges('last_name', event.target.value)}
                                     />
                                     <p className={styles.createAtDate}>{tProfile('customer_since')}: {convertTimestampToFormatDate(session.create_at, i18n.language)}</p>
                                 </div>
@@ -344,6 +356,8 @@ export default function Profile() {
                                     placeholder={tProfile('DELETE MY ACCOUNT')}
                                     size='small'
                                     onChange={event => setDeleteTextInput(event.target.value)}
+                                    onKeyDown={handleKeyDownDelete}
+                                    value={deleteTextInput}
                                     style={{
                                         width: windowWidth <= 750 ? '100%' : 'calc(100% - 150px)'
                                     }}

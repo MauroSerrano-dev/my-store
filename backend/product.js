@@ -866,39 +866,6 @@ async function getAllActivesProducts() {
     }
 }
 
-async function getProductsAnalytics() {
-    try {
-        const productsCollection = collection(db, process.env.NEXT_PUBLIC_COLL_PRODUCTS);
-
-        // Criando uma consulta para a coleção de produtos
-        const q = query(productsCollection);
-
-        // Executando a consulta e obtendo os documentos
-        const querySnapshot = await getDocs(q);
-
-        // Inicializando contadores
-        let activeCount = 0;
-        let disabledCount = 0;
-
-        // Contando os produtos ativos e desativados
-        querySnapshot.docs.forEach(doc => {
-            if (doc.data().disabled) {
-                disabledCount++;
-            } else {
-                activeCount++;
-            }
-        });
-
-        return {
-            active: activeCount,
-            disabled: disabledCount
-        };
-    } catch (error) {
-        console.error('Error getting products analytics:', error);
-        throw new Error('Error retrieving products analytics');
-    }
-}
-
 export {
     createProduct,
     getProductsByQueries,
@@ -917,5 +884,4 @@ export {
     removeExpiredPromotions,
     getSimilarProducts,
     getAllActivesProducts,
-    getProductsAnalytics,
 }

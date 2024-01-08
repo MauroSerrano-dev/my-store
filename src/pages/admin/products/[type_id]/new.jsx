@@ -19,7 +19,6 @@ import { isNewProductValid } from '@/utils/edit-product'
 import { useTranslation } from 'next-i18next'
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
 import TextOutlinedInput from '@/components/material-ui/TextOutlinedInput'
-import { isAdmin } from '@/utils/validations'
 import { useAppContext } from '@/components/contexts/AppContext'
 import MyButton from '@/components/material-ui/MyButton'
 import { LoadingButton } from '@mui/lab'
@@ -46,10 +45,10 @@ const INICIAL_PRODUCT = {
 
 export default withRouter(() => {
     const {
-        auth,
         router,
         session,
         setAdminMenuOpen,
+        isAdmin,
     } = useAppContext()
 
     const [product, setProduct] = useState(INICIAL_PRODUCT)
@@ -576,7 +575,7 @@ export default withRouter(() => {
     return (
         session === undefined
             ? <div></div>
-            : session === null || !isAdmin(auth)
+            : session === null || !isAdmin
                 ? <NoFound404 />
                 : <div className={styles.container}>
                     <header>

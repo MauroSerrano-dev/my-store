@@ -7,14 +7,12 @@ import 'react-toastify/dist/ReactToastify.css'
 import NavBar from "../NavBar"
 import Maintenance from "../Maintenance"
 import Menu from "../Menu"
-import { onAuthStateChanged, signInWithEmailAndPassword, signOut } from "firebase/auth"
-import { isAdmin } from "@/utils/validations"
+import { fetchSignInMethodsForEmail, onAuthStateChanged, signInWithEmailAndPassword, signOut } from "firebase/auth"
 import { motion } from 'framer-motion'
 import SearchBar from '../SearchBar'
 import { CircularProgress } from '@mui/material'
 import Cookies from 'js-cookie'
-import { CART_COOKIE, CART_LOCAL_STORAGE, INICIAL_VISITANT_CART, LIMITS, getCurrencyByLocation } from '@/consts'
-import { v4 as uuidv4 } from 'uuid'
+import { CART_LOCAL_STORAGE, INICIAL_VISITANT_CART, LIMITS, getCurrencyByLocation } from '@/consts'
 import AdminMenu from '../menus/AdminMenu'
 import { showToast } from '@/utils/toasts'
 import Error from 'next/error'
@@ -26,6 +24,7 @@ import { addProductToWishlist, deleteProductFromWishlist, getWishlistById } from
 import { getCartById, mergeCarts } from '../../../frontend/cart'
 import { getProductsInfo } from '../../../frontend/product'
 import { auth } from '../../../firebaseInit'
+import { getAllCurrencies } from '../../../frontend/app-settings'
 
 const AppContext = createContext()
 
@@ -58,15 +57,41 @@ export function AppProvider({ children }) {
     const [loading, setLoading] = useState(false)
     const [blockInteractions, setBlockInteractions] = useState(false)
     const [currencies, setCurrencies] = useState()
+    const [isAdmin, setIsAdmin] = useState()
 
     const router = useRouter()
 
     const tNavbar = useTranslation('navbar').t
     const tToasts = useTranslation('toasts').t
 
-    const adminMode = isAdmin(auth) && router.pathname.split('/')[1] === 'admin'
+    const adminMode = isAdmin && router.pathname.split('/')[1] === 'admin'
 
     useEffect(() => {
+        handleResize()
+
+        function handleResize() {
+            setMobile(window.innerWidth < MOBILE_LIMIT)
+            setWindowWidth(window.innerWidth)
+        }
+
+        setTimeout(() => {
+            setWebsiteVisible(true)
+        }, 45) // com 10 estava tendo um bug de animação ao fazer refresh
+
+        window.addEventListener('resize', handleResize)
+
+        return () => {
+            window.removeEventListener('resize', handleResize)
+        }
+    }, [])
+
+    useEffect(() => {
+        const country = CountryConverter[Intl.DateTimeFormat().resolvedOptions().timeZone]
+        setUserLocation({
+            country: country,
+            zone: ZoneConverter[country],
+        })
+        updateSession()
         getCurrencies()
 
         NProgress.configure({ showSpinner: false })
@@ -100,24 +125,125 @@ export function AppProvider({ children }) {
         }
     }, [])
 
-    function getCurrencies() {
-        const options = {
-            method: 'GET',
-            headers: {
-                authorization: process.env.NEXT_PUBLIC_APP_TOKEN,
-            },
+    useEffect(() => {
+        const hoverMediaQuery = window.matchMedia('(hover: hover)');
+        const pointerMediaQuery = window.matchMedia('(pointer: fine)');
+
+        const updateHoverAndPointer = () => {
+            setSupportsHoverAndPointer(
+                hoverMediaQuery.matches && pointerMediaQuery.matches
+            )
         }
 
-        fetch("/api/app-settings/currencies", options)
-            .then(response => response.json())
-            .then(response => setCurrencies(response.data))
-            .catch(err => console.error(err))
-    }
+        hoverMediaQuery.addListener(updateHoverAndPointer);
+        pointerMediaQuery.addListener(updateHoverAndPointer);
+
+        updateHoverAndPointer();
+
+        return () => {
+            hoverMediaQuery.removeListener(updateHoverAndPointer);
+            pointerMediaQuery.removeListener(updateHoverAndPointer);
+        }
+    }, [])
+
+    useEffect(() => {
+        setSearch(router?.query?.s ? router.query.s : '')
+    }, [router])
+
+    useEffect(() => {
+        if (menuOpen) {
+            document.documentElement.style.overflowY = "hidden"
+            document.body.style.overflowY = "hidden";
+        } else {
+            document.documentElement.style.overflowY = "auto"
+            document.body.style.overflowY = "auto"
+        }
+
+        return () => {
+            document.documentElement.style.overflowY = "auto"
+            document.body.style.overflowY = "auto"
+        }
+    }, [menuOpen])
 
     useEffect(() => {
         if (cart !== undefined)
             setLoading(false)
     }, [cart])
+
+    useEffect(() => {
+        if (auth?.currentUser)
+            verifyAdmin()
+    }, [auth?.currentUser])
+
+    async function verifyAdmin() {
+        try {
+            const token = await auth.currentUser.getIdToken()
+
+            const options = {
+                method: 'GET',
+                headers: {
+                    authorization: token,
+                },
+            }
+            const response = await fetch('/api/admin/verify', options)
+            setIsAdmin(response.status === 200)
+        }
+        catch (error) {
+            if (!error?.props)
+                console.error(error)
+            showToast({ type: error?.props?.type || 'error', msg: tToasts(error?.props?.title || 'default_error') })
+        }
+    }
+
+    useEffect(() => {
+        let timeoutId
+
+        const handleScroll = () => {
+            // Check if the scroll position is at the top (you can adjust the threshold if needed)
+            const isAtTop = window.scrollY <= (mobile ? SUB_NAVBAR_HEIGHT_MOBILE : SUB_NAVBAR_HEIGHT) / 2
+
+            clearTimeout(timeoutId);
+
+            // Update the state based on the scroll position
+            timeoutId = setTimeout(() => {
+                setIsScrollAtTop(isAtTop)
+            }, 150)
+        }
+
+        // Attach the scroll event listener
+        window.addEventListener('scroll', handleScroll)
+
+        return () => {
+            // Clean up the event listener when the component unmounts
+            window.removeEventListener('scroll', handleScroll)
+        }
+    }, [mobile])
+
+    useEffect(() => {
+        if (currencies) {
+            if (Cookies.get('CURR'))
+                setUserCurrency(currencies?.[Cookies.get('CURR')])
+            else {
+                const country = CountryConverter[Intl.DateTimeFormat().resolvedOptions().timeZone]
+                const zone = Intl.DateTimeFormat().resolvedOptions().timeZone.split('/')[0]
+                const startCurrency = currencies[getCurrencyByLocation(country, zone)]
+                setUserCurrency(startCurrency)
+                Cookies.set('CURR', startCurrency.code)
+            }
+        }
+    }, [currencies])
+
+    async function getCurrencies() {
+        try {
+            const currencies = await getAllCurrencies()
+            setCurrencies(currencies.data)
+        }
+        catch (error) {
+            if (!error?.props)
+                console.error(error)
+            showToast({ type: error?.props?.type || 'error', msg: tToasts(error?.props?.title || 'default_error') })
+        }
+    }
 
     function switchMenu() {
         setMenuOpen(prev => {
@@ -223,19 +349,24 @@ export function AppProvider({ children }) {
     }
 
     async function getUserLoginProviders(email) {
-        const options = {
-            method: 'GET',
-            headers: {
-                authorization: process.env.NEXT_PUBLIC_APP_TOKEN,
-                email: email
-            },
-        }
-
-        const providers = await fetch("/api/user-providers", options)
-            .then(response => response.json())
-            .then(response => response.data)
-
+        const providers = await fetchSignInMethodsForEmail(auth, email)
         return providers
+    }
+
+    function handleChangeSearch(event) {
+        const search = event.target.value
+        setSearch(search)
+    }
+
+    function handleClickSearch() {
+        router.push(`/search?s=${search}`)
+    }
+
+    function handleKeyDownSearch(event) {
+        if (event.key === 'Enter') {
+            handleClickSearch()
+            event.target.blur()
+        }
     }
 
     function logout() {
@@ -247,6 +378,7 @@ export function AppProvider({ children }) {
                 setCart(INICIAL_VISITANT_CART)
                 setUserEmailVerify(false)
                 setSession(null)
+                setIsAdmin(false)
                 showToast({ type: 'info', msg: tToasts('always_welcome') })
                 router.push('/')
             })
@@ -254,30 +386,6 @@ export function AppProvider({ children }) {
                 showToast({ type: 'error', msg: tToasts('default_error') })
             })
     }
-
-    useEffect(() => {
-        let timeoutId
-
-        const handleScroll = () => {
-            // Check if the scroll position is at the top (you can adjust the threshold if needed)
-            const isAtTop = window.scrollY <= (mobile ? SUB_NAVBAR_HEIGHT_MOBILE : SUB_NAVBAR_HEIGHT) / 2
-
-            clearTimeout(timeoutId);
-
-            // Update the state based on the scroll position
-            timeoutId = setTimeout(() => {
-                setIsScrollAtTop(isAtTop)
-            }, 150)
-        }
-
-        // Attach the scroll event listener
-        window.addEventListener('scroll', handleScroll)
-
-        return () => {
-            // Clean up the event listener when the component unmounts
-            window.removeEventListener('scroll', handleScroll)
-        }
-    }, [mobile])
 
     function updateSession() {
         onAuthStateChanged(auth, (authUser) => {
@@ -315,103 +423,6 @@ export function AppProvider({ children }) {
             showToast({ type: error?.props?.type || 'error', msg: tToasts(error?.props?.title || 'default_error') })
         }
     }
-
-    useEffect(() => {
-        const country = CountryConverter[Intl.DateTimeFormat().resolvedOptions().timeZone]
-        setUserLocation({
-            country: country,
-            zone: ZoneConverter[country],
-        })
-        updateSession()
-    }, [])
-
-    useEffect(() => {
-        if (currencies) {
-            if (Cookies.get('CURR'))
-                setUserCurrency(currencies?.[Cookies.get('CURR')])
-            else {
-                const country = CountryConverter[Intl.DateTimeFormat().resolvedOptions().timeZone]
-                const zone = Intl.DateTimeFormat().resolvedOptions().timeZone.split('/')[0]
-                const startCurrency = currencies[getCurrencyByLocation(country, zone)]
-                setUserCurrency(startCurrency)
-                Cookies.set('CURR', startCurrency.code)
-            }
-        }
-    }, [currencies])
-
-    useEffect(() => {
-        function handleResize() {
-            setMobile(window.innerWidth < MOBILE_LIMIT)
-            setWindowWidth(window.innerWidth)
-        }
-
-        handleResize()
-        setTimeout(() => {
-            setWebsiteVisible(true)
-        }, 45) // com 10 estava tendo um bug de animação ao fazer refresh
-
-        window.addEventListener('resize', handleResize)
-
-        return () => {
-            window.removeEventListener('resize', handleResize)
-        }
-    }, [])
-
-    useEffect(() => {
-        const hoverMediaQuery = window.matchMedia('(hover: hover)');
-        const pointerMediaQuery = window.matchMedia('(pointer: fine)');
-
-        const updateHoverAndPointer = () => {
-            setSupportsHoverAndPointer(
-                hoverMediaQuery.matches && pointerMediaQuery.matches
-            )
-        }
-
-        hoverMediaQuery.addListener(updateHoverAndPointer);
-        pointerMediaQuery.addListener(updateHoverAndPointer);
-
-        updateHoverAndPointer();
-
-        return () => {
-            hoverMediaQuery.removeListener(updateHoverAndPointer);
-            pointerMediaQuery.removeListener(updateHoverAndPointer);
-        }
-    }, [])
-
-    function handleChangeSearch(event) {
-        const search = event.target.value
-        setSearch(search)
-    }
-
-    function handleClickSearch() {
-        router.push(`/search?s=${search}`)
-    }
-
-    function handleKeyDownSearch(event) {
-        if (event.key === 'Enter') {
-            handleClickSearch()
-            event.target.blur()
-        }
-    }
-
-    useEffect(() => {
-        setSearch(router?.query?.s ? router.query.s : '')
-    }, [router])
-
-    useEffect(() => {
-        if (menuOpen) {
-            document.documentElement.style.overflowY = "hidden"
-            document.body.style.overflowY = "hidden";
-        } else {
-            document.documentElement.style.overflowY = "auto"
-            document.body.style.overflowY = "auto"
-        }
-
-        return () => {
-            document.documentElement.style.overflowY = "auto"
-            document.body.style.overflowY = "auto"
-        }
-    }, [menuOpen])
 
     async function handleWishlistClick(productId, toAdd) {
         const prevWishlist = { ...wishlist }
@@ -466,7 +477,6 @@ export function AppProvider({ children }) {
                 setShowLoadingScreen,
                 isUser,
                 isVisitant,
-                updateSession,
                 adminMenuOpen,
                 userEmailVerify,
                 setUserEmailVerify,
@@ -481,6 +491,7 @@ export function AppProvider({ children }) {
                 setWishlist,
                 handleWishlistClick,
                 getInicialCart,
+                isAdmin,
             }}
         >
             <motion.div

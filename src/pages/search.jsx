@@ -544,11 +544,11 @@ export default withRouter(() => {
                             style={{
                                 display: 'flex',
                                 justifyContent: 'center',
-                                alignItems: 'center'
+                                alignItems: 'center',
                             }}
                             renderItem={item => (
                                 <PaginationItem
-                                    className={`${styles.pageButton} noUnderline`}
+                                    className='pageButton noUnderline'
                                     component={item.page === Number(p || 1) || item.page === 0 || item.page === lastPage + 1 ? null : Link}
                                     href={{
                                         pathname: router.pathname,

@@ -6,7 +6,7 @@ import { showToast } from '@/utils/toasts';
 import { useAppContext } from '@/components/contexts/AppContext';
 import { useTranslation } from 'next-i18next'
 import { COMMON_TRANSLATES, LIMITS } from '@/consts';
-import styles from '@/styles/pages/__/auth.module.css'
+import styles from '@/styles/pages/auth.module.css'
 import { SlLock } from "react-icons/sl";
 import PasswordInput from '@/components/material-ui/PasswordInput';
 import { LoadingButton } from '@mui/lab';

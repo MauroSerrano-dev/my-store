@@ -3,6 +3,7 @@ import {
     doc,
     getDoc,
     setDoc,
+    updateDoc,
 } from "firebase/firestore"
 import { db } from "../firebaseInit";
 import { createCart } from "./cart";
@@ -17,7 +18,7 @@ async function getUserById(id) {
         const userDoc = await getDoc(userDocRef)
 
         if (userDoc.exists())
-            return userDoc.data()
+            return { id: userDoc.id, ...userDoc.data() }
         else
             return null
     } catch (error) {
@@ -54,14 +55,48 @@ async function createNewUserWithGoogle(authUser, cartProducts = []) {
 
         console.log(`${newUser.email} has been added as a new user.`)
 
-        return newUser
+        return { id: authUser.uid, ...newUser }
     } catch (error) {
         console.error('Error creating a new user and session:', error);
         throw new Error(`Error creating a new user and session: ${error.message}`);
     }
 }
 
+async function updateUser(userId, changes) {
+    console.log(userId)
+    try {
+        const userRef = doc(db, process.env.NEXT_PUBLIC_COLL_USERS, userId)
+        const userDoc = await getDoc(userRef)
+
+        if (userDoc.exists()) {
+            const userData = userDoc.data()
+
+            await updateDoc(userRef, { ...userData, ...changes })
+
+            return { id: userDoc.id, ...userData, ...changes }
+        } else {
+            throw new Error({ title: 'user_not_found', type: 'error' })
+        }
+    } catch (error) {
+        console.error('Error updating profile:', error)
+        throw new Error({ title: error?.props?.title || 'default_error', type: error?.props?.type || 'error' })
+    }
+}
+
+async function getUserProvidersByEmail(email) {
+    try {
+        const providers = await fetchSignInMethodsForEmail(auth, email)
+
+        return providers
+    } catch (error) {
+        console.error('Error fetching sign-in methods for email:', error)
+        throw new Error({ title: error?.props?.title || 'default_error', type: error?.props?.type || 'error' })
+    }
+}
+
 export {
     getUserById,
     createNewUserWithGoogle,
+    updateUser,
+    getUserProvidersByEmail,
 }

@@ -1,5 +1,4 @@
 import { collection, doc, getDoc, updateDoc, Timestamp, getDocs, query, where, setDoc, deleteDoc } from "firebase/firestore";
-import { deleteCartSession, getCartSessionById } from "./cart-session";
 import { mergeProducts } from "@/utils";
 import Error from "next/error";
 import { LIMITS } from "@/consts";
@@ -230,38 +229,6 @@ async function changeProductField(collectionName, cartId, product, fieldName, ne
 }
 
 /**
- * Merges products from a cart session into a user's cart.
- * @param {string} userId - The ID of the user.
- * @param {string} cart_cookie_id - The ID of the cart session.
- */
-async function mergeCarts(userId, cart_cookie_id) {
-    try {
-        const userCartRes = await getCartIdByUserId(userId)
-        const userCartId = userCartRes?.id
-
-        if (userCartId) {
-            const cartSession = await getCartSessionById(cart_cookie_id)
-
-            if (cartSession) {
-                await deleteCartSession(cart_cookie_id)
-                const userCart = await getCartById(userCartId)
-                if (userCart.products.reduce((acc, prod) => acc + prod.quantity, 0) + cartSession.products.reduce((acc, prod) => acc + prod.quantity, 0) <= LIMITS.cart_items)
-                    await addProductsToCart(userCartId, cartSession.products)
-
-                console.log(`Cart Session ${cart_cookie_id} merged with cart ${userCartId} successfully.`)
-            } else {
-                console.log(`Cart Session with ID ${cart_cookie_id} not found.`)
-            }
-        } else {
-            console.log(`User ${userId} Cart not found.`)
-        }
-    } catch (error) {
-        console.error(`Error merging Cart Session ${cart_cookie_id}.`, error)
-        throw error
-    }
-}
-
-/**
  * Deletes a cart by its ID.
  * @param {string} cartId - The ID of the cart to be deleted.
  */
@@ -288,6 +255,5 @@ export {
     addProductsToCart,
     deleteProductFromCart,
     changeProductField,
-    mergeCarts,
     deleteCart,
 }

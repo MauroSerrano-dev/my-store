@@ -1,21 +1,20 @@
 import styles from '@/styles/admin/products/index.module.css'
 import NoFound404 from '../../../components/NoFound404';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
-import { isAdmin } from '@/utils/validations';
 import { COMMON_TRANSLATES } from '@/consts';
 import { useAppContext } from '@/components/contexts/AppContext';
 import ProductsSelector from '@/components/products/ProductsSelector';
 
 export default function Products() {
     const {
-        auth,
         session,
+        isAdmin,
     } = useAppContext()
 
     return (
         session === undefined
             ? <div></div>
-            : session === null || !isAdmin(auth)
+            : session === null || !isAdmin
                 ? <NoFound404 />
                 : <div
                     className={styles.container}

@@ -8,11 +8,10 @@ import SupportAgentIcon from '@mui/icons-material/SupportAgent'
 import PersonOutlineOutlinedIcon from '@mui/icons-material/PersonOutlineOutlined'
 import AccountCircleRoundedIcon from '@mui/icons-material/AccountCircleRounded'
 import styles from '@/styles/components/buttons-icon/AvatarMenu.module.css'
-import AdminPanelSettingsRoundedIcon from '@mui/icons-material/AdminPanelSettingsRounded'
+import AdminPanelSettingsOutlinedIcon from '@mui/icons-material/AdminPanelSettingsOutlined'
 import ShoppingBagOutlinedIcon from '@mui/icons-material/ShoppingBagOutlined'
 import { useTranslation } from 'next-i18next'
 import { motion } from 'framer-motion'
-import { isAdmin } from '@/utils/validations'
 import { useAppContext } from '../contexts/AppContext'
 import LoginOutlinedIcon from '@mui/icons-material/LoginOutlined';
 import FavoriteBorderRoundedIcon from '@mui/icons-material/FavoriteBorderRounded';
@@ -25,7 +24,8 @@ export default function AvatarMenu() {
     router,
     supportsHoverAndPointer,
     logout,
-    isUser
+    isUser,
+    isAdmin
   } = useAppContext()
 
   const [open, setOpen] = useState(false)
@@ -200,14 +200,14 @@ export default function AvatarMenu() {
                   {tNavbar('Support')}
                 </MenuItem>
               </Link>
-              {isAdmin(auth) &&
+              {isAdmin &&
                 <Link
                   href={'/admin'}
                   className='noUnderline'
                 >
                   <MenuItem>
                     <ListItemIcon>
-                      <AdminPanelSettingsRoundedIcon fontSize="medium" />
+                      <AdminPanelSettingsOutlinedIcon fontSize="medium" />
                     </ListItemIcon>
                     {tNavbar('Admin')}
                   </MenuItem>
