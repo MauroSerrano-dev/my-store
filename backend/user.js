@@ -10,8 +10,8 @@ import {
     Timestamp,
 } from "firebase/firestore"
 import { createUserWithEmailAndPassword, sendEmailVerification, fetchSignInMethodsForEmail, updateProfile } from "firebase/auth"
-import { createCart, deleteCart } from "./cart"
-import { createWishlist, deleteWishlist } from "./wishlists"
+import { createCart } from "./cart"
+import { createWishlist } from "./wishlists"
 import { newUserModel } from "@/utils/models"
 import Error from "next/error"
 import { addUserDeleted } from "./app-settings"

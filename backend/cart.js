@@ -5,71 +5,6 @@ import { LIMITS } from "@/consts";
 import { db } from "../firebaseInit";
 
 /**
- * Retrieves a cart by its ID.
- * @param {string} id - The ID of the cart.
- * @returns {object} The cart data.
- */
-async function getCartById(id) {
-    const cartRef = doc(db, process.env.NEXT_PUBLIC_COLL_CARTS, id)
-
-    try {
-        const cartDoc = await getDoc(cartRef)
-
-        if (cartDoc.exists()) {
-            return cartDoc.data()
-        } else {
-            console.log("Cart not found")
-            return null
-        }
-    } catch (error) {
-        console.error("Error getting cart by ID:", error)
-        return null
-    }
-}
-
-/**
- * Retrieves a cart ID by user ID.
- * @param {string} userId - The ID of the user.
- * @returns {object} The status and cart ID.
- */
-async function getCartIdByUserId(userId) {
-    try {
-        const cartCollection = collection(db, process.env.NEXT_PUBLIC_COLL_CARTS)
-
-        let q = query(
-            cartCollection,
-            where("user_id", "==", userId)
-        )
-
-        const querySnapshot = await getDocs(q)
-
-        if (querySnapshot.empty) {
-            return {
-                status: 200,
-                message: "Cart ID not found",
-                id: null,
-            }
-        }
-
-        const cartDoc = querySnapshot.docs[0]
-
-        return {
-            status: 200,
-            message: "Cart ID retrieved successfully",
-            id: cartDoc.id,
-        }
-    } catch (error) {
-        console.error(error);
-        return {
-            status: 500,
-            message: "Error retrieving cart ID",
-            id: null,
-            error: error,
-        }
-    }
-}
-
-/**
  * Creates a new cart.
  * @param {string} userId - The ID of the user.
  * @param {string} cartId - The ID of the cart.
@@ -129,66 +64,6 @@ async function setCartProducts(cartId, cartProducts) {
 }
 
 /**
- * Adds products to a cart.
- * @param {string} cartId - The ID of the cart.
- * @param {Array} cartNewProducts - The new products to add to the cart.
- * @returns {object} Status and message regarding the cart update.
- */
-async function addProductsToCart(cartId, cartNewProducts) {
-    try {
-        const cartRef = doc(db, process.env.NEXT_PUBLIC_COLL_CARTS, cartId)
-        const cartDoc = await getDoc(cartRef)
-
-        const cartData = cartDoc.data()
-
-        if (cartData.products.reduce((acc, prod) => acc + prod.quantity, 0) + cartNewProducts.reduce((acc, prod) => acc + prod.quantity, 0) > LIMITS.cart_items)
-            throw new Error({ code: 'max_products' })
-
-        cartData.products = mergeProducts(cartData.products, cartNewProducts)
-
-        await updateDoc(cartRef, cartData)
-
-        return cartData
-    } catch (error) {
-        console.error(error)
-        throw error
-    }
-}
-
-/**
- * Deletes a product from a cart.
- * @param {string} cartId - The ID of the cart.
- * @param {object} product - The product to be removed from the cart.
- * @returns {object} Status and message regarding the cart update.
- */
-async function deleteProductFromCart(cartId, product) {
-    const userRef = doc(db, process.env.NEXT_PUBLIC_COLL_CARTS, cartId)
-    const cartDoc = await getDoc(userRef)
-
-    try {
-        const cartData = cartDoc.data()
-
-        cartData.products = cartData.products.filter(prod => prod.id !== product.id || prod.variant_id !== product.variant_id)
-
-        await updateDoc(userRef, cartData)
-
-        return {
-            status: 200,
-            message: `Cart ${cartId} updated successfully!`,
-            cart: cartData,
-        }
-    } catch (error) {
-        console.error(`Error Deleting Product from Cart ${cartId}: ${error}`)
-        return {
-            status: 500,
-            message: `Error Deleting Product from Cart ${cartId}: ${error}`,
-            cart: null,
-            error: error,
-        }
-    }
-}
-
-/**
  * Changes a specific field value in a product within a cart.
  * @param {string} collectionName - The name of the collection.
  * @param {string} cartId - The ID of the cart.
@@ -228,32 +103,8 @@ async function changeProductField(collectionName, cartId, product, fieldName, ne
     }
 }
 
-/**
- * Deletes a cart by its ID.
- * @param {string} cartId - The ID of the cart to be deleted.
- */
-async function deleteCart(cartId) {
-    try {
-        // Referência para o carrinho na coleção de carrinhos
-        const cartRef = doc(db, process.env.NEXT_PUBLIC_COLL_CARTS, cartId);
-
-        // Exclui o documento do carrinho
-        await deleteDoc(cartRef);
-
-        console.log(`Cart with ID ${cartId} has been deleted successfully.`);
-    } catch (error) {
-        console.error(`Error deleting cart with ID ${cartId}:`, error);
-        throw new Error(`Error deleting cart with ID ${cartId}: ${error}`);
-    }
-}
-
 export {
-    getCartById,
-    getCartIdByUserId,
     createCart,
     setCartProducts,
-    addProductsToCart,
-    deleteProductFromCart,
     changeProductField,
-    deleteCart,
 }
