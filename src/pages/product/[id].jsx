@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react'
 import ImagesSlider from '@/components/ImagesSlider'
 import ShoppingCartOutlinedIcon from '@mui/icons-material/ShoppingCartOutlined'
 import CreditCardOutlinedIcon from '@mui/icons-material/CreditCardOutlined'
-import { CART_COOKIE, COLORS_POOL, SIZES_POOL, LIMITS, getShippingOptions, DEFAULT_LANGUAGE, COMMON_TRANSLATES, PRODUCTS_TYPES, CART_LOCAL_STORAGE } from '@/consts'
+import { CART_COOKIE, COLORS_POOL, SIZES_POOL, LIMITS, getShippingOptions, DEFAULT_LANGUAGE, COMMON_TRANSLATES, PRODUCTS_TYPES, CART_LOCAL_STORAGE, INICIAL_VISITANT_CART } from '@/consts'
 import Head from 'next/head'
 import ColorSelector from '@/components/ColorSelector'
 import SizesSelector from '@/components/SizesSelector'
@@ -171,7 +171,8 @@ export default withRouter(props => {
                     await addProductsToCart(session.cart_id, [newProduct])
                 }
                 else {
-                    const newVisitantCart = addProductsToVisitantCart(JSON.parse(localStorage.getItem(CART_LOCAL_STORAGE)), [newProduct])
+                    const localData = localStorage.getItem(CART_LOCAL_STORAGE)
+                    const newVisitantCart = addProductsToVisitantCart(localData ? JSON.parse(localData) : INICIAL_VISITANT_CART, [newProduct])
                     localStorage.setItem(CART_LOCAL_STORAGE, JSON.stringify(newVisitantCart))
                 }
 
@@ -206,9 +207,8 @@ export default withRouter(props => {
             }
         }
         catch (error) {
-            console.error(error)
-            showToast({ type: 'error', msg: tToasts(error) })
             setLoading(false)
+            showToast({ type: error?.props?.type || 'error', msg: tToasts(error?.props?.title || 'default_error') })
         }
     }
 

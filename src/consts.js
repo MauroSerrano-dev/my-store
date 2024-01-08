@@ -5,6 +5,8 @@ export const languageToCountry = {
     'pt': 'pt'
 }
 
+export const INICIAL_VISITANT_CART = { products: [] }
+
 export const DEFAULT_LANGUAGE = 'en'
 
 export const DEFAULT_CURRENCY = 'usd'

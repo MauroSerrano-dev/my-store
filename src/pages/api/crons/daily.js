@@ -1,6 +1,5 @@
 import { CURRENCIES } from '@/consts'
 import { clearDeletedUsers, updateAllCurrencies } from '../../../../backend/app-settings'
-import { deleteExpiredCartSessions } from '../../../../backend/cart-session'
 import { removeExpiredPromotions } from '../../../../backend/product'
 
 const axios = require('axios')
@@ -35,8 +34,6 @@ export default async function handler(req, res) {
         })
 
         await updateAllCurrencies(updatedCurrencies)
-
-        await deleteExpiredCartSessions()
 
         await clearDeletedUsers()
 

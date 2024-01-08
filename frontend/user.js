@@ -26,7 +26,7 @@ async function getUserById(id) {
     }
 }
 
-async function createNewUserWithGoogle(authUser) {
+async function createNewUserWithGoogle(authUser, cartProducts = []) {
     try {
         const fullName = authUser.displayName.split(' ')
 
@@ -35,7 +35,7 @@ async function createNewUserWithGoogle(authUser) {
 
         const newUserRef = doc(db, process.env.NEXT_PUBLIC_COLL_USERS, authUser.uid)
 
-        const cart_id = await createCart(newUserRef.id)
+        const cart_id = await createCart(newUserRef.id, cartProducts)
 
         const wishlist_id = await createWishlist(newUserRef.id)
 

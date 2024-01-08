@@ -13,7 +13,7 @@ import { motion } from 'framer-motion'
 import SearchBar from '../SearchBar'
 import { CircularProgress } from '@mui/material'
 import Cookies from 'js-cookie'
-import { CART_COOKIE, CART_LOCAL_STORAGE, LIMITS, getCurrencyByLocation } from '@/consts'
+import { CART_COOKIE, CART_LOCAL_STORAGE, INICIAL_VISITANT_CART, LIMITS, getCurrencyByLocation } from '@/consts'
 import { v4 as uuidv4 } from 'uuid'
 import AdminMenu from '../menus/AdminMenu'
 import { showToast } from '@/utils/toasts'
@@ -23,7 +23,7 @@ import ZoneConverter from '@/utils/country-zone.json'
 import NProgress from 'nprogress'
 import { createNewUserWithGoogle, getUserById } from '../../../frontend/user'
 import { addProductToWishlist, deleteProductFromWishlist, getWishlistById } from '../../../frontend/wishlists'
-import { getCartById } from '../../../frontend/cart'
+import { getCartById, mergeCarts } from '../../../frontend/cart'
 import { getProductsInfo } from '../../../frontend/product'
 import { auth } from '../../../firebaseInit'
 
@@ -129,45 +129,6 @@ export function AppProvider({ children }) {
         })
     }
 
-    function getInicialCart2() {
-        if (session) {
-            getCartFromApi(session.cart_id)
-        }
-        else if (session === null) {
-            const cart_id = Cookies.get(CART_COOKIE)
-            if (cart_id) {
-                getCartFromApi(cart_id)
-            }
-            else {
-                const new_cart_id = uuidv4()
-                getCartFromApi(new_cart_id)
-                Cookies.set(CART_COOKIE, new_cart_id)
-            }
-        }
-    }
-
-    function getCartFromApi2(cart_id) {
-        const options = {
-            method: 'GET',
-            headers: {
-                cart_id: cart_id,
-                authorization: process.env.NEXT_PUBLIC_APP_TOKEN,
-            },
-        }
-
-        if (session) {
-            options.headers.user_id = session.id
-        }
-
-        fetch("/api/carts/cart", options)
-            .then(response => response.json())
-            .then(response => setCart(response))
-            .catch(err => {
-                setLoading(false)
-                console.error(err)
-            })
-    }
-
     async function getInicialCart() {
         try {
             if (session === undefined)
@@ -184,8 +145,8 @@ export function AppProvider({ children }) {
                     setCart({ ...visitantCart, products: products })
                 }
                 else {
-                    localStorage.setItem(CART_LOCAL_STORAGE, JSON.stringify({ products: [] }))
-                    setCart({ products: [] })
+                    localStorage.setItem(CART_LOCAL_STORAGE, JSON.stringify(INICIAL_VISITANT_CART))
+                    setCart(INICIAL_VISITANT_CART)
                 }
             }
         }
@@ -199,47 +160,22 @@ export function AppProvider({ children }) {
         setUserCurrency(currencies?.[newCurrencyCode])
     }
 
-    function handleLogin2(authUser) {
-        const options = {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                authorization: process.env.NEXT_PUBLIC_APP_TOKEN
-            },
-            body: JSON.stringify({
-                uid: authUser.uid,
-                authUser: authUser,
-                cart_cookie_id: Cookies.get(CART_COOKIE),
-            })
-        }
-        fetch("/api/user-session", options)
-            .then(response => response.json())
-            .then(response => {
-                if (response.error) {
-                    showToast({ type: 'error', msg: tToasts('error_getting_session') })
-                    logout()
-                }
-                else
-                    setSession(response)
-            })
-            .catch(err => console.error(err))
-        Cookies.remove(CART_COOKIE)
-    }
-
     async function handleLogin(authUser) {
         try {
             const user = await getUserById(authUser.uid)
+            const visitantCartProducts = JSON.parse(localStorage.getItem(CART_LOCAL_STORAGE))?.products || []
             if (user) {
                 setSession(user)
-                const cart = await getCartById(user.cart_id)
+                const cart = visitantCartProducts.length > 0
+                    ? await mergeCarts(user.cart_id, visitantCartProducts)
+                    : await getCartById(user.cart_id)
                 const products = await getProductsInfo(cart.products)
                 setCart({ ...cart, products: products })
                 const wishlist = await getWishlistById(user.wishlist_id)
                 setWishlist(wishlist)
             }
             else {
-                const newUser = await createNewUserWithGoogle(authUser)
-                /* await deleteCartSession(Cookies.get(CART_COOKIE)) */
+                const newUser = await createNewUserWithGoogle(authUser, visitantCartProducts)
                 setSession(newUser)
                 const cart = await getCartById(newUser.cart_id)
                 const products = await getProductsInfo(cart.products)
@@ -247,7 +183,7 @@ export function AppProvider({ children }) {
                 const wishlist = await getWishlistById(newUser.wishlist_id)
                 setWishlist(wishlist)
             }
-            Cookies.remove(CART_COOKIE)
+            localStorage.removeItem(CART_LOCAL_STORAGE)
         }
         catch (error) {
             console.error(error)
@@ -308,7 +244,7 @@ export function AppProvider({ children }) {
             .then(() => {
                 setIsUser(false)
                 setIsVisitant(true)
-                setCart()
+                setCart(INICIAL_VISITANT_CART)
                 setUserEmailVerify(false)
                 setSession(null)
                 showToast({ type: 'info', msg: tToasts('always_welcome') })
@@ -355,12 +291,12 @@ export function AppProvider({ children }) {
                 // O usuário fez logout ou não está autenticado
                 setIsVisitant(true)
                 setSession(null)
-                getCartSession()
+                getVisitantCart()
             }
         })
     }
 
-    async function getCartSession() {
+    async function getVisitantCart() {
         try {
             const visitantCart = JSON.parse(localStorage.getItem(CART_LOCAL_STORAGE))
             if (visitantCart) {
@@ -369,9 +305,9 @@ export function AppProvider({ children }) {
                 setCart({ ...visitantCart, products: products })
             }
             else {
-                const newCartJson = JSON.stringify({ products: [] })
+                const newCartJson = INICIAL_VISITANT_CART
                 setCart(newCartJson)
-                localStorage.setItem(CART_LOCAL_STORAGE, newCartJson)
+                localStorage.setItem(CART_LOCAL_STORAGE, JSON.stringify(newCartJson))
             }
 
         }

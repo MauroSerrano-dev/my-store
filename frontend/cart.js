@@ -23,7 +23,6 @@ async function getCartById(id) {
         const cartDoc = await getDoc(cartRef)
 
         if (cartDoc.exists()) {
-            console.log({ id: cartDoc.id, ...cartDoc.data() })
             return { id: cartDoc.id, ...cartDoc.data() };
         } else {
             console.log("Cart not found")
@@ -75,16 +74,16 @@ async function addProductsToCart(cartId, cartNewProducts) {
         const cartData = cartDoc.data()
 
         if (cartData.products.reduce((acc, prod) => acc + prod.quantity, 0) + cartNewProducts.reduce((acc, prod) => acc + prod.quantity, 0) > LIMITS.cart_items)
-            throw 'max_products'
+            throw new Error({ title: 'max_products', type: 'warning' })
 
         cartData.products = mergeProducts(cartData.products, cartNewProducts)
 
         await updateDoc(cartRef, cartData)
 
-        return cartData
+        return { id: cartDoc.id, ...cartData }
     } catch (error) {
-        console.error(error)
-        throw error
+        console.error('Error Adding Product to Cart:', error)
+        throw new Error({ title: error?.props?.title || 'default_error', type: error?.props?.type || 'error' })
     }
 }
 
@@ -113,9 +112,23 @@ async function deleteProductFromCart(cartId, product) {
     }
 }
 
+async function mergeCarts(cartId, products) {
+    try {
+        const userCart = await getCartById(cartId)
+        const newCart = userCart.products.reduce((acc, prod) => acc + prod.quantity, 0) + products.reduce((acc, prod) => acc + prod.quantity, 0) <= LIMITS.cart_items
+            ? await addProductsToCart(cartId, products)
+            : userCart
+        return newCart
+    } catch (error) {
+        console.error('Error merging Carts', error)
+        throw new Error({ title: error?.props?.title || 'error_deleting_product_from_cart', type: error?.props?.type || 'error' })
+    }
+}
+
 export {
     getCartById,
     createCart,
     addProductsToCart,
     deleteProductFromCart,
+    mergeCarts,
 }
