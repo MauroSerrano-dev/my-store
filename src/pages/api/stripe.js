@@ -90,7 +90,7 @@ export default async function handler(req, res) {
           currency: currency,
           product_data: {
             name: item.title,
-            images: [item.image.src],
+            images: [item.image_src],
             description: item.description,
             metadata: {
               id: item.id,

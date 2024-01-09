@@ -1,14 +1,14 @@
 import axios from 'axios'
 import { setCartProducts } from '../../../../backend/cart'
 import { createOrder, refundOrderByStripeId } from '../../../../backend/orders'
-import getRawBody from 'raw-body'
+import { handleStripeWebhookFail } from '../../../../backend/app-settings'
 import { deleteProductsFromWishlist } from '../../../../backend/wishlists'
 import { sendPurchaseConfirmationEmail } from '../../../../backend/email-sender'
+import getRawBody from 'raw-body'
 import { STEPS } from '@/consts'
-import { handleStripeWebhookFail } from '../../../../backend/app-settings'
 const { v4: uuidv4 } = require('uuid')
 
-const Stripe = require("stripe")
+const Stripe = require('stripe')
 const stripe = Stripe(process.env.STRIPE_SECRET_KEY)
 
 export default async function handler(req, res) {
@@ -21,7 +21,7 @@ export default async function handler(req, res) {
         event = stripe.webhooks.constructEvent(rawBody, sig, process.env.STRIPE_WEBHOOK_SECRET)
     }
     catch (error) {
-        return res.status(401).json({ error: 'Invalid authentication.' })
+        return res.status(401).json({ error: 'Invalid authentication' })
     }
 
     try {
@@ -102,8 +102,8 @@ export default async function handler(req, res) {
             const stripeCharge = await stripe.charges.retrieve(stripePaymentIntent.latest_charge)
 
             await createOrder(
+                orderId,
                 {
-                    id: orderId,
                     id_printify: printifyRes.data.id,
                     user_id: user_id,
                     user_email: customer_details.email,

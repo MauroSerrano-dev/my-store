@@ -1,6 +1,5 @@
 import {
     collection,
-    setDoc,
     doc,
     updateDoc,
     Timestamp,
@@ -10,36 +9,82 @@ import {
     orderBy,
     getDoc,
 } from "firebase/firestore"
-import { handleProductsPurchased } from "./product"
-import { ALLOWED_WEBHOOK_STATUS } from "@/consts"
+import { ALLOWED_WEBHOOK_STATUS, POPULARITY_POINTS } from "@/consts"
 import Error from "next/error"
 import { db } from "../firebaseInit"
+const admin = require('../firebaseAdminInit');
 
-
-async function createOrder(order) {
+/**
+ * Creates a new order in the Firestore.
+ * 
+ * @param {string} orderId - The order ID.
+ * @param {Object} order - The order object to be created in the Firestore.
+ * @returns {string} The order ID.
+ */
+async function createOrder(orderId, order) {
     try {
-        const orderRef = doc(db, process.env.NEXT_PUBLIC_COLL_ORDERS, order.id)
+        const orderRef = admin.firestore().collection(process.env.NEXT_PUBLIC_COLL_ORDERS).doc(orderId);
 
-        const now = Timestamp.now()
+        const now = admin.firestore.Timestamp.now();
 
-        await setDoc(
-            orderRef,
-            {
-                ...order,
-                products: order.products.map(prod => ({ ...prod, updated_at: now })),
-                create_at: now,
+        // Set the order document with the provided order data.
+        // Update 'updated_at' timestamp for each product in the order.
+        await orderRef.set({
+            ...order,
+            products: order.products.map(prod => ({ ...prod, updated_at: now })),
+            create_at: now,
+        })
+
+        await handlePostOrderCreation(order.products) // Function to handle post-order creation logic.
+
+        return orderId
+    } catch (error) {
+        console.error('Error creating order:', error)
+        throw new Error({ title: error?.props?.title || 'error_creating_order', type: error?.props?.type || 'error' })
+    }
+}
+
+/**
+ * Handles post-order creation tasks such as updating product sales.
+ * 
+ * @param {Array} line_items - Array of line items from the order.
+ */
+async function handlePostOrderCreation(line_items) {
+    try {
+        for (const lineItem of line_items) {
+            const { id, variant_id, quantity } = lineItem;
+
+            const productRef = admin.firestore().doc(`${process.env.NEXT_PUBLIC_COLL_PRODUCTS}/${id}`);
+            const productDoc = await productRef.get();
+
+            if (productDoc.exists()) {
+                const productData = productDoc.data();
+                // Update total sales on the product
+                productData.total_sales = (productData.total_sales || 0) + quantity;
+
+                // Update popularity scores
+                productData.popularity = (productData.popularity || 0) + POPULARITY_POINTS.purchase * quantity;
+                productData.popularity_year = (productData.popularity_year || 0) + POPULARITY_POINTS.purchase * quantity;
+                productData.popularity_month = (productData.popularity_month || 0) + POPULARITY_POINTS.purchase * quantity;
+
+                // Check if the product has variants
+                if (productData.variants) {
+                    const variant = productData.variants.find(v => v.id === variant_id);
+
+                    // Check if the variant exists
+                    if (variant) {
+                        // Update variant sales
+                        variant.sales = (variant.sales || 0) + quantity;
+                    }
+                }
+
+                // Update the product in the database
+                await productRef.update(productData);
             }
-        )
-
-        await handleProductsPurchased(order.products)
-
-        return {
-            status: 200,
-            message: `Order created with ID: ${order.id}`,
-            orderId: order.id,
         }
     } catch (error) {
-        throw new Error(`Error creating order: ${error}`);
+        console.error('Error handling purchased products:', error);
+        throw new Error({ title: error?.props?.title || 'error_handling_purchased_products', type: error?.props?.type || 'error' })
     }
 }
 
@@ -209,41 +254,39 @@ async function getOrderLimitInfoById(orderId) {
     }
 }
 
+/**
+ * Refunds an order based on its Stripe payment intent ID.
+ * 
+ * @param {string} payment_intent - The Stripe payment intent ID.
+ * @param {number} amount_refunded - The amount refunded.
+ */
 async function refundOrderByStripeId(payment_intent, amount_refunded) {
     try {
-        const ordersCollection = collection(db, process.env.NEXT_PUBLIC_COLL_ORDERS)
-
-        const q = query(ordersCollection, where("id_stripe_payment_intent", "==", payment_intent))
-        const querySnapshot = await getDocs(q)
+        const ordersCollection = admin.firestore().collection(process.env.NEXT_PUBLIC_COLL_ORDERS);
+        const q = ordersCollection.where("id_stripe_payment_intent", "==", payment_intent);
+        const querySnapshot = await q.get();
 
         if (!querySnapshot.empty) {
-            const orderDoc = querySnapshot.docs[0]
-            const orderData = orderDoc.data()
+            const orderDoc = querySnapshot.docs[0];
+            const orderData = orderDoc.data();
 
-            await updateDoc(
-                orderDoc.ref,
-                {
-                    payment_details: {
-                        ...orderData.payment_details,
-                        refund: {
-                            amount: amount_refunded,
-                            refund_at: Timestamp.now(),
-                        },
+            await orderDoc.ref.update({
+                payment_details: {
+                    ...orderData.payment_details,
+                    refund: {
+                        amount: amount_refunded,
+                        refund_at: admin.firestore.Timestamp.now(),
                     },
-                    products: orderData.products.map(prod => ({ ...prod, status: 'refunded' }))
-                })
-
-            return {
-                status: 200,
-                message: "Order refunded successfully",
-            }
+                },
+                products: orderData.products.map(prod => ({ ...prod, status: 'refunded' }))
+            });
         } else {
-            console.error(`Order with Stripe ID ${payment_intent} not found. Refund fail.`)
-            throw new Error(`Order with Stripe ID ${payment_intent} not found. Refund fail.`)
+            console.error(`Refund fail. Order with Stripe ID ${payment_intent} not found.`);
+            throw new Error({ title: 'refund_fail_order_not_found', type: 'error' })
         }
     } catch (error) {
-        console.error(`Error refunding order by stripe id: ${error}`)
-        throw new Error(`Error refunding order by stripe id: ${error}`)
+        console.error('Error refunding order by Stripe ID:', error);
+        throw new Error({ title: error?.props?.title || 'error_refunding_order', type: error?.props?.type || 'error' })
     }
 }
 

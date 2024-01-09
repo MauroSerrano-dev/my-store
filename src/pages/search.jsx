@@ -132,7 +132,7 @@ export default withRouter(() => {
                 min: min,
                 max: min,
                 order: order,
-                prods_limit: 15,
+                prods_limit: LIMITS.max_products_in_search_page,
                 user_language: i18n.language,
             })
 
@@ -184,7 +184,6 @@ export default withRouter(() => {
     }
 
     function handleDeleteTag(queryName, value) {
-        console.log(queryName, value)
         router.push({
             pathname: router.pathname,
             query: router.query[queryName].split(' ').filter((ele, i, arr) => arr.indexOf(ele) === i).length === 1

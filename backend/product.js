@@ -486,52 +486,6 @@ async function updateProduct(product_id, product_new_fields) {
     }
 }
 
-async function handleProductsPurchased(line_items) {
-    try {
-        for (const lineItem of line_items) {
-            const { id, variant_id, quantity } = lineItem
-
-            const productRef = doc(db, process.env.NEXT_PUBLIC_COLL_PRODUCTS, id)
-            const productDoc = await getDoc(productRef)
-
-            if (productDoc.exists()) {
-                const productData = productDoc.data()
-                // Atualize o total_sales no produto
-                productData.total_sales += quantity
-
-                productData.popularity += POPULARITY_POINTS.purchase * quantity
-
-                productData.popularity_year += POPULARITY_POINTS.purchase * quantity
-
-                productData.popularity_month += POPULARITY_POINTS.purchase * quantity
-
-                // Verifique se o produto tem variantes
-                if (productData.variants) {
-                    const variant = productData.variants.find(v => v.id === variant_id)
-
-                    // Verifique se a variante existe
-                    if (variant) {
-                        // Atualize as vendas da variante
-                        variant.sales += quantity
-                    }
-                }
-
-                // Atualize o produto no banco de dados
-                await updateDoc(productRef, productData)
-            }
-        }
-
-        return {
-            msg: "Products updated successfully!",
-        }
-    } catch (error) {
-        console.error("Error handling purchased products:", error)
-        return {
-            msg: "An error occurred while updating products.",
-        }
-    }
-}
-
 async function getAllProductsIds() {
     try {
         const productsCollection = collection(db, process.env.NEXT_PUBLIC_COLL_PRODUCTS);
@@ -873,7 +827,6 @@ export {
     getAllProducts,
     getProductsByTitle,
     updateProduct,
-    handleProductsPurchased,
     getProductsInfo,
     getAllProductsIds,
     getProductsByIds,

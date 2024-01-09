@@ -106,7 +106,9 @@ export default function Cart() {
                     })
                 }),
                 cancel_url: window.location.href,
-                success_url: session ? `${window.location.origin}${i18n.language === DEFAULT_LANGUAGE ? '' : `/${i18n.language}`}/orders` : `${window.location.origin}${i18n.language === DEFAULT_LANGUAGE ? '' : `/${i18n.language}`}`,
+                success_url: session
+                    ? `${window.location.origin}${i18n.language === DEFAULT_LANGUAGE ? '' : `/${i18n.language}`}/orders`
+                    : `${window.location.origin}${i18n.language === DEFAULT_LANGUAGE ? '' : `/${i18n.language}`}/?refresh-cart`,
                 customer: session,
                 shippingValue: SHIPPING_CONVERTED,
                 shippingCountry: userLocation.country,
@@ -167,7 +169,7 @@ export default function Cart() {
     async function getProducts() {
         try {
             const response = await getAllProducts({
-                prods_limit: 16,
+                prods_limit: LIMITS.max_products_in_carousel,
             })
 
             if (response.products.length > 8) {
@@ -301,7 +303,7 @@ export default function Cart() {
                                     </p>
                                     <Selector
                                         label={tCommon('Currency')}
-                                        value={userCurrency.code}
+                                        value={userCurrency?.code}
                                         options={Object.values(currencies).map(currency => ({ value: currency.code, name: currency.code.toUpperCase() }))}
                                         width='100px'
                                         dark

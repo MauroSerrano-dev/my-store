@@ -1,4 +1,4 @@
-import { doc, getDoc, updateDoc, Timestamp, setDoc, getDocs, query, collection, where, deleteDoc } from "firebase/firestore";
+import { doc, getDoc, Timestamp, setDoc } from "firebase/firestore";
 import Error from "next/error";
 import { db } from "../firebaseInit";
 
@@ -32,37 +32,37 @@ async function createWishlist(userId, wishlistId) {
     }
 }
 
+/**
+ * Deletes specified products from a user's wishlist.
+ * 
+ * @param {string} user_id - The ID of the user whose wishlist is being modified.
+ * @param {Array} productsIdsToDelete - Array of product IDs to be deleted from the wishlist.
+ * @returns {Object} - Updated wishlist.
+ */
 async function deleteProductsFromWishlist(user_id, productsIdsToDelete) {
     try {
-        const wishlistQuery = query(
-            collection(db, process.env.COLL_WISHLISTS),
-            where("user_id", "==", user_id)
-        )
-        const querySnapshot = await getDocs(wishlistQuery);
+        const wishlistQuery = admin.firestore().collection(process.env.NEXT_PUBLIC_COLL_WISHLISTS)
+            .where("user_id", "==", user_id);
+        const querySnapshot = await wishlistQuery.get();
 
         if (querySnapshot.empty) {
-            return {
-                status: 404,
-                message: `Wishlist for user ID ${user_id} not found.`,
-                wishlist: null,
-            }
+            console.error(`Wishlist for user ID ${user_id} not found`)
+            throw new Error({ title: 'wishlist_not_found', type: 'error' })
         }
 
         const wishlistDoc = querySnapshot.docs[0];
         const wishlistData = wishlistDoc.data();
 
-        wishlistData.products = wishlistData.products.filter(prod => !productsIdsToDelete.includes(prod.id))
+        // Filter out the products that need to be deleted
+        wishlistData.products = wishlistData.products.filter(prod => !productsIdsToDelete.includes(prod.id));
 
-        await updateDoc(wishlistDoc.ref, wishlistData)
+        // Update the wishlist document with the new products array
+        await wishlistDoc.ref.update({ products: wishlistData.products });
 
-        return {
-            status: 200,
-            message: `Products deleted from the wishlist successfully!`,
-            wishlist: wishlistData,
-        }
+        return { id: wishlistDoc.id, ...wishlistData }
     } catch (error) {
-        console.error(`Error deleting products from the wishlist: ${error}`)
-        throw new Error(`Error deleting products from the wishlist: ${error}`)
+        console.error('Error deleting products from the wishlist:', error);
+        throw new Error({ title: error?.props?.title || 'error_deleting_products_from_wishlist', type: error?.props?.type || 'error' })
     }
 }
 

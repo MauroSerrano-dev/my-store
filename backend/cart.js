@@ -1,7 +1,5 @@
-import { collection, doc, getDoc, updateDoc, Timestamp, getDocs, query, where, setDoc, deleteDoc } from "firebase/firestore";
-import { mergeProducts } from "@/utils";
+import { doc, getDoc, updateDoc, Timestamp, setDoc } from "firebase/firestore";
 import Error from "next/error";
-import { LIMITS } from "@/consts";
 import { db } from "../firebaseInit";
 
 /**
@@ -47,19 +45,15 @@ async function createCart(userId, cartId, products) {
  * @param {Array} cartProducts - The products to set in the cart.
  */
 async function setCartProducts(cartId, cartProducts) {
-    const cartRef = doc(db, process.env.NEXT_PUBLIC_COLL_CARTS, cartId)
-    const cartDoc = await getDoc(cartRef)
-
     try {
-        const cartData = cartDoc.data()
-        cartData.products = cartProducts
+        const cartRef = admin.firestore().doc(`${process.env.NEXT_PUBLIC_COLL_USERS}/${cartId}`)
 
-        await updateDoc(cartRef, cartData)
+        await cartRef.update({ products: cartProducts });
 
         console.log(`Cart ${cartId} setted successfully!`)
     } catch (error) {
-        console.error(`Error setting cart ${cartId}: ${error}`)
-        throw new Error(`Error setting cart ${cartId}: ${error}`);
+        console.error(`Error setting cart ${cartId}:`, error)
+        throw new Error({ title: error?.props?.title || 'error_setting_cart', type: error?.props?.type || 'error' })
     }
 }
 

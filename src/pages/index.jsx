@@ -6,7 +6,7 @@ import CarouselProducts from '@/components/carousels/CarouselProducts'
 import Carousel from '@/components/carousels/Carousel'
 import Link from 'next/link'
 import Image from 'next/image'
-import { COMMON_TRANSLATES, DEFAULT_PRODUCTS_TAGS, USER_CUSTOMIZE_HOME_PAGE } from '@/consts'
+import { CART_LOCAL_STORAGE, COMMON_TRANSLATES, DEFAULT_PRODUCTS_TAGS, INICIAL_VISITANT_CART, LIMITS, USER_CUSTOMIZE_HOME_PAGE } from '@/consts'
 import { useTranslation } from 'next-i18next'
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
 import { useAppContext } from '@/components/contexts/AppContext'
@@ -28,6 +28,8 @@ export default function Home() {
   const {
     session,
     windowWidth,
+    router,
+    setCart,
   } = useAppContext()
 
   const tIndex = useTranslation('index').t
@@ -59,6 +61,14 @@ export default function Home() {
     getProductsFromCategories()
   }, [session])
 
+  useEffect(() => {
+    if (router.query['refresh-cart'] === '') {
+      setCart(INICIAL_VISITANT_CART)
+      localStorage.setItem(CART_LOCAL_STORAGE, JSON.stringify(INICIAL_VISITANT_CART))
+      router.push('/')
+    }
+  }, [router])
+
   async function getProductsFromCategories() {
     if (session !== undefined && !productsOne) {
       (session && session.custom_home_page.active ? session.custom_home_page.tags : DEFAULT_PRODUCTS_TAGS).forEach(async (tag, i) => {
@@ -72,7 +82,7 @@ export default function Home() {
       const { query, id } = tag
       const response = await getProductsByQueries({
         [query]: id,
-        prods_limit: 15,
+        prods_limit: LIMITS.max_products_in_carousel,
         user_language: i18n.language
       })
 

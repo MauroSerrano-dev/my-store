@@ -69,5 +69,6 @@
     "error_getting_session": "Erro ao obter a sessão",
     "product_already_in_wishlist": "O produto já está na Lista de Desejos",
     "user_updated": "Perfil atualizado com sucesso!",
-    "invalid_profile_attribute": "Atributo de perfil inválido"
+    "invalid_profile_attribute": "Atributo de perfil inválido",
+    "order_not_found": "Nenhum pedido encontrado com este ID"
 }

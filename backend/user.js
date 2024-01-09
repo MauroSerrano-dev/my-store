@@ -9,7 +9,7 @@ import {
     updateDoc,
     Timestamp,
 } from "firebase/firestore"
-import { createUserWithEmailAndPassword, sendEmailVerification, fetchSignInMethodsForEmail, updateProfile } from "firebase/auth"
+import { createUserWithEmailAndPassword, sendEmailVerification, updateProfile } from "firebase/auth"
 import { createCart } from "./cart"
 import { createWishlist } from "./wishlists"
 import { newUserModel } from "@/utils/models"
