@@ -53,11 +53,10 @@ async function handlePostOrderCreation(line_items) {
     try {
         for (const lineItem of line_items) {
             const { id, variant_id, quantity } = lineItem;
-            const productRef = admin.firestore().doc(`${process.env.NEXT_PUBLIC_COLL_PRODUCTS}/${id}`);
 
+            const productRef = admin.firestore().collection(process.env.NEXT_PUBLIC_COLL_PRODUCTS).doc(id);
             const productDoc = await productRef.get();
 
-            console.log('productRef:', productRef);
             console.log('productRef.get():', await productRef.get());
 
             if (productDoc.exists()) {
