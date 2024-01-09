@@ -400,6 +400,48 @@ async function getProductsAnalytics() {
     }
 }
 
+async function getProductsByIds(ids) {
+    try {
+        if (!ids || ids.length === 0)
+            return []
+
+        const productsCollection = collection(db, process.env.NEXT_PUBLIC_COLL_PRODUCTS);
+
+        const chunkSize = 30;
+        const chunks = [];
+
+        for (let i = 0; i < ids.length; i += chunkSize) {
+            chunks.push(ids.slice(i, i + chunkSize));
+        }
+
+        const promises = chunks.map(async chunk => {
+            const q = query(
+                productsCollection,
+                where('id', 'in', chunk)
+            );
+
+            const querySnapshot = await getDocs(q);
+            return querySnapshot.docs.map(doc => doc.data());
+        });
+
+        const chunkResults = await Promise.all(promises);
+        const mergedResults = chunkResults.flat();
+
+        const products = {};
+        mergedResults.forEach(product => {
+            products[product.id] = product;
+        })
+
+        const orderedProducts = ids.map(id => products[id] || null);
+
+        console.log('Products retrieved successfully by IDs!')
+        return orderedProducts
+    } catch (error) {
+        console.error('Error getting products by IDs:', error);
+        throw new Error({ title: 'Error getting products by IDs.', statusCode: 500 })
+    }
+}
+
 export {
     getProductsInfo,
     getProductsByQueries,
@@ -407,4 +449,5 @@ export {
     getSimilarProducts,
     getAllActivesProducts,
     getProductsAnalytics,
+    getProductsByIds,
 }

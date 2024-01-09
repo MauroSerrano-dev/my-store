@@ -1,5 +1,4 @@
 import { isTokenValid } from "@/utils/auth";
-import { getProductsInfo } from "../../../../backend/product";
 import { getOrderLimitInfoById } from "../../../../backend/orders";
 
 export default async function handler(req, res) {

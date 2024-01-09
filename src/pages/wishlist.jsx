@@ -9,8 +9,8 @@ import lottie from 'lottie-web';
 import { COMMON_TRANSLATES, LIMITS } from '@/consts'
 import NoFound404 from '@/components/NoFound404'
 import { useAppContext } from '@/components/contexts/AppContext'
-import { getProductsByIds } from '../../backend/product'
 import { showToast } from '@/utils/toasts'
+import { getProductsByIds } from '../../frontend/product'
 
 export default function Wishlist() {
     const {
