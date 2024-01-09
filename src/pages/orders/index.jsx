@@ -60,8 +60,8 @@ export default function Orders() {
             const productsInfoRes = await getProductsInfo(inicialOrders.reduce((acc, order) => acc.concat(order.products), []))
             const ordersRes = inicialOrders.map(order => ({
                 ...order,
-                products: order.products.map((prod, i) => (
-                    orderProduct({ ...prod, ...productsInfoRes[i] })
+                products: order.products.map(prod => (
+                    orderProduct({ ...prod, ...productsInfoRes.shift() })
                 ))
             }))
             setOrders(ordersRes)

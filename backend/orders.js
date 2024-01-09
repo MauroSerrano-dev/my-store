@@ -34,7 +34,7 @@ async function createOrder(orderId, order) {
             products: order.products.map(prod => ({ ...prod, updated_at: now })),
             create_at: now,
         })
-
+        console.log('tenso', order)
         await handlePostOrderCreation(order.products) // Function to handle post-order creation logic.
 
         return orderId
@@ -53,14 +53,10 @@ async function handlePostOrderCreation(line_items) {
     try {
         for (const lineItem of line_items) {
             const { id, variant_id, quantity } = lineItem;
-            console.log('line_items', line_items)
             const productRef = admin.firestore().doc(`${process.env.NEXT_PUBLIC_COLL_PRODUCTS}/${id}`);
             const productDoc = await productRef.get();
-            console.log('productDoc', productDoc)
-            console.log('productDocId', productDoc.id)
-            
+
             if (productDoc.exists()) {
-                console.log('dentro')
                 const productData = productDoc.data();
                 // Update total sales on the product
                 productData.total_sales = (productData.total_sales || 0) + quantity;
