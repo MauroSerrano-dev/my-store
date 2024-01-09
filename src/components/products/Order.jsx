@@ -7,7 +7,7 @@ import { useTranslation } from 'next-i18next'
 import { convertTimestampToFormatDate, convertTimestampToFormatDateNoYear } from '@/utils';
 import { useAppContext } from '../contexts/AppContext';
 import KeyboardArrowDownOutlinedIcon from '@mui/icons-material/KeyboardArrowDownOutlined'
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import ArrowForwardIosOutlinedIcon from '@mui/icons-material/ArrowForwardIosOutlined'
 import ProductTag from './ProductTag';
 import ProductStepper from './ProductStepper';
@@ -47,10 +47,6 @@ export default function Order(props) {
     function handleShipToOnClick() {
         setShipToModalOpen(prev => !prev)
     }
-
-    useEffect(() => {
-        console.log(order)
-    }, [order])
 
     return (
         windowWidth > 851
