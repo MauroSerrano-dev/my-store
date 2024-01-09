@@ -433,19 +433,13 @@ async function removeExpiredPromotions() {
 
 export {
     createProduct,
-    getProductsByQueries,
     getProductById,
-    getAllProducts,
-    getProductsByTitle,
     updateProduct,
     getProductsInfo,
-    getAllProductsIds,
     getProductsByIds,
     cleanPopularityMonth,
     cleanPopularityYear,
     getDisabledProducts,
     createPromotionForProducts,
     removeExpiredPromotions,
-    getSimilarProducts,
-    getAllActivesProducts,
 }
