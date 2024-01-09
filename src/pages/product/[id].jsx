@@ -16,7 +16,7 @@ import { useTranslation } from 'next-i18next'
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
 import { showToast } from '@/utils/toasts'
 import HeartButton from '@/components/buttons-icon/HeartButton'
-import { cartItemModel, productInfo } from '@/utils/models'
+import { cartItemModel, productInfoModel } from '@/utils/models'
 import SelectorAutocomplete from '@/components/material-ui/SelectorAutocomplete'
 import COUNTRIES_POOL from '../../../public/locales/en/countries.json'
 import { useAppContext } from '@/components/contexts/AppContext'
@@ -179,7 +179,7 @@ export default withRouter(props => {
                     localStorage.setItem(CART_LOCAL_STORAGE, JSON.stringify(newVisitantCart))
                 }
 
-                const newProductFullInfo = productInfo(
+                const newProductFullInfo = productInfoModel(
                     {
                         id: product.id,
                         art_position: typeof product.images[0].src === 'string'

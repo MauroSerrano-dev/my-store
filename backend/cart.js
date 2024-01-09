@@ -1,6 +1,7 @@
 import { doc, getDoc, updateDoc, Timestamp, setDoc } from "firebase/firestore";
 import Error from "next/error";
 import { db } from "../firebaseInit";
+const admin = require('../firebaseAdminInit');
 
 /**
  * Creates a new cart.

@@ -232,15 +232,17 @@ async function getOrderById(orderId) {
 
 async function getOrderLimitInfoById(orderId) {
     try {
-        const orderRef = doc(db, process.env.NEXT_PUBLIC_COLL_ORDERS, orderId)
-        const orderDoc = await getDoc(orderRef)
+        const orderRef = admin.firestore().doc(`${process.env.NEXT_PUBLIC_COLL_ORDERS}/${orderId}`)
 
-        if (orderDoc.exists()) {
+        const orderDoc = await orderRef.get();
+
+        if (orderDoc.exists) {
             const orderData = orderDoc.data()
+
             console.log("Order info retrieved successfully")
             return {
+                id: orderDoc.id,
                 create_at: orderData.create_at,
-                id: orderData.id,
                 products: orderData.products,
             }
         }

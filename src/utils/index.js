@@ -61,7 +61,7 @@ export function mergeProducts(prods1, prods2) {
 }
 
 export function convertTimestampToFormatDate(timestamp, locale) {
-    const date = new Date(timestamp.seconds * 1000 + timestamp.nanoseconds * 0.000001)
+    const date = new Date(timestamp._seconds * 1000 + timestamp._nanoseconds * 0.000001)
 
     let selectedLocale = en
     let model = 'MMMM d, yyyy'
@@ -83,7 +83,7 @@ export function convertTimestampToFormatDate(timestamp, locale) {
 }
 
 export function convertTimestampToFormatDateSeconds(timestamp, locale) {
-    const date = new Date(timestamp.seconds * 1000 + timestamp.nanoseconds * 0.000001);
+    const date = new Date(timestamp._seconds * 1000 + timestamp._nanoseconds * 0.000001);
 
     let selectedLocale = en;
     let model = 'PPpp'; // Formato padrão para 'en'
@@ -105,7 +105,7 @@ export function convertTimestampToFormatDateSeconds(timestamp, locale) {
 }
 
 export function convertTimestampToFormatDateNoYear(timestamp, locale) {
-    const date = new Date(timestamp.seconds * 1000 + timestamp.nanoseconds * 0.000001)
+    const date = new Date(timestamp._seconds * 1000 + timestamp._nanoseconds * 0.000001)
 
     let selectedLocale = en
     let model = 'MMMM d'

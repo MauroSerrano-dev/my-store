@@ -15,7 +15,7 @@ import { COMMON_TRANSLATES, LIMITS } from '@/consts';
 import { getOrdersByUserId } from '../../../frontend/orders';
 import { getAllProducts, getProductsInfo } from '../../../frontend/product';
 import { showToast } from '@/utils/toasts';
-import { orderProduct } from '@/utils/models';
+import { orderProductModel } from '@/utils/models';
 
 export default function Orders() {
     const {
@@ -61,7 +61,7 @@ export default function Orders() {
             const ordersRes = inicialOrders.map(order => ({
                 ...order,
                 products: order.products.map(prod => (
-                    orderProduct({ ...prod, ...productsInfoRes.shift() })
+                    orderProductModel({ ...prod, ...productsInfoRes.shift() })
                 ))
             }))
             setOrders(ordersRes)

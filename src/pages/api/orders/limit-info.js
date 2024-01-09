@@ -15,16 +15,13 @@ export default async function handler(req, res) {
         try {
             const order = await getOrderLimitInfoById(order_id)
 
-            if (order) {
-                const productsRes = await getProductsInfo(order.products)
-                order.products = productsRes.products
+            if (order)
                 res.status(200).json({ data: order })
-            }
             else
                 res.status(404).json({ error: 'order_not_found', data: null })
         }
         catch (error) {
-            res.status(500).json({ error: "Error retrieving order info", data: null });
+            res.status(500).json({ error: 'default_error', data: null });
         }
     }
 }

@@ -10,7 +10,7 @@ import {
 import { getProductVariantsInfos } from "@/utils"
 import { db } from "../firebaseInit"
 import Error from "next/error";
-import { productInfo } from "@/utils/models";
+import { productInfoModel } from "@/utils/models";
 import { DEFAULT_LANGUAGE } from "@/consts";
 
 async function getProductsInfo(products) {
@@ -72,7 +72,7 @@ async function getProductsInfo(products) {
 
             const visualImage = product.images.filter(img => img.color_id === variant.color_id)[product.image_showcase_index]
 
-            return productInfo(
+            return productInfoModel(
                 {
                     id: prod.id,
                     art_position: prod.art_position,
