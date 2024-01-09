@@ -54,9 +54,13 @@ async function handlePostOrderCreation(line_items) {
         for (const lineItem of line_items) {
             const { id, variant_id, quantity } = lineItem;
             const productRef = admin.firestore().doc(`${process.env.NEXT_PUBLIC_COLL_PRODUCTS}/${id}`);
+            console.log('productRef', productRef)
             const productDoc = await productRef.get();
 
+            console.log('productDoc', productDoc)
+            console.log('productDocId', productDoc.id)
             if (productDoc.exists()) {
+                console.log('dentro')
                 const productData = productDoc.data();
                 // Update total sales on the product
                 productData.total_sales = (productData.total_sales || 0) + quantity;
