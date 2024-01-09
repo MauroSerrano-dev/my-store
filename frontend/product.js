@@ -91,7 +91,7 @@ async function getProductsInfo(products) {
                         : visualImage.src,
                 }
             )
-        });
+        })
 
         return productsOneVariant
     } catch (error) {

@@ -110,7 +110,7 @@ async function getOrdersByUserId(userId, startDate, endDate) {
 
         const querySnapshot = await getDocs(q)
 
-        const orders = querySnapshot.docs.map(doc => doc.data())
+        const orders = querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }))
 
         return {
             status: 200,
@@ -218,7 +218,7 @@ async function getOrderById(orderId) {
         if (orderDoc.exists()) {
             const orderData = orderDoc.data()
             console.log("Order retrieved successfully")
-            return orderData
+            return { id: orderDoc.id, ...orderData }
         }
         else {
             console.log(`Order ${orderId} not found`)

@@ -109,3 +109,35 @@ export function productInfo(props) {
         image_src: image_src,
     }
 }
+
+export function orderProduct(props) {
+    const {
+        id,
+        type_id,
+        id_printify,
+        title,
+        image_src,
+        price,
+        quantity,
+        status,
+        updated_at,
+        variant,
+        variant_id_printify,
+        default_variant,
+    } = props
+
+    return {
+        id: id,
+        type_id: type_id,
+        id_printify: id_printify,
+        title: title,
+        image_src: image_src,
+        price: price,
+        quantity: quantity,
+        status: status,
+        updated_at: updated_at,
+        variant: variant,
+        variant_id_printify: variant_id_printify,
+        default_variant: default_variant,
+    }
+}
