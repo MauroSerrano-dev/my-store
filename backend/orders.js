@@ -251,8 +251,8 @@ async function getOrderLimitInfoById(orderId) {
             return null
         }
     } catch (error) {
-        console.error(`Error getting order info by id: ${error}`)
-        throw new Error(`Error getting order info by id: ${error}`)
+        console.error('Error getting order info by id:', error)
+        throw new Error({ title: error?.props?.title || 'default_error', type: error?.props?.type || 'error' })
     }
 }
 

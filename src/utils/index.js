@@ -5,6 +5,7 @@ import ptBR from 'date-fns/locale/pt-BR'
 import ptPT from 'date-fns/locale/pt'
 import { LIMITS, PRODUCTS_TYPES } from '@/consts';
 import Error from 'next/error';
+import { Timestamp } from 'firebase/firestore';
 
 export function getObjectsDiff(obj1, obj2) {
     const differentFields = {};
@@ -60,8 +61,17 @@ export function mergeProducts(prods1, prods2) {
     }).concat(prods2.filter(prod => !prods1.some(p => p.id === prod.id && (p.variant ? (p.variant.id === prod.variant.id) : (p.variant_id === prod.variant_id)) && p.art_position === prod.art_position)))
 }
 
+export function convertTimestampToDate(timestamp) {
+    if (timestamp)
+        return new Date(
+            timestamp instanceof Timestamp
+                ? timestamp.toMillis()
+                : (timestamp._seconds * 1000) + (timestamp._nanoseconds / 1000000)
+        )
+}
+
 export function convertTimestampToFormatDate(timestamp, locale) {
-    const date = new Date(timestamp._seconds * 1000 + timestamp._nanoseconds * 0.000001)
+    const date = new Date(convertTimestampToDate(timestamp))
 
     let selectedLocale = en
     let model = 'MMMM d, yyyy'
@@ -79,11 +89,12 @@ export function convertTimestampToFormatDate(timestamp, locale) {
         model = 'd \'de\' MMMM, yyyy'
     }
 
-    return format(date, model, { locale: selectedLocale })
+    if (timestamp)
+        return format(date, model, { locale: selectedLocale })
 }
 
 export function convertTimestampToFormatDateSeconds(timestamp, locale) {
-    const date = new Date(timestamp._seconds * 1000 + timestamp._nanoseconds * 0.000001);
+    const date = new Date(convertTimestampToDate(timestamp))
 
     let selectedLocale = en;
     let model = 'PPpp'; // Formato padrão para 'en'
@@ -101,11 +112,12 @@ export function convertTimestampToFormatDateSeconds(timestamp, locale) {
         model = 'd \'de\' MMMM \'de\' yyyy, HH:mm:ss'; // Formato para português de Portugal
     }
 
-    return format(date, model, { locale: selectedLocale });
+    if (timestamp)
+        return format(date, model, { locale: selectedLocale });
 }
 
 export function convertTimestampToFormatDateNoYear(timestamp, locale) {
-    const date = new Date(timestamp._seconds * 1000 + timestamp._nanoseconds * 0.000001)
+    const date = new Date(convertTimestampToDate(timestamp))
 
     let selectedLocale = en
     let model = 'MMMM d'
