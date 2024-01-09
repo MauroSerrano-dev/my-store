@@ -82,7 +82,7 @@ export function cartItemModel(props) {
     }
 }
 
-export function productInfo(props) {
+export function productInfoModel(props) {
     const {
         id,
         art_position,
@@ -110,7 +110,7 @@ export function productInfo(props) {
     }
 }
 
-export function orderProduct(props) {
+export function orderProductModel(props) {
     const {
         id,
         type_id,

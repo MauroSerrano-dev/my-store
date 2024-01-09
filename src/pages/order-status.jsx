@@ -9,7 +9,8 @@ import { LoadingButton } from '@mui/lab'
 import Order from '@/components/products/Order'
 import { showToast } from '@/utils/toasts'
 import { useTranslation } from 'next-i18next'
-import { getOrderById } from '../../frontend/orders'
+import { getProductsInfo } from '../../frontend/product'
+import { orderProductModel } from '@/utils/models'
 
 export default function OrderStatus() {
 
@@ -33,19 +34,38 @@ export default function OrderStatus() {
         }
     }, [router])
 
-    async function getOrder() {
-        try {
-            setLoading(true)
+    function getOrder() {
+        setLoading(true)
 
-            const orderRes = await getOrderById(router.query.id)
-            setOrder(orderRes)
+        const options = {
+            method: 'GET',
+            headers: {
+                authorization: process.env.NEXT_PUBLIC_APP_TOKEN,
+                order_id: router.query.id,
+            }
         }
-        catch (error) {
-            if (!error?.props)
-                console.error(error)
-            setOrder(null)
-            showToast({ type: error?.props?.type || 'error', msg: tToasts(error?.props?.title || 'default_error') })
-        }
+
+        fetch("/api/orders/limit-info", options)
+            .then(response => response.json())
+            .then(async response => {
+                if (response.error)
+                    showToast({ type: 'error', msg: tToasts(response.error) })
+                const productsInfo = await getProductsInfo(response.data.products)
+                setOrder({
+                    ...response.data,
+                    products: response.data.products.map(prod => (
+                        orderProductModel({ ...prod, ...productsInfo.shift() })
+                    ))
+                })
+                setLoading(false)
+            })
+            .catch(error => {
+                if (!error?.props)
+                    console.error(error)
+                showToast({ type: 'error', msg: tToasts('default_error') })
+                setOrder(null)
+                setLoading(false)
+            })
     }
 
     function handleSearch() {

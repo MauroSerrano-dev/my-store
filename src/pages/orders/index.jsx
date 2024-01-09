@@ -15,7 +15,8 @@ import { COMMON_TRANSLATES, LIMITS } from '@/consts';
 import { getOrdersByUserId } from '../../../frontend/orders';
 import { getAllProducts, getProductsInfo } from '../../../frontend/product';
 import { showToast } from '@/utils/toasts';
-import { orderProduct } from '@/utils/models';
+import { orderProductModel } from '@/utils/models';
+import { convertTimestampToDate } from '@/utils';
 
 export default function Orders() {
     const {
@@ -28,7 +29,7 @@ export default function Orders() {
     const animationContainer = useRef(null)
 
     const NOW = new Date()
-    const userCreateAt = new Date(session?.create_at.seconds * 1000 + session?.create_at.nanoseconds * 0.000001)
+    const userCreateAt = new Date(convertTimestampToDate(session?.create_at))
 
     const YEAR_DIFF = NOW.getFullYear() - userCreateAt.getFullYear()
 
@@ -61,7 +62,7 @@ export default function Orders() {
             const ordersRes = inicialOrders.map(order => ({
                 ...order,
                 products: order.products.map(prod => (
-                    orderProduct({ ...prod, ...productsInfoRes.shift() })
+                    orderProductModel({ ...prod, ...productsInfoRes.shift() })
                 ))
             }))
             setOrders(ordersRes)
