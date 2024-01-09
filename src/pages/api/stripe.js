@@ -114,7 +114,6 @@ export default async function handler(req, res) {
           variant_id: item.variant.id,
           variant_id_printify: item.variant.id_printify,
           quantity: item.quantity,
-          price: item.price,
         }
       )
     })

@@ -50,7 +50,7 @@ async function getOrdersByUserId(userId, startDate, endDate) {
 
         const querySnapshot = await getDocs(q)
 
-        const orders = querySnapshot.docs.map(doc => doc.data())
+        const orders = querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }))
 
         return orders
     } catch (error) {

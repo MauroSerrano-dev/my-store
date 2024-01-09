@@ -15,6 +15,7 @@ import { COMMON_TRANSLATES, LIMITS } from '@/consts';
 import { getOrdersByUserId } from '../../../frontend/orders';
 import { getAllProducts, getProductsInfo } from '../../../frontend/product';
 import { showToast } from '@/utils/toasts';
+import { orderProduct } from '@/utils/models';
 
 export default function Orders() {
     const {
@@ -44,19 +45,25 @@ export default function Orders() {
     }, [session])
 
     useEffect(() => {
-        getAllProductsCall()
-    }, [])
-
-    useEffect(() => {
         if (session)
             getUserOrders()
     }, [dateSelected])
 
+    useEffect(() => {
+        getAllProductsCall()
+    }, [])
+
+
     async function getUserOrders() {
         try {
             const inicialOrders = await getOrdersByUserId(session.id, new Date(dateSelected, 0).getTime(), new Date(dateSelected + 1, 0).getTime())
-            const productsInfoRes = await getProductsInfo(inicialOrders.reduce((acc, order) => [...acc, ...order.products], []))
-            const ordersRes = inicialOrders.map(order => ({ ...order, products: order.products.map(() => productsInfoRes.products?.shift()) }))
+            const productsInfoRes = await getProductsInfo(inicialOrders.reduce((acc, order) => acc.concat(order.products), []))
+            const ordersRes = inicialOrders.map(order => ({
+                ...order,
+                products: order.products.map((prod, i) => (
+                    orderProduct({ ...prod, ...productsInfoRes[i] })
+                ))
+            }))
             setOrders(ordersRes)
         }
         catch (error) {

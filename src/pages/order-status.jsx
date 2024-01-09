@@ -9,6 +9,7 @@ import { LoadingButton } from '@mui/lab'
 import Order from '@/components/products/Order'
 import { showToast } from '@/utils/toasts'
 import { useTranslation } from 'next-i18next'
+import { getOrderById } from '../../frontend/orders'
 
 export default function OrderStatus() {
 
@@ -32,30 +33,19 @@ export default function OrderStatus() {
         }
     }, [router])
 
-    function getOrder() {
-        setLoading(true)
+    async function getOrder() {
+        try {
+            setLoading(true)
 
-        const options = {
-            method: 'GET',
-            headers: {
-                authorization: process.env.NEXT_PUBLIC_APP_TOKEN,
-                order_id: router.query.id,
-            }
+            const orderRes = await getOrderById(router.query.id)
+            setOrder(orderRes)
         }
-
-        fetch("/api/orders/limit-info", options)
-            .then(response => response.json())
-            .then(response => {
-                if (response.error)
-                    showToast({ type: 'error', msg: tToasts(response.error) })
-                setOrder(response.data)
-                setLoading(false)
-            })
-            .catch(() => {
-                showToast({ type: 'error', msg: tToasts('default_error') })
-                setOrder(null)
-                setLoading(false)
-            })
+        catch (error) {
+            if (!error?.props)
+                console.error(error)
+            setOrder(null)
+            showToast({ type: error?.props?.type || 'error', msg: tToasts(error?.props?.title || 'default_error') })
+        }
     }
 
     function handleSearch() {

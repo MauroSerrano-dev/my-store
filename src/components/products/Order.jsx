@@ -7,7 +7,7 @@ import { useTranslation } from 'next-i18next'
 import { convertTimestampToFormatDate, convertTimestampToFormatDateNoYear } from '@/utils';
 import { useAppContext } from '../contexts/AppContext';
 import KeyboardArrowDownOutlinedIcon from '@mui/icons-material/KeyboardArrowDownOutlined'
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import ArrowForwardIosOutlinedIcon from '@mui/icons-material/ArrowForwardIosOutlined'
 import ProductTag from './ProductTag';
 import ProductStepper from './ProductStepper';
@@ -47,6 +47,10 @@ export default function Order(props) {
     function handleShipToOnClick() {
         setShipToModalOpen(prev => !prev)
     }
+
+    useEffect(() => {
+        console.log(order)
+    }, [order])
 
     return (
         windowWidth > 851
@@ -203,7 +207,7 @@ export default function Order(props) {
                                 >
                                     <Image
                                         quality={100}
-                                        src={product.image.src}
+                                        src={product.image_src}
                                         sizes={'100px'}
                                         fill
                                         alt={product.title}
@@ -317,7 +321,7 @@ export default function Order(props) {
                                         >
                                             <Image
                                                 quality={100}
-                                                src={product.image.src}
+                                                src={product.image_src}
                                                 sizes={'100px'}
                                                 fill
                                                 alt={product.title}
@@ -377,7 +381,7 @@ export default function Order(props) {
                                         >
                                             <Image
                                                 quality={100}
-                                                src={product.image.src}
+                                                src={product.image_src}
                                                 sizes={'100px'}
                                                 fill
                                                 alt={product.title}
