@@ -15,9 +15,8 @@ import { DEFAULT_LANGUAGE } from "@/consts";
 
 async function getProductsInfo(products) {
     try {
-        if (products.length === 0) {
+        if (products.length === 0)
             return []
-        }
 
         const productsCollection = collection(db, process.env.NEXT_PUBLIC_COLL_PRODUCTS);
 
@@ -97,7 +96,7 @@ async function getProductsInfo(products) {
         return productsOneVariant
     } catch (error) {
         console.error('Error getting Products Info:', error);
-        throw new Error(`Error getting Products Info: ${error.message}`);
+        throw new Error({ title: error?.props?.title || 'default_error', type: error?.props?.type || 'error' })
     }
 }
 

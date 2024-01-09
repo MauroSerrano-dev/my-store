@@ -13,6 +13,9 @@ import Image from 'next/image'
 import ProductStepper from '@/components/products/ProductStepper'
 import ProductTag from '@/components/products/ProductTag'
 import MyButton from '@/components/material-ui/MyButton'
+import { getOrderById } from '../../../frontend/orders'
+import { showToast } from '@/utils/toasts'
+import { getProductsInfo } from '../../../frontend/product'
 
 export default function Orders() {
     const {
@@ -27,29 +30,24 @@ export default function Orders() {
     const tCountries = useTranslation('countries').t
     const tColors = useTranslation('colors').t
     const tCommon = useTranslation('common').t
+    const tToasts = useTranslation('toasts').t
 
     const [order, setOrder] = useState()
 
     const animationContainer = useRef(null)
 
-    function getOrder() {
-        const options = {
-            method: 'GET',
-            headers: {
-                authorization: process.env.NEXT_PUBLIC_APP_TOKEN,
-                order_id: router.query.order_id,
-            }
+    async function getOrder() {
+        try {
+            const order = await getOrderById(router.query.order_id)
+            const productsFullInfo = await getProductsInfo(order.products)
+            setOrder({ ...order, products: productsFullInfo })
         }
-
-        fetch("/api/order", options)
-            .then(response => response.json())
-            .then(response => {
-                setOrder(response.data)
-            })
-            .catch(err => {
-                console.error(err)
-                setOrder(null)
-            })
+        catch (error) {
+            if (!error?.props)
+                console.error(error)
+            setOrder(null)
+            showToast({ type: error?.props?.type || 'error', msg: tToasts(error?.props?.title || 'default_error') })
+        }
     }
 
     useEffect(() => {

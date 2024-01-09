@@ -169,7 +169,7 @@ export default function Cart() {
     async function getProducts() {
         try {
             const response = await getAllProducts({
-                prods_limit: 16,
+                prods_limit: LIMITS.max_products_in_carousel,
             })
 
             if (response.products.length > 8) {

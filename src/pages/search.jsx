@@ -132,7 +132,7 @@ export default withRouter(() => {
                 min: min,
                 max: min,
                 order: order,
-                prods_limit: 15,
+                prods_limit: LIMITS.max_products_in_search_page,
                 user_language: i18n.language,
             })
 

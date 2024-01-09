@@ -69,5 +69,6 @@
     "error_getting_session": "Error getting session",
     "product_already_in_wishlist": "Product is already in Wishlist",
     "user_updated": "Profile updated successfully!",
-    "invalid_profile_attribute": "Invalid profile attribute"
+    "invalid_profile_attribute": "Invalid profile attribute",
+    "order_not_found": "No order with this ID"
 }

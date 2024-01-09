@@ -11,7 +11,10 @@ import CarouselProducts from '@/components/carousels/CarouselProducts'
 import Footer from '@/components/Footer'
 import lottie from 'lottie-web';
 import { useAppContext } from '@/components/contexts/AppContext';
-import { COMMON_TRANSLATES } from '@/consts';
+import { COMMON_TRANSLATES, LIMITS } from '@/consts';
+import { getOrdersByUserId } from '../../../frontend/orders';
+import { getAllProducts, getProductsInfo } from '../../../frontend/product';
+import { showToast } from '@/utils/toasts';
 
 export default function Orders() {
     const {
@@ -19,6 +22,7 @@ export default function Orders() {
     } = useAppContext()
 
     const tOrders = useTranslation('orders').t
+    const tToasts = useTranslation('toasts').t
 
     const animationContainer = useRef(null)
 
@@ -40,58 +44,48 @@ export default function Orders() {
     }, [session])
 
     useEffect(() => {
+        getAllProductsCall()
+    }, [])
+
+    useEffect(() => {
         if (session)
             getUserOrders()
     }, [dateSelected])
 
-    function getUserOrders() {
-        const options = {
-            method: 'GET',
-            headers: {
-                authorization: process.env.NEXT_PUBLIC_APP_TOKEN,
-                user_id: session.id,
-                start_date: new Date(dateSelected, 0).getTime(),
-                end_date: new Date(dateSelected + 1, 0).getTime(),
-            }
+    async function getUserOrders() {
+        try {
+            const inicialOrders = await getOrdersByUserId(session.id, new Date(dateSelected, 0).getTime(), new Date(dateSelected + 1, 0).getTime())
+            const productsInfoRes = await getProductsInfo(inicialOrders.reduce((acc, order) => [...acc, ...order.products], []))
+            const ordersRes = inicialOrders.map(order => ({ ...order, products: order.products.map(() => productsInfoRes.products?.shift()) }))
+            setOrders(ordersRes)
         }
-
-        fetch("/api/user-orders", options)
-            .then(response => response.json())
-            .then(response => {
-                if (response.status < 300)
-                    setOrders(response.orders)
-                else
-                    setOrders([])
-            })
-            .catch(err => {
-                console.error(err)
-                setOrders([])
-            })
+        catch (error) {
+            if (!error?.props)
+                console.error(error)
+            setOrders(null)
+            showToast({ type: error?.props?.type || 'error', msg: tToasts(error?.props?.title || 'default_error') })
+        }
     }
 
     function handleSelectYear(event) {
         setDateSelected(event.target.value)
     }
 
-    async function getAllProducts() {
-        const options = {
-            method: 'GET',
-            headers: {
-                authorization: process.env.NEXT_PUBLIC_APP_TOKEN
-            },
+    async function getAllProductsCall() {
+        try {
+            const response = await getAllProducts({
+                prods_limit: LIMITS.max_products_in_carousel,
+            })
+            setAllProducts(response.products)
         }
-
-        const products = await fetch("/api/products/all-products", options)
-            .then(response => response.json())
-            .then(response => response.products)
-            .catch(err => console.error(err))
-
-        setAllProducts(products)
+        catch (error) {
+            if (!error?.props)
+                console.error(error)
+            setAllProducts(null)
+            showToast({ type: error?.props?.type || 'error', msg: tToasts(error?.props?.title || 'default_error') })
+        }
     }
 
-    useEffect(() => {
-        getAllProducts()
-    }, [])
 
     useEffect(() => {
         const animation = lottie.loadAnimation({
