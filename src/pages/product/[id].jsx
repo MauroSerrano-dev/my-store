@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react'
 import ImagesSlider from '@/components/ImagesSlider'
 import ShoppingCartOutlinedIcon from '@mui/icons-material/ShoppingCartOutlined'
 import CreditCardOutlinedIcon from '@mui/icons-material/CreditCardOutlined'
-import { CART_COOKIE, COLORS_POOL, SIZES_POOL, LIMITS, getShippingOptions, DEFAULT_LANGUAGE, COMMON_TRANSLATES, PRODUCTS_TYPES, CART_LOCAL_STORAGE, INICIAL_VISITANT_CART } from '@/consts'
+import { CART_COOKIE, COLORS_POOL, SIZES_POOL, getShippingOptions, DEFAULT_LANGUAGE, COMMON_TRANSLATES, PRODUCTS_TYPES, CART_LOCAL_STORAGE, INICIAL_VISITANT_CART } from '@/consts'
 import Head from 'next/head'
 import ColorSelector from '@/components/ColorSelector'
 import SizesSelector from '@/components/SizesSelector'
@@ -35,6 +35,7 @@ import KeyFeatures from '@/components/products/KeyFeatures'
 import { ButtonGroup } from '@mui/material'
 import { addProductsToCart } from '../../../frontend/cart'
 import { addProductsToVisitantCart } from '../../../frontend/visitant-cart'
+import CarouselSimilarProducts from '@/components/carousels/CarouselSimilarProducts'
 
 export default withRouter(props => {
     const {
@@ -547,9 +548,9 @@ export default withRouter(props => {
                     }
                     <div className={styles.carousel}>
                         <h2 className={styles.similarTitle}>{tProduct('similar-products-title')}</h2>
-                        <CarouselProducts
-                            key={product.id}
-                            similar={product.id}
+                        <CarouselSimilarProducts
+                            key={product.id} // importante para dar refresh a posição do componente
+                            product_id={product.id}
                         />
                     </div>
                 </main>
