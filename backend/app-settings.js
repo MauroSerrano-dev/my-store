@@ -14,7 +14,7 @@ async function updateAllCurrencies(updatedCurrencies) {
         return
     } catch (error) {
         console.error('Error updating currencies:', error)
-        throw new Error({ title: error?.props?.title || 'default_error', type: error?.props?.type || 'error' })
+        throw error
     }
 }
 
@@ -35,7 +35,7 @@ async function addUserDeleted(email) {
         console.log('Deleted users updated successfully!');
     } catch (error) {
         console.error('Error adding user to deleted_users:', error)
-        throw new Error({ title: error?.props?.title || 'default_error', type: error?.props?.type || 'error' })
+        throw error
     }
 }
 
@@ -58,7 +58,7 @@ async function clearDeletedUsers() {
         }
     } catch (error) {
         console.error("Error clearing old deleted users:", error);
-        throw new Error({ title: error?.props?.title || 'default_error', type: error?.props?.type || 'error' })
+        throw error
     }
 }
 
@@ -86,7 +86,7 @@ async function handleStripeWebhookFail(callId) {
         console.log('Order failure recorded successfully!')
     } catch (error) {
         console.error('Error recording order failure:', error);
-        throw new Error({ title: error?.props?.title || 'default_error', type: error?.props?.type || 'error' })
+        throw error
     }
 }
 

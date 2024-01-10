@@ -189,9 +189,8 @@ export function AppProvider({ children }) {
             setIsAdmin(response.status === 200)
         }
         catch (error) {
-            if (!error?.props)
-                console.error(error)
-            showToast({ type: error?.props?.type || 'error', msg: tToasts(error?.props?.title || 'default_error') })
+            console.error(error)
+            showToast({ type: error?.type || 'error', msg: tToasts(error.message) })
         }
     }
 
@@ -239,9 +238,8 @@ export function AppProvider({ children }) {
             setCurrencies(currencies.data)
         }
         catch (error) {
-            if (!error?.props)
-                console.error(error)
-            showToast({ type: error?.props?.type || 'error', msg: tToasts(error?.props?.title || 'default_error') })
+            console.error(error)
+            showToast({ type: error?.type || 'error', msg: tToasts(error.message) })
         }
     }
 
@@ -277,7 +275,8 @@ export function AppProvider({ children }) {
             }
         }
         catch (error) {
-            showToast({ type: error?.props?.type || 'error', msg: tToasts(error?.props?.title || 'default_error') })
+            console.error(error)
+            showToast({ type: error?.type || 'error', msg: tToasts(error.message) })
         }
     }
 
@@ -420,7 +419,8 @@ export function AppProvider({ children }) {
 
         }
         catch (error) {
-            showToast({ type: error?.props?.type || 'error', msg: tToasts(error?.props?.title || 'default_error') })
+            console.error(error)
+            showToast({ type: error?.type || 'error', msg: tToasts(error.message) })
         }
     }
 
@@ -449,8 +449,9 @@ export function AppProvider({ children }) {
 
         }
         catch (error) {
+            console.error(error)
             setWishlist(prevWishlist)
-            showToast({ type: error?.props?.type || 'error', msg: tToasts(error?.props?.title || 'default_error') })
+            showToast({ type: error?.type || 'error', msg: tToasts(error.message) })
         }
     }
 
@@ -664,7 +665,7 @@ export function AppProvider({ children }) {
 export const useAppContext = () => {
     const context = useContext(AppContext)
     if (!context) {
-        throw new Error('useAppContext must be used within a AppProvider');
+        throw new MyError('useAppContext must be used within a AppProvider');
     }
     return context
 }

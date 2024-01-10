@@ -70,5 +70,10 @@
     "product_already_in_wishlist": "Product is already in Wishlist",
     "user_updated": "Profile updated successfully!",
     "invalid_profile_attribute": "Invalid profile attribute",
-    "order_not_found": "No order with this ID"
+    "order_not_found": "No order with this ID",
+    "promotion_created_successfully": "Promotion created successfully",
+    "promotion_deleted_successfully": "Promotion deleted successfully",
+    "invalid_expire_date": "Invalid expire date",
+    "invalid_promotion_percentage": "Invalid promotion percentage",
+    "invalid_product_ids_parameters": "Invalid product IDs parameters"
 }

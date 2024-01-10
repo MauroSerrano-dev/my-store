@@ -189,14 +189,14 @@ async function getProductById(id) {
 
 async function updateProduct(product_id, product_new_fields) {
     if (!product_id || !product_new_fields)
-        throw new Error({ title: 'Invalid update data', statusCode: 400 })
+        throw new MyError({ title: 'Invalid update data', statusCode: 400 })
 
     const productRes = await getProductById(product_id)
     if (!productRes.product)
-        throw new Error({ title: 'Product not found to update', statusCode: 404 })
+        throw new MyError({ title: 'Product not found to update', statusCode: 404 })
     const existInPrintify = await isProductInPrintify({ ...productRes.product, ...product_new_fields })
     if (!existInPrintify)
-        throw new Error({ title: 'Invalid printify id', statusCode: 400 })
+        throw new MyError({ title: 'Invalid printify id', statusCode: 400 })
 
     if (product_new_fields.variants) {
         const type = PRODUCTS_TYPES.find(type => type.id === productRes.product.type_id)
@@ -206,7 +206,7 @@ async function updateProduct(product_id, product_new_fields) {
             cost: type.variants.find(vari => vari.id === variant.id).cost
         }))
         if (variants.some(vari => vari.cost + LIMITS.min_profit >= vari.price * (productRes.product.promotion ? (1 - productRes.product.promotion.percentage) : 1)))
-            throw new Error({ title: 'Invalid product price', statusCode: 400 })
+            throw new MyError({ title: 'Invalid product price', statusCode: 400 })
     }
 
     const productRef = doc(db, process.env.NEXT_PUBLIC_COLL_PRODUCTS, product_id)
@@ -218,7 +218,7 @@ async function updateProduct(product_id, product_new_fields) {
         return { message: `Product ${product_id} updated successfully!` }
     } catch (error) {
         console.log("Error updating product:", error)
-        throw new Error({ title: 'An error occurred while updating the product.', statusCode: 500 })
+        throw new MyError({ title: 'An error occurred while updating the product.', statusCode: 500 })
     }
 }
 
@@ -303,7 +303,7 @@ async function getDisabledProducts(products) {
 
     try {
         if (!products || products.length === 0) {
-            throw new Error('No product IDs provided.')
+            throw new MyError('No product IDs provided.')
         }
 
         for (const product of products) {
@@ -317,81 +317,7 @@ async function getDisabledProducts(products) {
 
         return disabledProducts
     } catch (error) {
-        throw new Error(`Error retrieving disabled products: ${error.message}`)
-    }
-}
-
-/**
- * Updates the promotion for a list of products in Firestore.
- * 
- * This function receives an array of product IDs and a promotion object. It validates the promotion
- * details, such as the promotion percentage and expiration date, and then updates the promotion
- * field for each product in Firestore based on the provided product objects.
- * 
- * @param {string[]} products_ids - Array of product IDs to have the promotion applied.
- * @param {Object} promotion - Promotion object with details such as percentage and expiration date.
- * @returns {Promise<object>} An object containing a success or error message.
- * @throws {Error} Throws an error if input parameters are invalid or if there is an error during the update.
- */
-async function createPromotionForProducts(products_ids, promotion) {
-    try {
-        if (!products_ids || products_ids.length === 0)
-            throw new Error({ title: 'Invalid product IDs parameters.', statusCode: 400 })
-
-        // Retrieve full product objects by their IDs
-        const products = await getProductsByIds(products_ids)
-
-        // Perform necessary validations
-        products.forEach(product => {
-            const type = PRODUCTS_TYPES.find(type => type.id === product.type_id)
-            const variants = product.variants.map(variant => ({
-                ...variant,
-                cost: type.variants.find(vari => vari.id === variant.id).cost
-            }))
-            if (variants.some(vari => vari.cost + LIMITS.min_profit >= vari.price * (1 - promotion.percentage)))
-                throw new Error({ title: 'Invalid Promotion Percentage', statusCode: 400 })
-        })
-
-        if (new Date(promotion.expire_at).getTime() - new Date().getTime() <= 18 * 60 * 60 * 1000)
-            throw new Error({ title: 'Invalid Promotion Expire Date', statusCode: 400 })
-
-        // Reference to the products collection in Firestore
-        const productsCollection = collection(db, process.env.NEXT_PUBLIC_COLL_PRODUCTS)
-
-        promotion.expire_at = new Timestamp(promotion.expire_at.seconds, promotion.expire_at.nanoseconds)
-
-        // Maps each product object to an update promise
-        const updatePromises = products.map(async (product) => {
-            const productRef = doc(productsCollection, product.id)
-            const min_price_original = product.promotion?.min_price_original ? product.promotion.min_price_original : product.min_price
-            if (promotion.percentage === 0)
-                await updateDoc(
-                    productRef,
-                    {
-                        min_price: min_price_original,
-                        promotion: null,
-                        tags: product.tags.filter(tag => tag !== 'promotion')
-                    }
-                )
-            else
-                await updateDoc(
-                    productRef,
-                    {
-                        min_price: min_price_original * (1 - promotion.percentage),
-                        promotion: { ...promotion, min_price_original: min_price_original },
-                        tags: product.tags.concat('promotion')
-                    }
-                )
-        })
-
-        // Waits for all the update promises to complete
-        await Promise.all(updatePromises)
-
-        console.log('Promotion updated successfully for all specified products.')
-        return { message: 'Promotion updated successfully for all specified products.' }
-    } catch (error) {
-        console.error('Error creating promotion for products:', error)
-        throw new Error({ title: error?.props?.title || 'Error creating promotion for products', statusCode: error?.props?.statusCode || 500 })
+        throw new MyError(`Error retrieving disabled products: ${error.message}`)
     }
 }
 
@@ -427,7 +353,7 @@ async function removeExpiredPromotions() {
         return { message: 'Expired promotions removed successfully.' }
     } catch (error) {
         console.error('Error removing expired promotions:', error)
-        throw new Error('Error removing expired promotions.')
+        throw new MyError('Error removing expired promotions.')
     }
 }
 
@@ -440,6 +366,5 @@ export {
     cleanPopularityMonth,
     cleanPopularityYear,
     getDisabledProducts,
-    createPromotionForProducts,
     removeExpiredPromotions,
 }

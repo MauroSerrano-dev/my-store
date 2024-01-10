@@ -62,7 +62,7 @@ export default function ProductCart(props) {
         catch (error) {
             console.error(error)
             setDeleting(false)
-            showToast({ type: error?.props?.type || 'error', msg: tToasts(error?.props?.title || 'default_error') })
+            showToast({ type: error?.type || 'error', msg: tToasts(error.message) })
         }
     }
 

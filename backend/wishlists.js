@@ -47,7 +47,7 @@ async function deleteProductsFromWishlist(user_id, productsIdsToDelete) {
 
         if (querySnapshot.empty) {
             console.error(`Wishlist for user ID ${user_id} not found`)
-            throw new Error({ title: 'wishlist_not_found', type: 'error' })
+            throw new MyError({ title: 'wishlist_not_found', type: 'error' })
         }
 
         const wishlistDoc = querySnapshot.docs[0];
@@ -62,7 +62,7 @@ async function deleteProductsFromWishlist(user_id, productsIdsToDelete) {
         return { id: wishlistDoc.id, ...wishlistData }
     } catch (error) {
         console.error('Error deleting products from the wishlist:', error);
-        throw new Error({ title: error?.props?.title || 'error_deleting_products_from_wishlist', type: error?.props?.type || 'error' })
+        throw new MyError({ title: error?.props?.title || 'error_deleting_products_from_wishlist', type: error?.props?.type || 'error' })
     }
 }
 

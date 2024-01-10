@@ -43,10 +43,9 @@ export default function Orders() {
             setOrder({ ...order, products: productsFullInfo })
         }
         catch (error) {
-            if (!error?.props)
-                console.error(error)
+            console.error(error)
             setOrder(null)
-            showToast({ type: error?.props?.type || 'error', msg: tToasts(error?.props?.title || 'default_error') })
+            showToast({ type: error?.type || 'error', msg: tToasts(error.message) })
         }
     }
 

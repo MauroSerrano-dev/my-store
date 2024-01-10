@@ -19,11 +19,11 @@ async function getWishlistById(id) {
             return { id: wishlistDoc.id, ...wishlistDoc.data() };
         } else {
             console.error('Wishlist not found')
-            throw new Error('Wishlist not found')
+            throw new MyError('Wishlist not found')
         }
     } catch (error) {
         console.error('Error getting wishlist by ID:', error)
-        throw new Error('Error getting wishlist by ID')
+        throw new MyError('Error getting wishlist by ID')
     }
 }
 
@@ -46,7 +46,7 @@ async function createWishlist(userId) {
         return docRef.id
     } catch (error) {
         console.error('Error creating wishlist:', error)
-        throw new Error('Error creating wishlist')
+        throw new MyError('Error creating wishlist')
     }
 }
 
@@ -76,7 +76,7 @@ async function addProductToWishlist(wishlistId, product) {
         return { id: wishlistDoc.id, ...wishlistData }
     } catch (error) {
         console.error('Error updating wishlist:', error)
-        throw new Error({ title: error?.props?.title || 'default_error', type: error?.props?.type || 'error' })
+        throw error
     }
 }
 
@@ -98,7 +98,7 @@ async function deleteProductFromWishlist(wishlistId, product) {
         return { id: wishlistDoc.id, ...wishlistData }
     } catch (error) {
         console.error('Error Deleting Product from wishlist:', error)
-        throw new Error({ title: error?.props?.title || 'default_error', type: error?.props?.type || 'error' })
+        throw error
     }
 }
 

@@ -30,7 +30,7 @@ async function getCartById(id) {
         }
     } catch (error) {
         console.error('Error getting cart by ID:', error)
-        throw new Error({ title: error?.props?.title || 'default_error', type: error?.props?.type || 'error' })
+        throw error
     }
 }
 
@@ -56,7 +56,7 @@ async function createCart(userId, products = []) {
         return docRef.id
     } catch (error) {
         console.error('Error creating cart:', error)
-        throw new Error({ title: error?.props?.title || 'default_error', type: error?.props?.type || 'error' })
+        throw error
     }
 }
 
@@ -74,7 +74,7 @@ async function addProductsToCart(cartId, cartNewProducts) {
         const cartData = cartDoc.data()
 
         if (cartData.products.reduce((acc, prod) => acc + prod.quantity, 0) + cartNewProducts.reduce((acc, prod) => acc + prod.quantity, 0) > LIMITS.cart_items)
-            throw new Error({ title: 'max_products', type: 'warning' })
+            throw new MyError({ title: 'max_products', type: 'warning' })
 
         cartData.products = mergeProducts(cartData.products, cartNewProducts)
 
@@ -83,7 +83,7 @@ async function addProductsToCart(cartId, cartNewProducts) {
         return { id: cartDoc.id, ...cartData }
     } catch (error) {
         console.error('Error Adding Product to Cart:', error)
-        throw new Error({ title: error?.props?.title || 'default_error', type: error?.props?.type || 'error' })
+        throw error
     }
 }
 
@@ -108,7 +108,7 @@ async function deleteProductFromCart(cartId, product) {
         return { id: cartDoc.id, ...cartData }
     } catch (error) {
         console.error('Error Deleting Product from Cart:', error)
-        throw new Error({ title: error?.props?.title || 'error_deleting_product_from_cart', type: error?.props?.type || 'error' })
+        throw new MyError({ title: error?.props?.title || 'error_deleting_product_from_cart', type: error?.props?.type || 'error' })
     }
 }
 
@@ -121,7 +121,7 @@ async function mergeCarts(cartId, products) {
         return newCart
     } catch (error) {
         console.error('Error merging Carts', error)
-        throw new Error({ title: error?.props?.title || 'error_deleting_product_from_cart', type: error?.props?.type || 'error' })
+        throw new MyError({ title: error?.props?.title || 'error_deleting_product_from_cart', type: error?.props?.type || 'error' })
     }
 }
 

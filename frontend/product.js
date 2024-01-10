@@ -1,17 +1,19 @@
 import {
+    Timestamp,
     collection,
     doc,
     getDoc,
     getDocs,
     orderBy,
     query,
+    updateDoc,
     where,
 } from "firebase/firestore"
 import { getProductVariantsInfos } from "@/utils"
 import { db } from "../firebaseInit"
-import Error from "next/error";
 import { productInfoModel } from "@/utils/models";
-import { DEFAULT_LANGUAGE } from "@/consts";
+import { DEFAULT_LANGUAGE, LIMITS, PRODUCTS_TYPES } from "@/consts";
+import { MyError } from "@/classes/MyError";
 
 async function getProductsInfo(products) {
     try {
@@ -96,7 +98,7 @@ async function getProductsInfo(products) {
         return productsOneVariant
     } catch (error) {
         console.error('Error getting Products Info:', error);
-        throw new Error({ title: error?.props?.title || 'default_error', type: error?.props?.type || 'error' })
+        throw error
     }
 }
 
@@ -247,7 +249,7 @@ async function getProductsByQueries(props) {
         }
     } catch (error) {
         console.error('Error getting products:', error)
-        throw new Error({ title: error?.props?.title || 'default_error', type: error?.props?.type || 'error' })
+        throw error
     }
 }
 
@@ -298,7 +300,7 @@ async function getAllProducts(props) {
         }
     } catch (error) {
         console.error('Error all getting products:', error)
-        throw new Error({ title: error?.props?.title || 'default_error', type: error?.props?.type || 'error' })
+        throw error
     }
 }
 
@@ -317,7 +319,7 @@ async function getAllActivesProducts() {
         return activeProducts.length > 0 ? activeProducts : [];
     } catch (error) {
         console.error('Error getting active products:', error);
-        throw new Error('Error retrieving active products');
+        throw new MyError('Error retrieving active products');
     }
 }
 
@@ -363,7 +365,7 @@ async function getSimilarProducts(product_id, limit = 16) {
     }
     catch (error) {
         console.error('Error getting similar products:', error)
-        throw new Error({ title: error?.props?.title || 'default_error', type: error?.props?.type || 'error' })
+        throw error
     }
 }
 
@@ -396,7 +398,7 @@ async function getProductsAnalytics() {
         };
     } catch (error) {
         console.error('Error getting products analytics:', error);
-        throw new Error({ title: error?.props?.title || 'default_error', type: error?.props?.type || 'error' })
+        throw error
     }
 }
 
@@ -437,8 +439,80 @@ async function getProductsByIds(ids) {
         console.log('Products retrieved successfully by IDs!')
         return orderedProducts
     } catch (error) {
-        console.error('Error getting products by IDs:', error);
-        throw new Error({ title: 'Error getting products by IDs.', statusCode: 500 })
+        console.error('Error getting products by IDs:', error)
+        throw error
+    }
+}
+
+/**
+ * Updates the promotion for a list of products in Firestore.
+ * 
+ * This function receives an array of product IDs and a promotion object. It validates the promotion
+ * details, such as the promotion percentage and expiration date, and then updates the promotion
+ * field for each product in Firestore based on the provided product objects.
+ * 
+ * @param {string[]} products_ids - Array of product IDs to have the promotion applied.
+ * @param {Object} promotion - Promotion object with details such as percentage and expiration date.
+ * @returns {Promise<object>} An object containing a success or error message.
+ */
+async function createPromotionForProducts(products_ids, promotion) {
+    try {
+        if (!products_ids || products_ids.length === 0)
+            throw new MyError('invalid_product_ids_parameters', 'warning')
+
+        // Retrieve full product objects by their IDs
+        const products = await getProductsByIds(products_ids)
+
+        // Perform necessary validations
+        products.forEach(product => {
+            const type = PRODUCTS_TYPES.find(type => type.id === product.type_id)
+            const variants = product.variants.map(variant => ({
+                ...variant,
+                cost: type.variants.find(vari => vari.id === variant.id).cost
+            }))
+            if (variants.some(vari => vari.cost + LIMITS.min_profit >= vari.price * (1 - promotion.percentage)))
+                throw new MyError('invalid_promotion_percentage', 'warning')
+        })
+
+        if (new Date(promotion.expire_at).getTime() - new Date().getTime() <= 18 * 60 * 60 * 1000)
+            throw new MyError('invalid_expire_date', 'warning')
+
+        // Reference to the products collection in Firestore
+        const productsCollection = collection(db, process.env.NEXT_PUBLIC_COLL_PRODUCTS)
+
+        promotion.expire_at = new Timestamp(promotion.expire_at.seconds, promotion.expire_at.nanoseconds)
+
+        // Maps each product object to an update promise
+        const updatePromises = products.map(async (product) => {
+            const productRef = doc(productsCollection, product.id)
+            const min_price_original = product.promotion?.min_price_original ? product.promotion.min_price_original : product.min_price
+            if (promotion.percentage === 0)
+                await updateDoc(
+                    productRef,
+                    {
+                        min_price: min_price_original,
+                        promotion: null,
+                        tags: product.tags.filter(tag => tag !== 'promotion')
+                    }
+                )
+            else
+                await updateDoc(
+                    productRef,
+                    {
+                        min_price: min_price_original * (1 - promotion.percentage),
+                        promotion: { ...promotion, min_price_original: min_price_original },
+                        tags: product.tags.concat('promotion')
+                    }
+                )
+        })
+
+        // Waits for all the update promises to complete
+        await Promise.all(updatePromises)
+
+        console.log('Promotion updated successfully for specified products.')
+    } catch (error) {
+        console.error('Error creating promotion for products:', error)
+        throw error
     }
 }
 
@@ -450,4 +524,5 @@ export {
     getAllActivesProducts,
     getProductsAnalytics,
     getProductsByIds,
+    createPromotionForProducts,
 }

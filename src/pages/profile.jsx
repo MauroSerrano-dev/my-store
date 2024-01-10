@@ -120,12 +120,11 @@ export default function Profile() {
             showToast({ type: 'success', msg: tToasts('user_updated') })
         }
         catch (error) {
-            if (!error?.props)
-                console.error(error)
+            console.error(error)
             if (error?.code === 'auth/invalid-profile-attribute')
                 showToast({ type: 'error', msg: tToasts('invalid_profile_attribute') })
             else
-                showToast({ type: error?.props?.type || 'error', msg: tToasts(error?.props?.title || 'default_error') })
+                showToast({ type: error?.type || 'error', msg: tToasts(error.message) })
             setDisableSaveButton(false)
         }
     }
@@ -172,9 +171,8 @@ export default function Profile() {
                 window.location.href = `${window.location.origin}${i18n.language === DEFAULT_LANGUAGE ? '' : `/${i18n.language}`}`
             }
             catch (error) {
-                if (!error?.props)
-                    console.error(error)
-                showToast({ type: error?.props?.type || 'error', msg: tToasts(error?.props?.title || 'default_error') })
+                console.error(error)
+                showToast({ type: error?.type || 'error', msg: tToasts(error.message) })
                 setDeleteAccButtonLoading(false)
             }
         } */

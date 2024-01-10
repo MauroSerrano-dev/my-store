@@ -287,11 +287,10 @@ export default function ProductAdmin(props) {
                             </p>
                         </div>
                         <div
-                            className={styles.statusIndicator}
                             style={{
                                 backgroundColor: product.disabled ? 'var(--color-error)' : 'var(--color-success)',
-                                width: width * 0.08,
-                                height: width * 0.08,
+                                width: width * 0.06,
+                                height: width * 0.06,
                                 borderRadius: '100%',
                             }}
                         >

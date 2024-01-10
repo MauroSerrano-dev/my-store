@@ -23,7 +23,7 @@ async function getUserById(id) {
             return null
     } catch (error) {
         console.error('Erro ao obter usuário pelo ID:', error)
-        throw new Error(`Erro ao obter usuário pelo ID: ${error.message}`);
+        throw new MyError(`Erro ao obter usuário pelo ID: ${error.message}`);
     }
 }
 
@@ -58,7 +58,7 @@ async function createNewUserWithGoogle(authUser, cartProducts = []) {
         return { id: authUser.uid, ...newUser }
     } catch (error) {
         console.error('Error creating a new user and session:', error);
-        throw new Error(`Error creating a new user and session: ${error.message}`);
+        throw new MyError(`Error creating a new user and session: ${error.message}`);
     }
 }
 
@@ -75,11 +75,11 @@ async function updateUser(userId, changes) {
 
             return { id: userDoc.id, ...userData, ...changes }
         } else {
-            throw new Error({ title: 'user_not_found', type: 'error' })
+            throw new MyError({ title: 'user_not_found', type: 'error' })
         }
     } catch (error) {
         console.error('Error updating profile:', error)
-        throw new Error({ title: error?.props?.title || 'default_error', type: error?.props?.type || 'error' })
+        throw error
     }
 }
 
@@ -90,7 +90,7 @@ async function getUserProvidersByEmail(email) {
         return providers
     } catch (error) {
         console.error('Error fetching sign-in methods for email:', error)
-        throw new Error({ title: error?.props?.title || 'default_error', type: error?.props?.type || 'error' })
+        throw error
     }
 }
 

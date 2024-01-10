@@ -216,11 +216,11 @@ async function completeQuest(user_id, quest_id) {
             return updatedQuests
         } else {
             console.error(`User ${user_id} not found.`)
-            throw new Error(`User ${user_id} not found.`)
+            throw new MyError(`User ${user_id} not found.`)
         }
     } catch (error) {
         console.error(`Error completing quest for user ${user_id}: ${error}`)
-        throw new Error(`Error completing quest for user ${user_id}: ${error}`)
+        throw new MyError(`Error completing quest for user ${user_id}: ${error}`)
     }
 }
 
@@ -231,7 +231,7 @@ async function deleteUser(user_id) {
         const userDoc = await userRef.get()
 
         if (!userDoc.exists)
-            throw new Error({ title: 'user_not_found', type: 'error' })
+            throw new MyError({ title: 'user_not_found', type: 'error' })
 
         const user = userDoc.data()
 
@@ -240,13 +240,13 @@ async function deleteUser(user_id) {
         const cartDoc = await cartRef.get()
 
         if (!cartDoc.exists)
-            throw new Error({ title: 'cart_not_found', type: 'error' })
+            throw new MyError({ title: 'cart_not_found', type: 'error' })
 
         const wishlistRef = admin.firestore().doc(`${process.env.NEXT_PUBLIC_COLL_WISHLISTS}/${user.wishlist_id}`)
 
         const wishlistDoc = await wishlistRef.get()
         if (!wishlistDoc.exists)
-            throw new Error({ title: 'wishlist_not_found', type: 'error' })
+            throw new MyError({ title: 'wishlist_not_found', type: 'error' })
 
         await admin.auth().deleteUser(user_id)
         await userRef.delete()
@@ -258,7 +258,7 @@ async function deleteUser(user_id) {
         console.log(`User with ID ${user_id} has been deleted successfully.`)
     } catch (error) {
         console.error(`Error deleting user with ID ${user_id}:`, error)
-        throw new Error({ title: error?.props?.title || 'default_error', type: error?.props?.type || 'error' })
+        throw error
     }
 }
 

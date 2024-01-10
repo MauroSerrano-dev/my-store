@@ -40,7 +40,7 @@ async function createOrder(orderId, order) {
         return orderId
     } catch (error) {
         console.error('Error creating order:', error)
-        throw new Error({ title: error?.props?.title || 'error_creating_order', type: error?.props?.type || 'error' })
+        throw new MyError({ title: error?.props?.title || 'error_creating_order', type: error?.props?.type || 'error' })
     }
 }
 
@@ -84,7 +84,7 @@ async function handlePostOrderCreation(line_items) {
         }
     } catch (error) {
         console.error('Error handling purchased products:', error);
-        throw new Error({ title: error?.props?.title || 'error_handling_purchased_products', type: error?.props?.type || 'error' })
+        throw new MyError({ title: error?.props?.title || 'error_handling_purchased_products', type: error?.props?.type || 'error' })
     }
 }
 
@@ -226,7 +226,7 @@ async function getOrderById(orderId) {
         }
     } catch (error) {
         console.error(`Error getting order by id: ${error}`)
-        throw new Error(`Error getting order by id: ${error}`)
+        throw new MyError(`Error getting order by id: ${error}`)
     }
 }
 
@@ -252,7 +252,7 @@ async function getOrderLimitInfoById(orderId) {
         }
     } catch (error) {
         console.error('Error getting order info by id:', error)
-        throw new Error({ title: error?.props?.title || 'default_error', type: error?.props?.type || 'error' })
+        throw error
     }
 }
 
@@ -284,11 +284,11 @@ async function refundOrderByStripeId(payment_intent, amount_refunded) {
             });
         } else {
             console.error(`Refund fail. Order with Stripe ID ${payment_intent} not found.`);
-            throw new Error({ title: 'refund_fail_order_not_found', type: 'error' })
+            throw new MyError({ title: 'refund_fail_order_not_found', type: 'error' })
         }
     } catch (error) {
         console.error('Error refunding order by Stripe ID:', error);
-        throw new Error({ title: error?.props?.title || 'error_refunding_order', type: error?.props?.type || 'error' })
+        throw new MyError({ title: error?.props?.title || 'error_refunding_order', type: error?.props?.type || 'error' })
     }
 }
 

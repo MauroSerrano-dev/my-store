@@ -41,9 +41,8 @@ export default function Admins() {
 
             setAdminsList(adminUsers)
         } catch (error) {
-            if (!error?.props)
-                console.error(error)
-            showToast({ type: error?.props?.type || 'error', msg: tToasts(error?.props?.title || 'default_error') });
+            console.error(error)
+            showToast({ type: error?.type || 'error', msg: tToasts(error.message) });
         }
     }
 

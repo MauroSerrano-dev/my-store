@@ -70,5 +70,10 @@
     "product_already_in_wishlist": "O produto já está na Lista de Desejos",
     "user_updated": "Perfil atualizado com sucesso!",
     "invalid_profile_attribute": "Atributo de perfil inválido",
-    "order_not_found": "Nenhum pedido encontrado com este ID"
+    "order_not_found": "Nenhum pedido encontrado com este ID",
+    "promotion_created_successfully": "Promoção criada com sucesso",
+    "promotion_deleted_successfully": "Promoção excluída com sucesso",
+    "invalid_expire_date": "Data de validade inválida",
+    "invalid_promotion_percentage": "Porcentagem de promoção inválida",
+    "invalid_product_ids_parameters": "Parâmetros de IDs de produtos inválidos"
 }

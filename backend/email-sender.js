@@ -148,7 +148,7 @@ async function sendPurchaseConfirmationEmail(customer_email, orderId, user_langu
     console.log('Order Email Sent:', info.response)
     return { status: 'success', message: `Purchase confirmation email sent to ${customer_email} successfully!` }
   } catch (error) {
-    throw new Error(`Error sending purchase confirmation email: ${error}`);
+    throw new MyError(`Error sending purchase confirmation email: ${error}`);
   }
 }
 
@@ -337,7 +337,7 @@ async function sendSupportEmail(props) {
     console.log('Support Email Sent:', info.response);
     return { status: 'success', message: `Support email sent to ${customer_email} successfully!` };
   } catch (error) {
-    throw new Error(`Error sending support email: ${error} `);
+    throw new MyError(`Error sending support email: ${error} `);
   }
 }
 

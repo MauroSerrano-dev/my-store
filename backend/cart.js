@@ -1,6 +1,6 @@
 import { doc, getDoc, updateDoc, Timestamp, setDoc } from "firebase/firestore";
-import Error from "next/error";
 import { db } from "../firebaseInit";
+import MyError from "@/classes/MyError";
 const admin = require('../firebaseAdminInit');
 
 /**
@@ -54,7 +54,7 @@ async function setCartProducts(cartId, cartProducts) {
         console.log(`Cart ${cartId} setted successfully!`)
     } catch (error) {
         console.error(`Error setting cart ${cartId}:`, error)
-        throw new Error({ title: error?.props?.title || 'error_setting_cart', type: error?.props?.type || 'error' })
+        throw new MyError({ title: error?.props?.title || 'error_setting_cart', type: error?.props?.type || 'error' })
     }
 }
 

@@ -39,9 +39,8 @@ export default function Admin() {
             setData({ prods_data: prods_data, app_data: app_data })
         }
         catch (error) {
-            if (!error?.props)
-                console.log(error)
-            showToast({ type: error?.props?.type || 'error', msg: tToasts(error?.props?.title || 'default_error') })
+            console.error(error)
+            showToast({ type: error?.type || 'error', msg: tToasts(error.message) })
         }
     }
 
@@ -60,9 +59,8 @@ export default function Admin() {
             const adminUsers = await response.json();
             setAdminsList(adminUsers)
         } catch (error) {
-            if (!error?.props)
-                console.error(error)
-            showToast({ type: error?.props?.type || 'error', msg: tToasts(error?.props?.title || 'default_error') });
+            console.error(error)
+            showToast({ type: error?.type || 'error', msg: tToasts(error.message) });
         }
     }
 

@@ -21,10 +21,10 @@ async function getOrderById(orderId) {
             return { id: orderDoc.id, ...orderData }
         }
         else
-            throw new Error({ title: 'order_not_found', type: 'error' })
+            throw new MyError({ title: 'order_not_found', type: 'error' })
     } catch (error) {
         console.error('Error getting order:', error);
-        throw new Error({ title: error?.props?.title || 'default_error', type: error?.props?.type || 'error' })
+        throw error
     }
 }
 
@@ -55,7 +55,7 @@ async function getOrdersByUserId(userId, startDate, endDate) {
         return orders
     } catch (error) {
         console.error('Error retrieving orders:', error);
-        throw new Error({ title: error?.props?.title || 'default_error', type: error?.props?.type || 'error' })
+        throw error
     }
 }
 

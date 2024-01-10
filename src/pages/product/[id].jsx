@@ -210,8 +210,9 @@ export default withRouter(props => {
             }
         }
         catch (error) {
+            console.error(error)
             setLoading(false)
-            showToast({ type: error?.props?.type || 'error', msg: tToasts(error?.props?.title || 'default_error') })
+            showToast({ type: error?.type || 'error', msg: tToasts(error.message) })
         }
     }
 
