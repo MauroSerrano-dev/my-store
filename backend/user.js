@@ -13,11 +13,11 @@ import { createUserWithEmailAndPassword, sendEmailVerification, updateProfile } 
 import { createCart } from "./cart"
 import { createWishlist } from "./wishlists"
 import { newUserModel } from "@/utils/models"
-import Error from "next/error"
 import { addUserDeleted } from "./app-settings"
 const { v4: uuidv4 } = require('uuid')
 const admin = require('../firebaseAdminInit');
 import { db } from "../firebaseInit";
+import MyError from "@/classes/MyError"
 
 async function getUserIdByEmail(email) {
     try {
@@ -219,8 +219,8 @@ async function completeQuest(user_id, quest_id) {
             throw new MyError(`User ${user_id} not found.`)
         }
     } catch (error) {
-        console.error(`Error completing quest for user ${user_id}: ${error}`)
-        throw new MyError(`Error completing quest for user ${user_id}: ${error}`)
+        console.error('Error completing quest:', error)
+        throw error
     }
 }
 
@@ -231,7 +231,7 @@ async function deleteUser(user_id) {
         const userDoc = await userRef.get()
 
         if (!userDoc.exists)
-            throw new MyError({ title: 'user_not_found', type: 'error' })
+            throw new MyError('user_not_found')
 
         const user = userDoc.data()
 
@@ -240,13 +240,13 @@ async function deleteUser(user_id) {
         const cartDoc = await cartRef.get()
 
         if (!cartDoc.exists)
-            throw new MyError({ title: 'cart_not_found', type: 'error' })
+            throw new MyError('cart_not_found')
 
         const wishlistRef = admin.firestore().doc(`${process.env.NEXT_PUBLIC_COLL_WISHLISTS}/${user.wishlist_id}`)
 
         const wishlistDoc = await wishlistRef.get()
         if (!wishlistDoc.exists)
-            throw new MyError({ title: 'wishlist_not_found', type: 'error' })
+            throw new MyError('wishlist_not_found')
 
         await admin.auth().deleteUser(user_id)
         await userRef.delete()

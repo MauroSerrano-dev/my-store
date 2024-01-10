@@ -11,7 +11,6 @@ import SizesSelector from '@/components/SizesSelector'
 import ShareButton from '@/components/ShareButton'
 import CareInstructionsIcons from '@/components/products/CareInstructionsIcons'
 import NoFound404 from '../../components/NoFound404'
-import Cookies from 'js-cookie'
 import { useTranslation } from 'next-i18next'
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
 import { showToast } from '@/utils/toasts'
@@ -30,7 +29,6 @@ import ZoneConverter from '@/utils/country-zone.json'
 import ProductTag from '@/components/products/ProductTag'
 import { handleCloseModal, handleOpenModal, mergeProducts } from '@/utils'
 import TableSizes from '@/components/products/TableSizes'
-import CarouselProducts from '@/components/carousels/CarouselProducts'
 import KeyFeatures from '@/components/products/KeyFeatures'
 import { ButtonGroup } from '@mui/material'
 import { addProductsToCart } from '../../../frontend/cart'
@@ -141,7 +139,7 @@ export default withRouter(props => {
                 shippingValue: Math.round(shippingValue * userCurrency?.rate),
                 shippingCountry: userLocation.country,
                 currency: userCurrency?.code,
-                cart_id: session ? session.cart_id : Cookies.get(CART_COOKIE),
+                cart_id: session ? session.cart_id : null,
                 user_language: i18n.language,
             })
         }
@@ -175,8 +173,7 @@ export default withRouter(props => {
                 }
                 else {
                     const localData = localStorage.getItem(CART_LOCAL_STORAGE)
-                    const newVisitantCart = addProductsToVisitantCart(localData ? JSON.parse(localData) : INICIAL_VISITANT_CART, [newProduct])
-                    localStorage.setItem(CART_LOCAL_STORAGE, JSON.stringify(newVisitantCart))
+                    addProductsToVisitantCart(localData ? JSON.parse(localData) : INICIAL_VISITANT_CART, [newProduct])
                 }
 
                 const newProductFullInfo = productInfoModel(

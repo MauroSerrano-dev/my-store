@@ -39,6 +39,6 @@ export default async function handler(req, res) {
         }
     }
     catch (error) {
-        res.status(500).json({ error: error?.props?.title || 'default_error' })
+        res.status(500).json({ error: 'default_error' })
     }
 }

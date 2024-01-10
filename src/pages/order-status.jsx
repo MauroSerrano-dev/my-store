@@ -60,8 +60,7 @@ export default function OrderStatus() {
                 setLoading(false)
             })
             .catch(error => {
-                if (!error?.props)
-                    console.error(error)
+                console.error(error)
                 showToast({ type: 'error', msg: tToasts('default_error') })
                 setOrder(null)
                 setLoading(false)

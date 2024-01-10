@@ -18,8 +18,8 @@ export default async function handler(req, res) {
             const product = await getProductFromPrintify(prod_printify_id)
             res.status(200).json({ data: product })
         } catch (error) {
-            console.error(`Error in printify product GET: ${error?.props?.title || error}`)
-            res.status(error?.props?.statusCode || 500).json({ error: error?.props?.title || 'default_error' })
+            console.error('Error in printify product GET:', error)
+            res.status(500).json({ error: 'default_error' })
         }
     }
 }

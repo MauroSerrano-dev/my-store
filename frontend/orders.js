@@ -7,8 +7,8 @@ import {
     orderBy,
     getDoc,
 } from "firebase/firestore"
-import Error from "next/error"
 import { db } from "../firebaseInit"
+import MyError from "@/classes/MyError"
 
 async function getOrderById(orderId) {
     try {
@@ -21,7 +21,7 @@ async function getOrderById(orderId) {
             return { id: orderDoc.id, ...orderData }
         }
         else
-            throw new MyError({ title: 'order_not_found', type: 'error' })
+            throw new MyError('order_not_found', 'error')
     } catch (error) {
         console.error('Error getting order:', error);
         throw error

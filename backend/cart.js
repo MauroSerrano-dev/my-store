@@ -54,7 +54,7 @@ async function setCartProducts(cartId, cartProducts) {
         console.log(`Cart ${cartId} setted successfully!`)
     } catch (error) {
         console.error(`Error setting cart ${cartId}:`, error)
-        throw new MyError({ title: error?.props?.title || 'error_setting_cart', type: error?.props?.type || 'error' })
+        throw new MyError('error_setting_cart', 'error')
     }
 }
 
@@ -82,19 +82,11 @@ async function changeProductField(collectionName, cartId, product, fieldName, ne
 
         await updateDoc(userRef, cartData)
 
-        return {
-            status: 200,
-            message: `Product field ${fieldName} in Cart ${cartId} updated successfully!`,
-            cart: cartData,
-        }
-    } catch (error) {
-        console.error(`Error in changeProductField: ${error}`)
-        return {
-            status: 500,
-            message: `Error in changeProductField: ${error}`,
-            cart: null,
-            error: error,
-        }
+        return cartData
+    }
+    catch (error) {
+        console.error('Error in changeProductField:', error)
+        throw error
     }
 }
 

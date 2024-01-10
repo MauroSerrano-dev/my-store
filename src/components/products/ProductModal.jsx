@@ -2,7 +2,7 @@ import styles from '@/styles/components/products/ProductModal.module.css'
 import { SlClose } from "react-icons/sl";
 import { motion } from "framer-motion";
 import Link from 'next/link';
-import { SIZES_POOL, COLORS_POOL, CART_LOCAL_STORAGE } from '@/consts';
+import { SIZES_POOL, COLORS_POOL } from '@/consts';
 import Image from 'next/image';
 import { useState } from 'react';
 import { useTranslation } from 'next-i18next';
@@ -11,8 +11,6 @@ import { showToast } from '@/utils/toasts';
 import { getProductPriceUnit } from '@/utils/prices';
 import ProductTag from './ProductTag';
 import MyTooltip from '../MyTooltip';
-import { deleteProductFromCart } from '../../../frontend/cart';
-import { isSameProduct } from '@/utils';
 
 export default function ProductModal(props) {
     const {
@@ -22,9 +20,7 @@ export default function ProductModal(props) {
 
     const {
         userCurrency,
-        setCart,
-        session,
-        cart,
+        handleDeleteProductFromCart,
     } = useAppContext()
 
     const tCommon = useTranslation('common').t
@@ -40,22 +36,15 @@ export default function ProductModal(props) {
 
     const [deleting, setDeleting] = useState(false)
 
-    async function handleDeleteProductFromCart() {
+    async function handleDeleteProduct() {
         try {
             setDeleting(true)
-            if (session) {
-                await deleteProductFromCart(cart.id, product)
-            }
-            else {
-                const visitantCart = JSON.parse(localStorage.getItem(CART_LOCAL_STORAGE))
-                localStorage.setItem(CART_LOCAL_STORAGE, JSON.stringify({ ...visitantCart, products: visitantCart.products.filter(prod => !isSameProduct(prod, product)) }))
-            }
-            setCart(prev => ({ ...prev, products: prev.products.filter(prod => !isSameProduct(prod, product)) }))
+            await handleDeleteProductFromCart(product)
         }
         catch (error) {
             console.error(error)
-            setDeleting(false)
             showToast({ type: error?.type || 'error', msg: tToasts(error.message) })
+            setDeleting(false)
         }
     }
 
@@ -98,7 +87,7 @@ export default function ProductModal(props) {
                     }}
                 >
                     <SlClose
-                        onClick={handleDeleteProductFromCart}
+                        onClick={handleDeleteProduct}
                         color='#ffffff'
                         style={{
                             fontSize: '15px',

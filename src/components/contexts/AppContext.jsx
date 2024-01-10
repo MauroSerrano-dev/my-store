@@ -11,20 +11,21 @@ import { fetchSignInMethodsForEmail, onAuthStateChanged, signInWithEmailAndPassw
 import { motion } from 'framer-motion'
 import SearchBar from '../SearchBar'
 import { CircularProgress } from '@mui/material'
-import Cookies from 'js-cookie'
-import { CART_LOCAL_STORAGE, INICIAL_VISITANT_CART, LIMITS, getCurrencyByLocation } from '@/consts'
+import { CART_LOCAL_STORAGE, CURRENCY_LOCAL_STORAGE, INICIAL_VISITANT_CART, LIMITS, getCurrencyByLocation } from '@/consts'
 import AdminMenu from '../menus/AdminMenu'
 import { showToast } from '@/utils/toasts'
-import Error from 'next/error'
 import CountryConverter from '@/utils/time-zone-country.json'
 import ZoneConverter from '@/utils/country-zone.json'
 import NProgress from 'nprogress'
 import { createNewUserWithGoogle, getUserById } from '../../../frontend/user'
 import { addProductToWishlist, deleteProductFromWishlist, getWishlistById } from '../../../frontend/wishlists'
-import { getCartById, mergeCarts } from '../../../frontend/cart'
+import { changeCartProductField, deleteProductFromCart, getCartById, mergeCarts } from '../../../frontend/cart'
 import { getProductsInfo } from '../../../frontend/product'
 import { auth } from '../../../firebaseInit'
 import { getAllCurrencies } from '../../../frontend/app-settings'
+import MyError from '@/classes/MyError'
+import { changeVisitantCartProductField, deleteProductFromVisitantCart } from '../../../frontend/visitant-cart'
+import { isSameProduct } from '@/utils'
 
 const AppContext = createContext()
 
@@ -220,14 +221,14 @@ export function AppProvider({ children }) {
 
     useEffect(() => {
         if (currencies) {
-            if (Cookies.get('CURR'))
-                setUserCurrency(currencies?.[Cookies.get('CURR')])
+            if (localStorage.getItem(CURRENCY_LOCAL_STORAGE))
+                setUserCurrency(currencies?.[localStorage.getItem(CURRENCY_LOCAL_STORAGE)])
             else {
                 const country = CountryConverter[Intl.DateTimeFormat().resolvedOptions().timeZone]
                 const zone = Intl.DateTimeFormat().resolvedOptions().timeZone.split('/')[0]
                 const startCurrency = currencies[getCurrencyByLocation(country, zone)]
                 setUserCurrency(startCurrency)
-                Cookies.set('CURR', startCurrency.code)
+                localStorage.setItem(CURRENCY_LOCAL_STORAGE, startCurrency.code)
             }
         }
     }, [currencies])
@@ -281,7 +282,7 @@ export function AppProvider({ children }) {
     }
 
     function handleChangeCurrency(newCurrencyCode) {
-        Cookies.set('CURR', newCurrencyCode)
+        localStorage.setItem(CURRENCY_LOCAL_STORAGE, newCurrencyCode)
         setUserCurrency(currencies?.[newCurrencyCode])
     }
 
@@ -455,6 +456,35 @@ export function AppProvider({ children }) {
         }
     }
 
+    async function handleChangeProductQuantity(product, value) {
+        try {
+            session
+                ? await changeCartProductField(session.cart_id, product, 'quantity', value)
+                : changeVisitantCartProductField(product, 'quantity', value)
+            setCart(prev => ({ ...prev, products: prev.products.map(prod => isSameProduct(prod, product) ? { ...prod, quantity: value } : prod) }))
+        }
+        catch (error) {
+            console.error(error)
+            showToast({ type: error?.type || 'error', msg: tToasts(error.message) })
+        }
+    }
+
+    async function handleDeleteProductFromCart(product) {
+        try {
+            if (session) {
+                await deleteProductFromCart(cart.id, product)
+            }
+            else {
+                deleteProductFromVisitantCart(product)
+            }
+            setCart(prev => ({ ...prev, products: prev.products.filter(prod => !isSameProduct(prod, product)) }))
+        }
+        catch (error) {
+            console.error(error)
+            showToast({ type: error?.type || 'error', msg: tToasts(error.message) })
+        }
+    }
+
     return (
         <AppContext.Provider
             value={{
@@ -493,6 +523,8 @@ export function AppProvider({ children }) {
                 handleWishlistClick,
                 getInicialCart,
                 isAdmin,
+                handleChangeProductQuantity,
+                handleDeleteProductFromCart,
             }}
         >
             <motion.div

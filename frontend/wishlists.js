@@ -7,7 +7,7 @@ import {
     addDoc
 } from "firebase/firestore";
 import { db } from "../firebaseInit";
-import Error from "next/error";
+import MyError from "@/classes/MyError";
 
 async function getWishlistById(id) {
     try {

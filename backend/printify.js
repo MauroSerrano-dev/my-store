@@ -73,7 +73,7 @@ async function filterNotInPrintify(cartItems) {
 /**
  * Checks if a product is available in Printify.
  * 
- * @param {Object} product - The product object to check.
+ * @param {object} product - The product object to check.
  * @returns {Promise<boolean>} A promise that resolves to a boolean indicating if the product is available in Printify.
  */
 async function isProductInPrintify(product) {

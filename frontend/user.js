@@ -9,7 +9,7 @@ import { db } from "../firebaseInit";
 import { createCart } from "./cart";
 import { createWishlist } from "./wishlists";
 import { newUserModel } from "@/utils/models";
-import Error from "next/error";
+import MyError from "@/classes/MyError";
 
 async function getUserById(id) {
     try {
@@ -75,7 +75,7 @@ async function updateUser(userId, changes) {
 
             return { id: userDoc.id, ...userData, ...changes }
         } else {
-            throw new MyError({ title: 'user_not_found', type: 'error' })
+            throw new MyError('user_not_found', 'error')
         }
     } catch (error) {
         console.error('Error updating profile:', error)

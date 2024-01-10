@@ -4,20 +4,17 @@ import {
     updateDoc,
     getDoc,
     getDocs,
-    orderBy,
-    limit,
     query,
     setDoc,
     where,
     Timestamp,
 } from "firebase/firestore"
-import Fuse from 'fuse.js'
 import { LIMITS, PRODUCTS_TYPES } from "@/consts"
-import Error from "next/error"
 import { getProductVariantsInfos } from "@/utils"
 import { isProductInPrintify } from "./printify"
 import { db } from "../firebaseInit"
 import { getProductsByIds } from "../frontend/product"
+import MyError from "@/classes/MyError"
 
 async function getProductsInfo(products) {
     try {
@@ -189,14 +186,14 @@ async function getProductById(id) {
 
 async function updateProduct(product_id, product_new_fields) {
     if (!product_id || !product_new_fields)
-        throw new MyError({ title: 'Invalid update data', statusCode: 400 })
+        throw new MyError('Invalid update data', 'warning')
 
     const productRes = await getProductById(product_id)
     if (!productRes.product)
-        throw new MyError({ title: 'Product not found to update', statusCode: 404 })
+        throw new MyError('Product not found to update', 'warning')
     const existInPrintify = await isProductInPrintify({ ...productRes.product, ...product_new_fields })
     if (!existInPrintify)
-        throw new MyError({ title: 'Invalid printify id', statusCode: 400 })
+        throw new MyError('Invalid printify ID', 'warning')
 
     if (product_new_fields.variants) {
         const type = PRODUCTS_TYPES.find(type => type.id === productRes.product.type_id)
@@ -206,7 +203,7 @@ async function updateProduct(product_id, product_new_fields) {
             cost: type.variants.find(vari => vari.id === variant.id).cost
         }))
         if (variants.some(vari => vari.cost + LIMITS.min_profit >= vari.price * (productRes.product.promotion ? (1 - productRes.product.promotion.percentage) : 1)))
-            throw new MyError({ title: 'Invalid product price', statusCode: 400 })
+            throw new MyError('Invalid product price', 'warning')
     }
 
     const productRef = doc(db, process.env.NEXT_PUBLIC_COLL_PRODUCTS, product_id)
@@ -218,7 +215,7 @@ async function updateProduct(product_id, product_new_fields) {
         return { message: `Product ${product_id} updated successfully!` }
     } catch (error) {
         console.log("Error updating product:", error)
-        throw new MyError({ title: 'An error occurred while updating the product.', statusCode: 500 })
+        throw new MyError('Error updating product', error?.type || 'error')
     }
 }
 
@@ -317,7 +314,8 @@ async function getDisabledProducts(products) {
 
         return disabledProducts
     } catch (error) {
-        throw new MyError(`Error retrieving disabled products: ${error.message}`)
+        console.log("Error retrieving disabled products:", error)
+        throw new MyError('Error retrieving disabled products', error?.type || 'error')
     }
 }
 
@@ -353,7 +351,7 @@ async function removeExpiredPromotions() {
         return { message: 'Expired promotions removed successfully.' }
     } catch (error) {
         console.error('Error removing expired promotions:', error)
-        throw new MyError('Error removing expired promotions.')
+        throw new MyError('Error removing expired promotions', error?.type || 'error')
     }
 }
 

@@ -10,15 +10,15 @@ import {
     getDoc,
 } from "firebase/firestore"
 import { ALLOWED_WEBHOOK_STATUS, POPULARITY_POINTS } from "@/consts"
-import Error from "next/error"
 import { db } from "../firebaseInit"
+import MyError from "@/classes/MyError";
 const admin = require('../firebaseAdminInit');
 
 /**
  * Creates a new order in the Firestore.
  * 
  * @param {string} orderId - The order ID.
- * @param {Object} order - The order object to be created in the Firestore.
+ * @param {object} order - The order object to be created in the Firestore.
  * @returns {string} The order ID.
  */
 async function createOrder(orderId, order) {
@@ -38,9 +38,10 @@ async function createOrder(orderId, order) {
         await handlePostOrderCreation(order.products) // Function to handle post-order creation logic.
 
         return orderId
-    } catch (error) {
+    }
+    catch (error) {
         console.error('Error creating order:', error)
-        throw new MyError({ title: error?.props?.title || 'error_creating_order', type: error?.props?.type || 'error' })
+        throw error
     }
 }
 
@@ -82,9 +83,10 @@ async function handlePostOrderCreation(line_items) {
                 await productRef.update(productData);
             }
         }
-    } catch (error) {
+    }
+    catch (error) {
         console.error('Error handling purchased products:', error);
-        throw new MyError({ title: error?.props?.title || 'error_handling_purchased_products', type: error?.props?.type || 'error' })
+        throw new MyError('error_handling_purchased_products', error?.type || 'error')
     }
 }
 
@@ -225,8 +227,8 @@ async function getOrderById(orderId) {
             return null
         }
     } catch (error) {
-        console.error(`Error getting order by id: ${error}`)
-        throw new MyError(`Error getting order by id: ${error}`)
+        console.error('Error getting order by id:', error)
+        throw new MyError('Error getting order by id', error?.type || 'error')
     }
 }
 
@@ -284,11 +286,11 @@ async function refundOrderByStripeId(payment_intent, amount_refunded) {
             });
         } else {
             console.error(`Refund fail. Order with Stripe ID ${payment_intent} not found.`);
-            throw new MyError({ title: 'refund_fail_order_not_found', type: 'error' })
+            throw new MyError('refund_fail_order_not_found')
         }
     } catch (error) {
         console.error('Error refunding order by Stripe ID:', error);
-        throw new MyError({ title: error?.props?.title || 'error_refunding_order', type: error?.props?.type || 'error' })
+        throw new MyError('error_refunding_order', error?.type || 'error')
     }
 }
 

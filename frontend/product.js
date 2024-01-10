@@ -13,7 +13,7 @@ import { getProductVariantsInfos } from "@/utils"
 import { db } from "../firebaseInit"
 import { productInfoModel } from "@/utils/models";
 import { DEFAULT_LANGUAGE, LIMITS, PRODUCTS_TYPES } from "@/consts";
-import { MyError } from "@/classes/MyError";
+import MyError from "@/classes/MyError";
 
 async function getProductsInfo(products) {
     try {
@@ -452,7 +452,7 @@ async function getProductsByIds(ids) {
  * field for each product in Firestore based on the provided product objects.
  * 
  * @param {string[]} products_ids - Array of product IDs to have the promotion applied.
- * @param {Object} promotion - Promotion object with details such as percentage and expiration date.
+ * @param {object} promotion - Promotion object with details such as percentage and expiration date.
  * @returns {Promise<object>} An object containing a success or error message.
  */
 async function createPromotionForProducts(products_ids, promotion) {

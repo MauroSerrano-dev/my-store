@@ -4,8 +4,8 @@ import {
     collection,
     getDocs,
 } from "firebase/firestore"
-import Error from "next/error"
 import { db } from "../firebaseInit"
+import MyError from "@/classes/MyError";
 
 async function getAppSettings() {
     try {
@@ -38,7 +38,7 @@ async function getAllCurrencies() {
             return currDoc.data()
         } else {
             console.error("Currencies document does not exist")
-            throw new MyError({ title: 'default_error', type: 'error' })
+            throw new MyError('default_error', 'error')
         }
     } catch (error) {
         console.error("Error retrieving currencies:", error)
