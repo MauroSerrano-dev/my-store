@@ -7,10 +7,10 @@ export default async function handler(req, res) {
         const { authUser } = req.body
 
         if (!authorization)
-            return res.status(401).json({ message: "Invalid authentication" })
+            res.status(401).json({ message: "Invalid authentication" })
 
         if (!isTokenValid(authorization, process.env.APP_SECRET_KEY))
-            return res.status(401).json({ message: "Invalid authentication" })
+            res.status(401).json({ message: "Invalid authentication" })
 
         if (req.method === "POST") {
             const user = await createNewUser(authUser)

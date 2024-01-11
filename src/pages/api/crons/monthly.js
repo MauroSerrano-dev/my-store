@@ -5,12 +5,12 @@ export default async function handler(req, res) {
 
     if (!authorization) {
         console.error("Invalid authentication")
-        return res.status(401).json({ error: "Invalid authentication" })
+        res.status(401).json({ error: "Invalid authentication" })
     }
 
     if (authorization !== `Bearer ${process.env.CRON_SECRET}`) {
         console.error("Invalid authentication")
-        return res.status(401).json({ error: "Invalid authentication" })
+        res.status(401).json({ error: "Invalid authentication" })
     }
 
     await cleanPopularityMonth()

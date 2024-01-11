@@ -187,7 +187,8 @@ export function AppProvider({ children }) {
                 },
             }
             const response = await fetch('/api/admin/verify', options)
-            setIsAdmin(response.status === 200)
+            const responseJson = await response.json()
+            setIsAdmin(responseJson.isAdmin)
         }
         catch (error) {
             console.error(error)
@@ -310,7 +311,6 @@ export function AppProvider({ children }) {
 
     async function handleLogin(user) {
         try {
-            console.log('user', user)
             const visitantCartProducts = JSON.parse(localStorage.getItem(CART_LOCAL_STORAGE))?.products || []
             setSession(user)
             const cart = visitantCartProducts.length > 0

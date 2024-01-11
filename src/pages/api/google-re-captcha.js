@@ -6,11 +6,11 @@ export default async function handler(req, res) {
     const { response, expectedAction } = req.body;
 
     if (!authorization) {
-        return res.status(401).json({ error: "Invalid authentication" });
+        res.status(401).json({ error: "Invalid authentication" });
     }
 
     if (!isTokenValid(authorization, process.env.APP_SECRET_KEY)) {
-        return res.status(401).json({ error: "Invalid authentication" });
+        res.status(401).json({ error: "Invalid authentication" });
     }
 
     try {

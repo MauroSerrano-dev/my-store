@@ -11,7 +11,7 @@ async function getUserById(id) {
         const userDocRef = doc(db, process.env.NEXT_PUBLIC_COLL_USERS, id)
 
         const userDoc = await getDoc(userDocRef)
-        console.log('userDoc.data()', userDoc.data())
+
         if (userDoc.exists())
             return { id: userDoc.id, ...userDoc.data() }
         else
