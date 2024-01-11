@@ -1,4 +1,3 @@
-const { default: MyError } = require('@/classes/MyError');
 const fs = require('fs');
 const path = require('path');
 
@@ -25,7 +24,7 @@ function checkLocalizationConsistency() {
     // Verificar se todos os idiomas têm a mesma quantidade de arquivos
     const allSameFileCount = Object.values(fileCountMap).every((val, _, arr) => val === arr[0]);
     if (!allSameFileCount) {
-        throw new MyError('Inconsistência na quantidade de arquivos entre os idiomas.');
+        throw new Error('Inconsistência na quantidade de arquivos entre os idiomas.');
     }
 
     // Verificar se todos os arquivos têm as mesmas chaves em todos os idiomas
@@ -36,7 +35,7 @@ function checkLocalizationConsistency() {
         allLanguages.forEach(lang => {
             const keys = keysMap[file][lang];
             if (keys.length !== referenceKeys.length || !keys.every(key => referenceKeys.includes(key))) {
-                throw new MyError(`Inconsistência de chaves no arquivo ${file} entre os idiomas.`);
+                throw new Error(`Inconsistência de chaves no arquivo ${file} entre os idiomas.`);
             }
         });
     });
