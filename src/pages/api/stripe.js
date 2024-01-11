@@ -12,10 +12,10 @@ export default async function handler(req, res) {
   const { authorization } = req.headers
 
   if (!authorization)
-    return res.status(401).json({ error: "Invalid authentication" })
+    res.status(401).json({ error: "Invalid authentication" })
 
   if (!isTokenValid(authorization, process.env.APP_SECRET_KEY))
-    return res.status(401).json({ error: "Invalid authentication" })
+    res.status(401).json({ error: "Invalid authentication" })
 
   if (req.method === 'POST') {
     const {
@@ -33,13 +33,13 @@ export default async function handler(req, res) {
 
     const notExistingProducts = await filterNotInPrintify(cartItems)
     if (notExistingProducts.length !== 0) {
-      return res.status(200).json({ disabledProducts: notExistingProducts })
+      res.status(200).json({ disabledProducts: notExistingProducts })
     }
 
     const disabledProducts = await getDisabledProducts(cartItems)
 
     if (disabledProducts.length !== 0) {
-      return res.status(200).json({ disabledProducts: disabledProducts })
+      res.status(200).json({ disabledProducts: disabledProducts })
     }
 
     let outOfStock = []
@@ -56,7 +56,7 @@ export default async function handler(req, res) {
     await Promise.all(asyncOutOfStockRequests)
 
     if (outOfStock.length !== 0) {
-      return res.status(200).json({ outOfStock: outOfStock })
+      res.status(200).json({ outOfStock: outOfStock })
     }
 
     let stripeCustomer

@@ -9,7 +9,7 @@ export default async function handler(req, res) {
         const providedSignatureWithoutPrefix = req.headers['x-pfy-signature'].replace('sha256=', '')
 
         if (calculatedSignature !== providedSignatureWithoutPrefix)
-            return res.status(401).json({ error: 'Invalid authentication' })
+            res.status(401).json({ error: 'Invalid authentication' })
 
         const body = req.body
         const type = body.type
