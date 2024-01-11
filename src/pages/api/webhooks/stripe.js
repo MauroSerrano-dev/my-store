@@ -144,19 +144,24 @@ export default async function handler(req, res) {
             )
 
             if (customer_details.email) {
-                sendPurchaseConfirmationEmail(customer_details.email, orderId, user_language)
-                    .then(() => {
-                        console.log(`Purchase email sent to ${customer_details.email}`)
-                    })
-                    .catch(error => {
-                        console.error("Error purchase email:", error)
-                    })
+                try {
+                    await sendPurchaseConfirmationEmail(customer_details.email, orderId, user_language)
+                    console.log(`Purchase email sent to ${customer_details.email}`)
+                }
+                catch {
+                    console.error("Error purchase email:", error)
+                }
             }
 
             if (cart_id) {
-                if (user_id) {
-                    await setCartProducts(cart_id, [])
-                    await deleteProductsFromWishlist(user_id, line_items.map(prod => prod.id))
+                try {
+                    if (user_id) {
+                        await setCartProducts(cart_id, [])
+                        await deleteProductsFromWishlist(user_id, line_items.map(prod => prod.id))
+                    }
+                }
+                catch {
+                    console.error('Error deleting products from Cart or Wishlist')
                 }
             }
             res.status(200).json({ message: `Order ${orderId} Created. Checkout Complete!` })

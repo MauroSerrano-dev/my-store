@@ -12,7 +12,7 @@ export default async function handler(req, res) {
             if (decodedToken.admin)
                 res.status(200).json('User is an administrator')
             else
-                return
+                return res.end()
         } catch (error) {
             console.error('Error verifying token:', error)
             return res.status(500).send('Internal server error')

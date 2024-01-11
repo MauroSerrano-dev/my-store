@@ -200,7 +200,6 @@ export default withRouter(() => {
                             ? {
                                 ...vari,
                                 active: true,
-                                price: vari.price,
                                 art: {
                                     id: artIdChained
                                         ? prev.id

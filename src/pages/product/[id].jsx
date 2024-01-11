@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react'
 import ImagesSlider from '@/components/ImagesSlider'
 import ShoppingCartOutlinedIcon from '@mui/icons-material/ShoppingCartOutlined'
 import CreditCardOutlinedIcon from '@mui/icons-material/CreditCardOutlined'
-import { CART_COOKIE, COLORS_POOL, SIZES_POOL, getShippingOptions, DEFAULT_LANGUAGE, COMMON_TRANSLATES, PRODUCTS_TYPES, CART_LOCAL_STORAGE, INICIAL_VISITANT_CART } from '@/consts'
+import { COLORS_POOL, SIZES_POOL, getShippingOptions, DEFAULT_LANGUAGE, COMMON_TRANSLATES, PRODUCTS_TYPES, CART_LOCAL_STORAGE, INICIAL_VISITANT_CART } from '@/consts'
 import Head from 'next/head'
 import ColorSelector from '@/components/ColorSelector'
 import SizesSelector from '@/components/SizesSelector'
@@ -53,7 +53,6 @@ export default withRouter(props => {
         setCart,
         cart,
         windowWidth,
-        setSession,
         userLocation,
         setUserLocation,
         wishlist,
@@ -576,24 +575,32 @@ export async function getServerSideProps({ query, locale, resolvedUrl }) {
         .catch(err => console.error(err))
 
     const colorQuery = cl
-        ? Object.values(COLORS_POOL).find(color => color.id_string === cl.toLowerCase())
+        ? Object.values(COLORS_POOL).some(color => color.id_string === cl.toLowerCase())
         : null
 
     const sizeQuery = sz
         ? SIZES_POOL.find(size => size.title.toLowerCase() === sz.toLowerCase())
         : null
 
+    const chooseColor = colorQuery && product.colors_ids.some(color_id => color_id === colorQuery.id)
+        ? colorQuery
+        : null
+
+    const chooseSize = sizeQuery && product.sizes_ids.some(size_id => size_id === sizeQuery.id)
+        ? sizeQuery
+        : null
+
     return {
         props: {
             ...(await serverSideTranslations(locale, COMMON_TRANSLATES.concat(['countries', 'product', 'care-instructions', 'key-features', 'table-sizes', 'footer']))),
             product: product || null,
-            cl: colorQuery === undefined ? null : colorQuery,
-            sz: sizeQuery === undefined ? null : sizeQuery,
+            cl: chooseColor === undefined ? null : chooseColor,
+            sz: chooseSize === undefined ? null : chooseSize,
             urlMeta: `${process.env.NEXT_PUBLIC_URL}${locale === DEFAULT_LANGUAGE ? '' : `/${locale}`}${resolvedUrl} `,
             productMetaImage: !product
                 ? 'https://mrfstyles.com/logos/circle-black.jpg'
-                : colorQuery
-                    ? product.images.filter(img => img.color_id === colorQuery.id)[product.image_showcase_index].src
+                : chooseColor
+                    ? product.images.filter(img => img.color_id === chooseColor.id)[product.image_showcase_index].src
                     : product.images[product.image_showcase_index].src
         }
     }

@@ -34,7 +34,6 @@ export default function Product(props) {
     } = props
 
     const {
-        setSession,
         setWishlist,
         session,
         supportsHoverAndPointer,

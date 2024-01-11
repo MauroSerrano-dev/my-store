@@ -40,6 +40,8 @@ export default function Orders() {
 
     useEffect(() => {
         if (session) {
+            console.log(session)
+            console.log(NOW.getFullYear(), userCreateAt.getFullYear())
             setDatesRange(Array(1 + YEAR_DIFF).fill(null).map((ele, i) => ({ value: NOW.getFullYear() - i, name: String(NOW.getFullYear() - i) })))
             getUserOrders()
         }

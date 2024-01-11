@@ -11,7 +11,7 @@ async function getUserById(id) {
         const userDocRef = doc(db, process.env.NEXT_PUBLIC_COLL_USERS, id)
 
         const userDoc = await getDoc(userDocRef)
-
+        console.log('userDoc.data()', userDoc.data())
         if (userDoc.exists())
             return { id: userDoc.id, ...userDoc.data() }
         else
@@ -82,9 +82,36 @@ async function getUserProvidersByEmail(email) {
     }
 }
 
+async function completeQuest(user_id, quest_id) {
+    try {
+        const userRef = doc(db, process.env.NEXT_PUBLIC_COLL_USERS, user_id)
+        const userDoc = await getDoc(userRef)
+
+        if (userDoc.exists()) {
+            const userData = userDoc.data()
+            const { quests } = userData
+
+            // Update the quests array using map to modify the specific quest
+            const updatedQuests = quests.filter(quest => quest !== quest_id)
+
+            // Update the user document with the modified quests array
+            await updateDoc(userRef, { quests: updatedQuests })
+
+            return updatedQuests
+        } else {
+            console.error('User not found')
+            throw new MyError('user_not_found')
+        }
+    } catch (error) {
+        console.error('Error completing quest:', error)
+        throw error
+    }
+}
+
 export {
     getUserById,
     createNewUser,
     updateUser,
     getUserProvidersByEmail,
+    completeQuest,
 }

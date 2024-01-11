@@ -72,7 +72,9 @@ async function getProductsInfo(products) {
                 }), {})
                 : product.printify_ids
 
-            const visualImage = product.images.filter(img => img.color_id === variant.color_id)[product.image_showcase_index]
+            const visualImage = product.images.filter(img => img.color_id === variant.color_id).length > 0
+                ? product.images.filter(img => img.color_id === variant.color_id)[product.image_showcase_index]
+                : product.images[product.image_showcase_index]
 
             return productInfoModel(
                 {
