@@ -5,6 +5,7 @@ import styles from '@/styles/components/NoFound404.module.css'
 import { useAppContext } from './contexts/AppContext';
 import { CircularProgress } from '@mui/material';
 import { motion } from 'framer-motion'
+import { useTranslation } from 'next-i18next';
 
 export default function NoFound404(props) {
     const {
@@ -19,6 +20,8 @@ export default function NoFound404(props) {
     } = useAppContext()
 
     const animationContainer = useRef(null)
+
+    const tPageError = useTranslation('page-error').t
 
     useEffect(() => {
         let time
@@ -115,13 +118,13 @@ export default function NoFound404(props) {
                 </div>
                 <div style={{ zIndex: 1 }}>
                     <p style={{ fontWeight: '700', fontSize: '24px' }}>
-                        {message}
+                        {tPageError(message)}
                     </p>
                     <Link
                         href="/"
                         className={styles.link}
                     >
-                        Back to homepage
+                        {tPageError('Back to homepage')}
                     </Link>
                 </div>
             </div>
