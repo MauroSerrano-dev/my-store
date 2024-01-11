@@ -68,7 +68,6 @@ export function AppProvider({ children }) {
     const adminMode = isAdmin && router.pathname.split('/')[1] === 'admin'
 
     useEffect(() => {
-        throw new Error('test')
         handleResize()
 
         function handleResize() {
