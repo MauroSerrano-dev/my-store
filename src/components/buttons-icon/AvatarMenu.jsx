@@ -20,7 +20,6 @@ import MyButton from '@/components/material-ui/MyButton'
 
 export default function AvatarMenu() {
   const {
-    auth,
     router,
     supportsHoverAndPointer,
     logout,
@@ -31,6 +30,26 @@ export default function AvatarMenu() {
   const [open, setOpen] = useState(false)
   const { i18n } = useTranslation()
   const tNavbar = useTranslation('navbar').t
+
+  useEffect(() => {
+    setOpen(false)
+  }, [router])
+
+  useEffect(() => {
+    function handleCloseMenuOnScroll() {
+      setOpen(false)
+    }
+
+    if (!supportsHoverAndPointer) {
+      window.addEventListener('scroll', handleCloseMenuOnScroll);
+    }
+
+    return () => {
+      if (!supportsHoverAndPointer) {
+        window.removeEventListener('scroll', handleCloseMenuOnScroll);
+      }
+    }
+  }, [supportsHoverAndPointer])
 
   function handleLogout() {
     logout()
@@ -52,26 +71,6 @@ export default function AvatarMenu() {
       setOpen(prev => !prev)
     }
   }
-
-  useEffect(() => {
-    setOpen(false)
-  }, [router])
-
-  useEffect(() => {
-    function handleCloseMenuOnScroll() {
-      setOpen(false)
-    }
-
-    if (!supportsHoverAndPointer) {
-      window.addEventListener('scroll', handleCloseMenuOnScroll);
-    }
-
-    return () => {
-      if (!supportsHoverAndPointer) {
-        window.removeEventListener('scroll', handleCloseMenuOnScroll);
-      }
-    }
-  }, [supportsHoverAndPointer])
 
   return (
     <div

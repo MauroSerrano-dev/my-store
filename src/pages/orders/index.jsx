@@ -68,10 +68,9 @@ export default function Orders() {
             setOrders(ordersRes)
         }
         catch (error) {
-            if (!error?.props)
-                console.error(error)
+            console.error(error)
             setOrders(null)
-            showToast({ type: error?.props?.type || 'error', msg: tToasts(error?.props?.title || 'default_error') })
+            showToast({ type: error?.type || 'error', msg: tToasts(error.message) })
         }
     }
 
@@ -87,10 +86,9 @@ export default function Orders() {
             setAllProducts(response.products)
         }
         catch (error) {
-            if (!error?.props)
-                console.error(error)
+            console.error(error)
             setAllProducts(null)
-            showToast({ type: error?.props?.type || 'error', msg: tToasts(error?.props?.title || 'default_error') })
+            showToast({ type: error?.type || 'error', msg: tToasts(error.message) })
         }
     }
 

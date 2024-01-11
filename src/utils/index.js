@@ -4,8 +4,8 @@ import es from 'date-fns/locale/es'
 import ptBR from 'date-fns/locale/pt-BR'
 import ptPT from 'date-fns/locale/pt'
 import { LIMITS, PRODUCTS_TYPES } from '@/consts';
-import Error from 'next/error';
 import { Timestamp } from 'firebase/firestore';
+import MyError from '@/classes/MyError';
 
 export function getObjectsDiff(obj1, obj2) {
     const differentFields = {};
@@ -53,7 +53,7 @@ export function mergeProducts(prods1, prods2) {
         if (exist) {
             const newQuantity = p.quantity + exist.quantity
             if (newQuantity > LIMITS.cart_same_item)
-                throw new Error({ title: 'max_same_products', type: 'warning' })
+                throw new MyError('max_same_products', 'warning')
             return { ...p, quantity: newQuantity }
         }
         else

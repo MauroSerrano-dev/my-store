@@ -29,7 +29,6 @@
     "framer-motion": "^10.16.1",
     "fuse.js": "^6.6.2",
     "i18next": "^23.6.0",
-    "js-cookie": "^3.0.5",
     "jsonwebtoken": "^9.0.2",
     "lottie-web": "^5.12.2",
     "next": "^14.0.4",

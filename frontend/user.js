@@ -1,15 +1,10 @@
 import {
-    Timestamp,
     doc,
     getDoc,
-    setDoc,
     updateDoc,
 } from "firebase/firestore"
-import { db } from "../firebaseInit";
-import { createCart } from "./cart";
-import { createWishlist } from "./wishlists";
-import { newUserModel } from "@/utils/models";
-import Error from "next/error";
+import { db, auth } from "../firebaseInit";
+import MyError from "@/classes/MyError";
 
 async function getUserById(id) {
     try {
@@ -23,42 +18,35 @@ async function getUserById(id) {
             return null
     } catch (error) {
         console.error('Erro ao obter usuário pelo ID:', error)
-        throw new Error(`Erro ao obter usuário pelo ID: ${error.message}`);
+        throw new MyError(`Erro ao obter usuário pelo ID: ${error.message}`);
     }
 }
 
-async function createNewUserWithGoogle(authUser, cartProducts = []) {
+async function createNewUser(authUser) {
     try {
-        const fullName = authUser.displayName.split(' ')
+        const options = {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                authorization: process.env.NEXT_PUBLIC_APP_TOKEN,
+            },
+            body: JSON.stringify({
+                authUser: authUser,
+            })
+        }
 
-        const firstName = fullName.length <= 1 ? authUser.displayName : fullName.slice(0, fullName.length - 1).join(' ')
-        const lastName = fullName.length <= 1 ? null : fullName[fullName.length - 1]
+        const response = await fetch('/api/users/user', options)
+        const responseJson = await response.json()
 
-        const newUserRef = doc(db, process.env.NEXT_PUBLIC_COLL_USERS, authUser.uid)
+        if (response.status >= 500)
+            throw new MyError(responseJson.message, 'error')
+        if (response.status >= 300)
+            throw new MyError(responseJson.message, 'warning')
 
-        const cart_id = await createCart(newUserRef.id, cartProducts)
-
-        const wishlist_id = await createWishlist(newUserRef.id)
-
-        const newUser = newUserModel({
-            email: authUser.email,
-            first_name: firstName,
-            last_name: lastName,
-            cart_id: cart_id,
-            wishlist_id: wishlist_id,
-            email_verified: authUser.emailVerified,
-        })
-
-        newUser.create_at = Timestamp.now()
-
-        await setDoc(newUserRef, newUser)
-
-        console.log(`${newUser.email} has been added as a new user.`)
-
-        return { id: authUser.uid, ...newUser }
+        return responseJson.user
     } catch (error) {
-        console.error('Error creating a new user and session:', error);
-        throw new Error(`Error creating a new user and session: ${error.message}`);
+        console.error('Error creating a new user:', error);
+        throw error;
     }
 }
 
@@ -75,11 +63,11 @@ async function updateUser(userId, changes) {
 
             return { id: userDoc.id, ...userData, ...changes }
         } else {
-            throw new Error({ title: 'user_not_found', type: 'error' })
+            throw new MyError('user_not_found', 'error')
         }
     } catch (error) {
         console.error('Error updating profile:', error)
-        throw new Error({ title: error?.props?.title || 'default_error', type: error?.props?.type || 'error' })
+        throw error
     }
 }
 
@@ -90,13 +78,13 @@ async function getUserProvidersByEmail(email) {
         return providers
     } catch (error) {
         console.error('Error fetching sign-in methods for email:', error)
-        throw new Error({ title: error?.props?.title || 'default_error', type: error?.props?.type || 'error' })
+        throw error
     }
 }
 
 export {
     getUserById,
-    createNewUserWithGoogle,
+    createNewUser,
     updateUser,
     getUserProvidersByEmail,
 }

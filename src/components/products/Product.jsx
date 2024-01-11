@@ -14,9 +14,9 @@ import MyButton from '@/components/material-ui/MyButton';
 import MyTooltip from '../MyTooltip'
 
 /**
- * @param {object} props - Component props.
- * @param {object} props.product - Product props.
- * @param {object} props.style - Product style.
+ * @param {Object} props - Component props.
+ * @param {Object} props.product - Product props.
+ * @param {Object} props.style - Product style.
  * @param {string} props.width - Component width.
  * @param {boolean} props.responsive - Responsive width.
  * @param {boolean} props.supportsHoverAndPointer - Device supportsHoverAndPointer.

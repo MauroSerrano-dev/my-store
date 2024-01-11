@@ -1,15 +1,12 @@
 import {
-    Timestamp,
-    addDoc,
-    collection,
     doc,
     getDoc,
     updateDoc,
 } from "firebase/firestore";
 import { db } from "../firebaseInit";
-import Error from "next/error";
 import { LIMITS } from "@/consts";
-import { mergeProducts } from "@/utils";
+import { isSameProduct, mergeProducts } from "@/utils";
+import MyError from "@/classes/MyError";
 
 /**
  * Retrieves a cart by its ID.
@@ -30,33 +27,7 @@ async function getCartById(id) {
         }
     } catch (error) {
         console.error('Error getting cart by ID:', error)
-        throw new Error({ title: error?.props?.title || 'default_error', type: error?.props?.type || 'error' })
-    }
-}
-
-/**
- * Creates a new cart.
- * @param {string} userId - The ID of the user.
- * @param {Array} products - The products in the cart. `Default: []`
- * @returns {string | object} The cart ID or status message if a conflict occurs.
- */
-async function createCart(userId, products = []) {
-    try {
-        const cartsCollectionRef = collection(db, process.env.NEXT_PUBLIC_COLL_CARTS);
-
-        const newCart = {
-            user_id: userId,
-            products: products,
-            created_at: Timestamp.now(),
-        }
-
-        const docRef = await addDoc(cartsCollectionRef, newCart);
-
-        console.log('Cart created');
-        return docRef.id
-    } catch (error) {
-        console.error('Error creating cart:', error)
-        throw new Error({ title: error?.props?.title || 'default_error', type: error?.props?.type || 'error' })
+        throw error
     }
 }
 
@@ -74,7 +45,7 @@ async function addProductsToCart(cartId, cartNewProducts) {
         const cartData = cartDoc.data()
 
         if (cartData.products.reduce((acc, prod) => acc + prod.quantity, 0) + cartNewProducts.reduce((acc, prod) => acc + prod.quantity, 0) > LIMITS.cart_items)
-            throw new Error({ title: 'max_products', type: 'warning' })
+            throw new MyError('max_products', 'warning')
 
         cartData.products = mergeProducts(cartData.products, cartNewProducts)
 
@@ -83,14 +54,14 @@ async function addProductsToCart(cartId, cartNewProducts) {
         return { id: cartDoc.id, ...cartData }
     } catch (error) {
         console.error('Error Adding Product to Cart:', error)
-        throw new Error({ title: error?.props?.title || 'default_error', type: error?.props?.type || 'error' })
+        throw error
     }
 }
 
 /**
  * Deletes a product from a cart.
  * @param {string} cartId - The ID of the cart.
- * @param {object} product - The product to be removed from the cart.
+ * @param {Object} product - The product to be removed from the cart.
  * @returns {object} Status and message regarding the cart update.
  */
 async function deleteProductFromCart(cartId, product) {
@@ -108,7 +79,7 @@ async function deleteProductFromCart(cartId, product) {
         return { id: cartDoc.id, ...cartData }
     } catch (error) {
         console.error('Error Deleting Product from Cart:', error)
-        throw new Error({ title: error?.props?.title || 'error_deleting_product_from_cart', type: error?.props?.type || 'error' })
+        throw new MyError('error_deleting_product_from_cart', 'error')
     }
 }
 
@@ -121,14 +92,44 @@ async function mergeCarts(cartId, products) {
         return newCart
     } catch (error) {
         console.error('Error merging Carts', error)
-        throw new Error({ title: error?.props?.title || 'error_deleting_product_from_cart', type: error?.props?.type || 'error' })
+        throw new MyError('error_deleting_product_from_cart', 'error')
+    }
+}
+
+/**
+ * Changes a specific field value in a product within a cart.
+ * @param {string} cartId - The ID of the cart.
+ * @param {Object} product - The product to be updated.
+ * @param {string} fieldName - The name of the field to be updated.
+ * @param {any} newValue - The new value for the field.
+ * @returns {object} Status and message regarding the cart update.
+ */
+async function changeCartProductField(cartId, product, fieldName, newValue) {
+    try {
+        const userRef = doc(db, process.env.NEXT_PUBLIC_COLL_CARTS, cartId)
+        const cartDoc = await getDoc(userRef)
+
+        const cartData = cartDoc.data()
+
+        const newProducts = cartData.products.map(prod =>
+            isSameProduct(prod, product)
+                ? { ...prod, [fieldName]: newValue }
+                : prod
+        )
+
+        await updateDoc(userRef, { products: newProducts })
+
+        return { id: cartDoc.id, ...cartData }
+    } catch (error) {
+        console.error('Error in changeProductField:', error)
+        throw error
     }
 }
 
 export {
     getCartById,
-    createCart,
     addProductsToCart,
     deleteProductFromCart,
     mergeCarts,
+    changeCartProductField,
 }

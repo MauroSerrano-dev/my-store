@@ -10,8 +10,8 @@ import {
     getDoc,
 } from "firebase/firestore"
 import { ALLOWED_WEBHOOK_STATUS, POPULARITY_POINTS } from "@/consts"
-import Error from "next/error"
 import { db } from "../firebaseInit"
+import MyError from "@/classes/MyError";
 const admin = require('../firebaseAdminInit');
 
 /**
@@ -35,12 +35,19 @@ async function createOrder(orderId, order) {
             create_at: now,
         })
 
-        await handlePostOrderCreation(order.products) // Function to handle post-order creation logic.
+        handlePostOrderCreation(order.products)
+            .then(() => {
+                console.log('handlePostOrderCreation was executed successfully')
+            })
+            .catch(error => {
+                console.error("Error in handlePostOrderCreation:", error)
+            })
 
         return orderId
-    } catch (error) {
+    }
+    catch (error) {
         console.error('Error creating order:', error)
-        throw new Error({ title: error?.props?.title || 'error_creating_order', type: error?.props?.type || 'error' })
+        throw error
     }
 }
 
@@ -82,9 +89,10 @@ async function handlePostOrderCreation(line_items) {
                 await productRef.update(productData);
             }
         }
-    } catch (error) {
+    }
+    catch (error) {
         console.error('Error handling purchased products:', error);
-        throw new Error({ title: error?.props?.title || 'error_handling_purchased_products', type: error?.props?.type || 'error' })
+        throw new MyError('error_handling_purchased_products', error?.type || 'error')
     }
 }
 
@@ -225,8 +233,8 @@ async function getOrderById(orderId) {
             return null
         }
     } catch (error) {
-        console.error(`Error getting order by id: ${error}`)
-        throw new Error(`Error getting order by id: ${error}`)
+        console.error('Error getting order by id:', error)
+        throw new MyError('Error getting order by id', error?.type || 'error')
     }
 }
 
@@ -252,7 +260,7 @@ async function getOrderLimitInfoById(orderId) {
         }
     } catch (error) {
         console.error('Error getting order info by id:', error)
-        throw new Error({ title: error?.props?.title || 'default_error', type: error?.props?.type || 'error' })
+        throw error
     }
 }
 
@@ -284,11 +292,11 @@ async function refundOrderByStripeId(payment_intent, amount_refunded) {
             });
         } else {
             console.error(`Refund fail. Order with Stripe ID ${payment_intent} not found.`);
-            throw new Error({ title: 'refund_fail_order_not_found', type: 'error' })
+            throw new MyError('refund_fail_order_not_found')
         }
     } catch (error) {
         console.error('Error refunding order by Stripe ID:', error);
-        throw new Error({ title: error?.props?.title || 'error_refunding_order', type: error?.props?.type || 'error' })
+        throw new MyError('error_refunding_order', error?.type || 'error')
     }
 }
 

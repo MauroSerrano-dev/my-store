@@ -11,20 +11,21 @@ import { fetchSignInMethodsForEmail, onAuthStateChanged, signInWithEmailAndPassw
 import { motion } from 'framer-motion'
 import SearchBar from '../SearchBar'
 import { CircularProgress } from '@mui/material'
-import Cookies from 'js-cookie'
-import { CART_LOCAL_STORAGE, INICIAL_VISITANT_CART, LIMITS, getCurrencyByLocation } from '@/consts'
+import { CART_LOCAL_STORAGE, CURRENCY_LOCAL_STORAGE, INICIAL_VISITANT_CART, LIMITS, getCurrencyByLocation } from '@/consts'
 import AdminMenu from '../menus/AdminMenu'
 import { showToast } from '@/utils/toasts'
-import Error from 'next/error'
 import CountryConverter from '@/utils/time-zone-country.json'
 import ZoneConverter from '@/utils/country-zone.json'
 import NProgress from 'nprogress'
-import { createNewUserWithGoogle, getUserById } from '../../../frontend/user'
+import { createNewUser, getUserById } from '../../../frontend/user'
 import { addProductToWishlist, deleteProductFromWishlist, getWishlistById } from '../../../frontend/wishlists'
-import { getCartById, mergeCarts } from '../../../frontend/cart'
+import { changeCartProductField, deleteProductFromCart, getCartById, mergeCarts } from '../../../frontend/cart'
 import { getProductsInfo } from '../../../frontend/product'
 import { auth } from '../../../firebaseInit'
 import { getAllCurrencies } from '../../../frontend/app-settings'
+import MyError from '@/classes/MyError'
+import { changeVisitantCartProductField, deleteProductFromVisitantCart } from '../../../frontend/visitant-cart'
+import { isSameProduct } from '@/utils'
 
 const AppContext = createContext()
 
@@ -189,9 +190,8 @@ export function AppProvider({ children }) {
             setIsAdmin(response.status === 200)
         }
         catch (error) {
-            if (!error?.props)
-                console.error(error)
-            showToast({ type: error?.props?.type || 'error', msg: tToasts(error?.props?.title || 'default_error') })
+            console.error(error)
+            showToast({ type: error?.type || 'error', msg: tToasts(error.message) })
         }
     }
 
@@ -221,14 +221,14 @@ export function AppProvider({ children }) {
 
     useEffect(() => {
         if (currencies) {
-            if (Cookies.get('CURR'))
-                setUserCurrency(currencies?.[Cookies.get('CURR')])
+            if (localStorage.getItem(CURRENCY_LOCAL_STORAGE))
+                setUserCurrency(currencies?.[localStorage.getItem(CURRENCY_LOCAL_STORAGE)])
             else {
                 const country = CountryConverter[Intl.DateTimeFormat().resolvedOptions().timeZone]
                 const zone = Intl.DateTimeFormat().resolvedOptions().timeZone.split('/')[0]
                 const startCurrency = currencies[getCurrencyByLocation(country, zone)]
                 setUserCurrency(startCurrency)
-                Cookies.set('CURR', startCurrency.code)
+                localStorage.setItem(CURRENCY_LOCAL_STORAGE, startCurrency.code)
             }
         }
     }, [currencies])
@@ -239,9 +239,8 @@ export function AppProvider({ children }) {
             setCurrencies(currencies.data)
         }
         catch (error) {
-            if (!error?.props)
-                console.error(error)
-            showToast({ type: error?.props?.type || 'error', msg: tToasts(error?.props?.title || 'default_error') })
+            console.error(error)
+            showToast({ type: error?.type || 'error', msg: tToasts(error.message) })
         }
     }
 
@@ -277,43 +276,91 @@ export function AppProvider({ children }) {
             }
         }
         catch (error) {
-            showToast({ type: error?.props?.type || 'error', msg: tToasts(error?.props?.title || 'default_error') })
+            console.error(error)
+            showToast({ type: error?.type || 'error', msg: tToasts(error.message) })
         }
     }
 
     function handleChangeCurrency(newCurrencyCode) {
-        Cookies.set('CURR', newCurrencyCode)
+        localStorage.setItem(CURRENCY_LOCAL_STORAGE, newCurrencyCode)
         setUserCurrency(currencies?.[newCurrencyCode])
     }
 
-    async function handleLogin(authUser) {
+    function updateSession() {
+        onAuthStateChanged(auth, async (authUser) => {
+            const user = authUser ? await getUserById(authUser.uid) : null
+            if (authUser && user) {
+                setIsUser(true)
+                setIsVisitant(false)
+                setUserEmailVerify(authUser.emailVerified)
+                handleLogin(user)
+            }
+            else if (!user && authUser && authUser.providerData?.some(provider => ['google.com'].includes(provider.providerId))) {
+                handleCreateNewUser(authUser)
+            }
+            else if (!authUser) {
+                setIsVisitant(true)
+                setIsUser(false)
+                setSession(null)
+                getVisitantCart()
+            }
+            setAuthValidated(true)
+        })
+    }
+
+    async function handleLogin(user) {
         try {
-            const user = await getUserById(authUser.uid)
             const visitantCartProducts = JSON.parse(localStorage.getItem(CART_LOCAL_STORAGE))?.products || []
-            if (user) {
-                setSession(user)
-                const cart = visitantCartProducts.length > 0
-                    ? await mergeCarts(user.cart_id, visitantCartProducts)
-                    : await getCartById(user.cart_id)
-                const products = await getProductsInfo(cart.products)
-                setCart({ ...cart, products: products })
-                const wishlist = await getWishlistById(user.wishlist_id)
-                setWishlist(wishlist)
-            }
-            else {
-                const newUser = await createNewUserWithGoogle(authUser, visitantCartProducts)
-                setSession(newUser)
-                const cart = await getCartById(newUser.cart_id)
-                const products = await getProductsInfo(cart.products)
-                setCart({ ...cart, products: products })
-                const wishlist = await getWishlistById(newUser.wishlist_id)
-                setWishlist(wishlist)
-            }
+            setSession(user)
+            const cart = visitantCartProducts.length > 0
+                ? await mergeCarts(user.cart_id, visitantCartProducts)
+                : await getCartById(user.cart_id)
+            const products = await getProductsInfo(cart.products)
+            setCart({ ...cart, products: products })
+            const wishlist = await getWishlistById(user.wishlist_id)
+            setWishlist(wishlist)
             localStorage.removeItem(CART_LOCAL_STORAGE)
         }
         catch (error) {
             console.error(error)
             showToast({ type: 'error', msg: tToasts('error_getting_session') })
+            logout()
+        }
+    }
+
+    async function handleCreateNewUser(authUser) {
+        try {
+            setIsUser(true)
+            setIsVisitant(false)
+            setUserEmailVerify(authUser.emailVerified)
+            const newUser = await createNewUser(authUser)
+            handleLogin(newUser)
+        }
+        catch (error) {
+            console.error(error)
+            showToast({ type: 'error', msg: tToasts('error_creating_user') })
+            logout()
+        }
+    }
+
+    async function getVisitantCart() {
+        try {
+            const visitantCart = JSON.parse(localStorage.getItem(CART_LOCAL_STORAGE))
+            if (visitantCart) {
+                const products = await getProductsInfo(visitantCart.products)
+
+                setCart({ ...visitantCart, products: products })
+            }
+            else {
+                const newCartJson = INICIAL_VISITANT_CART
+                setCart(newCartJson)
+                localStorage.setItem(CART_LOCAL_STORAGE, JSON.stringify(newCartJson))
+            }
+
+        }
+        catch (error) {
+            console.error(error)
+            showToast({ type: error?.type || 'error', msg: tToasts(error.message) })
         }
     }
 
@@ -387,43 +434,6 @@ export function AppProvider({ children }) {
             })
     }
 
-    function updateSession() {
-        onAuthStateChanged(auth, (authUser) => {
-            setAuthValidated(true)
-            if (authUser) {
-                setIsUser(true)
-                setUserEmailVerify(authUser.emailVerified)
-                handleLogin(authUser)
-            }
-            else {
-                // O usuário fez logout ou não está autenticado
-                setIsVisitant(true)
-                setSession(null)
-                getVisitantCart()
-            }
-        })
-    }
-
-    async function getVisitantCart() {
-        try {
-            const visitantCart = JSON.parse(localStorage.getItem(CART_LOCAL_STORAGE))
-            if (visitantCart) {
-                const products = await getProductsInfo(visitantCart.products)
-
-                setCart({ ...visitantCart, products: products })
-            }
-            else {
-                const newCartJson = INICIAL_VISITANT_CART
-                setCart(newCartJson)
-                localStorage.setItem(CART_LOCAL_STORAGE, JSON.stringify(newCartJson))
-            }
-
-        }
-        catch (error) {
-            showToast({ type: error?.props?.type || 'error', msg: tToasts(error?.props?.title || 'default_error') })
-        }
-    }
-
     async function handleWishlistClick(productId, toAdd) {
         const prevWishlist = { ...wishlist }
         try {
@@ -449,8 +459,38 @@ export function AppProvider({ children }) {
 
         }
         catch (error) {
+            console.error(error)
             setWishlist(prevWishlist)
-            showToast({ type: error?.props?.type || 'error', msg: tToasts(error?.props?.title || 'default_error') })
+            showToast({ type: error?.type || 'error', msg: tToasts(error.message) })
+        }
+    }
+
+    async function handleChangeProductQuantity(product, value) {
+        try {
+            session
+                ? await changeCartProductField(session.cart_id, product, 'quantity', value)
+                : changeVisitantCartProductField(product, 'quantity', value)
+            setCart(prev => ({ ...prev, products: prev.products.map(prod => isSameProduct(prod, product) ? { ...prod, quantity: value } : prod) }))
+        }
+        catch (error) {
+            console.error(error)
+            showToast({ type: error?.type || 'error', msg: tToasts(error.message) })
+        }
+    }
+
+    async function handleDeleteProductFromCart(product) {
+        try {
+            if (session) {
+                await deleteProductFromCart(cart.id, product)
+            }
+            else {
+                deleteProductFromVisitantCart(product)
+            }
+            setCart(prev => ({ ...prev, products: prev.products.filter(prod => !isSameProduct(prod, product)) }))
+        }
+        catch (error) {
+            console.error(error)
+            showToast({ type: error?.type || 'error', msg: tToasts(error.message) })
         }
     }
 
@@ -492,6 +532,9 @@ export function AppProvider({ children }) {
                 handleWishlistClick,
                 getInicialCart,
                 isAdmin,
+                handleChangeProductQuantity,
+                handleDeleteProductFromCart,
+                handleCreateNewUser
             }}
         >
             <motion.div
@@ -664,7 +707,7 @@ export function AppProvider({ children }) {
 export const useAppContext = () => {
     const context = useContext(AppContext)
     if (!context) {
-        throw new Error('useAppContext must be used within a AppProvider');
+        throw new MyError('useAppContext must be used within a AppProvider');
     }
     return context
 }

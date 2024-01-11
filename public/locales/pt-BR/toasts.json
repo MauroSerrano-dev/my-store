@@ -6,7 +6,7 @@
     "out_of_stock_other": "{{count}} produtos estão fora de estoque para {{country}}",
     "disabled_products_one": "{{product_title}} está indisponível",
     "disabled_products_other": "{{count}} produtos estão indisponíveis",
-    "password_length": "A senha deve ter pelo menos 8 caracteres",
+    "password_length": "A senha deve ter pelo menos 6 caracteres",
     "password_lowercase": "A senha deve conter pelo menos um caractere minúsculo",
     "password_uppercase": "A senha deve conter pelo menos um caractere maiúsculo",
     "password_number": "A senha deve conter pelo menos um número",
@@ -70,5 +70,10 @@
     "product_already_in_wishlist": "O produto já está na Lista de Desejos",
     "user_updated": "Perfil atualizado com sucesso!",
     "invalid_profile_attribute": "Atributo de perfil inválido",
-    "order_not_found": "Nenhum pedido encontrado com este ID"
+    "order_not_found": "Nenhum pedido encontrado com este ID",
+    "promotion_created_successfully": "Promoção criada com sucesso",
+    "promotion_deleted_successfully": "Promoção excluída com sucesso",
+    "invalid_expire_date": "Data de validade inválida",
+    "invalid_promotion_percentage": "Porcentagem de promoção inválida",
+    "invalid_product_ids_parameters": "Parâmetros de IDs de produtos inválidos"
 }

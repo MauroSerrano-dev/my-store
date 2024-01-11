@@ -1,4 +1,3 @@
-import Error from "next/error"
 const admin = require('../firebaseAdminInit')
 
 async function updateAllCurrencies(updatedCurrencies) {
@@ -14,7 +13,7 @@ async function updateAllCurrencies(updatedCurrencies) {
         return
     } catch (error) {
         console.error('Error updating currencies:', error)
-        throw new Error({ title: error?.props?.title || 'default_error', type: error?.props?.type || 'error' })
+        throw error
     }
 }
 
@@ -35,7 +34,7 @@ async function addUserDeleted(email) {
         console.log('Deleted users updated successfully!');
     } catch (error) {
         console.error('Error adding user to deleted_users:', error)
-        throw new Error({ title: error?.props?.title || 'default_error', type: error?.props?.type || 'error' })
+        throw error
     }
 }
 
@@ -58,7 +57,7 @@ async function clearDeletedUsers() {
         }
     } catch (error) {
         console.error("Error clearing old deleted users:", error);
-        throw new Error({ title: error?.props?.title || 'default_error', type: error?.props?.type || 'error' })
+        throw error
     }
 }
 
@@ -86,7 +85,31 @@ async function handleStripeWebhookFail(callId) {
         console.log('Order failure recorded successfully!')
     } catch (error) {
         console.error('Error recording order failure:', error);
-        throw new Error({ title: error?.props?.title || 'default_error', type: error?.props?.type || 'error' })
+        throw error
+    }
+}
+
+/**
+ * Checks if an email is in the list of prohibited emails.
+ * This function looks up the 'deleted_users' document in the 'app_settings' collection
+ * to see if the provided email is listed there.
+ * 
+ * @param {string} email - The email to check against the prohibited list.
+ * @returns {Promise<boolean>} True if the email is prohibited, false otherwise.
+ */
+async function emailIsProhibited(email) {
+    try {
+        const settingsRef = admin.firestore().doc(`${process.env.NEXT_PUBLIC_COLL_APP_SETTINGS}/deleted_users`);
+        const settingsDoc = await settingsRef.get();
+
+        if (settingsDoc.exists && settingsDoc.data().data) {
+            const prohibitedEmails = settingsDoc.data().data.map(item => item.email);
+            return prohibitedEmails.includes(email);
+        }
+        return false;
+    } catch (error) {
+        console.error("Error checking if email is prohibited:", error);
+        throw error;
     }
 }
 
@@ -95,4 +118,5 @@ export {
     addUserDeleted,
     clearDeletedUsers,
     handleStripeWebhookFail,
+    emailIsProhibited,
 }

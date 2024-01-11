@@ -25,7 +25,7 @@ import Image from 'next/image';
 import { Timestamp } from 'firebase/firestore';
 import SearchRoundedIcon from '@mui/icons-material/SearchRounded';
 import ProductSkeleton from '@/components/products/ProductSkeleton';
-import { getAllProducts, getProductsByQueries } from '../../../../../frontend/product';
+import { createPromotionForProducts, getAllProducts, getProductsByQueries } from '../../../../../frontend/product';
 
 export default function ProductsId() {
     const {
@@ -55,10 +55,18 @@ export default function ProductsId() {
 
     const tToasts = useTranslation('toasts').t
 
+    const modalOpen = productsPromotionModal?.length > 0
+
     useEffect(() => {
         if (router.isReady)
             getProductsByQuery()
     }, [router])
+
+
+    useEffect(() => {
+        if (!modalOpen)
+            resetModal()
+    }, [productsPromotionModal])
 
     async function getProductsByQuery() {
         try {
@@ -79,41 +87,29 @@ export default function ProductsId() {
             setProductsKey(uuidv4())
         }
         catch (error) {
-            showToast({ type: error?.props?.type || 'error', msg: tToasts(error?.props?.title || 'default_error') })
+            console.error(error)
+            showToast({ type: error?.type || 'error', msg: tToasts(error.message) })
         }
     }
 
-    function createPromotion() {
-        setCreatingPromotion(true)
+    async function createPromotion() {
+        try {
+            setCreatingPromotion(true)
 
-        const options = {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                authorization: process.env.NEXT_PUBLIC_APP_TOKEN
-            },
-            body: JSON.stringify({
-                products_ids: productsPromotionModal.map(product => product.id),
-                promotion: { ...promotion, percentage: promotion.percentage / 100, expire_at: Timestamp.fromDate(promotion.expire_at.toDate()) },
-            })
+            const products_ids = productsPromotionModal.map(product => product.id)
+            const promo = { ...promotion, percentage: promotion.percentage / 100, expire_at: Timestamp.fromDate(promotion.expire_at.toDate()) }
+
+            await createPromotionForProducts(products_ids, promo)
+            getProductsByQuery()
+            setProductsSelected([])
+            handleClosePromotionModal()
+            showToast({ type: 'success', msg: tToasts(promo.percentage === 0 ? 'promotion_deleted_successfully' : 'promotion_created_successfully') })
         }
-        fetch("/api/promotion", options)
-            .then(response => response.json())
-            .then(response => {
-                if (response.error)
-                    showToast({ type: 'error', msg: tToasts(response.error) })
-                else {
-                    showToast({ type: 'success', msg: tToasts(response.message) })
-                    getProductsByQuery()
-                    setProductsSelected([])
-                    handleClosePromotionModal()
-                }
-                setCreatingPromotion(false)
-            })
-            .catch(() => {
-                showToast({ type: 'error', msg: tToasts('default_error') })
-                setCreatingPromotion(false)
-            })
+        catch (error) {
+            console.error(error)
+            showToast({ type: 'error', msg: tToasts(error.message) })
+            setCreatingPromotion(false)
+        }
     }
 
     function getQueries(newQueries, deleteQueries) {
@@ -145,8 +141,12 @@ export default function ProductsId() {
     }
 
     function handleClosePromotionModal() {
-        setPromotion({ percentage: 15, expire_at: dayjs().add(1, 'month') })
         handleCloseModal(setProductsPromotionModal, setPromotionModalOpacity, [])
+    }
+
+    function resetModal() {
+        setPromotion({ percentage: 15, expire_at: dayjs().add(1, 'month') })
+        setCreatingPromotion(false)
     }
 
     function getProfit(product) {
@@ -183,7 +183,7 @@ export default function ProductsId() {
                     <header>
                     </header>
                     <main className={styles.main}>
-                        {productsPromotionModal?.length > 0 &&
+                        {modalOpen &&
                             <Modal
                                 closeModal={handleClosePromotionModal}
                                 showModalOpacity={promotionModalOpacity}

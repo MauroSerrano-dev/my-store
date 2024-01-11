@@ -15,6 +15,8 @@ import { LoadingButton } from '@mui/lab'
 import { useAppContext } from '@/components/contexts/AppContext'
 import NoFound404 from '@/components/NoFound404'
 import MyButton from '@/components/material-ui/MyButton'
+import MyError from '@/classes/MyError'
+import { createUserWithEmailAndPassword, sendEmailVerification, updateProfile } from 'firebase/auth'
 
 export default function Signin() {
     const {
@@ -25,8 +27,10 @@ export default function Signin() {
         loading,
         setLoading,
         authValidated,
+        auth,
         isUser,
         setBlockInteractions,
+        handleCreateNewUser,
     } = useAppContext()
 
     const [reCaptchaSolve, setReCaptchaSolve] = useState(false)
@@ -58,7 +62,7 @@ export default function Signin() {
         ))
     }
 
-    function handleCreateNewUser() {
+    async function handleCreateNewUserCall() {
         if (!reCaptchaSolve)
             return showToast({ msg: tToasts('solve_recaptcha') })
 
@@ -78,43 +82,47 @@ export default function Signin() {
         setBlockInteractions(true)
         setLoading(true)
         setDisableSigninButton(true)
-        const options = {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                authorization: process.env.NEXT_PUBLIC_APP_TOKEN,
-            },
-            body: JSON.stringify({
-                user: newUser,
-                userLanguage: i18n.language
-            })
-        }
+        try {
+            const { user: authenticatedUser } = await createUserWithEmailAndPassword(auth, newUser.email, newUser.password)
 
-        fetch('/api/user', options)
-            .then(response => response.json())
-            .then(response => {
-                if (response.status < 300) {
-                    login(newUser.email, newUser.password)
-                }
-                else if (response.status < 500) {
-                    setBlockInteractions(false)
-                    setLoading(false)
-                    setDisableSigninButton(false)
-                    showToast({ msg: tToasts(response.message) })
-                }
-                else {
-                    setBlockInteractions(false)
-                    setLoading(false)
-                    setDisableSigninButton(false)
-                    showToast({ type: 'error', msg: tToasts(response.message) })
-                }
+            // Set display name for the authenticated user
+            await updateProfile(authenticatedUser, {
+                displayName: `${newUser.first_name} ${newUser.last_name}`
             })
-            .catch(() => {
-                setBlockInteractions(false)
-                setLoading(false)
-                setDisableSigninButton(false)
-                showToast({ type: 'error', msg: tToasts('error_creating_user') })
+
+            await handleCreateNewUser({ ...authenticatedUser, displayName: `${newUser.first_name} ${newUser.last_name}` })
+
+            // Envie o e-mail de verificação
+            auth.languageCode = i18n.language
+            sendEmailVerification(authenticatedUser, {
+                url: `${process.env.NEXT_PUBLIC_URL}/${i18n.language}/auth`,
+                handleCodeInApp: true,
             })
+                .then(() => {
+                    console.log(`Verification email sent to ${newUser.email}`)
+                })
+                .catch((error) => {
+                    console.error("Error sending verification email:", error)
+                })
+
+            login(newUser.email, newUser.password)
+        }
+        catch (error) {
+            console.error(error)
+            if (error.code === 'auth/invalid-email')
+                showToast({ msg: tToasts('invalid_email') })
+            else if (error.code === 'auth/email-already-in-use')
+                showToast({ msg: tToasts('email_already_exists') })
+            else if (error.code === 'auth/weak-password')
+                showToast({ msg: tToasts('weak_password') })
+            else if (error.code === 'auth/account-exists-with-different-credential')
+                showToast({ msg: tToasts('account_exists_with_different_credential') })
+            else
+                showToast({ type: error?.type || 'error', msg: tToasts('error_creating_user') })
+            setBlockInteractions(false)
+            setLoading(false)
+            setDisableSigninButton(false)
+        }
     }
 
     return (
@@ -216,7 +224,7 @@ export default function Signin() {
                                     <LoadingButton
                                         loading={disableSigninButton}
                                         variant='contained'
-                                        onClick={handleCreateNewUser}
+                                        onClick={handleCreateNewUserCall}
                                         sx={{
                                             width: '100%',
                                             height: '50px',

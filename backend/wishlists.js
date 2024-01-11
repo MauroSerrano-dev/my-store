@@ -1,34 +1,30 @@
-import { doc, getDoc, Timestamp, setDoc } from "firebase/firestore";
-import Error from "next/error";
-import { db } from "../firebaseInit";
+import MyError from "@/classes/MyError";
+const admin = require('../firebaseAdminInit');
 
-async function createWishlist(userId, wishlistId) {
+/**
+ * Creates a new wishlist for a user.
+ * @param {string} userId - The ID of the user for whom the wishlist is being created.
+ * @returns {Promise<string>} The ID of the created wishlist document.
+ */
+async function createWishlist(userId) {
     try {
-        const wishlistRef = doc(db, process.env.COLL_WISHLISTS, wishlistId)
+        const wishlistsCollectionRef = admin.firestore().collection(process.env.NEXT_PUBLIC_COLL_WISHLISTS);
 
-        const docSnapshot = await getDoc(wishlistRef)
-
-        if (docSnapshot.exists()) {
-            return {
-                status: 409,
-                message: `Wishlist ID ${wishlistId} already exists.`,
-            }
-        }
+        const now = admin.firestore.Timestamp.now();
 
         const newWishlist = {
-            id: wishlistId,
             user_id: userId,
             products: [],
-            created_at: Timestamp.now(),
-        }
+            created_at: now,
+            updated_at: now,
+        };
 
-        await setDoc(wishlistRef, newWishlist)
+        const docRef = await wishlistsCollectionRef.add(newWishlist);
 
-        console.log(`Wishlist created with ID: ${wishlistId}`)
-        return wishlistId
+        return docRef.id;
     } catch (error) {
-        console.error("Error creating wishlist:", error)
-        return null
+        console.error('Error creating wishlist:', error);
+        throw new MyError('Error creating wishlist');
     }
 }
 
@@ -37,7 +33,7 @@ async function createWishlist(userId, wishlistId) {
  * 
  * @param {string} user_id - The ID of the user whose wishlist is being modified.
  * @param {Array} productsIdsToDelete - Array of product IDs to be deleted from the wishlist.
- * @returns {Object} - Updated wishlist.
+ * @returns {object} - Updated wishlist.
  */
 async function deleteProductsFromWishlist(user_id, productsIdsToDelete) {
     try {
@@ -47,7 +43,7 @@ async function deleteProductsFromWishlist(user_id, productsIdsToDelete) {
 
         if (querySnapshot.empty) {
             console.error(`Wishlist for user ID ${user_id} not found`)
-            throw new Error({ title: 'wishlist_not_found', type: 'error' })
+            throw new MyError('wishlist_not_found', 'error')
         }
 
         const wishlistDoc = querySnapshot.docs[0];
@@ -62,7 +58,7 @@ async function deleteProductsFromWishlist(user_id, productsIdsToDelete) {
         return { id: wishlistDoc.id, ...wishlistData }
     } catch (error) {
         console.error('Error deleting products from the wishlist:', error);
-        throw new Error({ title: error?.props?.title || 'error_deleting_products_from_wishlist', type: error?.props?.type || 'error' })
+        throw new MyError('error_deleting_products_from_wishlist', 'error')
     }
 }
 

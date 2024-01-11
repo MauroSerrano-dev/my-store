@@ -3,11 +3,9 @@ import {
     getDoc,
     updateDoc,
     Timestamp,
-    collection,
-    addDoc
 } from "firebase/firestore";
 import { db } from "../firebaseInit";
-import Error from "next/error";
+import MyError from "@/classes/MyError";
 
 async function getWishlistById(id) {
     try {
@@ -19,37 +17,13 @@ async function getWishlistById(id) {
             return { id: wishlistDoc.id, ...wishlistDoc.data() };
         } else {
             console.error('Wishlist not found')
-            throw new Error('Wishlist not found')
+            throw new MyError('Wishlist not found')
         }
     } catch (error) {
         console.error('Error getting wishlist by ID:', error)
-        throw new Error('Error getting wishlist by ID')
+        throw new MyError('Error getting wishlist by ID')
     }
 }
-
-async function createWishlist(userId) {
-    try {
-        const wishlistsCollectionRef = collection(db, process.env.NEXT_PUBLIC_COLL_WISHLISTS);
-
-        const now = Timestamp.now()
-
-        const newWishlist = {
-            user_id: userId,
-            products: [],
-            created_at: now,
-            updated_at: now,
-        }
-
-        const docRef = await addDoc(wishlistsCollectionRef, newWishlist)
-
-        console.log('Wishlist created')
-        return docRef.id
-    } catch (error) {
-        console.error('Error creating wishlist:', error)
-        throw new Error('Error creating wishlist')
-    }
-}
-
 
 async function addProductToWishlist(wishlistId, product) {
     try {
@@ -76,7 +50,7 @@ async function addProductToWishlist(wishlistId, product) {
         return { id: wishlistDoc.id, ...wishlistData }
     } catch (error) {
         console.error('Error updating wishlist:', error)
-        throw new Error({ title: error?.props?.title || 'default_error', type: error?.props?.type || 'error' })
+        throw error
     }
 }
 
@@ -98,13 +72,12 @@ async function deleteProductFromWishlist(wishlistId, product) {
         return { id: wishlistDoc.id, ...wishlistData }
     } catch (error) {
         console.error('Error Deleting Product from wishlist:', error)
-        throw new Error({ title: error?.props?.title || 'default_error', type: error?.props?.type || 'error' })
+        throw error
     }
 }
 
 export {
     getWishlistById,
-    createWishlist,
     addProductToWishlist,
     deleteProductFromWishlist,
 }

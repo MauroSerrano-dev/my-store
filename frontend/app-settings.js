@@ -4,8 +4,8 @@ import {
     collection,
     getDocs,
 } from "firebase/firestore"
-import Error from "next/error"
 import { db } from "../firebaseInit"
+import MyError from "@/classes/MyError";
 
 async function getAppSettings() {
     try {
@@ -25,7 +25,7 @@ async function getAppSettings() {
         }
     } catch (error) {
         console.error('Error retrieving settings collections:', error);
-        throw new Error({ title: error?.props?.title || 'default_error', type: error?.props?.type || 'error' })
+        throw error
     }
 }
 
@@ -38,11 +38,11 @@ async function getAllCurrencies() {
             return currDoc.data()
         } else {
             console.error("Currencies document does not exist")
-            throw new Error({ title: 'default_error', type: 'error' })
+            throw new MyError('default_error', 'error')
         }
     } catch (error) {
         console.error("Error retrieving currencies:", error)
-        throw new Error({ title: error?.props?.title || 'default_error', type: error?.props?.type || 'error' })
+        throw error
     }
 }
 
@@ -58,7 +58,7 @@ async function emailIsProhibited(email) {
         return false;
     } catch (error) {
         console.error("Error checking if email is prohibited:", error);
-        throw new Error({ title: error?.props?.title || 'default_error', type: error?.props?.type || 'error' })
+        throw error
     }
 }
 

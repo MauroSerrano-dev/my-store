@@ -1,4 +1,3 @@
-import Error from 'next/error'
 const nodemailer = require('nodemailer')
 const { v4: uuidv4 } = require('uuid')
 
@@ -147,8 +146,10 @@ async function sendPurchaseConfirmationEmail(customer_email, orderId, user_langu
     const info = await transporter.sendMail(mailOptions)
     console.log('Order Email Sent:', info.response)
     return { status: 'success', message: `Purchase confirmation email sent to ${customer_email} successfully!` }
-  } catch (error) {
-    throw new Error(`Error sending purchase confirmation email: ${error}`);
+  }
+  catch (error) {
+    console.error('Error sending purchase confirmation email:', error);
+    throw error
   }
 }
 
@@ -336,8 +337,10 @@ async function sendSupportEmail(props) {
     const info = await transporter.sendMail(mailOptions);
     console.log('Support Email Sent:', info.response);
     return { status: 'success', message: `Support email sent to ${customer_email} successfully!` };
-  } catch (error) {
-    throw new Error(`Error sending support email: ${error} `);
+  }
+  catch (error) {
+    console.error('Error sending support email:', error);
+    throw error
   }
 }
 

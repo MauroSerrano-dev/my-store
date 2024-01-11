@@ -2,33 +2,33 @@ import {
     collection,
     doc,
     getDoc,
-    setDoc,
     getDocs,
     where,
     query,
     updateDoc,
-    Timestamp,
 } from "firebase/firestore"
-import { createUserWithEmailAndPassword, sendEmailVerification, updateProfile } from "firebase/auth"
 import { createCart } from "./cart"
 import { createWishlist } from "./wishlists"
 import { newUserModel } from "@/utils/models"
-import Error from "next/error"
 import { addUserDeleted } from "./app-settings"
-const { v4: uuidv4 } = require('uuid')
 const admin = require('../firebaseAdminInit');
 import { db } from "../firebaseInit";
+import MyError from "@/classes/MyError"
 
+/**
+ * Retrieves the user ID associated with a given email address.
+ * Queries the 'users' collection in Firestore to find a user document with the provided email.
+ * 
+ * @param {string} email - The email address to search for in the users collection.
+ * @returns {Promise<string | null>} The user ID if found, or null if no user exists with the given email.
+ * @throws {Error} Throws an error if there is an issue during the query.
+ */
 async function getUserIdByEmail(email) {
     try {
-        // Create a reference to the users collection
-        const usersCollection = collection(db, process.env.NEXT_PUBLIC_COLL_USERS);
+        const usersCollection = admin.firestore().collection(process.env.NEXT_PUBLIC_COLL_USERS);
+        const q = usersCollection.where("email", "==", email);
+        const querySnapshot = await q.get();
 
-        // Query the user with the provided email
-        const q = query(usersCollection, where("email", "==", email));
-        const querySnapshot = await getDocs(q);
-
-        // If a document is returned, return the userId
         if (!querySnapshot.empty) {
             const userDoc = querySnapshot.docs[0];
             return userDoc.id;
@@ -41,56 +41,50 @@ async function getUserIdByEmail(email) {
     }
 }
 
-async function createNewUserWithCredentials(user, userLanguage) {
+/**
+ * Creates a new user using Google authentication details.
+ * If the user does not already exist, creates a new user document in the 'users' collection.
+ * Also creates a new cart and wishlist for the user.
+ * 
+ * @param {Object} authUser - The authenticated user object from Google.
+ * @param {Object} cartProducts - The cart session ID from a cookie.
+ * @returns {Promise<Object>} The new user object if created.
+ */
+async function createNewUser(authUser) {
     try {
-        // Create a session for the new user and return the session ID
-        const { user: authenticatedUser } = await createUserWithEmailAndPassword(auth, user.email, user.password)
+        // Check if user with the same email already exists
+        const userIdExists = await getUserIdByEmail(authUser.email);
 
-        // Set display name for the authenticated user
-        await updateProfile(authenticatedUser, {
-            displayName: `${user.first_name} ${user.last_name}`
-        })
+        if (!userIdExists) {
+            const fullName = authUser.displayName.split(' ');
+            const firstName = fullName.length <= 1 ? authUser.displayName : fullName.slice(0, fullName.length - 1).join(' ');
+            const lastName = fullName.length <= 1 ? null : fullName[fullName.length - 1];
 
-        // Add the new user to the collection with password encryption
-        const newUserRef = doc(db, process.env.NEXT_PUBLIC_COLL_USERS, authenticatedUser.uid)
+            const cart_id = await createCart(authUser.uid);
 
-        const cart_id = uuidv4()
-        await createCart(newUserRef.id, cart_id, [])
+            const wishlist_id = await createWishlist(authUser.uid);
 
-        const wishlist_id = uuidv4()
-        await createWishlist(newUserRef.id, wishlist_id)
+            const newUser = newUserModel({
+                email: authUser.email,
+                first_name: firstName,
+                last_name: lastName,
+                cart_id: cart_id,
+                wishlist_id: wishlist_id,
+                email_verified: authUser.emailVerified,
+                create_at: admin.firestore.Timestamp.now()
+            });
 
-        const newUser = newUserModel({
-            email: user.email,
-            first_name: user.first_name,
-            last_name: user.last_name,
-            cart_id: cart_id,
-            wishlist_id: wishlist_id,
-            email_verified: false,
-        })
+            await admin.firestore().collection(process.env.NEXT_PUBLIC_COLL_USERS).doc(authUser.uid).set(newUser);
 
-        newUser.create_at = Timestamp.now()
-
-        // Set the document for the new user
-        await setDoc(newUserRef, newUser)
-
-        // Envie o e-mail de verificação
-        auth.languageCode = userLanguage
-        sendEmailVerification(authenticatedUser, {
-            url: process.env.NEXT_PUBLIC_URL.concat('/email-verification'),
-            handleCodeInApp: true,
-        })
-            .then(() => {
-                console.log(`Verification email sent to ${authenticatedUser.email}`)
-            })
-            .catch((error) => {
-                console.error("Error sending verification email:", error)
-            })
-
-        return newUserRef.id
+            console.log(`${newUser.email} has been added as a new user.`);
+            return { id: authUser.uid, ...newUser };
+        } else {
+            console.log(`${authUser.email} already exists as a user.`);
+            throw new MyError(`${authUser.email} already exists as a user.`);
+        }
     } catch (error) {
-        console.error("Error creating new user with credentials", error)
-        throw error
+        console.error("Error creating a new user:", error);
+        throw error;
     }
 }
 
@@ -114,89 +108,6 @@ async function checkUserExistsByEmail(email) {
     }
 }
 
-async function removeEmailVerifiedField(userId) {
-    try {
-        const userRef = doc(db, process.env.NEXT_PUBLIC_COLL_USERS, userId); // Adjust the path accordingly
-
-        // Get the existing user data
-        const userDoc = await getDoc(userRef)
-        if (userDoc.exists()) {
-            const userData = userDoc.data()
-
-            delete userData.emailVerified
-
-            await setDoc(userRef, userData)
-
-            console.log(`${userId} emailVerified field removed from the database`)
-        } else {
-            console.log(`${userId} User document not found`)
-        }
-    } catch (error) {
-        console.error(`Error removing ${userId} emailVerified field from the database:`, error)
-    }
-}
-
-async function updateField(userId, fieldName, value) {
-    try {
-        const userRef = doc(db, process.env.NEXT_PUBLIC_COLL_USERS, userId)
-        const userDoc = await getDoc(userRef)
-
-        if (userDoc.exists()) {
-            const userData = userDoc.data()
-
-            userData[fieldName] = value
-
-            await updateDoc(userRef, userData)
-
-            console.log(`User ${userId} field ${fieldName} updated successfully!`)
-
-            const updatedUserDoc = await getDoc(userRef)
-
-            return updatedUserDoc.data()
-        } else {
-            console.log(`User with id ${userId} not found.`)
-        }
-    } catch (error) {
-        console.error(`Error updating field ${fieldName} for user ${userId}.`, error)
-        throw error
-    }
-}
-
-async function clearUpdateCounter() {
-    try {
-        const usersCollection = collection(db, process.env.NEXT_PUBLIC_COLL_USERS)
-        const usersQuery = query(usersCollection)
-        const userDocs = await getDocs(usersQuery)
-
-        const updatePromises = []
-
-        userDocs.forEach((userDoc) => {
-            const userData = userDoc.data()
-            userData.update_counter = Timestamp.now()
-
-            const userRef = doc(db, process.env.NEXT_PUBLIC_COLL_USERS, userDoc.id)
-
-            updatePromises.push(setDoc(userRef, userData))
-        })
-
-        await Promise.all(updatePromises)
-
-        console.log("The 'update_counter' field for all users has been set to zero successfully.")
-
-        return {
-            status: 200,
-            message: "The 'update_counter' field for all users has been set to zero successfully.",
-        }
-    } catch (error) {
-        console.error("Error clearing the 'update_counter' field for all users:", error)
-        return {
-            status: 500,
-            message: "Error clearing the 'update_counter' field for all users.",
-            error: error,
-        }
-    }
-}
-
 async function completeQuest(user_id, quest_id) {
     try {
         const userRef = doc(db, process.env.NEXT_PUBLIC_COLL_USERS, user_id)
@@ -216,11 +127,11 @@ async function completeQuest(user_id, quest_id) {
             return updatedQuests
         } else {
             console.error(`User ${user_id} not found.`)
-            throw new Error(`User ${user_id} not found.`)
+            throw new MyError(`User ${user_id} not found.`)
         }
     } catch (error) {
-        console.error(`Error completing quest for user ${user_id}: ${error}`)
-        throw new Error(`Error completing quest for user ${user_id}: ${error}`)
+        console.error('Error completing quest:', error)
+        throw error
     }
 }
 
@@ -231,7 +142,7 @@ async function deleteUser(user_id) {
         const userDoc = await userRef.get()
 
         if (!userDoc.exists)
-            throw new Error({ title: 'user_not_found', type: 'error' })
+            throw new MyError('user_not_found')
 
         const user = userDoc.data()
 
@@ -240,13 +151,13 @@ async function deleteUser(user_id) {
         const cartDoc = await cartRef.get()
 
         if (!cartDoc.exists)
-            throw new Error({ title: 'cart_not_found', type: 'error' })
+            throw new MyError('cart_not_found')
 
         const wishlistRef = admin.firestore().doc(`${process.env.NEXT_PUBLIC_COLL_WISHLISTS}/${user.wishlist_id}`)
 
         const wishlistDoc = await wishlistRef.get()
         if (!wishlistDoc.exists)
-            throw new Error({ title: 'wishlist_not_found', type: 'error' })
+            throw new MyError('wishlist_not_found')
 
         await admin.auth().deleteUser(user_id)
         await userRef.delete()
@@ -258,17 +169,14 @@ async function deleteUser(user_id) {
         console.log(`User with ID ${user_id} has been deleted successfully.`)
     } catch (error) {
         console.error(`Error deleting user with ID ${user_id}:`, error)
-        throw new Error({ title: error?.props?.title || 'default_error', type: error?.props?.type || 'error' })
+        throw error
     }
 }
 
 export {
-    createNewUserWithCredentials,
-    removeEmailVerifiedField,
     checkUserExistsByEmail,
     getUserIdByEmail,
-    updateField,
-    clearUpdateCounter,
     completeQuest,
-    deleteUser
+    deleteUser,
+    createNewUser,
 }

@@ -81,7 +81,7 @@ export default function Profile() {
 
         auth.languageCode = i18n.language;
         sendEmailVerification(auth.currentUser, {
-            url: process.env.NEXT_PUBLIC_URL.concat('/email-verification'),
+            url: `${process.env.NEXT_PUBLIC_URL}/${i18n.language}/auth`,
             handleCodeInApp: true,
         })
             .then(() => {
@@ -120,17 +120,16 @@ export default function Profile() {
             showToast({ type: 'success', msg: tToasts('user_updated') })
         }
         catch (error) {
-            if (!error?.props)
-                console.error(error)
+            console.error(error)
             if (error?.code === 'auth/invalid-profile-attribute')
                 showToast({ type: 'error', msg: tToasts('invalid_profile_attribute') })
             else
-                showToast({ type: error?.props?.type || 'error', msg: tToasts(error?.props?.title || 'default_error') })
+                showToast({ type: error?.type || 'error', msg: tToasts(error.message) })
             setDisableSaveButton(false)
         }
     }
 
-    function handleDeleteAccount() {
+    async function handleDeleteAccount() {
         if (deleteTextInput === tProfile('DELETE MY ACCOUNT')) {
             setDeleteAccButtonLoading(true)
 
@@ -143,41 +142,25 @@ export default function Profile() {
                 },
             }
 
-            fetch("/api/user", options)
-                .then(response => response.json())
-                .then(response => {
-                    if (response.error) {
-                        showToast({ type: response?.type || 'error', msg: tToasts(response.error) })
-                        setDeleteAccButtonLoading(false)
-                    }
-                    else {
-                        showToast({ type: 'success', msg: tToasts(response.message) })
-                        window.location.href = `${window.location.origin}${i18n.language === DEFAULT_LANGUAGE ? '' : `/${i18n.language}`}`
-                    }
-                })
-                .catch(error => {
-                    console.error(error)
-                    showToast({ type: 'error', msg: tToasts('default_error') })
-                    setDeleteAccButtonLoading(false)
-                })
+            const response = await fetch('/api/users/user', options)
+            const responseJson = await response.json()
+
+            if (response.status >= 500) {
+                showToast({ type: 'error', msg: tToasts(responseJson.message) })
+                setDeleteAccButtonLoading(false)
+                return
+            }
+
+            if (response.status >= 300) {
+                showToast({ msg: tToasts(responseJson.message) })
+                setDeleteAccButtonLoading(false)
+                return
+            }
+
+            showToast({ type: 'success', msg: tToasts(responseJson.message) })
+            window.location.href = `${window.location.origin}${i18n.language === DEFAULT_LANGUAGE ? '' : `/${i18n.language}`}`
         }
     }
-
-    /*     async function handleDeleteAccount() {
-            try {
-                setDeleteAccButtonLoading(true)
-    
-                await deleteUser(session.id)
-                showToast({ type: 'success', msg: tToasts('user_deleted_successfully') })
-                window.location.href = `${window.location.origin}${i18n.language === DEFAULT_LANGUAGE ? '' : `/${i18n.language}`}`
-            }
-            catch (error) {
-                if (!error?.props)
-                    console.error(error)
-                showToast({ type: error?.props?.type || 'error', msg: tToasts(error?.props?.title || 'default_error') })
-                setDeleteAccButtonLoading(false)
-            }
-        } */
 
     function handleKeyDownDelete(event) {
         if (event.key === 'Enter') {

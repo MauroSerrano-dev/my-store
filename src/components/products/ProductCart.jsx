@@ -2,19 +2,16 @@ import styles from '@/styles/components/products/ProductCart.module.css'
 import { SlClose } from "react-icons/sl";
 import { motion } from "framer-motion";
 import Link from 'next/link';
-import { SIZES_POOL, COLORS_POOL, CART_COOKIE, CART_LOCAL_STORAGE } from '@/consts';
+import { SIZES_POOL, COLORS_POOL } from '@/consts';
 import Image from 'next/image';
 import Selector from '../material-ui/Selector';
 import { useState } from 'react';
 import { useTranslation } from 'next-i18next';
-import Cookies from 'js-cookie';
 import { useAppContext } from '../contexts/AppContext';
 import { showToast } from '@/utils/toasts';
 import { getProductPriceUnit } from '@/utils/prices';
 import MyTooltip from '../MyTooltip';
-import { deleteProductFromCart } from '../../../frontend/cart';
 import ProductTag from './ProductTag';
-import { isSameProduct } from '@/utils';
 
 export default function ProductCart(props) {
     const {
@@ -25,10 +22,9 @@ export default function ProductCart(props) {
     } = props
 
     const {
-        session,
         userCurrency,
-        cart,
-        setCart,
+        handleChangeProductQuantity,
+        handleDeleteProductFromCart,
     } = useAppContext()
 
     const { i18n } = useTranslation()
@@ -47,55 +43,29 @@ export default function ProductCart(props) {
 
     const [deleting, setDeleting] = useState(false)
 
-    async function handleDeleteProductFromCart() {
+    async function handleDeleteProduct() {
         try {
             setDeleting(true)
-            if (session) {
-                await deleteProductFromCart(cart.id, product)
-            }
-            else {
-                const visitantCart = JSON.parse(localStorage.getItem(CART_LOCAL_STORAGE))
-                localStorage.setItem(CART_LOCAL_STORAGE, JSON.stringify({ ...visitantCart, products: visitantCart.products.filter(prod => !isSameProduct(prod, product)) }))
-            }
-            setCart(prev => ({ ...prev, products: prev.products.filter(prod => !isSameProduct(prod, product)) }))
+            await handleDeleteProductFromCart(product)
         }
         catch (error) {
             console.error(error)
+            showToast({ type: error?.type || 'error', msg: tToasts(error.message) })
             setDeleting(false)
-            showToast({ type: error?.props?.type || 'error', msg: tToasts(error?.props?.title || 'default_error') })
         }
     }
 
-    function handleChangeQuantity(event) {
-        setDeleting(true)
-
-        const options = {
-            method: 'PUT',
-            headers: {
-                'Content-Type': 'application/json',
-                authorization: process.env.NEXT_PUBLIC_APP_TOKEN
-            },
-            body: JSON.stringify({
-                cartId: session ? session.cart_id : Cookies.get(CART_COOKIE),
-                product: { id: product.id, variant_id: product.variant.id },
-                newQuantity: event.target.value
-            }),
+    async function handleChangeQuantity(event) {
+        try {
+            setDeleting(true)
+            await handleChangeProductQuantity(product, event.target.value)
+            setDeleting(false)
         }
-
-        if (session) {
-            options.headers.user_id = session.id
+        catch (error) {
+            console.error(error)
+            showToast({ type: error?.type || 'error', msg: tToasts(error.message) })
+            setDeleting(false)
         }
-
-        fetch("/api/carts/cart-product-quantity", options)
-            .then(response => response.json())
-            .then(response => {
-                setDeleting(false)
-                setCart(response.cart)
-            })
-            .catch(err => {
-                setDeleting(false)
-                console.error(err)
-            })
     }
 
     return (
@@ -126,7 +96,7 @@ export default function ProductCart(props) {
                 title={tCommon('remove_from_cart')}
             >
                 <button
-                    onClick={handleDeleteProductFromCart}
+                    onClick={handleDeleteProduct}
                     className={`${styles.deleteButton} buttonInvisible`}
                 >
                     <SlClose />

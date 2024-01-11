@@ -3,7 +3,7 @@ import { toast } from 'react-toastify'
 /**
  * Função para exibir um toast de informação.
  *
- * @param {object} props - Function props.
+ * @param {Object} props - Function props.
  * @param {'info' | 'success' | 'error'} props.type - Toast type. `Default: 'info'`
  * @param {string} props.msg - Toast message. `Default: 'This is a Toast!'`
  * @param {number} props.time - Toast duration. `Default: 3000`

@@ -4,7 +4,6 @@ import { CART_COOKIE, COLORS_POOL, COMMON_TRANSLATES, DEFAULT_LANGUAGE, LIMITS, 
 import COUNTRIES_POOL from '../../public/locales/en/countries.json'
 import { useEffect, useState } from 'react'
 import Selector from '@/components/material-ui/Selector'
-import Cookies from 'js-cookie'
 import CarouselProducts from '@/components/carousels/CarouselProducts'
 import { useTranslation } from 'next-i18next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
@@ -113,7 +112,7 @@ export default function Cart() {
                 shippingValue: SHIPPING_CONVERTED,
                 shippingCountry: userLocation.country,
                 currency: userCurrency?.code,
-                cart_id: session ? session.cart_id : Cookies.get(CART_COOKIE),
+                cart_id: session ? session.cart_id : null,
                 user_language: i18n.language,
             })
         }
@@ -182,7 +181,8 @@ export default function Cart() {
             }
         }
         catch (error) {
-            showToast({ type: error?.props?.type || 'error', msg: tToasts(error?.props?.title || 'default_error') })
+            console.error(error)
+            showToast({ type: error?.type || 'error', msg: tToasts(error.message) })
         }
     }
 
