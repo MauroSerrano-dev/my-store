@@ -4,7 +4,7 @@ import { motion } from "framer-motion";
 import Link from 'next/link';
 import { SIZES_POOL, COLORS_POOL } from '@/consts';
 import Image from 'next/image';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useTranslation } from 'next-i18next';
 import { useAppContext } from '../contexts/AppContext';
 import { showToast } from '@/utils/toasts';
@@ -35,6 +35,10 @@ export default function ProductModal(props) {
     const SIZE = SIZES_POOL.find(sz => sz.id === product.variant.size_id)
 
     const [deleting, setDeleting] = useState(false)
+
+    useEffect(() => {
+        throw new Error('salva')
+    }, [])
 
     async function handleDeleteProduct() {
         try {
