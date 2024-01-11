@@ -1,6 +1,6 @@
 import ProductCart from '@/components/products/ProductCart'
 import styles from '@/styles/pages/cart.module.css'
-import { CART_COOKIE, COLORS_POOL, COMMON_TRANSLATES, DEFAULT_LANGUAGE, LIMITS, PRODUCTS_TYPES, SIZES_POOL, getShippingOptions } from '@/consts'
+import { COLORS_POOL, COMMON_TRANSLATES, DEFAULT_LANGUAGE, LIMITS, PRODUCTS_TYPES, SIZES_POOL, getShippingOptions } from '@/consts'
 import COUNTRIES_POOL from '../../public/locales/en/countries.json'
 import { useEffect, useState } from 'react'
 import Selector from '@/components/material-ui/Selector'

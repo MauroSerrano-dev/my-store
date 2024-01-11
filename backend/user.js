@@ -71,8 +71,9 @@ async function createNewUser(authUser) {
                 cart_id: cart_id,
                 wishlist_id: wishlist_id,
                 email_verified: authUser.emailVerified,
-                create_at: admin.firestore.Timestamp.now()
             });
+
+            newUser.create_at = admin.firestore.Timestamp.now()
 
             await admin.firestore().collection(process.env.NEXT_PUBLIC_COLL_USERS).doc(authUser.uid).set(newUser);
 
@@ -105,33 +106,6 @@ async function checkUserExistsByEmail(email) {
     } catch (error) {
         console.error("Error checking if user exists:", error);
         throw error;
-    }
-}
-
-async function completeQuest(user_id, quest_id) {
-    try {
-        const userRef = doc(db, process.env.NEXT_PUBLIC_COLL_USERS, user_id)
-        const userDoc = await getDoc(userRef)
-
-        if (userDoc.exists()) {
-            const userData = userDoc.data()
-            const { quests } = userData
-
-            // Update the quests array using map to modify the specific quest
-            const updatedQuests = quests.filter(quest => quest !== quest_id)
-
-            // Update the user document with the modified quests array
-            await updateDoc(userRef, { quests: updatedQuests })
-
-            console.log(`Quest ${quest_id} completed for user ${user_id}.`)
-            return updatedQuests
-        } else {
-            console.error(`User ${user_id} not found.`)
-            throw new MyError(`User ${user_id} not found.`)
-        }
-    } catch (error) {
-        console.error('Error completing quest:', error)
-        throw error
     }
 }
 
@@ -176,7 +150,6 @@ async function deleteUser(user_id) {
 export {
     checkUserExistsByEmail,
     getUserIdByEmail,
-    completeQuest,
     deleteUser,
     createNewUser,
 }

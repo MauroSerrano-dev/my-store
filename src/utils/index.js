@@ -10,16 +10,22 @@ import MyError from '@/classes/MyError';
 export function getObjectsDiff(obj1, obj2) {
     const differentFields = {};
 
+    if (!obj1 || !obj2) {
+        return differentFields;
+    }
+
     for (const key in obj1) {
-        if (obj1.hasOwnProperty(key) && !obj2.hasOwnProperty(key)) {
-            differentFields[key] = obj1[key];
-        } else if (typeof obj1[key] === "object" && typeof obj2[key] === "object") {
-            const nestedDifferences = getObjectsDiff(obj1[key], obj2[key]);
-            if (Object.keys(nestedDifferences).length > 0) {
-                differentFields[key] = nestedDifferences;
+        if (obj1.hasOwnProperty(key)) {
+            if (!obj2.hasOwnProperty(key)) {
+                differentFields[key] = obj1[key];
+            } else if (typeof obj1[key] === "object" && typeof obj2[key] === "object") {
+                const nestedDifferences = getObjectsDiff(obj1[key], obj2[key]);
+                if (Object.keys(nestedDifferences).length > 0) {
+                    differentFields[key] = nestedDifferences;
+                }
+            } else if (obj1[key] !== obj2[key]) {
+                differentFields[key] = obj1[key];
             }
-        } else if (obj1[key] !== obj2[key]) {
-            differentFields[key] = obj1[key];
         }
     }
 
@@ -31,6 +37,7 @@ export function getObjectsDiff(obj1, obj2) {
 
     return differentFields;
 }
+
 
 export function hasRepeatedItems(arr) {
     const values = new Set()

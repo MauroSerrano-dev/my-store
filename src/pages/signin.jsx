@@ -15,7 +15,6 @@ import { LoadingButton } from '@mui/lab'
 import { useAppContext } from '@/components/contexts/AppContext'
 import NoFound404 from '@/components/NoFound404'
 import MyButton from '@/components/material-ui/MyButton'
-import MyError from '@/classes/MyError'
 import { createUserWithEmailAndPassword, sendEmailVerification, updateProfile } from 'firebase/auth'
 
 export default function Signin() {

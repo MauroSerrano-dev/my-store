@@ -33,11 +33,11 @@ export function isNewProductValid(product, images, translate) {
         showToast({ type: 'error', msg: translate('image_src_missing') })
         return false
     }
-    if (product.variants.some(vari => vari.art.color_id === null)) {
+    if (product.variants.some(vari => vari.active && vari.art.color_id === null)) {
         showToast({ type: 'error', msg: translate('art_color_missing') })
         return false
     }
-    if (product.variants.some(vari => vari.art.id === null)) {
+    if (product.variants.some(vari => vari.active && vari.art.id === null)) {
         showToast({ type: 'error', msg: translate('art_id_missing') })
         return false
     }

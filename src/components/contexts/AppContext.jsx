@@ -310,6 +310,7 @@ export function AppProvider({ children }) {
 
     async function handleLogin(user) {
         try {
+            console.log('user', user)
             const visitantCartProducts = JSON.parse(localStorage.getItem(CART_LOCAL_STORAGE))?.products || []
             setSession(user)
             const cart = visitantCartProducts.length > 0

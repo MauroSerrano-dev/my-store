@@ -15,142 +15,41 @@ import { isProductInPrintify } from "./printify"
 import { db } from "../firebaseInit"
 import { getProductsByIds } from "../frontend/product"
 import MyError from "@/classes/MyError"
+const admin = require('../firebaseAdminInit');
 
-async function getProductsInfo(products) {
-    try {
-        if (products.length === 0) {
-            return {
-                status: 200,
-                message: 'No products found for the provided Cart.',
-                products: [],
-            };
-        }
-
-        const productsCollection = collection(db, process.env.NEXT_PUBLIC_COLL_PRODUCTS);
-
-        const productIDs = products.map(prod => prod.id);
-        const chunkSize = 30;
-        const chunks = [];
-
-        for (let i = 0; i < productIDs.length; i += chunkSize) {
-            chunks.push(productIDs.slice(i, i + chunkSize));
-        }
-
-        const promises = chunks.map(async chunk => {
-            const q = query(
-                productsCollection,
-                where('id', 'in', chunk)
-            );
-
-            const querySnapshot = await getDocs(q);
-            return querySnapshot.docs.map(doc => doc.data());
-        });
-
-        const chunkResults = await Promise.all(promises);
-        const productsResult = chunkResults.flat();
-
-        const productsOneVariant = products.map(prod => {
-            const product = productsResult.find(p => p.id === prod.id)
-            const variants = getProductVariantsInfos(product)
-            const variant = variants.find(vari => vari.id === prod.variant_id)
-
-            const art_position = typeof product.printify_ids[0] === 'string'
-                ? null
-                : prod.art_position
-                    ? prod.art_position
-                    : Object.keys(product.printify_ids).reduce((acc, key) =>
-                        Object.keys(product.printify_ids[key]).reduce((acc2, a_position) =>
-                            product.printify_ids[key][a_position] === prod.id_printify ? a_position : acc2
-                            , null
-                        )
-                            ? Object.keys(product.printify_ids[key]).reduce((acc2, a_position) =>
-                                product.printify_ids[key][a_position] === prod.id_printify ? a_position : acc2
-                                , null
-                            )
-                            : acc
-                        , null
-                    )
-
-            const printify_ids = art_position
-                ? Object.keys(product.printify_ids).reduce((acc, key) => ({
-                    ...acc,
-                    [key]: product.printify_ids[key][art_position]
-                }), {})
-                : product.printify_ids
-
-            const visualImage = product.images.filter(img => img.color_id === variant.color_id)[product.image_showcase_index]
-
-            const prodImage = art_position
-                ? { ...visualImage, src: visualImage.src[art_position] }
-                : visualImage
-
-            return {
-                ...prod,
-                type_id: product.type_id,
-                title: product.title,
-                promotion: product.promotion,
-                printify_ids: printify_ids,
-                variant: variant,
-                default_variant: {
-                    color_id: variants[0].color_id,
-                    size_id: variants[0].size_id,
-                },
-                image: prodImage,
-            };
-        });
-
-        return {
-            status: 200,
-            message: 'Products retrieved successfully Products Info!',
-            products: productsOneVariant,
-        };
-    } catch (error) {
-        console.log('Error getting Products Info:', error);
-        return {
-            status: 500,
-            message: 'Error getting Products Info.',
-            products: null,
-            error: error,
-        };
-    }
-}
-
+/**
+ * Creates a new product in the Firestore database.
+ * Checks for existing product with the same ID and for validity in Printify.
+ * 
+ * @param {Object} product - The product object to be created.
+ * @returns {Promise<Object>} An object containing the status and message of the operation.
+ * @throws {MyError} Throws a MyError if the product creation fails.
+ */
 async function createProduct(product) {
-    const productRef = doc(db, process.env.NEXT_PUBLIC_COLL_PRODUCTS, product.id)
+    const productsCollection = admin.firestore().collection(process.env.NEXT_PUBLIC_COLL_PRODUCTS);
+    const productRef = productsCollection.doc(product.id);
 
     try {
-        const docSnapshot = await getDoc(productRef)
-        if (docSnapshot.exists()) {
-            return {
-                status: 409,
-                msg: `Product ID ${product.id} already exists.`,
-            }
+        const docSnapshot = await productRef.get();
+        if (docSnapshot.exists) {
+            throw new MyError(`Product ID ${product.id} already exists.`);
         }
 
-        const existInPrintify = await isProductInPrintify(product)
-
-        if (!existInPrintify)
-            return {
-                status: 400,
-                msg: 'Invalid printify id',
-            }
+        const existInPrintify = await isProductInPrintify(product);
+        if (!existInPrintify) {
+            throw new MyError('Invalid printify ID');
+        }
 
         const newProduct = {
             ...product,
-            create_at: Timestamp.now(),
-        }
+            create_at: admin.firestore.Timestamp.now(),
+        };
 
-        await setDoc(productRef, newProduct)
-        return {
-            status: 201, // Código de status HTTP 201 Created
-            msg: `Product ${newProduct.id} created successfully!`,
-        }
+        await productRef.set(newProduct);
+        return { status: 200, msg: 'Product created successfully' };
     } catch (error) {
-        console.log("Error creating product:", error)
-        return {
-            status: 500, // Código de status HTTP 500 Internal Server Error
-            msg: "An error occurred while creating the product.",
-        }
+        console.error("Error creating product:", error);
+        throw error;
     }
 }
 
@@ -184,102 +83,75 @@ async function getProductById(id) {
     }
 }
 
+/**
+ * Updates a product in the Firestore database with new fields.
+ * 
+ * @param {string} product_id - The ID of the product to update.
+ * @param {Object} product_new_fields - New fields to update the product with.
+ * @returns {Promise<Object>} An object containing the status message of the operation.
+ * @throws {MyError} Throws a MyError if the product update fails.
+ */
 async function updateProduct(product_id, product_new_fields) {
-    if (!product_id || !product_new_fields)
-        throw new MyError('Invalid update data', 'warning')
-
-    const productRes = await getProductById(product_id)
-    if (!productRes.product)
-        throw new MyError('Product not found to update', 'warning')
-    const existInPrintify = await isProductInPrintify({ ...productRes.product, ...product_new_fields })
-    if (!existInPrintify)
-        throw new MyError('Invalid printify ID', 'warning')
-
-    if (product_new_fields.variants) {
-        const type = PRODUCTS_TYPES.find(type => type.id === productRes.product.type_id)
-
-        const variants = product_new_fields.variants.map(variant => ({
-            ...variant,
-            cost: type.variants.find(vari => vari.id === variant.id).cost
-        }))
-        if (variants.some(vari => vari.cost + LIMITS.min_profit >= vari.price * (productRes.product.promotion ? (1 - productRes.product.promotion.percentage) : 1)))
-            throw new MyError('Invalid product price', 'warning')
+    if (!product_id || !product_new_fields) {
+        throw new MyError('Invalid update data', 'warning');
     }
 
-    const productRef = doc(db, process.env.NEXT_PUBLIC_COLL_PRODUCTS, product_id)
+    const productsCollection = admin.firestore().collection(process.env.NEXT_PUBLIC_COLL_PRODUCTS);
+    const productRef = productsCollection.doc(product_id);
 
     try {
-        await updateDoc(productRef, product_new_fields)
+        const productDoc = await productRef.get();
 
-        console.log(`Product ${product_id} updated successfully!`)
-        return { message: `Product ${product_id} updated successfully!` }
+        if (!productDoc.exists) {
+            throw new MyError('Product not found to update', 'warning');
+        }
+
+        const productData = productDoc.data();
+        const existInPrintify = await isProductInPrintify({ ...productData, ...product_new_fields });
+        if (!existInPrintify) {
+            throw new MyError('Invalid printify ID', 'warning');
+        }
+
+        await productRef.update(product_new_fields);
+        console.log(`Product ${product_id} updated successfully!`);
+        return { message: `Product ${product_id} updated successfully!` };
     } catch (error) {
-        console.log("Error updating product:", error)
-        throw new MyError('Error updating product', error?.type || 'error')
+        console.error("Error updating product:", error);
+        throw error;
     }
 }
 
 async function cleanPopularityMonth() {
     try {
-        const productsCollection = collection(db, process.env.NEXT_PUBLIC_COLL_PRODUCTS);
-        const querySnapshot = await getDocs(productsCollection);
+        const productsCollection = admin.firestore().collection(process.env.NEXT_PUBLIC_COLL_PRODUCTS);
+        const querySnapshot = await productsCollection.get();
 
         for (const doc of querySnapshot.docs) {
-            const productRef = doc.ref;
-            const productDoc = await getDoc(productRef);
-
-            if (productDoc.exists()) {
-                const productData = productDoc.data();
-                productData.popularity_month = 0;
-
-                await updateDoc(productRef, productData);
-            }
+            await doc.ref.update({ popularity_month: 0 });
         }
 
-        console.log('Popularity month cleaned successfully!')
-        return {
-            status: 200,
-            message: 'Popularity month cleaned successfully!',
-        };
+        console.log('Popularity month cleaned successfully!');
+        return { status: 200, message: 'Popularity month cleaned successfully!' };
     } catch (error) {
         console.error('Error cleaning popularity month:', error);
-        return {
-            status: 500,
-            message: 'Error cleaning popularity month.',
-            error: error,
-        };
+        throw error;
     }
 }
 
 async function cleanPopularityYear() {
     try {
-        const productsCollection = collection(db, process.env.NEXT_PUBLIC_COLL_PRODUCTS);
-        const querySnapshot = await getDocs(productsCollection);
+        const productsCollection = admin.firestore().collection(process.env.NEXT_PUBLIC_COLL_PRODUCTS);
+        const querySnapshot = await productsCollection.get();
 
         for (const doc of querySnapshot.docs) {
-            const productRef = doc.ref;
-            const productDoc = await getDoc(productRef);
-
-            if (productDoc.exists()) {
-                const productData = productDoc.data();
-                productData.popularity_year = 0;
-
-                await updateDoc(productRef, productData);
-            }
+            await doc.ref.update({ popularity_year: 0 });
         }
 
-        console.log('Popularity year cleaned successfully!')
-        return {
-            status: 200,
-            message: 'Popularity year cleaned successfully!',
-        };
+        console.log('Popularity year cleaned successfully!');
+        return { status: 200, message: 'Popularity year cleaned successfully!' };
     } catch (error) {
         console.error('Error cleaning popularity year:', error);
-        return {
-            status: 500,
-            message: 'Error cleaning popularity year.',
-            error: error,
-        };
+        throw error;
     }
 }
 
@@ -359,7 +231,6 @@ export {
     createProduct,
     getProductById,
     updateProduct,
-    getProductsInfo,
     getProductsByIds,
     cleanPopularityMonth,
     cleanPopularityYear,

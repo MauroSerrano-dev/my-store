@@ -22,8 +22,6 @@ export const COMMON_TRANSLATES = [
     'page-error',
 ]
 
-export const CART_COOKIE = 'CART'
-
 export const CART_LOCAL_STORAGE = 'visitant-cart'
 export const CURRENCY_LOCAL_STORAGE = 'currency'
 
@@ -287,7 +285,7 @@ export const PRODUCTS_TYPES = [
         care_instructions: ['machine-wash-cold', 'not-dryclean', 'not-bleach', 'tumble-dry-low', 'iron-low'],
         metrics: { width: [45.72, 50.8, 55.88, 60.96, 66.04], length: [71.12, 73.66, 76.2, 78.74, 81.28], sleeve: [20.9, 21.6, 22.2, 22.9, 23.5] },
         sizes: [14, 15, 16, 17, 18],
-        colors: [521, 418, 358, 362, 364, 369, 392, 424, 425, 511, 420, 423],
+        colors: [521, 418, 358, 362, 364, 369, 392, 424, 425, 511, 423],
         variants: [
             {
                 id: "black-s",
