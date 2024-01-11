@@ -90,9 +90,34 @@ async function handleStripeWebhookFail(callId) {
     }
 }
 
+/**
+ * Checks if an email is in the list of prohibited emails.
+ * This function looks up the 'deleted_users' document in the 'app_settings' collection
+ * to see if the provided email is listed there.
+ * 
+ * @param {string} email - The email to check against the prohibited list.
+ * @returns {Promise<boolean>} True if the email is prohibited, false otherwise.
+ */
+async function emailIsProhibited(email) {
+    try {
+        const settingsRef = admin.firestore().doc(`${process.env.NEXT_PUBLIC_COLL_APP_SETTINGS}/deleted_users`);
+        const settingsDoc = await settingsRef.get();
+
+        if (settingsDoc.exists && settingsDoc.data().data) {
+            const prohibitedEmails = settingsDoc.data().data.map(item => item.email);
+            return prohibitedEmails.includes(email);
+        }
+        return false;
+    } catch (error) {
+        console.error("Error checking if email is prohibited:", error);
+        throw error;
+    }
+}
+
 export {
     updateAllCurrencies,
     addUserDeleted,
     clearDeletedUsers,
     handleStripeWebhookFail,
+    emailIsProhibited,
 }

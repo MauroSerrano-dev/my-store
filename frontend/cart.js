@@ -38,7 +38,7 @@ async function getCartById(id) {
  * Creates a new cart.
  * @param {string} userId - The ID of the user.
  * @param {Array} products - The products in the cart. `Default: []`
- * @returns {string | object} The cart ID or status message if a conflict occurs.
+ * @returns {string} The cart ID.
  */
 async function createCart(userId, products = []) {
     try {
@@ -52,7 +52,6 @@ async function createCart(userId, products = []) {
 
         const docRef = await addDoc(cartsCollectionRef, newCart);
 
-        console.log('Cart created');
         return docRef.id
     } catch (error) {
         console.error('Error creating cart:', error)
@@ -90,7 +89,7 @@ async function addProductsToCart(cartId, cartNewProducts) {
 /**
  * Deletes a product from a cart.
  * @param {string} cartId - The ID of the cart.
- * @param {object} product - The product to be removed from the cart.
+ * @param {Object} product - The product to be removed from the cart.
  * @returns {object} Status and message regarding the cart update.
  */
 async function deleteProductFromCart(cartId, product) {
@@ -128,7 +127,7 @@ async function mergeCarts(cartId, products) {
 /**
  * Changes a specific field value in a product within a cart.
  * @param {string} cartId - The ID of the cart.
- * @param {object} product - The product to be updated.
+ * @param {Object} product - The product to be updated.
  * @param {string} fieldName - The name of the field to be updated.
  * @param {any} newValue - The new value for the field.
  * @returns {object} Status and message regarding the cart update.

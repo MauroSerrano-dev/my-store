@@ -1,42 +1,30 @@
-import { doc, getDoc, updateDoc, Timestamp, setDoc } from "firebase/firestore";
+import { doc, getDoc, updateDoc } from "firebase/firestore";
 import { db } from "../firebaseInit";
 import MyError from "@/classes/MyError";
 const admin = require('../firebaseAdminInit');
 
 /**
- * Creates a new cart.
- * @param {string} userId - The ID of the user.
- * @param {string} cartId - The ID of the cart.
- * @param {Array} products - The products in the cart.
- * @returns {string | object} The cart ID or status message if a conflict occurs.
+ * Creates a new cart for a user.
+ * @param {string} userId - The ID of the user for whom the cart is being created.
+ * @param {Array} products - Products to be included in the cart. Default is an empty array.
+ * @returns {Promise<string>} The ID of the created cart document.
  */
-async function createCart(userId, cartId, products) {
+async function createCart(userId, products = []) {
     try {
-        const cartRef = doc(db, process.env.NEXT_PUBLIC_COLL_CARTS, cartId)
-
-        const docSnapshot = await getDoc(cartRef)
-
-        if (docSnapshot.exists()) {
-            return {
-                status: 409,
-                message: `Cart ID ${cartId} already exists.`,
-            }
-        }
+        const cartsCollectionRef = admin.firestore().collection(process.env.NEXT_PUBLIC_COLL_CARTS);
 
         const newCart = {
-            id: cartId,
             user_id: userId,
             products: products,
-            created_at: Timestamp.now(),
-        }
+            created_at: admin.firestore.Timestamp.now(),
+        };
 
-        await setDoc(cartRef, newCart)
+        const docRef = await cartsCollectionRef.add(newCart);
 
-        console.log(`Cart created with ID: ${cartId}`)
-        return cartId
+        return docRef.id;
     } catch (error) {
-        console.error("Error creating cart:", error)
-        return null
+        console.error('Error creating cart:', error);
+        throw error;
     }
 }
 
@@ -62,7 +50,7 @@ async function setCartProducts(cartId, cartProducts) {
  * Changes a specific field value in a product within a cart.
  * @param {string} collectionName - The name of the collection.
  * @param {string} cartId - The ID of the cart.
- * @param {object} product - The product to be updated.
+ * @param {Object} product - The product to be updated.
  * @param {string} fieldName - The name of the field to be updated.
  * @param {any} newValue - The new value for the field.
  * @returns {object} Status and message regarding the cart update.

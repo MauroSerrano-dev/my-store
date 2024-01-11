@@ -1,34 +1,30 @@
-import { doc, getDoc, Timestamp, setDoc } from "firebase/firestore";
-import { db } from "../firebaseInit";
 import MyError from "@/classes/MyError";
+const admin = require('../firebaseAdminInit');
 
-async function createWishlist(userId, wishlistId) {
+/**
+ * Creates a new wishlist for a user.
+ * @param {string} userId - The ID of the user for whom the wishlist is being created.
+ * @returns {Promise<string>} The ID of the created wishlist document.
+ */
+async function createWishlist(userId) {
     try {
-        const wishlistRef = doc(db, process.env.COLL_WISHLISTS, wishlistId)
+        const wishlistsCollectionRef = admin.firestore().collection(process.env.NEXT_PUBLIC_COLL_WISHLISTS);
 
-        const docSnapshot = await getDoc(wishlistRef)
-
-        if (docSnapshot.exists()) {
-            return {
-                status: 409,
-                message: `Wishlist ID ${wishlistId} already exists.`,
-            }
-        }
+        const now = admin.firestore.Timestamp.now();
 
         const newWishlist = {
-            id: wishlistId,
             user_id: userId,
             products: [],
-            created_at: Timestamp.now(),
-        }
+            created_at: now,
+            updated_at: now,
+        };
 
-        await setDoc(wishlistRef, newWishlist)
+        const docRef = await wishlistsCollectionRef.add(newWishlist);
 
-        console.log(`Wishlist created with ID: ${wishlistId}`)
-        return wishlistId
+        return docRef.id;
     } catch (error) {
-        console.error("Error creating wishlist:", error)
-        return null
+        console.error('Error creating wishlist:', error);
+        throw new MyError('Error creating wishlist');
     }
 }
 

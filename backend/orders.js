@@ -18,7 +18,7 @@ const admin = require('../firebaseAdminInit');
  * Creates a new order in the Firestore.
  * 
  * @param {string} orderId - The order ID.
- * @param {object} order - The order object to be created in the Firestore.
+ * @param {Object} order - The order object to be created in the Firestore.
  * @returns {string} The order ID.
  */
 async function createOrder(orderId, order) {
@@ -35,7 +35,13 @@ async function createOrder(orderId, order) {
             create_at: now,
         })
 
-        await handlePostOrderCreation(order.products) // Function to handle post-order creation logic.
+        handlePostOrderCreation(order.products)
+            .then(() => {
+                console.log('handlePostOrderCreation was executed successfully')
+            })
+            .catch(error => {
+                console.error("Error in handlePostOrderCreation:", error)
+            })
 
         return orderId
     }

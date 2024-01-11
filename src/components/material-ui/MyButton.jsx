@@ -5,8 +5,8 @@ import React from 'react';
  * MyButton is a custom button component based on Material-UI's Button.
  * It allows additional customization and passing content as children.
  *
- * @param {object} props - The properties of the component.
- * @param {object} [props.style] - Custom styles to apply to the button. `Default: {}`
+ * @param {Object} props - The properties of the component.
+ * @param {Object} [props.style] - Custom styles to apply to the button. `Default: {}`
  * @param {'small' | 'medium' | 'large'} [props.size] - Defines the size of the button. `Default: 'medium'`
  * @param {function} [props.onClick] - Function to be called when the button is clicked. `Default: null`
  * @param {React.ReactNode} props.children - Content to be displayed inside the button.

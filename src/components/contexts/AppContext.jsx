@@ -17,7 +17,7 @@ import { showToast } from '@/utils/toasts'
 import CountryConverter from '@/utils/time-zone-country.json'
 import ZoneConverter from '@/utils/country-zone.json'
 import NProgress from 'nprogress'
-import { createNewUserWithGoogle, getUserById } from '../../../frontend/user'
+import { createNewUser, getUserById } from '../../../frontend/user'
 import { addProductToWishlist, deleteProductFromWishlist, getWishlistById } from '../../../frontend/wishlists'
 import { changeCartProductField, deleteProductFromCart, getCartById, mergeCarts } from '../../../frontend/cart'
 import { getProductsInfo } from '../../../frontend/product'
@@ -286,34 +286,81 @@ export function AppProvider({ children }) {
         setUserCurrency(currencies?.[newCurrencyCode])
     }
 
-    async function handleLogin(authUser) {
+    function updateSession() {
+        onAuthStateChanged(auth, async (authUser) => {
+            const user = authUser ? await getUserById(authUser.uid) : null
+            if (authUser && user) {
+                setIsUser(true)
+                setIsVisitant(false)
+                setUserEmailVerify(authUser.emailVerified)
+                handleLogin(user)
+            }
+            else if (!user && authUser && authUser.providerData?.some(provider => ['google.com'].includes(provider.providerId))) {
+                handleCreateNewUser(authUser)
+            }
+            else if (!authUser) {
+                setIsVisitant(true)
+                setIsUser(false)
+                setSession(null)
+                getVisitantCart()
+            }
+            setAuthValidated(true)
+        })
+    }
+
+    async function handleLogin(user) {
         try {
-            const user = await getUserById(authUser.uid)
             const visitantCartProducts = JSON.parse(localStorage.getItem(CART_LOCAL_STORAGE))?.products || []
-            if (user) {
-                setSession(user)
-                const cart = visitantCartProducts.length > 0
-                    ? await mergeCarts(user.cart_id, visitantCartProducts)
-                    : await getCartById(user.cart_id)
-                const products = await getProductsInfo(cart.products)
-                setCart({ ...cart, products: products })
-                const wishlist = await getWishlistById(user.wishlist_id)
-                setWishlist(wishlist)
-            }
-            else {
-                const newUser = await createNewUserWithGoogle(authUser, visitantCartProducts)
-                setSession(newUser)
-                const cart = await getCartById(newUser.cart_id)
-                const products = await getProductsInfo(cart.products)
-                setCart({ ...cart, products: products })
-                const wishlist = await getWishlistById(newUser.wishlist_id)
-                setWishlist(wishlist)
-            }
+            setSession(user)
+            const cart = visitantCartProducts.length > 0
+                ? await mergeCarts(user.cart_id, visitantCartProducts)
+                : await getCartById(user.cart_id)
+            const products = await getProductsInfo(cart.products)
+            setCart({ ...cart, products: products })
+            const wishlist = await getWishlistById(user.wishlist_id)
+            setWishlist(wishlist)
             localStorage.removeItem(CART_LOCAL_STORAGE)
         }
         catch (error) {
             console.error(error)
             showToast({ type: 'error', msg: tToasts('error_getting_session') })
+            logout()
+        }
+    }
+
+    async function handleCreateNewUser(authUser) {
+        try {
+            setIsUser(true)
+            setIsVisitant(false)
+            setUserEmailVerify(authUser.emailVerified)
+            const newUser = await createNewUser(authUser)
+            handleLogin(newUser)
+        }
+        catch (error) {
+            console.error(error)
+            showToast({ type: 'error', msg: tToasts('error_creating_user') })
+            logout()
+        }
+    }
+
+    async function getVisitantCart() {
+        try {
+            const visitantCart = JSON.parse(localStorage.getItem(CART_LOCAL_STORAGE))
+            if (visitantCart) {
+                const products = await getProductsInfo(visitantCart.products)
+
+                setCart({ ...visitantCart, products: products })
+            }
+            else {
+                const newCartJson = INICIAL_VISITANT_CART
+                setCart(newCartJson)
+                localStorage.setItem(CART_LOCAL_STORAGE, JSON.stringify(newCartJson))
+            }
+
+        }
+        catch (error) {
+            console.error(error)
+            showToast({ type: error?.type || 'error', msg: tToasts(error.message) })
         }
     }
 
@@ -385,44 +432,6 @@ export function AppProvider({ children }) {
             .catch(() => {
                 showToast({ type: 'error', msg: tToasts('default_error') })
             })
-    }
-
-    function updateSession() {
-        onAuthStateChanged(auth, (authUser) => {
-            setAuthValidated(true)
-            if (authUser) {
-                setIsUser(true)
-                setUserEmailVerify(authUser.emailVerified)
-                handleLogin(authUser)
-            }
-            else {
-                // O usuário fez logout ou não está autenticado
-                setIsVisitant(true)
-                setSession(null)
-                getVisitantCart()
-            }
-        })
-    }
-
-    async function getVisitantCart() {
-        try {
-            const visitantCart = JSON.parse(localStorage.getItem(CART_LOCAL_STORAGE))
-            if (visitantCart) {
-                const products = await getProductsInfo(visitantCart.products)
-
-                setCart({ ...visitantCart, products: products })
-            }
-            else {
-                const newCartJson = INICIAL_VISITANT_CART
-                setCart(newCartJson)
-                localStorage.setItem(CART_LOCAL_STORAGE, JSON.stringify(newCartJson))
-            }
-
-        }
-        catch (error) {
-            console.error(error)
-            showToast({ type: error?.type || 'error', msg: tToasts(error.message) })
-        }
     }
 
     async function handleWishlistClick(productId, toAdd) {
@@ -525,6 +534,7 @@ export function AppProvider({ children }) {
                 isAdmin,
                 handleChangeProductQuantity,
                 handleDeleteProductFromCart,
+                handleCreateNewUser
             }}
         >
             <motion.div

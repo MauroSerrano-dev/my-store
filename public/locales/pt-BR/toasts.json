@@ -6,7 +6,7 @@
     "out_of_stock_other": "{{count}} produtos estão fora de estoque para {{country}}",
     "disabled_products_one": "{{product_title}} está indisponível",
     "disabled_products_other": "{{count}} produtos estão indisponíveis",
-    "password_length": "A senha deve ter pelo menos 8 caracteres",
+    "password_length": "A senha deve ter pelo menos 6 caracteres",
     "password_lowercase": "A senha deve conter pelo menos um caractere minúsculo",
     "password_uppercase": "A senha deve conter pelo menos um caractere maiúsculo",
     "password_number": "A senha deve conter pelo menos um número",

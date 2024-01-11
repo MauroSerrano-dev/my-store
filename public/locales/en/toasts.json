@@ -6,7 +6,7 @@
     "out_of_stock_other": "{{count}} Products Out of Stock for {{country}}",
     "disabled_products_one": "{{product_title}} is unavailable",
     "disabled_products_other": "{{count}} Products are unavailable",
-    "password_length": "Password must have at least 8 characters",
+    "password_length": "Password must have at least 6 characters",
     "password_lowercase": "Password must contain at least one lowercase character",
     "password_uppercase": "Password must contain at least one uppercase character",
     "password_number": "Password must contain at least one number",

@@ -143,8 +143,15 @@ export default async function handler(req, res) {
                 }
             )
 
-            if (customer_details.email)
-                await sendPurchaseConfirmationEmail(customer_details.email, orderId, user_language)
+            if (customer_details.email) {
+                sendPurchaseConfirmationEmail(customer_details.email, orderId, user_language)
+                    .then(() => {
+                        console.log(`Purchase email sent to ${customer_details.email}`)
+                    })
+                    .catch(error => {
+                        console.error("Error purchase email:", error)
+                    })
+            }
 
             if (cart_id) {
                 if (user_id) {

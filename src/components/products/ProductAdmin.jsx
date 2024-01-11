@@ -13,9 +13,9 @@ import EditOutlinedIcon from '@mui/icons-material/EditOutlined'
 import SellOutlinedIcon from '@mui/icons-material/SellOutlined'
 
 /**
- * @param {object} props - Component props.
- * @param {object} props.product - Product props.
- * @param {object} props.style - Product style.
+ * @param {Object} props - Component props.
+ * @param {Object} props.product - Product props.
+ * @param {Object} props.style - Product style.
  * @param {string} props.width - Component width.
  * @param {boolean} props.responsive - Responsive width.
  * @param {boolean} props.supportsHoverAndPointer - Device supportsHoverAndPointer.

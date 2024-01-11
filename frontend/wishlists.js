@@ -42,7 +42,6 @@ async function createWishlist(userId) {
 
         const docRef = await addDoc(wishlistsCollectionRef, newWishlist)
 
-        console.log('Wishlist created')
         return docRef.id
     } catch (error) {
         console.error('Error creating wishlist:', error)
