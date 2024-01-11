@@ -19,6 +19,7 @@ export const COMMON_TRANSLATES = [
     'toasts',
     'languages',
     'categories',
+    'page-error',
 ]
 
 export const CART_COOKIE = 'CART'

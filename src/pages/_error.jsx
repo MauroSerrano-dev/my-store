@@ -3,16 +3,17 @@ import { useEffect, useRef } from 'react'
 import lottie from 'lottie-web'
 import styles from '@/styles/pages/_error.module.css'
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
-import NoFound404 from '@/components/NoFound404'
 import { useAppContext } from '@/components/contexts/AppContext'
 import { COMMON_TRANSLATES } from '@/consts'
+import { useTranslation } from 'next-i18next';
 
-function Error({ statusCode }) {
-
+function Error() {
     const {
         router,
         loading,
     } = useAppContext()
+
+    const tPageError = useTranslation('page-error').t
 
     const animationContainer = useRef(null)
 
@@ -42,42 +43,36 @@ function Error({ statusCode }) {
     }, [])
 
     return (
-        statusCode === 404
-            ? <NoFound404 autoRedirect={false} />
-            : <div
-                className='flex column align-center fillWidth'
-                style={{
-                    '--text-color': 'var(--text-white)',
-                }}
+        <div
+            className='flex column align-center fillWidth'
+            style={{
+                '--text-color': 'var(--text-white)',
+            }}
+        >
+            <div
+                ref={animationContainer}
+                className={styles.animationContainer}
             >
-                <div
-                    ref={animationContainer}
-                    className={styles.animationContainer}
-                >
-                </div>
-                <div style={{ zIndex: 1 }}>
-                    <p className={styles.errorMsg}>
-                        {statusCode
-                            ? `An error ${statusCode} occurred on server`
-                            : 'An error occurred on the website'
-                        }
-                    </p>
-                    <Link
-                        href="/"
-                        className={styles.link}
-                    >
-                        Back to homepage
-                    </Link>
-                </div>
             </div>
+            <div style={{ zIndex: 1 }}>
+                <p className={styles.errorMsg}>
+                    {tPageError('An error occurred on the website')}
+                </p>
+                <Link
+                    href="/"
+                    className={styles.link}
+                >
+                    {tPageError('Back to homepage')}
+                </Link>
+            </div>
+        </div>
     )
 }
 
-export async function getServerSideProps({ locale, res }) {
+export async function getServerSideProps({ locale }) {
     return {
         props: {
             ...(await serverSideTranslations(locale, COMMON_TRANSLATES)),
-            statusCode: res.statusCode,
         }
     }
 }
