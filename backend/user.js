@@ -2,12 +2,10 @@ import {
     collection,
     doc,
     getDoc,
-    setDoc,
     getDocs,
     where,
     query,
     updateDoc,
-    Timestamp,
 } from "firebase/firestore"
 import { createCart } from "./cart"
 import { createWishlist } from "./wishlists"
@@ -39,41 +37,6 @@ async function getUserIdByEmail(email) {
         }
     } catch (error) {
         console.error("Error getting userId by email:", error);
-        throw error;
-    }
-}
-
-/**
- * Creates a new user with given credentials in the Firestore database.
- * Additionally, it creates a new cart and wishlist for the user.
- * 
- * @param {Object} user - User object containing details like email, first name, last name, etc.
- * @returns {Promise<string>} The ID of the created user document.
- */
-async function createNewUserWithCredentials(user) {
-    try {
-        const usersCollection = admin.firestore().collection(process.env.NEXT_PUBLIC_COLL_USERS);
-        const newUserRef = usersCollection.doc(user.id);
-
-        const cart_id = await createCart(user.id, []);
-        const wishlist_id = await createWishlist(user.id);
-
-        const newUser = newUserModel({
-            email: user.email,
-            first_name: user.first_name,
-            last_name: lastName,
-            cart_id: cart_id,
-            wishlist_id: wishlist_id,
-            email_verified: false,
-            create_at: admin.firestore.Timestamp.now()
-        });
-
-        await newUserRef.set(newUser);
-
-        console.log("New user created with credentials");
-        return newUserRef.id;
-    } catch (error) {
-        console.error("Error creating new user with credentials", error);
         throw error;
     }
 }
@@ -145,89 +108,6 @@ async function checkUserExistsByEmail(email) {
     }
 }
 
-async function removeEmailVerifiedField(userId) {
-    try {
-        const userRef = doc(db, process.env.NEXT_PUBLIC_COLL_USERS, userId); // Adjust the path accordingly
-
-        // Get the existing user data
-        const userDoc = await getDoc(userRef)
-        if (userDoc.exists()) {
-            const userData = userDoc.data()
-
-            delete userData.emailVerified
-
-            await setDoc(userRef, userData)
-
-            console.log(`${userId} emailVerified field removed from the database`)
-        } else {
-            console.log(`${userId} User document not found`)
-        }
-    } catch (error) {
-        console.error(`Error removing ${userId} emailVerified field from the database:`, error)
-    }
-}
-
-async function updateField(userId, fieldName, value) {
-    try {
-        const userRef = doc(db, process.env.NEXT_PUBLIC_COLL_USERS, userId)
-        const userDoc = await getDoc(userRef)
-
-        if (userDoc.exists()) {
-            const userData = userDoc.data()
-
-            userData[fieldName] = value
-
-            await updateDoc(userRef, userData)
-
-            console.log(`User ${userId} field ${fieldName} updated successfully!`)
-
-            const updatedUserDoc = await getDoc(userRef)
-
-            return updatedUserDoc.data()
-        } else {
-            console.log(`User with id ${userId} not found.`)
-        }
-    } catch (error) {
-        console.error(`Error updating field ${fieldName} for user ${userId}.`, error)
-        throw error
-    }
-}
-
-async function clearUpdateCounter() {
-    try {
-        const usersCollection = collection(db, process.env.NEXT_PUBLIC_COLL_USERS)
-        const usersQuery = query(usersCollection)
-        const userDocs = await getDocs(usersQuery)
-
-        const updatePromises = []
-
-        userDocs.forEach((userDoc) => {
-            const userData = userDoc.data()
-            userData.update_counter = Timestamp.now()
-
-            const userRef = doc(db, process.env.NEXT_PUBLIC_COLL_USERS, userDoc.id)
-
-            updatePromises.push(setDoc(userRef, userData))
-        })
-
-        await Promise.all(updatePromises)
-
-        console.log("The 'update_counter' field for all users has been set to zero successfully.")
-
-        return {
-            status: 200,
-            message: "The 'update_counter' field for all users has been set to zero successfully.",
-        }
-    } catch (error) {
-        console.error("Error clearing the 'update_counter' field for all users:", error)
-        return {
-            status: 500,
-            message: "Error clearing the 'update_counter' field for all users.",
-            error: error,
-        }
-    }
-}
-
 async function completeQuest(user_id, quest_id) {
     try {
         const userRef = doc(db, process.env.NEXT_PUBLIC_COLL_USERS, user_id)
@@ -294,12 +174,8 @@ async function deleteUser(user_id) {
 }
 
 export {
-    createNewUserWithCredentials,
-    removeEmailVerifiedField,
     checkUserExistsByEmail,
     getUserIdByEmail,
-    updateField,
-    clearUpdateCounter,
     completeQuest,
     deleteUser,
     createNewUser,

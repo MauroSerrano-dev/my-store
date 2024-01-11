@@ -3,8 +3,6 @@ import {
     getDoc,
     updateDoc,
     Timestamp,
-    collection,
-    addDoc
 } from "firebase/firestore";
 import { db } from "../firebaseInit";
 import MyError from "@/classes/MyError";
@@ -26,29 +24,6 @@ async function getWishlistById(id) {
         throw new MyError('Error getting wishlist by ID')
     }
 }
-
-async function createWishlist(userId) {
-    try {
-        const wishlistsCollectionRef = collection(db, process.env.NEXT_PUBLIC_COLL_WISHLISTS);
-
-        const now = Timestamp.now()
-
-        const newWishlist = {
-            user_id: userId,
-            products: [],
-            created_at: now,
-            updated_at: now,
-        }
-
-        const docRef = await addDoc(wishlistsCollectionRef, newWishlist)
-
-        return docRef.id
-    } catch (error) {
-        console.error('Error creating wishlist:', error)
-        throw new MyError('Error creating wishlist')
-    }
-}
-
 
 async function addProductToWishlist(wishlistId, product) {
     try {
@@ -103,7 +78,6 @@ async function deleteProductFromWishlist(wishlistId, product) {
 
 export {
     getWishlistById,
-    createWishlist,
     addProductToWishlist,
     deleteProductFromWishlist,
 }

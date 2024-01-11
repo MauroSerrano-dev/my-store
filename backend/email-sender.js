@@ -1,4 +1,3 @@
-import MyError from '@/classes/MyError'
 const nodemailer = require('nodemailer')
 const { v4: uuidv4 } = require('uuid')
 

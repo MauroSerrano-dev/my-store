@@ -1,7 +1,4 @@
 import {
-    Timestamp,
-    addDoc,
-    collection,
     doc,
     getDoc,
     updateDoc,
@@ -30,31 +27,6 @@ async function getCartById(id) {
         }
     } catch (error) {
         console.error('Error getting cart by ID:', error)
-        throw error
-    }
-}
-
-/**
- * Creates a new cart.
- * @param {string} userId - The ID of the user.
- * @param {Array} products - The products in the cart. `Default: []`
- * @returns {string} The cart ID.
- */
-async function createCart(userId, products = []) {
-    try {
-        const cartsCollectionRef = collection(db, process.env.NEXT_PUBLIC_COLL_CARTS);
-
-        const newCart = {
-            user_id: userId,
-            products: products,
-            created_at: Timestamp.now(),
-        }
-
-        const docRef = await addDoc(cartsCollectionRef, newCart);
-
-        return docRef.id
-    } catch (error) {
-        console.error('Error creating cart:', error)
         throw error
     }
 }
@@ -156,7 +128,6 @@ async function changeCartProductField(cartId, product, fieldName, newValue) {
 
 export {
     getCartById,
-    createCart,
     addProductsToCart,
     deleteProductFromCart,
     mergeCarts,

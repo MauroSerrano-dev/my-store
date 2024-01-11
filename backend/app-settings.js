@@ -1,4 +1,3 @@
-import Error from "next/error"
 const admin = require('../firebaseAdminInit')
 
 async function updateAllCurrencies(updatedCurrencies) {
