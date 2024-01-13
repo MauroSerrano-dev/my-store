@@ -6,6 +6,7 @@ import { deleteProductsFromWishlist } from '../../../../backend/wishlists'
 import { sendPurchaseConfirmationEmail } from '../../../../backend/email-sender'
 import getRawBody from 'raw-body'
 import { STEPS } from '@/consts'
+import { getProductsInfo } from '../../../../backend/product'
 const { v4: uuidv4 } = require('uuid')
 
 const Stripe = require('stripe')
@@ -54,6 +55,8 @@ export default async function handler(req, res) {
             delete newMetadata.shippingValue
 
             const line_items = Object.keys(newMetadata).map(key => JSON.parse(newMetadata[key]))
+
+            const purchaseProducts = await getProductsInfo(line_items)
 
             const orderId = uuidv4()
 
@@ -114,9 +117,9 @@ export default async function handler(req, res) {
                             id: prod.id,
                             id_printify: prod.id_printify,
                             quantity: prod.quantity,
-                            variant: prod.variant,
+                            variant: purchaseProducts.variant,
                             variant_id_printify: prod.variant_id_printify,
-                            image_src: prod.image_src,
+                            image_src: purchaseProducts.image_src,
                             status: STEPS[0]
                         }
                     )),

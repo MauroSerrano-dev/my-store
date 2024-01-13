@@ -112,9 +112,8 @@ export default async function handler(req, res) {
           id: item.id,
           id_printify: item.id_printify,
           quantity: item.quantity,
-          variant: item.variant,
+          variant_id: item.variant.id,
           variant_id_printify: item.variant.id_printify,
-          image_src: item.image_src,
         }
       )
     })

@@ -156,7 +156,6 @@ export function getDateFormat(country) {
 }
 
 export function getProductVariantsInfos(product) {
-    console.log(product)
     return product.variants.map(vari => ({ ...PRODUCTS_TYPES.find(type => type.id === product?.type_id).variants.find(va => va.id === vari.id), ...vari }))
 }
 

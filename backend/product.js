@@ -8,8 +8,8 @@ import {
 } from "firebase/firestore"
 import { isProductInPrintify } from "./printify"
 import { db } from "../firebaseInit"
-import { getProductsByIds } from "../frontend/product"
 import MyError from "@/classes/MyError"
+import { productInfoModel } from "@/utils/models";
 const admin = require('../firebaseAdminInit');
 
 /**
@@ -222,11 +222,97 @@ async function removeExpiredPromotions() {
     }
 }
 
+async function getProductsInfo(products) {
+    try {
+        if (products.length === 0)
+            return [];
+
+        const productsCollection = admin.firestore().collection(process.env.NEXT_PUBLIC_COLL_PRODUCTS);
+
+        const productIDs = products.map(prod => prod.id);
+        const chunkSize = 30;
+        const chunks = [];
+
+        for (let i = 0; i < productIDs.length; i += chunkSize) {
+            chunks.push(productIDs.slice(i, i + chunkSize));
+        }
+
+        const promises = chunks.map(async chunk => {
+            const q = productsCollection.where('id', 'in', chunk);
+            const querySnapshot = await q.get();
+            return querySnapshot.docs.map(doc => doc.data());
+        });
+
+        const chunkResults = await Promise.all(promises);
+        const productsResult = chunkResults.flat();
+
+        const productsOneVariant = products.map(prod => {
+            const product = productsResult.find(p => p.id === prod.id);
+
+            const variants = getProductVariantsInfos(product)
+            const variant = variants.find(vari => vari.id === prod.variant_id)
+
+            const art_position = typeof product.printify_ids[0] === 'string'
+                ? null
+                : prod.art_position
+                    ? prod.art_position
+                    : Object.keys(product.printify_ids).reduce((acc, key) =>
+                        Object.keys(product.printify_ids[key]).reduce((acc2, a_position) =>
+                            product.printify_ids[key][a_position] === prod.id_printify ? a_position : acc2
+                            , null
+                        )
+                            ? Object.keys(product.printify_ids[key]).reduce((acc2, a_position) =>
+                                product.printify_ids[key][a_position] === prod.id_printify ? a_position : acc2
+                                , null
+                            )
+                            : acc
+                        , null
+                    )
+
+            const printify_ids = art_position
+                ? Object.keys(product.printify_ids).reduce((acc, key) => ({
+                    ...acc,
+                    [key]: product.printify_ids[key][art_position]
+                }), {})
+                : product.printify_ids
+
+            const visualImage = product.images.filter(img => img.color_id === variant.color_id).length > 0
+                ? product.images.filter(img => img.color_id === variant.color_id)[product.image_showcase_index]
+                : { src: '/no-image.webp' }
+
+            return productInfoModel(
+                {
+                    id: prod.id,
+                    art_position: prod.art_position,
+                    quantity: prod.quantity,
+                    type_id: product.type_id,
+                    title: product.title,
+                    promotion: product.promotion,
+                    printify_ids: printify_ids,
+                    variant: variant,
+                    default_variant: {
+                        color_id: variants[0].color_id,
+                        size_id: variants[0].size_id,
+                    },
+                    image_src: art_position
+                        ? visualImage.src[art_position]
+                        : visualImage.src,
+                }
+            )
+        })
+
+        return productsOneVariant
+    } catch (error) {
+        console.error('Error getting Products Info:', error);
+        throw error;
+    }
+}
+
 export {
     createProduct,
     getProductById,
     updateProduct,
-    getProductsByIds,
+    getProductsInfo,
     cleanPopularityMonth,
     cleanPopularityYear,
     getDisabledProducts,
