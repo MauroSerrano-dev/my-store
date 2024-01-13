@@ -10,6 +10,7 @@ import { isProductInPrintify } from "./printify"
 import { db } from "../firebaseInit"
 import MyError from "@/classes/MyError"
 import { productInfoModel } from "@/utils/models";
+import { getProductVariantsInfos } from "@/utils";
 const admin = require('../firebaseAdminInit');
 
 /**
