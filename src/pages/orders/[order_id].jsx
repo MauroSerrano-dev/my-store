@@ -218,7 +218,7 @@ export default function Orders() {
                                                         >
                                                             <Image
                                                                 quality={100}
-                                                                src={prod.image.src}
+                                                                src={prod.image_src}
                                                                 sizes={'100%'}
                                                                 fill
                                                                 alt={prod.title}

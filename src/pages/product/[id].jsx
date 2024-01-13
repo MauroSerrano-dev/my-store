@@ -27,7 +27,7 @@ import { SlClose } from 'react-icons/sl'
 import { LoadingButton } from '@mui/lab'
 import ZoneConverter from '@/utils/country-zone.json'
 import ProductTag from '@/components/products/ProductTag'
-import { handleCloseModal, handleOpenModal, mergeProducts } from '@/utils'
+import { mergeProducts } from '@/utils'
 import TableSizes from '@/components/products/TableSizes'
 import KeyFeatures from '@/components/products/KeyFeatures'
 import { ButtonGroup } from '@mui/material'
@@ -72,7 +72,6 @@ export default withRouter(props => {
     const [currentPosition, setCurrentPosition] = useState('front')
 
     const [buyNowModalOpen, setBuyNowModalOpen] = useState(false)
-    const [buyNowModalOpacity, setBuyNowModalOpacity] = useState(false)
 
     const [shippingValue, setShippingValue] = useState(0)
     const [disableCheckoutButton, setDisableCheckoutButton] = useState(false)
@@ -223,6 +222,10 @@ export default withRouter(props => {
 
     function handleSizeChange(arr, index, size) {
         setCurrentSize(size)
+    }
+
+    function handleBuyNowModal() {
+        setBuyNowModalOpen(true)
     }
 
     return (
@@ -416,7 +419,7 @@ export default withRouter(props => {
                                             </MyButton>
                                             <MyButton
                                                 variant='outlined'
-                                                onClick={() => handleOpenModal(setBuyNowModalOpen, setBuyNowModalOpacity)}
+                                                onClick={handleBuyNowModal}
                                                 style={{
                                                     display: 'flex',
                                                     gap: '0.2rem',
@@ -481,68 +484,66 @@ export default withRouter(props => {
                             </div>
                         </section>
                     </div>
-                    {buyNowModalOpen &&
-                        <Modal
-                            closeModal={() => handleCloseModal(setBuyNowModalOpen, setBuyNowModalOpacity)}
-                            showModalOpacity={buyNowModalOpacity}
-                            className={styles.modalContent}
-                        >
-                            <div className={styles.modalHead}>
-                                <h3>{tProduct('ship_to')}</h3>
-                                <button
-                                    className='flex buttonInvisible'
-                                    onClick={() => handleCloseModal(setBuyNowModalOpen, setBuyNowModalOpacity)}
-                                    style={{
-                                        position: 'absolute',
-                                        right: '1rem',
-                                        top: '1rem',
-                                    }}
-                                >
-                                    <SlClose
-                                        size={20}
-                                    />
-                                </button>
-                            </div>
-                            <div className={styles.modalBody}>
-                                <div className={styles.shippingContainer}>
-                                    <SelectorAutocomplete
-                                        options={
-                                            Object.keys(COUNTRIES_POOL)
-                                                .map(key => ({ id: key, label: tCountries(key) }))
-                                                .sort((a, b) => a.label.localeCompare(b.label, 'en', { sensitivity: 'base' }))
-                                        }
-                                        label={tCommon('Country')}
-                                        value={{ id: userLocation.country, label: tCountries(userLocation.country) }}
-                                        onChange={handleChangeCountrySelector}
-                                        dark
-                                        sx={{
-                                            width: 300,
-                                        }}
-                                        popperStyle={{
-                                            zIndex: 2500,
-                                            width: 300,
-                                        }}
-                                    />
-                                </div>
-                            </div>
-                            <div className={styles.modalFoot}>
-                                <LoadingButton
-                                    loading={disableCheckoutButton}
-                                    variant='contained'
-                                    size='large'
-                                    onClick={handleBuyNow}
+                    <Modal
+                        className={styles.modalContent}
+                        open={buyNowModalOpen}
+                        closeModal={() => setBuyNowModalOpen(false)}
+                    >
+                        <div className={styles.modalHead}>
+                            <h3>{tProduct('ship_to')}</h3>
+                            <button
+                                className='flex buttonInvisible'
+                                onClick={() => setBuyNowModalOpen(false)}
+                                style={{
+                                    position: 'absolute',
+                                    right: '1rem',
+                                    top: '1rem',
+                                }}
+                            >
+                                <SlClose
+                                    size={20}
+                                />
+                            </button>
+                        </div>
+                        <div className={styles.modalBody}>
+                            <div className={styles.shippingContainer}>
+                                <SelectorAutocomplete
+                                    options={
+                                        Object.keys(COUNTRIES_POOL)
+                                            .map(key => ({ id: key, label: tCountries(key) }))
+                                            .sort((a, b) => a.label.localeCompare(b.label, 'en', { sensitivity: 'base' }))
+                                    }
+                                    label={tCommon('Country')}
+                                    value={{ id: userLocation?.country, label: tCountries(userLocation?.country) }}
+                                    onChange={handleChangeCountrySelector}
+                                    dark
                                     sx={{
-                                        width: '100%',
-                                        color: 'white',
-                                        fontWeight: '700',
-                                        textTransform: 'none',
+                                        width: 300,
                                     }}
-                                >
-                                    {tCommon('checkout')}
-                                </LoadingButton>
+                                    popperStyle={{
+                                        zIndex: 2500,
+                                        width: 300,
+                                    }}
+                                />
                             </div>
-                        </Modal>
-                    }
+                        </div>
+                        <div className={styles.modalFoot}>
+                            <LoadingButton
+                                loading={disableCheckoutButton}
+                                variant='contained'
+                                size='large'
+                                onClick={handleBuyNow}
+                                sx={{
+                                    width: '100%',
+                                    color: 'white',
+                                    fontWeight: '700',
+                                    textTransform: 'none',
+                                }}
+                            >
+                                {tCommon('checkout')}
+                            </LoadingButton>
+                        </div>
+                    </Modal>
                     <div className={styles.carousel}>
                         <h2 className={styles.similarTitle}>{tProduct('similar-products-title')}</h2>
                         <CarouselSimilarProducts
@@ -575,7 +576,7 @@ export async function getServerSideProps({ query, locale, resolvedUrl }) {
         .catch(err => console.error(err))
 
     const colorQuery = cl
-        ? Object.values(COLORS_POOL).some(color => color.id_string === cl.toLowerCase())
+        ? Object.values(COLORS_POOL).find(color => color.id_string === cl.toLowerCase())
         : null
 
     const sizeQuery = sz

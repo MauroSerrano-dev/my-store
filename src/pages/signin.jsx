@@ -127,7 +127,7 @@ export default function Signin() {
     return (
         !authValidated
             ? <div></div>
-            : isUser
+            : session
                 ? <NoFound404 />
                 : <div className={styles.container}>
                     <header>

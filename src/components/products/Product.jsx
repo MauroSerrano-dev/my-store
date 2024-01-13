@@ -49,7 +49,7 @@ export default function Product(props) {
     const productRef = useRef(null)
     const bottomHoverRef = useRef(null)
 
-    const [currentVariant, setCurrentVariant] = useState(inicialVariantId ? product.variants.find(vari => vari.id === inicialVariantId) : product.variants[0])
+    const [currentVariant, setCurrentVariant] = useState(inicialVariantId ? product.variants.find(vari => vari.id === inicialVariantId) : product.variants.find(vari => vari.color_id === product.colors_ids[0]))
 
     const [isDraggingColors, setIsDraggingColors] = useState(false)
 

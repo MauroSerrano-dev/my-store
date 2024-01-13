@@ -5,7 +5,7 @@ import TagsSelector from '@/components/material-ui/TagsSelector'
 import { COMMON_TRANSLATES, DEFAULT_LANGUAGE, LIMITS, USER_CUSTOMIZE_HOME_PAGE } from '@/consts'
 import { useEffect, useState } from 'react'
 import { showToast } from '@/utils/toasts'
-import { convertTimestampToFormatDate, getObjectsDiff, handleCloseModal, handleOpenModal } from '@/utils'
+import { convertTimestampToFormatDate, getObjectsDiff } from '@/utils'
 import TextInput from '@/components/material-ui/TextInput'
 import { useTranslation } from 'next-i18next'
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
@@ -42,7 +42,6 @@ export default function Profile() {
     const [user, setUser] = useState()
 
     const [deleteAccountModalOpen, setDeleteAccountModalOpen] = useState(false)
-    const [deleteAccountModalOpacity, setDeleteAccountModalOpacity] = useState(false)
 
     const [disableSaveButton, setDisableSaveButton] = useState(true)
     const [verificationEmailSent, setVerificationEmailSent] = useState(false)
@@ -293,7 +292,7 @@ export default function Profile() {
                                     <MyButton
                                         variant='outlined'
                                         color='error'
-                                        onClick={() => handleOpenModal(setDeleteAccountModalOpen, setDeleteAccountModalOpacity)}
+                                        onClick={() => setDeleteAccountModalOpen(true)}
                                     >
                                         {tProfile('delete_account')}
                                     </MyButton>
@@ -301,66 +300,64 @@ export default function Profile() {
                             </div>
                         </div>
                     </main>
-                    {deleteAccountModalOpen &&
-                        <Modal
-                            closeModal={() => handleCloseModal(setDeleteAccountModalOpen, setDeleteAccountModalOpacity)}
-                            showModalOpacity={deleteAccountModalOpacity}
-                            className={styles.modalContent}
-                        >
-                            <div className={`${styles.modalHead} noSelection`}>
-                                <h3>
-                                    {tProfile('delete_account')}
-                                </h3>
-                                <button
-                                    className='flex buttonInvisible'
-                                    onClick={() => handleCloseModal(setDeleteAccountModalOpen, setDeleteAccountModalOpacity)}
-                                    style={{
-                                        position: 'absolute',
-                                        right: '1rem',
-                                        top: '1rem',
-                                    }}
-                                >
-                                    <SlClose
-                                        size={20}
-                                    />
-                                </button>
-                            </div>
-                            <div className={`${styles.modalBody} noSelection`}>
-                                <ul className={styles.modalBodyList}>
-                                    <li>{tProfile('action_irreversible')}</li>
-                                    <li>{tProfile('to_complete')} "<span style={{ color: 'var(--color-error)', fontWeight: 500 }}>{tProfile('DELETE MY ACCOUNT')}</span>".</li>
-                                    <li>{tProfile('unable_to_create')}</li>
-                                </ul>
-                            </div>
-                            <div className={styles.modalFoot}>
-                                <TextInput
-                                    colorBorderFocus='var(--color-error)'
-                                    dark
-                                    placeholder={tProfile('DELETE MY ACCOUNT')}
-                                    size='small'
-                                    onChange={event => setDeleteTextInput(event.target.value)}
-                                    onKeyDown={handleKeyDownDelete}
-                                    value={deleteTextInput}
-                                    style={{
-                                        width: windowWidth <= 750 ? '100%' : 'calc(100% - 150px)'
-                                    }}
+                    <Modal
+                        className={styles.modalContent}
+                        open={deleteAccountModalOpen}
+                        closeModal={() => setDeleteAccountModalOpen(false)}
+                    >
+                        <div className={`${styles.modalHead} noSelection`}>
+                            <h3>
+                                {tProfile('delete_account')}
+                            </h3>
+                            <button
+                                className='flex buttonInvisible'
+                                onClick={() => setDeleteAccountModalOpen(false)}
+                                style={{
+                                    position: 'absolute',
+                                    right: '1rem',
+                                    top: '1rem',
+                                }}
+                            >
+                                <SlClose
+                                    size={20}
                                 />
-                                <LoadingButton
-                                    loading={deleteAccButtonLoading}
-                                    variant='contained'
-                                    color='error'
-                                    sx={{
-                                        width: windowWidth <= 750 ? '100%' : 120,
-                                        textTransform: 'none',
-                                    }}
-                                    disabled={deleteTextInput !== tProfile('DELETE MY ACCOUNT')}
-                                    onClick={handleDeleteAccount}
-                                >
-                                    {tProfile('delete')}
-                                </LoadingButton>
-                            </div>
-                        </Modal>
-                    }
+                            </button>
+                        </div>
+                        <div className={`${styles.modalBody} noSelection`}>
+                            <ul className={styles.modalBodyList}>
+                                <li>{tProfile('action_irreversible')}</li>
+                                <li>{tProfile('to_complete')} "<span style={{ color: 'var(--color-error)', fontWeight: 500 }}>{tProfile('DELETE MY ACCOUNT')}</span>".</li>
+                                <li>{tProfile('unable_to_create')}</li>
+                            </ul>
+                        </div>
+                        <div className={styles.modalFoot}>
+                            <TextInput
+                                colorBorderFocus='var(--color-error)'
+                                dark
+                                placeholder={tProfile('DELETE MY ACCOUNT')}
+                                size='small'
+                                onChange={event => setDeleteTextInput(event.target.value)}
+                                onKeyDown={handleKeyDownDelete}
+                                value={deleteTextInput}
+                                style={{
+                                    width: windowWidth <= 750 ? '100%' : 'calc(100% - 150px)'
+                                }}
+                            />
+                            <LoadingButton
+                                loading={deleteAccButtonLoading}
+                                variant='contained'
+                                color='error'
+                                sx={{
+                                    width: windowWidth <= 750 ? '100%' : 120,
+                                    textTransform: 'none',
+                                }}
+                                disabled={deleteTextInput !== tProfile('DELETE MY ACCOUNT')}
+                                onClick={handleDeleteAccount}
+                            >
+                                {tProfile('delete')}
+                            </LoadingButton>
+                        </div>
+                    </Modal>
                 </div>
     )
 }

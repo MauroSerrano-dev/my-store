@@ -95,6 +95,7 @@ export const TAGS_POOL = [
     'raglan',
     'rock',
     'tee',
+    'promotion',
 ]
 
 export const THEMES_POOL = [

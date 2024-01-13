@@ -5,10 +5,15 @@ import { motion } from "framer-motion"
 export default function Modal(props) {
     const {
         closeModal,
-        showModalOpacity,
         children,
-        className
+        className,
+        open,
+        duration = 300,
+        closedCallBack
     } = props
+
+    const [modalOpen, setModalOpen] = useState(false)
+    const [modalOpacity, setModalOpacity] = useState(false)
 
     useEffect(() => {
         document.addEventListener("keydown", handleKeyDown)
@@ -16,6 +21,30 @@ export default function Modal(props) {
             document.removeEventListener('resize', handleKeyDown)
         }
     }, [])
+
+    useEffect(() => {
+        open
+            ? handleOpenModal()
+            : handleCloseModal()
+    }, [open])
+
+    function handleOpenModal() {
+        if (!modalOpen) {
+            setModalOpen(true)
+            setModalOpacity(true)
+        }
+    }
+
+    function handleCloseModal() {
+        if (modalOpen) {
+            setModalOpacity(false)
+            setTimeout(() => {
+                setModalOpen(false)
+                if (closedCallBack)
+                    closedCallBack()
+            }, duration)
+        }
+    }
 
     function handleKeyDown(event) {
         if (event.key === 'Escape') {
@@ -25,11 +54,11 @@ export default function Modal(props) {
         }
     }
 
-    return (
+    return (modalOpen &&
         <motion.div
             className={styles.container}
             initial='hidden'
-            animate={showModalOpacity ? 'visible' : 'hidden'}
+            animate={modalOpacity ? 'visible' : 'hidden'}
             variants={{
                 hidden: {
                     opacity: 0,
@@ -39,9 +68,7 @@ export default function Modal(props) {
                 }
             }}
             transition={{
-                duration: showModalOpacity
-                    ? 0.3
-                    : 0.3,
+                duration: duration / 1000,
                 ease: [.62, -0.18, .32, 1.17]
             }}
         >
@@ -53,21 +80,19 @@ export default function Modal(props) {
             <motion.div
                 className={styles.modal}
                 initial='hidden'
-                animate={showModalOpacity ? 'visible' : 'hidden'}
+                animate={modalOpacity ? 'visible' : 'hidden'}
                 variants={{
                     hidden: {
                         scale: 0.8,
                         opacity: 0,
                     },
                     visible: {
-                        scale: showModalOpacity ? 1 : 0.8,
-                        opacity: showModalOpacity ? 1 : 0,
+                        scale: modalOpacity ? 1 : 0.8,
+                        opacity: modalOpacity ? 1 : 0,
                     }
                 }}
                 transition={{
-                    duration: showModalOpacity
-                        ? 0.3
-                        : 0.3,
+                    duration: duration / 1000,
                     ease: [.37, .01, 0, 1.02]
                 }}
             >

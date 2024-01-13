@@ -4,13 +4,8 @@ import {
     updateDoc,
     getDoc,
     getDocs,
-    query,
-    setDoc,
-    where,
     Timestamp,
 } from "firebase/firestore"
-import { LIMITS, PRODUCTS_TYPES } from "@/consts"
-import { getProductVariantsInfos } from "@/utils"
 import { isProductInPrintify } from "./printify"
 import { db } from "../firebaseInit"
 import { getProductsByIds } from "../frontend/product"
