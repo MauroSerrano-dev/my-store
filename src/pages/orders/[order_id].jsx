@@ -39,8 +39,7 @@ export default function Orders() {
     async function getOrder() {
         try {
             const order = await getOrderById(router.query.order_id)
-            const productsFullInfo = await getProductsInfo(order.products)
-            setOrder({ ...order, products: productsFullInfo })
+            setOrder(order)
         }
         catch (error) {
             console.error(error)
@@ -205,15 +204,7 @@ export default function Orders() {
                                                 <div className={styles.productBody}>
                                                     <div className={styles.productBodyLeft}>
                                                         <Link
-                                                            href={`/product/${prod.id}${prod.variant.color_id !== prod.default_variant.color_id && prod.variant.size_id !== prod.default_variant.size_id
-                                                                ? `?sz=${SIZES_POOL.find(sz => sz.id === prod.variant.size_id).title.toLowerCase()}&cl=${COLORS_POOL[prod.variant.color_id].id_string}`
-                                                                : prod.variant.size_id !== prod.default_variant.size_id
-                                                                    ? `?sz=${SIZES_POOL.find(sz => sz.id === prod.variant.size_id).title.toLowerCase()}`
-                                                                    : prod.variant.color_id !== prod.default_variant.color_id
-                                                                        ? `?cl=${COLORS_POOL[prod.variant.color_id].id_string}`
-                                                                        : ''
-                                                                }`
-                                                            }
+                                                            href={`/product/${prod.id}`}
                                                             className={`${styles.productImage} noUnderline`}
                                                         >
                                                             <Image
@@ -231,15 +222,7 @@ export default function Orders() {
                                                     </div>
                                                     <div className={styles.productBodyRight}>
                                                         <Link
-                                                            href={`/product/${prod.id}${prod.variant.color_id !== prod.default_variant.color_id && prod.variant.size_id !== prod.default_variant.size_id
-                                                                ? `?sz=${SIZES_POOL.find(sz => sz.id === prod.variant.size_id).title.toLowerCase()}&cl=${COLORS_POOL[prod.variant.color_id].id_string}`
-                                                                : prod.variant.size_id !== prod.default_variant.size_id
-                                                                    ? `?sz=${SIZES_POOL.find(sz => sz.id === prod.variant.size_id).title.toLowerCase()}`
-                                                                    : prod.variant.color_id !== prod.default_variant.color_id
-                                                                        ? `?cl=${COLORS_POOL[prod.variant.color_id].id_string}`
-                                                                        : ''
-                                                                }`
-                                                            }
+                                                            href={`/product/${prod.id}`}
                                                             className='ellipsis'
                                                             style={{
                                                                 fontWeight: 600,
