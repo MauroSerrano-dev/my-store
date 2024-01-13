@@ -183,15 +183,7 @@ export default function Order(props) {
                             <ProductStepper product={product} />
                             <div className={styles.productInfos}>
                                 <Link
-                                    href={`/product/${product.id}${product.variant.color_id !== product.default_variant.color_id && product.variant.size_id !== product.default_variant.size_id
-                                        ? `?sz=${SIZES_POOL.find(sz => sz.id === product.variant.size_id).title.toLowerCase()}&cl=${COLORS_POOL[product.variant.color_id].id_string}`
-                                        : product.variant.size_id !== product.default_variant.size_id
-                                            ? `?sz=${SIZES_POOL.find(sz => sz.id === product.variant.size_id).title.toLowerCase()}`
-                                            : product.variant.color_id !== product.default_variant.color_id
-                                                ? `?cl=${COLORS_POOL[product.variant.color_id].id_string}`
-                                                : ''
-                                        }`
-                                    }
+                                    href={`/product/${product.id}`}
                                     className='noUnderline'
                                     style={{
                                         position: 'relative',
@@ -215,15 +207,7 @@ export default function Order(props) {
                                 <div className={styles.productInfosRight}>
                                     <div className='flex row center' style={{ gap: 8 }}>
                                         <Link
-                                            href={`/product/${product.id}${product.variant.color_id !== product.default_variant.color_id && product.variant.size_id !== product.default_variant.size_id
-                                                ? `?sz=${SIZES_POOL.find(sz => sz.id === product.variant.size_id).title.toLowerCase()}&cl=${COLORS_POOL[product.variant.color_id].id_string}`
-                                                : product.variant.size_id !== product.default_variant.size_id
-                                                    ? `?sz=${SIZES_POOL.find(sz => sz.id === product.variant.size_id).title.toLowerCase()}`
-                                                    : product.variant.color_id !== product.default_variant.color_id
-                                                        ? `?cl=${COLORS_POOL[product.variant.color_id].id_string}`
-                                                        : ''
-                                                }`
-                                            }
+                                            href={`/product/${product.id}`}
                                             className='ellipsis'
                                             style={{
                                                 fontWeight: 500
