@@ -58,11 +58,10 @@ export default function Orders() {
     async function getUserOrders() {
         try {
             const inicialOrders = await getOrdersByUserId(session.id, new Date(dateSelected, 0).getTime(), new Date(dateSelected + 1, 0).getTime())
-            const productsInfoRes = await getProductsInfo(inicialOrders.reduce((acc, order) => acc.concat(order.products), []))
             const ordersRes = inicialOrders.map(order => ({
                 ...order,
                 products: order.products.map(prod => (
-                    orderProductModel({ ...prod, ...productsInfoRes.shift() })
+                    orderProductModel(prod)
                 ))
             }))
             setOrders(ordersRes)

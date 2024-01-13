@@ -116,6 +116,7 @@ export default async function handler(req, res) {
                         {
                             id: prod.id,
                             id_printify: prod.id_printify,
+                            type_id: purchaseProducts[i].type_id,
                             quantity: prod.quantity,
                             variant: purchaseProducts[i].variant,
                             variant_id_printify: prod.variant_id_printify,
