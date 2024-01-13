@@ -119,7 +119,13 @@ export default async function handler(req, res) {
                             title: purchaseProducts[i].title,
                             type_id: purchaseProducts[i].type_id,
                             quantity: prod.quantity,
-                            variant: purchaseProducts[i].variant,
+                            variant: {
+                                id: purchaseProducts[i].variant.id,
+                                id_printify: purchaseProducts[i].variant.id_printify,
+                                art: purchaseProducts[i].variant.art,
+                                color_id: purchaseProducts[i].variant.color_id,
+                                size_id: purchaseProducts[i].variant.size_id,
+                            },
                             variant_id_printify: prod.variant_id_printify,
                             image_src: purchaseProducts[i].image_src,
                             status: STEPS[0]

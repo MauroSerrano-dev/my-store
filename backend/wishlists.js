@@ -55,6 +55,7 @@ async function deleteProductsFromWishlist(user_id, productsIdsToDelete) {
         // Update the wishlist document with the new products array
         await wishlistDoc.ref.update({ products: wishlistData.products });
 
+        console.log(`Products successfully deleted from wishlist ${wishlistDoc.id}!`)
         return { id: wishlistDoc.id, ...wishlistData }
     } catch (error) {
         console.error('Error deleting products from the wishlist:', error);
