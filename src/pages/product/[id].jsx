@@ -118,7 +118,7 @@ export default withRouter(props => {
                     type_id: product.type_id,
                     quantity: 1,
                     title: product.title,
-                    image: product.images.find(img => img.color_id === productCurrentVariant.color_id),
+                    image_src: typeof product.images.find(img => img.color_id === productCurrentVariant.color_id).src === 'string' ? product.images.find(img => img.color_id === productCurrentVariant.color_id).src : product.images.find(img => img.color_id === productCurrentVariant.color_id).src[currentPosition],
                     description: `${tCommon(product.type_id)} ${tColors(currentColor.id_string)} / ${currentSize.title}`,
                     id_printify: product.printify_ids[shippingOption.provider_id],
                     provider_id: shippingOption.provider_id,

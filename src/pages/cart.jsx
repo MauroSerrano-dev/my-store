@@ -93,7 +93,7 @@ export default function Cart() {
                         type_id: prod.type_id,
                         quantity: prod.quantity,
                         title: prod.title,
-                        image: prod.image,
+                        image_src: prod.image_src,
                         description: `${tCommon(prod.type_id)} ${tColors(COLORS_POOL[prod.variant.color_id].id_string)} / ${tCommon(SIZES_POOL.find(sz => sz.id === prod.variant.size_id).title)}`,
                         id_printify: prod.printify_ids[shippingOption.provider_id],
                         provider_id: shippingOption.provider_id,
