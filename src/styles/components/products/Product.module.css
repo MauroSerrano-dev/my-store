@@ -41,6 +41,7 @@
 .imgHoverContainer {
     position: absolute;
     opacity: 0;
+
     width: 100%;
     height: auto;
 

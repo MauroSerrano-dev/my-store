@@ -45,6 +45,7 @@ async function getProductsInfo(products) {
 
         const productsOneVariant = products.map(prod => {
             const product = productsResult.find(p => p.id === prod.id)
+
             const variants = getProductVariantsInfos(product)
             const variant = variants.find(vari => vari.id === prod.variant_id)
 
@@ -74,7 +75,7 @@ async function getProductsInfo(products) {
 
             const visualImage = product.images.filter(img => img.color_id === variant.color_id).length > 0
                 ? product.images.filter(img => img.color_id === variant.color_id)[product.image_showcase_index]
-                : product.images[product.image_showcase_index]
+                : { src: '/no-image.webp' }
 
             return productInfoModel(
                 {

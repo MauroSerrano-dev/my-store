@@ -195,8 +195,8 @@ export default function Order(props) {
                                     className='noUnderline'
                                     style={{
                                         position: 'relative',
-                                        height: 100,
-                                        width: 100,
+                                        height: 110,
+                                        width: 99,
                                         borderRadius: 6,
                                         overflow: 'hidden',
                                     }}
@@ -204,12 +204,11 @@ export default function Order(props) {
                                     <Image
                                         quality={100}
                                         src={product.image_src}
-                                        sizes={'100px'}
+                                        sizes={'110px'}
                                         fill
                                         alt={product.title}
                                         style={{
                                             objectFit: 'cover',
-                                            objectPosition: 'top',
                                         }}
                                     />
                                 </Link>

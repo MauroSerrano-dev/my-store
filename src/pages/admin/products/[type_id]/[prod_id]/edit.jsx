@@ -27,6 +27,7 @@ import Link from 'next/link'
 import PrintifyIdPicker from '@/components/PrintifyIdPicker'
 import ProductPriceInput from '@/components/ProductPriceInput'
 import { LoadingButton } from '@mui/lab'
+import Modal from '@/components/Modal'
 
 export default withRouter(() => {
     const {
@@ -46,7 +47,9 @@ export default withRouter(() => {
     const [artColorChained, setArtColorChained] = useState()
     const [artIdChained, setArtIdChained] = useState()
     const [fieldChanged, setFieldChanged] = useState({})
+    const [productDiff, setProductDiff] = useState({})
     const [viewStatus, setViewStatus] = useState('front')
+    const [updateModalOpen, setUpdateModalOpen] = useState(false)
 
     const tCommon = useTranslation('common').t
     const tToasts = useTranslation('toasts').t
@@ -60,6 +63,10 @@ export default withRouter(() => {
     }, [])
 
     useEffect(() => {
+        console.log(product?.variants)
+    }, [product])
+
+    useEffect(() => {
         if (router.isReady) {
             getProductById(router.query.prod_id)
         }
@@ -67,8 +74,8 @@ export default withRouter(() => {
 
     useEffect(() => {
         if (inicialProduct) {
-            setArtColorChained(inicialProduct?.variants.filter(va => va.active).every(vari => vari.art.color_id === inicialProduct.variants.find(va => va.active).art.color_id))
-            setArtIdChained(inicialProduct?.variants.filter(va => va.active).every(vari => vari.art.id === inicialProduct.variants.find(va => va.active).art.id))
+            setArtColorChained(inicialProduct?.variants.every(vari => vari.art.color_id === inicialProduct.variants[0].art.color_id))
+            setArtIdChained(inicialProduct?.variants.every(vari => vari.art.id === inicialProduct.variants[0].art.id))
         }
     }, [inicialProduct])
 
@@ -282,7 +289,6 @@ export default withRouter(() => {
     }
 
     function updateProductField(fieldName, newValue) {
-        console.log(fieldName, newValue)
         setFieldChanged(prev => ({ ...prev, [fieldName]: true }))
         setProduct(prev => ({ ...prev, [fieldName]: newValue }))
     }
@@ -372,22 +378,25 @@ export default withRouter(() => {
                 return {
                     ...prev,
                     colors_ids: value.map(cl => cl.id),
-                    variants: prev.variants.map(vari =>
-                        color.id === vari.color_id && prev.sizes_ids.includes(vari.size_id)
-                            ? {
-                                ...vari,
-                                active: true,
-                                art: {
-                                    id: artIdChained
-                                        ? prev.id
-                                        : '',
-                                    color_id: artColorChained && prev.variants.filter(variant => variant.active).length > 0
-                                        ? prev.variants.filter(variant => variant.active)[0].art.color_id
-                                        : null
-                                }
-                            }
-                            : vari
-                    )
+                    variants: prev.variants
+                        .concat(
+                            TYPE.variants
+                                .filter(vari => color.id === vari.color_id && prev.sizes_ids.includes(vari.size_id))
+                                .map(vari => (
+                                    {
+                                        ...vari,
+                                        price: vari.inicial_price,
+                                        art: {
+                                            id: artIdChained
+                                                ? prev.id
+                                                : '',
+                                            color_id: artColorChained && prev.variants.length > 0
+                                                ? prev.variants[0].art.color_id
+                                                : null
+                                        }
+                                    }
+                                ))
+                        )
                 }
             }
             // remove color
@@ -404,11 +413,8 @@ export default withRouter(() => {
                 return {
                     ...prev,
                     colors_ids: value.map(cl => cl.id),
-                    variants: prev.variants.map(vari =>
-                        color.id === vari.color_id
-                            ? { ...vari, active: false, art: null }
-                            : vari
-                    )
+                    variants: prev.variants
+                        .filter(vari => value.some(cl => cl.id === vari.color_id))
                 }
             }
         })
@@ -447,33 +453,32 @@ export default withRouter(() => {
                 ? {
                     ...prev,
                     sizes_ids: value.map(sz => sz.id),
-                    variants: prev.variants.map(vari =>
-                        size.id === vari.size_id && prev.colors_ids.includes(vari.color_id)
-                            ? {
-                                ...vari,
-                                active: true,
-                                price: vari.price,
-                                art: {
-                                    id: artIdChained
-                                        ? prev.id
-                                        : '',
-                                    color_id: artColorChained && prev.variants.filter(variant => variant.active).length > 0
-                                        ? prev.variants.filter(variant => variant.active)[0].art.color_id
-                                        : null,
-                                }
-                            }
-                            : vari
-                    )
+                    variants: prev.variants
+                        .concat(
+                            TYPE.variants
+                                .filter(vari => size.id === vari.size_id && prev.colors_ids.includes(vari.color_id))
+                                .map(vari => (
+                                    {
+                                        ...vari,
+                                        price: vari.inicial_price,
+                                        art: {
+                                            id: artIdChained
+                                                ? prev.id
+                                                : '',
+                                            color_id: artColorChained && prev.variants.length > 0
+                                                ? prev.variants[0].art.color_id
+                                                : null
+                                        }
+                                    }
+                                ))
+                        )
                 }
                 // remove size
                 : {
                     ...prev,
                     sizes_ids: value.map(sz => sz.id),
-                    variants: prev.variants.map(vari =>
-                        size.id === vari.size_id
-                            ? { ...vari, active: false, art: null }
-                            : vari
-                    )
+                    variants: prev.variants
+                        .filter(vari => value.some(sz => sz.id === vari.size_id))
                 }
         )
     }
@@ -481,7 +486,16 @@ export default withRouter(() => {
     function handleChainArtColor() {
         setArtColorChained(prev => {
             if (!prev) //connecting
-                setProduct(prod => ({ ...prod, variants: prod.variants.map(vari => ({ ...vari, art: { ...vari.art, color_id: prod.variants[0].art.color_id } })) }))
+                setProduct(prod => ({
+                    ...prod,
+                    variants: prod.variants.map(vari => ({
+                        ...vari,
+                        art: {
+                            ...vari.art,
+                            color_id: prod.variants[0].art.color_id
+                        }
+                    }))
+                }))
             return !prev
         })
     }
@@ -491,7 +505,16 @@ export default withRouter(() => {
             setProduct(prev => (
                 {
                     ...prev,
-                    variants: prev.variants.map(vari => ({ ...vari, art: { ...vari.art, color_id: color.id === vari.art.color_id ? null : color.id } }))
+                    variants: prev.variants.map(vari => ({
+                        ...vari,
+                        art: {
+                            ...vari.art,
+                            color_id: color.id === vari.art.color_id
+                                ? null
+                                : color.id
+                        }
+                    }
+                    ))
                 }
             ))
         else
@@ -499,7 +522,15 @@ export default withRouter(() => {
                 {
                     ...prev,
                     variants: prev.variants.map(vari => vari.color_id === prev.colors_ids[colorIndex]
-                        ? { ...vari, art: { ...vari.art, color_id: color.id === vari.art.color_id ? null : color.id } }
+                        ? {
+                            ...vari,
+                            art: {
+                                ...vari.art,
+                                color_id: color.id === vari.art.color_id
+                                    ? null
+                                    : color.id
+                            }
+                        }
                         : vari
                     )
                 }
@@ -557,6 +588,24 @@ export default withRouter(() => {
                 }), {})
             }))
         }
+    }
+
+    function handleOpenModal() {
+        const newMinPrice = product.variants.reduce((acc, vari) => acc < vari.price ? acc : vari.price, product.variants[0].price)
+        const newProduct = {
+            ...product,
+            variants: product.variants.map(vari => ({ id: vari.id, art: vari.art, sales: vari.sales, price: vari.price, size_id: vari.size_id, color_id: vari.color_id })),
+            promotion: product.promotion
+                ? { ...product.promotion, min_price_original: newMinPrice }
+                : null,
+            min_price: product.promotion
+                ? Math.round(newMinPrice * (1 - product.promotion.percentage))
+                : newMinPrice,
+            images: product.colors_ids.reduce((acc, color_id) => acc.concat(images[color_id].map(img => ({ src: img.src, color_id: img.color_id }))), []),
+        }
+        const diff = getObjectsDiff(newProduct, inicialProduct)
+        setProductDiff(diff)
+        setUpdateModalOpen(true)
     }
 
     return (
@@ -879,8 +928,8 @@ export default withRouter(() => {
                                                 </h3>
                                             </div>
                                             <ColorSelector
-                                                value={[SEARCH_ART_COLORS.map(cl => ({ id: cl.id, colors: [cl.color_display.color], title: cl.color_display.title })).find(scl => scl.id === product.variants.find(vari => vari.color_id === product.colors_ids[colorIndex]).art?.color_id)]}
-                                                options={SEARCH_ART_COLORS.map(cl => ({ id: cl.id, colors: [cl.color_display.color], title: cl.color_display.title }))}
+                                                value={[SEARCH_ART_COLORS.map(cl => ({ id: cl.id, colors: [cl.color_display.color], id_string: cl.color_display.id_string })).find(scl => scl.id === product.variants.find(vari => vari.color_id === product.colors_ids[colorIndex]).art?.color_id)]}
+                                                options={SEARCH_ART_COLORS.map(cl => ({ id: cl.id, colors: [cl.color_display.color], id_string: cl.color_display.id_string }))}
                                                 onChange={handleArtColor}
                                                 style={{
                                                     paddingBottom: '1rem',
@@ -912,17 +961,17 @@ export default withRouter(() => {
                                         </div>
                                     </section>
                                 }
-                                <LoadingButton
-                                    onClick={updateProduct}
+                                <MyButton
+                                    onClick={handleOpenModal}
                                     loading={disableUpdateButton}
                                     variant='contained'
                                     size='large'
-                                    sx={{
+                                    style={{
                                         width: '100%',
                                     }}
                                 >
                                     Update Product
-                                </LoadingButton>
+                                </MyButton>
                             </div>
                         }
                         {product === null &&
@@ -934,6 +983,35 @@ export default withRouter(() => {
                             <div>
                             </div>
                         }
+                        <Modal
+                            open={product && updateModalOpen}
+                            closeModal={() => {
+                                if (!disableUpdateButton)
+                                    setUpdateModalOpen(false)
+                            }}
+                        >
+                            {Object.keys(productDiff).map((field, i) =>
+                                <div
+                                    key={i}
+                                    style={{
+                                        '--text-color': 'var(--text-black)'
+                                    }}
+                                >
+                                    {field}
+                                </div>
+                            )}
+                            <LoadingButton
+                                onClick={updateProduct}
+                                loading={disableUpdateButton}
+                                variant='contained'
+                                size='large'
+                                sx={{
+                                    width: '100%',
+                                }}
+                            >
+                                Update Product
+                            </LoadingButton>
+                        </Modal>
                     </main>
                 </div>
     )

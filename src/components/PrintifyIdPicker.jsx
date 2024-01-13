@@ -3,7 +3,6 @@ import MyButton from './material-ui/MyButton';
 import TextInput from './material-ui/TextInput';
 import styles from '@/styles/components/PrintifyIdPicker.module.css'
 import Modal from './Modal';
-import { handleCloseModal, handleOpenModal } from '@/utils';
 import { showToast } from '@/utils/toasts';
 import { useTranslation } from "next-i18next"
 import { CircularProgress, Pagination, PaginationItem } from '@mui/material';
@@ -85,17 +84,11 @@ export default function PrintifyIdPicker(props) {
 
     function handleOpen() {
         getPrintifyProducts()
-        handleOpenModal(setModalOpen, setModalOpacity)
+        setModalOpen(true)
     }
 
     function handleClose() {
-        handleCloseModal(setModalOpen, setModalOpacity)
-        setTimeout(() => {
-            setModalPage(1)
-            setModalLastPage(1)
-            setImagesFliped([])
-            setPrintifyProducts()
-        }, 300)
+        setModalOpen(false)
     }
 
     function handleImageClick(prodId) {
@@ -207,122 +200,125 @@ export default function PrintifyIdPicker(props) {
             >
                 Search
             </MyButton>
-            {modalOpen &&
-                <Modal
-                    closeModal={handleClose}
-                    showModalOpacity={modalOpacity}
-                    className={styles.modalContent}
-                >
-                    {printifyProducts &&
-                        <div className={styles.printProducts}>
-                            {printifyProducts.map((print_prod, i) =>
-                                <div
-                                    className={styles.printProduct}
-                                    key={i}
-                                >
-                                    <div className={styles.imageContainer}>
-                                        <img
-                                            onClick={() => handleImageClick(print_prod.id)}
-                                            src={print_prod.images[0].src}
-                                            alt={print_prod.title}
-                                            style={{
-                                                width: '100%',
-                                                height: '100%',
-                                            }}
-                                        />
-                                        <img
-                                            onClick={() => handleImageClick(print_prod.id)}
-                                            src={print_prod.images[1].src}
-                                            alt={print_prod.title}
-                                            style={{
-                                                width: '100%',
-                                                height: '100%',
-                                                position: 'absolute',
-                                                left: 0,
-                                                top: 0,
-                                                opacity: imagesFliped.includes(print_prod.id) ? 1 : 0
-                                            }}
-                                        />
-                                    </div>
-                                    <div className={styles.productBody}>
-                                        <span className='ellipsis'>
-                                            {print_prod.title}
-                                        </span>
-                                        <MyButton
-                                            style={{
-                                                paddingLeft: '2rem',
-                                                paddingRight: '2rem',
-                                            }}
-                                            onClick={() => handleChoose(print_prod)}
-                                        >
-                                            Select
-                                        </MyButton>
-                                    </div>
-                                </div>
-                            )}
-                            {printifyProducts &&
-                                <div className={styles.modalBottom}>
-                                    <Pagination
-                                        onChange={handlePageChange}
-                                        size='small'
-                                        count={modalLastPage}
-                                        color="primary"
-                                        page={Number(modalPage)}
+            <Modal
+                className={styles.modalContent}
+                open={modalOpen}
+                closeModal={handleClose}
+                closedCallBack={() => {
+                    setModalPage(1)
+                    setModalLastPage(1)
+                    setImagesFliped([])
+                    setPrintifyProducts()
+                }}
+            >
+                {printifyProducts &&
+                    <div className={styles.printProducts}>
+                        {printifyProducts.map((print_prod, i) =>
+                            <div
+                                className={styles.printProduct}
+                                key={i}
+                            >
+                                <div className={styles.imageContainer}>
+                                    <img
+                                        onClick={() => handleImageClick(print_prod.id)}
+                                        src={print_prod.images[0].src}
+                                        alt={print_prod.title}
                                         style={{
-                                            display: 'flex',
-                                            justifyContent: 'center',
-                                            alignItems: 'center'
+                                            width: '100%',
+                                            height: '100%',
                                         }}
-                                        renderItem={item => (
-                                            <PaginationItem
-                                                className='pageButton'
-                                                {...item}
-                                            />
-                                        )}
+                                    />
+                                    <img
+                                        onClick={() => handleImageClick(print_prod.id)}
+                                        src={print_prod.images[1].src}
+                                        alt={print_prod.title}
+                                        style={{
+                                            width: '100%',
+                                            height: '100%',
+                                            position: 'absolute',
+                                            left: 0,
+                                            top: 0,
+                                            opacity: imagesFliped.includes(print_prod.id) ? 1 : 0
+                                        }}
                                     />
                                 </div>
+                                <div className={styles.productBody}>
+                                    <span className='ellipsis'>
+                                        {print_prod.title}
+                                    </span>
+                                    <MyButton
+                                        style={{
+                                            paddingLeft: '2rem',
+                                            paddingRight: '2rem',
+                                        }}
+                                        onClick={() => handleChoose(print_prod)}
+                                    >
+                                        Select
+                                    </MyButton>
+                                </div>
+                            </div>
+                        )}
+                        {printifyProducts &&
+                            <div className={styles.modalBottom}>
+                                <Pagination
+                                    onChange={handlePageChange}
+                                    size='small'
+                                    count={modalLastPage}
+                                    color="primary"
+                                    page={Number(modalPage)}
+                                    style={{
+                                        display: 'flex',
+                                        justifyContent: 'center',
+                                        alignItems: 'center'
+                                    }}
+                                    renderItem={item => (
+                                        <PaginationItem
+                                            {...item}
+                                        />
+                                    )}
+                                />
+                            </div>
+                        }
+                    </div>
+                }
+                {!printifyProducts &&
+                    <motion.div
+                        className={styles.loadingSpinner}
+                        initial='hidden'
+                        animate='visible'
+                        variants={{
+                            hidden: {
+                                opacity: 0,
+                            },
+                            visible: {
+                                opacity: 1,
                             }
-                        </div>
-                    }
-                    {!printifyProducts &&
-                        <motion.div
-                            className={styles.loadingSpinner}
-                            initial='hidden'
-                            animate='visible'
-                            variants={{
-                                hidden: {
-                                    opacity: 0,
-                                },
-                                visible: {
-                                    opacity: 1,
-                                }
+                        }}
+                        transition={{
+                            duration: 0.3,
+                        }}
+                    >
+                        <CircularProgress
+                            variant="determinate"
+                            sx={{
+                                color: '#525252',
+                                position: 'absolute',
                             }}
-                            transition={{
-                                duration: 0.3,
+                            size={120}
+                            thickness={4}
+                            value={100}
+                        />
+                        <CircularProgress
+                            disableShrink
+                            size={120}
+                            thickness={4}
+                            sx={{
+                                animationDuration: '750ms',
                             }}
-                        >
-                            <CircularProgress
-                                variant="determinate"
-                                sx={{
-                                    color: '#525252',
-                                    position: 'absolute',
-                                }}
-                                size={120}
-                                thickness={4}
-                                value={100}
-                            />
-                            <CircularProgress
-                                disableShrink
-                                size={120}
-                                thickness={4}
-                                sx={{
-                                    animationDuration: '750ms',
-                                }}
-                            />
-                        </motion.div>
-                    }
-                </Modal>
-            }
+                        />
+                    </motion.div>
+                }
+            </Modal>
         </div>
     )
 }
