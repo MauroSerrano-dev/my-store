@@ -112,14 +112,14 @@ export default async function handler(req, res) {
                     user_email: customer_details.email,
                     id_stripe_payment_intent: payment_intent,
                     receipt_url: stripeCharge.receipt_url,
-                    products: line_items.map(prod => (
+                    products: line_items.map((prod, i) => (
                         {
                             id: prod.id,
                             id_printify: prod.id_printify,
                             quantity: prod.quantity,
-                            variant: purchaseProducts.variant,
+                            variant: purchaseProducts[i].variant,
                             variant_id_printify: prod.variant_id_printify,
-                            image_src: purchaseProducts.image_src,
+                            image_src: purchaseProducts[i].image_src,
                             status: STEPS[0]
                         }
                     )),
