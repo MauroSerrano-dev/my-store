@@ -14,15 +14,15 @@ const stripe = Stripe(process.env.STRIPE_SECRET_KEY)
 export default async function handler(req, res) {
     const sig = req.headers['stripe-signature']
 
-    let event = req.body
+    let event
 
-    /*     try {
-            const rawBody = await getRawBody(req)
-            event = stripe.webhooks.constructEvent(rawBody, sig, process.env.STRIPE_WEBHOOK_SECRET)
-        }
-        catch (error) {
-            res.status(401).json({ error: 'Invalid authentication' })
-        } */
+    try {
+        const rawBody = await getRawBody(req)
+        event = stripe.webhooks.constructEvent(rawBody, sig, process.env.STRIPE_WEBHOOK_SECRET)
+    }
+    catch (error) {
+        res.status(401).json({ error: 'Invalid authentication' })
+    }
 
     try {
         const { type, data } = event
@@ -181,9 +181,9 @@ export default async function handler(req, res) {
         }
     }
 }
-/* 
+
 export const config = {
     api: {
         bodyParser: false,
     },
-} */
+}
