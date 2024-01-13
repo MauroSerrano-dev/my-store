@@ -14,15 +14,15 @@ const stripe = Stripe(process.env.STRIPE_SECRET_KEY)
 export default async function handler(req, res) {
     const sig = req.headers['stripe-signature']
 
-    let event
+    let event = req.body
 
-    try {
-        const rawBody = await getRawBody(req)
-        event = stripe.webhooks.constructEvent(rawBody, sig, process.env.STRIPE_WEBHOOK_SECRET)
-    }
-    catch (error) {
-        res.status(401).json({ error: 'Invalid authentication' })
-    }
+    /*     try {
+            const rawBody = await getRawBody(req)
+            event = stripe.webhooks.constructEvent(rawBody, sig, process.env.STRIPE_WEBHOOK_SECRET)
+        }
+        catch (error) {
+            res.status(401).json({ error: 'Invalid authentication' })
+        } */
 
     try {
         const { type, data } = event
@@ -116,7 +116,7 @@ export default async function handler(req, res) {
                             quantity: prod.quantity,
                             variant: prod.variant,
                             variant_id_printify: prod.variant_id_printify,
-                            image: prod.image_src,
+                            image: prod.image,
                             status: STEPS[0]
                         }
                     )),
@@ -174,16 +174,16 @@ export default async function handler(req, res) {
     } catch (error) {
         try {
             await handleStripeWebhookFail(event?.id)
-            res.status(500).json({ message: 'Error on stripe webhook', error: error })
+            res.status(500).json({ message: 'Error on stripe webhook', error: error.message })
         }
         catch {
-            res.status(500).json({ message: 'Error on handleStripeWebhookFail', error: error })
+            res.status(500).json({ message: 'Error on handleStripeWebhookFail', error: error.message })
         }
     }
 }
-
+/* 
 export const config = {
     api: {
         bodyParser: false,
     },
-}
+} */
