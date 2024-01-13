@@ -50,11 +50,10 @@ export default function OrderStatus() {
             .then(async response => {
                 if (response.error)
                     showToast({ type: 'error', msg: tToasts(response.error) })
-                const productsInfo = await getProductsInfo(response.data.products)
                 setOrder({
                     ...response.data,
                     products: response.data.products.map(prod => (
-                        orderProductModel({ ...prod, ...productsInfo.shift() })
+                        orderProductModel(prod)
                     ))
                 })
                 setLoading(false)

@@ -35,7 +35,7 @@ async function createCart(userId, products = []) {
  */
 async function setCartProducts(cartId, cartProducts) {
     try {
-        const cartRef = admin.firestore().doc(`${process.env.NEXT_PUBLIC_COLL_USERS}/${cartId}`)
+        const cartRef = admin.firestore().doc(`${process.env.NEXT_PUBLIC_COLL_CARTS}/${cartId}`)
 
         await cartRef.update({ products: cartProducts });
 
