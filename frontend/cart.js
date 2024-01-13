@@ -117,6 +117,9 @@ async function changeCartProductField(cartId, product, fieldName, newValue) {
                 : prod
         )
 
+        if (newProducts.reduce((acc, prod) => acc + prod.quantity, 0) > LIMITS.cart_items)
+            throw new MyError('max_products', 'warning')
+
         await updateDoc(userRef, { products: newProducts })
 
         return { id: cartDoc.id, ...cartData }
