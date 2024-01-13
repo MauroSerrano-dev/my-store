@@ -43,7 +43,7 @@ export function newUserModel(props) {
  * @param {string} props.type_id - The type ID of the item.
  * @param {number} props.quantity - The quantity of the item.
  * @param {string} props.title - The title/name of the item.
- * @param {string} props.image - The image URL of the item.
+ * @param {string} props.image_src - The image_src URL of the item.
  * @param {string} props.description - The description of the item.
  * @param {string} props.id_printify - The Printify ID of the item.
  * @param {string} props.provider_id - The provider ID of the item.
@@ -58,7 +58,7 @@ export function cartItemModel(props) {
         type_id,
         quantity,
         title,
-        image,
+        image_src,
         description,
         id_printify,
         provider_id,
@@ -71,7 +71,7 @@ export function cartItemModel(props) {
         type_id: type_id,
         quantity: quantity,
         title: title,
-        image: image,
+        image_src: image_src,
         description: description,
         id_printify: id_printify,
         provider_id: provider_id,

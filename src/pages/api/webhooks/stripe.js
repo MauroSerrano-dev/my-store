@@ -116,7 +116,7 @@ export default async function handler(req, res) {
                             quantity: prod.quantity,
                             variant: prod.variant,
                             variant_id_printify: prod.variant_id_printify,
-                            image: prod.image,
+                            image_src: prod.image_src,
                             status: STEPS[0]
                         }
                     )),
