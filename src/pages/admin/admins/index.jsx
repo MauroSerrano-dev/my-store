@@ -7,23 +7,30 @@ import { useTranslation } from 'next-i18next';
 import { useEffect, useState } from 'react';
 import { showToast } from '@/utils/toasts';
 import { Table, TableBody, TableCell, TableHead, TableRow, Paper, Avatar } from '@mui/material';
+import { convertStringToFormatDate } from '@/utils';
 
 export default function Admins() {
     const {
         auth,
         session,
         isAdmin,
+        router,
     } = useAppContext()
 
+    const {
+        page = 1,
+        limit = 100,
+    } = router.query
 
     const [adminList, setAdminsList] = useState()
 
+    const { i18n } = useTranslation()
     const tToasts = useTranslation('toasts').t
 
     useEffect(() => {
-        if (auth?.currentUser)
+        if (isAdmin)
             getAdminUsers()
-    }, [auth?.currentUser])
+    }, [isAdmin])
 
     async function getAdminUsers() {
         try {
@@ -33,6 +40,8 @@ export default function Admins() {
                 method: 'GET',
                 headers: {
                     authorization: token,
+                    page: page,
+                    limit: limit,
                 },
             };
 
@@ -85,24 +94,24 @@ export default function Admins() {
                                                 <TableCell>{admin.displayName}</TableCell>
                                                 <TableCell>{admin.email}</TableCell>
                                                 <TableCell>{admin.uid}</TableCell>
-                                                <TableCell>{admin.customClaims.admin.toString()}</TableCell>
-                                                <TableCell>{admin.disabled.toString()}</TableCell>
-                                                <TableCell>{admin.emailVerified.toString()}</TableCell>
-                                                <TableCell>{admin.metadata.creationTime}</TableCell>
-                                                <TableCell>{admin.metadata.lastSignInTime}</TableCell>
-                                                <TableCell>{admin.metadata.lastRefreshTime}</TableCell>
-                                                <TableCell>{admin.metadata.lastSignInTime}</TableCell>
-                                                <TableCell>{admin.tokensValidAfterTime}</TableCell>
+                                                <TableCell>{String(admin.customClaims.admin)}</TableCell>
+                                                <TableCell>{String(admin.disabled)}</TableCell>
+                                                <TableCell>{String(admin.emailVerified)}</TableCell>
+                                                <TableCell>{convertStringToFormatDate(admin.metadata.creationTime, i18n.language)}</TableCell>
+                                                <TableCell>{convertStringToFormatDate(admin.metadata.lastSignInTime, i18n.language)}</TableCell>
+                                                <TableCell>{convertStringToFormatDate(admin.metadata.lastRefreshTime, i18n.language)}</TableCell>
+                                                <TableCell>{convertStringToFormatDate(admin.tokensValidAfterTime, i18n.language)}</TableCell>
                                             </TableRow>
                                         ))}
                                     </TableBody>
                                 </Table>
                             </Paper>
                         }
-                    </main >
-                </div >
+                    </main>
+                </div>
     )
 }
+
 export async function getServerSideProps({ locale }) {
     return {
         props: {

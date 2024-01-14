@@ -22,6 +22,7 @@ export function newUserModel(props) {
             active: false,
         },
         email_verified,
+        orders_counter = 0,
     } = props
 
     return {
@@ -33,6 +34,7 @@ export function newUserModel(props) {
         quests: quests,
         custom_home_page: custom_home_page,
         email_verified: email_verified,
+        orders_counter: orders_counter,
     }
 }
 

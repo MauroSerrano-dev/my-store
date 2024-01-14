@@ -572,7 +572,7 @@ export async function getServerSideProps({ query, locale, resolvedUrl }) {
     }
     const product = await fetch(`${process.env.NEXT_PUBLIC_URL}/api/product`, options)
         .then(response => response.json())
-        .then(response => response.product)
+        .then(response => response)
         .catch(err => console.error(err))
 
     const colorQuery = cl

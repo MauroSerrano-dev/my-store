@@ -303,7 +303,10 @@ export default function Profile() {
                     <Modal
                         className={styles.modalContent}
                         open={deleteAccountModalOpen}
-                        closeModal={() => setDeleteAccountModalOpen(false)}
+                        closeModal={() => {
+                            if (!deleteAccButtonLoading)
+                                setDeleteAccountModalOpen(false)
+                        }}
                     >
                         <div className={`${styles.modalHead} noSelection`}>
                             <h3>

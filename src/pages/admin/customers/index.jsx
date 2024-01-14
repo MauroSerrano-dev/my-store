@@ -1,43 +1,16 @@
-import styles from '@/styles/admin/products/type_id/prod_id/index.module.css'
+import styles from '@/styles/admin/index.module.css'
+import NoFound404 from '../../../components/NoFound404';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
-import NoFound404 from '@/components/NoFound404';
 import { useAppContext } from '@/components/contexts/AppContext';
 import { COMMON_TRANSLATES } from '@/consts';
-import { useEffect, useState } from 'react';
+import MyButton from '@/components/material-ui/MyButton';
+import Link from 'next/link';
 
-export default function ProductsId() {
+export default function Customers() {
     const {
         session,
-        router,
         isAdmin,
     } = useAppContext()
-
-    const [product, setProduct] = useState()
-
-    useEffect(() => {
-        if (router.isReady && isAdmin) {
-            getProductById(router.query.prod_id)
-        }
-    }, [router])
-
-    async function getProductById(id) {
-        const options = {
-            method: 'GET',
-            headers: {
-                authorization: process.env.NEXT_PUBLIC_APP_TOKEN,
-            }
-        }
-
-        if (id)
-            options.headers.id = id
-
-        await fetch("/api/product", options)
-            .then(response => response.json())
-            .then(response => {
-                setProduct(response)
-            })
-            .catch(err => console.error(err))
-    }
 
     return (
         session === undefined
@@ -53,11 +26,19 @@ export default function ProductsId() {
                     <header>
                     </header>
                     <main className={styles.main}>
-                        {product?.id}
+                        <Link
+                            href='/admin/customers/inactive'
+                            className='noUnderline'
+                        >
+                            <MyButton>
+                                Inactive Customers
+                            </MyButton>
+                        </Link>
                     </main>
                 </div>
     )
 }
+
 export async function getServerSideProps({ locale }) {
     return {
         props: {

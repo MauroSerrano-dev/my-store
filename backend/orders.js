@@ -1,16 +1,4 @@
-import {
-    collection,
-    doc,
-    updateDoc,
-    Timestamp,
-    query,
-    where,
-    getDocs,
-    orderBy,
-    getDoc,
-} from "firebase/firestore"
 import { ALLOWED_WEBHOOK_STATUS, POPULARITY_POINTS } from "@/consts"
-import { db } from "../firebaseInit"
 import MyError from "@/classes/MyError";
 const admin = require('../firebaseAdminInit');
 
@@ -35,7 +23,7 @@ async function createOrder(orderId, order) {
             create_at: now,
         })
 
-        handlePostOrderCreation(order.products)
+        handlePostOrderCreation(order.products, orderId.user_id)
             .then(() => {
                 console.log('handlePostOrderCreation was executed successfully')
             })
@@ -55,186 +43,131 @@ async function createOrder(orderId, order) {
  * Handles post-order creation tasks such as updating product sales.
  * 
  * @param {Array} line_items - Array of line items from the order.
+ * @param {string} userId - userId to update field orders_counter.
  */
-async function handlePostOrderCreation(line_items) {
+async function handlePostOrderCreation(line_items, userId) {
     try {
-        for (const lineItem of line_items) {
-            const { id, variant_id, quantity } = lineItem;
-            const productRef = admin.firestore().doc(`${process.env.NEXT_PUBLIC_COLL_PRODUCTS}/${id}`);
+        const firestore = admin.firestore()
 
-            const productDoc = await productRef.get();
+        const userRef = firestore.doc(`${process.env.NEXT_PUBLIC_COLL_USERS}/${userId}`)
+        await userRef.update({ orders_counter: admin.firestore.FieldValue.increment(1) })
+
+        for (const lineItem of line_items) {
+            const { id, variant_id, quantity } = lineItem
+            const productRef = firestore.doc(`${process.env.NEXT_PUBLIC_COLL_PRODUCTS}/${id}`)
+
+            const productDoc = await productRef.get()
 
             if (productDoc.exists) {
-                const productData = productDoc.data();
+                const productData = productDoc.data()
                 // Update total sales on the product
-                productData.total_sales = (productData.total_sales || 0) + quantity;
+                productData.total_sales = (productData.total_sales || 0) + quantity
 
                 // Update popularity scores
-                productData.popularity = (productData.popularity || 0) + POPULARITY_POINTS.purchase * quantity;
-                productData.popularity_year = (productData.popularity_year || 0) + POPULARITY_POINTS.purchase * quantity;
-                productData.popularity_month = (productData.popularity_month || 0) + POPULARITY_POINTS.purchase * quantity;
+                productData.popularity = (productData.popularity || 0) + POPULARITY_POINTS.purchase * quantity
+                productData.popularity_year = (productData.popularity_year || 0) + POPULARITY_POINTS.purchase * quantity
+                productData.popularity_month = (productData.popularity_month || 0) + POPULARITY_POINTS.purchase * quantity
 
                 // Check if the product has variants
                 if (productData.variants) {
-                    const variant = productData.variants.find(v => v.id === variant_id);
+                    const variant = productData.variants.find(v => v.id === variant_id)
 
                     // Check if the variant exists
                     if (variant) {
                         // Update variant sales
-                        variant.sales = (variant.sales || 0) + quantity;
+                        variant.sales = (variant.sales || 0) + quantity
                     }
                 }
 
                 // Update the product in the database
-                await productRef.update(productData);
+                await productRef.update(productData)
             }
         }
     }
     catch (error) {
-        console.error('Error handling purchased products:', error);
+        console.error('Error handling purchased products:', error)
         throw new MyError('error_handling_purchased_products', error?.type || 'error')
-    }
-}
-
-async function getOrdersByUserId(userId, startDate, endDate) {
-    try {
-        const ordersCollection = collection(db, process.env.NEXT_PUBLIC_COLL_ORDERS);
-        let q = query(
-            ordersCollection,
-            where("user_id", "==", userId)
-        );
-
-        if (startDate) {
-            const start = new Date(Number(startDate))
-            q = query(q, where("create_at", ">=", start))
-        }
-
-        if (endDate) {
-            const end = new Date(Number(endDate))
-            q = query(q, where("create_at", "<=", end))
-        }
-
-        q = query(q, orderBy("create_at", "desc"))
-
-        const querySnapshot = await getDocs(q)
-
-        const orders = querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }))
-
-        return {
-            status: 200,
-            message: "Orders retrieved successfully",
-            orders: orders,
-        };
-    } catch (error) {
-        console.error(error)
-        return {
-            status: 500,
-            message: "Error retrieving orders",
-            orders: [],
-            error: error,
-        };
     }
 }
 
 async function updateProductStatus(order_id_printify, printify_products) {
     try {
-        const ordersCollection = collection(db, process.env.NEXT_PUBLIC_COLL_ORDERS)
+        const firestore = admin.firestore();
+        const ordersCollection = firestore.collection(process.env.NEXT_PUBLIC_COLL_ORDERS);
 
-        const q = query(ordersCollection, where("id_printify", "==", order_id_printify))
-        const querySnapshot = await getDocs(q)
+        const q = ordersCollection.where("id_printify", "==", order_id_printify);
+        const querySnapshot = await q.get();
 
         if (!querySnapshot.empty) {
+            const orderDoc = querySnapshot.docs[0];
 
-            const orderDoc = querySnapshot.docs[0]
+            const now = admin.firestore.Timestamp.now();
 
-            const now = Timestamp.now();
-
-            const orderData = orderDoc.data()
+            const orderData = orderDoc.data();
             const updatedProducts = orderData.products.map(product => {
-                const newPossibleStatus = printify_products.find(prod => prod.product_id === product.id_printify && prod.variant_id === product.variant_id_printify)?.status
-                const newStatus = ALLOWED_WEBHOOK_STATUS.some(step => step === newPossibleStatus) && ALLOWED_WEBHOOK_STATUS.some(step => step === product.status)
+                const newPossibleStatus = printify_products.find(prod => prod.product_id === product.id_printify && prod.variant_id === product.variant_id_printify)?.status;
+                const newStatus = ALLOWED_WEBHOOK_STATUS.includes(newPossibleStatus) && ALLOWED_WEBHOOK_STATUS.includes(product.status)
                     ? newPossibleStatus || null
-                    : product.status
+                    : product.status;
                 return {
                     ...product,
-                    updated_at: newStatus !== product.status
-                        ? now
-                        : product.updated_at,
+                    updated_at: newStatus !== product.status ? now : product.updated_at,
                     status: newStatus
-                }
-            })
+                };
+            });
 
-            await updateDoc(orderDoc.ref, { products: updatedProducts })
+            await orderDoc.ref.update({ products: updatedProducts });
 
-            return {
-                status: 200,
-                message: "Product status updated successfully",
-            }
+            console.log("Product status updated successfully")
         } else {
-            return {
-                status: 404,
-                message: `Order with ID ${order_id_printify} not found`,
-            }
+            throw new MyError(`Order with ID ${order_id_printify} not found`)
         }
     } catch (error) {
-        console.error(error);
-        return {
-            status: 500,
-            message: "Error updating product status",
-            error: error,
-        }
+        console.error("Error updating product status", error);
+        throw error;
     }
 }
 
 async function updateOrderField(order_id_printify, field_name, value) {
     try {
-        const ordersCollection = collection(db, process.env.NEXT_PUBLIC_COLL_ORDERS)
+        const firestore = admin.firestore();
+        const ordersCollection = firestore.collection(process.env.NEXT_PUBLIC_COLL_ORDERS);
 
-        const q = query(ordersCollection, where("id_printify", "==", order_id_printify))
-        const querySnapshot = await getDocs(q)
+        const q = ordersCollection.where("id_printify", "==", order_id_printify);
+        const querySnapshot = await q.get();
 
         if (!querySnapshot.empty) {
-            const orderDoc = querySnapshot.docs[0]
+            const orderDoc = querySnapshot.docs[0];
 
-            await updateDoc(orderDoc.ref, { [field_name]: value })
+            await orderDoc.ref.update({ [field_name]: value });
 
-            return {
-                status: 200,
-                message: "Product updated successfully",
-            }
+            console.log('Order updated successfully');
         } else {
-            return {
-                status: 404,
-                message: `Order with Printify ID ${order_id_printify} not found`,
-            }
+            throw new MyError(`Order with Printify ID ${order_id_printify} not found`);
         }
     } catch (error) {
-        console.error(error);
-        return {
-            status: 500,
-            message: "Error updating product",
-            error: error,
-        }
+        console.error('Error updating order:', error);
+        throw error;
     }
 }
 
 async function getOrderById(orderId) {
     try {
-        const orderRef = doc(db, process.env.NEXT_PUBLIC_COLL_ORDERS, orderId)
-        const orderDoc = await getDoc(orderRef)
+        const firestore = admin.firestore();
+        const orderRef = firestore.doc(`${process.env.NEXT_PUBLIC_COLL_ORDERS}/${orderId}`);
+        const orderDoc = await orderRef.get();
 
-        if (orderDoc.exists()) {
-            const orderData = orderDoc.data()
-            console.log("Order retrieved successfully")
-            return { id: orderDoc.id, ...orderData }
-        }
-        else {
-            console.log(`Order ${orderId} not found`)
-            return null
+        if (orderDoc.exists) {
+            const orderData = orderDoc.data();
+            console.log("Order retrieved successfully");
+            return { id: orderDoc.id, ...orderData };
+        } else {
+            console.log(`Order ${orderId} not found`);
+            return null;
         }
     } catch (error) {
-        console.error('Error getting order by id:', error)
-        throw new MyError('Error getting order by id', error?.type || 'error')
+        console.error('Error getting order by id:', error);
+        throw new MyError('Error getting order by id');
     }
 }
 
@@ -302,7 +235,6 @@ async function refundOrderByStripeId(payment_intent, amount_refunded) {
 
 export {
     createOrder,
-    getOrdersByUserId,
     updateProductStatus,
     updateOrderField,
     getOrderById,

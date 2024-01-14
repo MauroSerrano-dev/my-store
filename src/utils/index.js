@@ -77,6 +77,29 @@ export function convertTimestampToDate(timestamp) {
         )
 }
 
+export function convertStringToFormatDate(dateString, locale) {
+    const date = new Date(dateString)
+
+    let selectedLocale = en
+    let model = 'MMMM d, yyyy'
+
+    if (locale === 'es') {
+        selectedLocale = es
+        model = 'd \'de\' MMMM, yyyy'
+    }
+    else if (locale === 'pt-BR') {
+        selectedLocale = ptBR
+        model = 'd \'de\' MMMM, yyyy'
+    }
+    else if (locale === 'pt') {
+        selectedLocale = ptPT
+        model = 'd \'de\' MMMM, yyyy'
+    }
+
+    if (dateString)
+        return format(date, model, { locale: selectedLocale })
+}
+
 export function convertTimestampToFormatDate(timestamp, locale) {
     const date = new Date(convertTimestampToDate(timestamp))
 

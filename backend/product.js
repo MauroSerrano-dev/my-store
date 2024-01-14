@@ -1,13 +1,4 @@
-import {
-    collection,
-    doc,
-    updateDoc,
-    getDoc,
-    getDocs,
-    Timestamp,
-} from "firebase/firestore"
 import { isProductInPrintify } from "./printify"
-import { db } from "../firebaseInit"
 import MyError from "@/classes/MyError"
 import { productInfoModel } from "@/utils/models";
 import { getProductVariantsInfos } from "@/utils";
@@ -19,7 +10,6 @@ const admin = require('../firebaseAdminInit');
  * 
  * @param {Object} product - The product object to be created.
  * @returns {Promise<Object>} An object containing the status and message of the operation.
- * @throws {MyError} Throws a MyError if the product creation fails.
  */
 async function createProduct(product) {
     const productsCollection = admin.firestore().collection(process.env.NEXT_PUBLIC_COLL_PRODUCTS);
@@ -51,31 +41,21 @@ async function createProduct(product) {
 
 async function getProductById(id) {
     try {
-        const productRef = doc(db, process.env.NEXT_PUBLIC_COLL_PRODUCTS, id)
-        const productDoc = await getDoc(productRef)
+        const firestore = admin.firestore();
+        const productRef = firestore.doc(`${process.env.NEXT_PUBLIC_COLL_PRODUCTS}/${id}`);
+        const productDoc = await productRef.get();
 
-        if (productDoc.exists()) {
-            const productData = productDoc.data()
-            return {
-                status: 200,
-                message: `Product with ID ${id} found!`,
-                product: productData
-            }
+        if (productDoc.exists) {
+            const productData = productDoc.data();
+
+            console.log(`Product with ID ${id} found!`);
+            return productData;
         } else {
-            return {
-                status: 200,
-                message: `Product with ID ${id} not found.`,
-                product: null
-            }
+            throw new MyError(`Product with ID ${id} not found`);
         }
     } catch (error) {
-        console.log("Error getting product:", error)
-        return {
-            status: 400,
-            message: `Product with ID ${id} not found.`,
-            product: null,
-            error: error
-        }
+        console.error("Error getting product:", error);
+        throw error;
     }
 }
 
@@ -85,7 +65,6 @@ async function getProductById(id) {
  * @param {string} product_id - The ID of the product to update.
  * @param {Object} product_new_fields - New fields to update the product with.
  * @returns {Promise<Object>} An object containing the status message of the operation.
- * @throws {MyError} Throws a MyError if the product update fails.
  */
 async function updateProduct(product_id, product_new_fields) {
     if (!product_id || !product_new_fields) {
@@ -160,30 +139,29 @@ async function cleanPopularityYear() {
  * 
  * @param {string[]} productIds - Array de IDs de produtos a serem verificados.
  * @returns {Promise<string[]>} Um array contendo os IDs dos produtos desabilitados.
- * @throws {Error} Lança um erro se ocorrer um problema durante a consulta ao banco de dados.
  */
-async function getDisabledProducts(products) {
-    const productsCollection = collection(db, process.env.NEXT_PUBLIC_COLL_PRODUCTS)
-    const disabledProducts = []
+async function getDisabledProducts(productIds) {
+    const firestore = admin.firestore();
+    const disabledProducts = [];
 
     try {
-        if (!products || products.length === 0) {
-            throw new MyError('No product IDs provided.')
+        if (!productIds || productIds.length === 0) {
+            throw new MyError('No product IDs provided.');
         }
 
-        for (const product of products) {
-            const productRef = doc(productsCollection, product.id)
-            const productDoc = await getDoc(productRef)
+        for (const productId of productIds) {
+            const productRef = firestore.doc(`${process.env.NEXT_PUBLIC_COLL_PRODUCTS}/${productId}`);
+            const productDoc = await productRef.get();
 
-            if (productDoc.exists() && productDoc.data().disabled) {
-                disabledProducts.push(product)
+            if (productDoc.exists && productDoc.data().disabled) {
+                disabledProducts.push(productId);
             }
         }
 
-        return disabledProducts
+        return disabledProducts;
     } catch (error) {
-        console.log("Error retrieving disabled products:", error)
-        throw new MyError('Error retrieving disabled products', error?.type || 'error')
+        console.error("Error retrieving disabled products:", error);
+        throw error;
     }
 }
 
@@ -194,32 +172,32 @@ async function getDisabledProducts(products) {
  * for those products whose promotion has expired.
  * 
  * @returns {Promise<object>} An object containing a success or error message.
- * @throws {Error} Throws an error if there is an error during the process.
  */
 async function removeExpiredPromotions() {
+    const firestore = admin.firestore();
     try {
-        const productsCollection = collection(db, process.env.NEXT_PUBLIC_COLL_PRODUCTS)
-        const querySnapshot = await getDocs(productsCollection)
+        const productsCollection = firestore.collection(process.env.NEXT_PUBLIC_COLL_PRODUCTS);
+        const querySnapshot = await productsCollection.get();
 
-        const updatePromises = []
+        const updatePromises = [];
 
         querySnapshot.forEach((doc) => {
-            const product = doc.data()
+            const product = doc.data();
             if (product.promotion && product.promotion.expire_at) {
-                const now = Timestamp.now()
+                const now = admin.firestore.Timestamp.now();
 
                 if (product.promotion.expire_at.seconds < now.seconds) {
-                    updatePromises.push(updateDoc(doc.ref, { min_price: product.promotion.min_price_original, promotion: null }))
+                    updatePromises.push(doc.ref.update({ min_price: product.promotion.min_price_original, promotion: null }));
                 }
             }
-        })
+        });
 
-        await Promise.all(updatePromises)
-        console.log('Expired promotions removed successfully.')
-        return { message: 'Expired promotions removed successfully.' }
+        await Promise.all(updatePromises);
+        console.log('Expired promotions removed successfully.');
+        return { message: 'Expired promotions removed successfully.' };
     } catch (error) {
-        console.error('Error removing expired promotions:', error)
-        throw new MyError('Error removing expired promotions', error?.type || 'error')
+        console.error('Error removing expired promotions:', error);
+        throw error;
     }
 }
 
