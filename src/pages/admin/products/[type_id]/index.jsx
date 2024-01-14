@@ -58,7 +58,7 @@ export default function ProductsId() {
     const modalOpen = productsPromotionModal?.length > 0
 
     useEffect(() => {
-        if (router.isReady)
+        if (router.isReady && isAdmin)
             getProductsByQuery()
     }, [router])
 

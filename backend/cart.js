@@ -1,5 +1,3 @@
-import { doc, getDoc, updateDoc } from "firebase/firestore";
-import { db } from "../firebaseInit";
 import MyError from "@/classes/MyError";
 const admin = require('../firebaseAdminInit');
 
@@ -46,40 +44,7 @@ async function setCartProducts(cartId, cartProducts) {
     }
 }
 
-/**
- * Changes a specific field value in a product within a cart.
- * @param {string} collectionName - The name of the collection.
- * @param {string} cartId - The ID of the cart.
- * @param {Object} product - The product to be updated.
- * @param {string} fieldName - The name of the field to be updated.
- * @param {any} newValue - The new value for the field.
- * @returns {object} Status and message regarding the cart update.
- */
-async function changeProductField(collectionName, cartId, product, fieldName, newValue) {
-    try {
-        const userRef = doc(db, collectionName, cartId)
-        const cartDoc = await getDoc(userRef)
-
-        const cartData = cartDoc.data()
-
-        cartData.products = cartData.products.map(prod =>
-            prod.id === product.id && prod.variant_id === product.variant_id
-                ? { ...prod, [fieldName]: newValue }
-                : prod
-        )
-
-        await updateDoc(userRef, cartData)
-
-        return cartData
-    }
-    catch (error) {
-        console.error('Error in changeProductField:', error)
-        throw error
-    }
-}
-
 export {
     createCart,
     setCartProducts,
-    changeProductField,
 }

@@ -89,7 +89,7 @@ export default withRouter(() => {
         }
         const product = await fetch("/api/product", options)
             .then(response => response.json())
-            .then(response => response.product)
+            .then(response => response)
             .catch(err => console.error(err))
         if (product) {
             if (product.colors_ids.every(cl => product.variants.filter(vari => vari.color_id === cl).every(variColor => variColor.price === product.variants.find(vari => vari.size_id === variColor.size_id).price)))

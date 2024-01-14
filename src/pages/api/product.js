@@ -12,8 +12,14 @@ export default async function handler(req, res) {
         res.status(401).json({ error: "Invalid authentication" })
 
     if (req.method === "GET") {
-        const result = await getProductById(id)
-        res.status(result.status).json(result)
+        try {
+            const product = await getProductById(id)
+            res.status(200).json(product)
+        }
+        catch (error) {
+            console.error('Error in product GET:', error)
+            res.status(500).json({ error: 'default_error' })
+        }
     }
     else if (req.method === "POST") {
         const result = await createProduct(product)

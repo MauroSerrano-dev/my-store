@@ -34,7 +34,7 @@ function changeVisitantCartProductField(product, fieldName, newValue) {
 
         saveVisitantCart(newCart)
     } catch (error) {
-        console.error('Error in changeProductField:', error)
+        console.error('Error in changeVisitantCartProductField:', error)
         throw error
     }
 }

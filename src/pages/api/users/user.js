@@ -1,5 +1,6 @@
 import { isTokenValid } from "@/utils/auth";
 import { createNewUser, deleteUser } from "../../../../backend/user";
+import { addUserDeleted } from "../../../../backend/app-settings";
 
 export default async function handler(req, res) {
     try {
@@ -17,7 +18,8 @@ export default async function handler(req, res) {
             res.status(201).json({ status: 201, message: 'user_created', user: user })
         }
         else if (req.method === "DELETE") {
-            await deleteUser(user_id)
+            const deletedUser = await deleteUser(user_id)
+            await addUserDeleted(deletedUser.email)
             res.status(200).json({ message: 'user_deleted_successfully' })
         }
     }

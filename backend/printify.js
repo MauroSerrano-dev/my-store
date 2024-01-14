@@ -5,7 +5,6 @@ import axios from 'axios'
  * 
  * @param {number} page - The page number to fetch products from.
  * @returns {Promise<Object>} A promise that resolves to the data of the fetched products.
- * @throws {Error} Throws an error if the request fails.
  */
 async function fetchPrintifyProducts(page) {
     const url = `${`https://api.printify.com/v1/shops/${process.env.PRINTIFY_SHOP_ID}/products.json`}?page=${page}`;
@@ -22,7 +21,6 @@ async function fetchPrintifyProducts(page) {
  * Fetches all products across all pages from Printify.
  * 
  * @returns {Promise<Array>} A promise that resolves to an array of all products.
- * @throws {Error} Throws an error if any request fails.
  */
 async function fetchAllPrintifyProducts() {
     let currentPage = 1;

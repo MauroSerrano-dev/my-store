@@ -124,7 +124,7 @@ async function changeCartProductField(cartId, product, fieldName, newValue) {
 
         return { id: cartDoc.id, ...cartData }
     } catch (error) {
-        console.error('Error in changeProductField:', error)
+        console.error('Error in changeCartProductField:', error)
         throw error
     }
 }

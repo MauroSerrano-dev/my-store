@@ -1,18 +1,8 @@
-import {
-    collection,
-    doc,
-    getDoc,
-    getDocs,
-    where,
-    query,
-    updateDoc,
-} from "firebase/firestore"
+
 import { createCart } from "./cart"
 import { createWishlist } from "./wishlists"
 import { newUserModel } from "@/utils/models"
-import { addUserDeleted } from "./app-settings"
 const admin = require('../firebaseAdminInit');
-import { db } from "../firebaseInit";
 import MyError from "@/classes/MyError"
 
 /**
@@ -21,7 +11,6 @@ import MyError from "@/classes/MyError"
  * 
  * @param {string} email - The email address to search for in the users collection.
  * @returns {Promise<string | null>} The user ID if found, or null if no user exists with the given email.
- * @throws {Error} Throws an error if there is an issue during the query.
  */
 async function getUserIdByEmail(email) {
     try {
@@ -89,26 +78,6 @@ async function createNewUser(authUser) {
     }
 }
 
-async function checkUserExistsByEmail(email) {
-    try {
-        const usersCollection = collection(db, process.env.NEXT_PUBLIC_COLL_USERS);
-
-        // Crie uma consulta para verificar se há um documento com o mesmo email
-        const q = query(usersCollection, where("email", "==", email));
-        const querySnapshot = await getDocs(q);
-
-        // Se algum documento for retornado, isso significa que o usuário já existe
-        if (!querySnapshot.empty) {
-            return true;
-        } else {
-            return false;
-        }
-    } catch (error) {
-        console.error("Error checking if user exists:", error);
-        throw error;
-    }
-}
-
 async function deleteUser(user_id) {
     try {
         const userRef = admin.firestore().doc(`${process.env.NEXT_PUBLIC_COLL_USERS}/${user_id}`)
@@ -138,18 +107,88 @@ async function deleteUser(user_id) {
         await cartRef.delete()
         await wishlistRef.delete()
 
-        await addUserDeleted(user.email)
-
         console.log(`User with ID ${user_id} has been deleted successfully.`)
+        return { id: userDoc.id, ...user }
     } catch (error) {
         console.error(`Error deleting user with ID ${user_id}:`, error)
         throw error
     }
 }
 
+async function getUsersInactiveForMonths(limit = 100, monthsInactive = 12) {
+    if (typeof limit !== 'number') {
+        throw new MyError('Limit must be a number');
+    }
+    if (typeof monthsInactive !== 'number') {
+        throw new MyError('Months Inactive must be a number');
+    }
+
+    const firestore = admin.firestore();
+    const inactiveSince = new Date();
+    inactiveSince.setMonth(inactiveSince.getMonth() - monthsInactive);
+
+    let inactiveUsers = [];
+    let pageToken;
+
+    do {
+        const listUsersResult = await admin.auth().listUsers(limit, pageToken);
+        for (const userRecord of listUsersResult.users) {
+            const lastRefreshTime = new Date(userRecord.metadata.lastRefreshTime);
+            if (lastRefreshTime < inactiveSince) {
+                const userDocRef = firestore.doc(`${process.env.NEXT_PUBLIC_COLL_USERS}/${userRecord.uid}`);
+                const userDoc = await userDocRef.get();
+                if (userDoc.exists && userDoc.data().orders_counter === 0) {
+                    inactiveUsers.push(userRecord);
+                }
+            }
+        }
+        pageToken = listUsersResult.pageToken;
+    } while (pageToken);
+
+    return inactiveUsers;
+}
+
+async function deleteInactiveUsersForMonths(monthsInactive = 12) {
+    try {
+        // Define the date for inactivity threshold
+        const inactiveSince = new Date();
+        inactiveSince.setMonth(inactiveSince.getMonth() - monthsInactive);
+
+        // Initialize Firestore and Admin Auth
+        const firestore = admin.firestore();
+        let pageToken;
+
+        do {
+            const listUsersResult = await admin.auth().listUsers(1000, pageToken);
+            for (const userRecord of listUsersResult.users) {
+                const lastRefreshTime = new Date(userRecord.metadata.lastRefreshTime);
+
+                // Check if the user is inactive and has not made any purchases
+                if (lastRefreshTime < inactiveSince) {
+                    const userDocRef = firestore.doc(`${process.env.NEXT_PUBLIC_COLL_USERS}/${userRecord.uid}`);
+                    const userDoc = await userDocRef.get();
+
+                    if (userDoc.exists && userDoc.data().orders_counter === 0) {
+                        // Delete the user and their associated data
+                        await deleteUser(userRecord.uid);
+                    }
+                }
+            }
+
+            pageToken = listUsersResult.pageToken;
+        } while (pageToken);
+
+        console.log('Inactive users deleted successfully');
+    } catch (error) {
+        console.error(`Error deleting inactive users: ${error}`);
+        throw error;
+    }
+}
+
 export {
-    checkUserExistsByEmail,
     getUserIdByEmail,
     deleteUser,
     createNewUser,
+    getUsersInactiveForMonths,
+    deleteInactiveUsersForMonths,
 }
