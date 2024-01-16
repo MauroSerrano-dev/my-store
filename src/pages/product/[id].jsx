@@ -57,6 +57,7 @@ export default withRouter(props => {
         setUserLocation,
         wishlist,
         handleWishlistClick,
+        setPosAddModal,
     } = useAppContext()
 
     const { i18n } = useTranslation()
@@ -195,7 +196,7 @@ export default withRouter(props => {
                             : product.images.find(img => img.color_id === productCurrentVariant.color_id).src[currentPosition],
                     }
                 )
-
+                setPosAddModal(true)
                 setCart(prev => (
                     {
                         ...prev,
@@ -277,9 +278,11 @@ export default withRouter(props => {
                             </div>
                             <div className={styles.right}>
                                 <div className={styles.rightTop}>
-                                    <div className={styles.titleContainer}>
-                                        <div className='fillWidth flex row' style={{ justifyContent: 'space-between', height: 35 }}>
-                                            <h2>{product.title}</h2>
+                                    <div className={styles.titleAndPrice}>
+                                        <div className={styles.titleContainer}>
+                                            <h1 className={styles.title}>
+                                                {product.title}
+                                            </h1>
                                             {session && wishlist &&
                                                 <HeartButton
                                                     checked={wishlist.products.some(prod => prod.id === product.id)}

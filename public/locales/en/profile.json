@@ -19,5 +19,6 @@
     "danger_zone": "Danger Zone",
     "send_verification_email": "Send verification email",
     "information_block_title": "Informations",
-    "welcome": "Welcome"
+    "welcome": "Welcome",
+    "pos_add_modal": "Show pop-up after adding to cart"
 }

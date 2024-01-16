@@ -15,7 +15,6 @@ import ProductTag from '@/components/products/ProductTag'
 import MyButton from '@/components/material-ui/MyButton'
 import { getOrderById } from '../../../frontend/orders'
 import { showToast } from '@/utils/toasts'
-import { getProductsInfo } from '../../../frontend/product'
 
 export default function Orders() {
     const {

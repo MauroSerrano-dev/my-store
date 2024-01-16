@@ -5,6 +5,7 @@ import {
 } from "firebase/firestore"
 import { db, auth } from "../firebaseInit";
 import MyError from "@/classes/MyError";
+import { DONT_SHOW_POS_ADD } from "@/consts";
 
 async function getUserById(id) {
     try {
@@ -24,6 +25,7 @@ async function getUserById(id) {
 
 async function createNewUser(authUser) {
     try {
+
         const options = {
             method: 'POST',
             headers: {
@@ -31,7 +33,12 @@ async function createNewUser(authUser) {
                 authorization: process.env.NEXT_PUBLIC_APP_TOKEN,
             },
             body: JSON.stringify({
-                authUser: authUser,
+                authUser: {
+                    ...authUser,
+                    preferences: localStorage.getItem(DONT_SHOW_POS_ADD)
+                        ? [DONT_SHOW_POS_ADD]
+                        : []
+                },
             })
         }
 
@@ -51,7 +58,6 @@ async function createNewUser(authUser) {
 }
 
 async function updateUser(userId, changes) {
-    console.log(userId)
     try {
         const userRef = doc(db, process.env.NEXT_PUBLIC_COLL_USERS, userId)
         const userDoc = await getDoc(userRef)

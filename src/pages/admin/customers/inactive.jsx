@@ -6,13 +6,14 @@ import { COMMON_TRANSLATES } from '@/consts';
 import { useTranslation } from 'next-i18next';
 import { useEffect, useState } from 'react';
 import { showToast } from '@/utils/toasts';
-import { Table, TableBody, TableCell, TableHead, TableRow, Paper, Avatar } from '@mui/material';
+import { Avatar } from '@mui/material';
 import { convertStringToFormatDate } from '@/utils';
 import MyButton from '@/components/material-ui/MyButton';
 import Modal from '@/components/Modal';
 import { SlClose } from 'react-icons/sl';
 import TextInput from '@/components/material-ui/TextInput';
 import { LoadingButton } from '@mui/lab';
+import MyTable from '@/components/material-ui/MyTable';
 
 const INACTIVE_MONTHS = 12
 
@@ -30,7 +31,7 @@ export default function InactiveCustomers() {
         limit = 100,
     } = router.query
 
-    const [adminList, setInactiveList] = useState()
+    const [inactiveList, setInactiveList] = useState()
     const [deleteModalOpen, setDeleteModalOpen] = useState(false)
     const [deleteTextInput, setDeleteTextInput] = useState('')
     const [deleteAccButtonLoading, setDeleteAccButtonLoading] = useState(false)
@@ -118,43 +119,33 @@ export default function InactiveCustomers() {
                         <p>
                             Usuários que estão inativos a mais de {INACTIVE_MONTHS} meses e nunca compraram nada
                         </p>
-                        {adminList &&
-                            <Paper style={{ overflow: 'hidden' }}>
-                                <Table aria-label="admin users table">
-                                    <TableHead>
-                                        <TableRow>
-                                            <TableCell>Photo</TableCell>
-                                            <TableCell>Name</TableCell>
-                                            <TableCell>Email</TableCell>
-                                            <TableCell>UID</TableCell>
-                                            <TableCell>Admin</TableCell>
-                                            <TableCell>Disabled</TableCell>
-                                            <TableCell>Email Verified</TableCell>
-                                            <TableCell>Creation Time</TableCell>
-                                            <TableCell>Last Sign In Time</TableCell>
-                                            <TableCell>Last Refresh Time</TableCell>
-                                            <TableCell>Tokens Valid After Time</TableCell>
-                                        </TableRow>
-                                    </TableHead>
-                                    <TableBody>
-                                        {adminList.map((admin) => (
-                                            <TableRow key={admin.uid}>
-                                                <TableCell>{admin.photoURL && <Avatar src={admin.photoURL} />}</TableCell>
-                                                <TableCell>{admin.displayName}</TableCell>
-                                                <TableCell>{admin.email}</TableCell>
-                                                <TableCell>{admin.uid}</TableCell>
-                                                <TableCell>{String(admin.customClaims?.admin || false)}</TableCell>
-                                                <TableCell>{String(admin.disabled)}</TableCell>
-                                                <TableCell>{String(admin.emailVerified)}</TableCell>
-                                                <TableCell>{convertStringToFormatDate(admin.metadata.creationTime, i18n.language)}</TableCell>
-                                                <TableCell>{convertStringToFormatDate(admin.metadata.lastSignInTime, i18n.language)}</TableCell>
-                                                <TableCell>{convertStringToFormatDate(admin.metadata.lastRefreshTime, i18n.language)}</TableCell>
-                                                <TableCell>{convertStringToFormatDate(admin.tokensValidAfterTime, i18n.language)}</TableCell>
-                                            </TableRow>
-                                        ))}
-                                    </TableBody>
-                                </Table>
-                            </Paper>
+                        {inactiveList &&
+                            <MyTable
+                                headers={[
+                                    { id: 'photoURL', title: 'Photo' },
+                                    { id: 'displayName', title: 'Name' },
+                                    { id: 'email', title: 'Email' },
+                                    { id: 'uid', title: 'ID' },
+                                    { id: 'isAdmin', title: 'Admin' },
+                                    { id: 'disabled', title: 'Disabled' },
+                                    { id: 'emailVerified', title: 'Email Verified' },
+                                    { id: 'creationTime', title: 'Creation Time' },
+                                    { id: 'lastSignInTime', title: 'Last Sign In Time' },
+                                    { id: 'lastRefreshTime', title: 'Last Refresh Time' },
+                                    { id: 'tokensValidAfterTime', title: 'Tokens Valid After Time' },
+                                ]}
+                                records={inactiveList.map(admin => ({
+                                    ...admin,
+                                    photoURL: admin.photoURL && <Avatar src={admin.photoURL} />,
+                                    isAdmin: String(admin.customClaims?.admin),
+                                    disabled: String(admin.disabled),
+                                    emailVerified: String(admin.emailVerified),
+                                    creationTime: convertStringToFormatDate(admin.metadata.creationTime, i18n.language),
+                                    lastSignInTime: convertStringToFormatDate(admin.metadata.lastSignInTime, i18n.language),
+                                    lastRefreshTime: convertStringToFormatDate(admin.metadata.lastRefreshTime, i18n.language),
+                                    tokensValidAfterTime: convertStringToFormatDate(admin.tokensValidAfterTime, i18n.language)
+                                }))}
+                            />
                         }
                         <MyButton
                             color='error'

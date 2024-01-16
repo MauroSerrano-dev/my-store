@@ -57,6 +57,7 @@ async function createNewUser(authUser) {
                 email: authUser.email,
                 first_name: firstName,
                 last_name: lastName,
+                preferences: authUser.preferences,
                 cart_id: cart_id,
                 wishlist_id: wishlist_id,
                 email_verified: authUser.emailVerified,
