@@ -5,6 +5,7 @@
  * @param {string} props.cart_id - The user's cart ID.
  * @param {string} props.wishlist_id - The user's wishlist ID.
  * @param {Array<string>} props.quests - Tasks that the user must perform.
+ * @param {Array} props.preferences - User preferences.
  * @param {Object} props.custom_home_page - Home page tags associated with the user.
  * @param {boolean} props.email_verified - Email verification status of the user.
  * @returns {object} - Returns an object representing the model of the new user with corresponding properties.
@@ -17,6 +18,7 @@ export function newUserModel(props) {
         cart_id,
         wishlist_id,
         quests = [],
+        preferences = [],
         custom_home_page = {
             tags: [],
             active: false,
@@ -32,6 +34,7 @@ export function newUserModel(props) {
         cart_id: cart_id,
         wishlist_id: wishlist_id,
         quests: quests,
+        preferences: preferences,
         custom_home_page: custom_home_page,
         email_verified: email_verified,
         orders_counter: orders_counter,

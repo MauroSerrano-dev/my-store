@@ -26,6 +26,7 @@ import { getAllCurrencies } from '../../../frontend/app-settings'
 import MyError from '@/classes/MyError'
 import { changeVisitantCartProductField, deleteProductFromVisitantCart } from '../../../frontend/visitant-cart'
 import { isSameProduct } from '@/utils'
+import PosAddToCartModal from '../PosAddToCartModal'
 
 const AppContext = createContext()
 
@@ -59,6 +60,7 @@ export function AppProvider({ children }) {
     const [blockInteractions, setBlockInteractions] = useState(false)
     const [currencies, setCurrencies] = useState()
     const [isAdmin, setIsAdmin] = useState()
+    const [posAddModal, setPosAddModal] = useState(false)
 
     const router = useRouter()
 
@@ -149,6 +151,7 @@ export function AppProvider({ children }) {
 
     useEffect(() => {
         setSearch(router?.query?.s ? router.query.s : '')
+        setPosAddModal(false)
     }, [router])
 
     useEffect(() => {
@@ -535,7 +538,8 @@ export function AppProvider({ children }) {
                 isAdmin,
                 handleChangeProductQuantity,
                 handleDeleteProductFromCart,
-                handleCreateNewUser
+                handleCreateNewUser,
+                setPosAddModal,
             }}
         >
             <motion.div
@@ -637,6 +641,10 @@ export function AppProvider({ children }) {
                     }
                 </div>
             </motion.div>
+            <PosAddToCartModal
+                open={posAddModal}
+                close={() => setPosAddModal(false)}
+            />
             <ToastContainer
                 newestOnTop
                 transition={Flip}

@@ -29,5 +29,8 @@
     "link_copied": "Link Copied!",
     "socks": "Socks",
     "remove_from_cart": "Remove from cart",
-    "remove_from_wishlist": "Remove from wishlist"
+    "remove_from_wishlist": "Remove from wishlist",
+    "go_to_cart": "Go to Cart",
+    "continue_shopping": "Continue Shopping",
+    "dont_show_again": "Don't show again"
 }

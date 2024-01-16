@@ -2,7 +2,7 @@ import styles from '@/styles/pages/profile.module.css'
 import Head from 'next/head'
 import NoFound404 from '../components/NoFound404'
 import TagsSelector from '@/components/material-ui/TagsSelector'
-import { COMMON_TRANSLATES, DEFAULT_LANGUAGE, LIMITS, USER_CUSTOMIZE_HOME_PAGE } from '@/consts'
+import { COMMON_TRANSLATES, DEFAULT_LANGUAGE, DONT_SHOW_POS_ADD, LIMITS, USER_CUSTOMIZE_HOME_PAGE } from '@/consts'
 import { useEffect, useState } from 'react'
 import { showToast } from '@/utils/toasts'
 import { convertTimestampToFormatDate, getObjectsDiff } from '@/utils'
@@ -116,6 +116,9 @@ export default function Profile() {
             await updateProfile(auth.currentUser, { displayName: `${first_name || session.first_name || ''} ${last_name || session.last_name || ''}` })
             const updatedUser = await updateUser(session.id, changes)
             setSession(updatedUser)
+            updatedUser.preferences.includes(DONT_SHOW_POS_ADD)
+                ? localStorage.setItem(DONT_SHOW_POS_ADD, 'true')
+                : localStorage.removeItem(DONT_SHOW_POS_ADD)
             showToast({ type: 'success', msg: tToasts('user_updated') })
         }
         catch (error) {
@@ -221,6 +224,29 @@ export default function Profile() {
                                         style={{
                                             width: '100%'
                                         }}
+                                    />
+                                    <FormControlLabel
+                                        control={
+                                            <Switch
+                                                checked={!user.preferences.includes(DONT_SHOW_POS_ADD)}
+                                                onChange={event =>
+                                                    handleChanges(
+                                                        'preferences',
+                                                        event.target.checked
+                                                            ? user.preferences.filter(pref => pref !== DONT_SHOW_POS_ADD)
+                                                            : [...user.preferences, DONT_SHOW_POS_ADD]
+                                                    )
+                                                }
+                                                color='success'
+                                            />
+                                        }
+                                        componentsProps={{
+                                            typography: {
+                                                fontSize: 15,
+                                                fontWeight: 700
+                                            }
+                                        }}
+                                        label={tProfile('pos_add_modal')}
                                     />
                                     <p className={styles.createAtDate}>{tProfile('customer_since')}: {convertTimestampToFormatDate(session.create_at, i18n.language)}</p>
                                 </div>

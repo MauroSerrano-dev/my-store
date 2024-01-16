@@ -19,5 +19,6 @@
     "danger_zone": "Zona de Peligro",
     "send_verification_email": "Enviar correo de verificación",
     "information_block_title": "Informaciones",
-    "welcome": "¡Bienvenido"
+    "welcome": "¡Bienvenido",
+    "pos_add_modal": "Mostrar ventana emergente después de agregar al carrito"
 }

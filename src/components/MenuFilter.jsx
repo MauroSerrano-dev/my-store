@@ -1,9 +1,8 @@
 import styles from '@/styles/components/MenuFilter.module.css'
 import { motion } from "framer-motion";
-import Link from 'next/link';
 import { useEffect } from 'react';
 import { SlClose } from "react-icons/sl";
-import { PRODUCTS_TYPES, SEARCH_PRODUCT_COLORS, SEARCH_ART_COLORS, SEARCH_FILTERS, CURRENCIES } from '@/consts';
+import { SEARCH_PRODUCT_COLORS, SEARCH_ART_COLORS, SEARCH_FILTERS, CURRENCIES } from '@/consts';
 import ColorButton from './ColorButton';
 import { useAppContext } from './contexts/AppContext';
 import { useTranslation } from 'next-i18next';
@@ -82,10 +81,8 @@ export default function MenuFilter(props) {
                 variants={{
                     hidden: {
                         bottom: '-100%',
-                        height: '65%',
                     },
                     visible: {
-                        height: '65%',
                         bottom: '-35%',
                     }
                 }}
