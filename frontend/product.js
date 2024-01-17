@@ -14,6 +14,7 @@ import { db } from "../firebaseInit"
 import { productInfoModel } from "@/utils/models";
 import { DEFAULT_LANGUAGE, LIMITS, PRODUCTS_TYPES } from "@/consts";
 import MyError from "@/classes/MyError";
+import Translate from "translate";
 
 async function getProductsInfo(products) {
     try {
@@ -214,7 +215,7 @@ async function getProductsByQueries(props) {
             const translationPromises = []
 
             inicialTags.forEach(word => {
-                const translation = translate(word, { from: user_language.slice(0, 2), to: "en", engine: "google" })
+                const translation = Translate(word, { from: user_language.slice(0, 2), to: "en", engine: "google" })
                 translationPromises.push(translation)
             })
 
