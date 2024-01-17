@@ -12,7 +12,7 @@ import {
 import { getProductVariantsInfos } from "@/utils"
 import { db } from "../firebaseInit"
 import { productInfoModel } from "@/utils/models";
-import { DEFAULT_LANGUAGE, LIMITS, PRODUCTS_TYPES } from "@/consts";
+import { DEFAULT_LANGUAGE, LIMITS, PRODUCTS_TYPES, TAGS_POOL, THEMES_POOL } from "@/consts";
 import MyError from "@/classes/MyError";
 import Translate from "translate";
 const Fuse = require('fuse.js');
