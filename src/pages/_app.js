@@ -61,11 +61,11 @@ function App(props) {
         <link rel="icon" href="/small-logo-32.ico" key='icon' type="image/x-icon" />
 
         <Script src="https://js.stripe.com/v3/" async></Script>
-{/*         {process.env.NEXT_PUBLIC_ENV === 'production' &&
+        {process.env.NEXT_PUBLIC_ENV === 'production' &&
           <script
             strategy='afterInteractive'
             async
-            src={`https://www.googletagmanager.com/gtag/js?id=${process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS_ID}`}
+            src={`https://www.googletagmanager.com/gtag/js?id=${process.env.NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID}`}
           />
         }
         {process.env.NEXT_PUBLIC_ENV === 'production' &&
@@ -76,13 +76,13 @@ function App(props) {
               window.dataLayer = window.dataLayer || [];
               function gtag(){dataLayer.push(arguments);}
               gtag('js', new Date());
-              gtag('config', '${process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS_ID}', {
+              gtag('config', '${process.env.NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID}', {
                 page_path: window.location.pathname,
               });
               `,
             }}
           />
-        } */}
+        }
       </Head>
       <ThemeProvider theme={mainTheme}>
         <AppProvider>
