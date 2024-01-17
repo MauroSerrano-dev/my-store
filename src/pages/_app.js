@@ -61,7 +61,7 @@ function App(props) {
         <link rel="icon" href="/small-logo-32.ico" key='icon' type="image/x-icon" />
 
         <Script src="https://js.stripe.com/v3/" async></Script>
-        {process.env.NEXT_PUBLIC_ENV === 'production' &&
+{/*         {process.env.NEXT_PUBLIC_ENV === 'production' &&
           <script
             strategy='afterInteractive'
             async
@@ -82,7 +82,7 @@ function App(props) {
               `,
             }}
           />
-        }
+        } */}
       </Head>
       <ThemeProvider theme={mainTheme}>
         <AppProvider>
