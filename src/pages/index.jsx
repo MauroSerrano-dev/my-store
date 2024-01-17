@@ -15,13 +15,13 @@ import { getProductsByQueries } from '../../frontend/product'
 import { showToast } from '@/utils/toasts'
 
 const categories = [
-  { id: 'games', url: '/search?h=games', img: 'https://firebasestorage.googleapis.com/v0/b/my-store-4aef7.appspot.com/o/index%2Fgames.webp?alt=media&token=c28521d0-8fd8-45b7-9c80-60feffab7f60' },
-  { id: 't-shirts', url: '/search?v=t-shirts', img: 'https://firebasestorage.googleapis.com/v0/b/my-store-4aef7.appspot.com/o/index%2Ft-shirts.webp?alt=media&token=3818e9b9-4efa-4148-9041-eadb93f2f05d' },
-  { id: 'music', url: '/search?h=music', img: 'https://firebasestorage.googleapis.com/v0/b/my-store-4aef7.appspot.com/o/index%2Fmusic.webp?alt=media&token=e6a0a6cd-3f03-4db5-88c8-6924ba4c1f5f' },
-  { id: 'rpg', url: '/search?h=rpg', img: 'https://firebasestorage.googleapis.com/v0/b/my-store-4aef7.appspot.com/o/index%2Frpg.webp?alt=media&token=0a1bb84f-de87-4995-ad26-d8f2a39b5a0a' },
-  { id: 'mugs', url: '/search?v=mugs', img: 'https://firebasestorage.googleapis.com/v0/b/my-store-4aef7.appspot.com/o/index%2Fmugs.webp?alt=media&token=10310c77-061a-497c-9f56-f885942e2d96' },
-  { id: 'christmas', url: '/search?t=christmas', img: 'https://firebasestorage.googleapis.com/v0/b/my-store-4aef7.appspot.com/o/index%2Fchristmas.webp?alt=media&token=ec33c800-a6c6-497b-92bc-10c8cc8cf54d' },
-  { id: 'valentines', url: '/search?t=valentines', img: 'https://firebasestorage.googleapis.com/v0/b/my-store-4aef7.appspot.com/o/index%2Fvalentines.webp?alt=media&token=1a8ba264-3494-42ae-9099-39fe5417231e' },
+  { id: 'games', url: '/search?h=games', img: 'https://firebasestorage.googleapis.com/v0/b/mrf-styles.appspot.com/o/app%2Fcategories%2Fgames.webp?alt=media&token=ad5cef32-4725-4bdd-aae4-a8302a5bf6a6' },
+  { id: 't-shirts', url: '/search?v=t-shirts', img: 'https://firebasestorage.googleapis.com/v0/b/mrf-styles.appspot.com/o/app%2Fcategories%2Ft-shirts.webp?alt=media&token=e91d2c95-a996-436c-817d-f078e25d814c' },
+  { id: 'music', url: '/search?h=music', img: 'https://firebasestorage.googleapis.com/v0/b/mrf-styles.appspot.com/o/app%2Fcategories%2Fmusic.webp?alt=media&token=f7ea9fa6-a6d8-455d-96d5-16667780e145' },
+  { id: 'rpg', url: '/search?h=rpg', img: 'https://firebasestorage.googleapis.com/v0/b/mrf-styles.appspot.com/o/app%2Fcategories%2Frpg.webp?alt=media&token=70a43a1f-d1c9-4d3b-b66d-c96c5e2d25f4' },
+  { id: 'mugs', url: '/search?v=mugs', img: 'https://firebasestorage.googleapis.com/v0/b/mrf-styles.appspot.com/o/app%2Fcategories%2Fmugs.webp?alt=media&token=e3f49c7c-ece1-4cb2-8b4e-72b6b4e648d4' },
+  { id: 'christmas', url: '/search?t=christmas', img: 'https://firebasestorage.googleapis.com/v0/b/mrf-styles.appspot.com/o/app%2Fcategories%2Fchristmas.webp?alt=media&token=5d351170-455e-410d-8d0f-79ce4cef0bed' },
+  { id: 'valentines', url: '/search?t=valentines', img: 'https://firebasestorage.googleapis.com/v0/b/mrf-styles.appspot.com/o/app%2Fcategories%2Fvalentines.webp?alt=media&token=d32eda94-cb25-4224-a838-41468d1ed061' },
 ]
 
 export default function Home() {
@@ -107,7 +107,7 @@ export default function Home() {
         <BannerSlider
           images={[
             {
-              src: 'https://firebasestorage.googleapis.com/v0/b/my-store-4aef7.appspot.com/o/banners%2Fsound-vibes_bg.webp?alt=media&token=56fc01f4-9e4e-4d01-97ee-529bdf99ebd1',
+              src: 'https://firebasestorage.googleapis.com/v0/b/mrf-styles.appspot.com/o/app%2Fbanners%2Fsound-vibes_bg.webp?alt=media&token=eda820f0-f5b4-4a30-8d72-a0ed130c3882',
               href: '/search?c=sound-vibes',
               alt: 'Sound Vibes Collection Banner'
             },
