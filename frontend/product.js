@@ -15,7 +15,7 @@ import { productInfoModel } from "@/utils/models";
 import { DEFAULT_LANGUAGE, LIMITS, PRODUCTS_TYPES, TAGS_POOL, THEMES_POOL } from "@/consts";
 import MyError from "@/classes/MyError";
 import Translate from "translate";
-const Fuse = require('fuse.js');
+import Fuse from 'fuse.js';
 
 async function getProductsInfo(products) {
     try {
