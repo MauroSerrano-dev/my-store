@@ -1,3 +1,4 @@
+import { SIZES_POOL } from '@/consts'
 import styles from '@/styles/components/SizesSelector.module.css'
 
 export default function SizesSelector(props) {
@@ -18,12 +19,13 @@ export default function SizesSelector(props) {
             {options.map((option, i) =>
                 <button
                     key={i}
-                    onClick={() => onChange(value.some(size => option.id === size?.id)
-                        ? value.filter(size => option.id !== size?.id)
-                        : value.concat(option),
-                        i,
-                        option
-                    )}
+                    onClick={() =>
+                        onChange(value.some(size => option.id === size?.id)
+                            ? value.filter(size => option.id !== size?.id)
+                            : SIZES_POOL.filter(sz => value.concat(option).some(size => size.id === sz.id)),
+                            i,
+                            option
+                        )}
                     className={`${styles.button} ${value.some(size => option.id === size?.id) ? styles.buttonActive : ''}`}
                 >
                     {option.title}

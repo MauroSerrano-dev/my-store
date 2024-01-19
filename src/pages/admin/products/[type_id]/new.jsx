@@ -1,14 +1,12 @@
 import ImagesSliderEditable from '@/components/ImagesSliderEditable'
 import styles from '@/styles/admin/products/type_id/new.module.css'
-import { Checkbox, FormControlLabel, Switch } from '@mui/material'
+import { FormControlLabel, Switch } from '@mui/material'
 import { useEffect, useState } from 'react'
 import { withRouter } from 'next/router'
 import { COLLECTIONS, TAGS_POOL, THEMES_POOL, PRODUCTS_TYPES, COLORS_POOL, SIZES_POOL, PROVIDERS_POOL, SEARCH_ART_COLORS, COMMON_TRANSLATES } from '@/consts'
 import ColorSelector from '@/components/ColorSelector'
 import TextInput from '@/components/material-ui/TextInput'
 import TagsSelector from '@/components/material-ui/TagsSelector'
-import ClearRoundedIcon from '@mui/icons-material/ClearRounded'
-import ButtonIcon from '@/components/material-ui/ButtonIcon'
 import SizesSelector from '@/components/SizesSelector'
 import Chain from '@/components/svgs/Chain'
 import BrokeChain from '@/components/svgs/BrokeChain'
@@ -32,8 +30,8 @@ const INICIAL_PRODUCT = {
     title: '',
     collection_id: null,
     disabled: true,
-    colors: [],
-    sizes: [],
+    colors_ids: [],
+    sizes_ids: [],
     images: [],
     tags: [],
     themes: [],
@@ -64,7 +62,7 @@ export default withRouter(() => {
     const [artColorChained, setArtColorChained] = useState(true)
     const [viewStatus, setViewStatus] = useState('front')
 
-    const tCommon = useTranslation('common').t
+    const tColors = useTranslation('colors').t
     const tToasts = useTranslation('toasts').t
 
     useEffect(() => {
@@ -83,8 +81,10 @@ export default withRouter(() => {
                 setProduct(prev => (
                     {
                         ...prev,
+                        type_id: tp.id,
+                        family_id: tp.family_id,
                         printify_ids: tp.providers.reduce((acc, prov_id) => ({ ...acc, [prov_id]: '' }), {}),
-                        sizes: SIZES_POOL.filter(sz => tp.sizes.includes(sz.id)),
+                        sizes_ids: tp.sizes,
                         tags: tp.inicial_tags,
                     }
                 ))
@@ -101,11 +101,6 @@ export default withRouter(() => {
             return
         }
 
-        const product_copy = { ...product }
-
-        delete product_copy.colors
-        delete product_copy.sizes
-
         const options = {
             method: 'POST',
             headers: {
@@ -114,16 +109,12 @@ export default withRouter(() => {
             },
             body: JSON.stringify({
                 product: {
-                    ...product_copy,
+                    ...product,
                     id: product.id + '-' + type.id,
                     collection_id: product.collection_id,
-                    type_id: type.id,
-                    family_id: type.family_id,
                     title_lower_case: product.title.toLowerCase(),
-                    colors_ids: product.colors.map(color => color.id),
-                    sizes_ids: SIZES_POOL.map(size => size.id).filter(sz_id => product.sizes.some(sz => sz.id === sz_id)),
                     min_price: product.variants.reduce((acc, vari) => acc < vari.price ? acc : vari.price, product.variants[0].price),
-                    images: product.colors.reduce((acc, color) => acc.concat(images[color.id].map(img => ({ src: img.src, color_id: img.color_id }))), []),
+                    images: product.colors_ids.reduce((acc, color_id) => acc.concat(images[color_id].map(img => ({ src: img.src, color_id: img.color_id }))), []),
                     variants: product.variants.map(vari => variantModel(vari)),
                     promotion: null,
                 }
@@ -163,14 +154,14 @@ export default withRouter(() => {
 
     function handleChangeColors(value, i, color) {
         setProduct(prev => {
-            setColorIndex(prevIndex => value.length > prev.colors.length
+            setColorIndex(prevIndex => value.length > prev.colors_ids.length
                 ? value.length - 1
-                : prevIndex >= prev.colors.length - 1
+                : prevIndex >= prev.colors_ids.length - 1
                     ? value.length - 1
                     : prevIndex
             )
             // add color
-            if (value.length > prev.colors.length) {
+            if (value.length > prev.colors_ids.length) {
                 setColorsChained(prevC => prevC.concat(color.id))
                 setSizesChained(sizesChainedPrev =>
                     Object.keys(sizesChainedPrev).map(ele => Number(ele)).some(cId => colorsChained.includes(cId))
@@ -178,28 +169,24 @@ export default withRouter(() => {
                         : { ...sizesChainedPrev, [color.id]: [] }
                 )
                 setImages(prevImgs => {
-                    const inicialImage = { src: typeof Object.values(prev.printify_ids)[0] === 'string' ? '' : { front: '', back: '' }, color_id: color.id }
                     return {
                         ...prevImgs,
-                        [color.id]: [
-                            inicialImage,
-                            inicialImage,
-                            inicialImage,
-                            inicialImage
-                        ]
+                        [color.id]: []
                     }
                 })
                 return {
                     ...prev,
-                    colors: value,
+                    colors_ids: value.map(cl => cl.id),
                     variants: prev.variants
                         .concat(
                             type.variants
-                                .filter(vari => color.id === vari.color_id && prev.sizes.some(sz => sz.id === vari.size_id))
+                                .filter(vari => color.id === vari.color_id && prev.sizes_ids.includes(vari.size_id))
                                 .map(vari => (
                                     {
                                         ...vari,
-                                        price: vari.inicial_price,
+                                        price: prev.variants.filter(varia => colorsChained.includes(varia.color_id) && varia.size_id === vari.size_id).length > 0
+                                            ? prev.variants.find(varia => colorsChained.includes(varia.color_id) && varia.size_id === vari.size_id).price
+                                            : vari.inicial_price,
                                         art: {
                                             id: artIdChained
                                                 ? prev.id
@@ -226,7 +213,7 @@ export default withRouter(() => {
                 })
                 return {
                     ...prev,
-                    colors: value,
+                    colors_ids: value.map(cl => cl.id),
                     variants: prev.variants
                         .filter(vari => value.some(cl => cl.id === vari.color_id))
                 }
@@ -238,46 +225,17 @@ export default withRouter(() => {
         setColorIndex(i)
     }
 
-    function handleAddNewImage() {
-        const colorId = product.colors[colorIndex].id
-        setImages(prev => ({
-            ...prev,
-            [colorId]: prev[colorId].concat({
-                src: typeof Object.values(product.printify_ids)[0] === 'string'
-                    ? ''
-                    : { front: '', back: '' },
-                color_id: colorId,
-            })
-        }))
-    }
-
-    function handleDeleteImageField(index) {
-        const colorId = product.colors[colorIndex].id
-        setImages(prev => ({ ...prev, [colorId]: prev[colorId].filter((img, i) => index !== i) }))
-    }
-
-    function updateImageSrc(newValue, index) {
-        const colorId = product.colors[colorIndex].id
-        setImages(prev => ({
-            ...prev,
-            [colorId]: prev[colorId].map((img, i) => index === i
-                ? { ...img, src: typeof img.src === 'string' ? newValue : { ...img.src, [viewStatus]: newValue } }
-                : img
-            )
-        }))
-    }
-
     function handleChangeSizes(value, i, size) {
         setProduct(prev =>
-            value.length > prev.sizes.length
+            value.length > prev.sizes_ids.length
                 // add size
                 ? {
                     ...prev,
-                    sizes: value,
+                    sizes_ids: value.map(sz => sz.id),
                     variants: prev.variants
                         .concat(
                             type.variants
-                                .filter(vari => size.id === vari.size_id && prev.colors.some(cl => cl.id === vari.color_id))
+                                .filter(vari => size.id === vari.size_id && prev.colors_ids.includes(vari.color_id))
                                 .map(vari => (
                                     {
                                         ...vari,
@@ -297,7 +255,7 @@ export default withRouter(() => {
                 // remove size
                 : {
                     ...prev,
-                    sizes: value,
+                    sizes_ids: value.map(sz => sz.id),
                     variants: prev.variants
                         .filter(vari => value.some(sz => sz.id === vari.size_id))
                 }
@@ -306,7 +264,7 @@ export default withRouter(() => {
     }
 
     function handleChainSize(sizeId) {
-        const colorId = product.colors[colorIndex].id
+        const colorId = product.colors_ids[colorIndex]
         // unchain
         if (sizesChained[colorId].includes(sizeId)) {
             if (isCurrentColorChained()) {
@@ -409,7 +367,7 @@ export default withRouter(() => {
             {
                 ...prev,
                 variants: prev.variants.map(vari =>
-                    sizesChained[product.colors[colorIndex].id].some(sId => vari.size_id === sId) && colorsChained.includes(vari.color_id)
+                    sizesChained[product.colors_ids[colorIndex]].some(sId => vari.size_id === sId) && colorsChained.includes(vari.color_id)
                         ? { ...vari, price: Number(value) }
                         : vari
                 )
@@ -457,19 +415,19 @@ export default withRouter(() => {
     }
 
     function handleChangePrice(value, sizeId) {
-        const colorId = product.colors[colorIndex].id
-        if (sizesChained[product.colors[colorIndex].id].includes(sizeId) && isCurrentColorChained())
+        const colorId = product.colors_ids[colorIndex]
+        if (sizesChained[product.colors_ids[colorIndex]].includes(sizeId) && isCurrentColorChained())
             changeChainedColorsChainedSizesPrice(value)
         else if (isCurrentColorChained())
             changeChainedColorsUnchainedSizePrice(sizeId, value)
-        else if (sizesChained[product.colors[colorIndex].id].includes(sizeId))
+        else if (sizesChained[product.colors_ids[colorIndex]].includes(sizeId))
             changeChainedSizesUnchainedColorPrice(colorId, value)
         else
             changeVariantPrice(sizeId, colorId, value)
     }
 
     function isCurrentColorChained() {
-        return colorsChained.includes(product.colors[colorIndex].id)
+        return colorsChained.includes(product.colors_ids[colorIndex])
     }
 
     function handleArtColor(value, i, color) {
@@ -567,10 +525,6 @@ export default withRouter(() => {
                 }), {})
             }))
         }
-    }
-
-    function handleBackView(event) {
-        setViewStatus(event.target.checked ? 'back' : 'front')
     }
 
     return (
@@ -698,7 +652,7 @@ export default withRouter(() => {
                                         {type.title} Colors Pool
                                     </h3>
                                     <ColorSelector
-                                        value={product.colors}
+                                        value={product.colors_ids.map(cl_id => COLORS_POOL[cl_id])}
                                         options={type.colors.map(cl_id => COLORS_POOL[cl_id])}
                                         onChange={handleChangeColors}
                                         style={{
@@ -707,12 +661,12 @@ export default withRouter(() => {
                                         }}
                                     />
                                     <SizesSelector
-                                        value={product.sizes}
+                                        value={product.sizes_ids.map(sz_id => SIZES_POOL.find(sz => sz.id === sz_id))}
                                         options={type.sizes.map(sz_id => SIZES_POOL.find(size => size.id === sz_id))}
                                         onChange={handleChangeSizes}
                                     />
                                 </section>
-                                {product.colors.length > 0 && product.sizes.length > 0 &&
+                                {product.colors_ids.length > 0 && product.sizes_ids.length > 0 &&
                                     <section className={styles.section}>
                                         <div className={styles.sectionLeft}>
                                             <div>
@@ -720,19 +674,19 @@ export default withRouter(() => {
                                                     Product Colors
                                                 </h3>
                                                 <ColorSelector
-                                                    value={[product.colors[colorIndex]]}
-                                                    options={product.colors}
+                                                    value={[COLORS_POOL[product.colors_ids[colorIndex]]]}
+                                                    options={product.colors_ids.map(cl_id => COLORS_POOL[cl_id])}
                                                     onChange={handleSelectedColor}
                                                     style={{
                                                         paddingBottom: '1rem',
                                                     }}
                                                 />
                                                 <div className='flex' style={{ gap: '0.5rem' }}>
-                                                    {product.colors.map((color, i) =>
+                                                    {product.colors_ids.map((color_id, i) =>
                                                         <MyButton
                                                             key={i}
-                                                            variant={colorsChained.includes(color.id) ? 'contained' : 'outlined'}
-                                                            onClick={() => handleChainColor(color.id)}
+                                                            variant={colorsChained.includes(color_id) ? 'contained' : 'outlined'}
+                                                            onClick={() => handleChainColor(color_id)}
                                                             style={{
                                                                 minWidth: 40,
                                                                 width: 40,
@@ -740,72 +694,23 @@ export default withRouter(() => {
                                                                 padding: 0,
                                                             }}
                                                         >
-                                                            {colorsChained.includes(color.id) ? <Chain iconSize={25} /> : <BrokeChain iconSize={25} />}
+                                                            {colorsChained.includes(color_id) ? <Chain iconSize={25} /> : <BrokeChain iconSize={25} />}
                                                         </MyButton>
                                                     )}
                                                 </div>
-                                                {images?.[product?.colors?.[colorIndex]?.id] &&
+                                                {images?.[product?.colors_ids?.[colorIndex]] &&
                                                     <div className='flex column' style={{ gap: '1rem' }}>
                                                         <div>
                                                             <ImagesEditor
+                                                                product_id={product.id + '-' + type.id}
                                                                 product={product}
                                                                 colorIndex={colorIndex}
                                                                 images={images}
                                                                 setImages={setImages}
                                                                 updateProductField={updateProductField}
+                                                                viewStatus={viewStatus}
+                                                                setViewStatus={setViewStatus}
                                                             />
-                                                            {images[product.colors[colorIndex].id].length > 0 &&
-                                                                <div className='flex row justify-end' style={{ fontSize: '11px', gap: '1rem', width: '100%', paddingRight: '11%' }}>
-                                                                    <p>showcase</p>
-                                                                    <p>hover</p>
-                                                                </div>
-                                                            }
-                                                            <div className='flex column' style={{ gap: '0.8rem' }} >
-                                                                {images[product.colors[colorIndex].id].map((img, i) =>
-                                                                    <div
-                                                                        className='flex row align-center fillWidth space-between'
-                                                                        key={i}
-                                                                    >
-                                                                        <TextInput
-                                                                            colorText='var(--color-success)'
-                                                                            label={`Image ${i + 1}`}
-                                                                            onChange={event => updateImageSrc(event.target.value, i)}
-                                                                            style={{
-                                                                                width: '70%'
-                                                                            }}
-                                                                            value={typeof img.src === 'string' ? img.src : img.src[viewStatus]}
-                                                                        />
-                                                                        <Checkbox
-                                                                            checked={i === product.image_showcase_index}
-                                                                            onChange={event => updateProductField('image_showcase_index', event.target.checked ? i : -1)}
-                                                                            sx={{
-                                                                                color: '#ffffff'
-                                                                            }}
-                                                                        />
-                                                                        <Checkbox
-                                                                            checked={i === product.image_hover_index}
-                                                                            onChange={event => updateProductField('image_hover_index', event.target.checked ? i : -1)}
-                                                                            sx={{
-                                                                                color: '#ffffff'
-                                                                            }}
-                                                                        />
-                                                                        <ButtonIcon
-                                                                            icon={<ClearRoundedIcon />}
-                                                                            onClick={() => handleDeleteImageField(i)}
-                                                                        />
-                                                                    </div>
-                                                                )}
-                                                                <MyButton
-                                                                    variant='outlined'
-                                                                    onClick={handleAddNewImage}
-                                                                    style={{
-                                                                        width: '100%',
-                                                                        marginBottom: '1rem'
-                                                                    }}
-                                                                >
-                                                                    Add New Image
-                                                                </MyButton>
-                                                            </div>
                                                         </div>
                                                         <div
                                                             className='flex center column fillWidth'
@@ -814,19 +719,19 @@ export default withRouter(() => {
                                                             }}
                                                         >
                                                             <h3>
-                                                                {tCommon(product.colors[colorIndex].title)} Price (USD)
+                                                                {tColors(COLORS_POOL[product.colors_ids[colorIndex]].id_string)} Price (USD)
                                                             </h3>
-                                                            {product.sizes.map((size, i) =>
+                                                            {product.sizes_ids.map((size_id, i) =>
                                                                 <ProductPriceInput
                                                                     productType={type.id}
-                                                                    onClickChain={() => handleChainSize(size.id)}
-                                                                    chained={sizesChained[product.colors[colorIndex].id].includes(size.id)}
-                                                                    size={size}
+                                                                    onClickChain={() => handleChainSize(size_id)}
+                                                                    chained={sizesChained[product.colors_ids[colorIndex]].includes(size_id)}
+                                                                    size={SIZES_POOL.find(sz => sz.id === size_id)}
                                                                     key={i}
                                                                     product={product}
-                                                                    onChangeText={event => handleChangePrice(isNaN(Number(event.target.value)) ? 0 : Math.abs(Number(event.target.value.slice(0, Math.min(event.target.value.length, 7)))), size.id)}
-                                                                    onChangeSlider={event => handleChangePrice(event.target.value, size.id)}
-                                                                    price={product.variants.find(vari => vari.size_id === size.id && vari.color_id === product.colors[colorIndex].id).price}
+                                                                    onChangeText={event => handleChangePrice(isNaN(Number(event.target.value)) ? 0 : Math.abs(Number(event.target.value.slice(0, Math.min(event.target.value.length, 7)))), size_id)}
+                                                                    onChangeSlider={event => handleChangePrice(event.target.value, size_id)}
+                                                                    price={product.variants.find(vari => vari.size_id === size_id && vari.color_id === product.colors_ids[colorIndex]).price}
                                                                 />
                                                             )}
                                                         </div>
@@ -835,15 +740,15 @@ export default withRouter(() => {
                                             </div>
                                         </div>
                                         <div className={styles.sectionRight}>
-                                            {images?.[product?.colors?.[colorIndex]?.id] &&
+                                            {images?.[product?.colors_ids?.[colorIndex]] &&
                                                 <div>
                                                     <h3>
                                                         Preview
                                                     </h3>
                                                     <ImagesSliderEditable
                                                         images={Object.keys(images).reduce((acc, key) => acc.concat(images[key]), []).map(img => ({ ...img, src: typeof img.src === 'string' ? img.src : img.src[viewStatus] }))}
-                                                        currentColor={product.colors[colorIndex]}
-                                                        colors={product.colors}
+                                                        currentColor={COLORS_POOL[product.colors_ids[colorIndex]]}
+                                                        colors={product.colors_ids.map(cl_id => COLORS_POOL[cl_id])}
                                                     />
                                                 </div>
                                             }
@@ -865,7 +770,7 @@ export default withRouter(() => {
                                                 </h3>
                                             </div>
                                             <ColorSelector
-                                                value={[SEARCH_ART_COLORS.map(cl => ({ id: cl.id, colors: [cl.color_display.color], id_string: cl.color_display.id_string })).find(scl => scl.id === product.variants.find(vari => vari.color_id === product.colors[colorIndex].id).art.color_id)]}
+                                                value={[SEARCH_ART_COLORS.map(cl => ({ id: cl.id, colors: [cl.color_display.color], id_string: cl.color_display.id_string })).find(scl => scl.id === product.variants.find(vari => vari.color_id === product.colors_ids[colorIndex]).art.color_id)]}
                                                 options={SEARCH_ART_COLORS.map(cl => ({ id: cl.id, colors: [cl.color_display.color], id_string: cl.color_display.id_string }))}
                                                 onChange={handleArtColor}
                                                 style={{
@@ -889,7 +794,7 @@ export default withRouter(() => {
                                                     disabled={artIdChained}
                                                     colorText='var(--color-success)'
                                                     label='Art ID'
-                                                    value={product.variants.find(vari => vari.color_id === product.colors[colorIndex].id).art.id || ''}
+                                                    value={product.variants.find(vari => vari.color_id === product.colors_ids[colorIndex]).art.id || ''}
                                                     onChange={handleArtId}
                                                     style={{
                                                         width: '100%'

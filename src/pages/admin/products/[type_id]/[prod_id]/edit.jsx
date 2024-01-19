@@ -52,7 +52,7 @@ export default withRouter(() => {
     const [updateModalOpen, setUpdateModalOpen] = useState(false)
     const [newProduct, setNewProduct] = useState()
 
-    const tCommon = useTranslation('common').t
+    const tColors = useTranslation('colors').t
     const tToasts = useTranslation('toasts').t
 
     const TYPE = PRODUCTS_TYPES.find(type => type.id === product?.type_id)
@@ -756,11 +756,14 @@ export default withRouter(() => {
                                                 <div className='flex column' style={{ gap: '1rem' }}>
                                                     <div>
                                                         <ImagesEditor
+                                                            product_id={product.id}
                                                             product={product}
                                                             colorIndex={colorIndex}
                                                             images={images}
                                                             setImages={setImages}
                                                             updateProductField={updateProductField}
+                                                            viewStatus={viewStatus}
+                                                            setViewStatus={setViewStatus}
                                                         />
                                                         <div
                                                             className='flex center column fillWidth'
@@ -769,7 +772,7 @@ export default withRouter(() => {
                                                             }}
                                                         >
                                                             <h3>
-                                                                {tCommon(COLORS_POOL[product.colors_ids[colorIndex]].title)} Price (USD)
+                                                                {tColors(COLORS_POOL[product.colors_ids[colorIndex]].title)} Price (USD)
                                                             </h3>
                                                             {SIZES?.map((size, i) =>
                                                                 <ProductPriceInput

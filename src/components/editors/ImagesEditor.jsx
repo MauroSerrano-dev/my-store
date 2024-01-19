@@ -1,9 +1,9 @@
 import styles from '@/styles/components/editors/ImagesEditor.module.css'
-import { ButtonGroup, Checkbox, CircularProgress, Pagination, PaginationItem } from "@mui/material"
+import { ButtonGroup, Checkbox, CircularProgress } from "@mui/material"
 import MyButton from "../material-ui/MyButton"
 import TextInput from "../material-ui/TextInput"
 import Modal from '../Modal'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { motion } from "framer-motion"
 import { storage } from '../../../firebaseInit'
 import { ref, listAll, getDownloadURL } from 'firebase/storage'
@@ -13,11 +13,12 @@ import ClearRoundedIcon from '@mui/icons-material/ClearRounded'
 
 export default function ImagesEditor(props) {
     const {
+        product_id,
         images,
         setImages,
         product,
         colorIndex,
-        viewStatus = 'front',
+        viewStatus,
         setViewStatus,
         updateProductField,
     } = props
@@ -26,26 +27,42 @@ export default function ImagesEditor(props) {
     const [modalOpen, setModalOpen] = useState()
     const [path, setPath] = useState()
 
+    useEffect(() => {
+        console.log(images)
+    }, [images])
+
     function handleDeleteImageField(index) {
         const colorId = product.colors_ids[colorIndex]
-        setImages(prev => ({ ...prev, [colorId]: prev[colorId].filter((img, i) => index !== i) }))
+        setImages(prev => ({
+            ...prev,
+            [colorId]: prev[colorId].filter((img, i) => index !== i)
+        }))
     }
 
     function handleAddNewImage(src) {
         const colorId = product.colors_ids[colorIndex]
-        setImages(prev => ({
-            ...prev,
-            [colorId]: prev[colorId].concat({
-                src: typeof Object.values(product.printify_ids)[0] === 'string'
-                    ? src
-                    : { front: src, back: src },
-                color_id: colorId,
+        if (typeof Object.values(product.printify_ids)[0] === 'string') {
+            setImages(prev => ({
+                ...prev,
+                [colorId]: prev[colorId].concat({
+                    src: src,
+                    color_id: colorId,
+                })
+            }))
+        }
+        else {
+            setImages(prev => {
+                const emptyImageIndex = prev[colorId].findIndex(img => img.src[viewStatus] === '')
+                return {
+                    ...prev,
+                    [colorId]: prev[colorId].map((img, i) => i === emptyImageIndex ? { ...img, src: { ...img.src, [viewStatus]: src } } : img)
+                }
             })
-        }))
+        }
     }
 
     async function handleOpenModal() {
-        handleChangePath(`/${product.type_id}/${product.id.slice(0, -product.type_id.length - 1)}`)
+        handleChangePath(`/${product.type_id}/${product_id.slice(0, -product.type_id.length - 1)}`)
         setModalOpen(true)
     }
 
@@ -101,10 +118,12 @@ export default function ImagesEditor(props) {
                     </MyButton>
                 </ButtonGroup>
             }
-            <div className={styles.showcaseHover}>
-                <span>showcase</span>
-                <span>hover</span>
-            </div>
+            {images[product.colors_ids[colorIndex]].length > 0 &&
+                <div className={styles.showcaseHover}>
+                    <span>showcase</span>
+                    <span>hover</span>
+                </div>
+            }
             <div className='flex column' style={{ gap: '0.8rem' }} >
                 {images[product.colors_ids[colorIndex]].map((img, i) =>
                     <div
@@ -117,7 +136,7 @@ export default function ImagesEditor(props) {
                             style={{
                                 width: '70%'
                             }}
-                            value={typeof img.src === 'string' ? img.src : img.src[viewStatus]}
+                            value={(typeof img.src === 'string' ? img.src : img.src[viewStatus])}
                         />
                         <Checkbox
                             checked={i === product.image_showcase_index}
@@ -176,8 +195,8 @@ export default function ImagesEditor(props) {
                                 onClick={() => {
                                     option.type === 'directory'
                                         ? handleChangePath(option.path)
-                                        : images[product.colors_ids[colorIndex]].findIndex(img => img.src === option.src) >= 0
-                                            ? handleDeleteImageField(images[product.colors_ids[colorIndex]].findIndex(img => img.src === option.src))
+                                        : images[product.colors_ids[colorIndex]].findIndex(img => (typeof img.src === 'string' ? img.src : img.src[viewStatus]) === option.src) >= 0
+                                            ? handleDeleteImageField(images[product.colors_ids[colorIndex]].findIndex(img => (typeof img.src === 'string' ? img.src : img.src[viewStatus]) === option.src))
                                             : handleAddNewImage(option.src)
                                 }}
                             >
@@ -203,11 +222,11 @@ export default function ImagesEditor(props) {
                                             {option.title}
                                         </span>
                                     }
-                                    {images[product.colors_ids[colorIndex]].findIndex(img => img.src === option.src) >= 0 &&
+                                    {images[product.colors_ids[colorIndex]].findIndex(img => (typeof img.src === 'string' ? img.src : img.src[viewStatus]) === option.src) >= 0 &&
                                         <div
                                             className={styles.imageIndex}
                                         >
-                                            {1 + images[product.colors_ids[colorIndex]].findIndex(img => img.src === option.src)}
+                                            {1 + images[product.colors_ids[colorIndex]].findIndex(img => (typeof img.src === 'string' ? img.src : img.src[viewStatus]) === option.src)}
                                         </div>
                                     }
                                 </div>
@@ -253,6 +272,6 @@ export default function ImagesEditor(props) {
                     </motion.div>
                 }
             </Modal>
-        </div>
+        </div >
     )
 }
