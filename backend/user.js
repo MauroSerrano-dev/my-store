@@ -67,11 +67,11 @@ async function createNewUser(authUser) {
 
             await admin.firestore().collection(process.env.NEXT_PUBLIC_COLL_USERS).doc(authUser.uid).set(newUser);
 
-            console.log(`${newUser.email} has been added as a new user.`);
+            console.log(`${newUser.email} has been added as a new user`);
             return { id: authUser.uid, ...newUser };
         } else {
-            console.log(`${authUser.email} already exists as a user.`);
-            throw new MyError(`${authUser.email} already exists as a user.`);
+            console.log(`${authUser.email} already exists as a user`);
+            throw new MyError({ message: `${authUser.email} already exists as a user` });
         }
     } catch (error) {
         console.error("Error creating a new user:", error);
@@ -86,7 +86,7 @@ async function deleteUser(user_id) {
         const userDoc = await userRef.get()
 
         if (!userDoc.exists)
-            throw new MyError('user_not_found')
+            throw new MyError({ message: 'user_not_found' })
 
         const user = userDoc.data()
 
@@ -95,13 +95,13 @@ async function deleteUser(user_id) {
         const cartDoc = await cartRef.get()
 
         if (!cartDoc.exists)
-            throw new MyError('cart_not_found')
+            throw new MyError({ message: 'cart_not_found' })
 
         const wishlistRef = admin.firestore().doc(`${process.env.NEXT_PUBLIC_COLL_WISHLISTS}/${user.wishlist_id}`)
 
         const wishlistDoc = await wishlistRef.get()
         if (!wishlistDoc.exists)
-            throw new MyError('wishlist_not_found')
+            throw new MyError({ message: 'wishlist_not_found' })
 
         await admin.auth().deleteUser(user_id)
         await userRef.delete()
@@ -118,10 +118,10 @@ async function deleteUser(user_id) {
 
 async function getUsersInactiveForMonths(limit = 100, monthsInactive = 12) {
     if (typeof limit !== 'number') {
-        throw new MyError('Limit must be a number');
+        throw new MyError({ message: 'Limit must be a number' });
     }
     if (typeof monthsInactive !== 'number') {
-        throw new MyError('Months Inactive must be a number');
+        throw new MyError({ message: 'Months Inactive must be a number' });
     }
 
     const firestore = admin.firestore();

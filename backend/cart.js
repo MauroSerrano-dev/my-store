@@ -40,7 +40,7 @@ async function setCartProducts(cartId, cartProducts) {
         console.log(`Cart ${cartId} setted successfully!`)
     } catch (error) {
         console.error(`Error setting cart ${cartId}:`, error)
-        throw new MyError('error_setting_cart', 'error')
+        throw new MyError({ message: 'error_setting_cart', type: 'error' })
     }
 }
 

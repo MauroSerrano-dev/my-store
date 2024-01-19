@@ -86,7 +86,7 @@ async function handlePostOrderCreation(line_items, userId) {
     }
     catch (error) {
         console.error('Error handling purchased products:', error)
-        throw new MyError('error_handling_purchased_products', error?.type || 'error')
+        throw new MyError({ message: 'error_handling_purchased_products', type: error?.type || 'error' })
     }
 }
 
@@ -120,7 +120,7 @@ async function updateProductStatus(order_id_printify, printify_products) {
 
             console.log("Product status updated successfully")
         } else {
-            throw new MyError(`Order with ID ${order_id_printify} not found`)
+            throw new MyError({ message: `Order with ID ${order_id_printify} not found` })
         }
     } catch (error) {
         console.error("Error updating product status", error);
@@ -143,7 +143,7 @@ async function updateOrderField(order_id_printify, field_name, value) {
 
             console.log('Order updated successfully');
         } else {
-            throw new MyError(`Order with Printify ID ${order_id_printify} not found`);
+            throw new MyError({ message: `Order with Printify ID ${order_id_printify} not found` });
         }
     } catch (error) {
         console.error('Error updating order:', error);
@@ -167,7 +167,7 @@ async function getOrderById(orderId) {
         }
     } catch (error) {
         console.error('Error getting order by id:', error);
-        throw new MyError('Error getting order by id');
+        throw new MyError({ message: 'Error getting order by id' });
     }
 }
 
@@ -225,11 +225,11 @@ async function refundOrderByStripeId(payment_intent, amount_refunded) {
             });
         } else {
             console.error(`Refund fail. Order with Stripe ID ${payment_intent} not found.`);
-            throw new MyError('refund_fail_order_not_found')
+            throw new MyError({ message: 'refund_fail_order_not_found' })
         }
     } catch (error) {
         console.error('Error refunding order by Stripe ID:', error);
-        throw new MyError('error_refunding_order', error?.type || 'error')
+        throw new MyError({ message: 'error_refunding_order', type: error?.type || 'error' })
     }
 }
 

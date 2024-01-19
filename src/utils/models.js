@@ -144,3 +144,21 @@ export function orderProductModel(props) {
         default_variant: default_variant,
     }
 }
+
+export function variantModel(props) {
+    const {
+        id,
+        color_id,
+        size_id,
+        art,
+        price,
+    } = props
+
+    return {
+        id: id,
+        color_id: color_id,
+        size_id: size_id,
+        art: art,
+        price: price,
+    }
+}

@@ -1,0 +1,130 @@
+.container {
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
+    width: 100%;
+    padding-top: 1rem;
+    padding-bottom: 2rem;
+}
+
+.showcaseHover {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    font-size: 11px;
+    width: 100%;
+    gap: 3%;
+    padding-right: 10.5%;
+}
+
+.modalContent {
+    display: flex;
+    flex-direction: column;
+
+    position: relative;
+    height: 450px;
+    width: 700px;
+    background-color: white;
+
+    --text-color: var(--text-black);
+
+    overflow: auto;
+
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+}
+
+.printProducts {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: flex-start;
+
+    width: 100%;
+
+    flex-wrap: wrap;
+
+    gap: 1rem;
+}
+
+.printProduct {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+
+    width: 198px;
+}
+
+.imageContainer {
+    position: relative;
+    height: 220px;
+    width: 198px;
+}
+
+.imageIndex {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    position: absolute;
+    width: 140px;
+    height: 140px;
+    border-radius: 100%;
+    border: var(--primary) solid 0.7rem;
+    color: var(--primary);
+
+    background-color: rgba(0, 0, 0, 0.4);
+
+    font-size: 70px;
+    font-weight: 700;
+
+    top: 50%;
+    left: 50%;
+
+    transform: translateX(-50%) translateY(-50%);
+}
+
+.directoryTitle {
+    width: 100%;
+
+    position: absolute;
+    top: 50%;
+    left: 50%;
+
+    font-size: 20px;
+    font-weight: 700;
+
+    transform: translateX(-50%) translateY(-50%);
+}
+
+.productBody {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+
+    display: flex;
+    width: 100%;
+
+    font-weight: 600;
+}
+
+.modalBottom {
+    padding-top: 1rem;
+}
+
+.loadingSpinner {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    padding-top: 18%;
+    height: 100%;
+    width: 100%;
+}
+
+/* Enable hover only on non-touch devices */
+@media (hover: hover) and (pointer: fine) {
+    .imageContainer:hover {
+        cursor: pointer;
+    }
+}

@@ -46,7 +46,6 @@ function App(props) {
 
   return (
     <div className={montserrat.className}>
-      <Script src="https://js.stripe.com/v3/" async />
       <Script
         strategy='afterInteractive'
         async

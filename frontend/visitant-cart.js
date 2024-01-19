@@ -5,7 +5,7 @@ import { isSameProduct, mergeProducts } from "@/utils"
 function addProductsToVisitantCart(cart, products) {
     try {
         if (cart.products.reduce((acc, prod) => acc + prod.quantity, 0) + products.reduce((acc, prod) => acc + prod.quantity, 0) > LIMITS.cart_items)
-            throw new MyError('max_products', 'warning')
+            throw new MyError({ message: 'max_products', type: 'warning' })
 
         cart.products = mergeProducts(cart.products, products)
 

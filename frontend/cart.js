@@ -45,7 +45,7 @@ async function addProductsToCart(cartId, cartNewProducts) {
         const cartData = cartDoc.data()
 
         if (cartData.products.reduce((acc, prod) => acc + prod.quantity, 0) + cartNewProducts.reduce((acc, prod) => acc + prod.quantity, 0) > LIMITS.cart_items)
-            throw new MyError('max_products', 'warning')
+            throw new MyError({ message: 'max_products', type: 'warning' })
 
         cartData.products = mergeProducts(cartData.products, cartNewProducts)
 
@@ -79,7 +79,7 @@ async function deleteProductFromCart(cartId, product) {
         return { id: cartDoc.id, ...cartData }
     } catch (error) {
         console.error('Error Deleting Product from Cart:', error)
-        throw new MyError('error_deleting_product_from_cart', 'error')
+        throw new MyError({ message: 'error_deleting_product_from_cart' })
     }
 }
 
@@ -92,7 +92,7 @@ async function mergeCarts(cartId, products) {
         return newCart
     } catch (error) {
         console.error('Error merging Carts', error)
-        throw new MyError('error_deleting_product_from_cart', 'error')
+        throw new MyError({ message: 'error_deleting_product_from_cart' })
     }
 }
 
@@ -118,7 +118,7 @@ async function changeCartProductField(cartId, product, fieldName, newValue) {
         )
 
         if (newProducts.reduce((acc, prod) => acc + prod.quantity, 0) > LIMITS.cart_items)
-            throw new MyError('max_products', 'warning')
+            throw new MyError({ message: 'max_products', type: 'warning' })
 
         await updateDoc(userRef, { products: newProducts })
 

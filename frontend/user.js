@@ -19,7 +19,7 @@ async function getUserById(id) {
             return null
     } catch (error) {
         console.error('Erro ao obter usuário pelo ID:', error)
-        throw new MyError(`Erro ao obter usuário pelo ID: ${error.message}`);
+        throw new MyError({ message: `Erro ao obter usuário pelo ID: ${error.message}` });
     }
 }
 
@@ -46,9 +46,9 @@ async function createNewUser(authUser) {
         const responseJson = await response.json()
 
         if (response.status >= 500)
-            throw new MyError(responseJson.message, 'error')
+            throw new MyError({ message: responseJson.message })
         if (response.status >= 300)
-            throw new MyError(responseJson.message, 'warning')
+            throw new MyError({ message: responseJson.message, type: 'warning' })
 
         return responseJson.user
     } catch (error) {
@@ -69,7 +69,7 @@ async function updateUser(userId, changes) {
 
             return { id: userDoc.id, ...userData, ...changes }
         } else {
-            throw new MyError('user_not_found', 'error')
+            throw new MyError({ message: 'user_not_found' })
         }
     } catch (error) {
         console.error('Error updating profile:', error)
@@ -106,7 +106,7 @@ async function completeQuest(user_id, quest_id) {
             return updatedQuests
         } else {
             console.error('User not found')
-            throw new MyError('user_not_found')
+            throw new MyError({ message: 'user_not_found' })
         }
     } catch (error) {
         console.error('Error completing quest:', error)

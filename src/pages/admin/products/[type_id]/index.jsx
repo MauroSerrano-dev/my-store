@@ -60,7 +60,7 @@ export default function ProductsId() {
     useEffect(() => {
         if (router.isReady && isAdmin)
             getProductsByQuery()
-    }, [router])
+    }, [router, isAdmin])
 
 
     useEffect(() => {
