@@ -75,5 +75,6 @@
     "promotion_deleted_successfully": "Promoción eliminada con éxito",
     "invalid_expire_date": "Fecha de caducidad inválida",
     "invalid_promotion_percentage": "Porcentaje de promoción inválido",
-    "invalid_product_ids_parameters": "Parámetros de IDs de productos inválidos"
+    "invalid_product_ids_parameters": "Parámetros de IDs de productos inválidos",
+    "at_least_one_variant": "Crea al menos una variante"
 }

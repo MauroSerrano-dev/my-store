@@ -220,11 +220,7 @@ export default function Product(props) {
                             <Image
                                 quality={100}
                                 key={i}
-                                src={
-                                    typeof product.images.filter(img => img.color_id === color_id)[product.image_hover_index].src === 'string'
-                                        ? product.images.filter(img => img.color_id === color_id)[product.image_hover_index].src
-                                        : product.images.filter(img => img.color_id === color_id)[product.image_hover_index].src.front
-                                }
+                                src={product.images.filter(img => img.color_id === color_id)[product.image_hover_index].src}
                                 sizes={`${height * 2 / 3}px`}
                                 fill
                                 alt={product.title}
@@ -250,11 +246,7 @@ export default function Product(props) {
                             priority={i === 0}
                             quality={100}
                             key={i}
-                            src={
-                                typeof product.images.filter(img => img.color_id === color_id)[product.image_showcase_index].src === 'string'
-                                    ? product.images.filter(img => img.color_id === color_id)[product.image_showcase_index].src
-                                    : product.images.filter(img => img.color_id === color_id)[product.image_showcase_index].src.front
-                            }
+                            src={product.images.filter(img => img.color_id === color_id)[product.image_showcase_index].src}
                             fill
                             sizes={`${height * 2 / 3}px`}
                             alt={product.title}

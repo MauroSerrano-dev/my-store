@@ -31,7 +31,7 @@ export function isNewProductValid(product, images, translate) {
         showToast({ type: 'error', msg: translate('choose_at_least_one_size') })
         return false
     }
-    if (Object.values(images).some(imgs => imgs.some(img => typeof img.src === 'string' ? img.src === '' : (img.src.front === '' || img.src.back === '')))) {
+    if (Object.values(images).some(imgs => imgs.some(img => img.src === ''))) {
         showToast({ type: 'error', msg: translate('image_src_missing') })
         return false
     }
@@ -65,7 +65,7 @@ export function isProductValid(product) {
     if (product.sizes?.length === 0 || product.sizes_ids?.length === 0)
         throw new MyError({ message: 'choose_at_least_one_size' })
 
-    if (product.images.some(img => typeof img.src === 'string' ? img.src === '' : (img.src.front === '' || img.src.back === '')))
+    if (product.images.some(img => img.src === ''))
         throw new MyError({ message: 'image_src_missing' })
 
     if (product.variants.some(vari => vari.active && vari.art.color_id === null))

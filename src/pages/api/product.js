@@ -22,12 +22,15 @@ export default async function handler(req, res) {
         }
     }
     else if (req.method === "POST") {
-        const result = await createProduct(product)
+        try {
+            await createProduct(product)
 
-        res.status(result.status).json({
-            status: result.status,
-            msg: result.msg,
-        })
+            res.status(200).json({ message: 'Product created successfully' })
+        }
+        catch (error) {
+            console.error('Error in product POST:', error)
+            res.status(500).json({ error: error });
+        }
     }
     else if (req.method === "PUT") {
         try {

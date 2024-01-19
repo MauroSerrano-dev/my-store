@@ -38,4 +38,47 @@ describe('Product Types Tests', () => {
     const uniqueIcons = new Set(icons);
     expect(uniqueIcons.size).toBe(icons.length);
   });
+
+  test('Each variant should have a valid id_printify within its type', () => {
+    let hasError = false; // Variável de flag para indicar se ocorreu algum erro
+
+    PRODUCTS_TYPES.forEach(type => {
+      const idPrintifyMap = new Map(); // Map para rastrear os id_printify usados
+
+      type.variants.forEach(variant => {
+        // Verifica se o campo id_printify existe
+        expect(variant).toHaveProperty('id_printify');
+
+        // Se id_printify for uma string, verifica se é único
+        if (typeof variant.id_printify === 'string') {
+          if (idPrintifyMap.has(variant.id_printify))
+            console.error(`Invalid id_printify value "${variant.id_printify}" in variant "${variant.id}" in type "${type.id}"`);
+          expect(idPrintifyMap.has(variant.id_printify)).toBeFalsy(); // Verifica se já foi usado
+          idPrintifyMap.set(variant.id_printify, true);
+        }
+
+        // Se id_printify for um objeto, verifica cada valor
+        else if (typeof variant.id_printify === 'object') {
+          Object.values(variant.id_printify).reduce((acc, id) => acc.includes(id) ? acc : [...acc, id], []).forEach(id => {
+
+            if (idPrintifyMap.has(id))
+              console.error(`Invalid id_printify value "${id}" in variant "${variant.id}" in type "${type.id}"`);
+
+            expect(typeof id).toBe('string');
+            expect(idPrintifyMap.has(id)).toBeFalsy(); // Verifica se já foi usado
+            idPrintifyMap.set(id, true);
+          });
+        }
+        else {
+          // Se id_printify não for string nem objeto, emite um console de erro
+          console.error(`Invalid id_printify format for variant "${variant.id}" in type "${type.id}"`);
+        }
+      });
+    });
+
+    // Se ocorreu algum erro, faz com que o teste falhe
+    if (hasError) {
+      throw new Error('Test failed due to id_printify format errors');
+    }
+  });
 });

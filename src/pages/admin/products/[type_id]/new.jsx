@@ -13,7 +13,7 @@ import BrokeChain from '@/components/svgs/BrokeChain'
 import { showToast } from '@/utils/toasts'
 import NoFound404 from '@/components/NoFound404'
 import Selector from '@/components/material-ui/Selector'
-import { isNewProductValid } from '@/utils/edit-product'
+import { isNewProductValid, isProductValid } from '@/utils/edit-product'
 import { useTranslation } from 'next-i18next'
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
 import TextOutlinedInput from '@/components/material-ui/TextOutlinedInput'
@@ -24,6 +24,7 @@ import PrintifyIdPicker from '@/components/PrintifyIdPicker'
 import ProductPriceInput from '@/components/ProductPriceInput'
 import { variantModel } from '@/utils/models'
 import ImagesEditor from '@/components/editors/ImagesEditor'
+import MyError from '@/classes/MyError'
 
 const INICIAL_PRODUCT = {
     id: '',
@@ -61,6 +62,7 @@ export default withRouter(() => {
     const [artIdChained, setArtIdChained] = useState(true)
     const [artColorChained, setArtColorChained] = useState(true)
     const [viewStatus, setViewStatus] = useState('front')
+    const [havePositionsVariants, setHavePositionsVariants] = useState(false)
 
     const tColors = useTranslation('colors').t
     const tToasts = useTranslation('toasts').t
@@ -94,49 +96,59 @@ export default withRouter(() => {
     }, [router])
 
     async function createProduct() {
-        setLoadingCreateButton(true)
+        try {
+            setLoadingCreateButton(true)
+            if (product.variants.length === 0)
+                throw new MyError({ message: 'at_least_one_variant' })
 
-        if (!isNewProductValid(product, images, tToasts)) {
+            const product_images = havePositionsVariants
+                ? product.colors_ids
+                    .reduce((acc, color_id) =>
+                        acc.concat(images[color_id].front.map(img => ({ src: img.src, color_id: img.color_id, position: 'front' })))
+                            .concat(images[color_id].back.map(img => ({ src: img.src, color_id: img.color_id, position: 'back' }))),
+                        []
+                    )
+                : product.colors_ids
+                    .reduce((acc, color_id) => acc.concat(images[color_id]), [])
+                    .map(img => ({ src: img.src, color_id: img.color_id }))
+
+            const newProduct = {
+                ...product,
+                id: product.id + '-' + type.id,
+                collection_id: product.collection_id,
+                title_lower_case: product.title.toLowerCase(),
+                min_price: product.variants.reduce((acc, vari) => acc < vari.price ? acc : vari.price, product.variants[0].price),
+                images: product_images,
+                variants: product.variants.map(vari => variantModel(vari)),
+                promotion: null,
+            }
+
+            isProductValid(newProduct)
+
+            const options = {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    authorization: process.env.NEXT_PUBLIC_APP_TOKEN,
+                },
+                body: JSON.stringify({
+                    product: newProduct
+                })
+            }
+            const response = await fetch("/api/product", options)
+            const responseJson = await response.json()
+
+            if (response.status >= 300)
+                throw responseJson.error
+
+            showToast({ type: 'success', msg: tToasts(response.message) })
+            router.push(`/admin/products/${router.query.type_id}`)
+        }
+        catch (error) {
+            console.error(error)
+            showToast({ type: error.type || 'error', msg: tToasts(error.message, error.options) })
             setLoadingCreateButton(false)
-            return
         }
-
-        const options = {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                authorization: process.env.NEXT_PUBLIC_APP_TOKEN,
-            },
-            body: JSON.stringify({
-                product: {
-                    ...product,
-                    id: product.id + '-' + type.id,
-                    collection_id: product.collection_id,
-                    title_lower_case: product.title.toLowerCase(),
-                    min_price: product.variants.reduce((acc, vari) => acc < vari.price ? acc : vari.price, product.variants[0].price),
-                    images: product.colors_ids.reduce((acc, color_id) => acc.concat(images[color_id].map(img => ({ src: img.src, color_id: img.color_id }))), []),
-                    variants: product.variants.map(vari => variantModel(vari)),
-                    promotion: null,
-                }
-            })
-        }
-        await fetch("/api/product", options)
-            .then(response => response.json())
-            .then(response => {
-                if (response.status < 300) {
-                    showToast({ type: 'success', msg: tToasts(response.msg) })
-                    router.push(`/admin/products/${router.query.type_id}`)
-                }
-                else {
-                    setLoadingCreateButton(false)
-                    showToast({ type: 'error', msg: tToasts(response.msg) })
-                }
-            })
-            .catch(error => {
-                console.error(error)
-                setLoadingCreateButton(false)
-                showToast({ type: 'error', msg: tToasts('default_error') })
-            })
     }
 
     function updateProductField(fieldName, newValue) {
@@ -171,7 +183,9 @@ export default withRouter(() => {
                 setImages(prevImgs => {
                     return {
                         ...prevImgs,
-                        [color.id]: []
+                        [color.id]: havePositionsVariants
+                            ? { front: [], back: [] }
+                            : []
                     }
                 })
                 return {
@@ -499,22 +513,24 @@ export default withRouter(() => {
                 setImages(prev => (
                     Object.keys(prev).reduce((acc, key) => ({
                         ...acc,
-                        [key]: [
-                            ...prev[key].map(img => ({ ...img, src: { front: img.src, back: '' } })),
-                        ]
+                        [key]: {
+                            front: [...prev[key]],
+                            back: []
+                        }
                     }), {})
                 ))
             setProduct(prev => ({
                 ...prev,
                 printify_ids: Object.keys(prev.printify_ids).reduce((acc, key) => ({ ...acc, [key]: { front: prev.printify_ids[key], back: '' } }), {})
             }))
+            setHavePositionsVariants(true)
         }
         else {
             if (images)
                 setImages(prev =>
                     Object.keys(prev).reduce((acc, key) => ({
                         ...acc,
-                        [key]: prev[key].map(img => ({ ...img, src: img.src.front }))
+                        [key]: prev[key].front
                     }), {})
                 )
             setProduct(prev => ({
@@ -524,6 +540,7 @@ export default withRouter(() => {
                     [key]: prev.printify_ids[key].front
                 }), {})
             }))
+            setHavePositionsVariants(false)
         }
     }
 
@@ -698,45 +715,44 @@ export default withRouter(() => {
                                                         </MyButton>
                                                     )}
                                                 </div>
-                                                {images?.[product?.colors_ids?.[colorIndex]] &&
-                                                    <div className='flex column' style={{ gap: '1rem' }}>
-                                                        <div>
-                                                            <ImagesEditor
-                                                                product_id={product.id + '-' + type.id}
-                                                                product={product}
-                                                                colorIndex={colorIndex}
-                                                                images={images}
-                                                                setImages={setImages}
-                                                                updateProductField={updateProductField}
-                                                                viewStatus={viewStatus}
-                                                                setViewStatus={setViewStatus}
-                                                            />
-                                                        </div>
-                                                        <div
-                                                            className='flex center column fillWidth'
-                                                            style={{
-                                                                gap: '1rem'
-                                                            }}
-                                                        >
-                                                            <h3>
-                                                                {tColors(COLORS_POOL[product.colors_ids[colorIndex]].id_string)} Price (USD)
-                                                            </h3>
-                                                            {product.sizes_ids.map((size_id, i) =>
-                                                                <ProductPriceInput
-                                                                    productType={type.id}
-                                                                    onClickChain={() => handleChainSize(size_id)}
-                                                                    chained={sizesChained[product.colors_ids[colorIndex]].includes(size_id)}
-                                                                    size={SIZES_POOL.find(sz => sz.id === size_id)}
-                                                                    key={i}
-                                                                    product={product}
-                                                                    onChangeText={event => handleChangePrice(isNaN(Number(event.target.value)) ? 0 : Math.abs(Number(event.target.value.slice(0, Math.min(event.target.value.length, 7)))), size_id)}
-                                                                    onChangeSlider={event => handleChangePrice(event.target.value, size_id)}
-                                                                    price={product.variants.find(vari => vari.size_id === size_id && vari.color_id === product.colors_ids[colorIndex]).price}
-                                                                />
-                                                            )}
-                                                        </div>
+                                                <div className='flex column' style={{ gap: '1rem' }}>
+                                                    <div>
+                                                        <ImagesEditor
+                                                            product_id={product.id + '-' + type.id}
+                                                            product={product}
+                                                            colorIndex={colorIndex}
+                                                            images={images}
+                                                            setImages={setImages}
+                                                            updateProductField={updateProductField}
+                                                            viewStatus={viewStatus}
+                                                            setViewStatus={setViewStatus}
+                                                            havePositionsVariants={havePositionsVariants}
+                                                        />
                                                     </div>
-                                                }
+                                                    <div
+                                                        className='flex center column fillWidth'
+                                                        style={{
+                                                            gap: '1rem'
+                                                        }}
+                                                    >
+                                                        <h3>
+                                                            {tColors(COLORS_POOL[product.colors_ids[colorIndex]].id_string)} Price (USD)
+                                                        </h3>
+                                                        {product.sizes_ids.map((size_id, i) =>
+                                                            <ProductPriceInput
+                                                                productType={type.id}
+                                                                onClickChain={() => handleChainSize(size_id)}
+                                                                chained={sizesChained[product.colors_ids[colorIndex]].includes(size_id)}
+                                                                size={SIZES_POOL.find(sz => sz.id === size_id)}
+                                                                key={i}
+                                                                product={product}
+                                                                onChangeText={event => handleChangePrice(isNaN(Number(event.target.value)) ? 0 : Math.abs(Number(event.target.value.slice(0, Math.min(event.target.value.length, 7)))), size_id)}
+                                                                onChangeSlider={event => handleChangePrice(event.target.value, size_id)}
+                                                                price={product.variants.find(vari => vari.size_id === size_id && vari.color_id === product.colors_ids[colorIndex]).price}
+                                                            />
+                                                        )}
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
                                         <div className={styles.sectionRight}>
@@ -746,7 +762,7 @@ export default withRouter(() => {
                                                         Preview
                                                     </h3>
                                                     <ImagesSliderEditable
-                                                        images={Object.keys(images).reduce((acc, key) => acc.concat(images[key]), []).map(img => ({ ...img, src: typeof img.src === 'string' ? img.src : img.src[viewStatus] }))}
+                                                        images={Object.keys(images).reduce((acc, key) => acc.concat(havePositionsVariants ? images[key][viewStatus] : images[key]), [])}
                                                         currentColor={COLORS_POOL[product.colors_ids[colorIndex]]}
                                                         colors={product.colors_ids.map(cl_id => COLORS_POOL[cl_id])}
                                                     />

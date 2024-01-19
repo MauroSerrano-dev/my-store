@@ -75,5 +75,6 @@
     "promotion_deleted_successfully": "Promotion deleted successfully",
     "invalid_expire_date": "Invalid expire date",
     "invalid_promotion_percentage": "Invalid promotion percentage",
-    "invalid_product_ids_parameters": "Invalid product IDs parameters"
+    "invalid_product_ids_parameters": "Invalid product IDs parameters",
+    "at_least_one_variant": "Create at least one variant"
 }

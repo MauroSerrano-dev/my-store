@@ -32,7 +32,7 @@ async function createProduct(product) {
         };
 
         await productRef.set(newProduct);
-        return { status: 200, msg: 'Product created successfully' };
+        console.log('Product created successfully')
     } catch (error) {
         console.error("Error creating product:", error);
         throw error;
@@ -254,8 +254,8 @@ async function getProductsInfo(products) {
                 }), {})
                 : product.printify_ids
 
-            const visualImage = product.images.filter(img => img.color_id === variant.color_id).length > 0
-                ? product.images.filter(img => img.color_id === variant.color_id)[product.image_showcase_index]
+            const visualImage = product.images.filter(img => img.color_id === variant.color_id && (!art_position || img.position === art_position)).length > 0
+                ? product.images.filter(img => img.color_id === variant.color_id && (!art_position || img.position === art_position))[product.image_showcase_index]
                 : { src: '/no-image.webp' }
 
             return productInfoModel(
@@ -272,9 +272,7 @@ async function getProductsInfo(products) {
                         color_id: variants[0].color_id,
                         size_id: variants[0].size_id,
                     },
-                    image_src: art_position
-                        ? visualImage.src[art_position]
-                        : visualImage.src,
+                    image_src: visualImage.src,
                 }
             )
         })

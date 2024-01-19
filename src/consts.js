@@ -291,7 +291,7 @@ export const PRODUCTS_TYPES = [
         variants: [
             {
                 id: "black-s",
-                id_printify: 38164,
+                id_printify: '38164',
                 cost: 959,
                 inicial_price: 1598,
                 title: "Black / S",
@@ -301,7 +301,7 @@ export const PRODUCTS_TYPES = [
             },
             {
                 id: "military-green-s",
-                id_printify: 38166,
+                id_printify: '38166',
                 cost: 959,
                 inicial_price: 1598,
                 title: "Military Green / S",
@@ -311,7 +311,7 @@ export const PRODUCTS_TYPES = [
             },
             {
                 id: "charcoal-s",
-                id_printify: 38153,
+                id_printify: '38153',
                 cost: 959,
                 inicial_price: 1598,
                 title: "Charcoal / S",
@@ -321,7 +321,7 @@ export const PRODUCTS_TYPES = [
             },
             {
                 id: "dark-chocolate-s",
-                id_printify: 38155,
+                id_printify: '38155',
                 cost: 959,
                 inicial_price: 1598,
                 title: "Dark Chocolate / S",
@@ -331,7 +331,7 @@ export const PRODUCTS_TYPES = [
             },
             {
                 id: "irish-green-s",
-                id_printify: 38156,
+                id_printify: '38156',
                 cost: 959,
                 inicial_price: 1598,
                 title: "Irish Green / S",
@@ -341,7 +341,7 @@ export const PRODUCTS_TYPES = [
             },
             {
                 id: "light-blue-s",
-                id_printify: 38157,
+                id_printify: '38157',
                 cost: 959,
                 inicial_price: 1598,
                 title: "Light Blue / S",
@@ -351,7 +351,7 @@ export const PRODUCTS_TYPES = [
             },
             {
                 id: "navy-s",
-                id_printify: 38158,
+                id_printify: '38158',
                 cost: 959,
                 inicial_price: 1598,
                 title: "Navy / S",
@@ -361,7 +361,7 @@ export const PRODUCTS_TYPES = [
             },
             {
                 id: "red-s",
-                id_printify: 38160,
+                id_printify: '38160',
                 cost: 959,
                 inicial_price: 1598,
                 title: "Red / S",
@@ -371,7 +371,7 @@ export const PRODUCTS_TYPES = [
             },
             {
                 id: "royal-s",
-                id_printify: 38161,
+                id_printify: '38161',
                 cost: 959,
                 inicial_price: 1598,
                 title: "Royal / S",
@@ -381,7 +381,7 @@ export const PRODUCTS_TYPES = [
             },
             {
                 id: "white-s",
-                id_printify: 38163,
+                id_printify: '38163',
                 cost: 959,
                 inicial_price: 1598,
                 title: "White / S",
@@ -391,7 +391,7 @@ export const PRODUCTS_TYPES = [
             },
             {
                 id: "sport-grey-s",
-                id_printify: 38162,
+                id_printify: '38162',
                 cost: 959,
                 inicial_price: 1598,
                 title: "Sport Grey / S",
@@ -401,7 +401,7 @@ export const PRODUCTS_TYPES = [
             },
             {
                 id: "black-m",
-                id_printify: 38178,
+                id_printify: '38178',
                 cost: 959,
                 inicial_price: 1598,
                 title: "Black / M",
@@ -411,7 +411,7 @@ export const PRODUCTS_TYPES = [
             },
             {
                 id: "military-green-m",
-                id_printify: 38180,
+                id_printify: '38180',
                 cost: 959,
                 inicial_price: 1598,
                 title: "Military Green / M",
@@ -421,7 +421,7 @@ export const PRODUCTS_TYPES = [
             },
             {
                 id: "charcoal-m",
-                id_printify: 38167,
+                id_printify: '38167',
                 cost: 959,
                 inicial_price: 1598,
                 title: "Charcoal / M",
@@ -431,7 +431,7 @@ export const PRODUCTS_TYPES = [
             },
             {
                 id: "dark-chocolate-m",
-                id_printify: 38169,
+                id_printify: '38169',
                 cost: 959,
                 inicial_price: 1598,
                 title: "Dark Chocolate / M",
@@ -441,7 +441,7 @@ export const PRODUCTS_TYPES = [
             },
             {
                 id: "irish-green-m",
-                id_printify: 38170,
+                id_printify: '38170',
                 cost: 959,
                 inicial_price: 1598,
                 title: "Irish Green / M",
@@ -451,7 +451,7 @@ export const PRODUCTS_TYPES = [
             },
             {
                 id: "light-blue-m",
-                id_printify: 38171,
+                id_printify: '38171',
                 cost: 959,
                 inicial_price: 1598,
                 title: "Light Blue / M",
@@ -461,7 +461,7 @@ export const PRODUCTS_TYPES = [
             },
             {
                 id: "navy-m",
-                id_printify: 38172,
+                id_printify: '38172',
                 cost: 959,
                 inicial_price: 1598,
                 title: "Navy / M",
@@ -471,7 +471,7 @@ export const PRODUCTS_TYPES = [
             },
             {
                 id: "red-m",
-                id_printify: 38174,
+                id_printify: '38174',
                 cost: 959,
                 inicial_price: 1598,
                 title: "Red / M",
@@ -481,7 +481,7 @@ export const PRODUCTS_TYPES = [
             },
             {
                 id: "royal-m",
-                id_printify: 38175,
+                id_printify: '38175',
                 cost: 959,
                 inicial_price: 1598,
                 title: "Royal / M",
@@ -491,7 +491,7 @@ export const PRODUCTS_TYPES = [
             },
             {
                 id: "white-m",
-                id_printify: 38177,
+                id_printify: '38177',
                 cost: 959,
                 inicial_price: 1598,
                 title: "White / M",
@@ -501,7 +501,7 @@ export const PRODUCTS_TYPES = [
             },
             {
                 id: "sport-grey-m",
-                id_printify: 38176,
+                id_printify: '38176',
                 cost: 959,
                 inicial_price: 1598,
                 title: "Sport Grey / M",
@@ -511,7 +511,7 @@ export const PRODUCTS_TYPES = [
             },
             {
                 id: "black-l",
-                id_printify: 38192,
+                id_printify: '38192',
                 cost: 959,
                 inicial_price: 1598,
                 title: "Black / L",
@@ -521,7 +521,7 @@ export const PRODUCTS_TYPES = [
             },
             {
                 id: "military-green-l",
-                id_printify: 38194,
+                id_printify: '38194',
                 cost: 959,
                 inicial_price: 1598,
                 title: "Military Green / L",
@@ -531,7 +531,7 @@ export const PRODUCTS_TYPES = [
             },
             {
                 id: "charcoal-l",
-                id_printify: 38181,
+                id_printify: '38181',
                 cost: 959,
                 inicial_price: 1598,
                 title: "Charcoal / L",
@@ -541,7 +541,7 @@ export const PRODUCTS_TYPES = [
             },
             {
                 id: "dark-chocolate-l",
-                id_printify: 38183,
+                id_printify: '38183',
                 cost: 959,
                 inicial_price: 1598,
                 title: "Dark Chocolate / L",
@@ -551,7 +551,7 @@ export const PRODUCTS_TYPES = [
             },
             {
                 id: "irish-green-l",
-                id_printify: 38184,
+                id_printify: '38184',
                 cost: 959,
                 inicial_price: 1598,
                 title: "Irish Green / L",
@@ -561,7 +561,7 @@ export const PRODUCTS_TYPES = [
             },
             {
                 id: "light-blue-l",
-                id_printify: 38185,
+                id_printify: '38185',
                 cost: 959,
                 inicial_price: 1598,
                 title: "Light Blue / L",
@@ -571,7 +571,7 @@ export const PRODUCTS_TYPES = [
             },
             {
                 id: "navy-l",
-                id_printify: 38186,
+                id_printify: '38186',
                 cost: 959,
                 inicial_price: 1598,
                 title: "Navy / L",
@@ -581,7 +581,7 @@ export const PRODUCTS_TYPES = [
             },
             {
                 id: "red-l",
-                id_printify: 38188,
+                id_printify: '38188',
                 cost: 959,
                 inicial_price: 1598,
                 title: "Red / L",
@@ -591,7 +591,7 @@ export const PRODUCTS_TYPES = [
             },
             {
                 id: "royal-l",
-                id_printify: 38189,
+                id_printify: '38189',
                 cost: 959,
                 inicial_price: 1598,
                 title: "Royal / L",
@@ -601,7 +601,7 @@ export const PRODUCTS_TYPES = [
             },
             {
                 id: "white-l",
-                id_printify: 38191,
+                id_printify: '38191',
                 cost: 959,
                 inicial_price: 1598,
                 title: "White / L",
@@ -611,7 +611,7 @@ export const PRODUCTS_TYPES = [
             },
             {
                 id: "sport-grey-l",
-                id_printify: 38190,
+                id_printify: '38190',
                 cost: 959,
                 inicial_price: 1598,
                 title: "Sport Grey / L",
@@ -621,7 +621,7 @@ export const PRODUCTS_TYPES = [
             },
             {
                 id: "black-xl",
-                id_printify: 38206,
+                id_printify: '38206',
                 cost: 959,
                 inicial_price: 1598,
                 title: "Black / XL",
@@ -631,7 +631,7 @@ export const PRODUCTS_TYPES = [
             },
             {
                 id: "military-green-xl",
-                id_printify: 38208,
+                id_printify: '38208',
                 cost: 959,
                 inicial_price: 1598,
                 title: "Military Green / XL",
@@ -641,7 +641,7 @@ export const PRODUCTS_TYPES = [
             },
             {
                 id: "charcoal-xl",
-                id_printify: 38195,
+                id_printify: '38195',
                 cost: 959,
                 inicial_price: 1598,
                 title: "Charcoal / XL",
@@ -651,7 +651,7 @@ export const PRODUCTS_TYPES = [
             },
             {
                 id: "dark-chocolate-xl",
-                id_printify: 38197,
+                id_printify: '38197',
                 cost: 959,
                 inicial_price: 1598,
                 title: "Dark Chocolate / XL",
@@ -661,7 +661,7 @@ export const PRODUCTS_TYPES = [
             },
             {
                 id: "irish-green-xl",
-                id_printify: 38198,
+                id_printify: '38198',
                 cost: 959,
                 inicial_price: 1598,
                 title: "Irish Green / XL",
@@ -671,7 +671,7 @@ export const PRODUCTS_TYPES = [
             },
             {
                 id: "light-blue-xl",
-                id_printify: 38199,
+                id_printify: '38199',
                 cost: 959,
                 inicial_price: 1598,
                 title: "Light Blue / XL",
@@ -681,7 +681,7 @@ export const PRODUCTS_TYPES = [
             },
             {
                 id: "navy-xl",
-                id_printify: 38200,
+                id_printify: '38200',
                 cost: 959,
                 inicial_price: 1598,
                 title: "Navy / XL",
@@ -691,7 +691,7 @@ export const PRODUCTS_TYPES = [
             },
             {
                 id: "red-xl",
-                id_printify: 38202,
+                id_printify: '38202',
                 cost: 959,
                 inicial_price: 1598,
                 title: "Red / XL",
@@ -701,7 +701,7 @@ export const PRODUCTS_TYPES = [
             },
             {
                 id: "royal-xl",
-                id_printify: 38203,
+                id_printify: '38203',
                 cost: 959,
                 inicial_price: 1598,
                 title: "Royal / XL",
@@ -711,7 +711,7 @@ export const PRODUCTS_TYPES = [
             },
             {
                 id: "white-xl",
-                id_printify: 38205,
+                id_printify: '38205',
                 cost: 959,
                 inicial_price: 1598,
                 title: "White / XL",
@@ -721,7 +721,7 @@ export const PRODUCTS_TYPES = [
             },
             {
                 id: "sport-grey-xl",
-                id_printify: 38204,
+                id_printify: '38204',
                 cost: 959,
                 inicial_price: 1598,
                 title: "Sport Grey / XL",
@@ -731,7 +731,7 @@ export const PRODUCTS_TYPES = [
             },
             {
                 id: "black-2xl",
-                id_printify: 38220,
+                id_printify: '38220',
                 cost: 1096,
                 inicial_price: 1827,
                 title: "Black / 2XL",
@@ -741,7 +741,7 @@ export const PRODUCTS_TYPES = [
             },
             {
                 id: "military-green-2xl",
-                id_printify: 38222,
+                id_printify: '38222',
                 cost: 1096,
                 inicial_price: 1827,
                 title: "Military Green / 2XL",
@@ -751,7 +751,7 @@ export const PRODUCTS_TYPES = [
             },
             {
                 id: "charcoal-2xl",
-                id_printify: 38209,
+                id_printify: '38209',
                 cost: 1096,
                 inicial_price: 1827,
                 title: "Charcoal / 2XL",
@@ -761,7 +761,7 @@ export const PRODUCTS_TYPES = [
             },
             {
                 id: "dark-chocolate-2xl",
-                id_printify: 38211,
+                id_printify: '38211',
                 cost: 1096,
                 inicial_price: 1827,
                 title: "Dark Chocolate / 2XL",
@@ -771,7 +771,7 @@ export const PRODUCTS_TYPES = [
             },
             {
                 id: "irish-green-2xl",
-                id_printify: 38212,
+                id_printify: '38212',
                 cost: 1096,
                 inicial_price: 1827,
                 title: "Irish Green / 2XL",
@@ -781,7 +781,7 @@ export const PRODUCTS_TYPES = [
             },
             {
                 id: "light-blue-2xl",
-                id_printify: 38213,
+                id_printify: '38213',
                 cost: 1096,
                 inicial_price: 1827,
                 title: "Light Blue / 2XL",
@@ -791,7 +791,7 @@ export const PRODUCTS_TYPES = [
             },
             {
                 id: "navy-2xl",
-                id_printify: 38214,
+                id_printify: '38214',
                 cost: 1096,
                 inicial_price: 1827,
                 title: "Navy / 2XL",
@@ -801,7 +801,7 @@ export const PRODUCTS_TYPES = [
             },
             {
                 id: "red-2xl",
-                id_printify: 38216,
+                id_printify: '38216',
                 cost: 1096,
                 inicial_price: 1827,
                 title: "Red / 2XL",
@@ -811,7 +811,7 @@ export const PRODUCTS_TYPES = [
             },
             {
                 id: "royal-2xl",
-                id_printify: 38217,
+                id_printify: '38217',
                 cost: 1096,
                 inicial_price: 1827,
                 title: "Royal / 2XL",
@@ -821,7 +821,7 @@ export const PRODUCTS_TYPES = [
             },
             {
                 id: "white-2xl",
-                id_printify: 38219,
+                id_printify: '38219',
                 cost: 1096,
                 inicial_price: 1827,
                 title: "White / 2XL",
@@ -831,7 +831,7 @@ export const PRODUCTS_TYPES = [
             },
             {
                 id: "sport-grey-2xl",
-                id_printify: 38218,
+                id_printify: '38218',
                 cost: 1096,
                 inicial_price: 1827,
                 title: "Sport Grey / 2XL",
@@ -861,7 +861,7 @@ export const PRODUCTS_TYPES = [
         variants: [
             {
                 id: "white-s",
-                id_printify: 33791,
+                id_printify: '33791',
                 cost: 1531,
                 inicial_price: 2552,
                 grams: 185,
@@ -870,7 +870,7 @@ export const PRODUCTS_TYPES = [
             },
             {
                 id: "white-m",
-                id_printify: 33792,
+                id_printify: '33792',
                 cost: 1640,
                 inicial_price: 2733,
                 grams: 220,
@@ -879,7 +879,7 @@ export const PRODUCTS_TYPES = [
             },
             {
                 id: "white-l",
-                id_printify: 33793,
+                id_printify: '33793',
                 cost: 1731,
                 inicial_price: 2885,
                 grams: 260,
@@ -888,7 +888,7 @@ export const PRODUCTS_TYPES = [
             },
             {
                 id: "white-xl",
-                id_printify: 33794,
+                id_printify: '33794',
                 cost: 1752,
                 inicial_price: 2920,
                 grams: 310,
@@ -897,7 +897,7 @@ export const PRODUCTS_TYPES = [
             },
             {
                 id: "white-2xl",
-                id_printify: 33795,
+                id_printify: '33795',
                 cost: 2024,
                 inicial_price: 3373,
                 grams: 380,
@@ -906,7 +906,7 @@ export const PRODUCTS_TYPES = [
             },
             {
                 id: "black-s",
-                id_printify: 33796,
+                id_printify: '33796',
                 cost: 1531,
                 inicial_price: 2552,
                 grams: 185,
@@ -915,7 +915,7 @@ export const PRODUCTS_TYPES = [
             },
             {
                 id: "black-m",
-                id_printify: 33797,
+                id_printify: '33797',
                 cost: 1640,
                 inicial_price: 2733,
                 grams: 220,
@@ -924,7 +924,7 @@ export const PRODUCTS_TYPES = [
             },
             {
                 id: "black-l",
-                id_printify: 33798,
+                id_printify: '33798',
                 cost: 1731,
                 inicial_price: 2885,
                 grams: 260,
@@ -933,7 +933,7 @@ export const PRODUCTS_TYPES = [
             },
             {
                 id: "black-xl",
-                id_printify: 33799,
+                id_printify: '33799',
                 cost: 1752,
                 inicial_price: 2920,
                 grams: 310,
@@ -942,7 +942,7 @@ export const PRODUCTS_TYPES = [
             },
             {
                 id: "black-2xl",
-                id_printify: 33800,
+                id_printify: '33800',
                 cost: 2024,
                 inicial_price: 3373,
                 grams: 380,
@@ -951,7 +951,7 @@ export const PRODUCTS_TYPES = [
             },
             {
                 id: "sport-grey-s",
-                id_printify: 33987,
+                id_printify: '33987',
                 cost: 1531,
                 inicial_price: 2552,
                 grams: 185,
@@ -960,7 +960,7 @@ export const PRODUCTS_TYPES = [
             },
             {
                 id: "sport-grey-m",
-                id_printify: 33988,
+                id_printify: '33988',
                 cost: 1640,
                 inicial_price: 2733,
                 grams: 220,
@@ -969,7 +969,7 @@ export const PRODUCTS_TYPES = [
             },
             {
                 id: "sport-grey-l",
-                id_printify: 33989,
+                id_printify: '33989',
                 cost: 1731,
                 inicial_price: 2885,
                 grams: 260,
@@ -978,7 +978,7 @@ export const PRODUCTS_TYPES = [
             },
             {
                 id: "sport-grey-xl",
-                id_printify: 33990,
+                id_printify: '33990',
                 cost: 1752,
                 inicial_price: 2920,
                 grams: 310,
@@ -987,7 +987,7 @@ export const PRODUCTS_TYPES = [
             },
             {
                 id: "sport-grey-2xl",
-                id_printify: 33991,
+                id_printify: '33991',
                 cost: 2024,
                 inicial_price: 3373,
                 grams: 380,
@@ -996,7 +996,7 @@ export const PRODUCTS_TYPES = [
             },
             {
                 id: "light-blue-s",
-                id_printify: 42661,
+                id_printify: '42661',
                 cost: 1531,
                 inicial_price: 2552,
                 grams: 185,
@@ -1005,7 +1005,7 @@ export const PRODUCTS_TYPES = [
             },
             {
                 id: "light-blue-m",
-                id_printify: 42662,
+                id_printify: '42662',
                 cost: 1640,
                 inicial_price: 2733,
                 grams: 220,
@@ -1014,7 +1014,7 @@ export const PRODUCTS_TYPES = [
             },
             {
                 id: "light-blue-l",
-                id_printify: 42663,
+                id_printify: '42663',
                 cost: 1731,
                 inicial_price: 2885,
                 grams: 260,
@@ -1023,7 +1023,7 @@ export const PRODUCTS_TYPES = [
             },
             {
                 id: "light-blue-xl",
-                id_printify: 42664,
+                id_printify: '42664',
                 cost: 1752,
                 inicial_price: 2920,
                 grams: 310,
@@ -1032,7 +1032,7 @@ export const PRODUCTS_TYPES = [
             },
             {
                 id: "light-blue-2xl",
-                id_printify: 42665,
+                id_printify: '42665',
                 cost: 2024,
                 inicial_price: 3373,
                 grams: 380,
@@ -1041,7 +1041,7 @@ export const PRODUCTS_TYPES = [
             },
             {
                 id: "light-pink-s",
-                id_printify: 42666,
+                id_printify: '42666',
                 cost: 1531,
                 inicial_price: 2552,
                 grams: 185,
@@ -1050,7 +1050,7 @@ export const PRODUCTS_TYPES = [
             },
             {
                 id: "light-pink-m",
-                id_printify: 42667,
+                id_printify: '42667',
                 cost: 1640,
                 inicial_price: 2733,
                 grams: 220,
@@ -1059,7 +1059,7 @@ export const PRODUCTS_TYPES = [
             },
             {
                 id: "light-pink-l",
-                id_printify: 42668,
+                id_printify: '42668',
                 cost: 1731,
                 inicial_price: 2885,
                 grams: 260,
@@ -1068,7 +1068,7 @@ export const PRODUCTS_TYPES = [
             },
             {
                 id: "light-pink-xl",
-                id_printify: 42669,
+                id_printify: '42669',
                 cost: 1752,
                 inicial_price: 2920,
                 grams: 310,
@@ -1077,7 +1077,7 @@ export const PRODUCTS_TYPES = [
             },
             {
                 id: "light-pink-2xl",
-                id_printify: 42670,
+                id_printify: '42670',
                 cost: 2024,
                 inicial_price: 3373,
                 grams: 380,
@@ -1086,7 +1086,7 @@ export const PRODUCTS_TYPES = [
             },
             {
                 id: "navy-s",
-                id_printify: 42711,
+                id_printify: '42711',
                 cost: 1531,
                 inicial_price: 2552,
                 grams: 185,
@@ -1095,7 +1095,7 @@ export const PRODUCTS_TYPES = [
             },
             {
                 id: "navy-m",
-                id_printify: 42712,
+                id_printify: '42712',
                 cost: 1640,
                 inicial_price: 2733,
                 grams: 220,
@@ -1104,7 +1104,7 @@ export const PRODUCTS_TYPES = [
             },
             {
                 id: "navy-l",
-                id_printify: 42713,
+                id_printify: '42713',
                 cost: 1731,
                 inicial_price: 2885,
                 grams: 260,
@@ -1113,7 +1113,7 @@ export const PRODUCTS_TYPES = [
             },
             {
                 id: "navy-xl",
-                id_printify: 42714,
+                id_printify: '42714',
                 cost: 1752,
                 inicial_price: 2920,
                 grams: 310,
@@ -1122,7 +1122,7 @@ export const PRODUCTS_TYPES = [
             },
             {
                 id: "navy-2xl",
-                id_printify: 42715,
+                id_printify: '42715',
                 cost: 2024,
                 inicial_price: 3373,
                 grams: 380,
@@ -1152,8 +1152,8 @@ export const PRODUCTS_TYPES = [
             {
                 id: "royal-white-s",
                 id_printify: {
-                    43: 33522,
-                    6: 33522,
+                    43: '33522',
+                    6: '33522',
                 },
                 cost: 1843,
                 inicial_price: 2970,
@@ -1165,8 +1165,8 @@ export const PRODUCTS_TYPES = [
             {
                 id: "asphalt-white-s",
                 id_printify: {
-                    43: 39175,
-                    6: 39175,
+                    43: '39175',
+                    6: '39175',
                 },
                 cost: 1843,
                 inicial_price: 2970,
@@ -1178,8 +1178,8 @@ export const PRODUCTS_TYPES = [
             {
                 id: "red-white-s",
                 id_printify: {
-                    43: 36256,
-                    6: 39211,
+                    43: '36256',
+                    6: '39211',
                 },
                 cost: 1843,
                 inicial_price: 2970,
@@ -1191,8 +1191,8 @@ export const PRODUCTS_TYPES = [
             {
                 id: "royal-white-m",
                 id_printify: {
-                    43: 33523,
-                    6: 33523,
+                    43: '33523',
+                    6: '33523',
                 },
                 cost: 1843,
                 inicial_price: 2970,
@@ -1204,8 +1204,8 @@ export const PRODUCTS_TYPES = [
             {
                 id: "asphalt-white-m",
                 id_printify: {
-                    43: 39253,
-                    6: 39253,
+                    43: '39253',
+                    6: '39253',
                 },
                 cost: 1843,
                 inicial_price: 2970,
@@ -1217,8 +1217,8 @@ export const PRODUCTS_TYPES = [
             {
                 id: "red-white-m",
                 id_printify: {
-                    43: 36258,
-                    6: 39289,
+                    43: '36258',
+                    6: '39289',
                 },
                 cost: 1843,
                 inicial_price: 2970,
@@ -1230,8 +1230,8 @@ export const PRODUCTS_TYPES = [
             {
                 id: "royal-white-l",
                 id_printify: {
-                    43: 33524,
-                    6: 33524,
+                    43: '33524',
+                    6: '33524',
                 },
                 cost: 1843,
                 inicial_price: 2970,
@@ -1243,8 +1243,8 @@ export const PRODUCTS_TYPES = [
             {
                 id: "asphalt-white-l",
                 id_printify: {
-                    43: 39331,
-                    6: 39331,
+                    43: '39331',
+                    6: '39331',
                 },
                 cost: 1843,
                 inicial_price: 2970,
@@ -1256,8 +1256,8 @@ export const PRODUCTS_TYPES = [
             {
                 id: "red-white-l",
                 id_printify: {
-                    43: 36260,
-                    6: 39367,
+                    43: '36260',
+                    6: '39367',
                 },
                 cost: 1843,
                 inicial_price: 2970,
@@ -1269,8 +1269,8 @@ export const PRODUCTS_TYPES = [
             {
                 id: "royal-white-xl",
                 id_printify: {
-                    43: 33525,
-                    6: 33525,
+                    43: '33525',
+                    6: '33525',
                 },
                 cost: 1843,
                 inicial_price: 2970,
@@ -1282,8 +1282,8 @@ export const PRODUCTS_TYPES = [
             {
                 id: "asphalt-white-xl",
                 id_printify: {
-                    43: 39409,
-                    6: 39409,
+                    43: '39409',
+                    6: '39409',
                 },
                 cost: 1843,
                 inicial_price: 2970,
@@ -1295,8 +1295,8 @@ export const PRODUCTS_TYPES = [
             {
                 id: "red-white-xl",
                 id_printify: {
-                    43: 36264,
-                    6: 39523,
+                    43: '36262',
+                    6: '39445',
                 },
                 cost: 1843,
                 inicial_price: 2970,
@@ -1308,8 +1308,8 @@ export const PRODUCTS_TYPES = [
             {
                 id: "royal-white-2xl",
                 id_printify: {
-                    43: 33526,
-                    6: 33526,
+                    43: '33526',
+                    6: '33526',
                 },
                 cost: 2187,
                 inicial_price: 3322,
@@ -1321,8 +1321,8 @@ export const PRODUCTS_TYPES = [
             {
                 id: "asphalt-white-2xl",
                 id_printify: {
-                    43: 39487,
-                    6: 39487,
+                    43: '39487',
+                    6: '39487',
                 },
                 cost: 2187,
                 inicial_price: 3322,
@@ -1334,8 +1334,8 @@ export const PRODUCTS_TYPES = [
             {
                 id: "red-white-2xl",
                 id_printify: {
-                    43: 36264,
-                    6: 39523,
+                    43: '36264',
+                    6: '39523',
                 },
                 cost: 2187,
                 inicial_price: 3322,
@@ -1347,8 +1347,8 @@ export const PRODUCTS_TYPES = [
             {
                 id: "white-black-s",
                 id_printify: {
-                    43: 39151,
-                    6: 39151,
+                    43: '39151',
+                    6: '39151',
                 },
                 cost: 1843,
                 inicial_price: 2970,
@@ -1360,8 +1360,8 @@ export const PRODUCTS_TYPES = [
             {
                 id: "green-white-s",
                 id_printify: {
-                    43: 39193,
-                    6: 39193,
+                    43: '39193',
+                    6: '39193',
                 },
                 cost: 1843,
                 inicial_price: 2970,
@@ -1373,8 +1373,8 @@ export const PRODUCTS_TYPES = [
             {
                 id: "navy-white-s",
                 id_printify: {
-                    43: 39196,
-                    6: 39196,
+                    43: '39196',
+                    6: '39196',
                 },
                 cost: 1843,
                 inicial_price: 2970,
@@ -1386,8 +1386,8 @@ export const PRODUCTS_TYPES = [
             {
                 id: "black-white-s",
                 id_printify: {
-                    43: 39178,
-                    6: 39178,
+                    43: '39178',
+                    6: '39178',
                 },
                 cost: 1843,
                 inicial_price: 2970,
@@ -1399,8 +1399,8 @@ export const PRODUCTS_TYPES = [
             {
                 id: "white-black-m",
                 id_printify: {
-                    43: 39229,
-                    6: 39229,
+                    43: '39229',
+                    6: '39229',
                 },
                 cost: 1843,
                 inicial_price: 2970,
@@ -1412,8 +1412,8 @@ export const PRODUCTS_TYPES = [
             {
                 id: "green-white-m",
                 id_printify: {
-                    43: 39271,
-                    6: 39271,
+                    43: '39271',
+                    6: '39271',
                 },
                 cost: 1843,
                 inicial_price: 2970,
@@ -1425,8 +1425,8 @@ export const PRODUCTS_TYPES = [
             {
                 id: "navy-white-m",
                 id_printify: {
-                    43: 39274,
-                    6: 39274,
+                    43: '39274',
+                    6: '39274',
                 },
                 cost: 1843,
                 inicial_price: 2970,
@@ -1438,8 +1438,8 @@ export const PRODUCTS_TYPES = [
             {
                 id: "black-white-m",
                 id_printify: {
-                    43: 39256,
-                    6: 39256,
+                    43: '39256',
+                    6: '39256',
                 },
                 cost: 1843,
                 inicial_price: 2970,
@@ -1451,8 +1451,8 @@ export const PRODUCTS_TYPES = [
             {
                 id: "white-black-l",
                 id_printify: {
-                    43: 39307,
-                    6: 39307,
+                    43: '39307',
+                    6: '39307',
                 },
                 cost: 1843,
                 inicial_price: 2970,
@@ -1464,8 +1464,8 @@ export const PRODUCTS_TYPES = [
             {
                 id: "green-white-l",
                 id_printify: {
-                    43: 39349,
-                    6: 39349,
+                    43: '39349',
+                    6: '39349',
                 },
                 cost: 1843,
                 inicial_price: 2970,
@@ -1477,8 +1477,8 @@ export const PRODUCTS_TYPES = [
             {
                 id: "navy-white-l",
                 id_printify: {
-                    43: 39352,
-                    6: 39352,
+                    43: '39352',
+                    6: '39352',
                 },
                 cost: 1843,
                 inicial_price: 2970,
@@ -1490,8 +1490,8 @@ export const PRODUCTS_TYPES = [
             {
                 id: "black-white-l",
                 id_printify: {
-                    43: 39334,
-                    6: 39334,
+                    43: '39334',
+                    6: '39334',
                 },
                 cost: 1843,
                 inicial_price: 2970,
@@ -1503,8 +1503,8 @@ export const PRODUCTS_TYPES = [
             {
                 id: "white-black-xl",
                 id_printify: {
-                    43: 39385,
-                    6: 39385,
+                    43: '39385',
+                    6: '39385',
                 },
                 cost: 1843,
                 inicial_price: 2970,
@@ -1516,8 +1516,8 @@ export const PRODUCTS_TYPES = [
             {
                 id: "green-white-xl",
                 id_printify: {
-                    43: 39427,
-                    6: 39427,
+                    43: '39427',
+                    6: '39427',
                 },
                 cost: 1843,
                 inicial_price: 2970,
@@ -1529,8 +1529,8 @@ export const PRODUCTS_TYPES = [
             {
                 id: "navy-white-xl",
                 id_printify: {
-                    43: 39430,
-                    6: 39430,
+                    43: '39430',
+                    6: '39430',
                 },
                 cost: 1843,
                 inicial_price: 2970,
@@ -1542,8 +1542,8 @@ export const PRODUCTS_TYPES = [
             {
                 id: "black-white-xl",
                 id_printify: {
-                    43: 39412,
-                    6: 39412,
+                    43: '39412',
+                    6: '39412',
                 },
                 cost: 1843,
                 inicial_price: 2970,
@@ -1555,8 +1555,8 @@ export const PRODUCTS_TYPES = [
             {
                 id: "white-black-2xl",
                 id_printify: {
-                    43: 39463,
-                    6: 39463,
+                    43: '39463',
+                    6: '39463',
                 },
                 cost: 2187,
                 inicial_price: 3322,
@@ -1568,8 +1568,8 @@ export const PRODUCTS_TYPES = [
             {
                 id: "green-white-2xl",
                 id_printify: {
-                    43: 39505,
-                    6: 39505,
+                    43: '39505',
+                    6: '39505',
                 },
                 cost: 2187,
                 inicial_price: 3322,
@@ -1581,8 +1581,8 @@ export const PRODUCTS_TYPES = [
             {
                 id: "navy-white-2xl",
                 id_printify: {
-                    43: 39508,
-                    6: 39508,
+                    43: '39508',
+                    6: '39508',
                 },
                 cost: 2187,
                 inicial_price: 3322,
@@ -1594,8 +1594,8 @@ export const PRODUCTS_TYPES = [
             {
                 id: "black-white-2xl",
                 id_printify: {
-                    43: 39490,
-                    6: 39490,
+                    43: '39490',
+                    6: '39490',
                 },
                 cost: 2187,
                 inicial_price: 3322,
@@ -1627,8 +1627,8 @@ export const PRODUCTS_TYPES = [
             {
                 id: "ash-s",
                 id_printify: {
-                    50: 25377,
-                    87: 25377,
+                    50: '25377',
+                    87: '25377',
                 },
                 cost: 2360,
                 inicial_price: 2802,
@@ -1640,8 +1640,8 @@ export const PRODUCTS_TYPES = [
             {
                 id: "dark-heather-s",
                 id_printify: {
-                    50: 25381,
-                    87: 25381,
+                    50: '25381',
+                    87: '25381',
                 },
                 cost: 2360,
                 inicial_price: 2802,
@@ -1653,8 +1653,8 @@ export const PRODUCTS_TYPES = [
             {
                 id: "light-blue-s",
                 id_printify: {
-                    50: 25385,
-                    87: 25385,
+                    50: '25385',
+                    87: '25385',
                 },
                 cost: 2360,
                 inicial_price: 2802,
@@ -1666,8 +1666,8 @@ export const PRODUCTS_TYPES = [
             {
                 id: "light-pink-s",
                 id_printify: {
-                    50: 25386,
-                    87: 25386,
+                    50: '25386',
+                    87: '25386',
                 },
                 cost: 2360,
                 inicial_price: 2802,
@@ -1679,8 +1679,8 @@ export const PRODUCTS_TYPES = [
             {
                 id: "navy-s",
                 id_printify: {
-                    50: 25388,
-                    87: 25388,
+                    50: '25388',
+                    87: '25388',
                 },
                 cost: 2360,
                 inicial_price: 2802,
@@ -1692,8 +1692,8 @@ export const PRODUCTS_TYPES = [
             {
                 id: "royal-s",
                 id_printify: {
-                    50: 25625,
-                    87: 25625,
+                    50: '25625',
+                    87: '25625',
                 },
                 cost: 2360,
                 inicial_price: 2802,
@@ -1705,8 +1705,8 @@ export const PRODUCTS_TYPES = [
             {
                 id: "red-s",
                 id_printify: {
-                    50: 25391,
-                    87: 25391,
+                    50: '25391',
+                    87: '25391',
                 },
                 cost: 2360,
                 inicial_price: 2802,
@@ -1718,8 +1718,8 @@ export const PRODUCTS_TYPES = [
             {
                 id: "sand-s",
                 id_printify: {
-                    50: 25394,
-                    87: 25394,
+                    50: '25394',
+                    87: '25394',
                 },
                 cost: 2360,
                 inicial_price: 2802,
@@ -1731,8 +1731,8 @@ export const PRODUCTS_TYPES = [
             {
                 id: "sport-grey-s",
                 id_printify: {
-                    50: 25395,
-                    87: 25395,
+                    50: '25395',
+                    87: '25395',
                 },
                 cost: 2360,
                 inicial_price: 2802,
@@ -1744,8 +1744,8 @@ export const PRODUCTS_TYPES = [
             {
                 id: "white-s",
                 id_printify: {
-                    50: 25396,
-                    87: 25396,
+                    50: '25396',
+                    87: '25396',
                 },
                 cost: 2360,
                 inicial_price: 2802,
@@ -1757,8 +1757,8 @@ export const PRODUCTS_TYPES = [
             {
                 id: "black-s",
                 id_printify: {
-                    50: 25397,
-                    87: 25397,
+                    50: '25397',
+                    87: '25397',
                 },
                 cost: 2360,
                 inicial_price: 2802,
@@ -1770,8 +1770,8 @@ export const PRODUCTS_TYPES = [
             {
                 id: "forest-green-s",
                 id_printify: {
-                    50: 25400,
-                    87: 25400,
+                    50: '25400',
+                    87: '25400',
                 },
                 cost: 2360,
                 inicial_price: 2802,
@@ -1783,8 +1783,8 @@ export const PRODUCTS_TYPES = [
             {
                 id: "ash-m",
                 id_printify: {
-                    50: 25408,
-                    87: 25408,
+                    50: '25408',
+                    87: '25408',
                 },
                 cost: 2360,
                 inicial_price: 2802,
@@ -1796,8 +1796,8 @@ export const PRODUCTS_TYPES = [
             {
                 id: "dark-heather-m",
                 id_printify: {
-                    50: 25412,
-                    87: 25412,
+                    50: '25412',
+                    87: '25412',
                 },
                 cost: 2360,
                 inicial_price: 2802,
@@ -1809,8 +1809,8 @@ export const PRODUCTS_TYPES = [
             {
                 id: "light-blue-m",
                 id_printify: {
-                    50: 25416,
-                    87: 25416,
+                    50: '25416',
+                    87: '25416',
                 },
                 cost: 2360,
                 inicial_price: 2802,
@@ -1822,8 +1822,8 @@ export const PRODUCTS_TYPES = [
             {
                 id: "light-pink-m",
                 id_printify: {
-                    50: 25417,
-                    87: 25417,
+                    50: '25417',
+                    87: '25417',
                 },
                 cost: 2360,
                 inicial_price: 2802,
@@ -1835,8 +1835,8 @@ export const PRODUCTS_TYPES = [
             {
                 id: "navy-m",
                 id_printify: {
-                    50: 25419,
-                    87: 25419,
+                    50: '25419',
+                    87: '25419',
                 },
                 cost: 2360,
                 inicial_price: 2802,
@@ -1848,8 +1848,8 @@ export const PRODUCTS_TYPES = [
             {
                 id: "royal-m",
                 id_printify: {
-                    50: 25624,
-                    87: 25624,
+                    50: '25624',
+                    87: '25624',
                 },
                 cost: 2360,
                 inicial_price: 2802,
@@ -1861,8 +1861,8 @@ export const PRODUCTS_TYPES = [
             {
                 id: "red-m",
                 id_printify: {
-                    50: 25422,
-                    87: 25422,
+                    50: '25422',
+                    87: '25422',
                 },
                 cost: 2360,
                 inicial_price: 2802,
@@ -1874,8 +1874,8 @@ export const PRODUCTS_TYPES = [
             {
                 id: "sand-m",
                 id_printify: {
-                    50: 25425,
-                    87: 25425,
+                    50: '25425',
+                    87: '25425',
                 },
                 cost: 2360,
                 inicial_price: 2802,
@@ -1887,8 +1887,8 @@ export const PRODUCTS_TYPES = [
             {
                 id: "sport-grey-m",
                 id_printify: {
-                    50: 25426,
-                    87: 25426,
+                    50: '25426',
+                    87: '25426',
                 },
                 cost: 2360,
                 inicial_price: 2802,
@@ -1900,8 +1900,8 @@ export const PRODUCTS_TYPES = [
             {
                 id: "white-m",
                 id_printify: {
-                    50: 25427,
-                    87: 25427,
+                    50: '25427',
+                    87: '25427',
                 },
                 cost: 2360,
                 inicial_price: 2802,
@@ -1913,8 +1913,8 @@ export const PRODUCTS_TYPES = [
             {
                 id: "black-m",
                 id_printify: {
-                    50: 25428,
-                    87: 25428,
+                    50: '25428',
+                    87: '25428',
                 },
                 cost: 2360,
                 inicial_price: 2802,
@@ -1926,8 +1926,8 @@ export const PRODUCTS_TYPES = [
             {
                 id: "forest-green-m",
                 id_printify: {
-                    50: 25431,
-                    87: 25431,
+                    50: '25431',
+                    87: '25431',
                 },
                 cost: 2360,
                 inicial_price: 2802,
@@ -1939,8 +1939,8 @@ export const PRODUCTS_TYPES = [
             {
                 id: "ash-l",
                 id_printify: {
-                    50: 25439,
-                    87: 25439,
+                    50: '25439',
+                    87: '25439',
                 },
                 cost: 2360,
                 inicial_price: 2802,
@@ -1952,8 +1952,8 @@ export const PRODUCTS_TYPES = [
             {
                 id: "dark-heather-l",
                 id_printify: {
-                    50: 25443,
-                    87: 25443,
+                    50: '25443',
+                    87: '25443',
                 },
                 cost: 2360,
                 inicial_price: 2802,
@@ -1965,8 +1965,8 @@ export const PRODUCTS_TYPES = [
             {
                 id: "light-blue-l",
                 id_printify: {
-                    50: 25447,
-                    87: 25447,
+                    50: '25447',
+                    87: '25447',
                 },
                 cost: 2360,
                 inicial_price: 2802,
@@ -1978,8 +1978,8 @@ export const PRODUCTS_TYPES = [
             {
                 id: "light-pink-l",
                 id_printify: {
-                    50: 25448,
-                    87: 25448,
+                    50: '25448',
+                    87: '25448',
                 },
                 cost: 2360,
                 inicial_price: 2802,
@@ -1991,8 +1991,8 @@ export const PRODUCTS_TYPES = [
             {
                 id: "navy-l",
                 id_printify: {
-                    50: 25450,
-                    87: 25450,
+                    50: '25450',
+                    87: '25450',
                 },
                 cost: 2360,
                 inicial_price: 2802,
@@ -2004,8 +2004,8 @@ export const PRODUCTS_TYPES = [
             {
                 id: "royal-l",
                 id_printify: {
-                    50: 25623,
-                    87: 25623,
+                    50: '25623',
+                    87: '25623',
                 },
                 cost: 2360,
                 inicial_price: 2802,
@@ -2017,8 +2017,8 @@ export const PRODUCTS_TYPES = [
             {
                 id: "red-l",
                 id_printify: {
-                    50: 25453,
-                    87: 25453,
+                    50: '25453',
+                    87: '25453',
                 },
                 cost: 2360,
                 inicial_price: 2802,
@@ -2030,8 +2030,8 @@ export const PRODUCTS_TYPES = [
             {
                 id: "sand-l",
                 id_printify: {
-                    50: 25456,
-                    87: 25456,
+                    50: '25456',
+                    87: '25456',
                 },
                 cost: 2360,
                 inicial_price: 2802,
@@ -2043,8 +2043,8 @@ export const PRODUCTS_TYPES = [
             {
                 id: "sport-grey-l",
                 id_printify: {
-                    50: 25457,
-                    87: 25457,
+                    50: '25457',
+                    87: '25457',
                 },
                 cost: 2360,
                 inicial_price: 2802,
@@ -2056,8 +2056,8 @@ export const PRODUCTS_TYPES = [
             {
                 id: "white-l",
                 id_printify: {
-                    50: 25458,
-                    87: 25458,
+                    50: '25458',
+                    87: '25458',
                 },
                 cost: 2360,
                 inicial_price: 2802,
@@ -2069,8 +2069,8 @@ export const PRODUCTS_TYPES = [
             {
                 id: "black-l",
                 id_printify: {
-                    50: 25459,
-                    87: 25459,
+                    50: '25459',
+                    87: '25459',
                 },
                 cost: 2360,
                 inicial_price: 2802,
@@ -2082,8 +2082,8 @@ export const PRODUCTS_TYPES = [
             {
                 id: "forest-green-l",
                 id_printify: {
-                    50: 25462,
-                    87: 25462,
+                    50: '25462',
+                    87: '25462',
                 },
                 cost: 2360,
                 inicial_price: 2802,
@@ -2095,8 +2095,8 @@ export const PRODUCTS_TYPES = [
             {
                 id: "ash-xl",
                 id_printify: {
-                    50: 25470,
-                    87: 25470,
+                    50: '25470',
+                    87: '25470',
                 },
                 cost: 2360,
                 inicial_price: 2802,
@@ -2108,8 +2108,8 @@ export const PRODUCTS_TYPES = [
             {
                 id: "dark-heather-xl",
                 id_printify: {
-                    50: 25474,
-                    87: 25474,
+                    50: '25474',
+                    87: '25474',
                 },
                 cost: 2360,
                 inicial_price: 2802,
@@ -2121,8 +2121,8 @@ export const PRODUCTS_TYPES = [
             {
                 id: "light-blue-xl",
                 id_printify: {
-                    50: 25478,
-                    87: 25478,
+                    50: '25478',
+                    87: '25478',
                 },
                 cost: 2360,
                 inicial_price: 2802,
@@ -2134,8 +2134,8 @@ export const PRODUCTS_TYPES = [
             {
                 id: "light-pink-xl",
                 id_printify: {
-                    50: 25479,
-                    87: 25479,
+                    50: '25479',
+                    87: '25479',
                 },
                 cost: 2360,
                 inicial_price: 2802,
@@ -2147,8 +2147,8 @@ export const PRODUCTS_TYPES = [
             {
                 id: "navy-xl",
                 id_printify: {
-                    50: 25481,
-                    87: 25481,
+                    50: '25481',
+                    87: '25481',
                 },
                 cost: 2360,
                 inicial_price: 2802,
@@ -2160,8 +2160,8 @@ export const PRODUCTS_TYPES = [
             {
                 id: "royal-xl",
                 id_printify: {
-                    50: 25626,
-                    87: 25626,
+                    50: '25626',
+                    87: '25626',
                 },
                 cost: 2360,
                 inicial_price: 2802,
@@ -2173,8 +2173,8 @@ export const PRODUCTS_TYPES = [
             {
                 id: "red-xl",
                 id_printify: {
-                    50: 25484,
-                    87: 25484,
+                    50: '25484',
+                    87: '25484',
                 },
                 cost: 2360,
                 inicial_price: 2802,
@@ -2186,8 +2186,8 @@ export const PRODUCTS_TYPES = [
             {
                 id: "sand-xl",
                 id_printify: {
-                    50: 25487,
-                    87: 25487,
+                    50: '25487',
+                    87: '25487',
                 },
                 cost: 2360,
                 inicial_price: 2802,
@@ -2199,8 +2199,8 @@ export const PRODUCTS_TYPES = [
             {
                 id: "sport-grey-xl",
                 id_printify: {
-                    50: 25488,
-                    87: 25488,
+                    50: '25488',
+                    87: '25488',
                 },
                 cost: 2360,
                 inicial_price: 2802,
@@ -2212,8 +2212,8 @@ export const PRODUCTS_TYPES = [
             {
                 id: "white-xl",
                 id_printify: {
-                    50: 25489,
-                    87: 25489,
+                    50: '25489',
+                    87: '25489',
                 },
                 cost: 2360,
                 inicial_price: 2802,
@@ -2225,8 +2225,8 @@ export const PRODUCTS_TYPES = [
             {
                 id: "black-xl",
                 id_printify: {
-                    50: 25490,
-                    87: 25490,
+                    50: '25490',
+                    87: '25490',
                 },
                 cost: 2360,
                 inicial_price: 2802,
@@ -2238,8 +2238,8 @@ export const PRODUCTS_TYPES = [
             {
                 id: "forest-green-xl",
                 id_printify: {
-                    50: 25493,
-                    87: 25493,
+                    50: '25493',
+                    87: '25493',
                 },
                 cost: 2360,
                 inicial_price: 2802,
@@ -2251,8 +2251,8 @@ export const PRODUCTS_TYPES = [
             {
                 id: "ash-2xl",
                 id_printify: {
-                    50: 25501,
-                    87: 25501,
+                    50: '25501',
+                    87: '25501',
                 },
                 cost: 2782,
                 inicial_price: 2802,
@@ -2264,8 +2264,8 @@ export const PRODUCTS_TYPES = [
             {
                 id: "dark-heather-2xl",
                 id_printify: {
-                    50: 25505,
-                    87: 25505,
+                    50: '25505',
+                    87: '25505',
                 },
                 cost: 2782,
                 inicial_price: 2802,
@@ -2277,8 +2277,8 @@ export const PRODUCTS_TYPES = [
             {
                 id: "light-blue-2xl",
                 id_printify: {
-                    50: 25509,
-                    87: 25509,
+                    50: '25509',
+                    87: '25509',
                 },
                 cost: 2782,
                 inicial_price: 2802,
@@ -2290,8 +2290,8 @@ export const PRODUCTS_TYPES = [
             {
                 id: "light-pink-2xl",
                 id_printify: {
-                    50: 25510,
-                    87: 25510,
+                    50: '25510',
+                    87: '25510',
                 },
                 cost: 2782,
                 inicial_price: 2802,
@@ -2303,8 +2303,8 @@ export const PRODUCTS_TYPES = [
             {
                 id: "navy-2xl",
                 id_printify: {
-                    50: 25512,
-                    87: 25512,
+                    50: '25512',
+                    87: '25512',
                 },
                 cost: 2782,
                 inicial_price: 2802,
@@ -2316,8 +2316,8 @@ export const PRODUCTS_TYPES = [
             {
                 id: "royal-2xl",
                 id_printify: {
-                    50: 25627,
-                    87: 25627,
+                    50: '25627',
+                    87: '25627',
                 },
                 cost: 2782,
                 inicial_price: 2802,
@@ -2329,8 +2329,8 @@ export const PRODUCTS_TYPES = [
             {
                 id: "red-2xl",
                 id_printify: {
-                    50: 25515,
-                    87: 25515,
+                    50: '25515',
+                    87: '25515',
                 },
                 cost: 2782,
                 inicial_price: 2802,
@@ -2342,8 +2342,8 @@ export const PRODUCTS_TYPES = [
             {
                 id: "sand-2xl",
                 id_printify: {
-                    50: 25518,
-                    87: 25518,
+                    50: '25518',
+                    87: '25518',
                 },
                 cost: 2782,
                 inicial_price: 2802,
@@ -2355,8 +2355,8 @@ export const PRODUCTS_TYPES = [
             {
                 id: "sport-grey-2xl",
                 id_printify: {
-                    50: 25519,
-                    87: 25519,
+                    50: '25519',
+                    87: '25519',
                 },
                 cost: 2782,
                 inicial_price: 2802,
@@ -2368,8 +2368,8 @@ export const PRODUCTS_TYPES = [
             {
                 id: "white-2xl",
                 id_printify: {
-                    50: 25520,
-                    87: 25520,
+                    50: '25520',
+                    87: '25520',
                 },
                 cost: 2782,
                 inicial_price: 2802,
@@ -2381,8 +2381,8 @@ export const PRODUCTS_TYPES = [
             {
                 id: "black-2xl",
                 id_printify: {
-                    50: 25521,
-                    87: 25521,
+                    50: '25521',
+                    87: '25521',
                 },
                 cost: 2782,
                 inicial_price: 2802,
@@ -2394,8 +2394,8 @@ export const PRODUCTS_TYPES = [
             {
                 id: "forest-green-2xl",
                 id_printify: {
-                    50: 25524,
-                    87: 25524,
+                    50: '25524',
+                    87: '25524',
                 },
                 cost: 2782,
                 inicial_price: 2802,
@@ -2426,7 +2426,7 @@ export const PRODUCTS_TYPES = [
         variants: [
             {
                 id: "black-s",
-                id_printify: 32918,
+                id_printify: '32918',
                 cost: 2360,
                 inicial_price: 3645,
                 title: "Black / S",
@@ -2436,7 +2436,7 @@ export const PRODUCTS_TYPES = [
             },
             {
                 id: "dark-heather-s",
-                id_printify: 32878,
+                id_printify: '32878',
                 cost: 2360,
                 inicial_price: 3645,
                 title: "Dark Heather / S",
@@ -2446,7 +2446,7 @@ export const PRODUCTS_TYPES = [
             },
             {
                 id: "navy-s",
-                id_printify: 32894,
+                id_printify: '32894',
                 cost: 2360,
                 inicial_price: 3645,
                 title: "Navy / S",
@@ -2456,7 +2456,7 @@ export const PRODUCTS_TYPES = [
             },
             {
                 id: "red-s",
-                id_printify: 33385,
+                id_printify: '33385',
                 cost: 2360,
                 inicial_price: 3645,
                 title: "Red / S",
@@ -2466,7 +2466,7 @@ export const PRODUCTS_TYPES = [
             },
             {
                 id: "royal-s",
-                id_printify: 33393,
+                id_printify: '33393',
                 cost: 2360,
                 inicial_price: 3645,
                 title: "Royal / S",
@@ -2476,7 +2476,7 @@ export const PRODUCTS_TYPES = [
             },
             {
                 id: "white-s",
-                id_printify: 32910,
+                id_printify: '32910',
                 cost: 2360,
                 inicial_price: 3645,
                 title: "White / S",
@@ -2486,7 +2486,7 @@ export const PRODUCTS_TYPES = [
             },
             {
                 id: "sport-grey-s",
-                id_printify: 32902,
+                id_printify: '32902',
                 cost: 2360,
                 inicial_price: 3645,
                 title: "Sport Grey / S",
@@ -2496,7 +2496,7 @@ export const PRODUCTS_TYPES = [
             },
             {
                 id: "black-m",
-                id_printify: 32919,
+                id_printify: '32919',
                 cost: 2360,
                 inicial_price: 3645,
                 title: "Black / M",
@@ -2506,7 +2506,7 @@ export const PRODUCTS_TYPES = [
             },
             {
                 id: "dark-heather-m",
-                id_printify: 32879,
+                id_printify: '32879',
                 cost: 2360,
                 inicial_price: 3645,
                 title: "Dark Heather / M",
@@ -2516,7 +2516,7 @@ export const PRODUCTS_TYPES = [
             },
             {
                 id: "navy-m",
-                id_printify: 32895,
+                id_printify: '32895',
                 cost: 2360,
                 inicial_price: 3645,
                 title: "Navy / M",
@@ -2526,7 +2526,7 @@ export const PRODUCTS_TYPES = [
             },
             {
                 id: "red-m",
-                id_printify: 33386,
+                id_printify: '33386',
                 cost: 2360,
                 inicial_price: 3645,
                 title: "Red / M",
@@ -2536,7 +2536,7 @@ export const PRODUCTS_TYPES = [
             },
             {
                 id: "royal-m",
-                id_printify: 33394,
+                id_printify: '33394',
                 cost: 2360,
                 inicial_price: 3645,
                 title: "Royal / M",
@@ -2546,7 +2546,7 @@ export const PRODUCTS_TYPES = [
             },
             {
                 id: "white-m",
-                id_printify: 32911,
+                id_printify: '32911',
                 cost: 2360,
                 inicial_price: 3645,
                 title: "White / M",
@@ -2556,7 +2556,7 @@ export const PRODUCTS_TYPES = [
             },
             {
                 id: "sport-grey-m",
-                id_printify: 32903,
+                id_printify: '32903',
                 cost: 2360,
                 inicial_price: 3645,
                 title: "Sport Grey / M",
@@ -2566,7 +2566,7 @@ export const PRODUCTS_TYPES = [
             },
             {
                 id: "black-l",
-                id_printify: 32920,
+                id_printify: '32920',
                 cost: 2360,
                 inicial_price: 3645,
                 title: "Black / L",
@@ -2576,7 +2576,7 @@ export const PRODUCTS_TYPES = [
             },
             {
                 id: "dark-heather-l",
-                id_printify: 32880,
+                id_printify: '32880',
                 cost: 2360,
                 inicial_price: 3645,
                 title: "Dark Heather / L",
@@ -2586,7 +2586,7 @@ export const PRODUCTS_TYPES = [
             },
             {
                 id: "navy-l",
-                id_printify: 32896,
+                id_printify: '32896',
                 cost: 2360,
                 inicial_price: 3645,
                 title: "Navy / L",
@@ -2596,7 +2596,7 @@ export const PRODUCTS_TYPES = [
             },
             {
                 id: "red-l",
-                id_printify: 33387,
+                id_printify: '33387',
                 cost: 2360,
                 inicial_price: 3645,
                 title: "Red / L",
@@ -2606,7 +2606,7 @@ export const PRODUCTS_TYPES = [
             },
             {
                 id: "royal-l",
-                id_printify: 33395,
+                id_printify: '33395',
                 cost: 2360,
                 inicial_price: 3645,
                 title: "Royal / L",
@@ -2616,7 +2616,7 @@ export const PRODUCTS_TYPES = [
             },
             {
                 id: "white-l",
-                id_printify: 32912,
+                id_printify: '32912',
                 cost: 2360,
                 inicial_price: 3645,
                 title: "White / L",
@@ -2626,7 +2626,7 @@ export const PRODUCTS_TYPES = [
             },
             {
                 id: "sport-grey-l",
-                id_printify: 32904,
+                id_printify: '32904',
                 cost: 2360,
                 inicial_price: 3645,
                 title: "Sport Grey / L",
@@ -2636,7 +2636,7 @@ export const PRODUCTS_TYPES = [
             },
             {
                 id: "black-xl",
-                id_printify: 32921,
+                id_printify: '32921',
                 cost: 2360,
                 inicial_price: 3645,
                 title: "Black / XL",
@@ -2646,7 +2646,7 @@ export const PRODUCTS_TYPES = [
             },
             {
                 id: "dark-heather-xl",
-                id_printify: 32881,
+                id_printify: '32881',
                 cost: 2360,
                 inicial_price: 3645,
                 title: "Dark Heather / XL",
@@ -2656,7 +2656,7 @@ export const PRODUCTS_TYPES = [
             },
             {
                 id: "navy-xl",
-                id_printify: 32897,
+                id_printify: '32897',
                 cost: 2360,
                 inicial_price: 3645,
                 title: "Navy / XL",
@@ -2666,7 +2666,7 @@ export const PRODUCTS_TYPES = [
             },
             {
                 id: "red-xl",
-                id_printify: 33388,
+                id_printify: '33388',
                 cost: 2360,
                 inicial_price: 3645,
                 title: "Red / XL",
@@ -2676,7 +2676,7 @@ export const PRODUCTS_TYPES = [
             },
             {
                 id: "royal-xl",
-                id_printify: 33396,
+                id_printify: '33396',
                 cost: 2360,
                 inicial_price: 3645,
                 title: "Royal / XL",
@@ -2686,7 +2686,7 @@ export const PRODUCTS_TYPES = [
             },
             {
                 id: "white-xl",
-                id_printify: 32913,
+                id_printify: '32913',
                 cost: 2360,
                 inicial_price: 3645,
                 title: "White / XL",
@@ -2696,7 +2696,7 @@ export const PRODUCTS_TYPES = [
             },
             {
                 id: "sport-grey-xl",
-                id_printify: 32905,
+                id_printify: '32905',
                 cost: 2360,
                 inicial_price: 3645,
                 title: "Sport Grey / XL",
@@ -2706,7 +2706,7 @@ export const PRODUCTS_TYPES = [
             },
             {
                 id: "black-2xl",
-                id_printify: 32922,
+                id_printify: '32922',
                 cost: 2782,
                 inicial_price: 3993,
                 title: "Black / 2XL",
@@ -2716,7 +2716,7 @@ export const PRODUCTS_TYPES = [
             },
             {
                 id: "dark-heather-2xl",
-                id_printify: 32882,
+                id_printify: '32882',
                 cost: 2782,
                 inicial_price: 3993,
                 title: "Dark Heather / 2XL",
@@ -2726,7 +2726,7 @@ export const PRODUCTS_TYPES = [
             },
             {
                 id: "navy-2xl",
-                id_printify: 32898,
+                id_printify: '32898',
                 cost: 2782,
                 inicial_price: 3993,
                 title: "Navy / 2XL",
@@ -2736,7 +2736,7 @@ export const PRODUCTS_TYPES = [
             },
             {
                 id: "red-2xl",
-                id_printify: 33389,
+                id_printify: '33389',
                 cost: 2782,
                 inicial_price: 3993,
                 title: "Red / 2XL",
@@ -2746,7 +2746,7 @@ export const PRODUCTS_TYPES = [
             },
             {
                 id: "royal-2xl",
-                id_printify: 33397,
+                id_printify: '33397',
                 cost: 2782,
                 inicial_price: 3993,
                 title: "Royal / 2XL",
@@ -2756,7 +2756,7 @@ export const PRODUCTS_TYPES = [
             },
             {
                 id: "white-2xl",
-                id_printify: 32914,
+                id_printify: '32914',
                 cost: 2782,
                 inicial_price: 3993,
                 title: "White / 2XL",
@@ -2766,7 +2766,7 @@ export const PRODUCTS_TYPES = [
             },
             {
                 id: "sport-grey-2xl",
-                id_printify: 32906,
+                id_printify: '32906',
                 cost: 2782,
                 inicial_price: 3993,
                 title: "Sport Grey / 2XL",
@@ -2795,7 +2795,7 @@ export const PRODUCTS_TYPES = [
         variants: [
             {
                 id: 's',
-                id_printify: 45134,
+                id_printify: '45134',
                 cost: 769,
                 inicial_price: 1300,
                 title: 'S',
@@ -2805,7 +2805,7 @@ export const PRODUCTS_TYPES = [
             },
             {
                 id: 'm',
-                id_printify: 45133,
+                id_printify: '45133',
                 cost: 769,
                 inicial_price: 1300,
                 title: 'M',
@@ -2815,7 +2815,7 @@ export const PRODUCTS_TYPES = [
             },
             {
                 id: 'l',
-                id_printify: 45132,
+                id_printify: '45132',
                 cost: 769,
                 inicial_price: 1300,
                 title: 'L',
@@ -2846,8 +2846,8 @@ export const PRODUCTS_TYPES = [
             {
                 id: 'white-11oz',
                 id_printify: {
-                    1: 33719,
-                    87: 79661,
+                    1: '33719',
+                    87: '79661',
                 },
                 cost: 639,
                 inicial_price: 1057,
@@ -2879,8 +2879,8 @@ export const PRODUCTS_TYPES = [
             {
                 id: 'black-11oz',
                 id_printify: {
-                    28: 72180,
-                    87: 79654,
+                    28: '72180',
+                    87: '79654',
                 },
                 cost: 607,
                 inicial_price: 1012,
@@ -2892,8 +2892,8 @@ export const PRODUCTS_TYPES = [
             {
                 id: 'blue-11oz',
                 id_printify: {
-                    28: 72181,
-                    87: 79655,
+                    28: '72181',
+                    87: '79655',
                 },
                 cost: 607,
                 inicial_price: 1012,
@@ -2905,8 +2905,8 @@ export const PRODUCTS_TYPES = [
             {
                 id: 'pink-11oz',
                 id_printify: {
-                    28: 72183,
-                    87: 79657,
+                    28: '72183',
+                    87: '79657',
                 },
                 cost: 607,
                 inicial_price: 1012,
@@ -2918,8 +2918,8 @@ export const PRODUCTS_TYPES = [
             {
                 id: 'red-11oz',
                 id_printify: {
-                    28: 72184,
-                    87: 79658,
+                    28: '72184',
+                    87: '79658',
                 },
                 cost: 607,
                 inicial_price: 1012,

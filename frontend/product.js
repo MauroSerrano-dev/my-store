@@ -12,7 +12,7 @@ import {
 import { getProductVariantsInfos } from "@/utils"
 import { db } from "../firebaseInit"
 import { productInfoModel } from "@/utils/models";
-import { DEFAULT_LANGUAGE, LIMITS, PRODUCTS_TYPES, TAGS_POOL, THEMES_POOL } from "@/consts";
+import { DEFAULT_LANGUAGE, PRODUCTS_TYPES, TAGS_POOL, THEMES_POOL } from "@/consts";
 import MyError from "@/classes/MyError";
 import Translate from "translate";
 import Fuse from 'fuse.js';
@@ -76,8 +76,8 @@ async function getProductsInfo(products) {
                 }), {})
                 : product.printify_ids
 
-            const visualImage = product.images.filter(img => img.color_id === variant.color_id).length > 0
-                ? product.images.filter(img => img.color_id === variant.color_id)[product.image_showcase_index]
+            const visualImage = product.images.filter(img => img.color_id === variant.color_id && (!art_position || img.position === art_position)).length > 0
+                ? product.images.filter(img => img.color_id === variant.color_id && (!art_position || img.position === art_position))[product.image_showcase_index]
                 : { src: '/no-image.webp' }
 
             return productInfoModel(
@@ -94,9 +94,7 @@ async function getProductsInfo(products) {
                         color_id: variants[0].color_id,
                         size_id: variants[0].size_id,
                     },
-                    image_src: art_position
-                        ? visualImage.src[art_position]
-                        : visualImage.src,
+                    image_src: visualImage.src,
                 }
             )
         })

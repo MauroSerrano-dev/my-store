@@ -28,6 +28,7 @@ import { LoadingButton } from '@mui/lab'
 import Modal from '@/components/Modal'
 import { variantModel } from '@/utils/models'
 import ImagesEditor from '@/components/editors/ImagesEditor'
+import MyError from '@/classes/MyError'
 
 export default withRouter(() => {
     const {
@@ -51,6 +52,7 @@ export default withRouter(() => {
     const [viewStatus, setViewStatus] = useState('front')
     const [updateModalOpen, setUpdateModalOpen] = useState(false)
     const [newProduct, setNewProduct] = useState()
+    const [havePositionsVariants, setHavePositionsVariants] = useState(false)
 
     const tColors = useTranslation('colors').t
     const tToasts = useTranslation('toasts').t
@@ -101,7 +103,23 @@ export default withRouter(() => {
             setInicialProduct(product)
 
             setProduct({ ...product, variants: product.variants.map(vari => getProductVariantInfo(vari, product.type_id)) })
-            setImages(product.images.reduce((acc, image) => acc[image.color_id] === undefined ? { ...acc, [image.color_id]: product.images.filter(img => img.color_id === image.color_id) } : acc, {}))
+
+            setHavePositionsVariants(product.printify_ids !== 'string')
+
+            setImages(product.images.reduce((acc, image) =>
+                acc[image.color_id] === undefined
+                    ? {
+                        ...acc,
+                        [image.color_id]: image.position
+                            ? {
+                                front: product.images.filter(img => img.color_id === image.color_id && img.position === 'front'),
+                                back: product.images.filter(img => img.color_id === image.color_id && img.position === 'back')
+                            }
+                            : product.images.filter(img => img.color_id === image.color_id)
+                    }
+                    : acc,
+                {}
+            ))
         }
     }
 
@@ -282,6 +300,8 @@ export default withRouter(() => {
 
     function handleOpenModal() {
         try {
+            if (product.variants.length === 0)
+                throw new MyError({ message: 'at_least_one_variant' })
             const newMinPrice = product.variants.reduce((acc, vari) => acc < vari.price ? acc : vari.price, product.variants[0].price)
             const newProductHolder = {
                 ...product,
@@ -378,8 +398,14 @@ export default withRouter(() => {
                         ? { ...sizesChainedPrev, [color.id]: sizesChainedPrev[Object.keys(sizesChainedPrev).map(ele => Number(ele)).find(cId => colorsChained.includes(cId))] }
                         : { ...sizesChainedPrev, [color.id]: [] }
                 )
-                setImages(prevImgs => ({ ...prevImgs, [color.id]: [{ src: '', color_id: color.id }, { src: '', color_id: color.id }, { src: '', color_id: color.id }, { src: '', color_id: color.id }] }))
-
+                setImages(prevImgs => {
+                    return {
+                        ...prevImgs,
+                        [color.id]: havePositionsVariants
+                            ? { front: [], back: [] }
+                            : []
+                    }
+                })
                 return {
                     ...prev,
                     colors_ids: value.map(cl => cl.id),
@@ -550,22 +576,24 @@ export default withRouter(() => {
                 setImages(prev => (
                     Object.keys(prev).reduce((acc, key) => ({
                         ...acc,
-                        [key]: [
-                            ...prev[key].map(img => ({ ...img, src: { front: img.src, back: '' } })),
-                        ]
+                        [key]: {
+                            front: [...prev[key]],
+                            back: []
+                        }
                     }), {})
                 ))
             setProduct(prev => ({
                 ...prev,
                 printify_ids: Object.keys(prev.printify_ids).reduce((acc, key) => ({ ...acc, [key]: { front: prev.printify_ids[key], back: '' } }), {})
             }))
+            setHavePositionsVariants(true)
         }
         else {
             if (images)
                 setImages(prev =>
                     Object.keys(prev).reduce((acc, key) => ({
                         ...acc,
-                        [key]: prev[key].map(img => ({ ...img, src: img.src.front }))
+                        [key]: prev[key].front
                     }), {})
                 )
             setProduct(prev => ({
@@ -575,6 +603,7 @@ export default withRouter(() => {
                     [key]: prev.printify_ids[key].front
                 }), {})
             }))
+            setHavePositionsVariants(false)
         }
     }
 
@@ -764,6 +793,7 @@ export default withRouter(() => {
                                                             updateProductField={updateProductField}
                                                             viewStatus={viewStatus}
                                                             setViewStatus={setViewStatus}
+                                                            havePositionsVariants={havePositionsVariants}
                                                         />
                                                         <div
                                                             className='flex center column fillWidth'
@@ -798,7 +828,7 @@ export default withRouter(() => {
                                             </h3>
                                             {images?.[product?.colors_ids?.[colorIndex]] &&
                                                 <ImagesSliderEditable
-                                                    images={Object.keys(images).reduce((acc, key) => acc.concat(images[key]), []).map(img => ({ ...img, src: typeof img.src === 'string' ? img.src : img.src[viewStatus] }))}
+                                                    images={Object.keys(images).reduce((acc, key) => acc.concat(havePositionsVariants ? images[key][viewStatus] : images[key]), [])}
                                                     currentColor={COLORS_POOL[product.colors_ids[colorIndex]]}
                                                     colors={COLORS}
                                                 />
