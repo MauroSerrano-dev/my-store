@@ -302,7 +302,20 @@ export default withRouter(() => {
         try {
             if (product.variants.length === 0)
                 throw new MyError({ message: 'at_least_one_variant' })
+
+            const product_images = havePositionsVariants
+                ? product.colors_ids
+                    .reduce((acc, color_id) =>
+                        acc.concat(images[color_id].front.map(img => ({ src: img.src, color_id: img.color_id, position: 'front' })))
+                            .concat(images[color_id].back.map(img => ({ src: img.src, color_id: img.color_id, position: 'back' }))),
+                        []
+                    )
+                : product.colors_ids
+                    .reduce((acc, color_id) => acc.concat(images[color_id]), [])
+                    .map(img => ({ src: img.src, color_id: img.color_id }))
+
             const newMinPrice = product.variants.reduce((acc, vari) => acc < vari.price ? acc : vari.price, product.variants[0].price)
+
             const newProductHolder = {
                 ...product,
                 variants: product.variants.map(vari => variantModel(vari)),
@@ -312,7 +325,7 @@ export default withRouter(() => {
                 min_price: product.promotion
                     ? Math.round(newMinPrice * (1 - product.promotion.percentage))
                     : newMinPrice,
-                images: product.colors_ids.reduce((acc, color_id) => acc.concat(images[color_id].map(img => ({ src: img.src, color_id: img.color_id }))), []),
+                images: product_images,
             }
             const diff = getObjectsDiff(newProductHolder, inicialProduct)
             const diffKeys = Object.keys(diff)

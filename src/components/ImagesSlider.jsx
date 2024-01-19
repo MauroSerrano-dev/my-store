@@ -1,5 +1,5 @@
 import styles from '@/styles/components/ImagesSlider.module.css'
-import { useEffect, useRef, useState } from 'react'
+import { useRef, useState } from 'react'
 import { motion } from 'framer-motion';
 import { useAppContext } from './contexts/AppContext';
 import Image from 'next/image';
@@ -138,10 +138,6 @@ export default function ImagesSlider(props) {
         }
     }
 
-    useEffect(() => {
-        console.log('currentPosition', currentPosition, images)
-    }, [currentPosition])
-
     return (
         <div
             className={styles.container}
@@ -223,6 +219,25 @@ export default function ImagesSlider(props) {
                                                 setImagesLoad(prev => [...prev, `${i}${j}`])
                                             }}
                                         />
+                                        {img.position && currentPosition === 'back' &&
+                                            <Image
+                                                priority
+                                                src={images.filter(image => image.color_id === img.color_id && image.position === 'back')[j].src}
+                                                quality={100}
+                                                alt='product preview'
+                                                fill
+                                                sizes={`${height * 2 / 3}px`}
+                                                style={{
+                                                    pointerEvents: 'none',
+                                                    objectFit: 'cover',
+                                                    opacity: imagesLoad.includes(`${i}${j}`) ? 1 : 0,
+                                                    transition: 'opacity ease-in-out 200ms'
+                                                }}
+                                                onLoad={() => {
+                                                    setImagesLoad(prev => [...prev, `${i}${j}`])
+                                                }}
+                                            />
+                                        }
                                     </div>
                                     {!imagesLoad.includes(`${i}${j}`) &&
                                         <Skeleton
@@ -328,6 +343,25 @@ export default function ImagesSlider(props) {
                                                 setOptionsImagesLoad(prev => [...prev, `${i}${j}`])
                                             }}
                                         />
+                                        {img.position && currentPosition === 'back' &&
+                                            <Image
+                                                priority
+                                                src={images.filter(image => image.color_id === img.color_id && image.position === 'back')[j].src}
+                                                quality={100}
+                                                alt='product preview'
+                                                fill
+                                                sizes={`${height * 2 / 3}px`}
+                                                style={{
+                                                    pointerEvents: 'none',
+                                                    objectFit: 'cover',
+                                                    opacity: imagesLoad.includes(`${i}${j}`) ? 1 : 0,
+                                                    transition: 'opacity ease-in-out 200ms'
+                                                }}
+                                                onLoad={() => {
+                                                    setImagesLoad(prev => [...prev, `${i}${j}`])
+                                                }}
+                                            />
+                                        }
                                     </div>
                                     {!optionsImagesLoad.includes(`${i}${j}`) &&
                                         <Skeleton
