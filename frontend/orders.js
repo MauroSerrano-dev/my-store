@@ -21,7 +21,7 @@ async function getOrderById(orderId) {
             return { id: orderDoc.id, ...orderData }
         }
         else
-            throw new MyError('order_not_found', 'error')
+            throw new MyError({ message: 'order_not_found' })
     } catch (error) {
         console.error('Error getting order:', error);
         throw error

@@ -4,9 +4,9 @@ const admin = require('../firebaseAdminInit')
 
 async function getAdminUsers(limit = 100, page = 1) {
     if (typeof limit !== 'number')
-        throw new MyError('Limit must be number')
+        throw new MyError({ message: 'Limit must be number' })
     if (typeof page !== 'number')
-        throw new MyError('Page must be number')
+        throw new MyError({ message: 'Page must be number' })
 
     let adminUsers = [];
     let pageToken;

@@ -18,12 +18,12 @@ async function createProduct(product) {
     try {
         const docSnapshot = await productRef.get();
         if (docSnapshot.exists) {
-            throw new MyError(`Product ID ${product.id} already exists.`);
+            throw new MyError({ message: `Product ID ${product.id} already exists.` });
         }
 
         const existInPrintify = await isProductInPrintify(product);
         if (!existInPrintify) {
-            throw new MyError('Invalid printify ID');
+            throw new MyError({ message: 'Invalid printify ID' });
         }
 
         const newProduct = {
@@ -51,7 +51,7 @@ async function getProductById(id) {
             console.log(`Product with ID ${id} found!`);
             return productData;
         } else {
-            throw new MyError(`Product with ID ${id} not found`);
+            throw new MyError({ message: `Product with ID ${id} not found` });
         }
     } catch (error) {
         console.error("Error getting product:", error);
@@ -66,33 +66,32 @@ async function getProductById(id) {
  * @param {Object} product_new_fields - New fields to update the product with.
  * @returns {Promise<Object>} An object containing the status message of the operation.
  */
-async function updateProduct(product_id, product_new_fields) {
-    if (!product_id || !product_new_fields) {
-        throw new MyError('Invalid update data', 'warning');
+async function updateProduct(product_id, new_product) {
+    if (!product_id || !new_product) {
+        throw new MyError({ message: 'Invalid update data', type: 'warning' })
     }
 
-    const productsCollection = admin.firestore().collection(process.env.NEXT_PUBLIC_COLL_PRODUCTS);
-    const productRef = productsCollection.doc(product_id);
+    const productsCollection = admin.firestore().collection(process.env.NEXT_PUBLIC_COLL_PRODUCTS)
+    const productRef = productsCollection.doc(product_id)
 
     try {
-        const productDoc = await productRef.get();
+        const productDoc = await productRef.get()
 
         if (!productDoc.exists) {
-            throw new MyError('Product not found to update', 'warning');
+            throw new MyError({ message: 'Product not found to update', type: 'warning' })
         }
 
-        const productData = productDoc.data();
-        const existInPrintify = await isProductInPrintify({ ...productData, ...product_new_fields });
+        const existInPrintify = await isProductInPrintify(new_product)
         if (!existInPrintify) {
-            throw new MyError('Invalid printify ID', 'warning');
+            throw new MyError({ message: 'Invalid printify ID', type: 'warning' })
         }
 
-        await productRef.update(product_new_fields);
-        console.log(`Product ${product_id} updated successfully!`);
-        return { message: `Product ${product_id} updated successfully!` };
+        await productRef.update(new_product)
+        console.log(`Product ${product_id} updated successfully!`)
+        return { message: `Product ${product_id} updated successfully!` }
     } catch (error) {
-        console.error("Error updating product:", error);
-        throw error;
+        console.error("Error updating product:", error)
+        throw error
     }
 }
 
@@ -146,7 +145,7 @@ async function getDisabledProducts(productIds) {
 
     try {
         if (!productIds || productIds.length === 0) {
-            throw new MyError('No product IDs provided.');
+            throw new MyError({ message: 'No product IDs provided' });
         }
 
         for (const productId of productIds) {

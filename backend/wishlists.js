@@ -24,7 +24,7 @@ async function createWishlist(userId) {
         return docRef.id;
     } catch (error) {
         console.error('Error creating wishlist:', error);
-        throw new MyError('Error creating wishlist');
+        throw new MyError({ message: 'Error creating wishlist' });
     }
 }
 
@@ -43,7 +43,7 @@ async function deleteProductsFromWishlist(user_id, productsIdsToDelete) {
 
         if (querySnapshot.empty) {
             console.error(`Wishlist for user ID ${user_id} not found`)
-            throw new MyError('wishlist_not_found', 'error')
+            throw new MyError({ message: 'wishlist_not_found' })
         }
 
         const wishlistDoc = querySnapshot.docs[0];
@@ -59,7 +59,7 @@ async function deleteProductsFromWishlist(user_id, productsIdsToDelete) {
         return { id: wishlistDoc.id, ...wishlistData }
     } catch (error) {
         console.error('Error deleting products from the wishlist:', error);
-        throw new MyError('error_deleting_products_from_wishlist', 'error')
+        throw new MyError({ message: 'error_deleting_products_from_wishlist' })
     }
 }
 

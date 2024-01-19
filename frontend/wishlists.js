@@ -17,11 +17,11 @@ async function getWishlistById(id) {
             return { id: wishlistDoc.id, ...wishlistDoc.data() };
         } else {
             console.error('Wishlist not found')
-            throw new MyError('Wishlist not found')
+            throw new MyError({ message: 'Wishlist not found' })
         }
     } catch (error) {
         console.error('Error getting wishlist by ID:', error)
-        throw new MyError('Error getting wishlist by ID')
+        throw new MyError({ message: 'Error getting wishlist by ID' })
     }
 }
 

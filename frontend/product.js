@@ -16,6 +16,7 @@ import { DEFAULT_LANGUAGE, LIMITS, PRODUCTS_TYPES, TAGS_POOL, THEMES_POOL } from
 import MyError from "@/classes/MyError";
 import Translate from "translate";
 import Fuse from 'fuse.js';
+import { isProductValid } from "@/utils/edit-product";
 
 async function getProductsInfo(products) {
     try {
@@ -324,7 +325,7 @@ async function getAllActivesProducts() {
         return activeProducts.length > 0 ? activeProducts : [];
     } catch (error) {
         console.error('Error getting active products:', error);
-        throw new MyError('Error retrieving active products');
+        throw new MyError({ message: 'Error retrieving active products' });
     }
 }
 
@@ -463,24 +464,18 @@ async function getProductsByIds(ids) {
 async function createPromotionForProducts(products_ids, promotion) {
     try {
         if (!products_ids || products_ids.length === 0)
-            throw new MyError('invalid_product_ids_parameters', 'warning')
+            throw new MyError({ message: 'invalid_product_ids_parameters', type: 'warning' })
 
         // Retrieve full product objects by their IDs
         const products = await getProductsByIds(products_ids)
 
         // Perform necessary validations
-        products.forEach(product => {
-            const type = PRODUCTS_TYPES.find(type => type.id === product.type_id)
-            const variants = product.variants.map(variant => ({
-                ...variant,
-                cost: type.variants.find(vari => vari.id === variant.id).cost
-            }))
-            if (variants.some(vari => vari.cost + LIMITS.min_profit >= vari.price * (1 - promotion.percentage)))
-                throw new MyError('invalid_promotion_percentage', 'warning')
+        products.forEach(prod => {
+            isProductValid(prod)
         })
 
         if (new Date(promotion.expire_at).getTime() - new Date().getTime() <= 18 * 60 * 60 * 1000)
-            throw new MyError('invalid_expire_date', 'warning')
+            throw new MyError({ message: 'invalid_expire_date', type: 'warning' })
 
         // Reference to the products collection in Firestore
         const productsCollection = collection(db, process.env.NEXT_PUBLIC_COLL_PRODUCTS)

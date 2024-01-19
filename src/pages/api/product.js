@@ -3,7 +3,7 @@ import { getProductById, createProduct, updateProduct } from "../../../backend/p
 
 export default async function handler(req, res) {
     const { authorization, id } = req.headers
-    const { product, product_id, product_new_fields } = req.body
+    const { product, product_id, new_product } = req.body
 
     if (!authorization)
         res.status(401).json({ error: "Invalid authentication" })
@@ -29,9 +29,9 @@ export default async function handler(req, res) {
             msg: result.msg,
         })
     }
-    else if (req.method === "PATCH") {
+    else if (req.method === "PUT") {
         try {
-            const result = await updateProduct(product_id, product_new_fields)
+            const result = await updateProduct(product_id, new_product)
 
             res.status(200).json({ message: result.message })
         }

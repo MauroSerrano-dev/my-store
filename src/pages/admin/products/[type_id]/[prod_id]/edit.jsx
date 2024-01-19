@@ -6,18 +6,16 @@ import { useEffect, useState } from 'react'
 import { COLLECTIONS, TAGS_POOL, PRODUCTS_TYPES, COLORS_POOL, SIZES_POOL, PROVIDERS_POOL, THEMES_POOL, SEARCH_ART_COLORS, COMMON_TRANSLATES } from '@/consts'
 import ColorSelector from '@/components/ColorSelector'
 import SizesSelector from '@/components/SizesSelector'
-import { ButtonGroup, Checkbox, FormControlLabel, Switch } from '@mui/material'
+import { FormControlLabel, Switch } from '@mui/material'
 import NoFound404 from '@/components/NoFound404'
-import ClearRoundedIcon from '@mui/icons-material/ClearRounded'
 import Chain from '@/components/svgs/Chain'
 import BrokeChain from '@/components/svgs/BrokeChain'
-import ButtonIcon from '@/components/material-ui/ButtonIcon'
 import ImagesSliderEditable from '@/components/ImagesSliderEditable'
 import { showToast } from '@/utils/toasts'
 import { getObjectsDiff, getProductVariantInfo } from '@/utils'
 import Head from 'next/head'
 import Selector from '@/components/material-ui/Selector'
-import { isNewProductValid } from '@/utils/edit-product'
+import { isProductValid } from '@/utils/edit-product'
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
 import { useTranslation } from 'next-i18next'
 import { useAppContext } from '@/components/contexts/AppContext'
@@ -28,6 +26,8 @@ import PrintifyIdPicker from '@/components/PrintifyIdPicker'
 import ProductPriceInput from '@/components/ProductPriceInput'
 import { LoadingButton } from '@mui/lab'
 import Modal from '@/components/Modal'
+import { variantModel } from '@/utils/models'
+import ImagesEditor from '@/components/editors/ImagesEditor'
 
 export default withRouter(() => {
     const {
@@ -50,6 +50,7 @@ export default withRouter(() => {
     const [productDiff, setProductDiff] = useState({})
     const [viewStatus, setViewStatus] = useState('front')
     const [updateModalOpen, setUpdateModalOpen] = useState(false)
+    const [newProduct, setNewProduct] = useState()
 
     const tCommon = useTranslation('common').t
     const tToasts = useTranslation('toasts').t
@@ -63,7 +64,7 @@ export default withRouter(() => {
     }, [])
 
     useEffect(() => {
-        console.log(product?.variants)
+        console.log('variants', product?.variants)
     }, [product])
 
     useEffect(() => {
@@ -98,6 +99,7 @@ export default withRouter(() => {
             setSizesChained(product.colors_ids.reduce((acc, cl) => ({ ...acc, [cl]: [] }), {}))
 
             setInicialProduct(product)
+
             setProduct({ ...product, variants: product.variants.map(vari => getProductVariantInfo(vari, product.type_id)) })
             setImages(product.images.reduce((acc, image) => acc[image.color_id] === undefined ? { ...acc, [image.color_id]: product.images.filter(img => img.color_id === image.color_id) } : acc, {}))
         }
@@ -206,21 +208,6 @@ export default withRouter(() => {
         }
     }
 
-    function handleAddNewImage() {
-        const colorId = product.colors_ids[colorIndex]
-        setImages(prev => ({
-            ...prev,
-            [colorId]: prev[colorId].concat({
-                src: typeof Object.values(product.printify_ids)[0] === 'string'
-                    ? ''
-                    : { front: '', back: '' },
-                color_id: colorId,
-                hover: false,
-                showcase: false
-            })
-        }))
-    }
-
     function handleChangePrice(value, sizeId) {
         if (sizesChained[product.colors_ids[colorIndex]].includes(sizeId) && isCurrentColorChained())
             changeChainedColorsChainedSizesPrice(value)
@@ -293,17 +280,12 @@ export default withRouter(() => {
         setProduct(prev => ({ ...prev, [fieldName]: newValue }))
     }
 
-    async function updateProduct() {
-        setDisableUpdateButton(true)
+    function handleOpenModal() {
         try {
-            if (!isNewProductValid(product, images, tToasts)) {
-                setDisableUpdateButton(false)
-                return
-            }
             const newMinPrice = product.variants.reduce((acc, vari) => acc < vari.price ? acc : vari.price, product.variants[0].price)
-            const newProduct = {
+            const newProductHolder = {
                 ...product,
-                variants: product.variants.map(vari => ({ id: vari.id, art: vari.art, sales: vari.sales, price: vari.price, size_id: vari.size_id, color_id: vari.color_id })),
+                variants: product.variants.map(vari => variantModel(vari)),
                 promotion: product.promotion
                     ? { ...product.promotion, min_price_original: newMinPrice }
                     : null,
@@ -312,7 +294,7 @@ export default withRouter(() => {
                     : newMinPrice,
                 images: product.colors_ids.reduce((acc, color_id) => acc.concat(images[color_id].map(img => ({ src: img.src, color_id: img.color_id }))), []),
             }
-            const diff = getObjectsDiff(newProduct, inicialProduct)
+            const diff = getObjectsDiff(newProductHolder, inicialProduct)
             const diffKeys = Object.keys(diff)
 
             if (diffKeys.length === 0) {
@@ -321,15 +303,38 @@ export default withRouter(() => {
                 return
             }
 
+            isProductValid(newProductHolder)
+
+            setNewProduct(newProductHolder)
+
+            setProductDiff(diff)
+
+            setUpdateModalOpen(true)
+        }
+        catch (error) {
+            console.error(error)
+            showToast({ type: error.type || 'error', msg: tToasts(error.message, error.options) })
+        }
+    }
+
+    async function updateProduct() {
+        try {
+            setDisableUpdateButton(true)
+            /*             if (!isNewProductValid(product, images, tToasts)) {
+                            setDisableUpdateButton(false)
+                            return
+                        } */
+            isProductValid(newProduct)
+
             const options = {
-                method: 'PATCH',
+                method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',
                     authorization: process.env.NEXT_PUBLIC_APP_TOKEN,
                 },
                 body: JSON.stringify({
                     product_id: newProduct.id,
-                    product_new_fields: diffKeys.reduce((acc, diffKey) => ({ ...acc, [diffKey]: newProduct[diffKey] }), {})
+                    new_product: newProduct
                 })
             }
             await fetch("/api/product", options)
@@ -351,9 +356,9 @@ export default withRouter(() => {
                 })
         }
         catch (error) {
-            setDisableUpdateButton(false)
             console.error('Error updating product', error)
-            showToast({ type: 'error', msg: tToasts('default_error') })
+            setDisableUpdateButton(false)
+            showToast({ type: error.type || 'error', msg: tToasts(error.message, error.options) })
         }
     }
 
@@ -419,23 +424,6 @@ export default withRouter(() => {
             }
         })
     }
-
-    function updateImageSrc(newValue, index) {
-        const colorId = product.colors_ids[colorIndex]
-        setImages(prev => ({
-            ...prev,
-            [colorId]: prev[colorId].map((img, i) => index === i
-                ? { ...img, src: typeof img.src === 'string' ? newValue : { ...img.src, [viewStatus]: newValue } }
-                : img
-            )
-        }))
-    }
-
-    function handleDeleteImageField(index) {
-        const colorId = product.colors_ids[colorIndex]
-        setImages(prev => ({ ...prev, [colorId]: prev[colorId].filter((img, i) => index !== i) }))
-    }
-
 
     function handlePrintifyId(providerId, newValue, artPosition) {
         setProduct(prev => ({
@@ -590,24 +578,6 @@ export default withRouter(() => {
         }
     }
 
-    function handleOpenModal() {
-        const newMinPrice = product.variants.reduce((acc, vari) => acc < vari.price ? acc : vari.price, product.variants[0].price)
-        const newProduct = {
-            ...product,
-            variants: product.variants.map(vari => ({ id: vari.id, art: vari.art, sales: vari.sales, price: vari.price, size_id: vari.size_id, color_id: vari.color_id })),
-            promotion: product.promotion
-                ? { ...product.promotion, min_price_original: newMinPrice }
-                : null,
-            min_price: product.promotion
-                ? Math.round(newMinPrice * (1 - product.promotion.percentage))
-                : newMinPrice,
-            images: product.colors_ids.reduce((acc, color_id) => acc.concat(images[color_id].map(img => ({ src: img.src, color_id: img.color_id }))), []),
-        }
-        const diff = getObjectsDiff(newProduct, inicialProduct)
-        setProductDiff(diff)
-        setUpdateModalOpen(true)
-    }
-
     return (
         session === undefined
             ? <div></div>
@@ -619,6 +589,7 @@ export default withRouter(() => {
                     <main className={styles.main}>
                         {product &&
                             <Link
+                                className='noUnderline'
                                 href={`/admin/products/${product.type_id}`}
                                 style={{
                                     position: 'absolute',
@@ -783,95 +754,14 @@ export default withRouter(() => {
                                             </div>
                                             {sizesChained[product.colors_ids[colorIndex]] &&
                                                 <div className='flex column' style={{ gap: '1rem' }}>
-                                                    <div
-                                                        className='flex center column fillWidth'
-                                                        style={{
-                                                            gap: '1rem'
-                                                        }}
-                                                    >
-                                                        <h3>
-                                                            {COLORS_POOL[product.colors_ids[colorIndex]].title} Price (USD)
-                                                        </h3>
-                                                    </div>
                                                     <div>
-                                                        <h3>Images</h3>
-                                                        {typeof Object.values(product.printify_ids)[0] !== 'string' &&
-                                                            <ButtonGroup
-                                                                sx={{
-                                                                    width: '100%'
-                                                                }}
-                                                            >
-                                                                <MyButton
-                                                                    variant={viewStatus === 'front' ? 'contained' : 'outlined'}
-                                                                    onClick={() => setViewStatus('front')}
-                                                                    style={{
-                                                                        width: '50%'
-                                                                    }}
-                                                                >
-                                                                    Front
-                                                                </MyButton>
-                                                                <MyButton
-                                                                    variant={viewStatus === 'back' ? 'contained' : 'outlined'}
-                                                                    onClick={() => setViewStatus('back')}
-                                                                    style={{
-                                                                        width: '50%'
-                                                                    }}
-                                                                >
-                                                                    Back
-                                                                </MyButton>
-                                                            </ButtonGroup>
-                                                        }
-                                                        {images[product.colors_ids[colorIndex]].length > 0 &&
-                                                            <div className='flex row justify-end' style={{ fontSize: '11px', gap: '1rem', width: '100%', paddingRight: '11%' }}>
-                                                                <p>showcase</p>
-                                                                <p>hover</p>
-                                                            </div>
-                                                        }
-                                                        <div className='flex column' style={{ gap: '0.8rem' }} >
-                                                            {images[product.colors_ids[colorIndex]].map((img, i) =>
-                                                                <div
-                                                                    className='flex row align-center fillWidth space-between'
-                                                                    key={i}
-                                                                >
-                                                                    <TextInput
-                                                                        label={`Image ${i + 1}`}
-                                                                        onChange={event => updateImageSrc(event.target.value, i)}
-                                                                        style={{
-                                                                            width: '70%'
-                                                                        }}
-                                                                        value={typeof img.src === 'string' ? img.src : img.src[viewStatus]}
-                                                                    />
-                                                                    <Checkbox
-                                                                        checked={i === product.image_showcase_index}
-                                                                        onChange={event => updateProductField('image_showcase_index', event.target.checked ? i : -1)}
-                                                                        sx={{
-                                                                            color: '#ffffff'
-                                                                        }}
-                                                                    />
-                                                                    <Checkbox
-                                                                        checked={i === product.image_hover_index}
-                                                                        onChange={event => updateProductField('image_hover_index', event.target.checked ? i : -1)}
-                                                                        sx={{
-                                                                            color: '#ffffff'
-                                                                        }}
-                                                                    />
-                                                                    <ButtonIcon
-                                                                        icon={<ClearRoundedIcon />}
-                                                                        onClick={() => handleDeleteImageField(i)}
-                                                                    />
-                                                                </div>
-                                                            )}
-                                                            <MyButton
-                                                                variant='outlined'
-                                                                onClick={handleAddNewImage}
-                                                                style={{
-                                                                    width: '100%',
-                                                                    marginBottom: '1rem'
-                                                                }}
-                                                            >
-                                                                Add New Image
-                                                            </MyButton>
-                                                        </div>
+                                                        <ImagesEditor
+                                                            product={product}
+                                                            colorIndex={colorIndex}
+                                                            images={images}
+                                                            setImages={setImages}
+                                                            updateProductField={updateProductField}
+                                                        />
                                                         <div
                                                             className='flex center column fillWidth'
                                                             style={{

@@ -60,7 +60,7 @@ export function mergeProducts(prods1, prods2) {
         if (exist) {
             const newQuantity = p.quantity + exist.quantity
             if (newQuantity > LIMITS.cart_same_item)
-                throw new MyError('max_same_products', 'warning')
+                throw new MyError({ message: 'max_same_products', type: 'warning' })
             return { ...p, quantity: newQuantity }
         }
         else

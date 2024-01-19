@@ -24,6 +24,8 @@ import MyButton from '@/components/material-ui/MyButton'
 import { LoadingButton } from '@mui/lab'
 import PrintifyIdPicker from '@/components/PrintifyIdPicker'
 import ProductPriceInput from '@/components/ProductPriceInput'
+import { variantModel } from '@/utils/models'
+import ImagesEditor from '@/components/editors/ImagesEditor'
 
 const INICIAL_PRODUCT = {
     id: '',
@@ -64,6 +66,10 @@ export default withRouter(() => {
 
     const tCommon = useTranslation('common').t
     const tToasts = useTranslation('toasts').t
+
+    useEffect(() => {
+        console.log('variants', product?.variants)
+    }, [product])
 
     useEffect(() => {
         setAdminMenuOpen(false)
@@ -118,7 +124,7 @@ export default withRouter(() => {
                     sizes_ids: SIZES_POOL.map(size => size.id).filter(sz_id => product.sizes.some(sz => sz.id === sz_id)),
                     min_price: product.variants.reduce((acc, vari) => acc < vari.price ? acc : vari.price, product.variants[0].price),
                     images: product.colors.reduce((acc, color) => acc.concat(images[color.id].map(img => ({ src: img.src, color_id: img.color_id }))), []),
-                    variants: product.variants,
+                    variants: product.variants.map(vari => variantModel(vari)),
                     promotion: null,
                 }
             })
@@ -241,8 +247,6 @@ export default withRouter(() => {
                     ? ''
                     : { front: '', back: '' },
                 color_id: colorId,
-                hover: false,
-                showcase: false
             })
         }))
     }
@@ -743,18 +747,13 @@ export default withRouter(() => {
                                                 {images?.[product?.colors?.[colorIndex]?.id] &&
                                                     <div className='flex column' style={{ gap: '1rem' }}>
                                                         <div>
-                                                            <h3>Images</h3>
-                                                            {typeof Object.values(product.printify_ids)[0] !== 'string' &&
-                                                                <div className='flex row center'>
-                                                                    <p>Front</p>
-                                                                    <Switch
-                                                                        checked={viewStatus === 'back'}
-                                                                        onChange={handleBackView}
-                                                                        color='success'
-                                                                    />
-                                                                    <p>Back</p>
-                                                                </div>
-                                                            }
+                                                            <ImagesEditor
+                                                                product={product}
+                                                                colorIndex={colorIndex}
+                                                                images={images}
+                                                                setImages={setImages}
+                                                                updateProductField={updateProductField}
+                                                            />
                                                             {images[product.colors[colorIndex].id].length > 0 &&
                                                                 <div className='flex row justify-end' style={{ fontSize: '11px', gap: '1rem', width: '100%', paddingRight: '11%' }}>
                                                                     <p>showcase</p>

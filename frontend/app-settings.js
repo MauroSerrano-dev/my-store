@@ -38,7 +38,7 @@ async function getAllCurrencies() {
             return currDoc.data()
         } else {
             console.error("Currencies document does not exist")
-            throw new MyError('default_error', 'error')
+            throw new MyError({ message: 'default_error' })
         }
     } catch (error) {
         console.error("Error retrieving currencies:", error)
