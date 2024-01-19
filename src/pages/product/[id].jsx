@@ -119,14 +119,14 @@ export default withRouter(props => {
                     type_id: product.type_id,
                     quantity: 1,
                     title: product.title,
-                    image_src: typeof product.images.find(img => img.color_id === productCurrentVariant.color_id).src === 'string' ? product.images.find(img => img.color_id === productCurrentVariant.color_id).src : product.images.find(img => img.color_id === productCurrentVariant.color_id).src[currentPosition],
+                    image_src: product.images.find(img => img.color_id === productCurrentVariant.color_id).src,
                     description: `${tCommon(product.type_id)} ${tColors(currentColor.id_string)} / ${currentSize.title}`,
                     id_printify: product.printify_ids[shippingOption.provider_id],
                     provider_id: shippingOption.provider_id,
                     variant: productCurrentVariant,
                     variant: {
                         ...productCurrentVariant.variant,
-                        id_printify: typeof productCurrentVariant.id_printify === 'number' ? productCurrentVariant.id_printify : productCurrentVariant.id_printify[shippingOption.provider_id],
+                        id_printify: typeof productCurrentVariant.id_printify === 'string' ? productCurrentVariant.id_printify : productCurrentVariant.id_printify[shippingOption.provider_id],
                     },
                     price: Math.round(productCurrentVariant.price * userCurrency?.rate),
                 })],
@@ -162,7 +162,7 @@ export default withRouter(props => {
                     id: product.id,
                     variant_id: productCurrentVariant.id,
                     quantity: 1,
-                    art_position: typeof product.images[0].src === 'string'
+                    art_position: product.images[0].src.position
                         ? null
                         : currentPosition
                 }
@@ -178,7 +178,7 @@ export default withRouter(props => {
                 const newProductFullInfo = productInfoModel(
                     {
                         id: product.id,
-                        art_position: typeof product.images[0].src === 'string'
+                        art_position: product.images[0].src.position
                             ? null
                             : currentPosition,
                         quantity: 1,
@@ -191,9 +191,7 @@ export default withRouter(props => {
                             color_id: product.colors_ids[0],
                             size_id: product.sizes_ids[0],
                         },
-                        image_src: typeof product.images[0].src === 'string'
-                            ? product.images.find(img => img.color_id === productCurrentVariant.color_id).src
-                            : product.images.find(img => img.color_id === productCurrentVariant.color_id).src[currentPosition],
+                        image_src: product.images.find(img => img.color_id === productCurrentVariant.color_id && (!img.position || img.position === currentPosition)).src,
                     }
                 )
                 setPosAddModal(true)
@@ -371,7 +369,7 @@ export default withRouter(props => {
                                                 onChange={handleSizeChange}
                                             />
                                         </div>
-                                        {typeof product.images[0].src !== 'string' &&
+                                        {product.images[0].position &&
                                             <div className={styles.sizeSelector}>
                                                 <p style={{ textAlign: 'start', fontWeight: '700' }}>
                                                     {tProduct('choose_art_position')}
