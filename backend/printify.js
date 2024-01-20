@@ -54,18 +54,18 @@ async function fetchAllPrintifyProducts() {
  * @returns {Promise<Array>} A promise that resolves to an array of cart items not available in Printify.
  */
 async function filterNotInPrintify(cartItems) {
-    let notInPrintify = [...cartItems];
-    let currentPage = 1;
-    let lastPage = false;
+    let notInPrintify = [...cartItems]
+    let currentPage = 1
+    let lastPage = false
 
     while (!lastPage) {
-        const { data } = await fetchPrintifyProducts(currentPage);
-        notInPrintify = notInPrintify.filter(prod => !data.some(p => p.id === prod.id_printify && p.variants.some(v => v.id === prod.variant.id_printify)));
-        lastPage = data.length === 0;
-        currentPage++;
+        const { data } = await fetchPrintifyProducts(currentPage)
+        notInPrintify = notInPrintify.filter(prod => !data.some(p => String(p.id) === prod.id_printify && p.variants.some(v => String(v.id) === prod.variant.id_printify)))
+        lastPage = data.length === 0
+        currentPage++
     }
 
-    return notInPrintify;
+    return notInPrintify
 }
 
 /**

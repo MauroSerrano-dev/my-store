@@ -99,7 +99,7 @@ export default function Cart() {
                         provider_id: shippingOption.provider_id,
                         variant: {
                             ...prod.variant,
-                            id_printify: typeof prod.variant.id_printify === 'number' ? prod.variant.id_printify : prod.variant.id_printify[shippingOption.provider_id]
+                            id_printify: typeof prod.variant.id_printify === 'string' ? prod.variant.id_printify : prod.variant.id_printify[shippingOption.provider_id]
                         },
                         price: getProductPriceUnit(prod, prod.variant, userCurrency?.rate),
                     })

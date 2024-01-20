@@ -2,6 +2,7 @@ import { isProductInPrintify } from "./printify"
 import MyError from "@/classes/MyError"
 import { productInfoModel } from "@/utils/models";
 import { getProductVariantsInfos } from "@/utils";
+import { getProductPrintifyIdsUniquePosition } from "@/utils/edit-product";
 const admin = require('../firebaseAdminInit');
 
 /**
@@ -230,32 +231,10 @@ async function getProductsInfo(products) {
             const variants = getProductVariantsInfos(product)
             const variant = variants.find(vari => vari.id === prod.variant_id)
 
-            const art_position = typeof product.printify_ids[0] === 'string'
-                ? null
-                : prod.art_position
-                    ? prod.art_position
-                    : Object.keys(product.printify_ids).reduce((acc, key) =>
-                        Object.keys(product.printify_ids[key]).reduce((acc2, a_position) =>
-                            product.printify_ids[key][a_position] === prod.id_printify ? a_position : acc2
-                            , null
-                        )
-                            ? Object.keys(product.printify_ids[key]).reduce((acc2, a_position) =>
-                                product.printify_ids[key][a_position] === prod.id_printify ? a_position : acc2
-                                , null
-                            )
-                            : acc
-                        , null
-                    )
+            const printify_ids = getProductPrintifyIdsUniquePosition(product.printify_ids, prod.art_position)
 
-            const printify_ids = art_position
-                ? Object.keys(product.printify_ids).reduce((acc, key) => ({
-                    ...acc,
-                    [key]: product.printify_ids[key][art_position]
-                }), {})
-                : product.printify_ids
-
-            const visualImage = product.images.filter(img => img.color_id === variant.color_id && (!art_position || img.position === art_position)).length > 0
-                ? product.images.filter(img => img.color_id === variant.color_id && (!art_position || img.position === art_position))[product.image_showcase_index]
+            const visualImage = product.images.filter(img => img.color_id === variant.color_id && (!prod.art_position || img.position === prod.art_position)).length > 0
+                ? product.images.filter(img => img.color_id === variant.color_id && (!prod.art_position || img.position === prod.art_position))[product.image_showcase_index]
                 : { src: '/no-image.webp' }
 
             return productInfoModel(

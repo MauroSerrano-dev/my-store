@@ -13,7 +13,7 @@ import BrokeChain from '@/components/svgs/BrokeChain'
 import { showToast } from '@/utils/toasts'
 import NoFound404 from '@/components/NoFound404'
 import Selector from '@/components/material-ui/Selector'
-import { isNewProductValid, isProductValid } from '@/utils/edit-product'
+import { isProductValid } from '@/utils/edit-product'
 import { useTranslation } from 'next-i18next'
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
 import TextOutlinedInput from '@/components/material-ui/TextOutlinedInput'
@@ -25,6 +25,7 @@ import ProductPriceInput from '@/components/ProductPriceInput'
 import { variantModel } from '@/utils/models'
 import ImagesEditor from '@/components/editors/ImagesEditor'
 import MyError from '@/classes/MyError'
+import ImagesSlider from '@/components/ImagesSlider'
 
 const INICIAL_PRODUCT = {
     id: '',
@@ -75,6 +76,19 @@ export default withRouter(() => {
         setAdminMenuOpen(false)
     }, [])
 
+    const FINAL_IMAGES = !product
+        ? []
+        : havePositionsVariants
+            ? product.colors_ids
+                .reduce((acc, color_id) =>
+                    acc.concat(images[color_id].front.map(img => ({ src: img.src, color_id: img.color_id, position: 'front' })))
+                        .concat(images[color_id].back.map(img => ({ src: img.src, color_id: img.color_id, position: 'back' }))),
+                    []
+                )
+            : product.colors_ids
+                .reduce((acc, color_id) => acc.concat(images[color_id]), [])
+                .map(img => ({ src: img.src, color_id: img.color_id }))
+
     useEffect(() => {
         if (router.isReady) {
             const { type_id } = router.query
@@ -101,24 +115,12 @@ export default withRouter(() => {
             if (product.variants.length === 0)
                 throw new MyError({ message: 'at_least_one_variant' })
 
-            const product_images = havePositionsVariants
-                ? product.colors_ids
-                    .reduce((acc, color_id) =>
-                        acc.concat(images[color_id].front.map(img => ({ src: img.src, color_id: img.color_id, position: 'front' })))
-                            .concat(images[color_id].back.map(img => ({ src: img.src, color_id: img.color_id, position: 'back' }))),
-                        []
-                    )
-                : product.colors_ids
-                    .reduce((acc, color_id) => acc.concat(images[color_id]), [])
-                    .map(img => ({ src: img.src, color_id: img.color_id }))
-
             const newProduct = {
                 ...product,
                 id: product.id + '-' + type.id,
                 collection_id: product.collection_id,
-                title_lower_case: product.title.toLowerCase(),
                 min_price: product.variants.reduce((acc, vari) => acc < vari.price ? acc : vari.price, product.variants[0].price),
-                images: product_images,
+                images: FINAL_IMAGES,
                 variants: product.variants.map(vari => variantModel(vari)),
                 promotion: null,
             }
@@ -761,10 +763,11 @@ export default withRouter(() => {
                                                     <h3>
                                                         Preview
                                                     </h3>
-                                                    <ImagesSliderEditable
-                                                        images={Object.keys(images).reduce((acc, key) => acc.concat(havePositionsVariants ? images[key][viewStatus] : images[key]), [])}
-                                                        currentColor={COLORS_POOL[product.colors_ids[colorIndex]]}
+                                                    <ImagesSlider
+                                                        images={FINAL_IMAGES}
                                                         colors={product.colors_ids.map(cl_id => COLORS_POOL[cl_id])}
+                                                        currentColor={COLORS_POOL[product.colors_ids[colorIndex]]}
+                                                        currentPosition={viewStatus}
                                                     />
                                                 </div>
                                             }
