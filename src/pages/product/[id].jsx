@@ -34,6 +34,7 @@ import { ButtonGroup } from '@mui/material'
 import { addProductsToCart } from '../../../frontend/cart'
 import { addProductsToVisitantCart } from '../../../frontend/visitant-cart'
 import CarouselSimilarProducts from '@/components/carousels/CarouselSimilarProducts'
+import { getProductPrintifyIdsUniquePosition } from '@/utils/edit-product'
 
 export default withRouter(props => {
     const {
@@ -162,14 +163,14 @@ export default withRouter(props => {
                     id: product.id,
                     variant_id: productCurrentVariant.id,
                     quantity: 1,
-                    art_position: product.images[0].src.position
-                        ? null
-                        : currentPosition
                 }
 
-                if (session) {
+                if (typeof Object.values(product.printify_ids)[0] === 'object')
+                    newProduct.art_position = currentPosition
+
+                if (session)
                     await addProductsToCart(session.cart_id, [newProduct])
-                }
+
                 else {
                     const localData = localStorage.getItem(CART_LOCAL_STORAGE)
                     addProductsToVisitantCart(localData ? JSON.parse(localData) : INICIAL_VISITANT_CART, [newProduct])
@@ -178,14 +179,16 @@ export default withRouter(props => {
                 const newProductFullInfo = productInfoModel(
                     {
                         id: product.id,
-                        art_position: product.images[0].src.position
+                        art_position: product.images[0].position
                             ? null
                             : currentPosition,
                         quantity: 1,
                         type_id: product.type_id,
                         title: product.title,
                         promotion: product.promotion,
-                        printify_ids: product.printify_ids,
+                        printify_ids: typeof Object.values(product.printify_ids)[0] === 'string'
+                            ? product.printify_ids
+                            : getProductPrintifyIdsUniquePosition(product.printify_ids, currentPosition),
                         variant: productCurrentVariant,
                         default_variant: {
                             color_id: product.colors_ids[0],

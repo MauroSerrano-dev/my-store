@@ -260,6 +260,7 @@ export function AppProvider({ children }) {
 
     async function getInicialCart() {
         try {
+            console.log('como assim')
             if (session === undefined)
                 return
             if (session) {
@@ -320,6 +321,7 @@ export function AppProvider({ children }) {
                 ? await mergeCarts(user.cart_id, visitantCartProducts)
                 : await getCartById(user.cart_id)
             const products = await getProductsInfo(cart.products)
+            console.log('dasdsa', products)
             setCart({ ...cart, products: products })
             const wishlist = await getWishlistById(user.wishlist_id)
             setWishlist(wishlist)

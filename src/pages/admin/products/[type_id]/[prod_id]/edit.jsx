@@ -10,7 +10,6 @@ import { FormControlLabel, Switch } from '@mui/material'
 import NoFound404 from '@/components/NoFound404'
 import Chain from '@/components/svgs/Chain'
 import BrokeChain from '@/components/svgs/BrokeChain'
-import ImagesSliderEditable from '@/components/ImagesSliderEditable'
 import { showToast } from '@/utils/toasts'
 import { getObjectsDiff, getProductVariantInfo } from '@/utils'
 import Head from 'next/head'
@@ -29,6 +28,7 @@ import Modal from '@/components/Modal'
 import { variantModel } from '@/utils/models'
 import ImagesEditor from '@/components/editors/ImagesEditor'
 import MyError from '@/classes/MyError'
+import ImagesSlider from '@/components/ImagesSlider'
 
 export default withRouter(() => {
     const {
@@ -60,6 +60,19 @@ export default withRouter(() => {
     const TYPE = PRODUCTS_TYPES.find(type => type.id === product?.type_id)
     const COLORS = product?.colors_ids.map(cl_id => COLORS_POOL[cl_id])
     const SIZES = product?.sizes_ids.map(sz_id => SIZES_POOL.find(size => size.id === sz_id))
+
+    const FINAL_IMAGES = !product
+        ? []
+        : havePositionsVariants
+            ? product.colors_ids
+                .reduce((acc, color_id) =>
+                    acc.concat(images[color_id].front.map(img => ({ src: img.src, color_id: img.color_id, position: 'front' })))
+                        .concat(images[color_id].back.map(img => ({ src: img.src, color_id: img.color_id, position: 'back' }))),
+                    []
+                )
+            : product.colors_ids
+                .reduce((acc, color_id) => acc.concat(images[color_id]), [])
+                .map(img => ({ src: img.src, color_id: img.color_id }))
 
     useEffect(() => {
         setAdminMenuOpen(false)
@@ -303,17 +316,6 @@ export default withRouter(() => {
             if (product.variants.length === 0)
                 throw new MyError({ message: 'at_least_one_variant' })
 
-            const product_images = havePositionsVariants
-                ? product.colors_ids
-                    .reduce((acc, color_id) =>
-                        acc.concat(images[color_id].front.map(img => ({ src: img.src, color_id: img.color_id, position: 'front' })))
-                            .concat(images[color_id].back.map(img => ({ src: img.src, color_id: img.color_id, position: 'back' }))),
-                        []
-                    )
-                : product.colors_ids
-                    .reduce((acc, color_id) => acc.concat(images[color_id]), [])
-                    .map(img => ({ src: img.src, color_id: img.color_id }))
-
             const newMinPrice = product.variants.reduce((acc, vari) => acc < vari.price ? acc : vari.price, product.variants[0].price)
 
             const newProductHolder = {
@@ -325,7 +327,7 @@ export default withRouter(() => {
                 min_price: product.promotion
                     ? Math.round(newMinPrice * (1 - product.promotion.percentage))
                     : newMinPrice,
-                images: product_images,
+                images: FINAL_IMAGES,
             }
             const diff = getObjectsDiff(newProductHolder, inicialProduct)
             const diffKeys = Object.keys(diff)
@@ -429,7 +431,9 @@ export default withRouter(() => {
                                 .map(vari => (
                                     {
                                         ...vari,
-                                        price: vari.inicial_price,
+                                        price: prev.variants.filter(varia => colorsChained.includes(varia.color_id) && varia.size_id === vari.size_id).length > 0
+                                            ? prev.variants.find(varia => colorsChained.includes(varia.color_id) && varia.size_id === vari.size_id).price
+                                            : vari.inicial_price,
                                         art: {
                                             id: artIdChained
                                                 ? prev.id
@@ -840,10 +844,11 @@ export default withRouter(() => {
                                                 Preview
                                             </h3>
                                             {images?.[product?.colors_ids?.[colorIndex]] &&
-                                                <ImagesSliderEditable
-                                                    images={Object.keys(images).reduce((acc, key) => acc.concat(havePositionsVariants ? images[key][viewStatus] : images[key]), [])}
-                                                    currentColor={COLORS_POOL[product.colors_ids[colorIndex]]}
+                                                <ImagesSlider
+                                                    images={FINAL_IMAGES}
                                                     colors={COLORS}
+                                                    currentColor={COLORS_POOL[product.colors_ids[colorIndex]]}
+                                                    currentPosition={viewStatus}
                                                 />
                                             }
                                             <div className='flex row center' style={{ gap: '1rem' }}>

@@ -83,3 +83,7 @@ export function isProductValid(product) {
     if (variants.some(vari => vari.cost + LIMITS.min_profit >= vari.price * (product.promotion ? 1 - product.promotion.percentage : 1)))
         throw new MyError({ message: 'invalid_price' })
 }
+
+export function getProductPrintifyIdsUniquePosition(printify_ids, position) {
+    return Object.keys(printify_ids).reduce((acc, provider_id) => ({ ...acc, [provider_id]: typeof printify_ids[provider_id] === 'string' ? printify_ids[provider_id] : printify_ids[provider_id][position || 'front'] }), {})
+}
