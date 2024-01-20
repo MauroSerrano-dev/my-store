@@ -117,7 +117,7 @@ export default withRouter(() => {
 
             setProduct({ ...product, variants: product.variants.map(vari => getProductVariantInfo(vari, product.type_id)) })
 
-            setHavePositionsVariants(product.printify_ids !== 'string')
+            setHavePositionsVariants(typeof Object.values(product.printify_ids)[0] !== 'string')
 
             setImages(product.images.reduce((acc, image) =>
                 acc[image.color_id] === undefined
