@@ -51,7 +51,7 @@ export function hasRepeatedItems(arr) {
 }
 
 export function isSameProduct(prod1, prod2) {
-    return prod1.id === prod2.id && (prod1.variant?.id || prod1.variant_id) === (prod2.variant?.id || prod2.variant_id) && prod1.art_position === prod2.art_position
+    return prod1.id === prod2.id && (prod1.variant?.id || prod1.variant_id) === (prod2.variant?.id || prod2.variant_id) && prod1?.art_position === prod2?.art_position
 }
 
 export function mergeProducts(prods1, prods2) {
@@ -179,7 +179,7 @@ export function getDateFormat(country) {
 }
 
 export function getProductVariantsInfos(product) {
-    return product.variants.map(vari => ({ ...PRODUCTS_TYPES.find(type => type.id === product?.type_id).variants.find(va => va.id === vari.id), ...vari }))
+    return product?.variants.map(vari => ({ ...PRODUCTS_TYPES.find(type => type.id === product?.type_id).variants.find(va => va.id === vari.id), ...vari }))
 }
 
 export function getProductVariantInfo(variant, productType) {

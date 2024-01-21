@@ -51,6 +51,7 @@ export default withRouter(() => {
         session,
         setAdminMenuOpen,
         isAdmin,
+        auth,
     } = useAppContext()
 
     const [product, setProduct] = useState(INICIAL_PRODUCT)
@@ -109,7 +110,7 @@ export default withRouter(() => {
         }
     }, [router])
 
-    async function createProduct() {
+    async function handleCreateProduct() {
         try {
             setLoadingCreateButton(true)
             if (product.variants.length === 0)
@@ -127,11 +128,13 @@ export default withRouter(() => {
 
             isProductValid(newProduct)
 
+            const token = await auth.currentUser.getIdToken();
+
             const options = {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
-                    authorization: process.env.NEXT_PUBLIC_APP_TOKEN,
+                    authorization: token,
                 },
                 body: JSON.stringify({
                     product: newProduct
@@ -143,7 +146,7 @@ export default withRouter(() => {
             if (response.status >= 300)
                 throw responseJson.error
 
-            showToast({ type: 'success', msg: tToasts(response.message) })
+            showToast({ type: 'success', msg: tToasts(responseJson.message) })
             router.push(`/admin/products/${router.query.type_id}`)
         }
         catch (error) {
@@ -824,7 +827,7 @@ export default withRouter(() => {
                                     </section>
                                 }
                                 <LoadingButton
-                                    onClick={createProduct}
+                                    onClick={handleCreateProduct}
                                     variant='contained'
                                     loading={loadingCreateButton}
                                     size='large'

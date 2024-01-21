@@ -3,6 +3,7 @@ import { isTokenValid } from "@/utils/auth";
 import axios from 'axios'
 import { getDisabledProducts } from "../../../backend/product";
 import { filterNotInPrintify } from "../../../backend/printify";
+import { getShippingValue } from "@/utils/edit-product";
 
 const Stripe = require("stripe");
 
@@ -21,14 +22,12 @@ export default async function handler(req, res) {
     const {
       customer,
       cartItems,
-      shippingValue,
       currency,
       shippingCountry,
       cart_id,
       success_url,
       cancel_url,
       user_language,
-      art_position,
     } = req.body
 
     const notExistingProducts = await filterNotInPrintify(cartItems)
@@ -84,7 +83,7 @@ export default async function handler(req, res) {
     const line_items = cartItems.map(item => {
       return {
         price_data: {
-          currency: currency,
+          currency: currency.code,
           product_data: {
             name: item.title,
             images: [item.image_src],
@@ -125,6 +124,8 @@ export default async function handler(req, res) {
     if (cart_id)
       paymentMetadata.cart_id = cart_id
 
+    const shippingValue = getShippingValue(cartItems, shippingCountry, currency.rate)
+
     const session = await stripe.checkout.sessions.create({
       payment_method_types: ["card"],
       shipping_address_collection: {
@@ -136,7 +137,7 @@ export default async function handler(req, res) {
             type: "fixed_amount",
             fixed_amount: {
               amount: shippingValue,
-              currency: currency,
+              currency: currency.code,
             },
             display_name: "Standart",
             /* delivery_estimate: {

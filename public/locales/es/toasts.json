@@ -76,5 +76,6 @@
     "invalid_expire_date": "Fecha de caducidad inválida",
     "invalid_promotion_percentage": "Porcentaje de promoción inválido",
     "invalid_product_ids_parameters": "Parámetros de IDs de productos inválidos",
-    "at_least_one_variant": "Crea al menos una variante"
+    "at_least_one_variant": "Crea al menos una variante",
+    "empty_cart_due_to_an_error": "Vaciamos tu carrito debido a un error"
 }

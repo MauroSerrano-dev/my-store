@@ -111,7 +111,7 @@ export default function Cart() {
                 customer: session,
                 shippingValue: SHIPPING_CONVERTED,
                 shippingCountry: userLocation.country,
-                currency: userCurrency?.code,
+                currency: userCurrency,
                 cart_id: session ? session.cart_id : null,
                 user_language: i18n.language,
             })

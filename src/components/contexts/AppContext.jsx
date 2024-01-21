@@ -19,7 +19,7 @@ import ZoneConverter from '@/utils/country-zone.json'
 import NProgress from 'nprogress'
 import { createNewUser, getUserById } from '../../../frontend/user'
 import { addProductToWishlist, deleteProductFromWishlist, getWishlistById } from '../../../frontend/wishlists'
-import { changeCartProductField, deleteProductFromCart, getCartById, mergeCarts } from '../../../frontend/cart'
+import { changeCartProductField, deleteProductFromCart, getCartById, mergeCarts, setCartProducts } from '../../../frontend/cart'
 import { getProductsInfo } from '../../../frontend/product'
 import { auth } from '../../../firebaseInit'
 import { getAllCurrencies } from '../../../frontend/app-settings'
@@ -260,19 +260,32 @@ export function AppProvider({ children }) {
 
     async function getInicialCart() {
         try {
-            console.log('como assim')
             if (session === undefined)
                 return
             if (session) {
                 const userCart = await getCartById(session.cart_id)
-                const products = await getProductsInfo(userCart.products)
-                setCart({ ...cart, products: products })
+                try {
+                    const products = await getProductsInfo(userCart.products)
+                    setCart({ ...cart, products: products })
+                }
+                catch (error) {
+                    const emptyCart = await setCartProducts(userCart.id, [])
+                    setCart(emptyCart)
+                    showToast({ type: 'error', msg: tToasts('empty_cart_due_to_an_error') })
+                }
             }
             else {
                 const visitantCart = JSON.parse(localStorage.getItem(CART_LOCAL_STORAGE))
                 if (visitantCart) {
-                    const products = await getProductsInfo(visitantCart.products)
-                    setCart({ ...visitantCart, products: products })
+                    try {
+                        const products = await getProductsInfo(visitantCart.products)
+                        setCart({ ...visitantCart, products: products })
+                    }
+                    catch (error) {
+                        setCart(INICIAL_VISITANT_CART)
+                        localStorage.setItem(CART_LOCAL_STORAGE, JSON.stringify(INICIAL_VISITANT_CART))
+                        showToast({ type: 'error', msg: tToasts('empty_cart_due_to_an_error') })
+                    }
                 }
                 else {
                     localStorage.setItem(CART_LOCAL_STORAGE, JSON.stringify(INICIAL_VISITANT_CART))
@@ -320,8 +333,15 @@ export function AppProvider({ children }) {
             const cart = visitantCartProducts.length > 0
                 ? await mergeCarts(user.cart_id, visitantCartProducts)
                 : await getCartById(user.cart_id)
-            const products = await getProductsInfo(cart.products)
-            setCart({ ...cart, products: products })
+            try {
+                const products = await getProductsInfo(cart.products)
+                setCart({ ...cart, products: products })
+            }
+            catch (error) {
+                const emptyCart = await setCartProducts(cart.id, [])
+                setCart(emptyCart)
+                showToast({ type: 'error', msg: tToasts('empty_cart_due_to_an_error') })
+            }
             const wishlist = await getWishlistById(user.wishlist_id)
             setWishlist(wishlist)
             localStorage.removeItem(CART_LOCAL_STORAGE)
@@ -352,14 +372,19 @@ export function AppProvider({ children }) {
         try {
             const visitantCart = JSON.parse(localStorage.getItem(CART_LOCAL_STORAGE))
             if (visitantCart) {
-                const products = await getProductsInfo(visitantCart.products)
-
-                setCart({ ...visitantCart, products: products })
+                try {
+                    const products = await getProductsInfo(visitantCart.products)
+                    setCart({ ...visitantCart, products: products })
+                }
+                catch (error) {
+                    setCart(INICIAL_VISITANT_CART)
+                    localStorage.setItem(CART_LOCAL_STORAGE, JSON.stringify(INICIAL_VISITANT_CART))
+                    showToast({ type: 'error', msg: tToasts('empty_cart_due_to_an_error') })
+                }
             }
             else {
-                const newCartJson = INICIAL_VISITANT_CART
-                setCart(newCartJson)
-                localStorage.setItem(CART_LOCAL_STORAGE, JSON.stringify(newCartJson))
+                setCart(INICIAL_VISITANT_CART)
+                localStorage.setItem(CART_LOCAL_STORAGE, JSON.stringify(INICIAL_VISITANT_CART))
             }
 
         }

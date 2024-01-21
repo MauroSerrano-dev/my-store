@@ -27,7 +27,7 @@ import { SlClose } from 'react-icons/sl'
 import { LoadingButton } from '@mui/lab'
 import ZoneConverter from '@/utils/country-zone.json'
 import ProductTag from '@/components/products/ProductTag'
-import { mergeProducts } from '@/utils'
+import { getProductVariantsInfos, mergeProducts } from '@/utils'
 import TableSizes from '@/components/products/TableSizes'
 import KeyFeatures from '@/components/products/KeyFeatures'
 import { ButtonGroup } from '@mui/material'
@@ -35,6 +35,8 @@ import { addProductsToCart } from '../../../frontend/cart'
 import { addProductsToVisitantCart } from '../../../frontend/visitant-cart'
 import CarouselSimilarProducts from '@/components/carousels/CarouselSimilarProducts'
 import { getProductPrintifyIdsUniquePosition } from '@/utils/edit-product'
+import { getProductById } from '../../../backend/product'
+import MyError from '@/classes/MyError'
 
 export default withRouter(props => {
     const {
@@ -78,7 +80,7 @@ export default withRouter(props => {
     const [shippingValue, setShippingValue] = useState(0)
     const [disableCheckoutButton, setDisableCheckoutButton] = useState(false)
 
-    const productCurrentVariant = product?.variants.find(vari => vari.size_id === currentSize?.id && vari.color_id === currentColor?.id)
+    const productCurrentVariant = getProductVariantsInfos(product)?.find(vari => vari.size_id === currentSize?.id && vari.color_id === currentColor?.id)
 
     const PRODUCT_PRICE = product && userCurrency && productCurrentVariant ? getProductPriceUnit(product, productCurrentVariant, userCurrency.rate) : undefined
 
@@ -99,60 +101,87 @@ export default withRouter(props => {
         setShippingValue(shippingOption.first_item + shippingOption.tax)
     }
 
-    function handleBuyNow() {
-        if (process.env.NEXT_PUBLIC_DISABLE_CHECKOUT === 'true') {
-            showToast({ msg: tToasts('checkout_temporarily_disabled') })
-            return
+    async function handleBuyNow() {
+        try {
+            if (process.env.NEXT_PUBLIC_DISABLE_CHECKOUT === 'true') {
+                showToast({ msg: tToasts('checkout_temporarily_disabled') })
+                return
+            }
+
+            setDisableCheckoutButton(true)
+
+            const shippingOption = getShippingOptions(product.type_id, userLocation.country)
+            const options = {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    authorization: process.env.NEXT_PUBLIC_APP_TOKEN,
+                },
+                body: JSON.stringify({
+                    cartItems: [cartItemModel({
+                        id: product.id,
+                        type_id: product.type_id,
+                        quantity: 1,
+                        title: product.title,
+                        image_src: product.images.find(img => img.color_id === productCurrentVariant.color_id).src,
+                        description: `${tCommon(product.type_id)} ${tColors(currentColor.id_string)} / ${currentSize.title}`,
+                        id_printify: product.printify_ids[shippingOption.provider_id],
+                        provider_id: shippingOption.provider_id,
+                        variant: productCurrentVariant,
+                        variant: {
+                            ...productCurrentVariant.variant,
+                            id_printify: typeof productCurrentVariant.id_printify === 'string' ? productCurrentVariant.id_printify : productCurrentVariant.id_printify[shippingOption.provider_id],
+                        },
+                        price: Math.round(productCurrentVariant.price * userCurrency?.rate),
+                    })],
+                    success_url: session
+                        ? `${window.location.origin}${i18n.language === DEFAULT_LANGUAGE ? '' : `/${i18n.language}`}/orders`
+                        : `${window.location.origin}${i18n.language === DEFAULT_LANGUAGE ? '' : `/${i18n.language}`}/?refresh-cart`,
+                    cancel_url: window.location.href,
+                    customer: session,
+                    shippingValue: Math.round(shippingValue * userCurrency?.rate),
+                    shippingCountry: userLocation.country,
+                    currency: userCurrency,
+                    cart_id: session ? session.cart_id : null,
+                    user_language: i18n.language,
+                })
+            }
+
+            const response = await fetch('/api/stripe', options)
+            const responseJson = await response.json()
+
+            if (response.status >= 300)
+                throw responseJson.error
+            if (responseJson.outOfStock) {
+                product.outOfStock = true
+                throw new MyError({
+                    message: 'out_of_stock',
+                    options: {
+                        count: responseJson.outOfStock.length,
+                        country: tCountries(userLocation.country),
+                        product_title: responseJson.outOfStock[0].title,
+                        variant_title: responseJson.outOfStock[0].variant.title,
+                    }
+                })
+            }
+            if (responseJson.disabledProducts) {
+                product.disabled = true
+                throw new MyError({
+                    message: 'disabled_products',
+                    options: {
+                        count: responseJson.outOfStock.length,
+                        product_title: responseJson.outOfStock[0].title
+                    }
+                })
+            }
+            window.location.href = responseJson.url
         }
-
-        setDisableCheckoutButton(true)
-
-        const shippingOption = getShippingOptions(product.type_id, userLocation.country)
-        const options = {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                authorization: process.env.NEXT_PUBLIC_APP_TOKEN,
-            },
-            body: JSON.stringify({
-                cartItems: [cartItemModel({
-                    id: product.id,
-                    type_id: product.type_id,
-                    quantity: 1,
-                    title: product.title,
-                    image_src: product.images.find(img => img.color_id === productCurrentVariant.color_id).src,
-                    description: `${tCommon(product.type_id)} ${tColors(currentColor.id_string)} / ${currentSize.title}`,
-                    id_printify: product.printify_ids[shippingOption.provider_id],
-                    provider_id: shippingOption.provider_id,
-                    variant: productCurrentVariant,
-                    variant: {
-                        ...productCurrentVariant.variant,
-                        id_printify: typeof productCurrentVariant.id_printify === 'string' ? productCurrentVariant.id_printify : productCurrentVariant.id_printify[shippingOption.provider_id],
-                    },
-                    price: Math.round(productCurrentVariant.price * userCurrency?.rate),
-                })],
-                success_url: session
-                    ? `${window.location.origin}${i18n.language === DEFAULT_LANGUAGE ? '' : `/${i18n.language}`}/orders`
-                    : `${window.location.origin}${i18n.language === DEFAULT_LANGUAGE ? '' : `/${i18n.language}`}/?refresh-cart`,
-                cancel_url: window.location.href,
-                customer: session,
-                shippingValue: Math.round(shippingValue * userCurrency?.rate),
-                shippingCountry: userLocation.country,
-                currency: userCurrency?.code,
-                cart_id: session ? session.cart_id : null,
-                user_language: i18n.language,
-            })
+        catch (error) {
+            console.error(error)
+            showToast({ type: error?.type || 'error', msg: tToasts(error.message, error?.options || {}) })
+            setBuyNowModalOpen(false)
+            setDisableCheckoutButton(false)
         }
-
-        fetch('/api/stripe', options)
-            .then(response => response.json())
-            .then(response => {
-                window.location.href = response.url
-            })
-            .catch(err => {
-                console.error(err)
-                setDisableCheckoutButton(false)
-            })
     }
 
     async function handleAddToCart() {
@@ -306,6 +335,17 @@ export default withRouter(props => {
                                                 >
                                                     <p>
                                                         {tCommon('UNAVAILABLE')}
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        }
+                                        {product.outOfStock &&
+                                            <div style={{ paddingTop: 3, paddingBottom: 3 }}>
+                                                <div
+                                                    className={styles.unavailable}
+                                                >
+                                                    <p>
+                                                        {tCommon('OUT_OF_STOCK')}
                                                     </p>
                                                 </div>
                                             </div>
@@ -567,17 +607,13 @@ export default withRouter(props => {
 export async function getServerSideProps({ query, locale, resolvedUrl }) {
     const { id, cl, sz } = query
 
-    const options = {
-        method: 'GET',
-        headers: {
-            authorization: process.env.NEXT_PUBLIC_APP_TOKEN,
-            id: id,
-        }
+    let product
+    try {
+        product = await getProductById(id)
     }
-    const product = await fetch(`${process.env.NEXT_PUBLIC_URL}/api/product`, options)
-        .then(response => response.json())
-        .then(response => response)
-        .catch(err => console.error(err))
+    catch (error) {
+        product = null
+    }
 
     const colorQuery = cl
         ? Object.values(COLORS_POOL).find(color => color.id_string === cl.toLowerCase())
@@ -598,7 +634,7 @@ export async function getServerSideProps({ query, locale, resolvedUrl }) {
     return {
         props: {
             ...(await serverSideTranslations(locale, COMMON_TRANSLATES.concat(['countries', 'product', 'care-instructions', 'key-features', 'table-sizes', 'footer']))),
-            product: product || null,
+            product: product,
             cl: chooseColor === undefined ? null : chooseColor,
             sz: chooseSize === undefined ? null : chooseSize,
             urlMeta: `${process.env.NEXT_PUBLIC_URL}${locale === DEFAULT_LANGUAGE ? '' : `/${locale}`}${resolvedUrl} `,
