@@ -238,7 +238,7 @@ export default function Support() {
                                     onChange={event => setFields(prev => ({ ...prev, problem_description: event.target.value }))}
                                 />
                                 <ReCAPTCHA
-                                    sitekey={process.env.NEXT_PUBLIC_RE_CAPTCHA_KEY}
+                                    sitekey={process.env.NEXT_PUBLIC_RE_CAPTCHA_KEY_CLIENT}
                                     onChange={userToken => handleReCaptchaSuccess(userToken, setReCaptchaSolve)}
                                     onExpired={() => handleReCaptchaError(setReCaptchaSolve)}
                                     onErrored={() => handleReCaptchaError(setReCaptchaSolve)}
@@ -292,7 +292,7 @@ export default function Support() {
                                     onChange={event => setFields(prev => ({ ...prev, problem_description: event.target.value }))}
                                 />
                                 <ReCAPTCHA
-                                    sitekey={process.env.NEXT_PUBLIC_RE_CAPTCHA_KEY}
+                                    sitekey={process.env.NEXT_PUBLIC_RE_CAPTCHA_KEY_CLIENT}
                                     onChange={userToken => handleReCaptchaSuccess(userToken, setReCaptchaSolve)}
                                     onExpired={() => handleReCaptchaError(setReCaptchaSolve)}
                                     onErrored={() => handleReCaptchaError(setReCaptchaSolve)}
@@ -346,7 +346,7 @@ export default function Support() {
                                     onChange={event => setFields(prev => ({ ...prev, problem_description: event.target.value }))}
                                 />
                                 <ReCAPTCHA
-                                    sitekey={process.env.NEXT_PUBLIC_RE_CAPTCHA_KEY}
+                                    sitekey={process.env.NEXT_PUBLIC_RE_CAPTCHA_KEY_CLIENT}
                                     onChange={userToken => handleReCaptchaSuccess(userToken, setReCaptchaSolve)}
                                     onExpired={() => handleReCaptchaError(setReCaptchaSolve)}
                                     onErrored={() => handleReCaptchaError(setReCaptchaSolve)}
@@ -406,7 +406,7 @@ export default function Support() {
                                     onChange={event => setFields(prev => ({ ...prev, problem_description: event.target.value }))}
                                 />
                                 <ReCAPTCHA
-                                    sitekey={process.env.NEXT_PUBLIC_RE_CAPTCHA_KEY}
+                                    sitekey={process.env.NEXT_PUBLIC_RE_CAPTCHA_KEY_CLIENT}
                                     onChange={userToken => handleReCaptchaSuccess(userToken, setReCaptchaSolve)}
                                     onExpired={() => handleReCaptchaError(setReCaptchaSolve)}
                                     onErrored={() => handleReCaptchaError(setReCaptchaSolve)}
