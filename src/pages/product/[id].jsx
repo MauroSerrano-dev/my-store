@@ -35,6 +35,7 @@ import { addProductsToCart } from '../../../frontend/cart'
 import { addProductsToVisitantCart } from '../../../frontend/visitant-cart'
 import CarouselSimilarProducts from '@/components/carousels/CarouselSimilarProducts'
 import { getProductPrintifyIdsUniquePosition } from '@/utils/edit-product'
+import { getProductById } from '../../../backend/product'
 
 export default withRouter(props => {
     const {
@@ -567,17 +568,7 @@ export default withRouter(props => {
 export async function getServerSideProps({ query, locale, resolvedUrl }) {
     const { id, cl, sz } = query
 
-    const options = {
-        method: 'GET',
-        headers: {
-            authorization: process.env.NEXT_PUBLIC_APP_TOKEN,
-            id: id,
-        }
-    }
-    const product = await fetch(`${process.env.NEXT_PUBLIC_URL}/api/product`, options)
-        .then(response => response.json())
-        .then(response => response)
-        .catch(err => console.error(err))
+    const product = await getProductById(id)
 
     const colorQuery = cl
         ? Object.values(COLORS_POOL).find(color => color.id_string === cl.toLowerCase())

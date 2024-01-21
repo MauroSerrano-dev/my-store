@@ -1,30 +1,22 @@
-import { isTokenValid } from "@/utils/auth";
-import { getProductById, createProduct, updateProduct } from "../../../backend/product";
+import { createProduct, updateProduct } from "../../../backend/product";
+import admin from '../../../firebaseAdminInit'
 
 export default async function handler(req, res) {
     const { authorization, id } = req.headers
-    const { product, product_id, new_product } = req.body
+    const { product, new_product } = req.body
 
     if (!authorization)
-        res.status(401).json({ error: "Invalid authentication" })
+        res.status(401).json({ error: "Access denied: No token provided" })
 
-    if (!isTokenValid(authorization, process.env.APP_SECRET_KEY))
-        res.status(401).json({ error: "Invalid authentication" })
+    const decodedToken = await admin.auth().verifyIdToken(authorization)
+    if (!decodedToken.admin)
+        res.status(403).send('Access denied: User is not an administrator')
 
-    if (req.method === "GET") {
-        try {
-            const product = await getProductById(id)
-            res.status(200).json(product)
-        }
-        catch (error) {
-            console.error('Error in product GET:', error)
-            res.status(500).json({ error: 'default_error' })
-        }
-    }
-    else if (req.method === "POST") {
+    if (req.method === "POST") {
         try {
             await createProduct(product)
 
+            console.log('Product created successfully')
             res.status(200).json({ message: 'Product created successfully' })
         }
         catch (error) {
@@ -34,13 +26,13 @@ export default async function handler(req, res) {
     }
     else if (req.method === "PUT") {
         try {
-            const result = await updateProduct(product_id, new_product)
-
-            res.status(200).json({ message: result.message })
+            await updateProduct(new_product)
+            console.log(`Product ${new_product.id} updated successfully!`)
+            res.status(200).json({ message: `Product ${new_product.id} updated successfully!` })
         }
         catch (error) {
             console.error('Error in product PATCH:', error)
-            res.status(500).json({ error: 'default_error' })
+            res.status(500).json({ error: error })
         }
     }
 }

@@ -4,6 +4,9 @@ import NoFound404 from '@/components/NoFound404';
 import { useAppContext } from '@/components/contexts/AppContext';
 import { COMMON_TRANSLATES } from '@/consts';
 import { useEffect, useState } from 'react';
+import { getProductById } from '../../../../../../frontend/product';
+import { showToast } from '@/utils/toasts';
+import { useTranslation } from "next-i18next"
 
 export default function ProductsId() {
     const {
@@ -12,31 +15,25 @@ export default function ProductsId() {
         isAdmin,
     } = useAppContext()
 
+    const tToasts = useTranslation('toasts').t
+
     const [product, setProduct] = useState()
 
     useEffect(() => {
         if (router.isReady && isAdmin) {
-            getProductById(router.query.prod_id)
+            callGetProductById(router.query.prod_id)
         }
     }, [router])
 
-    async function getProductById(id) {
-        const options = {
-            method: 'GET',
-            headers: {
-                authorization: process.env.NEXT_PUBLIC_APP_TOKEN,
-            }
+    async function callGetProductById(id) {
+        try {
+            const product = await getProductById(id)
+            setProduct(product)
         }
-
-        if (id)
-            options.headers.id = id
-
-        await fetch("/api/product", options)
-            .then(response => response.json())
-            .then(response => {
-                setProduct(response)
-            })
-            .catch(err => console.error(err))
+        catch (error) {
+            console.error(error)
+            showToast({ type: error?.type || 'error', msg: tToasts(error.message) })
+        }
     }
 
     return (

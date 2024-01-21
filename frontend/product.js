@@ -11,70 +11,71 @@ import {
 } from "firebase/firestore"
 import { getProductVariantsInfos } from "@/utils"
 import { db } from "../firebaseInit"
-import { productInfoModel } from "@/utils/models";
-import { DEFAULT_LANGUAGE, PRODUCTS_TYPES, TAGS_POOL, THEMES_POOL } from "@/consts";
-import MyError from "@/classes/MyError";
-import Translate from "translate";
-import Fuse from 'fuse.js';
-import { getProductPrintifyIdsUniquePosition, isProductValid } from "@/utils/edit-product";
+import { productInfoModel } from "@/utils/models"
+import { DEFAULT_LANGUAGE, PRODUCTS_TYPES, TAGS_POOL, THEMES_POOL } from "@/consts"
+import MyError from "@/classes/MyError"
+import Translate from "translate"
+import Fuse from 'fuse.js'
+import { getProductPrintifyIdsUniquePosition, isProductValid } from "@/utils/edit-product"
 
 async function getProductsInfo(products) {
     try {
         if (products.length === 0)
             return []
 
-        const productsCollection = collection(db, process.env.NEXT_PUBLIC_COLL_PRODUCTS);
+        const productsCollection = collection(db, process.env.NEXT_PUBLIC_COLL_PRODUCTS)
 
-        const productIDs = products.map(prod => prod.id);
-        const chunkSize = 30;
-        const chunks = [];
+        const productIDs = products.map(prod => prod.id)
+        const chunkSize = 30
+        const chunks = []
 
         for (let i = 0; i < productIDs.length; i += chunkSize) {
-            chunks.push(productIDs.slice(i, i + chunkSize));
+            chunks.push(productIDs.slice(i, i + chunkSize))
         }
 
         const promises = chunks.map(async chunk => {
             const q = query(
                 productsCollection,
                 where('id', 'in', chunk)
-            );
+            )
 
-            const querySnapshot = await getDocs(q);
+            const querySnapshot = await getDocs(q)
             return querySnapshot.docs.map(doc => doc.data());
         });
 
         const chunkResults = await Promise.all(promises);
         const productsResult = chunkResults.flat();
 
-        const productsOneVariant = products.map(prod => {
-            const product = productsResult.find(p => p.id === prod.id)
+        const productsOneVariant = products
+            .map(prod => {
+                const product = productsResult.find(p => p.id === prod.id)
 
-            const variants = getProductVariantsInfos(product)
-            const variant = variants.find(vari => vari.id === prod.variant_id)
+                const variants = getProductVariantsInfos(product)
+                const variant = variants.find(vari => vari.id === prod.variant_id)
 
-            const printify_ids = getProductPrintifyIdsUniquePosition(product.printify_ids, prod.art_position)
-            const visualImage = product.images.filter(img => img.color_id === variant.color_id && (!prod.art_position || img.position === prod.art_position)).length > 0
-                ? product.images.filter(img => img.color_id === variant.color_id && (!prod.art_position || img.position === prod.art_position))[product.image_showcase_index]
-                : { src: '/no-image.webp' }
+                const printify_ids = getProductPrintifyIdsUniquePosition(product.printify_ids, prod.art_position)
+                const visualImage = product.images.filter(img => img.color_id === variant.color_id && (!prod.art_position || img.position === prod.art_position)).length > 0
+                    ? product.images.filter(img => img.color_id === variant.color_id && (!prod.art_position || img.position === prod.art_position))[product.image_showcase_index]
+                    : { src: '/no-image.webp' }
 
-            return productInfoModel(
-                {
-                    id: prod.id,
-                    art_position: prod.art_position,
-                    quantity: prod.quantity,
-                    type_id: product.type_id,
-                    title: product.title,
-                    promotion: product.promotion,
-                    printify_ids: printify_ids,
-                    variant: variant,
-                    default_variant: {
-                        color_id: variants[0].color_id,
-                        size_id: variants[0].size_id,
-                    },
-                    image_src: visualImage.src,
-                }
-            )
-        })
+                return productInfoModel(
+                    {
+                        id: prod.id,
+                        art_position: prod.art_position,
+                        quantity: prod.quantity,
+                        type_id: product.type_id,
+                        title: product.title,
+                        promotion: product.promotion,
+                        printify_ids: printify_ids,
+                        variant: variant,
+                        default_variant: {
+                            color_id: variants[0].color_id,
+                            size_id: variants[0].size_id,
+                        },
+                        image_src: visualImage.src,
+                    }
+                )
+            })
 
         return productsOneVariant
     } catch (error) {
@@ -491,13 +492,39 @@ async function createPromotionForProducts(products_ids, promotion) {
     }
 }
 
+/**
+ * Retrieves a product from the Firestore database by its ID.
+ * 
+ * @param {string} id - The ID of the product to retrieve.
+ * @returns {Promise<Object>} The product data.
+ */
+async function getProductById(id) {
+    try {
+        const productRef = doc(collection(db, process.env.NEXT_PUBLIC_COLL_PRODUCTS), id);
+        const productDoc = await getDoc(productRef);
+
+        if (productDoc.exists()) {
+            const productData = productDoc.data();
+
+            console.log(`Product with ID ${id} found!`);
+            return productData;
+        } else {
+            throw new MyError({ message: `Product with ID ${id} not found` });
+        }
+    } catch (error) {
+        console.error("Error getting product:", error);
+        throw error;
+    }
+}
+
 export {
+    getProductById,
+    getProductsByIds,
     getProductsInfo,
     getProductsByQueries,
     getAllProducts,
     getSimilarProducts,
     getAllActivesProducts,
     getProductsAnalytics,
-    getProductsByIds,
     createPromotionForProducts,
 }

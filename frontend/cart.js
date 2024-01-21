@@ -129,10 +129,36 @@ async function changeCartProductField(cartId, product, fieldName, newValue) {
     }
 }
 
+/**
+ * Sets the products for a cart.
+ * @param {string} cartId - The ID of the cart.
+ * @param {Array} cartProducts - The new list of products for the cart.
+ * @returns {object} Status and message regarding the cart update.
+ */
+async function setCartProducts(cartId, cartProducts) {
+    try {
+        const cartRef = doc(db, process.env.NEXT_PUBLIC_COLL_CARTS, cartId);
+        const cartDoc = await getDoc(cartRef);
+
+        const cartData = cartDoc.data();
+
+        cartData.products = cartProducts;
+
+        await updateDoc(cartRef, cartData);
+
+        console.log('Cart products set successfully!');
+        return { id: cartDoc.id, ...cartData };
+    } catch (error) {
+        console.error('Error setting cart products:', error);
+        throw error;
+    }
+}
+
 export {
     getCartById,
     addProductsToCart,
     deleteProductFromCart,
     mergeCarts,
     changeCartProductField,
+    setCartProducts,
 }

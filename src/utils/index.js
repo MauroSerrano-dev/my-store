@@ -51,7 +51,7 @@ export function hasRepeatedItems(arr) {
 }
 
 export function isSameProduct(prod1, prod2) {
-    return prod1.id === prod2.id && (prod1.variant?.id || prod1.variant_id) === (prod2.variant?.id || prod2.variant_id) && prod1.art_position === prod2.art_position
+    return prod1.id === prod2.id && (prod1.variant?.id || prod1.variant_id) === (prod2.variant?.id || prod2.variant_id) && prod1?.art_position === prod2?.art_position
 }
 
 export function mergeProducts(prods1, prods2) {

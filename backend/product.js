@@ -33,7 +33,6 @@ async function createProduct(product) {
         };
 
         await productRef.set(newProduct);
-        console.log('Product created successfully')
     } catch (error) {
         console.error("Error creating product:", error);
         throw error;
@@ -63,17 +62,16 @@ async function getProductById(id) {
 /**
  * Updates a product in the Firestore database with new fields.
  * 
- * @param {string} product_id - The ID of the product to update.
  * @param {Object} product_new_fields - New fields to update the product with.
  * @returns {Promise<Object>} An object containing the status message of the operation.
  */
-async function updateProduct(product_id, new_product) {
-    if (!product_id || !new_product) {
+async function updateProduct(new_product) {
+    if (!new_product?.id || !new_product) {
         throw new MyError({ message: 'Invalid update data', type: 'warning' })
     }
 
     const productsCollection = admin.firestore().collection(process.env.NEXT_PUBLIC_COLL_PRODUCTS)
-    const productRef = productsCollection.doc(product_id)
+    const productRef = productsCollection.doc(new_product.id)
 
     try {
         const productDoc = await productRef.get()
@@ -88,8 +86,6 @@ async function updateProduct(product_id, new_product) {
         }
 
         await productRef.update(new_product)
-        console.log(`Product ${product_id} updated successfully!`)
-        return { message: `Product ${product_id} updated successfully!` }
     } catch (error) {
         console.error("Error updating product:", error)
         throw error

@@ -29,6 +29,7 @@ import { variantModel } from '@/utils/models'
 import ImagesEditor from '@/components/editors/ImagesEditor'
 import MyError from '@/classes/MyError'
 import ImagesSlider from '@/components/ImagesSlider'
+import { getProductById } from '../../../../../../frontend/product'
 
 export default withRouter(() => {
     const {
@@ -36,6 +37,7 @@ export default withRouter(() => {
         session,
         setAdminMenuOpen,
         isAdmin,
+        auth,
     } = useAppContext()
 
     const [product, setProduct] = useState()
@@ -84,9 +86,9 @@ export default withRouter(() => {
 
     useEffect(() => {
         if (router.isReady) {
-            getProductById(router.query.prod_id)
+            callGetProductById(router.query.prod_id)
         }
-    }, [router])
+    }, [router, auth.currentUser])
 
     useEffect(() => {
         if (inicialProduct) {
@@ -95,19 +97,10 @@ export default withRouter(() => {
         }
     }, [inicialProduct])
 
-    async function getProductById(id) {
-        const options = {
-            method: 'GET',
-            headers: {
-                authorization: process.env.NEXT_PUBLIC_APP_TOKEN,
-                id: id || '',
-            }
-        }
-        const product = await fetch("/api/product", options)
-            .then(response => response.json())
-            .then(response => response)
-            .catch(err => console.error(err))
-        if (product) {
+    async function callGetProductById(id) {
+        try {
+            const product = await getProductById(id)
+
             if (product.colors_ids.every(cl => product.variants.filter(vari => vari.color_id === cl).every(variColor => variColor.price === product.variants.find(vari => vari.size_id === variColor.size_id).price)))
                 setColorsChained(product.colors_ids)
 
@@ -133,6 +126,10 @@ export default withRouter(() => {
                     : acc,
                 {}
             ))
+        }
+        catch (error) {
+            console.error(error)
+            showToast({ type: error?.type || 'error', msg: tToasts(error.message) })
         }
     }
 
@@ -352,43 +349,35 @@ export default withRouter(() => {
         }
     }
 
-    async function updateProduct() {
+    async function handleUpdateProduct() {
         try {
             setDisableUpdateButton(true)
-            /*             if (!isNewProductValid(product, images, tToasts)) {
-                            setDisableUpdateButton(false)
-                            return
-                        } */
+
             isProductValid(newProduct)
+
+            const token = await auth.currentUser.getIdToken();
 
             const options = {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',
-                    authorization: process.env.NEXT_PUBLIC_APP_TOKEN,
+                    authorization: token,
                 },
                 body: JSON.stringify({
                     product_id: newProduct.id,
                     new_product: newProduct
                 })
             }
-            await fetch("/api/product", options)
-                .then(response => response.json())
-                .then(response => {
-                    if (response.error) {
-                        setDisableUpdateButton(false)
-                        showToast({ type: 'error', msg: tToasts(response.error) })
-                    }
-                    else {
-                        setInicialProduct(newProduct)
-                        showToast({ type: 'success', msg: tToasts(response.message) })
-                        router.push(`/admin/products/${product.type_id}`)
-                    }
-                })
-                .catch(() => {
-                    setDisableUpdateButton(false)
-                    showToast({ type: 'error', msg: tToasts('default_error') })
-                })
+
+            const response = await fetch("/api/product", options)
+            const responseJson = await response.json()
+
+            if (response.status >= 300)
+                throw responseJson.error
+
+            setInicialProduct(newProduct)
+            showToast({ type: 'success', msg: tToasts(responseJson.message) })
+            router.push(`/admin/products/${newProduct.type_id}`)
         }
         catch (error) {
             console.error('Error updating product', error)
@@ -942,7 +931,7 @@ export default withRouter(() => {
                                 </div>
                             )}
                             <LoadingButton
-                                onClick={updateProduct}
+                                onClick={handleUpdateProduct}
                                 loading={disableUpdateButton}
                                 variant='contained'
                                 size='large'
