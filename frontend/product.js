@@ -223,7 +223,8 @@ async function getProductsByQueries(props) {
                 last_page: Math.ceil(products.length / prods_limit)
             }
         } else {
-            console.log('No products found matching the queries')
+            if (process.env.NEXT_PUBLIC_ENV === 'development')
+                console.log('No products found matching the queries')
             return {
                 products: [],
                 last_page: 1,

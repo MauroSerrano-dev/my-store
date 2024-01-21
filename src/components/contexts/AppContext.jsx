@@ -260,7 +260,6 @@ export function AppProvider({ children }) {
 
     async function getInicialCart() {
         try {
-            console.log('como assim')
             if (session === undefined)
                 return
             if (session) {

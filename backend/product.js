@@ -200,29 +200,29 @@ async function removeExpiredPromotions() {
 async function getProductsInfo(products) {
     try {
         if (products.length === 0)
-            return [];
+            return []
 
-        const productsCollection = admin.firestore().collection(process.env.NEXT_PUBLIC_COLL_PRODUCTS);
+        const productsCollection = admin.firestore().collection(process.env.NEXT_PUBLIC_COLL_PRODUCTS)
 
-        const productIDs = products.map(prod => prod.id);
-        const chunkSize = 30;
-        const chunks = [];
+        const productIDs = products.map(prod => prod.id)
+        const chunkSize = 30
+        const chunks = []
 
         for (let i = 0; i < productIDs.length; i += chunkSize) {
-            chunks.push(productIDs.slice(i, i + chunkSize));
+            chunks.push(productIDs.slice(i, i + chunkSize))
         }
 
         const promises = chunks.map(async chunk => {
-            const q = productsCollection.where('id', 'in', chunk);
-            const querySnapshot = await q.get();
-            return querySnapshot.docs.map(doc => doc.data());
-        });
+            const q = productsCollection.where('id', 'in', chunk)
+            const querySnapshot = await q.get()
+            return querySnapshot.docs.map(doc => doc.data())
+        })
 
-        const chunkResults = await Promise.all(promises);
-        const productsResult = chunkResults.flat();
+        const chunkResults = await Promise.all(promises)
+        const productsResult = chunkResults.flat()
 
         const productsOneVariant = products.map(prod => {
-            const product = productsResult.find(p => p.id === prod.id);
+            const product = productsResult.find(p => p.id === prod.id)
 
             const variants = getProductVariantsInfos(product)
             const variant = variants.find(vari => vari.id === prod.variant_id)
@@ -254,7 +254,7 @@ async function getProductsInfo(products) {
 
         return productsOneVariant
     } catch (error) {
-        console.error('Error getting Products Info:', error);
+        console.error('Error getting Products Info:', error)
         throw error;
     }
 }
