@@ -24,11 +24,12 @@ export default function Admin() {
     const [adminsList, setAdminsList] = useState()
 
     useEffect(() => {
-        getDashboardData()
+        if (isAdmin)
+            getDashboardData()
     }, [])
 
     useEffect(() => {
-        if (auth?.currentUser)
+        if (auth?.currentUser && isAdmin)
             getAdminUsers()
     }, [auth?.currentUser])
 
@@ -40,6 +41,7 @@ export default function Admin() {
         }
         catch (error) {
             console.error(error)
+            console.log('error.message', error.message)
             showToast({ type: error?.type || 'error', msg: tToasts(error.message) })
         }
     }

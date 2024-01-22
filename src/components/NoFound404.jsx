@@ -28,7 +28,7 @@ export default function NoFound404(props) {
         if (autoRedirect && !showLoadingScreen) {
             time = setTimeout(() => {
                 router.push('/')
-            }, 3000)
+            }, 5000)
         }
 
         return () => {
