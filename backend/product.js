@@ -259,6 +259,50 @@ async function getProductsInfo(products) {
     }
 }
 
+async function getProductsByIds(ids) {
+    try {
+        if (!ids || ids.length === 0) {
+            return [];
+        }
+
+        const productsCollection = admin.firestore().collection(process.env.NEXT_PUBLIC_COLL_PRODUCTS);
+
+        const chunkSize = 30;
+        const chunks = [];
+
+        for (let i = 0; i < ids.length; i += chunkSize) {
+            chunks.push(ids.slice(i, i + chunkSize));
+        }
+
+        const promises = chunks.map(async chunk => {
+            const querySnapshot = await productsCollection.where('id', 'in', chunk).get();
+            return querySnapshot.docs.map(doc => doc.data());
+        });
+
+        const chunkResults = await Promise.all(promises);
+        const mergedResults = chunkResults.flat();
+
+        const products = {};
+        mergedResults.forEach(product => {
+            products[product.id] = product;
+        });
+
+        const orderedProducts = ids.map(id => {
+            const foundProduct = products[id];
+            if (!foundProduct) {
+                throw new MyError({ message: `Product with ID ${id} not found` });
+            }
+            return foundProduct;
+        })
+
+        console.log('Products retrieved successfully by IDs!');
+        return orderedProducts;
+    } catch (error) {
+        console.error('Error getting products by IDs:', error);
+        throw error;
+    }
+}
+
 export {
     createProduct,
     getProductById,
@@ -268,4 +312,5 @@ export {
     cleanPopularityYear,
     getDisabledProducts,
     removeExpiredPromotions,
+    getProductsByIds,
 }

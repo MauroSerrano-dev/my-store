@@ -68,7 +68,6 @@ export function cartItemModel(props) {
         id_printify,
         provider_id,
         variant,
-        price,
     } = props
 
     return {
@@ -81,7 +80,6 @@ export function cartItemModel(props) {
         id_printify: id_printify,
         provider_id: provider_id,
         variant: variant,
-        price: price,
     }
 }
 

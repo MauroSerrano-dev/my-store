@@ -15,6 +15,7 @@ import { useAppContext } from '@/components/contexts/AppContext'
 import { getProductPriceUnit } from '@/utils/prices'
 import ZoneConverter from '@/utils/country-zone.json'
 import { getAllProducts } from '../../frontend/product'
+import MyError from '@/classes/MyError'
 
 export default function Cart() {
 
@@ -67,102 +68,67 @@ export default function Cart() {
             getProducts()
     }, [cart])
 
-    function handleCheckout() {
-        if (process.env.NEXT_PUBLIC_DISABLE_CHECKOUT === 'true') {
-            showToast({ msg: 'checkout_temporarily_disabled' })
-            return
-        }
-        if (cart.products.reduce((acc, prod) => acc + prod.quantity, 0) > LIMITS.cart_items) {
-            showToast({ msg: 'cart_contains_more_than_limit' })
-            return
-        }
-        setBlockInteractions(true)
-        setLoading(true)
-        setDisableCheckoutButton(true)
-        const options = {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                authorization: process.env.NEXT_PUBLIC_APP_TOKEN
-            },
-            body: JSON.stringify({
-                cartItems: cart.products.map(prod => {
-                    const shippingOption = getShippingOptions(prod.type_id, userLocation.country)
-                    return cartItemModel({
-                        id: prod.id,
-                        type_id: prod.type_id,
-                        quantity: prod.quantity,
-                        title: prod.title,
-                        image_src: prod.image_src,
-                        description: `${tCommon(prod.type_id)} ${tColors(COLORS_POOL[prod.variant.color_id].id_string)} / ${tCommon(SIZES_POOL.find(sz => sz.id === prod.variant.size_id).title)}`,
-                        id_printify: prod.printify_ids[shippingOption.provider_id],
-                        provider_id: shippingOption.provider_id,
-                        variant: {
-                            ...prod.variant,
-                            id_printify: typeof prod.variant.id_printify === 'string' ? prod.variant.id_printify : prod.variant.id_printify[shippingOption.provider_id]
-                        },
-                        price: getProductPriceUnit(prod, prod.variant, userCurrency?.rate),
-                    })
-                }),
-                cancel_url: window.location.href,
-                success_url: session
-                    ? `${window.location.origin}${i18n.language === DEFAULT_LANGUAGE ? '' : `/${i18n.language}`}/orders`
-                    : `${window.location.origin}${i18n.language === DEFAULT_LANGUAGE ? '' : `/${i18n.language}`}/?refresh-cart`,
-                customer: session,
-                shippingValue: SHIPPING_CONVERTED,
-                shippingCountry: userLocation.country,
-                currency: userCurrency,
-                cart_id: session ? session.cart_id : null,
-                user_language: i18n.language,
-            })
-        }
+    async function handleCheckout() {
+        try {
+            setBlockInteractions(true)
+            setLoading(true)
+            setDisableCheckoutButton(true)
+            const options = {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    authorization: process.env.NEXT_PUBLIC_APP_TOKEN
+                },
+                body: JSON.stringify({
+                    cartItems: cart.products.map(prod => {
+                        const shippingOption = getShippingOptions(prod.type_id, userLocation.country)
+                        return cartItemModel({
+                            id: prod.id,
+                            type_id: prod.type_id,
+                            quantity: prod.quantity,
+                            title: prod.title,
+                            image_src: prod.image_src,
+                            description: `${tCommon(prod.type_id)} ${tColors(COLORS_POOL[prod.variant.color_id].id_string)} / ${tCommon(SIZES_POOL.find(sz => sz.id === prod.variant.size_id).title)}`,
+                            id_printify: prod.printify_ids[shippingOption.provider_id],
+                            provider_id: shippingOption.provider_id,
+                            variant: {
+                                ...prod.variant,
+                                id_printify: typeof prod.variant.id_printify === 'string' ? prod.variant.id_printify : prod.variant.id_printify[shippingOption.provider_id]
+                            },
+                        })
+                    }),
+                    cancel_url: window.location.href,
+                    success_url: session
+                        ? `${window.location.origin}${i18n.language === DEFAULT_LANGUAGE ? '' : `/${i18n.language}`}/orders`
+                        : `${window.location.origin}${i18n.language === DEFAULT_LANGUAGE ? '' : `/${i18n.language}`}/?refresh-cart`,
+                    customer: session,
+                    shippingValue: SHIPPING_CONVERTED,
+                    shippingCountry: userLocation.country,
+                    currency_code: userCurrency?.code,
+                    cart_id: session ? session.cart_id : null,
+                    user_language: i18n.language,
+                })
+            }
 
-        fetch('/api/stripe', options)
-            .then(response => response.json())
-            .then(response => {
-                if (response.outOfStock) {
-                    setBlockInteractions(false)
-                    setLoading(false)
-                    setDisableCheckoutButton(false)
-                    setOutOfStock(response.outOfStock)
-                    showToast({
-                        msg: tToasts(
-                            'out_of_stock',
-                            {
-                                count: response.outOfStock.length,
-                                country: tCountries(userLocation.country),
-                                product_title: response.outOfStock[0].title,
-                                variant_title: response.outOfStock[0].variant.title,
-                            }
-                        ),
-                        type: 'error'
-                    })
-                }
-                if (response.disabledProducts) {
-                    setBlockInteractions(false)
-                    setLoading(false)
-                    setDisableCheckoutButton(false)
-                    setUnavailables(response.disabledProducts)
-                    showToast({
-                        msg: tToasts(
-                            'disabled_products',
-                            {
-                                count: response.disabledProducts.length,
-                                product_title: response.disabledProducts[0].title,
-                            }
-                        ),
-                        type: 'error'
-                    })
-                }
-                else
-                    window.location.href = response.url
-            })
-            .catch(err => {
-                setBlockInteractions(false)
-                setLoading(false)
-                setDisableCheckoutButton(false)
-                console.error(err)
-            })
+            const response = await fetch('/api/stripe', options)
+            const responseJson = await response.json()
+
+            if (response.status >= 300)
+                throw new MyError(responseJson.error)
+
+            window.location.href = responseJson.url
+        }
+        catch (error) {
+            console.error(error)
+            showToast({ type: error.type || 'error', msg: tToasts(error.message, error.customProps?.options || {}) })
+            if (error.customProps?.outOfStock)
+                setOutOfStock(error.customProps.outOfStock)
+            if (error.customProps?.disabledProducts)
+                setUnavailables(error.customProps.disabledProducts)
+            setBlockInteractions(false)
+            setLoading(false)
+            setDisableCheckoutButton(false)
+        }
     }
 
     async function getProducts() {

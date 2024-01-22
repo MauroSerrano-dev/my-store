@@ -88,7 +88,7 @@ async function mergeCarts(cartId, products) {
         const userCart = await getCartById(cartId)
         const newCart = userCart.products.reduce((acc, prod) => acc + prod.quantity, 0) + products.reduce((acc, prod) => acc + prod.quantity, 0) <= LIMITS.cart_items
             ? await addProductsToCart(cartId, products)
-            : userCart
+            : await setCartProducts(cartId, products)
         return newCart
     } catch (error) {
         console.error('Error merging Carts', error)
@@ -146,7 +146,8 @@ async function setCartProducts(cartId, cartProducts) {
 
         await updateDoc(cartRef, cartData);
 
-        console.log('Cart products set successfully!');
+        if (process.env.NEXT_PUBLIC_ENV === 'development')
+            console.log('Cart products set successfully!');
         return { id: cartDoc.id, ...cartData };
     } catch (error) {
         console.error('Error setting cart products:', error);

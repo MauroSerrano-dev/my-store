@@ -417,7 +417,13 @@ async function getProductsByIds(ids) {
             products[product.id] = product;
         })
 
-        const orderedProducts = ids.map(id => products[id] || null);
+        const orderedProducts = ids.map(id => {
+            const foundProduct = products[id];
+            if (!foundProduct) {
+                throw new MyError({ message: `Product with ID ${id} not found` });
+            }
+            return foundProduct;
+        })
 
         console.log('Products retrieved successfully by IDs!')
         return orderedProducts
