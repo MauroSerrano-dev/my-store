@@ -469,7 +469,7 @@ export default withRouter(() => {
             setProduct(prev => (
                 {
                     ...prev,
-                    variants: prev.variants.map(vari => vari.color_id === prev.colors[colorIndex].id
+                    variants: prev.variants.map(vari => vari.color_id === prev.colors_ids[colorIndex]
                         ? { ...vari, art: { ...vari.art, color_id: color.id === vari.art.color_id ? null : color.id } }
                         : vari
                     )
