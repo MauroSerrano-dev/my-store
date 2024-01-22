@@ -19,7 +19,7 @@ import ZoneConverter from '@/utils/country-zone.json'
 import NProgress from 'nprogress'
 import { createNewUser, getUserById } from '../../../frontend/user'
 import { addProductToWishlist, deleteProductFromWishlist, getWishlistById } from '../../../frontend/wishlists'
-import { changeCartProductField, deleteProductFromCart, getCartById, mergeCarts, setCartProducts } from '../../../frontend/cart'
+import { changeCartProductField, deleteProductFromCart, getCartById, setCartProducts } from '../../../frontend/cart'
 import { getProductsInfo } from '../../../frontend/product'
 import { auth } from '../../../firebaseInit'
 import { getAllCurrencies } from '../../../frontend/app-settings'
@@ -27,6 +27,8 @@ import MyError from '@/classes/MyError'
 import { changeVisitantCartProductField, deleteProductFromVisitantCart } from '../../../frontend/visitant-cart'
 import { isSameProduct } from '@/utils'
 import PosAddToCartModal from '../PosAddToCartModal'
+import Modal from '../Modal'
+import MyButton from '../material-ui/MyButton'
 
 const AppContext = createContext()
 
@@ -61,6 +63,8 @@ export function AppProvider({ children }) {
     const [currencies, setCurrencies] = useState()
     const [isAdmin, setIsAdmin] = useState()
     const [posAddModal, setPosAddModal] = useState(false)
+    const [bringCartModalOpen, setBringCartModalOpen] = useState(false)
+    const [visitantProductsLength, setVisitantProductsLength] = useState(0)
 
     const router = useRouter()
 
@@ -328,11 +332,8 @@ export function AppProvider({ children }) {
 
     async function handleLogin(user) {
         try {
-            const visitantCartProducts = JSON.parse(localStorage.getItem(CART_LOCAL_STORAGE))?.products || []
             setSession(user)
-            const cart = visitantCartProducts.length > 0
-                ? await mergeCarts(user.cart_id, visitantCartProducts)
-                : await getCartById(user.cart_id)
+            const cart = await getCartById(user.cart_id)
             try {
                 const products = await getProductsInfo(cart.products)
                 setCart({ ...cart, products: products })
@@ -344,7 +345,11 @@ export function AppProvider({ children }) {
             }
             const wishlist = await getWishlistById(user.wishlist_id)
             setWishlist(wishlist)
-            localStorage.removeItem(CART_LOCAL_STORAGE)
+            const visitantCartProducts = JSON.parse(localStorage.getItem(CART_LOCAL_STORAGE))?.products || []
+            if (visitantCartProducts.length > 0) {
+                setVisitantProductsLength(visitantCartProducts.reduce((acc, prod) => acc + prod.quantity, 0))
+                setBringCartModalOpen(true)
+            }
         }
         catch (error) {
             console.error(error)
@@ -524,6 +529,19 @@ export function AppProvider({ children }) {
         }
     }
 
+    async function handleBringCart() {
+        try {
+            setBringCartModalOpen(false)
+            const visitantCartProducts = JSON.parse(localStorage.getItem(CART_LOCAL_STORAGE))?.products || []
+            await setCartProducts(cart.id, visitantCartProducts)
+            getInicialCart()
+        }
+        catch (error) {
+            console.error(error)
+            showToast({ type: error?.type || 'error', msg: tToasts(error.message) })
+        }
+    }
+
     return (
         <AppContext.Provider
             value={{
@@ -570,9 +588,9 @@ export function AppProvider({ children }) {
         >
             <motion.div
                 className={styles.container}
-                style={{
+                /* style={{
                     opacity: websiteVisible ? 1 : 0,
-                }}
+                }} */
                 initial='closed'
                 animate={
                     menuOpen
@@ -643,6 +661,49 @@ export function AppProvider({ children }) {
                         </div>
                     }
                 </div>
+                <Modal
+                    className={styles.bringCartModal}
+                    open={bringCartModalOpen}
+                    closeModal={() => setBringCartModalOpen(false)}
+                    closedCallBack={() => {
+                        localStorage.removeItem(CART_LOCAL_STORAGE)
+                        setVisitantProductsLength(0)
+                    }}
+                >
+                    <div
+                        className={styles.bringCartModalTexts}
+                    >
+                        <span>Você tem {visitantProductsLength} produtos no seu carrinho</span>
+                        <span style={{ fontWeight: 600 }}>Manter carrinho?</span>
+                    </div>
+                    <div
+                        className={styles.bringCartModalButtons}
+                    >
+                        <MyButton
+                            variant='contained'
+                            color='success'
+                            onClick={handleBringCart}
+                            style={{
+                                width: 'calc(50% - 0.5rem)',
+                                fontWeight: 700,
+                                color: 'var(--global-white)',
+                            }}
+                        >
+                            Yes
+                        </MyButton>
+                        <MyButton
+                            variant='outlined'
+                            color='error'
+                            onClick={() => setBringCartModalOpen(false)}
+                            style={{
+                                width: 'calc(50% - 0.5rem)',
+                                fontWeight: 700,
+                            }}
+                        >
+                            No
+                        </MyButton>
+                    </div>
+                </Modal>
                 <div
                     className={styles.componentContainer}
                     style={{
@@ -677,8 +738,7 @@ export function AppProvider({ children }) {
                 style={{ color: 'white' }}
                 pauseOnFocusLoss={false}
             />
-            {
-                blockInteractions &&
+            {blockInteractions &&
                 <div
                     style={{
                         position: 'fixed',
@@ -690,8 +750,7 @@ export function AppProvider({ children }) {
                     }}>
                 </div>
             }
-            {
-                loading &&
+            {loading &&
                 <motion.div
                     variants={{
                         hidden: {

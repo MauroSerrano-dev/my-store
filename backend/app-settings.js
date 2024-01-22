@@ -1,4 +1,35 @@
+import MyError from '@/classes/MyError';
+
 const admin = require('../firebaseAdminInit')
+
+/**
+ * Retrieves currency information by its ID.
+ * 
+ * @param {string} currencyId - The ID of the currency to retrieve.
+ * @returns {Promise<Object>} A promise that resolves to the currency data if found.
+ */
+async function getCurrencyById(currencyId) {
+    try {
+        const currRef = admin.firestore().doc(`${process.env.NEXT_PUBLIC_COLL_APP_SETTINGS}/currencies`);
+
+        const currDoc = await currRef.get();
+        if (currDoc.exists) {
+            const currenciesData = currDoc.data().data;
+
+            const currency = currenciesData[currencyId];
+
+            if (currency)
+                return currency;
+            else
+                throw new MyError({ message: `Currency with ID ${currencyId} not found` });
+        }
+        else
+            throw new MyError({ message: `Currency collection not found` });
+    } catch (error) {
+        console.error('Error getting currency by ID:', error);
+        throw error;
+    }
+}
 
 async function updateAllCurrencies(updatedCurrencies) {
     try {
@@ -10,7 +41,6 @@ async function updateAllCurrencies(updatedCurrencies) {
         })
 
         console.log('Currencies updated successfully!')
-        return
     } catch (error) {
         console.error('Error updating currencies:', error)
         throw error
@@ -114,6 +144,7 @@ async function emailIsProhibited(email) {
 }
 
 export {
+    getCurrencyById,
     updateAllCurrencies,
     addUserDeleted,
     clearDeletedUsers,

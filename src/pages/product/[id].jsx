@@ -103,11 +103,6 @@ export default withRouter(props => {
 
     async function handleBuyNow() {
         try {
-            if (process.env.NEXT_PUBLIC_DISABLE_CHECKOUT === 'true') {
-                showToast({ msg: tToasts('checkout_temporarily_disabled') })
-                return
-            }
-
             setDisableCheckoutButton(true)
 
             const shippingOption = getShippingOptions(product.type_id, userLocation.country)
@@ -127,12 +122,10 @@ export default withRouter(props => {
                         description: `${tCommon(product.type_id)} ${tColors(currentColor.id_string)} / ${currentSize.title}`,
                         id_printify: product.printify_ids[shippingOption.provider_id],
                         provider_id: shippingOption.provider_id,
-                        variant: productCurrentVariant,
                         variant: {
-                            ...productCurrentVariant.variant,
+                            ...productCurrentVariant,
                             id_printify: typeof productCurrentVariant.id_printify === 'string' ? productCurrentVariant.id_printify : productCurrentVariant.id_printify[shippingOption.provider_id],
                         },
-                        price: Math.round(productCurrentVariant.price * userCurrency?.rate),
                     })],
                     success_url: session
                         ? `${window.location.origin}${i18n.language === DEFAULT_LANGUAGE ? '' : `/${i18n.language}`}/orders`
@@ -141,7 +134,7 @@ export default withRouter(props => {
                     customer: session,
                     shippingValue: Math.round(shippingValue * userCurrency?.rate),
                     shippingCountry: userLocation.country,
-                    currency: userCurrency,
+                    currency_code: userCurrency?.code,
                     cart_id: session ? session.cart_id : null,
                     user_language: i18n.language,
                 })
@@ -151,34 +144,17 @@ export default withRouter(props => {
             const responseJson = await response.json()
 
             if (response.status >= 300)
-                throw responseJson.error
-            if (responseJson.outOfStock) {
-                product.outOfStock = true
-                throw new MyError({
-                    message: 'out_of_stock',
-                    options: {
-                        count: responseJson.outOfStock.length,
-                        country: tCountries(userLocation.country),
-                        product_title: responseJson.outOfStock[0].title,
-                        variant_title: responseJson.outOfStock[0].variant.title,
-                    }
-                })
-            }
-            if (responseJson.disabledProducts) {
-                product.disabled = true
-                throw new MyError({
-                    message: 'disabled_products',
-                    options: {
-                        count: responseJson.outOfStock.length,
-                        product_title: responseJson.outOfStock[0].title
-                    }
-                })
-            }
+                throw new MyError(responseJson.error)
+
             window.location.href = responseJson.url
         }
         catch (error) {
             console.error(error)
-            showToast({ type: error?.type || 'error', msg: tToasts(error.message, error?.options || {}) })
+            showToast({ type: error.type || 'error', msg: tToasts(error.message, error.customProps?.options || {}) })
+            if (error.customProps?.outOfStock)
+                product.outOfStock = true
+            if (error.customProps?.disabledProducts)
+                product.disabled = true
             setBuyNowModalOpen(false)
             setDisableCheckoutButton(false)
         }

@@ -1,9 +1,11 @@
-import { DEFAULT_LANGUAGE, PRODUCTS_TYPES } from "@/consts";
+import { DEFAULT_LANGUAGE, LIMITS, PRODUCTS_TYPES } from "@/consts";
 import { isTokenValid } from "@/utils/auth";
 import axios from 'axios'
-import { getDisabledProducts } from "../../../backend/product";
+import { getDisabledProducts, getProductsByIds } from "../../../backend/product";
 import { filterNotInPrintify } from "../../../backend/printify";
 import { getShippingValue } from "@/utils/edit-product";
+import { getCurrencyById } from "../../../backend/app-settings";
+import { getProductPriceUnit } from "@/utils/prices";
 
 const Stripe = require("stripe");
 
@@ -22,7 +24,7 @@ export default async function handler(req, res) {
     const {
       customer,
       cartItems,
-      currency,
+      currency_code,
       shippingCountry,
       cart_id,
       success_url,
@@ -30,14 +32,44 @@ export default async function handler(req, res) {
       user_language,
     } = req.body
 
+    if (process.env.NEXT_PUBLIC_DISABLE_CHECKOUT === 'true')
+      res.status(400).json({ error: { type: 'warning', message: 'checkout_temporarily_disabled' } })
+
+    if (cartItems.reduce((acc, prod) => acc + prod.quantity, 0) > LIMITS.cart_items)
+      res.status(400).json({ error: { type: 'warning', message: 'cart_contains_more_than_limit' } })
+
+    const currency = await getCurrencyById(currency_code)
+
     const notExistingProducts = await filterNotInPrintify(cartItems)
     if (notExistingProducts.length !== 0) {
-      res.status(200).json({ disabledProducts: notExistingProducts })
+      res.status(400).json({
+        error: {
+          message: 'disabled_products',
+          customProps: {
+            disabledProducts: notExistingProducts,
+            options: {
+              count: notExistingProducts.length,
+              product_title: notExistingProducts[0].title,
+            }
+          }
+        }
+      })
     }
 
     const disabledProducts = await getDisabledProducts(cartItems)
     if (disabledProducts.length !== 0) {
-      res.status(200).json({ disabledProducts: disabledProducts })
+      res.status(400).json({
+        error: {
+          message: 'disabled_products',
+          customProps: {
+            disabledProducts: disabledProducts,
+            options: {
+              count: disabledProducts.length,
+              product_title: disabledProducts[0].title,
+            }
+          }
+        }
+      })
     }
 
     let outOfStock = []
@@ -53,8 +85,21 @@ export default async function handler(req, res) {
 
     await Promise.all(asyncOutOfStockRequests)
     if (outOfStock.length !== 0) {
-      res.status(200).json({ outOfStock: outOfStock })
+      res.status(400).json({
+        error: {
+          message: 'out_of_stock',
+          customProps: {
+            options: {
+              count: outOfStock.length,
+              country: shippingCountry,
+              product_title: outOfStock[0].title,
+              variant_title: outOfStock[0].variant.title,
+            }
+          }
+        }
+      })
     }
+
     let stripeCustomer
 
     if (customer) {
@@ -80,21 +125,25 @@ export default async function handler(req, res) {
       }
     }
 
+    const productsFullInfo = await getProductsByIds(cartItems.map(item => item.id))
+
     const line_items = cartItems.map(item => {
+      const productFullInfo = productsFullInfo.find(prod => prod.id === item.id)
+      const variantFullInfo = productFullInfo.variants.find(vari => vari.id === item.variant.id)
       return {
         price_data: {
           currency: currency.code,
           product_data: {
-            name: item.title,
+            name: productFullInfo.title,
             images: [item.image_src],
             description: item.description,
             metadata: {
-              id: item.id,
-              variant_id: item.variant.id,
+              id: productFullInfo.id,
+              variant_id: variantFullInfo.id,
               quantity: item.quantity
             },
           },
-          unit_amount: item.price,
+          unit_amount: getProductPriceUnit(productFullInfo, variantFullInfo, currency.rate),
         },
         quantity: item.quantity,
       }
@@ -103,12 +152,14 @@ export default async function handler(req, res) {
     const cartMetadata = {}
 
     cartItems.forEach((item, i) => {
+      const productFullInfo = productsFullInfo.find(prod => prod.id === item.id)
+      const variantFullInfo = productFullInfo.variants.find(vari => vari.id === item.variant.id)
       cartMetadata[i] = JSON.stringify(
         {
-          id: item.id,
+          id: productFullInfo.id,
           id_printify: item.id_printify,
           quantity: item.quantity,
-          variant_id: item.variant.id,
+          variant_id: variantFullInfo.id,
           variant_id_printify: item.variant.id_printify,
         }
       )

@@ -55,6 +55,29 @@
     transition: all ease-in-out 200ms;
 }
 
+.bringCartModal {
+    display: flex;
+    flex-direction: column;
+    padding: 1rem 1rem;
+
+    gap: 1rem;
+
+    width: 400px;
+}
+
+.bringCartModalTexts {
+    display: flex;
+    flex-direction: column;
+
+    gap: 0.3rem;
+}
+
+.bringCartModalButtons {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+}
+
 /* Enable hover only on non-touch devices */
 @media (hover: hover) and (pointer: fine) {
     .subNavBar p:hover {

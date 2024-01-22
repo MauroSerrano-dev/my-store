@@ -21,7 +21,7 @@ function Error() {
         let time
         time = setTimeout(() => {
             router.push('/')
-        }, 3000)
+        }, 5000)
 
         return () => {
             clearTimeout(time)
