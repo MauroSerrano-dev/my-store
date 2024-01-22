@@ -50,7 +50,6 @@ export function AppProvider({ children }) {
     const [isScrollAtTop, setIsScrollAtTop] = useState(true)
     const [mobile, setMobile] = useState()
     const [windowWidth, setWindowWidth] = useState()
-    const [websiteVisible, setWebsiteVisible] = useState(false)
     const [search, setSearch] = useState('')
     const [supportsHoverAndPointer, setSupportsHoverAndPointer] = useState()
     const [menuOpen, setMenuOpen] = useState(false)
@@ -66,6 +65,8 @@ export function AppProvider({ children }) {
     const [bringCartModalOpen, setBringCartModalOpen] = useState(false)
     const [visitantProductsLength, setVisitantProductsLength] = useState(0)
 
+    const websiteVisible = mobile !== undefined
+
     const router = useRouter()
 
     const tNavbar = useTranslation('navbar').t
@@ -80,10 +81,6 @@ export function AppProvider({ children }) {
             setMobile(window.innerWidth < MOBILE_LIMIT)
             setWindowWidth(window.innerWidth)
         }
-
-        setTimeout(() => {
-            setWebsiteVisible(true)
-        }, 45) // com 10 estava tendo um bug de animação ao fazer refresh
 
         window.addEventListener('resize', handleResize)
 
@@ -588,9 +585,9 @@ export function AppProvider({ children }) {
         >
             <motion.div
                 className={styles.container}
-                /* style={{
+                style={{
                     opacity: websiteVisible ? 1 : 0,
-                }} */
+                }}
                 initial='closed'
                 animate={
                     menuOpen
@@ -647,7 +644,7 @@ export function AppProvider({ children }) {
                             style={{
                                 top: isScrollAtTop ? '5rem' : 0,
                                 height: mobile ? SUB_NAVBAR_HEIGHT_MOBILE : SUB_NAVBAR_HEIGHT,
-                                transition: `all ease-in-out ${websiteVisible ? 200 : 0}ms`,
+                                transition: `all ease-in-out 0ms`,
                             }}
                         >
                             <SearchBar

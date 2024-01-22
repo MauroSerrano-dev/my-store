@@ -38,6 +38,8 @@ export default function Home() {
   const tToasts = useTranslation('toasts').t
   const { i18n } = useTranslation()
 
+  const [categoriesCarouselLoad, setCategoriesCarouselLoad] = useState(false)
+
   const [productsOne, setProductsOne] = useState()
   const [productsTwo, setProductsTwo] = useState()
   const [productsThree, setProductsThree] = useState()
@@ -147,8 +149,9 @@ export default function Home() {
                           : windowWidth > 420
                             ? 97.5
                             : 84.5,
-                        transition: `width ease-in-out ${session === undefined ? 0 : 200}ms, width ease-in-out ${session === undefined ? 0 : 200}ms, scale 100ms ease-out`,
+                        transition: `width ease-in-out ${categoriesCarouselLoad ? 200 : 0}ms, width ease-in-out ${categoriesCarouselLoad ? 200 : 0}ms, scale 100ms ease-out`,
                       }}
+                      onLoad={() => setCategoriesCarouselLoad(true)}
                     >
                       <div
                         className={styles.categoryShadow}
