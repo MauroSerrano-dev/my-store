@@ -5,6 +5,7 @@
     --text-color: var(--text-white);
     padding-top: 0.5rem;
     padding-bottom: 1rem;
+    min-height: 350px;
 }
 
 .menuFilters {
