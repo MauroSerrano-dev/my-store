@@ -103,23 +103,8 @@ async function deleteUser(user_id) {
 
         const user = userDoc.data()
 
-        const cartRef = admin.firestore().doc(`${process.env.NEXT_PUBLIC_COLL_CARTS}/${user.cart_id}`)
-
-        const cartDoc = await cartRef.get()
-
-        if (!cartDoc.exists)
-            throw new MyError({ message: 'cart_not_found' })
-
-        const wishlistRef = admin.firestore().doc(`${process.env.NEXT_PUBLIC_COLL_WISHLISTS}/${user.wishlist_id}`)
-
-        const wishlistDoc = await wishlistRef.get()
-        if (!wishlistDoc.exists)
-            throw new MyError({ message: 'wishlist_not_found' })
-
         await admin.auth().deleteUser(user_id)
         await userRef.delete()
-        await cartRef.delete()
-        await wishlistRef.delete()
 
         console.log(`User with ID ${user_id} has been deleted successfully.`)
         return { id: userDoc.id, ...user }
