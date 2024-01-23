@@ -25,7 +25,6 @@ async function getUserById(id) {
 
 async function createNewUser(authUser) {
     try {
-
         const options = {
             method: 'POST',
             headers: {

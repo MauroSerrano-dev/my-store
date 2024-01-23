@@ -212,16 +212,16 @@ export const SIZES_POOL = [
 ]
 
 export const PROVIDERS_POOL = {
-    1: { id: 1, title: 'SPOKE Custom Products' },
-    6: { id: 6, title: 'T Shirt and Sons' },
-    26: { id: 26, title: 'Textildruck Europa' },
-    27: { id: 27, title: 'Print Geek' },
-    28: { id: 28, title: 'District Photo' },
-    29: { id: 29, title: 'Monster Digital' },
-    39: { id: 39, title: 'SwiftPOD' },
-    43: { id: 43, title: 'Stoked On Printing' },
-    50: { id: 50, title: 'Underground Threads' },
-    87: { id: 87, title: 'Print Logistic' },
+    1: { id: '1', title: 'SPOKE Custom Products' },
+    6: { id: '6', title: 'T Shirt and Sons' },
+    26: { id: '26', title: 'Textildruck Europa' },
+    27: { id: '27', title: 'Print Geek' },
+    28: { id: '28', title: 'District Photo' },
+    29: { id: '29', title: 'Monster Digital' },
+    39: { id: '39', title: 'SwiftPOD' },
+    43: { id: '43', title: 'Stoked On Printing' },
+    50: { id: '50', title: 'Underground Threads' },
+    87: { id: '87', title: 'Print Logistic' },
 }
 
 export const MENU_OPTIONS = [
@@ -276,10 +276,10 @@ export const PRODUCTS_TYPES = [
         family_id: 't-shirts',
         color: '#1189c4',
         allow_back_variant: true,
-        providers: [29, 87],
+        providers: ['29', '87'],
         blueprint_ids: {
-            29: 145,
-            87: 145,
+            29: '145',
+            87: '145',
         },
         icon: '/svgs/products-types/t-shirt_icon.svg',
         inicial_tags: ['short-sleeve'],
@@ -846,10 +846,10 @@ export const PRODUCTS_TYPES = [
         family_id: 't-shirts',
         color: '#365486',
         allow_back_variant: true,
-        providers: [39, 87],
+        providers: ['39', '87'],
         blueprint_ids: {
-            39: 80,
-            87: 80,
+            39: '80',
+            87: '80',
         },
         icon: '/svgs/products-types/t-shirt-long-sleeve_icon.svg',
         inicial_tags: ['long-sleeve'],
@@ -1136,10 +1136,10 @@ export const PRODUCTS_TYPES = [
         family_id: 'raglan-tees',
         color: '#e0824b',
         allow_back_variant: false,
-        providers: [43, 6],
+        providers: ['27', '6'],
         blueprint_ids: {
-            43: 79,
-            6: 79,
+            27: '79',
+            6: '79',
         },
         icon: '/svgs/products-types/raglan-tee-long-sleeve_icon.svg',
         inicial_tags: ['long-sleeve', 'raglan', 'tee', 'baseball'],
@@ -1152,7 +1152,7 @@ export const PRODUCTS_TYPES = [
             {
                 id: "royal-white-s",
                 id_printify: {
-                    43: '33522',
+                    27: '33522',
                     6: '33522',
                 },
                 cost: 1843,
@@ -1165,7 +1165,7 @@ export const PRODUCTS_TYPES = [
             {
                 id: "asphalt-white-s",
                 id_printify: {
-                    43: '39175',
+                    27: '39175',
                     6: '39175',
                 },
                 cost: 1843,
@@ -1178,7 +1178,7 @@ export const PRODUCTS_TYPES = [
             {
                 id: "red-white-s",
                 id_printify: {
-                    43: '36256',
+                    27: '36256',
                     6: '39211',
                 },
                 cost: 1843,
@@ -1191,7 +1191,7 @@ export const PRODUCTS_TYPES = [
             {
                 id: "royal-white-m",
                 id_printify: {
-                    43: '33523',
+                    27: '33523',
                     6: '33523',
                 },
                 cost: 1843,
@@ -1204,7 +1204,7 @@ export const PRODUCTS_TYPES = [
             {
                 id: "asphalt-white-m",
                 id_printify: {
-                    43: '39253',
+                    27: '39253',
                     6: '39253',
                 },
                 cost: 1843,
@@ -1217,7 +1217,7 @@ export const PRODUCTS_TYPES = [
             {
                 id: "red-white-m",
                 id_printify: {
-                    43: '36258',
+                    27: '36258',
                     6: '39289',
                 },
                 cost: 1843,
@@ -1230,7 +1230,7 @@ export const PRODUCTS_TYPES = [
             {
                 id: "royal-white-l",
                 id_printify: {
-                    43: '33524',
+                    27: '33524',
                     6: '33524',
                 },
                 cost: 1843,
@@ -1243,7 +1243,7 @@ export const PRODUCTS_TYPES = [
             {
                 id: "asphalt-white-l",
                 id_printify: {
-                    43: '39331',
+                    27: '39331',
                     6: '39331',
                 },
                 cost: 1843,
@@ -1256,7 +1256,7 @@ export const PRODUCTS_TYPES = [
             {
                 id: "red-white-l",
                 id_printify: {
-                    43: '36260',
+                    27: '36260',
                     6: '39367',
                 },
                 cost: 1843,
@@ -1269,7 +1269,7 @@ export const PRODUCTS_TYPES = [
             {
                 id: "royal-white-xl",
                 id_printify: {
-                    43: '33525',
+                    27: '33525',
                     6: '33525',
                 },
                 cost: 1843,
@@ -1282,7 +1282,7 @@ export const PRODUCTS_TYPES = [
             {
                 id: "asphalt-white-xl",
                 id_printify: {
-                    43: '39409',
+                    27: '39409',
                     6: '39409',
                 },
                 cost: 1843,
@@ -1295,7 +1295,7 @@ export const PRODUCTS_TYPES = [
             {
                 id: "red-white-xl",
                 id_printify: {
-                    43: '36262',
+                    27: '36262',
                     6: '39445',
                 },
                 cost: 1843,
@@ -1308,7 +1308,7 @@ export const PRODUCTS_TYPES = [
             {
                 id: "royal-white-2xl",
                 id_printify: {
-                    43: '33526',
+                    27: '33526',
                     6: '33526',
                 },
                 cost: 2187,
@@ -1321,7 +1321,7 @@ export const PRODUCTS_TYPES = [
             {
                 id: "asphalt-white-2xl",
                 id_printify: {
-                    43: '39487',
+                    27: '39487',
                     6: '39487',
                 },
                 cost: 2187,
@@ -1334,7 +1334,7 @@ export const PRODUCTS_TYPES = [
             {
                 id: "red-white-2xl",
                 id_printify: {
-                    43: '36264',
+                    27: '36264',
                     6: '39523',
                 },
                 cost: 2187,
@@ -1347,7 +1347,7 @@ export const PRODUCTS_TYPES = [
             {
                 id: "white-black-s",
                 id_printify: {
-                    43: '39151',
+                    27: '39151',
                     6: '39151',
                 },
                 cost: 1843,
@@ -1360,7 +1360,7 @@ export const PRODUCTS_TYPES = [
             {
                 id: "green-white-s",
                 id_printify: {
-                    43: '39193',
+                    27: '39193',
                     6: '39193',
                 },
                 cost: 1843,
@@ -1373,7 +1373,7 @@ export const PRODUCTS_TYPES = [
             {
                 id: "navy-white-s",
                 id_printify: {
-                    43: '39196',
+                    27: '39196',
                     6: '39196',
                 },
                 cost: 1843,
@@ -1386,7 +1386,7 @@ export const PRODUCTS_TYPES = [
             {
                 id: "black-white-s",
                 id_printify: {
-                    43: '39178',
+                    27: '39178',
                     6: '39178',
                 },
                 cost: 1843,
@@ -1399,7 +1399,7 @@ export const PRODUCTS_TYPES = [
             {
                 id: "white-black-m",
                 id_printify: {
-                    43: '39229',
+                    27: '39229',
                     6: '39229',
                 },
                 cost: 1843,
@@ -1412,7 +1412,7 @@ export const PRODUCTS_TYPES = [
             {
                 id: "green-white-m",
                 id_printify: {
-                    43: '39271',
+                    27: '39271',
                     6: '39271',
                 },
                 cost: 1843,
@@ -1425,7 +1425,7 @@ export const PRODUCTS_TYPES = [
             {
                 id: "navy-white-m",
                 id_printify: {
-                    43: '39274',
+                    27: '39274',
                     6: '39274',
                 },
                 cost: 1843,
@@ -1438,7 +1438,7 @@ export const PRODUCTS_TYPES = [
             {
                 id: "black-white-m",
                 id_printify: {
-                    43: '39256',
+                    27: '39256',
                     6: '39256',
                 },
                 cost: 1843,
@@ -1451,7 +1451,7 @@ export const PRODUCTS_TYPES = [
             {
                 id: "white-black-l",
                 id_printify: {
-                    43: '39307',
+                    27: '39307',
                     6: '39307',
                 },
                 cost: 1843,
@@ -1464,7 +1464,7 @@ export const PRODUCTS_TYPES = [
             {
                 id: "green-white-l",
                 id_printify: {
-                    43: '39349',
+                    27: '39349',
                     6: '39349',
                 },
                 cost: 1843,
@@ -1477,7 +1477,7 @@ export const PRODUCTS_TYPES = [
             {
                 id: "navy-white-l",
                 id_printify: {
-                    43: '39352',
+                    27: '39352',
                     6: '39352',
                 },
                 cost: 1843,
@@ -1490,7 +1490,7 @@ export const PRODUCTS_TYPES = [
             {
                 id: "black-white-l",
                 id_printify: {
-                    43: '39334',
+                    27: '39334',
                     6: '39334',
                 },
                 cost: 1843,
@@ -1503,7 +1503,7 @@ export const PRODUCTS_TYPES = [
             {
                 id: "white-black-xl",
                 id_printify: {
-                    43: '39385',
+                    27: '39385',
                     6: '39385',
                 },
                 cost: 1843,
@@ -1516,7 +1516,7 @@ export const PRODUCTS_TYPES = [
             {
                 id: "green-white-xl",
                 id_printify: {
-                    43: '39427',
+                    27: '39427',
                     6: '39427',
                 },
                 cost: 1843,
@@ -1529,7 +1529,7 @@ export const PRODUCTS_TYPES = [
             {
                 id: "navy-white-xl",
                 id_printify: {
-                    43: '39430',
+                    27: '39430',
                     6: '39430',
                 },
                 cost: 1843,
@@ -1542,7 +1542,7 @@ export const PRODUCTS_TYPES = [
             {
                 id: "black-white-xl",
                 id_printify: {
-                    43: '39412',
+                    27: '39412',
                     6: '39412',
                 },
                 cost: 1843,
@@ -1555,7 +1555,7 @@ export const PRODUCTS_TYPES = [
             {
                 id: "white-black-2xl",
                 id_printify: {
-                    43: '39463',
+                    27: '39463',
                     6: '39463',
                 },
                 cost: 2187,
@@ -1568,7 +1568,7 @@ export const PRODUCTS_TYPES = [
             {
                 id: "green-white-2xl",
                 id_printify: {
-                    43: '39505',
+                    27: '39505',
                     6: '39505',
                 },
                 cost: 2187,
@@ -1581,7 +1581,7 @@ export const PRODUCTS_TYPES = [
             {
                 id: "navy-white-2xl",
                 id_printify: {
-                    43: '39508',
+                    27: '39508',
                     6: '39508',
                 },
                 cost: 2187,
@@ -1594,7 +1594,7 @@ export const PRODUCTS_TYPES = [
             {
                 id: "black-white-2xl",
                 id_printify: {
-                    43: '39490',
+                    27: '39490',
                     6: '39490',
                 },
                 cost: 2187,
@@ -1611,10 +1611,10 @@ export const PRODUCTS_TYPES = [
         family_id: 'sweatshirts',
         color: '#009c75',
         allow_back_variant: true,
-        providers: [50, 87],
+        providers: ['50', '87'],
         blueprint_ids: {
-            50: 49,
-            87: 49,
+            50: '49',
+            87: '49',
         },
         icon: '/svgs/products-types/sweatshirt_icon.svg',
         inicial_tags: ['long-sleeve'],
@@ -2411,10 +2411,10 @@ export const PRODUCTS_TYPES = [
         family_id: 'hoodies',
         color: '#026539',
         allow_back_variant: true,
-        providers: [50, 26],
+        providers: ['50', '26'],
         blueprint_ids: {
-            50: 77,
-            26: 77,
+            50: '77',
+            26: '77',
         },
         icon: '/svgs/products-types/hoodie_icon.svg',
         inicial_tags: ['long-sleeve', 'hood'],
@@ -2781,9 +2781,9 @@ export const PRODUCTS_TYPES = [
         family_id: 'socks',
         color: '#96305a',
         allow_back_variant: false,
-        providers: [1],
+        providers: ['1'],
         blueprint_ids: {
-            1: 376,
+            1: '376',
         },
         icon: '/svgs/products-types/socks_icon.svg',
         inicial_tags: [],
@@ -2830,10 +2830,10 @@ export const PRODUCTS_TYPES = [
         family_id: 'mugs',
         color: '#bA2326',
         allow_back_variant: false,
-        providers: [1, 87],
+        providers: ['1', '87'],
         blueprint_ids: {
-            1: 68,
-            87: 1020,
+            1: '68',
+            87: '1020',
         },
         icon: '/svgs/products-types/mug_icon.svg',
         inicial_tags: [],
@@ -2863,10 +2863,10 @@ export const PRODUCTS_TYPES = [
         family_id: 'mugs',
         color: '#bA2326',
         allow_back_variant: false,
-        providers: [28, 87],
+        providers: ['28', '87'],
         blueprint_ids: {
-            28: 635,
-            87: 1019,
+            28: '635',
+            87: '1019',
         },
         icon: '/svgs/products-types/mug-c_icon.svg',
         inicial_tags: [],
@@ -3163,8 +3163,8 @@ export function getShippingOptions(product_type, country) {
                 provider_id: 27,
                 first_item: 849,
                 add_item: 330,
-                tax: 171, //verificar
-                add_tax: 171, //verificar
+                tax: 179, //verificar
+                add_tax: 144, //verificar
                 currency: 'usd'
             }
         }

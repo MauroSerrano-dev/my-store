@@ -8,6 +8,7 @@
  * @param {Array} props.preferences - User preferences.
  * @param {Object} props.custom_home_page - Home page tags associated with the user.
  * @param {boolean} props.email_verified - Email verification status of the user.
+ * @param {Object} props.create_at - Create At Timestamp.
  * @returns {object} - Returns an object representing the model of the new user with corresponding properties.
  */
 export function newUserModel(props) {
@@ -25,6 +26,7 @@ export function newUserModel(props) {
         },
         email_verified,
         orders_counter = 0,
+        create_at,
     } = props
 
     return {
@@ -38,6 +40,7 @@ export function newUserModel(props) {
         custom_home_page: custom_home_page,
         email_verified: email_verified,
         orders_counter: orders_counter,
+        create_at: create_at,
     }
 }
 

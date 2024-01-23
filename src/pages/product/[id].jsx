@@ -27,7 +27,7 @@ import { SlClose } from 'react-icons/sl'
 import { LoadingButton } from '@mui/lab'
 import ZoneConverter from '@/utils/country-zone.json'
 import ProductTag from '@/components/products/ProductTag'
-import { getProductVariantsInfos, mergeProducts } from '@/utils'
+import { convertTimestampToDate, getProductVariantsInfos, mergeProducts } from '@/utils'
 import TableSizes from '@/components/products/TableSizes'
 import KeyFeatures from '@/components/products/KeyFeatures'
 import { ButtonGroup } from '@mui/material'
@@ -40,12 +40,14 @@ import MyError from '@/classes/MyError'
 
 export default withRouter(props => {
     const {
-        product,
+        productJSON,
         cl,
         sz,
         productMetaImage,
         urlMeta,
     } = props
+
+    const product = JSON.parse(productJSON)
 
     const {
         mobile,
@@ -134,7 +136,6 @@ export default withRouter(props => {
                     shippingValue: Math.round(shippingValue * userCurrency?.rate),
                     shippingCountry: userLocation.country,
                     currency_code: userCurrency?.code,
-                    cart_id: session ? session.cart_id : null,
                     user_language: i18n.language,
                 })
             }
@@ -611,7 +612,7 @@ export async function getServerSideProps({ query, locale, resolvedUrl }) {
     return {
         props: {
             ...(await serverSideTranslations(locale, COMMON_TRANSLATES.concat(['countries', 'product', 'care-instructions', 'key-features', 'table-sizes', 'footer']))),
-            product: product,
+            productJSON: JSON.stringify(product),
             cl: chooseColor === undefined ? null : chooseColor,
             sz: chooseSize === undefined ? null : chooseSize,
             urlMeta: `${process.env.NEXT_PUBLIC_URL}${locale === DEFAULT_LANGUAGE ? '' : `/${locale}`}${resolvedUrl} `,

@@ -10,8 +10,7 @@ const admin = require('../firebaseAdminInit');
  */
 async function deleteProductsFromWishlist(user_id, productsIdsToDelete) {
     try {
-        const firestore = admin.firestore()
-        const userRef = firestore.doc(`${process.env.NEXT_PUBLIC_COLL_USERS}/${user_id}`)
+        const userRef = admin.firestore().doc(`${process.env.NEXT_PUBLIC_COLL_USERS}/${user_id}`)
         const userDoc = await userRef.get()
 
         if (!userDoc.exists)

@@ -310,15 +310,19 @@ export function AppProvider({ children }) {
         onAuthStateChanged(auth, async (authUser) => {
             try {
                 const user = authUser ? await getUserById(authUser.uid) : null
+                //Já é usuário, logando
                 if (authUser && user) {
                     setIsUser(true)
                     setIsVisitant(false)
                     setUserEmailVerify(authUser.emailVerified)
-                    handleLogin(user)
+                    await handleLogin(user)
                 }
-                else if (!user && authUser && authUser.providerData?.some(provider => ['google.com'].includes(provider.providerId))) {
-                    handleCreateNewUser(authUser)
+                //Criando conta com o google ou Está autenticado mas não tem documento de usuário no firebase
+                else if (!user && authUser) {
+                    const newUser = await handleCreateNewUser(authUser)
+                    await handleLogin(newUser)
                 }
+                //Não é usuário, não está autenticado
                 else if (!authUser) {
                     setIsVisitant(true)
                     setIsUser(false)
@@ -368,7 +372,7 @@ export function AppProvider({ children }) {
             setIsVisitant(false)
             setUserEmailVerify(authUser.emailVerified)
             const newUser = await createNewUser(authUser)
-            handleLogin(newUser)
+            return newUser
         }
         catch (error) {
             console.error(error)
@@ -404,26 +408,23 @@ export function AppProvider({ children }) {
         }
     }
 
-    function login(email, password) {
-        setShowLoadingScreen(true)
-        signInWithEmailAndPassword(auth, email, password)
-            .then(authRes => {
-                showToast({ type: 'success', msg: tToasts('success_login', { user_name: authRes.user.displayName }), time: 2000 })
-                if (router.pathname === '/login' || router.pathname === '/signin')
-                    router.push('/')
-            })
-            .catch(error => {
+    async function login(email, password) {
+        try {
+            setShowLoadingScreen(true)
+            const authRes = await signInWithEmailAndPassword(auth, email, password)
+            showToast({ type: 'success', msg: tToasts('success_login', { user_name: authRes.user.displayName }), time: 2000 })
+            if (router.pathname === '/login' || router.pathname === '/signin')
+                router.push('/')
+        }
+        catch (error) {
+            try {
                 setLoading(false)
                 setBlockInteractions(false)
                 if (error.code === 'auth/wrong-password') {
-                    getUserLoginProviders(email)
-                        .then(providers => {
-                            if (providers.includes('password'))
-                                return showToast({ msg: tToasts('wrong_password'), type: 'error' })
-                            return showToast({ type: 'error', msg: tToasts('account_exists_with_different_provider', { count: providers.length, provider: providers.map(prov => prov === 'google.com' ? 'Google' : prov)[0] }) })
-                        })
-                        .catch(() => showToast({ type: 'error', msg: tToasts('default_error') }))
-                    return
+                    const providers = await getUserLoginProviders(email)
+                    if (providers.includes('password'))
+                        return showToast({ msg: tToasts('wrong_password'), type: 'error' })
+                    return showToast({ type: 'error', msg: tToasts('account_exists_with_different_provider', { count: providers.length, provider: providers.map(prov => prov === 'google.com' ? 'Google' : prov)[0] }) })
                 }
                 if (error.code === 'auth/user-not-found')
                     return showToast({ type: 'error', msg: tToasts('user_not_found') })
@@ -432,7 +433,13 @@ export function AppProvider({ children }) {
                 if (error.code === 'auth/too-many-requests')
                     return showToast({ type: 'error', msg: tToasts('too_many_requests') })
                 return showToast({ type: 'error', msg: tToasts('default_error') })
-            })
+            }
+            catch (error) {
+                console.error(error)
+                if (error.msg)
+                    showToast({ type: error.type, msg: tToasts(error.msg) })
+            }
+        }
     }
 
     async function getUserLoginProviders(email) {
@@ -512,7 +519,7 @@ export function AppProvider({ children }) {
     async function handleChangeProductQuantity(product, value) {
         try {
             session
-                ? await changeCartProductField(session.cart_id, product, 'quantity', value)
+                ? await changeCartProductField(session.id, product, 'quantity', value)
                 : changeVisitantCartProductField(product, 'quantity', value)
             setCart(prev => ({ ...prev, products: prev.products.map(prod => isSameProduct(prod, product) ? { ...prod, quantity: value } : prod) }))
         }

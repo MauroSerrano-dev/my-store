@@ -56,39 +56,39 @@ async function getUserIdByEmail(email) {
  */
 async function createNewUser(authUser) {
     try {
-        // Check if user with the same email already exists
-        const userIdExists = await getUserIdByEmail(authUser.email);
+        const userRef = admin.firestore().doc(`${process.env.NEXT_PUBLIC_COLL_USERS}/${authUser.uid}`)
+        const userDoc = await userRef.get()
 
-        if (!userIdExists) {
-            const fullName = authUser.displayName.split(' ');
-            const firstName = fullName.length <= 1 ? authUser.displayName : fullName.slice(0, fullName.length - 1).join(' ');
-            const lastName = fullName.length <= 1 ? null : fullName[fullName.length - 1];
-
-            const now = admin.firestore.Timestamp.now()
-
-            const newUser = newUserModel({
-                email: authUser.email,
-                first_name: firstName,
-                last_name: lastName,
-                preferences: authUser.preferences,
-                email_verified: authUser.emailVerified,
-                cart: { products: [], updated_at: now },
-                wishlist: { products: [], updated_at: now },
-            });
-
-            newUser.create_at = admin.firestore.Timestamp.now()
-
-            await admin.firestore().collection(process.env.NEXT_PUBLIC_COLL_USERS).doc(authUser.uid).set(newUser);
-
-            console.log(`${newUser.email} has been added as a new user`);
-            return { id: authUser.uid, ...newUser };
-        } else {
-            console.log(`${authUser.email} already exists as a user`);
-            throw new MyError({ message: `${authUser.email} already exists as a user` });
+        if (userDoc.exists) {
+            console.log(`${authUser.email} already exists as a user`)
+            throw new MyError({ message: `${authUser.email} already exists as a user` })
         }
-    } catch (error) {
-        console.error("Error creating a new user:", error);
-        throw error;
+
+        const fullName = authUser.displayName.split(' ')
+        const firstName = fullName.length <= 1 ? authUser.displayName : fullName.slice(0, fullName.length - 1).join(' ')
+        const lastName = fullName.length <= 1 ? null : fullName[fullName.length - 1]
+
+        const now = admin.firestore.Timestamp.now()
+
+        const newUser = newUserModel({
+            email: authUser.email,
+            first_name: firstName,
+            last_name: lastName,
+            preferences: authUser.preferences,
+            email_verified: authUser.emailVerified,
+            cart: { products: [], updated_at: now },
+            wishlist: { products: [], updated_at: now },
+            create_at: now,
+        })
+
+        await userRef.set(newUser)
+
+        console.log(`${newUser.email} has been added as a new user`)
+        return { id: authUser.uid, ...newUser }
+    }
+    catch (error) {
+        console.error("Error creating a new user:", error)
+        throw error
     }
 }
 

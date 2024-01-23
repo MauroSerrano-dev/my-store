@@ -45,11 +45,9 @@ export default async function handler(req, res) {
 
             const newMetadata = { ...metadata }
 
-            const cart_id = newMetadata.cart_id || null
             const user_id = newMetadata.user_id || null
             const user_language = newMetadata.user_language || null
 
-            delete newMetadata.cart_id
             delete newMetadata.user_id
             delete newMetadata.user_language
             delete newMetadata.shippingValue
@@ -165,17 +163,16 @@ export default async function handler(req, res) {
                 }
             }
 
-            if (cart_id) {
+            if (user_id) {
                 try {
-                    if (user_id) {
-                        await setCartProducts(user_id, [])
-                        await deleteProductsFromWishlist(user_id, line_items.map(prod => prod.id))
-                    }
+                    await setCartProducts(user_id, [])
+                    await deleteProductsFromWishlist(user_id, line_items.map(prod => prod.id))
                 }
                 catch {
                     console.error('Error deleting products from Cart or Wishlist')
                 }
             }
+
             res.status(200).json({ message: `Order ${orderId} Created. Checkout Complete!` })
         }
         else if (type === 'charge.refunded') {
