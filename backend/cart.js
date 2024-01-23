@@ -2,49 +2,33 @@ import MyError from "@/classes/MyError";
 const admin = require('../firebaseAdminInit');
 
 /**
- * Creates a new cart for a user.
- * @param {string} userId - The ID of the user for whom the cart is being created.
- * @param {Array} products - Products to be included in the cart. Default is an empty array.
- * @returns {Promise<string>} The ID of the created cart document.
- */
-async function createCart(userId, products = []) {
-    try {
-        const cartsCollectionRef = admin.firestore().collection(process.env.NEXT_PUBLIC_COLL_CARTS);
-
-        const newCart = {
-            user_id: userId,
-            products: products,
-            created_at: admin.firestore.Timestamp.now(),
-        };
-
-        const docRef = await cartsCollectionRef.add(newCart);
-
-        return docRef.id;
-    } catch (error) {
-        console.error('Error creating cart:', error);
-        throw error;
-    }
-}
-
-/**
  * Sets the products in a cart.
- * @param {string} cartId - The ID of the cart.
+ * @param {string} user_id - The ID of the user.
  * @param {Array} cartProducts - The products to set in the cart.
  */
-async function setCartProducts(cartId, cartProducts) {
+async function setCartProducts(user_id, cartProducts) {
     try {
-        const cartRef = admin.firestore().doc(`${process.env.NEXT_PUBLIC_COLL_CARTS}/${cartId}`)
+        const firestore = admin.firestore()
+        const userRef = firestore.doc(`${process.env.NEXT_PUBLIC_COLL_USERS}/${user_id}`)
+        const userDoc = await userRef.get()
 
-        await cartRef.update({ products: cartProducts });
+        if (!userDoc.exists)
+            throw new MyError({ message: `User with ID ${user_id} not found` })
 
-        console.log(`Cart ${cartId} setted successfully!`)
+        await userDoc.ref.update({
+            cart: {
+                products: cartProducts,
+                updated_at: admin.firestore.Timestamp.now()
+            }
+        })
+
+        console.log(`User ${user_id} cart setted successfully!`)
     } catch (error) {
-        console.error(`Error setting cart ${cartId}:`, error)
+        console.error(`Error setting user ${user_id} cart:`, error)
         throw new MyError({ message: 'error_setting_cart', type: 'error' })
     }
 }
 
 export {
-    createCart,
     setCartProducts,
 }

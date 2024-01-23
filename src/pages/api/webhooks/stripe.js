@@ -168,7 +168,7 @@ export default async function handler(req, res) {
             if (cart_id) {
                 try {
                     if (user_id) {
-                        await setCartProducts(cart_id, [])
+                        await setCartProducts(user_id, [])
                         await deleteProductsFromWishlist(user_id, line_items.map(prod => prod.id))
                     }
                 }

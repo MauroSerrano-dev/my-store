@@ -92,7 +92,8 @@ export default function Home() {
     }
     catch (error) {
       console.error(error)
-      showToast({ type: error?.type || 'error', msg: tToasts(error.message) })
+      if (error.msg)
+        showToast({ type: error.type, msg: tToasts(error.msg) })
     }
   }
 

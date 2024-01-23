@@ -88,7 +88,8 @@ export default function ProductsId() {
         }
         catch (error) {
             console.error(error)
-            showToast({ type: error?.type || 'error', msg: tToasts(error.message) })
+            if (error.msg)
+                showToast({ type: error.type, msg: tToasts(error.msg) })
         }
     }
 
@@ -106,7 +107,8 @@ export default function ProductsId() {
         }
         catch (error) {
             console.error(error)
-            showToast({ type: 'error', msg: tToasts(error.message) })
+            if (error.msg)
+                showToast({ type: error.type, msg: tToasts(error.msg) })
             setCreatingPromotion(false)
         }
     }

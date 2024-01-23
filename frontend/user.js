@@ -13,13 +13,13 @@ async function getUserById(id) {
 
         const userDoc = await getDoc(userDocRef)
 
-        if (userDoc.exists())
-            return { id: userDoc.id, ...userDoc.data() }
-        else
+        if (!userDoc.exists())
             return null
+
+        return { id: userDoc.id, ...userDoc.data() }
     } catch (error) {
         console.error('Erro ao obter usuário pelo ID:', error)
-        throw new MyError({ message: `Erro ao obter usuário pelo ID: ${error.message}` });
+        throw error;
     }
 }
 
@@ -62,15 +62,13 @@ async function updateUser(userId, changes) {
         const userRef = doc(db, process.env.NEXT_PUBLIC_COLL_USERS, userId)
         const userDoc = await getDoc(userRef)
 
-        if (userDoc.exists()) {
-            const userData = userDoc.data()
-
-            await updateDoc(userRef, { ...userData, ...changes })
-
-            return { id: userDoc.id, ...userData, ...changes }
-        } else {
+        if (!userDoc.exists())
             throw new MyError({ message: 'user_not_found' })
-        }
+
+        const userData = userDoc.data()
+        await updateDoc(userRef, { ...userData, ...changes })
+
+        return { id: userDoc.id, ...userData, ...changes }
     } catch (error) {
         console.error('Error updating profile:', error)
         throw error

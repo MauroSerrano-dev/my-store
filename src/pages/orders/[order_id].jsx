@@ -43,7 +43,8 @@ export default function Orders() {
         catch (error) {
             console.error(error)
             setOrder(null)
-            showToast({ type: error?.type || 'error', msg: tToasts(error.message) })
+            if (error.msg)
+                showToast({ type: error.type, msg: tToasts(error.msg) })
         }
     }
 

@@ -3160,21 +3160,21 @@ export function getShippingOptions(product_type, country) {
     if (product_type === 'raglan-tee-long-sleeve') {
         if (country === 'US') {
             return {
-                provider_id: 43,
-                first_item: 519,
-                add_item: 219,
-                tax: 171,
-                add_tax: 171,
+                provider_id: 27,
+                first_item: 849,
+                add_item: 330,
+                tax: 171, //verificar
+                add_tax: 171, //verificar
                 currency: 'usd'
             }
         }
         if (country === 'CA') {
             return {
-                provider_id: 43,
-                first_item: 939,
-                add_item: 439,
-                tax: 0,
-                add_tax: 0,
+                provider_id: 27,
+                first_item: 679,
+                add_item: 219,
+                tax: 0, //verificar
+                add_tax: 0, //verificar
                 currency: 'usd'
             }
         }
@@ -3198,16 +3198,6 @@ export function getShippingOptions(product_type, country) {
                 currency: 'usd'
             }
         }
-        if (country === 'AU') {
-            return {
-                provider_id: 43,
-                first_item: 1249,
-                add_item: 499,
-                tax: 0,
-                add_tax: 0,
-                currency: 'usd'
-            }
-        }
         if (EU_COUNTRIES.includes(country)) {
             return {
                 provider_id: 6,
@@ -3219,11 +3209,11 @@ export function getShippingOptions(product_type, country) {
             }
         }
         return {
-            provider_id: 43,
-            first_item: 1000,
-            add_item: 400,
-            tax: 0,
-            add_tax: 0,
+            provider_id: 27,
+            first_item: 1099,
+            add_item: 549,
+            tax: 0, //verificar
+            add_tax: 0, //verificar
             currency: 'usd'
         }
     }

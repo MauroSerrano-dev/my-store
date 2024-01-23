@@ -4,8 +4,9 @@
  *
  * @param {Object | string} props - An object containing the error details or a string representing the error message.
  * @param {string} [props.message] - The error message.
- * @param {string} [props.type='error'] - The type of error. Allowed values: 'error', 'warning', 'info'.
- * @param {Object} [props.customProps={}] - Additional customProps.
+ * @param {string} [props.msg] - The error message.
+ * @param {string} [props.type] - The type of error. Allowed values: 'error', 'warning', 'info'.
+ * @param {Object} [props.customProps] - Additional customProps.
  *
  * @example
  * const myError = new MyError({ message: 'Something went wrong', type: 'warning', customProps: { key: 'value' } });
@@ -22,10 +23,12 @@ export default class MyError extends Error {
     constructor(props) {
         if (typeof props === 'string') {
             super(props);
+            this.msg = props;
             this.type = 'error';  // Default type for string-only constructor
             this.customProps = {};
         } else {
             super(props.message || '');  // Pass an empty string if props.message is undefined
+            this.msg = props.message || '';
             this.type = props.type || 'error';  // Default type if props.type is undefined
             this.customProps = props.customProps || {};
         }

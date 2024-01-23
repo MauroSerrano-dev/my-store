@@ -58,7 +58,6 @@ export default withRouter(props => {
         windowWidth,
         userLocation,
         setUserLocation,
-        wishlist,
         handleWishlistClick,
         setPosAddModal,
     } = useAppContext()
@@ -150,7 +149,8 @@ export default withRouter(props => {
         }
         catch (error) {
             console.error(error)
-            showToast({ type: error.type || 'error', msg: tToasts(error.message, error.customProps?.options || {}) })
+            if (error.msg)
+                showToast({ type: error.type, msg: tToasts(error.msg, error.customProps?.options || {}) })
             if (error.customProps?.outOfStock)
                 product.outOfStock = true
             if (error.customProps?.disabledProducts)
@@ -174,7 +174,7 @@ export default withRouter(props => {
                     newProduct.art_position = currentPosition
 
                 if (session)
-                    await addProductsToCart(session.cart_id, [newProduct])
+                    await addProductsToCart(session.id, [newProduct])
 
                 else {
                     const localData = localStorage.getItem(CART_LOCAL_STORAGE)
@@ -214,7 +214,8 @@ export default withRouter(props => {
         catch (error) {
             console.error(error)
             setLoading(false)
-            showToast({ type: error?.type || 'error', msg: tToasts(error.message) })
+            if (error.msg)
+                showToast({ type: error.type, msg: tToasts(error.msg) })
         }
     }
 
@@ -289,9 +290,9 @@ export default withRouter(props => {
                                             <h1 className={styles.title}>
                                                 {product.title}
                                             </h1>
-                                            {session && wishlist &&
+                                            {session &&
                                                 <HeartButton
-                                                    checked={wishlist.products.some(prod => prod.id === product.id)}
+                                                    checked={session.wishlist.products.some(prod => prod.id === product.id)}
                                                     onClick={() => handleWishlistClick(product.id)}
                                                 />
                                             }

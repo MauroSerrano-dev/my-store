@@ -39,7 +39,7 @@
     "error_adding_product_to_wishlist": "Error adding product to wishlist",
     "error_removing_product_from_wishlist": "Error removing product from wishlist",
     "email_sent_if_its_user": "Email sent, if it's a user",
-    "always_welcome": "Always welcome",
+    "logout_message": "Come back anytime 😉",
     "error_deleting_product_from_cart": "Error Deleting Product From Cart",
     "checkout_temporarily_disabled": "Checkout temporarily disabled",
     "cart_contains_more_than_limit": "Cart contains more products than the allowed limit",
