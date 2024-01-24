@@ -157,17 +157,17 @@ async function getOrderById(orderId) {
         const orderRef = firestore.doc(`${process.env.NEXT_PUBLIC_COLL_ORDERS}/${orderId}`);
         const orderDoc = await orderRef.get();
 
-        if (orderDoc.exists) {
-            const orderData = orderDoc.data();
-            console.log("Order retrieved successfully");
-            return { id: orderDoc.id, ...orderData };
-        } else {
+        if (!orderDoc.exists) {
             console.log(`Order ${orderId} not found`);
-            return null;
+            throw new MyError({ message: 'order_not_found', statusCode: 400 })
         }
+
+        const orderData = orderDoc.data();
+        console.log("Order retrieved successfully");
+        return { id: orderDoc.id, ...orderData };
     } catch (error) {
         console.error('Error getting order by id:', error);
-        throw new MyError({ message: 'Error getting order by id' });
+        throw error
     }
 }
 

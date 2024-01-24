@@ -179,13 +179,14 @@ export default async function handler(req, res) {
             await refundOrderByStripeId(payment_intent, amount_refunded)
             res.status(200).json({ message: `Order stripe id ${payment_intent} Refunded. Charge Refunded!` })
         }
-    } catch (error) {
+    }
+    catch (error) {
         try {
             await handleStripeWebhookFail(event?.id)
-            res.status(500).json({ message: 'Error on stripe webhook', error: error.message })
+            res.status(error.statusCode || 500).json({ message: 'Error on stripe webhook', error: error.message })
         }
-        catch {
-            res.status(500).json({ message: 'Error on handleStripeWebhookFail', error: error.message })
+        catch (err) {
+            res.status(error.statusCode || 500).json({ message: 'Error on handleStripeWebhookFail', error: err.message })
         }
     }
 }

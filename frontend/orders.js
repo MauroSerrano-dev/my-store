@@ -15,13 +15,13 @@ async function getOrderById(orderId) {
         const orderRef = doc(db, process.env.NEXT_PUBLIC_COLL_ORDERS, orderId)
         const orderDoc = await getDoc(orderRef)
 
-        if (orderDoc.exists()) {
-            const orderData = orderDoc.data()
-            console.log("Order retrieved successfully")
-            return { id: orderDoc.id, ...orderData }
-        }
-        else
-            throw new MyError({ message: 'order_not_found' })
+        if (!orderDoc.exists())
+            throw new MyError('order_not_found')
+
+        const orderData = orderDoc.data()
+
+        console.log("Order retrieved successfully")
+        return { id: orderDoc.id, ...orderData }
     } catch (error) {
         console.error('Error getting order:', error);
         throw error

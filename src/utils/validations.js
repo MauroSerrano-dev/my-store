@@ -1,3 +1,8 @@
+export function isValidEmail(email) {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+    return emailRegex.test(email)
+}
+
 export function isStrongPassword(password) {
     const lengthRegex = /.{6,}/;
     const lowercaseRegex = /[a-z]+/;

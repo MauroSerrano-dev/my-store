@@ -1,3 +1,5 @@
+import MyError from '@/classes/MyError'
+
 const nodemailer = require('nodemailer')
 const { v4: uuidv4 } = require('uuid')
 
@@ -51,10 +53,9 @@ function getPurchaseEmailTemplate(language, orderId) {
  * @returns {object} Object indicating the status of the email sending process.
  */
 async function sendPurchaseConfirmationEmail(customer_email, orderId, user_language) {
-
   try {
     if (!customer_email)
-      return { status: 'error', message: 'Error sending the purchase email, email not provided.' }
+      throw new MyError('Error sending the purchase email, email not provided.')
 
     // SMTP transport configuration
     const transporter = nodemailer.createTransport({
@@ -236,15 +237,16 @@ function getSubject(subject, language, ticket_id, custom_subject) {
  * @returns {object} Object indicating the status of the email sending process.
  */
 async function sendSupportEmail(props) {
-  const {
-    customer_email,
-    subject,
-    customer_problem_description,
-    user_language,
-    custom_subject,
-    order_id,
-  } = props
   try {
+    const {
+      customer_email,
+      subject,
+      customer_problem_description,
+      user_language,
+      custom_subject,
+      order_id,
+    } = props
+
     if (!customer_email)
       return { status: 'error', message: 'Error sending the support email, email not provided.' };
     if (!subject)
@@ -264,7 +266,6 @@ async function sendSupportEmail(props) {
         pass: process.env.SUPPORT_EMAIL_PASSWORD,
       },
     });
-
     const template = getSupportEmailTemplate(user_language, customer_problem_description, order_id);
 
     // Email details
@@ -332,9 +333,9 @@ async function sendSupportEmail(props) {
       </body>
     </html>`,
     };
-
     // Sending the email
     const info = await transporter.sendMail(mailOptions);
+
     console.log('Support Email Sent:', info.response);
     return { status: 'success', message: `Support email sent to ${customer_email} successfully!` };
   }

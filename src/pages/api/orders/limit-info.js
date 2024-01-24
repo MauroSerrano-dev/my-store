@@ -16,7 +16,7 @@ export default async function handler(req, res) {
             res.status(200).json({ data: order })
         }
         catch (error) {
-            res.status(500).json({ error: error });
+            res.status(error.statusCode || 500).json({ error: error });
         }
     }
 }

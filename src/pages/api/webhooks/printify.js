@@ -38,6 +38,6 @@ export default async function handler(req, res) {
     }
     catch (error) {
         console.error(error)
-        res.status(500).json({ message: 'Error on printify webhook', error: error })
+        res.status(error.statusCode || 500).json({ message: 'Error on printify webhook', error: error.message })
     }
 }
