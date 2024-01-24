@@ -177,20 +177,20 @@ async function getOrderLimitInfoById(orderId) {
 
         const orderDoc = await orderRef.get();
 
-        if (orderDoc.exists) {
-            const orderData = orderDoc.data()
-
-            console.log("Order info retrieved successfully")
-            return {
-                id: orderDoc.id,
-                create_at: orderData.create_at,
-                products: orderData.products,
-            }
-        }
-        else {
+        if (!orderDoc.exists) {
             console.log(`Order info ${orderId} not found`)
-            return null
+            throw new MyError('order_not_found')
         }
+
+        const orderData = orderDoc.data()
+
+        console.log("Order info retrieved successfully")
+        return {
+            id: orderDoc.id,
+            create_at: orderData.create_at,
+            products: orderData.products,
+        }
+
     } catch (error) {
         console.error('Error getting order info by id:', error)
         throw error

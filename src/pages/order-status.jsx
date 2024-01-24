@@ -34,36 +34,41 @@ export default function OrderStatus() {
         }
     }, [router])
 
-    function getOrder() {
-        setLoading(true)
+    async function getOrder() {
+        try {
+            setLoading(true)
 
-        const options = {
-            method: 'GET',
-            headers: {
-                authorization: process.env.NEXT_PUBLIC_APP_TOKEN,
-                order_id: router.query.id,
+            const options = {
+                method: 'GET',
+                headers: {
+                    authorization: process.env.NEXT_PUBLIC_APP_TOKEN,
+                    order_id: router.query.id,
+                }
             }
-        }
 
-        fetch("/api/orders/limit-info", options)
-            .then(response => response.json())
-            .then(async response => {
-                if (response.error)
-                    showToast({ type: 'error', msg: tToasts(response.error) })
-                setOrder({
+            const response = await fetch("/api/orders/limit-info", options)
+            const responseJson = await response.json()
+
+            if (response.status >= 300)
+                throw responseJson.error
+
+            setOrder(
+                {
                     ...response.data,
                     products: response.data.products.map(prod => (
                         orderProductModel(prod)
                     ))
-                })
-                setLoading(false)
-            })
-            .catch(error => {
-                console.error(error)
-                showToast({ type: 'error', msg: tToasts('default_error') })
-                setOrder(null)
-                setLoading(false)
-            })
+                }
+            )
+            setLoading(false)
+        }
+        catch (error) {
+            console.error(error)
+            if (error.msg)
+                showToast({ type: error.type, msg: tToasts(error.msg) })
+            setOrder(null)
+            setLoading(false)
+        }
     }
 
     function handleSearch() {

@@ -1,5 +1,6 @@
 import { isTokenValid } from "@/utils/auth";
 import { getOrderLimitInfoById } from "../../../../backend/orders";
+import MyError from "@/classes/MyError";
 
 export default async function handler(req, res) {
     const { authorization, order_id } = req.headers
@@ -13,14 +14,10 @@ export default async function handler(req, res) {
     if (req.method === "GET") {
         try {
             const order = await getOrderLimitInfoById(order_id)
-
-            if (order)
-                res.status(200).json({ data: order })
-            else
-                res.status(404).json({ error: 'order_not_found', data: null })
+            res.status(200).json({ data: order })
         }
         catch (error) {
-            res.status(500).json({ error: 'default_error', data: null });
+            res.status(500).json({ error: error });
         }
     }
 }
