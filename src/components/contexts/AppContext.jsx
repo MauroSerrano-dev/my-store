@@ -744,12 +744,14 @@ export function AppProvider({ children }) {
                 open={posAddModal}
                 close={() => setPosAddModal(false)}
             />
-            <ToastContainer
-                newestOnTop
-                transition={Flip}
-                style={{ color: 'white' }}
-                pauseOnFocusLoss={false}
-            />
+            <div className={styles.toastContainer}>
+                <ToastContainer
+                    newestOnTop
+                    transition={Flip}
+                    style={{ color: 'white' }}
+                    pauseOnFocusLoss={false}
+                />
+            </div>
             {blockInteractions &&
                 <div
                     style={{
