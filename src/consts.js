@@ -1165,7 +1165,7 @@ export const PRODUCTS_TYPES = [
             {
                 id: "asphalt-white-s",
                 id_printify: {
-                    27: '39175',
+                    27: '36255',
                     6: '39175',
                 },
                 cost: 1843,
@@ -1204,7 +1204,7 @@ export const PRODUCTS_TYPES = [
             {
                 id: "asphalt-white-m",
                 id_printify: {
-                    27: '39253',
+                    27: '36257',
                     6: '39253',
                 },
                 cost: 1843,
@@ -1243,7 +1243,7 @@ export const PRODUCTS_TYPES = [
             {
                 id: "asphalt-white-l",
                 id_printify: {
-                    27: '39331',
+                    27: '36259',
                     6: '39331',
                 },
                 cost: 1843,
@@ -1282,7 +1282,7 @@ export const PRODUCTS_TYPES = [
             {
                 id: "asphalt-white-xl",
                 id_printify: {
-                    27: '39409',
+                    27: '36261',
                     6: '39409',
                 },
                 cost: 1843,
@@ -1321,7 +1321,7 @@ export const PRODUCTS_TYPES = [
             {
                 id: "asphalt-white-2xl",
                 id_printify: {
-                    27: '39487',
+                    27: '36263',
                     6: '39487',
                 },
                 cost: 2187,
@@ -1386,7 +1386,7 @@ export const PRODUCTS_TYPES = [
             {
                 id: "black-white-s",
                 id_printify: {
-                    27: '39178',
+                    27: '39217',
                     6: '39178',
                 },
                 cost: 1843,
@@ -1438,7 +1438,7 @@ export const PRODUCTS_TYPES = [
             {
                 id: "black-white-m",
                 id_printify: {
-                    27: '39256',
+                    27: '39295',
                     6: '39256',
                 },
                 cost: 1843,
@@ -1490,7 +1490,7 @@ export const PRODUCTS_TYPES = [
             {
                 id: "black-white-l",
                 id_printify: {
-                    27: '39334',
+                    27: '39373',
                     6: '39334',
                 },
                 cost: 1843,
@@ -1542,7 +1542,7 @@ export const PRODUCTS_TYPES = [
             {
                 id: "black-white-xl",
                 id_printify: {
-                    27: '39412',
+                    27: '39451',
                     6: '39412',
                 },
                 cost: 1843,
@@ -1594,7 +1594,7 @@ export const PRODUCTS_TYPES = [
             {
                 id: "black-white-2xl",
                 id_printify: {
-                    27: '39490',
+                    27: '39529',
                     6: '39490',
                 },
                 cost: 2187,
@@ -3163,8 +3163,8 @@ export function getShippingOptions(product_type, country) {
                 provider_id: 27,
                 first_item: 849,
                 add_item: 330,
-                tax: 179, //verificar
-                add_tax: 144, //verificar
+                tax: 179,
+                add_tax: 144,
                 currency: 'usd'
             }
         }
@@ -3173,8 +3173,8 @@ export function getShippingOptions(product_type, country) {
                 provider_id: 27,
                 first_item: 679,
                 add_item: 219,
-                tax: 0, //verificar
-                add_tax: 0, //verificar
+                tax: 116,
+                add_tax: 93,
                 currency: 'usd'
             }
         }
@@ -3183,8 +3183,8 @@ export function getShippingOptions(product_type, country) {
                 provider_id: 6,
                 first_item: 479,
                 add_item: 99,
-                tax: 424 - 100, //compensar a diferença de preço entre os provedores
-                add_tax: 424 - 100, //compensar a diferença de preço entre os provedores
+                tax: 424 - 100, //verificar //compensar a diferença de preço entre os provedores
+                add_tax: 424 - 100, //verificar //compensar a diferença de preço entre os provedores
                 currency: 'usd'
             }
         }
@@ -3193,8 +3193,8 @@ export function getShippingOptions(product_type, country) {
                 provider_id: 6,
                 first_item: 629,
                 add_item: 119,
-                tax: 550 - 100, //compensar a diferença de preço entre os provedores
-                add_tax: 550 - 100, //compensar a diferença de preço entre os provedores
+                tax: 550 - 100, //verificar //compensar a diferença de preço entre os provedores
+                add_tax: 550 - 100, //verificar //compensar a diferença de preço entre os provedores
                 currency: 'usd'
             }
         }
@@ -3203,8 +3203,8 @@ export function getShippingOptions(product_type, country) {
                 provider_id: 6,
                 first_item: 749,
                 add_item: 129,
-                tax: 550 - 100, //compensar a diferença de preço entre os provedores
-                add_tax: 550 - 100, //compensar a diferença de preço entre os provedores
+                tax: 518 - 100, //compensar a diferença de preço entre os provedores
+                add_tax: 382 - 100, //compensar a diferença de preço entre os provedores
                 currency: 'usd'
             }
         }
@@ -3223,8 +3223,8 @@ export function getShippingOptions(product_type, country) {
                 provider_id: 50,
                 first_item: 999,
                 add_item: 249,
-                tax: 191,
-                add_tax: 191,
+                tax: 191, //verificar
+                add_tax: 191, //verificar
                 currency: 'usd'
             }
         }
@@ -3233,8 +3233,8 @@ export function getShippingOptions(product_type, country) {
                 provider_id: 50,
                 first_item: 1269,
                 add_item: 659,
-                tax: 0,
-                add_tax: 0,
+                tax: 0, //verificar
+                add_tax: 0, //verificar
                 currency: 'usd'
             }
         }
@@ -3243,8 +3243,8 @@ export function getShippingOptions(product_type, country) {
                 provider_id: 87,
                 first_item: 729,
                 add_item: 239,
-                tax: 460 - 100, //compensar a diferença de preço entre os provedores
-                add_tax: 460 - 100, //compensar a diferença de preço entre os provedores
+                tax: 460 - 100, //verificar //compensar a diferença de preço entre os provedores
+                add_tax: 460 - 100, //verificar //compensar a diferença de preço entre os provedores
                 currency: 'usd'
             }
         }
@@ -3253,8 +3253,8 @@ export function getShippingOptions(product_type, country) {
                 provider_id: 87,
                 first_item: 729,
                 add_item: 239,
-                tax: 529 - 100, //compensar a diferença de preço entre os provedores
-                add_tax: 529 - 100, //compensar a diferença de preço entre os provedores
+                tax: 529 - 100, //verificar //compensar a diferença de preço entre os provedores
+                add_tax: 529 - 100, //verificar //compensar a diferença de preço entre os provedores
                 currency: 'usd'
             }
         }
@@ -3263,8 +3263,8 @@ export function getShippingOptions(product_type, country) {
                 provider_id: 50,
                 first_item: 2199,
                 add_item: 999,
-                tax: 0,
-                add_tax: 0,
+                tax: 0, //verificar
+                add_tax: 0, //verificar
                 currency: 'usd'
             }
         }
@@ -3273,8 +3273,8 @@ export function getShippingOptions(product_type, country) {
                 provider_id: 87,
                 first_item: 699,
                 add_item: 239,
-                tax: 547 - 100, //compensar a diferença de preço entre os provedores
-                add_tax: 547 - 100, //compensar a diferença de preço entre os provedores
+                tax: 547 - 100, //verificar //compensar a diferença de preço entre os provedores
+                add_tax: 547 - 100, //verificar //compensar a diferença de preço entre os provedores
                 currency: 'usd'
             }
         }
@@ -3283,8 +3283,8 @@ export function getShippingOptions(product_type, country) {
                 provider_id: 87,
                 first_item: 999,
                 add_item: 239,
-                tax: 642 - 100, //compensar a diferença de preço entre os provedores
-                add_tax: 642 - 100, //compensar a diferença de preço entre os provedores
+                tax: 642 - 100, //verificar //compensar a diferença de preço entre os provedores
+                add_tax: 642 - 100, //verificar //compensar a diferença de preço entre os provedores
                 currency: 'usd'
             }
         }
@@ -3292,8 +3292,8 @@ export function getShippingOptions(product_type, country) {
             provider_id: 50,
             first_item: 1500,
             add_item: 1000,
-            tax: 0,
-            add_tax: 0,
+            tax: 0, //verificar
+            add_tax: 0, //verificar
             currency: 'usd'
         }
     }
@@ -3303,8 +3303,8 @@ export function getShippingOptions(product_type, country) {
                 provider_id: 1,
                 first_item: 639,
                 add_item: 400,
-                tax: 92,
-                add_tax: 92,
+                tax: 92, //verificar
+                add_tax: 92, //verificar
                 currency: 'usd'
             }
         }
@@ -3313,8 +3313,8 @@ export function getShippingOptions(product_type, country) {
                 provider_id: 1,
                 first_item: 1489,
                 add_item: 609,
-                tax: 0,
-                add_tax: 0,
+                tax: 0, //verificar
+                add_tax: 0, //verificar
                 currency: 'usd'
             }
         }
@@ -3323,8 +3323,8 @@ export function getShippingOptions(product_type, country) {
                 provider_id: 87,
                 first_item: 659,
                 add_item: 199,
-                tax: 272 - 100, //compensar a diferença de preço entre os provedores
-                add_tax: 272 - 100, //compensar a diferença de preço entre os provedores
+                tax: 272 - 100, //verificar //compensar a diferença de preço entre os provedores
+                add_tax: 272 - 100, //verificar //compensar a diferença de preço entre os provedores
                 currency: 'usd'
             }
         }
@@ -3333,8 +3333,8 @@ export function getShippingOptions(product_type, country) {
                 provider_id: 87,
                 first_item: 729,
                 add_item: 169,
-                tax: 250 - 100, //compensar a diferença de preço entre os provedores
-                add_tax: 250 - 100, //compensar a diferença de preço entre os provedores
+                tax: 250 - 100, //verificar //compensar a diferença de preço entre os provedores
+                add_tax: 250 - 100, //verificar //compensar a diferença de preço entre os provedores
                 currency: 'usd'
             }
         }
@@ -3343,8 +3343,8 @@ export function getShippingOptions(product_type, country) {
                 provider_id: 87,
                 first_item: 729,
                 add_item: 169,
-                tax: 288 - 100, //compensar a diferença de preço entre os provedores
-                add_tax: 288 - 100, //compensar a diferença de preço entre os provedores
+                tax: 288 - 100, //verificar //compensar a diferença de preço entre os provedores
+                add_tax: 288 - 100, //verificar //compensar a diferença de preço entre os provedores
                 currency: 'usd'
             }
         }
@@ -3353,8 +3353,8 @@ export function getShippingOptions(product_type, country) {
                 provider_id: 87,
                 first_item: 699,
                 add_item: 179,
-                tax: 281 - 100, //compensar a diferença de preço entre os provedores
-                add_tax: 281 - 100, //compensar a diferença de preço entre os provedores
+                tax: 281 - 100, //verificar //compensar a diferença de preço entre os provedores
+                add_tax: 281 - 100, //verificar //compensar a diferença de preço entre os provedores
                 currency: 'usd'
             }
         }
@@ -3363,15 +3363,15 @@ export function getShippingOptions(product_type, country) {
                 provider_id: 87,
                 first_item: 1029,
                 add_item: 199,
-                tax: 372 - 100, //compensar a diferença de preço entre os provedores
-                add_tax: 372 - 100, //compensar a diferença de preço entre os provedores
+                tax: 372 - 100, //verificar //compensar a diferença de preço entre os provedores
+                add_tax: 372 - 100, //verificar //compensar a diferença de preço entre os provedores
                 currency: 'usd'
             }
         }
         return {
             provider_id: 87,
-            first_item: 1359 - 100, //compensar a diferença de preço entre os provedores
-            add_item: 699 - 100, //compensar a diferença de preço entre os provedores
+            first_item: 1359 - 100, //verificar //compensar a diferença de preço entre os provedores
+            add_item: 699 - 100, //verificar //compensar a diferença de preço entre os provedores
             tax: 0,
             add_tax: 0,
             currency: 'usd'
@@ -3383,8 +3383,8 @@ export function getShippingOptions(product_type, country) {
                 provider_id: 28,
                 first_item: 639,
                 add_item: 359,
-                tax: 86,
-                add_tax: 86,
+                tax: 86, //verificar
+                add_tax: 86, //verificar
                 currency: 'usd'
             }
         }
@@ -3393,8 +3393,8 @@ export function getShippingOptions(product_type, country) {
                 provider_id: 28,
                 first_item: 1149,
                 add_item: 599,
-                tax: 0,
-                add_tax: 0,
+                tax: 0, //verificar
+                add_tax: 0, //verificar
                 currency: 'usd'
             }
         }
@@ -3403,8 +3403,8 @@ export function getShippingOptions(product_type, country) {
                 provider_id: 87,
                 first_item: 659,
                 add_item: 199,
-                tax: 291,
-                add_tax: 291,
+                tax: 291, //verificar
+                add_tax: 291, //verificar
                 currency: 'usd'
             }
         }
@@ -3413,8 +3413,8 @@ export function getShippingOptions(product_type, country) {
                 provider_id: 87,
                 first_item: 729,
                 add_item: 169,
-                tax: 266,
-                add_tax: 266,
+                tax: 266, //verificar
+                add_tax: 266, //verificar
                 currency: 'usd'
             }
         }
@@ -3423,8 +3423,8 @@ export function getShippingOptions(product_type, country) {
                 provider_id: 87,
                 first_item: 729,
                 add_item: 169,
-                tax: 307,
-                add_tax: 307,
+                tax: 307, //verificar
+                add_tax: 307, //verificar
                 currency: 'usd'
             }
         }
@@ -3433,8 +3433,8 @@ export function getShippingOptions(product_type, country) {
                 provider_id: 87,
                 first_item: 699,
                 add_item: 179,
-                tax: 300,
-                add_tax: 300,
+                tax: 300, //verificar
+                add_tax: 300, //verificar
                 currency: 'usd'
             }
         }
@@ -3443,8 +3443,8 @@ export function getShippingOptions(product_type, country) {
                 provider_id: 87,
                 first_item: 1029,
                 add_item: 199,
-                tax: 392,
-                add_tax: 392,
+                tax: 392, //verificar
+                add_tax: 392, //verificar
                 currency: 'usd'
             }
         }
@@ -3452,8 +3452,8 @@ export function getShippingOptions(product_type, country) {
             provider_id: 87,
             first_item: 1359,
             add_item: 699,
-            tax: 0,
-            add_tax: 0,
+            tax: 0, //verificar
+            add_tax: 0, //verificar
             currency: 'usd'
         }
     }
@@ -3463,8 +3463,8 @@ export function getShippingOptions(product_type, country) {
                 provider_id: 1,
                 first_item: 479,
                 add_item: 150,
-                tax: 100,
-                add_tax: 70,
+                tax: 100, //verificar
+                add_tax: 70, //verificar
                 currency: 'usd'
             }
         }
@@ -3473,8 +3473,8 @@ export function getShippingOptions(product_type, country) {
                 provider_id: 1,
                 first_item: 879,
                 add_item: 109,
-                tax: 0,
-                add_tax: 0,
+                tax: 0, //verificar
+                add_tax: 0, //verificar
                 currency: 'usd'
             }
         }
@@ -3482,8 +3482,8 @@ export function getShippingOptions(product_type, country) {
             provider_id: 1,
             first_item: 1409,
             add_item: 199,
-            tax: 0,
-            add_tax: 0,
+            tax: 0, //verificar
+            add_tax: 0, //verificar
             currency: 'usd'
         }
     }

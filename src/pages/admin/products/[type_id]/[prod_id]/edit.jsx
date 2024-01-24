@@ -367,7 +367,7 @@ export default withRouter(() => {
                 },
                 body: JSON.stringify({
                     product_id: newProduct.id,
-                    new_product: newProduct,
+                    new_fields: productDiff,
                     inicial_product: inicialProduct,
                 })
             }

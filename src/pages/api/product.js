@@ -3,7 +3,7 @@ import admin from '../../../firebaseAdminInit'
 
 export default async function handler(req, res) {
     const { authorization } = req.headers
-    const { product, new_product, inicial_product } = req.body
+    const { product, product_id, new_fields, inicial_product } = req.body
 
     if (!authorization)
         res.status(401).json({ error: "Access denied: No token provided" })
@@ -26,9 +26,9 @@ export default async function handler(req, res) {
     }
     else if (req.method === "PUT") {
         try {
-            await updateProduct(new_product, inicial_product)
-            console.log(`Product ${new_product.id} updated successfully!`)
-            res.status(200).json({ message: `Product ${new_product.id} updated successfully!` })
+            await updateProduct(product_id, new_fields, inicial_product)
+            console.log(`Product ${product_id} updated successfully!`)
+            res.status(200).json({ message: `Product ${product_id} updated successfully!` })
         }
         catch (error) {
             console.error('Error in product PUT:', error)

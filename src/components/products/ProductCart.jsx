@@ -25,6 +25,7 @@ export default function ProductCart(props) {
         userCurrency,
         handleChangeProductQuantity,
         handleDeleteProductFromCart,
+        windowWidth,
     } = useAppContext()
 
     const { i18n } = useTranslation()
@@ -223,7 +224,7 @@ export default function ProductCart(props) {
                     </p>
                     {product.quantity > 1 &&
                         <p className={styles.rightP}>
-                            {`${userCurrency?.symbol} ${(PRICE_UNIT / 100).toFixed(2)} ${tCommon('unit')}`}
+                            {`${userCurrency?.symbol} ${(PRICE_UNIT / 100).toFixed(2)} ${tCommon('unit', { count: windowWidth < 475 ? 2 : 1 })}`}
                         </p>
                     }
                 </div>

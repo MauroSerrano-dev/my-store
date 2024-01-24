@@ -89,7 +89,7 @@ async function changeCartProductField(userId, product, fieldName, newValue) {
         const userDoc = await getDoc(userRef)
         const userData = userDoc.data()
 
-        const newProducts = userData.products.map(prod =>
+        const newProducts = userData.cart.products.map(prod =>
             isSameProduct(prod, product)
                 ? { ...prod, [fieldName]: newValue }
                 : prod
