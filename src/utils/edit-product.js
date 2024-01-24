@@ -1,7 +1,7 @@
 import MyError from "@/classes/MyError";
 import { hasRepeatedItems } from ".";
 import { showToast } from "./toasts";
-import { LIMITS, PRODUCTS_TYPES, getShippingOptions } from "@/consts";
+import { LIMITS, PRODUCTS_TYPES } from "@/consts";
 
 export function isNewProductValid(product, images, translate) {
     const requiredTextFields = [{ id: 'id', title: 'ID' }, { id: 'title', title: 'Title' }, { id: 'description', title: 'Description' }]
@@ -86,24 +86,4 @@ export function isProductValid(product) {
 
 export function getProductPrintifyIdsUniquePosition(printify_ids, position) {
     return Object.keys(printify_ids).reduce((acc, provider_id) => ({ ...acc, [provider_id]: typeof printify_ids[provider_id] === 'string' ? printify_ids[provider_id] : printify_ids[provider_id][position || 'front'] }), {})
-}
-
-export function getShippingValue(products, country, currencyRate) {
-    let value = 0
-    let typesAlreadyIn = []
-
-    value = products.reduce((acc, item) => {
-        const values = getShippingOptions(item.type_id, country)
-        const result = acc + (
-            typesAlreadyIn.includes(item.type_id)
-                ? ((values.add_item + values.add_tax) * item.quantity)
-                : ((values.first_item + values.tax) + ((values.add_item + values.add_tax) * (item.quantity - 1)))
-        )
-        typesAlreadyIn.push(item.type_id)
-        return result
-    }
-        , 0
-    )
-
-    return Math.round(value * currencyRate)
 }

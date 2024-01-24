@@ -1,6 +1,6 @@
 import ProductCart from '@/components/products/ProductCart'
 import styles from '@/styles/pages/cart.module.css'
-import { COLORS_POOL, COMMON_TRANSLATES, DEFAULT_LANGUAGE, LIMITS, PRODUCTS_TYPES, SIZES_POOL, getShippingOptions } from '@/consts'
+import { COLORS_POOL, COMMON_TRANSLATES, DEFAULT_LANGUAGE, LIMITS, SIZES_POOL, getShippingOptions } from '@/consts'
 import COUNTRIES_POOL from '../../public/locales/en/countries.json'
 import { useEffect, useState } from 'react'
 import Selector from '@/components/material-ui/Selector'
@@ -33,14 +33,15 @@ export default function Cart() {
     } = useAppContext()
 
     const [disableCheckoutButton, setDisableCheckoutButton] = useState(false)
-    const [shippingValue, setShippingValue] = useState(0)
+    const [shippingInfo, setShippingInfo] = useState({ providers_ids: {}, value: 0 })
     const [productsOne, setProductsOne] = useState()
     const [productsTwo, setProductsTwo] = useState()
     const [outOfStock, setOutOfStock] = useState([])
     const [unavailables, setUnavailables] = useState([])
     const [inicialCartAlreadyCalled, setInicialCartAlreadyCalled] = useState(false)
+    const [loadingShippingValue, setLoadingShippingValue] = useState(true)
 
-    const SHIPPING_CONVERTED = Math.round(shippingValue * userCurrency?.rate)
+    const SHIPPING_CONVERTED = Math.round(shippingInfo.value * userCurrency?.rate)
 
     const ITEMS_TOTAL = cart?.products.reduce((acc, product) => acc + ((getProductPriceUnit(product, product.variant, userCurrency?.rate) * product.quantity)), 0)
 
@@ -55,8 +56,8 @@ export default function Cart() {
     const tToasts = useTranslation('toasts').t
 
     useEffect(() => {
-        if (userLocation)
-            getShippingValue()
+        if (cart && userLocation && inicialCartAlreadyCalled)
+            callGetShippingInfo()
     }, [cart, userLocation])
 
     useEffect(() => {
@@ -64,7 +65,7 @@ export default function Cart() {
             getInicialCart()
             setInicialCartAlreadyCalled(true)
         }
-        if (!cart || cart.products.length === 0)
+        else if (!cart || cart.products.length === 0)
             getProducts()
     }, [cart])
 
@@ -81,7 +82,6 @@ export default function Cart() {
                 },
                 body: JSON.stringify({
                     cartItems: cart.products.map(prod => {
-                        const shippingOption = getShippingOptions(prod.type_id, userLocation.country)
                         return cartItemModel({
                             id: prod.id,
                             type_id: prod.type_id,
@@ -89,11 +89,11 @@ export default function Cart() {
                             title: prod.title,
                             image_src: prod.image_src,
                             description: `${tCommon(prod.type_id)} ${tColors(COLORS_POOL[prod.variant.color_id].id_string)} / ${tCommon(SIZES_POOL.find(sz => sz.id === prod.variant.size_id).title)}`,
-                            id_printify: prod.printify_ids[shippingOption.provider_id],
-                            provider_id: shippingOption.provider_id,
+                            id_printify: prod.printify_ids[shippingInfo.providers_ids[prod.type_id]],
+                            provider_id: shippingInfo.providers_ids[prod.type_id],
                             variant: {
                                 ...prod.variant,
-                                id_printify: typeof prod.variant.id_printify === 'string' ? prod.variant.id_printify : prod.variant.id_printify[shippingOption.provider_id]
+                                id_printify: typeof prod.variant.id_printify === 'string' ? prod.variant.id_printify : prod.variant.id_printify[shippingInfo.providers_ids[prod.type_id]]
                             },
                         })
                     }),
@@ -102,7 +102,6 @@ export default function Cart() {
                         ? `${window.location.origin}${i18n.language === DEFAULT_LANGUAGE ? '' : `/${i18n.language}`}/orders`
                         : `${window.location.origin}${i18n.language === DEFAULT_LANGUAGE ? '' : `/${i18n.language}`}/?refresh-cart`,
                     customer: session,
-                    shippingValue: SHIPPING_CONVERTED,
                     shippingCountry: userLocation.country,
                     currency_code: userCurrency?.code,
                     user_language: i18n.language,
@@ -153,23 +152,36 @@ export default function Cart() {
         }
     }
 
-    function getShippingValue() {
-        let value = 0
-        let typesAlreadyIn = []
-
-        value = cart?.products.reduce((acc, item) => {
-            const values = getShippingOptions(item.type_id, userLocation.country)
-            const result = acc + (
-                typesAlreadyIn.includes(item.type_id)
-                    ? ((values.add_item + values.add_tax) * item.quantity)
-                    : ((values.first_item + values.tax) + ((values.add_item + values.add_tax) * (item.quantity - 1)))
+    async function callGetShippingInfo() {
+        try {
+            setLoadingShippingValue(true)
+            const products_types = cart.products.reduce((acc, prod) =>
+                acc.some(type => type.id === prod.type_id)
+                    ? acc.map(type => type.id === prod.type_id ? { ...type, quantity: type.quantity + prod.quantity } : type)
+                    : acc.concat({ id: prod.type_id, quantity: prod.quantity }),
+                []
             )
-            typesAlreadyIn.push(item.type_id)
-            return result
+            const options = {
+                method: 'GET',
+                headers: {
+                    authorization: process.env.NEXT_PUBLIC_APP_TOKEN,
+                }
+            }
+
+            const response = await fetch(`/api/app-settings/shipping-value?products_types=${JSON.stringify(products_types)}&country=${userLocation.country}`, options)
+            const responseJson = await response.json()
+
+            if (response.status >= 300)
+                throw responseJson.error
+
+            setShippingInfo(responseJson.data)
+            setLoadingShippingValue(false)
         }
-            , 0
-        )
-        setShippingValue(value)
+        catch (error) {
+            console.error(error)
+            if (error.msg)
+                showToast({ type: error.type, msg: tToasts(error.msg) })
+        }
     }
 
     function handleChangeCountrySelector(event, value) {
@@ -289,9 +301,11 @@ export default function Cart() {
                                     <p>
                                         {tCart('shipping_and_taxes')}:
                                     </p>
-                                    <p>
-                                        {`${userCurrency?.symbol} ${(SHIPPING_CONVERTED / 100).toFixed(2)}`}
-                                    </p>
+                                    {!loadingShippingValue &&
+                                        <p>
+                                            {`${userCurrency?.symbol} ${(SHIPPING_CONVERTED / 100).toFixed(2)}`}
+                                        </p>
+                                    }
                                 </div>
                                 <div className={styles.orderTotalContainer}>
                                     <div className={styles.detailsItem}>

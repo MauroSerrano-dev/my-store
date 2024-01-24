@@ -27,7 +27,7 @@ import { SlClose } from 'react-icons/sl'
 import { LoadingButton } from '@mui/lab'
 import ZoneConverter from '@/utils/country-zone.json'
 import ProductTag from '@/components/products/ProductTag'
-import { convertTimestampToDate, getProductVariantsInfos, mergeProducts } from '@/utils'
+import { getProductVariantsInfos, mergeProducts } from '@/utils'
 import TableSizes from '@/components/products/TableSizes'
 import KeyFeatures from '@/components/products/KeyFeatures'
 import { ButtonGroup } from '@mui/material'
@@ -76,9 +76,9 @@ export default withRouter(props => {
     const [currentSize, setCurrentSize] = useState(sz ? sz : SIZES_POOL.find(sz => sz.id === product?.sizes_ids[0]))
     const [currentPosition, setCurrentPosition] = useState('front')
 
+    const [shippingInfo, setShippingInfo] = useState({ providers_ids: {}, value: 0 })
     const [buyNowModalOpen, setBuyNowModalOpen] = useState(false)
 
-    const [shippingValue, setShippingValue] = useState(0)
     const [disableCheckoutButton, setDisableCheckoutButton] = useState(false)
 
     const productCurrentVariant = getProductVariantsInfos(product)?.find(vari => vari.size_id === currentSize?.id && vari.color_id === currentColor?.id)
@@ -93,20 +93,14 @@ export default withRouter(props => {
     }, [router])
 
     useEffect(() => {
-        if (userLocation && product)
-            getShippingValue()
+        if (userLocation)
+            callGetShippingInfo()
     }, [userLocation])
-
-    function getShippingValue() {
-        const shippingOption = getShippingOptions(product.type_id, userLocation.country)
-        setShippingValue(shippingOption.first_item + shippingOption.tax)
-    }
 
     async function handleBuyNow() {
         try {
             setDisableCheckoutButton(true)
 
-            const shippingOption = getShippingOptions(product.type_id, userLocation.country)
             const options = {
                 method: 'POST',
                 headers: {
@@ -121,11 +115,11 @@ export default withRouter(props => {
                         title: product.title,
                         image_src: product.images.find(img => img.color_id === productCurrentVariant.color_id).src,
                         description: `${tCommon(product.type_id)} ${tColors(currentColor.id_string)} / ${currentSize.title}`,
-                        id_printify: product.printify_ids[shippingOption.provider_id],
-                        provider_id: shippingOption.provider_id,
+                        id_printify: product.printify_ids[shippingInfo.providers_ids[product.type_id]],
+                        provider_id: shippingInfo.providers_ids[product.type_id],
                         variant: {
                             ...productCurrentVariant,
-                            id_printify: typeof productCurrentVariant.id_printify === 'string' ? productCurrentVariant.id_printify : productCurrentVariant.id_printify[shippingOption.provider_id],
+                            id_printify: typeof productCurrentVariant.id_printify === 'string' ? productCurrentVariant.id_printify : productCurrentVariant.id_printify[shippingInfo.providers_ids[product.type_id]],
                         },
                     })],
                     success_url: session
@@ -133,7 +127,6 @@ export default withRouter(props => {
                         : `${window.location.origin}${i18n.language === DEFAULT_LANGUAGE ? '' : `/${i18n.language}`}/?refresh-cart`,
                     cancel_url: window.location.href,
                     customer: session,
-                    shippingValue: Math.round(shippingValue * userCurrency?.rate),
                     shippingCountry: userLocation.country,
                     currency_code: userCurrency?.code,
                     user_language: i18n.language,
@@ -158,6 +151,30 @@ export default withRouter(props => {
                 product.disabled = true
             setBuyNowModalOpen(false)
             setDisableCheckoutButton(false)
+        }
+    }
+
+    async function callGetShippingInfo() {
+        try {
+            const options = {
+                method: 'GET',
+                headers: {
+                    authorization: process.env.NEXT_PUBLIC_APP_TOKEN,
+                }
+            }
+
+            const response = await fetch(`/api/app-settings/shipping-value?products_types=${JSON.stringify([{ id: product.type_id, quantity: 1 }])}&country=${userLocation.country}`, options)
+            const responseJson = await response.json()
+
+            if (response.status >= 300)
+                throw responseJson.error
+
+            setShippingInfo(responseJson.data)
+        }
+        catch (error) {
+            console.error(error)
+            if (error.msg)
+                showToast({ type: error.type, msg: tToasts(error.msg) })
         }
     }
 
