@@ -105,7 +105,6 @@ export default function Cart() {
                     shippingValue: SHIPPING_CONVERTED,
                     shippingCountry: userLocation.country,
                     currency_code: userCurrency?.code,
-                    cart_id: session ? session.cart_id : null,
                     user_language: i18n.language,
                 })
             }
@@ -120,7 +119,8 @@ export default function Cart() {
         }
         catch (error) {
             console.error(error)
-            showToast({ type: error.type || 'error', msg: tToasts(error.message, error.customProps?.options || {}) })
+            if (error.msg)
+                showToast({ type: error.type, msg: tToasts(error.msg, error.customProps?.options || {}) })
             if (error.customProps?.outOfStock)
                 setOutOfStock(error.customProps.outOfStock)
             if (error.customProps?.disabledProducts)
@@ -148,7 +148,8 @@ export default function Cart() {
         }
         catch (error) {
             console.error(error)
-            showToast({ type: error?.type || 'error', msg: tToasts(error.message) })
+            if (error.msg)
+                showToast({ type: error.type, msg: tToasts(error.msg) })
         }
     }
 

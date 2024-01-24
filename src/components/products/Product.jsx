@@ -34,11 +34,10 @@ export default function Product(props) {
     } = props
 
     const {
-        setWishlist,
         session,
+        setSession,
         supportsHoverAndPointer,
         userCurrency,
-        wishlist,
         handleWishlistClick,
     } = useAppContext()
 
@@ -124,7 +123,15 @@ export default function Product(props) {
         setDeleting(true)
 
         await handleWishlistClick(product.id, false)
-        setWishlist(prev => ({ ...prev, products: prev.products.filter(prod => prod.id !== product.id) }))
+        setSession(prev => (
+            {
+                ...prev,
+                wishlist: {
+                    ...prev.wishlist,
+                    products: prev.wishlist.products.filter(prod => prod.id !== product.id)
+                }
+            }
+        ))
         setDeleting(false)
     }
 
@@ -160,7 +167,7 @@ export default function Product(props) {
             onMouseEnter={handleOnMouseEnter}
             onMouseLeave={handleOnMouseLeave}
         >
-            {!hideWishlistButton && session && wishlist && supportsHoverAndPointer &&
+            {!hideWishlistButton && session && supportsHoverAndPointer &&
                 <motion.div
                     className={styles.wishlistButton}
                     onClick={() => handleWishlistClick(product.id)}
@@ -180,7 +187,7 @@ export default function Product(props) {
                             top: '1px',
                             color: 'var(--global-white)'
                         }}
-                        checked={wishlist.products.some(prod => prod.id === product.id)}
+                        checked={session.wishlist.products.some(prod => prod.id === product.id)}
                         size={width * 0.13}
                     />
                 </motion.div>
@@ -278,9 +285,9 @@ export default function Product(props) {
                     <div
                         className={styles.tagContainer}
                         style={{
-                            fontSize: width < 150 ? width * 0.055 : width * 0.055,
-                            height: width < 150 ? '17%' : '17%',
-                            top: width < 150 ? '-8.5%' : '-8.5%',
+                            fontSize: width < 150 ? width * 0.065 : width * 0.055,
+                            height: width < 150 ? '20%' : '17%',
+                            top: width < 150 ? '-10%' : '-8.5%',
                             backgroundColor: PRODUCTS_TYPES.find(type => type.id === product.type_id).color || 'var(--primary)',
                         }}
                     >

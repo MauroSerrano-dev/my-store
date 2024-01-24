@@ -16,7 +16,6 @@ export default function Wishlist() {
     const {
         session,
         windowWidth,
-        wishlist
     } = useAppContext()
 
     const [wishlistProducts, setWishlistProducts] = useState()
@@ -28,9 +27,9 @@ export default function Wishlist() {
     const tToasts = useTranslation('toasts').t
 
     useEffect(() => {
-        if (wishlist)
+        if (session)
             getWishlist()
-    }, [wishlist])
+    }, [session])
 
     useEffect(() => {
         function handleResize() {
@@ -58,12 +57,13 @@ export default function Wishlist() {
 
     async function getWishlist() {
         try {
-            const prods = await getProductsByIds(wishlist.products.map(p => p.id))
-            setWishlistProducts({ ...wishlist, products: prods })
+            const prods = await getProductsByIds(session.wishlist.products.map(p => p.id))
+            setWishlistProducts({ ...session.wishlist, products: prods })
         }
         catch (error) {
             console.error(error)
-            showToast({ type: error?.type || 'error', msg: tToasts(error.message) })
+            if (error.msg)
+                showToast({ type: error.type, msg: tToasts(error.msg) })
         }
     }
 

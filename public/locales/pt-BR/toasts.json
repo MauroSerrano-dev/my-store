@@ -39,7 +39,7 @@
     "error_adding_product_to_wishlist": "Erro ao adicionar o produto à lista de desejos",
     "error_removing_product_from_wishlist": "Erro ao remover o produto da lista de desejos",
     "email_sent_if_its_user": "E-mail enviado, se for um usuário",
-    "always_welcome": "Sempre bem-vindo",
+    "logout_message": "Volte sempre 😉",
     "error_deleting_product_from_cart": "Erro ao excluir produto do carrinho",
     "checkout_temporarily_disabled": "Pagamento temporariamente desativado",
     "cart_contains_more_than_limit": "O carrinho contém mais produtos do que o limite permitido",

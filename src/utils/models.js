@@ -2,12 +2,13 @@
  * Converts properties of an object into a standardized model for a new user.
  * @param {Object} props - Properties of the user.
  * @param {string} props.email - The email of the user.
- * @param {string} props.cart_id - The user's cart ID.
- * @param {string} props.wishlist_id - The user's wishlist ID.
+ * @param {Object} props.cart - The user's cart.
+ * @param {Object} props.wishlist - The user's wishlist.
  * @param {Array<string>} props.quests - Tasks that the user must perform.
  * @param {Array} props.preferences - User preferences.
  * @param {Object} props.custom_home_page - Home page tags associated with the user.
  * @param {boolean} props.email_verified - Email verification status of the user.
+ * @param {Object} props.create_at - Create At Timestamp.
  * @returns {object} - Returns an object representing the model of the new user with corresponding properties.
  */
 export function newUserModel(props) {
@@ -15,8 +16,8 @@ export function newUserModel(props) {
         email,
         first_name,
         last_name,
-        cart_id,
-        wishlist_id,
+        cart = {},
+        wishlist = {},
         quests = [],
         preferences = [],
         custom_home_page = {
@@ -25,19 +26,21 @@ export function newUserModel(props) {
         },
         email_verified,
         orders_counter = 0,
+        create_at,
     } = props
 
     return {
         email: email,
         first_name: first_name,
         last_name: last_name,
-        cart_id: cart_id,
-        wishlist_id: wishlist_id,
+        cart: cart,
+        wishlist: wishlist,
         quests: quests,
         preferences: preferences,
         custom_home_page: custom_home_page,
         email_verified: email_verified,
         orders_counter: orders_counter,
+        create_at: create_at,
     }
 }
 

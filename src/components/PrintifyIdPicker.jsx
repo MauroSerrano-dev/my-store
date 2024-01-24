@@ -23,7 +23,6 @@ export default function PrintifyIdPicker(props) {
     const tToasts = useTranslation('toasts').t
 
     const [modalOpen, setModalOpen] = useState(false)
-    const [modalOpacity, setModalOpacity] = useState(false)
     const [printifyProducts, setPrintifyProducts] = useState()
     const [imagesFliped, setImagesFliped] = useState([])
     const [modalPage, setModalPage] = useState(1)
@@ -106,7 +105,7 @@ export default function PrintifyIdPicker(props) {
     }
 
     function handleClearPrintifyId() {
-        setChooseOne()
+        setChooseOne(null)
         onChoose('')
     }
 

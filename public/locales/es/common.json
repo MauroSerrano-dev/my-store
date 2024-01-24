@@ -3,8 +3,8 @@
     "mug": "Taza",
     "mug-c": "Taza",
     "hoodie": "Sudadera con capucha",
-    "raglan-tee-long-sleeve": "Camiseta Raglán Manga Larga",
-    "t-shirt-long-sleeve": "Camiseta Manga Larga",
+    "raglan-tee-long-sleeve": "Raglán Manga Larga",
+    "t-shirt-long-sleeve": "Manga Larga",
     "sweatshirt": "Sudadera",
     "more_info_button": "Más Información",
     "Price": "Precio",
@@ -32,5 +32,9 @@
     "remove_from_wishlist": "Quitar de la lista de deseos",
     "go_to_cart": "Ir al carrito",
     "continue_shopping": "Continuar comprando",
-    "dont_show_again": "No mostrar de nuevo"
+    "dont_show_again": "No mostrar de nuevo",
+    "you_have_x_products": "Tienes {{products_length}} productos en tu carrito",
+    "keep_cart": "¿Mantener el carrito?",
+    "yes": "Sí",
+    "no": "No"
 }

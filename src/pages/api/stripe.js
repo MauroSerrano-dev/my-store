@@ -26,7 +26,6 @@ export default async function handler(req, res) {
       cartItems,
       currency_code,
       shippingCountry,
-      cart_id,
       success_url,
       cancel_url,
       user_language,
@@ -172,8 +171,6 @@ export default async function handler(req, res) {
 
     if (customer)
       paymentMetadata.user_id = customer.id
-    if (cart_id)
-      paymentMetadata.cart_id = cart_id
 
     const shippingValue = getShippingValue(cartItems, shippingCountry, currency.rate)
 

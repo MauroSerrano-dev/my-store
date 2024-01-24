@@ -3,8 +3,8 @@
     "mug": "Caneca",
     "mug-c": "Caneca",
     "hoodie": "Hoodie",
-    "raglan-tee-long-sleeve": "Raglan Tee Manga Comprida",
-    "t-shirt-long-sleeve": "T-Shirt Manga Comprida",
+    "raglan-tee-long-sleeve": "Raglan Manga Comprida",
+    "t-shirt-long-sleeve": "Manga Comprida",
     "sweatshirt": "Suéter",
     "more_info_button": "Mais Informações",
     "Price": "Preço",
@@ -32,5 +32,9 @@
     "remove_from_wishlist": "Remover da wishlist",
     "go_to_cart": "Ir para o carrinho",
     "continue_shopping": "Continuar a comprar",
-    "dont_show_again": "Não mostrar novamente"
+    "dont_show_again": "Não mostrar novamente",
+    "you_have_x_products": "Tem {{products_length}} produtos no seu carrinho",
+    "keep_cart": "Manter carrinho?",
+    "yes": "Sim",
+    "no": "Não"
 }

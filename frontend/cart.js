@@ -1,4 +1,5 @@
 import {
+    Timestamp,
     doc,
     getDoc,
     updateDoc,
@@ -9,50 +10,25 @@ import { isSameProduct, mergeProducts } from "@/utils";
 import MyError from "@/classes/MyError";
 
 /**
- * Retrieves a cart by its ID.
- * @param {string} id - The ID of the cart.
- * @returns {object} The cart data.
- */
-async function getCartById(id) {
-    try {
-        const cartRef = doc(db, process.env.NEXT_PUBLIC_COLL_CARTS, id)
-
-        const cartDoc = await getDoc(cartRef)
-
-        if (cartDoc.exists()) {
-            return { id: cartDoc.id, ...cartDoc.data() };
-        } else {
-            console.log("Cart not found")
-            return null
-        }
-    } catch (error) {
-        console.error('Error getting cart by ID:', error)
-        throw error
-    }
-}
-
-/**
  * Adds products to a cart.
- * @param {string} cartId - The ID of the cart.
+ * @param {string} userId - The ID of the user.
  * @param {Array} cartNewProducts - The new products to add to the cart.
  * @returns {object} Status and message regarding the cart update.
  */
-async function addProductsToCart(cartId, cartNewProducts) {
+async function addProductsToCart(userId, cartNewProducts) {
     try {
-        const cartRef = doc(db, process.env.NEXT_PUBLIC_COLL_CARTS, cartId)
-        const cartDoc = await getDoc(cartRef)
+        const userRef = doc(db, process.env.NEXT_PUBLIC_COLL_USERS, userId)
+        const userDoc = await getDoc(userRef)
+        const userData = userDoc.data()
 
-        const cartData = cartDoc.data()
-
-        if (cartData.products.reduce((acc, prod) => acc + prod.quantity, 0) + cartNewProducts.reduce((acc, prod) => acc + prod.quantity, 0) > LIMITS.cart_items)
+        if (userData.cart.products.reduce((acc, prod) => acc + prod.quantity, 0) + cartNewProducts.reduce((acc, prod) => acc + prod.quantity, 0) > LIMITS.cart_items)
             throw new MyError({ message: 'max_products', type: 'warning' })
 
-        cartData.products = mergeProducts(cartData.products, cartNewProducts)
+        const cartProducts = mergeProducts(userData.cart.products, cartNewProducts)
 
-        await updateDoc(cartRef, cartData)
-
-        return { id: cartDoc.id, ...cartData }
-    } catch (error) {
+        await updateDoc(userRef, { cart: { products: cartProducts, updated_at: Timestamp.now() } })
+    }
+    catch (error) {
         console.error('Error Adding Product to Cart:', error)
         throw error
     }
@@ -60,37 +36,40 @@ async function addProductsToCart(cartId, cartNewProducts) {
 
 /**
  * Deletes a product from a cart.
- * @param {string} cartId - The ID of the cart.
+ * @param {string} userId - The ID of the user.
  * @param {Object} product - The product to be removed from the cart.
  * @returns {object} Status and message regarding the cart update.
  */
-async function deleteProductFromCart(cartId, product) {
-    const cartRef = doc(db, process.env.NEXT_PUBLIC_COLL_CARTS, cartId)
-    const cartDoc = await getDoc(cartRef)
-
+async function deleteProductFromCart(userId, product) {
     try {
-        const cartData = cartDoc.data()
+        const userRef = doc(db, process.env.NEXT_PUBLIC_COLL_USERS, userId)
+        const userDoc = await getDoc(userRef)
+        const userData = userDoc.data()
 
-        cartData.products = cartData.products.filter(prod => prod.id !== product.id || prod.variant_id !== product.variant.id)
+        const cartProducts = userData.cart.products.filter(prod => !isSameProduct(prod, product))
 
-        await updateDoc(cartRef, cartData)
+        await updateDoc(userRef, { cart: { products: cartProducts, updated_at: Timestamp.now() } })
 
-        console.log('Cart updated successfully!')
-        return { id: cartDoc.id, ...cartData }
-    } catch (error) {
+        if (process.env.NEXT_PUBLIC_ENV === 'development')
+            console.log('Cart updated successfully!')
+    }
+    catch (error) {
         console.error('Error Deleting Product from Cart:', error)
         throw new MyError({ message: 'error_deleting_product_from_cart' })
     }
 }
 
-async function mergeCarts(cartId, products) {
+async function mergeCarts(userId, products) {
     try {
-        const userCart = await getCartById(cartId)
-        const newCart = userCart.products.reduce((acc, prod) => acc + prod.quantity, 0) + products.reduce((acc, prod) => acc + prod.quantity, 0) <= LIMITS.cart_items
-            ? await addProductsToCart(cartId, products)
-            : await setCartProducts(cartId, products)
-        return newCart
-    } catch (error) {
+        const userRef = doc(db, process.env.NEXT_PUBLIC_COLL_USERS, userId)
+        const userDoc = await getDoc(userRef)
+        const userData = userDoc.data()
+
+        userData.cart.products.reduce((acc, prod) => acc + prod.quantity, 0) + products.reduce((acc, prod) => acc + prod.quantity, 0) <= LIMITS.cart_items
+            ? await addProductsToCart(userId, products)
+            : await setCartProducts(userId, products)
+    }
+    catch (error) {
         console.error('Error merging Carts', error)
         throw new MyError({ message: 'error_deleting_product_from_cart' })
     }
@@ -104,14 +83,13 @@ async function mergeCarts(cartId, products) {
  * @param {any} newValue - The new value for the field.
  * @returns {object} Status and message regarding the cart update.
  */
-async function changeCartProductField(cartId, product, fieldName, newValue) {
+async function changeCartProductField(userId, product, fieldName, newValue) {
     try {
-        const userRef = doc(db, process.env.NEXT_PUBLIC_COLL_CARTS, cartId)
-        const cartDoc = await getDoc(userRef)
+        const userRef = doc(db, process.env.NEXT_PUBLIC_COLL_USERS, userId)
+        const userDoc = await getDoc(userRef)
+        const userData = userDoc.data()
 
-        const cartData = cartDoc.data()
-
-        const newProducts = cartData.products.map(prod =>
+        const newProducts = userData.cart.products.map(prod =>
             isSameProduct(prod, product)
                 ? { ...prod, [fieldName]: newValue }
                 : prod
@@ -120,10 +98,9 @@ async function changeCartProductField(cartId, product, fieldName, newValue) {
         if (newProducts.reduce((acc, prod) => acc + prod.quantity, 0) > LIMITS.cart_items)
             throw new MyError({ message: 'max_products', type: 'warning' })
 
-        await updateDoc(userRef, { products: newProducts })
-
-        return { id: cartDoc.id, ...cartData }
-    } catch (error) {
+        await updateDoc(userRef, { cart: { products: newProducts, updated_at: Timestamp.now() } })
+    }
+    catch (error) {
         console.error('Error in changeCartProductField:', error)
         throw error
     }
@@ -131,32 +108,30 @@ async function changeCartProductField(cartId, product, fieldName, newValue) {
 
 /**
  * Sets the products for a cart.
- * @param {string} cartId - The ID of the cart.
+ * @param {string} userId - The ID of the cart.
  * @param {Array} cartProducts - The new list of products for the cart.
  * @returns {object} Status and message regarding the cart update.
  */
-async function setCartProducts(cartId, cartProducts) {
+async function setCartProducts(userId, cartProducts) {
     try {
-        const cartRef = doc(db, process.env.NEXT_PUBLIC_COLL_CARTS, cartId);
-        const cartDoc = await getDoc(cartRef);
+        const userRef = doc(db, process.env.NEXT_PUBLIC_COLL_USERS, userId)
+        const userDoc = await getDoc(userRef)
 
-        const cartData = cartDoc.data();
+        if (!userDoc.exists())
+            throw new MyError({ message: 'user_not_found' })
 
-        cartData.products = cartProducts;
-
-        await updateDoc(cartRef, cartData);
+        await updateDoc(userRef, { cart: { products: cartProducts, updated_at: Timestamp.now() } });
 
         if (process.env.NEXT_PUBLIC_ENV === 'development')
             console.log('Cart products set successfully!');
-        return { id: cartDoc.id, ...cartData };
-    } catch (error) {
+    }
+    catch (error) {
         console.error('Error setting cart products:', error);
         throw error;
     }
 }
 
 export {
-    getCartById,
     addProductsToCart,
     deleteProductFromCart,
     mergeCarts,

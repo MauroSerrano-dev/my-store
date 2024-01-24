@@ -3,8 +3,8 @@
     "mug": "Caneca",
     "mug-c": "Caneca",
     "hoodie": "Moletom",
-    "raglan-tee-long-sleeve": "Camisa Raglan Manga Longa",
-    "t-shirt-long-sleeve": "Camisa Manga Longa",
+    "raglan-tee-long-sleeve": "Raglan Manga Longa",
+    "t-shirt-long-sleeve": "Manga Longa",
     "sweatshirt": "Suéter",
     "more_info_button": "Mais Informações",
     "Price": "Preço",
@@ -32,5 +32,9 @@
     "remove_from_wishlist": "Remover da lista de desejos",
     "go_to_cart": "Ir para o carrinho",
     "continue_shopping": "Continuar comprando",
-    "dont_show_again": "Não mostrar novamente"
+    "dont_show_again": "Não mostrar novamente",
+    "you_have_x_products": "Você tem {{products_length}} produtos no seu carrinho",
+    "keep_cart": "Manter carrinho?",
+    "yes": "Sim",
+    "no": "Não"
 }

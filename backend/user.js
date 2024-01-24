@@ -1,9 +1,24 @@
-
-import { createCart } from "./cart"
-import { createWishlist } from "./wishlists"
 import { newUserModel } from "@/utils/models"
 const admin = require('../firebaseAdminInit');
 import MyError from "@/classes/MyError"
+
+async function getUserById(id) {
+    try {
+        const firestore = admin.firestore()
+        const userRef = firestore.doc(`${process.env.NEXT_PUBLIC_COLL_USERS}/${id}`)
+        const userDoc = await userRef.get()
+
+        if (!userDoc.exists)
+            throw new MyError({ message: `User with ID ${id} not found` })
+
+        const userData = userDoc.data()
+        console.log(`User with ID ${id} found!`)
+        return { id: userDoc.id, ...userData }
+    } catch (error) {
+        console.error("Error getting user:", error)
+        throw error
+    }
+}
 
 /**
  * Retrieves the user ID associated with a given email address.
@@ -41,41 +56,39 @@ async function getUserIdByEmail(email) {
  */
 async function createNewUser(authUser) {
     try {
-        // Check if user with the same email already exists
-        const userIdExists = await getUserIdByEmail(authUser.email);
+        const userRef = admin.firestore().doc(`${process.env.NEXT_PUBLIC_COLL_USERS}/${authUser.uid}`)
+        const userDoc = await userRef.get()
 
-        if (!userIdExists) {
-            const fullName = authUser.displayName.split(' ');
-            const firstName = fullName.length <= 1 ? authUser.displayName : fullName.slice(0, fullName.length - 1).join(' ');
-            const lastName = fullName.length <= 1 ? null : fullName[fullName.length - 1];
-
-            const cart_id = await createCart(authUser.uid);
-
-            const wishlist_id = await createWishlist(authUser.uid);
-
-            const newUser = newUserModel({
-                email: authUser.email,
-                first_name: firstName,
-                last_name: lastName,
-                preferences: authUser.preferences,
-                cart_id: cart_id,
-                wishlist_id: wishlist_id,
-                email_verified: authUser.emailVerified,
-            });
-
-            newUser.create_at = admin.firestore.Timestamp.now()
-
-            await admin.firestore().collection(process.env.NEXT_PUBLIC_COLL_USERS).doc(authUser.uid).set(newUser);
-
-            console.log(`${newUser.email} has been added as a new user`);
-            return { id: authUser.uid, ...newUser };
-        } else {
-            console.log(`${authUser.email} already exists as a user`);
-            throw new MyError({ message: `${authUser.email} already exists as a user` });
+        if (userDoc.exists) {
+            console.log(`${authUser.email} already exists as a user`)
+            throw new MyError({ message: `${authUser.email} already exists as a user` })
         }
-    } catch (error) {
-        console.error("Error creating a new user:", error);
-        throw error;
+
+        const fullName = authUser.displayName.split(' ')
+        const firstName = fullName.length <= 1 ? authUser.displayName : fullName.slice(0, fullName.length - 1).join(' ')
+        const lastName = fullName.length <= 1 ? null : fullName[fullName.length - 1]
+
+        const now = admin.firestore.Timestamp.now()
+
+        const newUser = newUserModel({
+            email: authUser.email,
+            first_name: firstName,
+            last_name: lastName,
+            preferences: authUser.preferences,
+            email_verified: authUser.emailVerified,
+            cart: { products: [], updated_at: now },
+            wishlist: { products: [], updated_at: now },
+            create_at: now,
+        })
+
+        await userRef.set(newUser)
+
+        console.log(`${newUser.email} has been added as a new user`)
+        return { id: authUser.uid, ...newUser }
+    }
+    catch (error) {
+        console.error("Error creating a new user:", error)
+        throw error
     }
 }
 
@@ -90,23 +103,8 @@ async function deleteUser(user_id) {
 
         const user = userDoc.data()
 
-        const cartRef = admin.firestore().doc(`${process.env.NEXT_PUBLIC_COLL_CARTS}/${user.cart_id}`)
-
-        const cartDoc = await cartRef.get()
-
-        if (!cartDoc.exists)
-            throw new MyError({ message: 'cart_not_found' })
-
-        const wishlistRef = admin.firestore().doc(`${process.env.NEXT_PUBLIC_COLL_WISHLISTS}/${user.wishlist_id}`)
-
-        const wishlistDoc = await wishlistRef.get()
-        if (!wishlistDoc.exists)
-            throw new MyError({ message: 'wishlist_not_found' })
-
         await admin.auth().deleteUser(user_id)
         await userRef.delete()
-        await cartRef.delete()
-        await wishlistRef.delete()
 
         console.log(`User with ID ${user_id} has been deleted successfully.`)
         return { id: userDoc.id, ...user }
@@ -187,6 +185,7 @@ async function deleteInactiveUsersForMonths(monthsInactive = 12) {
 }
 
 export {
+    getUserById,
     getUserIdByEmail,
     deleteUser,
     createNewUser,

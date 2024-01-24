@@ -18,8 +18,8 @@ import CountryConverter from '@/utils/time-zone-country.json'
 import ZoneConverter from '@/utils/country-zone.json'
 import NProgress from 'nprogress'
 import { createNewUser, getUserById } from '../../../frontend/user'
-import { addProductToWishlist, deleteProductFromWishlist, getWishlistById } from '../../../frontend/wishlists'
-import { changeCartProductField, deleteProductFromCart, getCartById, setCartProducts } from '../../../frontend/cart'
+import { addProductToWishlist, deleteProductFromWishlist } from '../../../frontend/wishlists'
+import { changeCartProductField, deleteProductFromCart, setCartProducts } from '../../../frontend/cart'
 import { getProductsInfo } from '../../../frontend/product'
 import { auth } from '../../../firebaseInit'
 import { getAllCurrencies } from '../../../frontend/app-settings'
@@ -43,7 +43,6 @@ export function AppProvider({ children }) {
     const [userEmailVerify, setUserEmailVerify] = useState()
     const [session, setSession] = useState()
     const [cart, setCart] = useState()
-    const [wishlist, setWishlist] = useState()
 
     const [userCurrency, setUserCurrency] = useState()
     const [userLocation, setUserLocation] = useState()
@@ -71,6 +70,7 @@ export function AppProvider({ children }) {
 
     const tNavbar = useTranslation('navbar').t
     const tToasts = useTranslation('toasts').t
+    const tCommon = useTranslation('common').t
 
     const adminMode = isAdmin && router.pathname.split('/')[1] === 'admin'
 
@@ -196,7 +196,8 @@ export function AppProvider({ children }) {
         }
         catch (error) {
             console.error(error)
-            showToast({ type: error?.type || 'error', msg: tToasts(error.message) })
+            if (error.msg)
+                showToast({ type: error.type, msg: tToasts(error.msg) })
         }
     }
 
@@ -245,7 +246,8 @@ export function AppProvider({ children }) {
         }
         catch (error) {
             console.error(error)
-            showToast({ type: error?.type || 'error', msg: tToasts(error.message) })
+            if (error.msg)
+                showToast({ type: error.type, msg: tToasts(error.msg) })
         }
     }
 
@@ -261,21 +263,19 @@ export function AppProvider({ children }) {
 
     async function getInicialCart() {
         try {
-            if (session === undefined)
-                return
             if (session) {
-                const userCart = await getCartById(session.cart_id)
                 try {
-                    const products = await getProductsInfo(userCart.products)
-                    setCart({ ...cart, products: products })
+                    const userData = await getUserById(session.id)
+                    const products = await getProductsInfo(userData.cart.products)
+                    setCart({ ...userData.cart, products: products })
                 }
                 catch (error) {
-                    const emptyCart = await setCartProducts(userCart.id, [])
+                    const emptyCart = await setCartProducts(session.id, [])
                     setCart(emptyCart)
                     showToast({ type: 'error', msg: tToasts('empty_cart_due_to_an_error') })
                 }
             }
-            else {
+            else if (session === null) {
                 const visitantCart = JSON.parse(localStorage.getItem(CART_LOCAL_STORAGE))
                 if (visitantCart) {
                     try {
@@ -296,7 +296,8 @@ export function AppProvider({ children }) {
         }
         catch (error) {
             console.error(error)
-            showToast({ type: error?.type || 'error', msg: tToasts(error.message) })
+            if (error.msg)
+                showToast({ type: error.type, msg: tToasts(error.msg) })
         }
     }
 
@@ -307,41 +308,51 @@ export function AppProvider({ children }) {
 
     function updateSession() {
         onAuthStateChanged(auth, async (authUser) => {
-            const user = authUser ? await getUserById(authUser.uid) : null
-            if (authUser && user) {
-                setIsUser(true)
-                setIsVisitant(false)
-                setUserEmailVerify(authUser.emailVerified)
-                handleLogin(user)
+            try {
+                const user = authUser ? await getUserById(authUser.uid) : null
+                //Já é usuário, logando
+                if (authUser && user) {
+                    setIsUser(true)
+                    setIsVisitant(false)
+                    setUserEmailVerify(authUser.emailVerified)
+                    await handleLogin(user)
+                }
+                //Criando conta com o google ou Está autenticado mas não tem documento de usuário no firebase
+                else if (!user && authUser) {
+                    const newUser = await handleCreateNewUser(authUser)
+                    await handleLogin(newUser)
+                }
+                //Não é usuário, não está autenticado
+                else if (!authUser) {
+                    setIsVisitant(true)
+                    setIsUser(false)
+                    setSession(null)
+                    getVisitantCart()
+                }
+                setAuthValidated(true)
             }
-            else if (!user && authUser && authUser.providerData?.some(provider => ['google.com'].includes(provider.providerId))) {
-                handleCreateNewUser(authUser)
+            catch (error) {
+                console.error(error)
+                if (error.msg)
+                    showToast({ type: error.type, msg: tToasts(error.msg) })
             }
-            else if (!authUser) {
-                setIsVisitant(true)
-                setIsUser(false)
-                setSession(null)
-                getVisitantCart()
-            }
-            setAuthValidated(true)
         })
     }
 
     async function handleLogin(user) {
         try {
-            setSession(user)
-            const cart = await getCartById(user.cart_id)
+            const sessionData = { ...user }
+            delete sessionData.cart
+            setSession(sessionData)
             try {
-                const products = await getProductsInfo(cart.products)
-                setCart({ ...cart, products: products })
+                const products = await getProductsInfo(user.cart.products)
+                setCart({ ...user.cart, products: products })
             }
             catch (error) {
-                const emptyCart = await setCartProducts(cart.id, [])
+                const emptyCart = await setCartProducts(user.id, [])
                 setCart(emptyCart)
                 showToast({ type: 'error', msg: tToasts('empty_cart_due_to_an_error') })
             }
-            const wishlist = await getWishlistById(user.wishlist_id)
-            setWishlist(wishlist)
             const visitantCartProducts = JSON.parse(localStorage.getItem(CART_LOCAL_STORAGE))?.products || []
             if (visitantCartProducts.length > 0) {
                 setVisitantProductsLength(visitantCartProducts.reduce((acc, prod) => acc + prod.quantity, 0))
@@ -361,7 +372,7 @@ export function AppProvider({ children }) {
             setIsVisitant(false)
             setUserEmailVerify(authUser.emailVerified)
             const newUser = await createNewUser(authUser)
-            handleLogin(newUser)
+            return newUser
         }
         catch (error) {
             console.error(error)
@@ -392,30 +403,28 @@ export function AppProvider({ children }) {
         }
         catch (error) {
             console.error(error)
-            showToast({ type: error?.type || 'error', msg: tToasts(error.message) })
+            if (error.msg)
+                showToast({ type: error.type, msg: tToasts(error.msg) })
         }
     }
 
-    function login(email, password) {
-        setShowLoadingScreen(true)
-        signInWithEmailAndPassword(auth, email, password)
-            .then(authRes => {
-                showToast({ type: 'success', msg: tToasts('success_login', { user_name: authRes.user.displayName }), time: 2000 })
-                if (router.pathname === '/login' || router.pathname === '/signin')
-                    router.push('/')
-            })
-            .catch(error => {
+    async function login(email, password) {
+        try {
+            setShowLoadingScreen(true)
+            const authRes = await signInWithEmailAndPassword(auth, email, password)
+            showToast({ type: 'success', msg: tToasts('success_login', { user_name: authRes.user.displayName }), time: 2000 })
+            if (router.pathname === '/login' || router.pathname === '/signin')
+                router.push('/')
+        }
+        catch (error) {
+            try {
                 setLoading(false)
                 setBlockInteractions(false)
                 if (error.code === 'auth/wrong-password') {
-                    getUserLoginProviders(email)
-                        .then(providers => {
-                            if (providers.includes('password'))
-                                return showToast({ msg: tToasts('wrong_password'), type: 'error' })
-                            return showToast({ type: 'error', msg: tToasts('account_exists_with_different_provider', { count: providers.length, provider: providers.map(prov => prov === 'google.com' ? 'Google' : prov)[0] }) })
-                        })
-                        .catch(() => showToast({ type: 'error', msg: tToasts('default_error') }))
-                    return
+                    const providers = await getUserLoginProviders(email)
+                    if (providers.includes('password'))
+                        return showToast({ msg: tToasts('wrong_password'), type: 'error' })
+                    return showToast({ type: 'error', msg: tToasts('account_exists_with_different_provider', { count: providers.length, provider: providers.map(prov => prov === 'google.com' ? 'Google' : prov)[0] }) })
                 }
                 if (error.code === 'auth/user-not-found')
                     return showToast({ type: 'error', msg: tToasts('user_not_found') })
@@ -424,7 +433,13 @@ export function AppProvider({ children }) {
                 if (error.code === 'auth/too-many-requests')
                     return showToast({ type: 'error', msg: tToasts('too_many_requests') })
                 return showToast({ type: 'error', msg: tToasts('default_error') })
-            })
+            }
+            catch (error) {
+                console.error(error)
+                if (error.msg)
+                    showToast({ type: error.type, msg: tToasts(error.msg) })
+            }
+        }
     }
 
     async function getUserLoginProviders(email) {
@@ -458,7 +473,7 @@ export function AppProvider({ children }) {
                 setUserEmailVerify(false)
                 setSession(null)
                 setIsAdmin(false)
-                showToast({ type: 'info', msg: tToasts('always_welcome') })
+                showToast({ type: 'info', msg: tToasts('logout_message') })
                 router.push('/')
             })
             .catch(() => {
@@ -467,75 +482,75 @@ export function AppProvider({ children }) {
     }
 
     async function handleWishlistClick(productId, toAdd) {
-        const prevWishlist = { ...wishlist }
+        const prevWishlist = { ...session.wishlist }
         try {
-            const add = toAdd || !wishlist.products.some(prod => prod.id === productId)
+            const add = toAdd || !session.wishlist.products.some(prod => prod.id === productId)
 
-            if (add && wishlist.products.length >= LIMITS.wishlist_products) {
+            if (add && session.wishlist.products.length >= LIMITS.wishlist_products) {
                 showToast({ type: 'error', msg: tToasts('wishlist_limit') })
                 return
             }
 
-            setWishlist(prev => (
+            setSession(prev => (
                 {
                     ...prev,
-                    products: add
-                        ? prev.products.concat({ id: productId })
-                        : prev.products.filter(prod => prod.id !== productId)
+                    wishlist: {
+                        ...prev.wishlist,
+                        products: add
+                            ? prev.wishlist.products.concat({ id: productId })
+                            : prev.wishlist.products.filter(prod => prod.id !== productId)
+                    }
                 }
             ))
 
             add
-                ? await addProductToWishlist(wishlist.id, { id: productId })
-                : await deleteProductFromWishlist(wishlist.id, { id: productId })
+                ? await addProductToWishlist(session.id, { id: productId })
+                : await deleteProductFromWishlist(session.id, { id: productId })
 
         }
         catch (error) {
             console.error(error)
-            setWishlist(prevWishlist)
-            showToast({ type: error?.type || 'error', msg: tToasts(error.message) })
+            setSession(prev => ({ ...prev, wishlist: prevWishlist }))
+            if (error.msg)
+                showToast({ type: error.type, msg: tToasts(error.msg) })
         }
     }
 
     async function handleChangeProductQuantity(product, value) {
         try {
             session
-                ? await changeCartProductField(session.cart_id, product, 'quantity', value)
+                ? await changeCartProductField(session.id, product, 'quantity', value)
                 : changeVisitantCartProductField(product, 'quantity', value)
             setCart(prev => ({ ...prev, products: prev.products.map(prod => isSameProduct(prod, product) ? { ...prod, quantity: value } : prod) }))
         }
         catch (error) {
             console.error(error)
-            showToast({ type: error?.type || 'error', msg: tToasts(error.message) })
+            if (error.msg)
+                showToast({ type: error.type, msg: tToasts(error.msg) })
         }
     }
 
     async function handleDeleteProductFromCart(product) {
-        try {
-            if (session) {
-                await deleteProductFromCart(cart.id, product)
-            }
-            else {
-                deleteProductFromVisitantCart(product)
-            }
-            setCart(prev => ({ ...prev, products: prev.products.filter(prod => !isSameProduct(prod, product)) }))
+        if (session) {
+            await deleteProductFromCart(session.id, product)
         }
-        catch (error) {
-            console.error(error)
-            showToast({ type: error?.type || 'error', msg: tToasts(error.message) })
+        else {
+            deleteProductFromVisitantCart(product)
         }
+        setCart(prev => ({ ...prev, products: prev.products.filter(prod => !isSameProduct(prod, product)) }))
     }
 
     async function handleBringCart() {
         try {
             setBringCartModalOpen(false)
             const visitantCartProducts = JSON.parse(localStorage.getItem(CART_LOCAL_STORAGE))?.products || []
-            await setCartProducts(cart.id, visitantCartProducts)
+            await setCartProducts(session.id, visitantCartProducts)
             getInicialCart()
         }
         catch (error) {
             console.error(error)
-            showToast({ type: error?.type || 'error', msg: tToasts(error.message) })
+            if (error.msg)
+                showToast({ type: error.type, msg: tToasts(error.msg) })
         }
     }
 
@@ -572,8 +587,6 @@ export function AppProvider({ children }) {
                 setSearch,
                 cart,
                 setCart,
-                wishlist,
-                setWishlist,
                 handleWishlistClick,
                 getInicialCart,
                 isAdmin,
@@ -658,49 +671,51 @@ export function AppProvider({ children }) {
                         </div>
                     }
                 </div>
-                <Modal
-                    className={styles.bringCartModal}
-                    open={bringCartModalOpen}
-                    closeModal={() => setBringCartModalOpen(false)}
-                    closedCallBack={() => {
-                        localStorage.removeItem(CART_LOCAL_STORAGE)
-                        setVisitantProductsLength(0)
-                    }}
-                >
-                    <div
-                        className={styles.bringCartModalTexts}
+                {session &&
+                    <Modal
+                        className={styles.bringCartModal}
+                        open={bringCartModalOpen}
+                        closeModal={() => setBringCartModalOpen(false)}
+                        closedCallBack={() => {
+                            localStorage.removeItem(CART_LOCAL_STORAGE)
+                            setVisitantProductsLength(0)
+                        }}
                     >
-                        <span>Você tem {visitantProductsLength} produtos no seu carrinho</span>
-                        <span style={{ fontWeight: 600 }}>Manter carrinho?</span>
-                    </div>
-                    <div
-                        className={styles.bringCartModalButtons}
-                    >
-                        <MyButton
-                            variant='contained'
-                            color='success'
-                            onClick={handleBringCart}
-                            style={{
-                                width: 'calc(50% - 0.5rem)',
-                                fontWeight: 700,
-                                color: 'var(--global-white)',
-                            }}
+                        <div
+                            className={styles.bringCartModalTexts}
                         >
-                            Yes
-                        </MyButton>
-                        <MyButton
-                            variant='outlined'
-                            color='error'
-                            onClick={() => setBringCartModalOpen(false)}
-                            style={{
-                                width: 'calc(50% - 0.5rem)',
-                                fontWeight: 700,
-                            }}
+                            <span>{tCommon('you_have_x_products', { products_length: visitantProductsLength })}</span>
+                            <span style={{ fontWeight: 600 }}>{tCommon('keep_cart')}</span>
+                        </div>
+                        <div
+                            className={styles.bringCartModalButtons}
                         >
-                            No
-                        </MyButton>
-                    </div>
-                </Modal>
+                            <MyButton
+                                variant='contained'
+                                color='success'
+                                onClick={handleBringCart}
+                                style={{
+                                    width: 'calc(50% - 0.5rem)',
+                                    fontWeight: 700,
+                                    color: 'var(--global-white)',
+                                }}
+                            >
+                                {tCommon('yes')}
+                            </MyButton>
+                            <MyButton
+                                variant='outlined'
+                                color='error'
+                                onClick={() => setBringCartModalOpen(false)}
+                                style={{
+                                    width: 'calc(50% - 0.5rem)',
+                                    fontWeight: 700,
+                                }}
+                            >
+                                {tCommon('no')}
+                            </MyButton>
+                        </div>
+                    </Modal>
+                }
                 <div
                     className={styles.componentContainer}
                     style={{

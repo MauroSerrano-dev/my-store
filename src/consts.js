@@ -212,16 +212,16 @@ export const SIZES_POOL = [
 ]
 
 export const PROVIDERS_POOL = {
-    1: { id: 1, title: 'SPOKE Custom Products' },
-    6: { id: 6, title: 'T Shirt and Sons' },
-    26: { id: 26, title: 'Textildruck Europa' },
-    27: { id: 27, title: 'Print Geek' },
-    28: { id: 28, title: 'District Photo' },
-    29: { id: 29, title: 'Monster Digital' },
-    39: { id: 39, title: 'SwiftPOD' },
-    43: { id: 43, title: 'Stoked On Printing' },
-    50: { id: 50, title: 'Underground Threads' },
-    87: { id: 87, title: 'Print Logistic' },
+    1: { id: '1', title: 'SPOKE Custom Products' },
+    6: { id: '6', title: 'T Shirt and Sons' },
+    26: { id: '26', title: 'Textildruck Europa' },
+    27: { id: '27', title: 'Print Geek' },
+    28: { id: '28', title: 'District Photo' },
+    29: { id: '29', title: 'Monster Digital' },
+    39: { id: '39', title: 'SwiftPOD' },
+    43: { id: '43', title: 'Stoked On Printing' },
+    50: { id: '50', title: 'Underground Threads' },
+    87: { id: '87', title: 'Print Logistic' },
 }
 
 export const MENU_OPTIONS = [
@@ -276,10 +276,10 @@ export const PRODUCTS_TYPES = [
         family_id: 't-shirts',
         color: '#1189c4',
         allow_back_variant: true,
-        providers: [29, 87],
+        providers: ['29', '87'],
         blueprint_ids: {
-            29: 145,
-            87: 145,
+            29: '145',
+            87: '145',
         },
         icon: '/svgs/products-types/t-shirt_icon.svg',
         inicial_tags: ['short-sleeve'],
@@ -846,10 +846,10 @@ export const PRODUCTS_TYPES = [
         family_id: 't-shirts',
         color: '#365486',
         allow_back_variant: true,
-        providers: [39, 87],
+        providers: ['39', '87'],
         blueprint_ids: {
-            39: 80,
-            87: 80,
+            39: '80',
+            87: '80',
         },
         icon: '/svgs/products-types/t-shirt-long-sleeve_icon.svg',
         inicial_tags: ['long-sleeve'],
@@ -1136,10 +1136,10 @@ export const PRODUCTS_TYPES = [
         family_id: 'raglan-tees',
         color: '#e0824b',
         allow_back_variant: false,
-        providers: [43, 6],
+        providers: ['27', '6'],
         blueprint_ids: {
-            43: 79,
-            6: 79,
+            27: '79',
+            6: '79',
         },
         icon: '/svgs/products-types/raglan-tee-long-sleeve_icon.svg',
         inicial_tags: ['long-sleeve', 'raglan', 'tee', 'baseball'],
@@ -1152,7 +1152,7 @@ export const PRODUCTS_TYPES = [
             {
                 id: "royal-white-s",
                 id_printify: {
-                    43: '33522',
+                    27: '33522',
                     6: '33522',
                 },
                 cost: 1843,
@@ -1165,7 +1165,7 @@ export const PRODUCTS_TYPES = [
             {
                 id: "asphalt-white-s",
                 id_printify: {
-                    43: '39175',
+                    27: '36255',
                     6: '39175',
                 },
                 cost: 1843,
@@ -1178,7 +1178,7 @@ export const PRODUCTS_TYPES = [
             {
                 id: "red-white-s",
                 id_printify: {
-                    43: '36256',
+                    27: '36256',
                     6: '39211',
                 },
                 cost: 1843,
@@ -1191,7 +1191,7 @@ export const PRODUCTS_TYPES = [
             {
                 id: "royal-white-m",
                 id_printify: {
-                    43: '33523',
+                    27: '33523',
                     6: '33523',
                 },
                 cost: 1843,
@@ -1204,7 +1204,7 @@ export const PRODUCTS_TYPES = [
             {
                 id: "asphalt-white-m",
                 id_printify: {
-                    43: '39253',
+                    27: '36257',
                     6: '39253',
                 },
                 cost: 1843,
@@ -1217,7 +1217,7 @@ export const PRODUCTS_TYPES = [
             {
                 id: "red-white-m",
                 id_printify: {
-                    43: '36258',
+                    27: '36258',
                     6: '39289',
                 },
                 cost: 1843,
@@ -1230,7 +1230,7 @@ export const PRODUCTS_TYPES = [
             {
                 id: "royal-white-l",
                 id_printify: {
-                    43: '33524',
+                    27: '33524',
                     6: '33524',
                 },
                 cost: 1843,
@@ -1243,7 +1243,7 @@ export const PRODUCTS_TYPES = [
             {
                 id: "asphalt-white-l",
                 id_printify: {
-                    43: '39331',
+                    27: '36259',
                     6: '39331',
                 },
                 cost: 1843,
@@ -1256,7 +1256,7 @@ export const PRODUCTS_TYPES = [
             {
                 id: "red-white-l",
                 id_printify: {
-                    43: '36260',
+                    27: '36260',
                     6: '39367',
                 },
                 cost: 1843,
@@ -1269,7 +1269,7 @@ export const PRODUCTS_TYPES = [
             {
                 id: "royal-white-xl",
                 id_printify: {
-                    43: '33525',
+                    27: '33525',
                     6: '33525',
                 },
                 cost: 1843,
@@ -1282,7 +1282,7 @@ export const PRODUCTS_TYPES = [
             {
                 id: "asphalt-white-xl",
                 id_printify: {
-                    43: '39409',
+                    27: '36261',
                     6: '39409',
                 },
                 cost: 1843,
@@ -1295,7 +1295,7 @@ export const PRODUCTS_TYPES = [
             {
                 id: "red-white-xl",
                 id_printify: {
-                    43: '36262',
+                    27: '36262',
                     6: '39445',
                 },
                 cost: 1843,
@@ -1308,7 +1308,7 @@ export const PRODUCTS_TYPES = [
             {
                 id: "royal-white-2xl",
                 id_printify: {
-                    43: '33526',
+                    27: '33526',
                     6: '33526',
                 },
                 cost: 2187,
@@ -1321,7 +1321,7 @@ export const PRODUCTS_TYPES = [
             {
                 id: "asphalt-white-2xl",
                 id_printify: {
-                    43: '39487',
+                    27: '36263',
                     6: '39487',
                 },
                 cost: 2187,
@@ -1334,7 +1334,7 @@ export const PRODUCTS_TYPES = [
             {
                 id: "red-white-2xl",
                 id_printify: {
-                    43: '36264',
+                    27: '36264',
                     6: '39523',
                 },
                 cost: 2187,
@@ -1347,7 +1347,7 @@ export const PRODUCTS_TYPES = [
             {
                 id: "white-black-s",
                 id_printify: {
-                    43: '39151',
+                    27: '39151',
                     6: '39151',
                 },
                 cost: 1843,
@@ -1360,7 +1360,7 @@ export const PRODUCTS_TYPES = [
             {
                 id: "green-white-s",
                 id_printify: {
-                    43: '39193',
+                    27: '39193',
                     6: '39193',
                 },
                 cost: 1843,
@@ -1373,7 +1373,7 @@ export const PRODUCTS_TYPES = [
             {
                 id: "navy-white-s",
                 id_printify: {
-                    43: '39196',
+                    27: '39196',
                     6: '39196',
                 },
                 cost: 1843,
@@ -1386,7 +1386,7 @@ export const PRODUCTS_TYPES = [
             {
                 id: "black-white-s",
                 id_printify: {
-                    43: '39178',
+                    27: '39217',
                     6: '39178',
                 },
                 cost: 1843,
@@ -1399,7 +1399,7 @@ export const PRODUCTS_TYPES = [
             {
                 id: "white-black-m",
                 id_printify: {
-                    43: '39229',
+                    27: '39229',
                     6: '39229',
                 },
                 cost: 1843,
@@ -1412,7 +1412,7 @@ export const PRODUCTS_TYPES = [
             {
                 id: "green-white-m",
                 id_printify: {
-                    43: '39271',
+                    27: '39271',
                     6: '39271',
                 },
                 cost: 1843,
@@ -1425,7 +1425,7 @@ export const PRODUCTS_TYPES = [
             {
                 id: "navy-white-m",
                 id_printify: {
-                    43: '39274',
+                    27: '39274',
                     6: '39274',
                 },
                 cost: 1843,
@@ -1438,7 +1438,7 @@ export const PRODUCTS_TYPES = [
             {
                 id: "black-white-m",
                 id_printify: {
-                    43: '39256',
+                    27: '39295',
                     6: '39256',
                 },
                 cost: 1843,
@@ -1451,7 +1451,7 @@ export const PRODUCTS_TYPES = [
             {
                 id: "white-black-l",
                 id_printify: {
-                    43: '39307',
+                    27: '39307',
                     6: '39307',
                 },
                 cost: 1843,
@@ -1464,7 +1464,7 @@ export const PRODUCTS_TYPES = [
             {
                 id: "green-white-l",
                 id_printify: {
-                    43: '39349',
+                    27: '39349',
                     6: '39349',
                 },
                 cost: 1843,
@@ -1477,7 +1477,7 @@ export const PRODUCTS_TYPES = [
             {
                 id: "navy-white-l",
                 id_printify: {
-                    43: '39352',
+                    27: '39352',
                     6: '39352',
                 },
                 cost: 1843,
@@ -1490,7 +1490,7 @@ export const PRODUCTS_TYPES = [
             {
                 id: "black-white-l",
                 id_printify: {
-                    43: '39334',
+                    27: '39373',
                     6: '39334',
                 },
                 cost: 1843,
@@ -1503,7 +1503,7 @@ export const PRODUCTS_TYPES = [
             {
                 id: "white-black-xl",
                 id_printify: {
-                    43: '39385',
+                    27: '39385',
                     6: '39385',
                 },
                 cost: 1843,
@@ -1516,7 +1516,7 @@ export const PRODUCTS_TYPES = [
             {
                 id: "green-white-xl",
                 id_printify: {
-                    43: '39427',
+                    27: '39427',
                     6: '39427',
                 },
                 cost: 1843,
@@ -1529,7 +1529,7 @@ export const PRODUCTS_TYPES = [
             {
                 id: "navy-white-xl",
                 id_printify: {
-                    43: '39430',
+                    27: '39430',
                     6: '39430',
                 },
                 cost: 1843,
@@ -1542,7 +1542,7 @@ export const PRODUCTS_TYPES = [
             {
                 id: "black-white-xl",
                 id_printify: {
-                    43: '39412',
+                    27: '39451',
                     6: '39412',
                 },
                 cost: 1843,
@@ -1555,7 +1555,7 @@ export const PRODUCTS_TYPES = [
             {
                 id: "white-black-2xl",
                 id_printify: {
-                    43: '39463',
+                    27: '39463',
                     6: '39463',
                 },
                 cost: 2187,
@@ -1568,7 +1568,7 @@ export const PRODUCTS_TYPES = [
             {
                 id: "green-white-2xl",
                 id_printify: {
-                    43: '39505',
+                    27: '39505',
                     6: '39505',
                 },
                 cost: 2187,
@@ -1581,7 +1581,7 @@ export const PRODUCTS_TYPES = [
             {
                 id: "navy-white-2xl",
                 id_printify: {
-                    43: '39508',
+                    27: '39508',
                     6: '39508',
                 },
                 cost: 2187,
@@ -1594,7 +1594,7 @@ export const PRODUCTS_TYPES = [
             {
                 id: "black-white-2xl",
                 id_printify: {
-                    43: '39490',
+                    27: '39529',
                     6: '39490',
                 },
                 cost: 2187,
@@ -1611,10 +1611,10 @@ export const PRODUCTS_TYPES = [
         family_id: 'sweatshirts',
         color: '#009c75',
         allow_back_variant: true,
-        providers: [50, 87],
+        providers: ['50', '87'],
         blueprint_ids: {
-            50: 49,
-            87: 49,
+            50: '49',
+            87: '49',
         },
         icon: '/svgs/products-types/sweatshirt_icon.svg',
         inicial_tags: ['long-sleeve'],
@@ -2411,10 +2411,10 @@ export const PRODUCTS_TYPES = [
         family_id: 'hoodies',
         color: '#026539',
         allow_back_variant: true,
-        providers: [50, 26],
+        providers: ['50', '26'],
         blueprint_ids: {
-            50: 77,
-            26: 77,
+            50: '77',
+            26: '77',
         },
         icon: '/svgs/products-types/hoodie_icon.svg',
         inicial_tags: ['long-sleeve', 'hood'],
@@ -2781,9 +2781,9 @@ export const PRODUCTS_TYPES = [
         family_id: 'socks',
         color: '#96305a',
         allow_back_variant: false,
-        providers: [1],
+        providers: ['1'],
         blueprint_ids: {
-            1: 376,
+            1: '376',
         },
         icon: '/svgs/products-types/socks_icon.svg',
         inicial_tags: [],
@@ -2830,10 +2830,10 @@ export const PRODUCTS_TYPES = [
         family_id: 'mugs',
         color: '#bA2326',
         allow_back_variant: false,
-        providers: [1, 87],
+        providers: ['1', '87'],
         blueprint_ids: {
-            1: 68,
-            87: 1020,
+            1: '68',
+            87: '1020',
         },
         icon: '/svgs/products-types/mug_icon.svg',
         inicial_tags: [],
@@ -2863,10 +2863,10 @@ export const PRODUCTS_TYPES = [
         family_id: 'mugs',
         color: '#bA2326',
         allow_back_variant: false,
-        providers: [28, 87],
+        providers: ['28', '87'],
         blueprint_ids: {
-            28: 635,
-            87: 1019,
+            28: '635',
+            87: '1019',
         },
         icon: '/svgs/products-types/mug-c_icon.svg',
         inicial_tags: [],
@@ -3160,21 +3160,21 @@ export function getShippingOptions(product_type, country) {
     if (product_type === 'raglan-tee-long-sleeve') {
         if (country === 'US') {
             return {
-                provider_id: 43,
-                first_item: 519,
-                add_item: 219,
-                tax: 171,
-                add_tax: 171,
+                provider_id: 27,
+                first_item: 849,
+                add_item: 330,
+                tax: 179,
+                add_tax: 144,
                 currency: 'usd'
             }
         }
         if (country === 'CA') {
             return {
-                provider_id: 43,
-                first_item: 939,
-                add_item: 439,
-                tax: 0,
-                add_tax: 0,
+                provider_id: 27,
+                first_item: 679,
+                add_item: 219,
+                tax: 116,
+                add_tax: 93,
                 currency: 'usd'
             }
         }
@@ -3183,8 +3183,8 @@ export function getShippingOptions(product_type, country) {
                 provider_id: 6,
                 first_item: 479,
                 add_item: 99,
-                tax: 424 - 100, //compensar a diferença de preço entre os provedores
-                add_tax: 424 - 100, //compensar a diferença de preço entre os provedores
+                tax: 424 - 100, //verificar //compensar a diferença de preço entre os provedores
+                add_tax: 424 - 100, //verificar //compensar a diferença de preço entre os provedores
                 currency: 'usd'
             }
         }
@@ -3193,18 +3193,8 @@ export function getShippingOptions(product_type, country) {
                 provider_id: 6,
                 first_item: 629,
                 add_item: 119,
-                tax: 550 - 100, //compensar a diferença de preço entre os provedores
-                add_tax: 550 - 100, //compensar a diferença de preço entre os provedores
-                currency: 'usd'
-            }
-        }
-        if (country === 'AU') {
-            return {
-                provider_id: 43,
-                first_item: 1249,
-                add_item: 499,
-                tax: 0,
-                add_tax: 0,
+                tax: 550 - 100, //verificar //compensar a diferença de preço entre os provedores
+                add_tax: 550 - 100, //verificar //compensar a diferença de preço entre os provedores
                 currency: 'usd'
             }
         }
@@ -3213,17 +3203,17 @@ export function getShippingOptions(product_type, country) {
                 provider_id: 6,
                 first_item: 749,
                 add_item: 129,
-                tax: 550 - 100, //compensar a diferença de preço entre os provedores
-                add_tax: 550 - 100, //compensar a diferença de preço entre os provedores
+                tax: 518 - 100, //compensar a diferença de preço entre os provedores
+                add_tax: 382 - 100, //compensar a diferença de preço entre os provedores
                 currency: 'usd'
             }
         }
         return {
-            provider_id: 43,
-            first_item: 1000,
-            add_item: 400,
-            tax: 0,
-            add_tax: 0,
+            provider_id: 27,
+            first_item: 1099,
+            add_item: 549,
+            tax: 0, //verificar
+            add_tax: 0, //verificar
             currency: 'usd'
         }
     }
@@ -3233,8 +3223,8 @@ export function getShippingOptions(product_type, country) {
                 provider_id: 50,
                 first_item: 999,
                 add_item: 249,
-                tax: 191,
-                add_tax: 191,
+                tax: 191, //verificar
+                add_tax: 191, //verificar
                 currency: 'usd'
             }
         }
@@ -3243,8 +3233,8 @@ export function getShippingOptions(product_type, country) {
                 provider_id: 50,
                 first_item: 1269,
                 add_item: 659,
-                tax: 0,
-                add_tax: 0,
+                tax: 0, //verificar
+                add_tax: 0, //verificar
                 currency: 'usd'
             }
         }
@@ -3253,8 +3243,8 @@ export function getShippingOptions(product_type, country) {
                 provider_id: 87,
                 first_item: 729,
                 add_item: 239,
-                tax: 460 - 100, //compensar a diferença de preço entre os provedores
-                add_tax: 460 - 100, //compensar a diferença de preço entre os provedores
+                tax: 460 - 100, //verificar //compensar a diferença de preço entre os provedores
+                add_tax: 460 - 100, //verificar //compensar a diferença de preço entre os provedores
                 currency: 'usd'
             }
         }
@@ -3263,8 +3253,8 @@ export function getShippingOptions(product_type, country) {
                 provider_id: 87,
                 first_item: 729,
                 add_item: 239,
-                tax: 529 - 100, //compensar a diferença de preço entre os provedores
-                add_tax: 529 - 100, //compensar a diferença de preço entre os provedores
+                tax: 529 - 100, //verificar //compensar a diferença de preço entre os provedores
+                add_tax: 529 - 100, //verificar //compensar a diferença de preço entre os provedores
                 currency: 'usd'
             }
         }
@@ -3273,8 +3263,8 @@ export function getShippingOptions(product_type, country) {
                 provider_id: 50,
                 first_item: 2199,
                 add_item: 999,
-                tax: 0,
-                add_tax: 0,
+                tax: 0, //verificar
+                add_tax: 0, //verificar
                 currency: 'usd'
             }
         }
@@ -3283,8 +3273,8 @@ export function getShippingOptions(product_type, country) {
                 provider_id: 87,
                 first_item: 699,
                 add_item: 239,
-                tax: 547 - 100, //compensar a diferença de preço entre os provedores
-                add_tax: 547 - 100, //compensar a diferença de preço entre os provedores
+                tax: 547 - 100, //verificar //compensar a diferença de preço entre os provedores
+                add_tax: 547 - 100, //verificar //compensar a diferença de preço entre os provedores
                 currency: 'usd'
             }
         }
@@ -3293,8 +3283,8 @@ export function getShippingOptions(product_type, country) {
                 provider_id: 87,
                 first_item: 999,
                 add_item: 239,
-                tax: 642 - 100, //compensar a diferença de preço entre os provedores
-                add_tax: 642 - 100, //compensar a diferença de preço entre os provedores
+                tax: 642 - 100, //verificar //compensar a diferença de preço entre os provedores
+                add_tax: 642 - 100, //verificar //compensar a diferença de preço entre os provedores
                 currency: 'usd'
             }
         }
@@ -3302,8 +3292,8 @@ export function getShippingOptions(product_type, country) {
             provider_id: 50,
             first_item: 1500,
             add_item: 1000,
-            tax: 0,
-            add_tax: 0,
+            tax: 0, //verificar
+            add_tax: 0, //verificar
             currency: 'usd'
         }
     }
@@ -3313,8 +3303,8 @@ export function getShippingOptions(product_type, country) {
                 provider_id: 1,
                 first_item: 639,
                 add_item: 400,
-                tax: 92,
-                add_tax: 92,
+                tax: 92, //verificar
+                add_tax: 92, //verificar
                 currency: 'usd'
             }
         }
@@ -3323,8 +3313,8 @@ export function getShippingOptions(product_type, country) {
                 provider_id: 1,
                 first_item: 1489,
                 add_item: 609,
-                tax: 0,
-                add_tax: 0,
+                tax: 0, //verificar
+                add_tax: 0, //verificar
                 currency: 'usd'
             }
         }
@@ -3333,8 +3323,8 @@ export function getShippingOptions(product_type, country) {
                 provider_id: 87,
                 first_item: 659,
                 add_item: 199,
-                tax: 272 - 100, //compensar a diferença de preço entre os provedores
-                add_tax: 272 - 100, //compensar a diferença de preço entre os provedores
+                tax: 272 - 100, //verificar //compensar a diferença de preço entre os provedores
+                add_tax: 272 - 100, //verificar //compensar a diferença de preço entre os provedores
                 currency: 'usd'
             }
         }
@@ -3343,8 +3333,8 @@ export function getShippingOptions(product_type, country) {
                 provider_id: 87,
                 first_item: 729,
                 add_item: 169,
-                tax: 250 - 100, //compensar a diferença de preço entre os provedores
-                add_tax: 250 - 100, //compensar a diferença de preço entre os provedores
+                tax: 250 - 100, //verificar //compensar a diferença de preço entre os provedores
+                add_tax: 250 - 100, //verificar //compensar a diferença de preço entre os provedores
                 currency: 'usd'
             }
         }
@@ -3353,8 +3343,8 @@ export function getShippingOptions(product_type, country) {
                 provider_id: 87,
                 first_item: 729,
                 add_item: 169,
-                tax: 288 - 100, //compensar a diferença de preço entre os provedores
-                add_tax: 288 - 100, //compensar a diferença de preço entre os provedores
+                tax: 288 - 100, //verificar //compensar a diferença de preço entre os provedores
+                add_tax: 288 - 100, //verificar //compensar a diferença de preço entre os provedores
                 currency: 'usd'
             }
         }
@@ -3363,8 +3353,8 @@ export function getShippingOptions(product_type, country) {
                 provider_id: 87,
                 first_item: 699,
                 add_item: 179,
-                tax: 281 - 100, //compensar a diferença de preço entre os provedores
-                add_tax: 281 - 100, //compensar a diferença de preço entre os provedores
+                tax: 281 - 100, //verificar //compensar a diferença de preço entre os provedores
+                add_tax: 281 - 100, //verificar //compensar a diferença de preço entre os provedores
                 currency: 'usd'
             }
         }
@@ -3373,15 +3363,15 @@ export function getShippingOptions(product_type, country) {
                 provider_id: 87,
                 first_item: 1029,
                 add_item: 199,
-                tax: 372 - 100, //compensar a diferença de preço entre os provedores
-                add_tax: 372 - 100, //compensar a diferença de preço entre os provedores
+                tax: 372 - 100, //verificar //compensar a diferença de preço entre os provedores
+                add_tax: 372 - 100, //verificar //compensar a diferença de preço entre os provedores
                 currency: 'usd'
             }
         }
         return {
             provider_id: 87,
-            first_item: 1359 - 100, //compensar a diferença de preço entre os provedores
-            add_item: 699 - 100, //compensar a diferença de preço entre os provedores
+            first_item: 1359 - 100, //verificar //compensar a diferença de preço entre os provedores
+            add_item: 699 - 100, //verificar //compensar a diferença de preço entre os provedores
             tax: 0,
             add_tax: 0,
             currency: 'usd'
@@ -3393,8 +3383,8 @@ export function getShippingOptions(product_type, country) {
                 provider_id: 28,
                 first_item: 639,
                 add_item: 359,
-                tax: 86,
-                add_tax: 86,
+                tax: 86, //verificar
+                add_tax: 86, //verificar
                 currency: 'usd'
             }
         }
@@ -3403,8 +3393,8 @@ export function getShippingOptions(product_type, country) {
                 provider_id: 28,
                 first_item: 1149,
                 add_item: 599,
-                tax: 0,
-                add_tax: 0,
+                tax: 0, //verificar
+                add_tax: 0, //verificar
                 currency: 'usd'
             }
         }
@@ -3413,8 +3403,8 @@ export function getShippingOptions(product_type, country) {
                 provider_id: 87,
                 first_item: 659,
                 add_item: 199,
-                tax: 291,
-                add_tax: 291,
+                tax: 291, //verificar
+                add_tax: 291, //verificar
                 currency: 'usd'
             }
         }
@@ -3423,8 +3413,8 @@ export function getShippingOptions(product_type, country) {
                 provider_id: 87,
                 first_item: 729,
                 add_item: 169,
-                tax: 266,
-                add_tax: 266,
+                tax: 266, //verificar
+                add_tax: 266, //verificar
                 currency: 'usd'
             }
         }
@@ -3433,8 +3423,8 @@ export function getShippingOptions(product_type, country) {
                 provider_id: 87,
                 first_item: 729,
                 add_item: 169,
-                tax: 307,
-                add_tax: 307,
+                tax: 307, //verificar
+                add_tax: 307, //verificar
                 currency: 'usd'
             }
         }
@@ -3443,8 +3433,8 @@ export function getShippingOptions(product_type, country) {
                 provider_id: 87,
                 first_item: 699,
                 add_item: 179,
-                tax: 300,
-                add_tax: 300,
+                tax: 300, //verificar
+                add_tax: 300, //verificar
                 currency: 'usd'
             }
         }
@@ -3453,8 +3443,8 @@ export function getShippingOptions(product_type, country) {
                 provider_id: 87,
                 first_item: 1029,
                 add_item: 199,
-                tax: 392,
-                add_tax: 392,
+                tax: 392, //verificar
+                add_tax: 392, //verificar
                 currency: 'usd'
             }
         }
@@ -3462,8 +3452,8 @@ export function getShippingOptions(product_type, country) {
             provider_id: 87,
             first_item: 1359,
             add_item: 699,
-            tax: 0,
-            add_tax: 0,
+            tax: 0, //verificar
+            add_tax: 0, //verificar
             currency: 'usd'
         }
     }
@@ -3473,8 +3463,8 @@ export function getShippingOptions(product_type, country) {
                 provider_id: 1,
                 first_item: 479,
                 add_item: 150,
-                tax: 100,
-                add_tax: 70,
+                tax: 100, //verificar
+                add_tax: 70, //verificar
                 currency: 'usd'
             }
         }
@@ -3483,8 +3473,8 @@ export function getShippingOptions(product_type, country) {
                 provider_id: 1,
                 first_item: 879,
                 add_item: 109,
-                tax: 0,
-                add_tax: 0,
+                tax: 0, //verificar
+                add_tax: 0, //verificar
                 currency: 'usd'
             }
         }
@@ -3492,8 +3482,8 @@ export function getShippingOptions(product_type, country) {
             provider_id: 1,
             first_item: 1409,
             add_item: 199,
-            tax: 0,
-            add_tax: 0,
+            tax: 0, //verificar
+            add_tax: 0, //verificar
             currency: 'usd'
         }
     }

@@ -1,7 +1,7 @@
 import { isProductInPrintify } from "./printify"
 import MyError from "@/classes/MyError"
 import { productInfoModel } from "@/utils/models";
-import { getProductVariantsInfos } from "@/utils";
+import { getObjectsDiff, getProductVariantsInfos } from "@/utils";
 import { getProductPrintifyIdsUniquePosition } from "@/utils/edit-product";
 const admin = require('../firebaseAdminInit');
 
@@ -45,14 +45,12 @@ async function getProductById(id) {
         const productRef = firestore.doc(`${process.env.NEXT_PUBLIC_COLL_PRODUCTS}/${id}`);
         const productDoc = await productRef.get();
 
-        if (productDoc.exists) {
-            const productData = productDoc.data();
-
-            console.log(`Product with ID ${id} found!`);
-            return productData;
-        } else {
+        if (!productDoc.exists)
             throw new MyError({ message: `Product with ID ${id} not found` });
-        }
+
+        const productData = productDoc.data();
+        console.log(`Product with ID ${id} found!`);
+        return productData;
     } catch (error) {
         console.error("Error getting product:", error);
         throw error;
@@ -65,27 +63,33 @@ async function getProductById(id) {
  * @param {Object} product_new_fields - New fields to update the product with.
  * @returns {Promise<Object>} An object containing the status message of the operation.
  */
-async function updateProduct(new_product) {
-    if (!new_product?.id || !new_product) {
+async function updateProduct(product_id, new_fields, inicial_product) {
+    if (!product_id || !new_fields || !inicial_product)
         throw new MyError({ message: 'Invalid update data', type: 'warning' })
-    }
-
-    const productsCollection = admin.firestore().collection(process.env.NEXT_PUBLIC_COLL_PRODUCTS)
-    const productRef = productsCollection.doc(new_product.id)
 
     try {
+        const productsCollection = admin.firestore().collection(process.env.NEXT_PUBLIC_COLL_PRODUCTS)
+        const productRef = productsCollection.doc(product_id)
+
         const productDoc = await productRef.get()
 
-        if (!productDoc.exists) {
+        if (!productDoc.exists)
             throw new MyError({ message: 'Product not found to update', type: 'warning' })
+
+        if (new_fields.printify_ids) {
+            const existInPrintify = await isProductInPrintify(new_fields)
+            if (!existInPrintify)
+                throw new MyError({ message: 'Invalid printify ID', type: 'warning' })
         }
 
-        const existInPrintify = await isProductInPrintify(new_product)
-        if (!existInPrintify) {
-            throw new MyError({ message: 'Invalid printify ID', type: 'warning' })
-        }
+        const diffs = getObjectsDiff(productDoc.data(), inicial_product)
 
-        await productRef.update(new_product)
+        delete diffs.create_at
+
+        if (Object.keys(diffs).length !== 0)
+            throw new MyError({ message: 'You are no longer editing the latest version', type: 'warning' })
+
+        await productRef.update(new_fields)
     } catch (error) {
         console.error("Error updating product:", error)
         throw error

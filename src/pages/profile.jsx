@@ -125,8 +125,8 @@ export default function Profile() {
             console.error(error)
             if (error?.code === 'auth/invalid-profile-attribute')
                 showToast({ type: 'error', msg: tToasts('invalid_profile_attribute') })
-            else
-                showToast({ type: error?.type || 'error', msg: tToasts(error.message) })
+            else if (error.msg)
+                showToast({ type: error.type, msg: tToasts(error.msg) })
             setDisableSaveButton(false)
         }
     }

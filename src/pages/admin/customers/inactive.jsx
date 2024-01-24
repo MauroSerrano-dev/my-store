@@ -65,7 +65,8 @@ export default function InactiveCustomers() {
             setInactiveList(inactiveUsers)
         } catch (error) {
             console.error(error)
-            showToast({ type: error?.type || 'error', msg: tToasts(error.message) });
+            if (error.msg)
+                showToast({ type: error.type, msg: tToasts(error.msg) });
         }
     }
 
@@ -88,7 +89,8 @@ export default function InactiveCustomers() {
         } catch (error) {
             console.error(error)
             setDeleteAccButtonLoading(false)
-            showToast({ type: error?.type || 'error', msg: tToasts(error.message) });
+            if (error.msg)
+                showToast({ type: error.type, msg: tToasts(error.msg) })
         }
     }
 

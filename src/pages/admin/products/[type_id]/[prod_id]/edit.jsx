@@ -129,7 +129,8 @@ export default withRouter(() => {
         }
         catch (error) {
             console.error(error)
-            showToast({ type: error?.type || 'error', msg: tToasts(error.message) })
+            if (error.msg)
+                showToast({ type: error.type, msg: tToasts(error.msg) })
         }
     }
 
@@ -345,7 +346,8 @@ export default withRouter(() => {
         }
         catch (error) {
             console.error(error)
-            showToast({ type: error.type || 'error', msg: tToasts(error.message, error.options) })
+            if (error.msg)
+                showToast({ type: error.type, msg: tToasts(error.msg, error.options) })
         }
     }
 
@@ -365,7 +367,8 @@ export default withRouter(() => {
                 },
                 body: JSON.stringify({
                     product_id: newProduct.id,
-                    new_product: newProduct
+                    new_fields: productDiff,
+                    inicial_product: inicialProduct,
                 })
             }
 
@@ -375,14 +378,14 @@ export default withRouter(() => {
             if (response.status >= 300)
                 throw responseJson.error
 
-            setInicialProduct(newProduct)
             showToast({ type: 'success', msg: tToasts(responseJson.message) })
             router.push(`/admin/products/${newProduct.type_id}`)
         }
         catch (error) {
             console.error('Error updating product', error)
             setDisableUpdateButton(false)
-            showToast({ type: error.type || 'error', msg: tToasts(error.message, error.options) })
+            if (error.msg)
+                showToast({ type: error.type, msg: tToasts(error.msg, error.options) })
         }
     }
 

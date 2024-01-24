@@ -32,7 +32,7 @@ export default function ProductsId() {
         }
         catch (error) {
             console.error(error)
-            showToast({ type: error?.type || 'error', msg: tToasts(error.message) })
+            showToast({ type: error.type, msg: tToasts(error.msg) })
         }
     }
 

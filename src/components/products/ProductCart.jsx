@@ -25,6 +25,7 @@ export default function ProductCart(props) {
         userCurrency,
         handleChangeProductQuantity,
         handleDeleteProductFromCart,
+        windowWidth,
     } = useAppContext()
 
     const { i18n } = useTranslation()
@@ -50,7 +51,8 @@ export default function ProductCart(props) {
         }
         catch (error) {
             console.error(error)
-            showToast({ type: error?.type || 'error', msg: tToasts(error.message) })
+            if (error.msg)
+                showToast({ type: error.type, msg: tToasts(error.msg) })
             setDeleting(false)
         }
     }
@@ -63,7 +65,8 @@ export default function ProductCart(props) {
         }
         catch (error) {
             console.error(error)
-            showToast({ type: error?.type || 'error', msg: tToasts(error.message) })
+            if (error.msg)
+                showToast({ type: error.type, msg: tToasts(error.msg) })
             setDeleting(false)
         }
     }
@@ -221,7 +224,7 @@ export default function ProductCart(props) {
                     </p>
                     {product.quantity > 1 &&
                         <p className={styles.rightP}>
-                            {`${userCurrency?.symbol} ${(PRICE_UNIT / 100).toFixed(2)} ${tCommon('unit')}`}
+                            {`${userCurrency?.symbol} ${(PRICE_UNIT / 100).toFixed(2)} ${tCommon('unit', { count: windowWidth < 475 ? 2 : 1 })}`}
                         </p>
                     }
                 </div>

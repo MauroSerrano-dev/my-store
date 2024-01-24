@@ -10,7 +10,7 @@
     --container-height: 250px;
     height: var(--container-height);
 
-    padding: 0px 3%;
+    padding: 0px 2%;
 
     border-top: #ababab solid 1px;
 }
@@ -172,6 +172,10 @@
     .deleteButton {
         font-size: 18px;
     }
+
+    .rightRight {
+        justify-content: flex-end;
+    }
 }
 
 /* Small Mobile */
@@ -181,12 +185,12 @@
         height: 170px;
     }
 
-    .rightLeft {
-        width: calc(100% - 64px);
-    }
-
     .rightRight {
         width: 64px;
+    }
+
+    .rightLeft {
+        width: calc(100% - 64px);
     }
 
     .price {

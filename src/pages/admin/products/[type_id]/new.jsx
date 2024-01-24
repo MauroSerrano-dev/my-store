@@ -151,7 +151,8 @@ export default withRouter(() => {
         }
         catch (error) {
             console.error(error)
-            showToast({ type: error.type || 'error', msg: tToasts(error.message, error.options) })
+            if (error.msg)
+                showToast({ type: error.type, msg: tToasts(error.msg, error.customProps?.options || {}) })
             setLoadingCreateButton(false)
         }
     }

@@ -237,9 +237,9 @@ export default function ProductAdmin(props) {
                     <div
                         className={styles.tagContainer}
                         style={{
-                            fontSize: width < 150 ? width * 0.055 : width * 0.055,
-                            height: width < 150 ? '17%' : '17%',
-                            top: width < 150 ? '-8.5%' : '-8.5%',
+                            fontSize: width < 150 ? width * 0.065 : width * 0.055,
+                            height: width < 150 ? '20%' : '17%',
+                            top: width < 150 ? '-10%' : '-8.5%',
                             backgroundColor: PRODUCTS_TYPES.find(type => type.id === product.type_id).color || 'var(--primary)',
                         }}
                     >

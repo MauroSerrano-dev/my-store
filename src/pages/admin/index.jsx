@@ -41,8 +41,8 @@ export default function Admin() {
         }
         catch (error) {
             console.error(error)
-            console.log('error.message', error.message)
-            showToast({ type: error?.type || 'error', msg: tToasts(error.message) })
+            if (error.msg)
+                showToast({ type: error.type, msg: tToasts(error.msg) })
         }
     }
 
@@ -62,7 +62,8 @@ export default function Admin() {
             setAdminsList(adminUsers)
         } catch (error) {
             console.error(error)
-            showToast({ type: error?.type || 'error', msg: tToasts(error.message) });
+            if (error.msg)
+                showToast({ type: error.type, msg: tToasts(error.msg) });
         }
     }
 

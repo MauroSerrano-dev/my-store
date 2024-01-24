@@ -3,8 +3,8 @@
     "mug": "Mug",
     "mug-c": "Mug",
     "hoodie": "Hoodie",
-    "raglan-tee-long-sleeve": "Raglan Tee Long Sleeve",
-    "t-shirt-long-sleeve": "T-Shirt Long Sleeve",
+    "raglan-tee-long-sleeve": "Raglan Long Sleeve",
+    "t-shirt-long-sleeve": "Long Sleeve",
     "sweatshirt": "Sweatshirt",
     "more_info_button": "More Info",
     "Price": "Price",
@@ -32,5 +32,9 @@
     "remove_from_wishlist": "Remove from wishlist",
     "go_to_cart": "Go to Cart",
     "continue_shopping": "Continue Shopping",
-    "dont_show_again": "Don't show again"
+    "dont_show_again": "Don't show again",
+    "you_have_x_products": "You have {{products_length}} products in your cart",
+    "keep_cart": "Keep cart?",
+    "yes": "Yes",
+    "no": "No"
 }
