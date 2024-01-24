@@ -118,7 +118,7 @@ async function updateProductStatus(order_id_printify, printify_products) {
 
             await orderDoc.ref.update({ products: updatedProducts });
 
-            console.log("Product status updated successfully")
+            console.log("Order products status updated successfully")
         } else {
             throw new MyError({ message: `Order with ID ${order_id_printify} not found` })
         }
