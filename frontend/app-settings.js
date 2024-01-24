@@ -17,10 +17,12 @@ async function getAppSettings() {
         const allSettings = querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
 
         if (allSettings.length > 0) {
-            console.log('Settings collections retrieved successfully.');
+            if (process.env.NEXT_PUBLIC_ENV === 'development')
+                console.log('Settings collections retrieved successfully.');
             return allSettings;
         } else {
-            console.log('No settings found in the collection.');
+            if (process.env.NEXT_PUBLIC_ENV === 'development')
+                console.log('No settings found in the collection.');
             return [];
         }
     } catch (error) {
