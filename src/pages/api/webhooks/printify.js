@@ -13,7 +13,7 @@ export default async function handler(req, res) {
 
         const body = req.body
         const type = body.type
-
+        console.log(body)
         const orderPrintifyId = body.resource.id
 
         const base_url = `https://api.printify.com/v1/shops/${process.env.PRINTIFY_SHOP_ID}/orders/${orderPrintifyId}.json`
@@ -38,6 +38,6 @@ export default async function handler(req, res) {
     }
     catch (error) {
         console.error(error)
-        res.status(500).json({ message: 'Error on printify webhook', error: error })
+        res.status(error.statusCode || 500).json({ message: 'Error on printify webhook', error: error.message })
     }
 }

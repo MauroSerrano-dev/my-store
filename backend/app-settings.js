@@ -143,6 +143,48 @@ async function emailIsProhibited(email) {
     }
 }
 
+async function getShippingInfos(products_types, country) {
+    try {
+        if (!Array.isArray(products_types))
+            throw new MyError('The "products_types" parameter must be an array')
+
+        if (typeof country !== 'string')
+            throw new MyError('The "country" parameter must be a string')
+
+        const EU_COUNTRIES = ['PL', 'DE', 'BV', 'GE', 'SM', 'GI', 'GG', 'AT', 'HU', 'MD', 'HR', 'BE', 'IM', 'GR', 'IT', 'BY', 'GL', 'GP', 'LU', 'VA', 'JE', 'SK', 'BG', 'MK', 'PT', 'RE', 'FR', 'RO', 'TR', 'SI', 'XK', 'CZ', 'RS', 'ES', 'MC', 'ME', 'UA', 'AL', 'AM', 'CY', 'AX', 'AD', 'FO', 'BA', 'NL', 'MT']
+
+        const EU_NORTH_COUNTRIES = ['LV', 'LT', 'NO', 'FI', 'SE', 'EE', 'IS', 'DK', 'CH', 'LI']
+
+        const settingsRef = admin.firestore().doc(`${process.env.NEXT_PUBLIC_COLL_APP_SETTINGS}/shipping_options`);
+        const settingsDoc = await settingsRef.get();
+
+        if (!settingsDoc.exists)
+            throw new MyError('shipping-options not found in app-settings')
+
+        const shippingOptions = settingsDoc.data().data
+
+        const value = products_types.reduce(
+            (acc, type) => {
+                const optionsCountries = Object.keys(shippingOptions[type.id])
+                let location = 'default'
+                if (optionsCountries.includes(country))
+                    location = country
+                else if (optionsCountries.includes('EU') && EU_COUNTRIES.includes(country))
+                    location = 'EU'
+                else if (optionsCountries.includes('EUN') && EU_NORTH_COUNTRIES.includes(country))
+                    location = 'EUN'
+                const option = shippingOptions[type.id][location]
+                return { providers_ids: { ...acc.providers_ids, [type.id]: option.provider_id }, value: acc.value + option.first_item + option.tax + (option.add_item + option.add_tax) * (type.quantity - 1) }
+            },
+            { providers_ids: {}, value: 0 }
+        )
+        return value
+    } catch (error) {
+        console.error("Error getting shipping value:", error);
+        throw error;
+    }
+}
+
 export {
     getCurrencyById,
     updateAllCurrencies,
@@ -150,4 +192,5 @@ export {
     clearDeletedUsers,
     handleStripeWebhookFail,
     emailIsProhibited,
+    getShippingInfos,
 }

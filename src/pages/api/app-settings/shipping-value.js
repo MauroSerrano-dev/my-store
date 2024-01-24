@@ -1,8 +1,9 @@
 import { isTokenValid } from "@/utils/auth";
-import { getOrderLimitInfoById } from "../../../../backend/orders";
+import { getShippingInfos } from "../../../../backend/app-settings";
 
 export default async function handler(req, res) {
-    const { authorization, order_id } = req.headers
+    const { authorization } = req.headers
+    const { products_types, country } = req.query
 
     if (!authorization)
         res.status(401).json({ error: "Invalid authentication" })
@@ -12,11 +13,11 @@ export default async function handler(req, res) {
 
     if (req.method === "GET") {
         try {
-            const order = await getOrderLimitInfoById(order_id)
-            res.status(200).json({ data: order })
+            const value = await getShippingInfos(JSON.parse(products_types), country)
+            res.status(200).json({ data: value })
         }
         catch (error) {
-            res.status(error.statusCode || 500).json({ error: error });
+            res.status(500).json({ error: error });
         }
     }
 }

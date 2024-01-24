@@ -14,6 +14,7 @@ import { showToast } from '@/utils/toasts'
 import { handleReCaptchaError, handleReCaptchaSuccess } from '@/utils/validations'
 import ReCAPTCHA from 'react-google-recaptcha'
 import lottie from 'lottie-web';
+import MyError from '@/classes/MyError'
 
 const INICIAL_FIELDS = {
     email: '',
@@ -50,39 +51,44 @@ export default function Support() {
         setReCaptchaSolve(false)
     }
 
-    function submit() {
-        if (!reCaptchaSolve)
-            return showToast({ msg: tToasts('solve_recaptcha') })
+    async function submit() {
+        try {
+            if (!reCaptchaSolve)
+                return showToast({ msg: tToasts('solve_recaptcha') })
 
-        setSubmiting(true)
+            setSubmiting(true)
 
-        const options = {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                authorization: process.env.NEXT_PUBLIC_APP_TOKEN
-            },
-            body: JSON.stringify({
-                option: option,
-                fields: fields,
-                user_language: i18n.language
-            })
+            const options = {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    authorization: process.env.NEXT_PUBLIC_APP_TOKEN
+                },
+                body: JSON.stringify({
+                    option: option,
+                    fields: fields,
+                    user_language: i18n.language
+                })
+            }
+            const response = await fetch("/api/support", options)
+            const responseJson = await response.json()
+
+            if (response.status >= 300)
+                throw new MyError(responseJson.error)
+
+            showToast({ type: 'success', msg: tToasts(responseJson.message) })
+            setShowSuccessScreen(true)
         }
-        fetch("/api/support", options)
-            .then(response => response.json())
-            .then(response => {
-                if (response.error)
-                    showToast({ type: 'error', msg: tToasts(response.error) })
-                else {
-                    showToast({ type: 'success', msg: tToasts(response.message) })
-                    setShowSuccessScreen(true)
-                }
-                setSubmiting(false)
-            })
-            .catch(() => {
+        catch (error) {
+            console.error(error)
+            if (error.msg)
+                showToast({ type: error.type, msg: tToasts(error.msg) })
+            else
                 showToast({ type: 'error', msg: tToasts('default_error') })
-                setSubmiting(false)
-            })
+        }
+        finally {
+            setSubmiting(false)
+        }
     }
 
     useEffect(() => {

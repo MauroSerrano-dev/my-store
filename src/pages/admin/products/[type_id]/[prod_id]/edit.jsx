@@ -82,7 +82,8 @@ export default withRouter(() => {
 
     useEffect(() => {
         console.log('variants', product?.variants)
-    }, [product])
+        console.log('images', FINAL_IMAGES)
+    }, [product, images])
 
     useEffect(() => {
         if (router.isReady) {
@@ -339,7 +340,6 @@ export default withRouter(() => {
             isProductValid(newProductHolder)
 
             setNewProduct(newProductHolder)
-
             setProductDiff(diff)
 
             setUpdateModalOpen(true)
@@ -367,7 +367,7 @@ export default withRouter(() => {
                 },
                 body: JSON.stringify({
                     product_id: newProduct.id,
-                    new_fields: productDiff,
+                    new_fields: Object.keys(productDiff).reduce((acc, key) => ({ ...acc, [key]: newProduct[key] }), {}),
                     inicial_product: inicialProduct,
                 })
             }
