@@ -49,8 +49,10 @@ async function handlePostOrderCreation(line_items, userId) {
     try {
         const firestore = admin.firestore()
 
-        const userRef = firestore.doc(`${process.env.NEXT_PUBLIC_COLL_USERS}/${userId}`)
-        await userRef.update({ orders_counter: admin.firestore.FieldValue.increment(1) })
+        if (userId) {
+            const userRef = firestore.doc(`${process.env.NEXT_PUBLIC_COLL_USERS}/${userId}`)
+            await userRef.update({ orders_counter: admin.firestore.FieldValue.increment(1) })
+        }
 
         for (const lineItem of line_items) {
             const { id, variant_id, quantity } = lineItem
