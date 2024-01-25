@@ -25,7 +25,7 @@ async function deleteProductsFromWishlist(user_id, productsIdsToDelete) {
             }
         })
 
-        console.log(`Products successfully deleted from user {${user_id}} wishlist!`)
+        console.log(`Products successfully deleted from user ${user_id} wishlist!`)
     } catch (error) {
         console.error('Error deleting products from the wishlist:', error);
         throw new MyError({ message: 'error_deleting_products_from_wishlist' })
