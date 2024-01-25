@@ -98,30 +98,29 @@ async function updateProductStatus(order_id_printify, printify_products) {
         const q = ordersCollection.where("id_printify", "==", order_id_printify);
         const querySnapshot = await q.get();
 
-        if (!querySnapshot.empty) {
-            const orderDoc = querySnapshot.docs[0];
-
-            const now = admin.firestore.Timestamp.now();
-
-            const orderData = orderDoc.data();
-            const updatedProducts = orderData.products.map(product => {
-                const newPossibleStatus = printify_products.find(prod => prod.product_id === product.id_printify && prod.variant_id === product.variant_id_printify)?.status;
-                const newStatus = ALLOWED_WEBHOOK_STATUS.includes(newPossibleStatus) && ALLOWED_WEBHOOK_STATUS.includes(product.status)
-                    ? newPossibleStatus || null
-                    : product.status;
-                return {
-                    ...product,
-                    updated_at: newStatus !== product.status ? now : product.updated_at,
-                    status: newStatus
-                };
-            });
-
-            await orderDoc.ref.update({ products: updatedProducts });
-
-            console.log("Order products status updated successfully")
-        } else {
+        if (!querySnapshot.empty)
             throw new MyError({ message: `Order with ID ${order_id_printify} not found` })
-        }
+
+        const orderDoc = querySnapshot.docs[0];
+
+        const now = admin.firestore.Timestamp.now();
+
+        const orderData = orderDoc.data();
+        const updatedProducts = orderData.products.map(product => {
+            const newPossibleStatus = printify_products.find(prod => prod.product_id === product.id_printify && prod.variant_id === product.variant_id_printify)?.status;
+            const newStatus = ALLOWED_WEBHOOK_STATUS.includes(newPossibleStatus) && ALLOWED_WEBHOOK_STATUS.includes(product.status)
+                ? newPossibleStatus || null
+                : product.status;
+            return {
+                ...product,
+                updated_at: newStatus !== product.status ? now : product.updated_at,
+                status: newStatus
+            };
+        });
+
+        await orderDoc.ref.update({ products: updatedProducts });
+
+        console.log("Order products status updated successfully")
     } catch (error) {
         console.error("Error updating product status", error);
         throw error;
