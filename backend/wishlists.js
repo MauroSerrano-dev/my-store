@@ -20,7 +20,7 @@ async function deleteProductsFromWishlist(user_id, productsIdsToDelete) {
 
         await userDoc.ref.update({
             wishlist: {
-                products: userData.products.filter(prod => !productsIdsToDelete.includes(prod.id)),
+                products: userData.wishlist.products.filter(prod => !productsIdsToDelete.includes(prod.id)),
                 updated_at: admin.firestore.Timestamp.now()
             }
         })
