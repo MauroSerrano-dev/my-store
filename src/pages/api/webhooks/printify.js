@@ -13,7 +13,7 @@ export default async function handler(req, res) {
 
         const body = req.body
         const type = body.type
-        console.log(body)
+
         const orderPrintifyId = body.resource.id
 
         const base_url = `https://api.printify.com/v1/shops/${process.env.PRINTIFY_SHOP_ID}/orders/${orderPrintifyId}.json`
@@ -27,7 +27,7 @@ export default async function handler(req, res) {
         if (type === 'order:updated' || type === 'order:sent-to-production' || type === 'order:shipment:created' || type === 'order:shipment:delivered') {
 
             const orderRes = await axios.get(base_url, options)
-
+            console.log('orderRes', orderRes)
             await updateProductStatus(orderPrintifyId, orderRes.data.line_items)
 
             if (orderRes.data.shipments)
