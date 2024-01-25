@@ -20,12 +20,12 @@ async function deleteProductsFromWishlist(user_id, productsIdsToDelete) {
 
         await userDoc.ref.update({
             wishlist: {
-                products: userData.products.filter(prod => !productsIdsToDelete.includes(prod.id)),
+                products: userData.wishlist.products.filter(prod => !productsIdsToDelete.includes(prod.id)),
                 updated_at: admin.firestore.Timestamp.now()
             }
         })
 
-        console.log(`Products successfully deleted from user {${user_id}} wishlist!`)
+        console.log(`Products successfully deleted from user ${user_id} wishlist!`)
     } catch (error) {
         console.error('Error deleting products from the wishlist:', error);
         throw new MyError({ message: 'error_deleting_products_from_wishlist' })
