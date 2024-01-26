@@ -27,6 +27,7 @@ export const CURRENCY_LOCAL_STORAGE = 'currency'
 export const DONT_SHOW_POS_ADD = 'dont_show_pa_modal'
 
 export const LIMITS = {
+    shipping_value: 5,
     cart_same_item: 10,
     cart_items: 20,
     wishlist_products: 60,

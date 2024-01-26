@@ -1,0 +1,14 @@
+.container {
+    width: 100%;
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+    padding-right: 2rem;
+    --text-color: var(--global-white);
+}
+
+.providers {
+    display: flex;
+    flex-direction: column;
+
+    gap: 2rem;
+}

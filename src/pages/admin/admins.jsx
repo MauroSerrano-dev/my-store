@@ -1,5 +1,5 @@
 import styles from '@/styles/admin/index.module.css'
-import NoFound404 from '../../../components/NoFound404';
+import NoFound404 from '../../components/NoFound404';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { useAppContext } from '@/components/contexts/AppContext';
 import { COMMON_TRANSLATES } from '@/consts';
