@@ -27,7 +27,7 @@ export default async function handler(req, res) {
         if (type === 'order:updated' || type === 'order:sent-to-production' || type === 'order:shipment:created' || type === 'order:shipment:delivered') {
 
             const orderRes = await axios.get(base_url, options)
-            console.log('orderRes', orderRes.data.line_items, orderPrintifyId)
+
             await updateProductStatus(orderPrintifyId, orderRes.data.line_items)
 
             if (orderRes.data.shipments)

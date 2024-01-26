@@ -48,6 +48,22 @@ async function getAllCurrencies() {
     }
 }
 
+async function getShippingOptions() {
+    try {
+        const currRef = doc(db, process.env.NEXT_PUBLIC_COLL_APP_SETTINGS, 'shipping_options')
+        const currDoc = await getDoc(currRef)
+
+        if (!currDoc.exists()) {
+            console.error("Shipping options document does not exist")
+            throw new MyError({ message: 'default_error' })
+        }
+        return currDoc.data()
+    } catch (error) {
+        console.error("Error retrieving shipping options:", error)
+        throw error
+    }
+}
+
 async function emailIsProhibited(email) {
     try {
         const settingsRef = doc(db, process.env.NEXT_PUBLIC_COLL_APP_SETTINGS, 'deleted_users');
@@ -68,4 +84,5 @@ export {
     getAppSettings,
     getAllCurrencies,
     emailIsProhibited,
+    getShippingOptions,
 }
