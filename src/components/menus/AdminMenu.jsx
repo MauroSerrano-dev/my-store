@@ -5,13 +5,12 @@ import ShoppingBagOutlinedIcon from '@mui/icons-material/ShoppingBagOutlined'
 import LocalShippingOutlinedIcon from '@mui/icons-material/LocalShippingOutlined'
 import GroupOutlinedIcon from '@mui/icons-material/GroupOutlined'
 import StyleOutlinedIcon from '@mui/icons-material/StyleOutlined'
-import ReportProblemOutlinedIcon from '@mui/icons-material/ReportProblemOutlined'
 import PaymentsOutlinedIcon from '@mui/icons-material/PaymentsOutlined'
 import ConfirmationNumberOutlinedIcon from '@mui/icons-material/ConfirmationNumberOutlined'
 import AdminPanelSettingsOutlinedIcon from '@mui/icons-material/AdminPanelSettingsOutlined'
+import LiveHelpOutlinedIcon from '@mui/icons-material/LiveHelpOutlined';
 import Link from 'next/link'
 import { motion } from 'framer-motion'
-import ColorLensOutlinedIcon from '@mui/icons-material/ColorLensOutlined'
 import { useAppContext } from '../contexts/AppContext'
 import { useState } from 'react'
 
@@ -25,8 +24,7 @@ const OPTIONS = [
     { title: 'Admins', type: 'link', href: '/admin/admins', icon: <AdminPanelSettingsOutlinedIcon /> },
     { title: 'Tags', type: 'link', href: '/admin/tags', icon: <StyleOutlinedIcon /> },
     { title: 'Tickets', type: 'link', href: '/admin/tickets', icon: <ConfirmationNumberOutlinedIcon /> },
-    { title: 'Visual Identity', type: 'link', href: '/admin/visual-identity', icon: <ColorLensOutlinedIcon /> },
-    { title: 'App Alert', type: 'link', href: '/admin/app-alert', icon: <ReportProblemOutlinedIcon /> },
+    { title: 'Quests', type: 'link', href: '/admin/quests', icon: <LiveHelpOutlinedIcon /> },
 ]
 
 export default function AdminMenu(props) {

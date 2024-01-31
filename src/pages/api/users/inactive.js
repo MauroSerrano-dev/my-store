@@ -4,10 +4,10 @@ const admin = require('../../../../firebaseAdminInit');
 export default async function handler(req, res) {
     const { authorization, limit, months } = req.headers;
 
-    if (!authorization)
-        return res.status(401).send('Access denied: No token provided');
-
     try {
+        if (!authorization)
+            return res.status(401).send('Access denied: No token provided');
+
         const decodedToken = await admin.auth().verifyIdToken(authorization);
         if (!decodedToken.admin) {
             return res.status(403).send('Access denied: User is not an administrator');
