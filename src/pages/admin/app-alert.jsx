@@ -1,14 +1,15 @@
-import styles from '@/styles/admin/products/index.module.css'
-import NoFound404 from '../../../components/NoFound404';
+import styles from '@/styles/admin/app-alert.module.css'
+import NoFound404 from '../../components/NoFound404';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
-import { COMMON_TRANSLATES } from '@/consts';
 import { useAppContext } from '@/components/contexts/AppContext';
-import ProductsSelector from '@/components/products/ProductsSelector';
+import { COMMON_TRANSLATES } from '@/consts';
 
-export default function Products() {
+export default function AppAlert() {
     const {
+        auth,
         session,
         isAdmin,
+        router,
     } = useAppContext()
 
     return (
@@ -25,13 +26,6 @@ export default function Products() {
                     <header>
                     </header>
                     <main className={styles.main}>
-                        <h2>Products Types</h2>
-                        <div className={styles.options}>
-                            <ProductsSelector
-                                url='/admin/products'
-                                showAll
-                            />
-                        </div>
                     </main>
                 </div>
     )

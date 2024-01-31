@@ -5,6 +5,7 @@ import { getDisabledProducts, getProductsByIds } from "../../../backend/product"
 import { filterNotInPrintify } from "../../../backend/printify";
 import { getCurrencyById, getShippingInfos } from "../../../backend/app-settings";
 import { getProductPriceUnit } from "@/utils/prices";
+import { DISABLE_CHECKOUT } from "@/utils/app-controller";
 
 const Stripe = require("stripe");
 
@@ -31,7 +32,7 @@ export default async function handler(req, res) {
         user_language,
       } = req.body
 
-      if (process.env.NEXT_PUBLIC_DISABLE_CHECKOUT === 'true')
+      if (DISABLE_CHECKOUT)
         res.status(400).json({ error: { type: 'warning', message: 'checkout_temporarily_disabled' } })
 
       if (cartItems.reduce((acc, prod) => acc + prod.quantity, 0) > LIMITS.cart_items)

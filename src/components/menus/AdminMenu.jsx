@@ -26,7 +26,7 @@ const OPTIONS = [
     { title: 'Tags', type: 'link', href: '/admin/tags', icon: <StyleOutlinedIcon /> },
     { title: 'Tickets', type: 'link', href: '/admin/tickets', icon: <ConfirmationNumberOutlinedIcon /> },
     { title: 'Visual Identity', type: 'link', href: '/admin/visual-identity', icon: <ColorLensOutlinedIcon /> },
-    { title: 'Global Report', type: 'link', href: '/admin/global-report', icon: <ReportProblemOutlinedIcon /> },
+    { title: 'App Alert', type: 'link', href: '/admin/app-alert', icon: <ReportProblemOutlinedIcon /> },
 ]
 
 export default function AdminMenu(props) {

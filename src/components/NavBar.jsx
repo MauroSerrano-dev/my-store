@@ -11,6 +11,8 @@ import { MenuToggle } from './MenuToggle';
 import { useTranslation } from 'next-i18next';
 import { useAppContext } from './contexts/AppContext';
 import LanguageSelector from './buttons-icon/LanguageSelector';
+import AppAlert from './buttons-icon/AppAlert';
+import { SHOW_APP_ALERT } from '@/utils/app-controller';
 
 export default function NavBar(props) {
     const {
@@ -60,17 +62,20 @@ export default function NavBar(props) {
                         </motion.div>
                     }
                     {!mobile &&
-                        <Link
-                            href={'/'}
-                            className='fillHeight'
-                            aria-label='Home'
-                            style={{
-                                height: '70%',
-                                paddingTop: '0.4rem',
-                            }}
-                        >
-                            <Logo height='100%' />
-                        </Link>
+                        (SHOW_APP_ALERT
+                            ? <AppAlert />
+                            : <Link
+                                href={'/'}
+                                className='fillHeight'
+                                aria-label='Home'
+                                style={{
+                                    height: '70%',
+                                    paddingTop: '0.4rem',
+                                }}
+                            >
+                                <Logo height='100%' />
+                            </Link>
+                        )
                     }
                 </div>
                 <div
@@ -79,18 +84,21 @@ export default function NavBar(props) {
                     {adminMode
                         ? <div></div>
                         : mobile
-                            ? <Link
-                                href={'/'}
-                                className='fillHeight flex center'
-                                aria-label='Home'
-                                style={{
-                                    width: '70px',
-                                    height: '100%',
-                                    paddingTop: '0.7rem',
-                                }}
-                            >
-                                <Logo width='100%' />
-                            </Link>
+                            ? (SHOW_APP_ALERT
+                                ? <AppAlert />
+                                : <Link
+                                    href={'/'}
+                                    className='fillHeight flex center'
+                                    aria-label='Home'
+                                    style={{
+                                        width: '70px',
+                                        height: '100%',
+                                        paddingTop: '0.7rem',
+                                    }}
+                                >
+                                    <Logo width='100%' />
+                                </Link>
+                            )
                             : <SearchBar
                                 show={isScrollAtTop}
                                 placeholder={tNavbar('search_bar_placeholder')}

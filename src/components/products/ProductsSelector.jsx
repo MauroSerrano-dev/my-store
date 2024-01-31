@@ -7,14 +7,14 @@ import Image from 'next/image'
 export default function ProductsSelector(props) {
     const {
         url = '',
-        hideAll
+        showAll
     } = props
 
     const tCommon = useTranslation('common').t
 
     return (
         <div className={styles.container}>
-            {!hideAll &&
+            {showAll &&
                 <Link
                     className={`${styles.option} ${styles.optionAll} noUnderline`}
                     href={`${url}/all`}

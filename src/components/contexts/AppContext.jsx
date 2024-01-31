@@ -29,6 +29,7 @@ import { isSameProduct } from '@/utils'
 import PosAddToCartModal from '../PosAddToCartModal'
 import Modal from '../Modal'
 import MyButton from '../material-ui/MyButton'
+import { MAINTENANCE } from '@/utils/app-controller'
 
 const AppContext = createContext()
 
@@ -723,7 +724,7 @@ export function AppProvider({ children }) {
                         transition: `all ease-in-out ${websiteVisible ? 200 : 0}ms`,
                     }}
                 >
-                    {process.env.NEXT_PUBLIC_MAINTENANCE === 'true'
+                    {MAINTENANCE
                         ? <Maintenance></Maintenance>
                         : children
                     }

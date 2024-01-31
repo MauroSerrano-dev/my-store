@@ -28,8 +28,7 @@ export default function Products() {
                         <h2>Products Types</h2>
                         <div className={styles.options}>
                             <ProductsSelector
-                                url='/admin/products'
-                                showAll
+                                url='/admin/providers'
                             />
                         </div>
                     </main>

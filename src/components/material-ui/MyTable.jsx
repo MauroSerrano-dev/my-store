@@ -14,16 +14,22 @@ export default function MyTable(props) {
         headers = [],
         records = [],
         onChange,
+        clearUpdates
     } = props
 
     const inputRef = useRef(null)
 
     const [editableCell, setEditableCell] = useState(null)
+    const [cellsUpdated, setCellsUpdated] = useState([])
 
     useEffect(() => {
         if (editableCell !== null)
             inputRef.current?.focus()
     }, [editableCell])
+
+    useEffect(() => {
+        setCellsUpdated([])
+    }, [clearUpdates])
 
     function handleEditCell(id) {
         setEditableCell(id === editableCell ? null : id);
@@ -42,6 +48,10 @@ export default function MyTable(props) {
                         {headers.map(head =>
                             <TableCell
                                 key={head.id}
+                                style={{
+                                    fontWeight: 700,
+                                    width: `${100 / headers.length}%`,
+                                }}
                             >
                                 {head.title}
                             </TableCell>
@@ -58,10 +68,11 @@ export default function MyTable(props) {
                                     key={head.id}
                                     height={50}
                                     style={{
-                                        padding: 0
+                                        padding: 0,
+                                        fontWeight: head.isHeader ? 700 : 500,
                                     }}
                                 >
-                                    {editableCell === `${i}${j}`
+                                    {editableCell === `${i}${j}` && head.editable
                                         ? <div
                                             className={styles.editableCell}
                                         >
@@ -69,18 +80,34 @@ export default function MyTable(props) {
                                                 className={styles.editInput}
                                                 ref={inputRef}
                                                 value={rec[head.id].id === undefined ? rec[head.id] : rec[head.id].id}
-                                                onChange={e => handleCellChange(i, j, e.target.value)}
+                                                onChange={e => {
+                                                    handleCellChange(i, j, e.target.value)
+                                                    setCellsUpdated(prev => prev.includes(`${i}${j}`) ? prev : [...prev, `${i}${j}`])
+                                                }}
                                                 onBlur={() => setEditableCell(null)}
                                                 style={{
                                                     width: '80px',
+                                                }}
+                                                onKeyDown={event => {
+                                                    if (event.key === 'Enter')
+                                                        setEditableCell(null)
                                                 }}
                                             />
                                         </div>
                                         : <div
                                             onClick={() => handleEditCell(`${i}${j}`)}
                                             className={styles.noEditableCell}
+                                            style={{
+                                                color: cellsUpdated.includes(`${i}${j}`)
+                                                    ? 'var(--color-success)'
+                                                    : 'var(--text-black)'
+                                            }}
                                         >
-                                            {rec[head.id].title === undefined ? rec[head.id] : rec[head.id].title}
+                                            {
+                                                rec[head.id].title === undefined
+                                                    ? rec[head.id]
+                                                    : rec[head.id].title
+                                            }
                                         </div>
                                     }
                                 </TableCell>
