@@ -104,6 +104,7 @@ export default function Quests() {
                             value={questId}
                             onChange={event => setQuestId(event.target.value)}
                             size='small'
+                            label='Quest ID'
                             style={{
                                 width: 600
                             }}

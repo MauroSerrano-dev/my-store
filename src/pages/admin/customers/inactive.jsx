@@ -14,6 +14,7 @@ import { SlClose } from 'react-icons/sl';
 import TextInput from '@/components/material-ui/TextInput';
 import { LoadingButton } from '@mui/lab';
 import MyTable from '@/components/material-ui/MyTable';
+import MyError from '@/classes/MyError';
 
 const INACTIVE_MONTHS = 12
 
@@ -60,10 +61,14 @@ export default function InactiveCustomers() {
             };
 
             const response = await fetch('/api/users/inactive', options)
-            const inactiveUsers = await response.json()
+            const responseJson = await response.json()
 
-            setInactiveList(inactiveUsers)
-        } catch (error) {
+            if (response.status >= 300)
+                throw new MyError(responseJson.message)
+
+            setInactiveList(responseJson.users)
+        }
+        catch (error) {
             console.error(error)
             if (error.msg)
                 showToast({ type: error.type, msg: tToasts(error.msg) });
@@ -86,7 +91,8 @@ export default function InactiveCustomers() {
             await fetch('/api/users/inactive', options)
             setInactiveList([])
             setDeleteModalOpen(false)
-        } catch (error) {
+        }
+        catch (error) {
             console.error(error)
             setDeleteAccButtonLoading(false)
             if (error.msg)
@@ -136,21 +142,23 @@ export default function InactiveCustomers() {
                                     { id: 'lastRefreshTime', title: 'Last Refresh Time' },
                                     { id: 'tokensValidAfterTime', title: 'Tokens Valid After Time' },
                                 ]}
-                                records={inactiveList.map(admin => ({
-                                    ...admin,
-                                    photoURL: admin.photoURL && <Avatar src={admin.photoURL} />,
-                                    isAdmin: String(admin.customClaims?.admin),
-                                    disabled: String(admin.disabled),
-                                    emailVerified: String(admin.emailVerified),
-                                    creationTime: convertStringToFormatDate(admin.metadata.creationTime, i18n.language),
-                                    lastSignInTime: convertStringToFormatDate(admin.metadata.lastSignInTime, i18n.language),
-                                    lastRefreshTime: convertStringToFormatDate(admin.metadata.lastRefreshTime, i18n.language),
-                                    tokensValidAfterTime: convertStringToFormatDate(admin.tokensValidAfterTime, i18n.language)
+                                records={inactiveList.map(user => ({
+                                    ...user,
+                                    photoURL: <Avatar src={user.photoURL}>{user.displayName[0]}</Avatar>,
+                                    isAdmin: String(user.customClaims?.user),
+                                    disabled: String(user.disabled),
+                                    emailVerified: String(user.emailVerified),
+                                    creationTime: convertStringToFormatDate(user.metadata.creationTime, i18n.language),
+                                    lastSignInTime: convertStringToFormatDate(user.metadata.lastSignInTime, i18n.language),
+                                    lastRefreshTime: convertStringToFormatDate(user.metadata.lastRefreshTime, i18n.language),
+                                    tokensValidAfterTime: convertStringToFormatDate(user.tokensValidAfterTime, i18n.language)
                                 }))}
                             />
                         }
                         <MyButton
                             color='error'
+                            disabled={!inactiveList || inactiveList.length === 0}
+                            light
                             onClick={() => setDeleteModalOpen(true)}
                         >
                             Delete Inactive Users

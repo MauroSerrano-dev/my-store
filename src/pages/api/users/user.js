@@ -15,7 +15,7 @@ export default async function handler(req, res) {
 
         if (req.method === "POST") {
             const user = await createNewUser(authUser)
-            res.status(201).json({ status: 201, message: 'user_created', user: user })
+            res.status(201).json({ message: 'user_created', user: user })
         }
         else if (req.method === "DELETE") {
             const deletedUser = await deleteUser(user_id)

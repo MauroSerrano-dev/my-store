@@ -56,8 +56,7 @@ export function newUserModel(props) {
  * @param {string} props.id_printify - The Printify ID of the item.
  * @param {string} props.provider_id - The provider ID of the item.
  * @param {Object} props.variant - The variant information of the item.
- * @param {string} props.variant_id - The ID of the variant.
- * @param {number} props.price - The price of the item.
+ * @param {Object} props.art_position - The product art position.
  * @returns {object} - Returns an object representing the model of the cart item.
  */
 export function cartItemModel(props) {
@@ -70,6 +69,7 @@ export function cartItemModel(props) {
         description,
         id_printify,
         provider_id,
+        art_position,
         variant,
     } = props
 
@@ -82,6 +82,7 @@ export function cartItemModel(props) {
         description: description,
         id_printify: id_printify,
         provider_id: provider_id,
+        art_position: art_position,
         variant: variant,
     }
 }

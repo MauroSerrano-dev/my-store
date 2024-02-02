@@ -74,6 +74,7 @@ export default function Cart() {
             setBlockInteractions(true)
             setLoading(true)
             setDisableCheckoutButton(true)
+
             const options = {
                 method: 'POST',
                 headers: {
@@ -91,6 +92,7 @@ export default function Cart() {
                             description: `${tCommon(prod.type_id)} ${tColors(COLORS_POOL[prod.variant.color_id].id_string)} / ${tCommon(SIZES_POOL.find(sz => sz.id === prod.variant.size_id).title)}`,
                             id_printify: prod.printify_ids[shippingInfo.providers_ids[prod.type_id]],
                             provider_id: shippingInfo.providers_ids[prod.type_id],
+                            art_position: prod.art_position,
                             variant: {
                                 ...prod.variant,
                                 id_printify: typeof prod.variant.id_printify === 'string' ? prod.variant.id_printify : prod.variant.id_printify[shippingInfo.providers_ids[prod.type_id]]

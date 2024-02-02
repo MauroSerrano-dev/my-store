@@ -162,6 +162,7 @@ export default async function handler(req, res) {
             quantity: item.quantity,
             variant_id: variantFullInfo.id,
             variant_id_printify: item.variant.id_printify,
+            art_position: item.art_position,
           }
         )
       })

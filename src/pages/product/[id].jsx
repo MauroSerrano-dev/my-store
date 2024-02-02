@@ -101,6 +101,10 @@ export default withRouter(props => {
         try {
             setDisableCheckoutButton(true)
 
+            const uniquePositionPrintifyIds = typeof Object.values(product.printify_ids)[0] === 'string'
+                ? product.printify_ids
+                : getProductPrintifyIdsUniquePosition(product.printify_ids, currentPosition)
+
             const options = {
                 method: 'POST',
                 headers: {
@@ -113,10 +117,13 @@ export default withRouter(props => {
                         type_id: product.type_id,
                         quantity: 1,
                         title: product.title,
-                        image_src: product.images.find(img => img.color_id === productCurrentVariant.color_id).src,
+                        image_src: product.images.find(img => img.color_id === productCurrentVariant.color_id && (!img.position || img.position === currentPosition)).src,
                         description: `${tCommon(product.type_id)} ${tColors(currentColor.id_string)} / ${currentSize.title}`,
-                        id_printify: product.printify_ids[shippingInfo.providers_ids[product.type_id]],
+                        id_printify: uniquePositionPrintifyIds[shippingInfo.providers_ids[product.type_id]],
                         provider_id: shippingInfo.providers_ids[product.type_id],
+                        art_position: product.images[0].position
+                            ? currentPosition
+                            : null,
                         variant: {
                             ...productCurrentVariant,
                             id_printify: typeof productCurrentVariant.id_printify === 'string' ? productCurrentVariant.id_printify : productCurrentVariant.id_printify[shippingInfo.providers_ids[product.type_id]],
@@ -203,8 +210,8 @@ export default withRouter(props => {
                     {
                         id: product.id,
                         art_position: product.images[0].position
-                            ? null
-                            : currentPosition,
+                            ? currentPosition
+                            : null,
                         quantity: 1,
                         type_id: product.type_id,
                         title: product.title,

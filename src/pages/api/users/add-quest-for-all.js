@@ -15,11 +15,11 @@ export default async function handler(req, res) {
 
         if (req.method === "POST") {
             await addQuestForAllUsers(questId)
-            res.status(201).json({ status: 201, message: 'quest_created-for-all-users' })
+            res.status(201).json({ message: 'quest_created-for-all-users' })
         }
         else if (req.method === "DELETE") {
             await deleteQuestForAllUsers(quest_id)
-            res.status(200).json({ status: 200, message: 'quest_deleted-for-all-users' })
+            res.status(200).json({ message: 'quest_deleted-for-all-users' })
         }
     }
     catch (error) {

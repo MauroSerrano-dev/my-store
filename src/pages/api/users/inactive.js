@@ -6,24 +6,27 @@ export default async function handler(req, res) {
 
     try {
         if (!authorization)
-            return res.status(401).send('Access denied: No token provided');
+            return res.status(401).json({ message: 'Access denied: No token provided' });
 
         const decodedToken = await admin.auth().verifyIdToken(authorization);
         if (!decodedToken.admin) {
-            return res.status(403).send('Access denied: User is not an administrator');
+            return res.status(403).json({ message: 'Access denied: User is not an administrator' });
         }
 
         if (req.method === 'GET') {
-            const adminUsers = await getUsersInactiveForMonths(Number(limit) || undefined, Number(months) || undefined);
-            res.status(200).json(adminUsers);
-        } else if (req.method === 'DELETE') {
-            await deleteInactiveUsersForMonths(Number(months) || undefined);
-            res.status(200).send('Inactive users deleted successfully');
-        } else {
-            res.status(405).send('Method not allowed');
+            const inactiveUsers = await getUsersInactiveForMonths(Number(limit) || undefined, Number(months) || undefined);
+            res.status(200).json({ users: inactiveUsers });
         }
-    } catch (error) {
+        else if (req.method === 'DELETE') {
+            await deleteInactiveUsersForMonths(Number(months) || undefined);
+            res.status(200).json({ message: 'Inactive users deleted successfully' });
+        }
+        else {
+            res.status(405).json({ message: 'Method not allowed' });
+        }
+    }
+    catch (error) {
         console.error('Error processing request:', error);
-        res.status(500).send('Internal server error');
+        res.status(500).json({ message: 'Internal server error' });
     }
 }

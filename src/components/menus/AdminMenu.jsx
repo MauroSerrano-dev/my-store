@@ -1,29 +1,23 @@
 import styles from '@/styles/components/menus/AdminMenu.module.css'
 import EqualizerOutlinedIcon from '@mui/icons-material/EqualizerOutlined'
 import { IoShirt } from "react-icons/io5"
-import ShoppingBagOutlinedIcon from '@mui/icons-material/ShoppingBagOutlined'
 import LocalShippingOutlinedIcon from '@mui/icons-material/LocalShippingOutlined'
 import GroupOutlinedIcon from '@mui/icons-material/GroupOutlined'
-import StyleOutlinedIcon from '@mui/icons-material/StyleOutlined'
-import PaymentsOutlinedIcon from '@mui/icons-material/PaymentsOutlined'
-import ConfirmationNumberOutlinedIcon from '@mui/icons-material/ConfirmationNumberOutlined'
 import AdminPanelSettingsOutlinedIcon from '@mui/icons-material/AdminPanelSettingsOutlined'
 import LiveHelpOutlinedIcon from '@mui/icons-material/LiveHelpOutlined';
 import Link from 'next/link'
 import { motion } from 'framer-motion'
 import { useAppContext } from '../contexts/AppContext'
 import { useState } from 'react'
+import ShoppingBagOutlinedIcon from '@mui/icons-material/ShoppingBagOutlined'
 
 const OPTIONS = [
     { title: 'Dashboard', type: 'link', href: '/admin', icon: <EqualizerOutlinedIcon /> },
     { title: 'Products', type: 'link', href: '/admin/products', icon: <IoShirt size={20} /> },
-    { title: 'Revenue', type: 'link', href: '/admin/revenue', icon: <PaymentsOutlinedIcon /> },
-    { title: 'Sales', type: 'link', href: '/admin/sales', icon: <ShoppingBagOutlinedIcon /> },
     { title: 'Providers', type: 'link', href: '/admin/providers', icon: <LocalShippingOutlinedIcon /> },
     { title: 'Customers', type: 'link', href: '/admin/customers', icon: <GroupOutlinedIcon /> },
+    { title: 'Orders', type: 'link', href: '/admin/orders', icon: <ShoppingBagOutlinedIcon /> },
     { title: 'Admins', type: 'link', href: '/admin/admins', icon: <AdminPanelSettingsOutlinedIcon /> },
-    { title: 'Tags', type: 'link', href: '/admin/tags', icon: <StyleOutlinedIcon /> },
-    { title: 'Tickets', type: 'link', href: '/admin/tickets', icon: <ConfirmationNumberOutlinedIcon /> },
     { title: 'Quests', type: 'link', href: '/admin/quests', icon: <LiveHelpOutlinedIcon /> },
 ]
 
