@@ -184,6 +184,72 @@ async function deleteInactiveUsersForMonths(monthsInactive = 12) {
     }
 }
 
+async function addQuestForAllUsers(questId) {
+    try {
+        // Recupera todos os usuários
+        const usersCollection = admin.firestore().collection(process.env.NEXT_PUBLIC_COLL_USERS);
+        const usersQuerySnapshot = await usersCollection.get();
+
+        // Itera sobre todos os usuários
+        for (const userDoc of usersQuerySnapshot.docs) {
+            const userId = userDoc.id;
+
+            // Adiciona a nova quest ao array existente de quests do usuário
+            const userRef = admin.firestore().doc(`${process.env.NEXT_PUBLIC_COLL_USERS}/${userId}`)
+            const userDocData = userDoc.data();
+            const userQuests = userDocData.quests || [];
+
+            // Verifica se a quest já existe para o usuário
+            if (!userQuests.includes(questId)) {
+                userQuests.push(questId);
+
+                // Atualiza o documento do usuário com a nova quest
+                await userRef.update({ quests: userQuests })
+
+                console.log(`Quest ${questId} adicionada para o usuário ${userId}`);
+            } else {
+                console.log(`Quest ${questId} já existe para o usuário ${userId}`);
+            }
+        }
+    } catch (error) {
+        console.error('Error adding quest for all users:', error);
+        throw error;
+    }
+}
+
+async function deleteQuestForAllUsers(questId) {
+    try {
+        // Recupera todos os usuários
+        const usersCollection = admin.firestore().collection(process.env.NEXT_PUBLIC_COLL_USERS);
+        const usersQuerySnapshot = await usersCollection.get();
+
+        // Itera sobre todos os usuários
+        for (const userDoc of usersQuerySnapshot.docs) {
+            const userId = userDoc.id;
+
+            // Remove a quest do array existente de quests do usuário
+            const userRef = admin.firestore().doc(`${process.env.NEXT_PUBLIC_COLL_USERS}/${userId}`)
+            const userDocData = userDoc.data();
+            const userQuests = userDocData.quests || [];
+
+            // Verifica se a quest existe para o usuário
+            if (userQuests.includes(questId)) {
+                const updatedQuests = userQuests.filter(quest => quest !== questId);
+
+                // Atualiza o documento do usuário sem a quest removida
+                await userRef.update({ quests: updatedQuests })
+
+                console.log(`Quest ${questId} removida para o usuário ${userId}`);
+            } else {
+                console.log(`Quest ${questId} não existe para o usuário ${userId}`);
+            }
+        }
+    } catch (error) {
+        console.error('Error deleting quest for all users:', error);
+        throw error;
+    }
+}
+
 export {
     getUserById,
     getUserIdByEmail,
@@ -191,4 +257,6 @@ export {
     createNewUser,
     getUsersInactiveForMonths,
     deleteInactiveUsersForMonths,
+    addQuestForAllUsers,
+    deleteQuestForAllUsers,
 }

@@ -11,11 +11,10 @@ import { fetchSignInMethodsForEmail, onAuthStateChanged, signInWithEmailAndPassw
 import { motion } from 'framer-motion'
 import SearchBar from '../SearchBar'
 import { CircularProgress } from '@mui/material'
-import { CART_LOCAL_STORAGE, CURRENCY_LOCAL_STORAGE, INICIAL_VISITANT_CART, LIMITS, getCurrencyByLocation } from '@/consts'
+import { CART_LOCAL_STORAGE, COUNTRIES, CURRENCY_LOCAL_STORAGE, INICIAL_VISITANT_CART, LIMITS, getCurrencyByLocation } from '@/consts'
 import AdminMenu from '../menus/AdminMenu'
 import { showToast } from '@/utils/toasts'
 import CountryConverter from '@/utils/time-zone-country.json'
-import ZoneConverter from '@/utils/country-zone.json'
 import NProgress from 'nprogress'
 import { createNewUser, getUserById } from '../../../frontend/user'
 import { addProductToWishlist, deleteProductFromWishlist } from '../../../frontend/wishlists'
@@ -29,6 +28,7 @@ import { isSameProduct } from '@/utils'
 import PosAddToCartModal from '../PosAddToCartModal'
 import Modal from '../Modal'
 import MyButton from '../material-ui/MyButton'
+import { MAINTENANCE } from '@/utils/app-controller'
 
 const AppContext = createContext()
 
@@ -93,7 +93,7 @@ export function AppProvider({ children }) {
         const country = CountryConverter[Intl.DateTimeFormat().resolvedOptions().timeZone]
         setUserLocation({
             country: country,
-            zone: ZoneConverter[country],
+            continent: COUNTRIES[country].continent
         })
         updateSession()
         getCurrencies()
@@ -723,7 +723,7 @@ export function AppProvider({ children }) {
                         transition: `all ease-in-out ${websiteVisible ? 200 : 0}ms`,
                     }}
                 >
-                    {process.env.NEXT_PUBLIC_MAINTENANCE === 'true'
+                    {MAINTENANCE
                         ? <Maintenance></Maintenance>
                         : children
                     }

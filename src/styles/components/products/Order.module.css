@@ -5,6 +5,7 @@
     overflow: hidden;
 
     width: 100%;
+    --text-color: var(--text-white)
 }
 
 .head {

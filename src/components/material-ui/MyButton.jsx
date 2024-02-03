@@ -1,4 +1,5 @@
 import { Button } from '@mui/material';
+import styles from '@/styles/components/material-ui/MyButton.module.css'
 import React from 'react';
 
 /**
@@ -26,12 +27,13 @@ export default function MyButton(props) {
         className,
         color,
         disabled,
+        light,
     } = props
 
     return (
         <Button
             disabled={disabled}
-            className={className}
+            className={`${className} ${light && disabled ? styles.lightDisabled : ''}`}
             variant={variant}
             onClick={onClick}
             size={size}

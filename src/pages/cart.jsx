@@ -1,7 +1,6 @@
 import ProductCart from '@/components/products/ProductCart'
 import styles from '@/styles/pages/cart.module.css'
-import { COLORS_POOL, COMMON_TRANSLATES, DEFAULT_LANGUAGE, LIMITS, SIZES_POOL, getShippingOptions } from '@/consts'
-import COUNTRIES_POOL from '../../public/locales/en/countries.json'
+import { COLORS_POOL, COMMON_TRANSLATES, COUNTRIES, DEFAULT_LANGUAGE, LIMITS, SIZES_POOL } from '@/consts'
 import { useEffect, useState } from 'react'
 import Selector from '@/components/material-ui/Selector'
 import CarouselProducts from '@/components/carousels/CarouselProducts'
@@ -13,7 +12,6 @@ import { cartItemModel } from '@/utils/models'
 import { LoadingButton } from '@mui/lab'
 import { useAppContext } from '@/components/contexts/AppContext'
 import { getProductPriceUnit } from '@/utils/prices'
-import ZoneConverter from '@/utils/country-zone.json'
 import { getAllProducts } from '../../frontend/product'
 import MyError from '@/classes/MyError'
 
@@ -33,7 +31,7 @@ export default function Cart() {
     } = useAppContext()
 
     const [disableCheckoutButton, setDisableCheckoutButton] = useState(false)
-    const [shippingInfo, setShippingInfo] = useState({ providers_ids: {}, value: 0 })
+    const [shippingInfo, setShippingInfo] = useState({ shippingValue: 0, taxValue: 0 })
     const [productsOne, setProductsOne] = useState()
     const [productsTwo, setProductsTwo] = useState()
     const [outOfStock, setOutOfStock] = useState([])
@@ -41,11 +39,11 @@ export default function Cart() {
     const [inicialCartAlreadyCalled, setInicialCartAlreadyCalled] = useState(false)
     const [loadingShippingValue, setLoadingShippingValue] = useState(true)
 
-    const SHIPPING_CONVERTED = Math.round(shippingInfo.value * userCurrency?.rate)
+    const SHIPPING_CONVERTED = Math.round((shippingInfo.shippingValue + shippingInfo.taxValue) * userCurrency?.rate)
 
     const ITEMS_TOTAL = cart?.products.reduce((acc, product) => acc + ((getProductPriceUnit(product, product.variant, userCurrency?.rate) * product.quantity)), 0)
 
-    const ORDER_TOTAL = SHIPPING_CONVERTED + ITEMS_TOTAL
+    const ORDER_TOTAL = ITEMS_TOTAL + SHIPPING_CONVERTED
 
     const { i18n } = useTranslation()
 
@@ -74,6 +72,7 @@ export default function Cart() {
             setBlockInteractions(true)
             setLoading(true)
             setDisableCheckoutButton(true)
+
             const options = {
                 method: 'POST',
                 headers: {
@@ -89,11 +88,12 @@ export default function Cart() {
                             title: prod.title,
                             image_src: prod.image_src,
                             description: `${tCommon(prod.type_id)} ${tColors(COLORS_POOL[prod.variant.color_id].id_string)} / ${tCommon(SIZES_POOL.find(sz => sz.id === prod.variant.size_id).title)}`,
-                            id_printify: prod.printify_ids[shippingInfo.providers_ids[prod.type_id]],
-                            provider_id: shippingInfo.providers_ids[prod.type_id],
+                            id_printify: prod.printify_ids[shippingInfo.provider_id],
+                            provider_id: shippingInfo.provider_id,
+                            art_position: prod.art_position,
                             variant: {
                                 ...prod.variant,
-                                id_printify: typeof prod.variant.id_printify === 'string' ? prod.variant.id_printify : prod.variant.id_printify[shippingInfo.providers_ids[prod.type_id]]
+                                id_printify: typeof prod.variant.id_printify === 'string' ? prod.variant.id_printify : prod.variant.id_printify[shippingInfo.provider_id]
                             },
                         })
                     }),
@@ -120,6 +120,8 @@ export default function Cart() {
             console.error(error)
             if (error.msg)
                 showToast({ type: error.type, msg: tToasts(error.msg, error.customProps?.options || {}) })
+            else
+                showToast({ type: 'error', msg: tToasts('default_error') })
             if (error.customProps?.outOfStock)
                 setOutOfStock(error.customProps.outOfStock)
             if (error.customProps?.disabledProducts)
@@ -155,12 +157,15 @@ export default function Cart() {
     async function callGetShippingInfo() {
         try {
             setLoadingShippingValue(true)
-            const products_types = cart.products.reduce((acc, prod) =>
-                acc.some(type => type.id === prod.type_id)
-                    ? acc.map(type => type.id === prod.type_id ? { ...type, quantity: type.quantity + prod.quantity } : type)
-                    : acc.concat({ id: prod.type_id, quantity: prod.quantity }),
-                []
-            )
+
+            const productsLessInfo = cart.products.map(prod => (
+                {
+                    type_id: prod.type_id,
+                    variant_id: prod.variant.id,
+                    quantity: prod.quantity
+                }
+            ))
+
             const options = {
                 method: 'GET',
                 headers: {
@@ -168,25 +173,27 @@ export default function Cart() {
                 }
             }
 
-            const response = await fetch(`/api/app-settings/shipping-value?products_types=${JSON.stringify(products_types)}&country=${userLocation.country}`, options)
+            const response = await fetch(`/api/app-settings/shipping-value?products=${JSON.stringify(productsLessInfo)}&country=${userLocation.country}`, options)
             const responseJson = await response.json()
 
             if (response.status >= 300)
                 throw responseJson.error
 
             setShippingInfo(responseJson.data)
-            setLoadingShippingValue(false)
         }
         catch (error) {
             console.error(error)
             if (error.msg)
                 showToast({ type: error.type, msg: tToasts(error.msg) })
         }
+        finally {
+            setLoadingShippingValue(false)
+        }
     }
 
     function handleChangeCountrySelector(event, value) {
         if (value?.id)
-            setUserLocation({ country: value.id, zone: ZoneConverter[value.id] })
+            setUserLocation({ country: value.id, continent: COUNTRIES[value.id].continent })
     }
 
     return (
@@ -260,7 +267,7 @@ export default function Cart() {
                                     </p>
                                     <SelectorAutocomplete
                                         options={
-                                            Object.keys(COUNTRIES_POOL)
+                                            Object.keys(COUNTRIES)
                                                 .map(key => ({ id: key, label: tCountries(key) }))
                                                 .sort((a, b) => a.label.localeCompare(b.label, 'en', { sensitivity: 'base' }))
                                         }

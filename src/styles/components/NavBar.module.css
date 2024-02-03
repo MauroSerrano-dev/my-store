@@ -136,6 +136,7 @@
         padding-left: 0.7rem;
         padding-right: 0.7rem;
     }
+
     .leftSide {
         width: 60px
     }
@@ -148,6 +149,3 @@
         width: 220px
     }
 }
-
-/* Tablet and Smaller Desktop */
-@media (min-width: 701px) and (max-width: 1120px) {}

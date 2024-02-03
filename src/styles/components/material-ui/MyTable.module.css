@@ -1,0 +1,36 @@
+.container {
+    position: relative;
+}
+
+.noEditableCell {
+    display: flex;
+    width: 100%;
+    height: 100%;
+    justify-content: flex-start;
+    align-items: center;
+
+    padding-left: 1rem;
+}
+
+.editableCell {
+    display: flex;
+    width: 100%;
+    height: 100%;
+    justify-content: center;
+    align-items: center;
+    outline: var(--primary) 2px solid;
+}
+
+.editInput {
+    background-color: var(--global-white);
+    font-family: '__Montserrat_cce811', '__Montserrat_Fallback_cce811';
+    border: none;
+    outline: none;
+}
+
+/* Enable hover only on non-touch devices */
+@media (hover: hover) and (pointer: fine) {
+    .noEditableCell:hover {
+        outline: rgba(var(--primary-rgb), 0.5) 2px solid;
+    }
+}

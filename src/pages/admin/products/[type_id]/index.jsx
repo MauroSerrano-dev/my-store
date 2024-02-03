@@ -400,7 +400,7 @@ export default function ProductsId() {
                             </Link>
                         }
                     </main>
-                </div >
+                </div>
     )
 }
 export async function getServerSideProps({ locale }) {

@@ -1,4 +1,4 @@
-import { getAdminUsers } from "../../../../backend/admin"
+import { getAllUsers } from "../../../../backend/admin"
 const admin = require('../../../../firebaseAdminInit')
 
 export default async function handler(req, res) {
@@ -11,8 +11,8 @@ export default async function handler(req, res) {
         try {
             const decodedToken = await admin.auth().verifyIdToken(authorization)
             if (decodedToken.admin) {
-                const adminUsers = await getAdminUsers(Number(limit) || undefined, Number(page) || undefined)
-                res.status(200).json({ users: adminUsers })
+                const users = await getAllUsers(Number(limit) || undefined, Number(page) || undefined)
+                res.status(200).json({ users: users })
             } else {
                 res.status(403).json({ message: 'Access denied: User is not an administrator' })
             }

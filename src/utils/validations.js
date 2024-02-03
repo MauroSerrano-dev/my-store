@@ -1,3 +1,6 @@
+import MyError from "@/classes/MyError";
+import { PROVIDERS_POOL } from "@/consts";
+
 export function isValidEmail(email) {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
     return emailRegex.test(email)
@@ -53,4 +56,9 @@ export function handleReCaptchaSuccess(userToken, setReCaptchaSolve) {
 
 export function handleReCaptchaError(setReCaptchaSolve) {
     setReCaptchaSolve(false)
+}
+
+export function isShippingOptionValid(shippingOption) {
+    if (Object.values(shippingOption).some(locationData => !PROVIDERS_POOL[locationData.provider_id]))
+        throw new MyError('Invalid Provider ID')
 }

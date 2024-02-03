@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react'
 import ImagesSlider from '@/components/ImagesSlider'
 import ShoppingCartOutlinedIcon from '@mui/icons-material/ShoppingCartOutlined'
 import CreditCardOutlinedIcon from '@mui/icons-material/CreditCardOutlined'
-import { COLORS_POOL, SIZES_POOL, getShippingOptions, DEFAULT_LANGUAGE, COMMON_TRANSLATES, PRODUCTS_TYPES, CART_LOCAL_STORAGE, INICIAL_VISITANT_CART } from '@/consts'
+import { COLORS_POOL, SIZES_POOL, DEFAULT_LANGUAGE, COMMON_TRANSLATES, PRODUCTS_TYPES, CART_LOCAL_STORAGE, INICIAL_VISITANT_CART, COUNTRIES } from '@/consts'
 import Head from 'next/head'
 import ColorSelector from '@/components/ColorSelector'
 import SizesSelector from '@/components/SizesSelector'
@@ -17,7 +17,6 @@ import { showToast } from '@/utils/toasts'
 import HeartButton from '@/components/buttons-icon/HeartButton'
 import { cartItemModel, productInfoModel } from '@/utils/models'
 import SelectorAutocomplete from '@/components/material-ui/SelectorAutocomplete'
-import COUNTRIES_POOL from '../../../public/locales/en/countries.json'
 import { useAppContext } from '@/components/contexts/AppContext'
 import { getProductPriceUnit, getProductPriceWithoutPromotion } from '@/utils/prices'
 import Footer from '@/components/Footer'
@@ -25,7 +24,6 @@ import MyButton from '@/components/material-ui/MyButton'
 import Modal from '@/components/Modal'
 import { SlClose } from 'react-icons/sl'
 import { LoadingButton } from '@mui/lab'
-import ZoneConverter from '@/utils/country-zone.json'
 import ProductTag from '@/components/products/ProductTag'
 import { getProductVariantsInfos, mergeProducts } from '@/utils'
 import TableSizes from '@/components/products/TableSizes'
@@ -53,7 +51,6 @@ export default withRouter(props => {
         mobile,
         router,
         session,
-        setLoading,
         userCurrency,
         setCart,
         cart,
@@ -76,10 +73,12 @@ export default withRouter(props => {
     const [currentSize, setCurrentSize] = useState(sz ? sz : SIZES_POOL.find(sz => sz.id === product?.sizes_ids[0]))
     const [currentPosition, setCurrentPosition] = useState('front')
 
-    const [shippingInfo, setShippingInfo] = useState({ providers_ids: {}, value: 0 })
+    const [shippingInfo, setShippingInfo] = useState({ value: 0 })
     const [buyNowModalOpen, setBuyNowModalOpen] = useState(false)
 
     const [disableCheckoutButton, setDisableCheckoutButton] = useState(false)
+
+    const [addingToCart, setAddingToCart] = useState(false)
 
     const productCurrentVariant = getProductVariantsInfos(product)?.find(vari => vari.size_id === currentSize?.id && vari.color_id === currentColor?.id)
 
@@ -101,6 +100,10 @@ export default withRouter(props => {
         try {
             setDisableCheckoutButton(true)
 
+            const uniquePositionPrintifyIds = typeof Object.values(product.printify_ids)[0] === 'string'
+                ? product.printify_ids
+                : getProductPrintifyIdsUniquePosition(product.printify_ids, currentPosition)
+
             const options = {
                 method: 'POST',
                 headers: {
@@ -113,13 +116,16 @@ export default withRouter(props => {
                         type_id: product.type_id,
                         quantity: 1,
                         title: product.title,
-                        image_src: product.images.find(img => img.color_id === productCurrentVariant.color_id).src,
+                        image_src: product.images.find(img => img.color_id === productCurrentVariant.color_id && (!img.position || img.position === currentPosition)).src,
                         description: `${tCommon(product.type_id)} ${tColors(currentColor.id_string)} / ${currentSize.title}`,
-                        id_printify: product.printify_ids[shippingInfo.providers_ids[product.type_id]],
-                        provider_id: shippingInfo.providers_ids[product.type_id],
+                        id_printify: uniquePositionPrintifyIds[shippingInfo.provider_id],
+                        provider_id: shippingInfo.provider_id,
+                        art_position: product.images[0].position
+                            ? currentPosition
+                            : null,
                         variant: {
                             ...productCurrentVariant,
-                            id_printify: typeof productCurrentVariant.id_printify === 'string' ? productCurrentVariant.id_printify : productCurrentVariant.id_printify[shippingInfo.providers_ids[product.type_id]],
+                            id_printify: typeof productCurrentVariant.id_printify === 'string' ? productCurrentVariant.id_printify : productCurrentVariant.id_printify[shippingInfo.provider_id],
                         },
                     })],
                     success_url: session
@@ -163,7 +169,7 @@ export default withRouter(props => {
                 }
             }
 
-            const response = await fetch(`/api/app-settings/shipping-value?products_types=${JSON.stringify([{ id: product.type_id, quantity: 1 }])}&country=${userLocation.country}`, options)
+            const response = await fetch(`/api/app-settings/shipping-value?products=${JSON.stringify([{ type_id: product.type_id, variant_id: productCurrentVariant.id, quantity: 1 }])}&country=${userLocation.country}`, options)
             const responseJson = await response.json()
 
             if (response.status >= 300)
@@ -179,9 +185,9 @@ export default withRouter(props => {
     }
 
     async function handleAddToCart() {
-        try {
-            if (cart) {
-                setLoading(true)
+        if (cart && !addingToCart) {
+            try {
+                setAddingToCart(true)
                 const newProduct = {
                     id: product.id,
                     variant_id: productCurrentVariant.id,
@@ -203,8 +209,8 @@ export default withRouter(props => {
                     {
                         id: product.id,
                         art_position: product.images[0].position
-                            ? null
-                            : currentPosition,
+                            ? currentPosition
+                            : null,
                         quantity: 1,
                         type_id: product.type_id,
                         title: product.title,
@@ -228,18 +234,20 @@ export default withRouter(props => {
                     }
                 ))
             }
-        }
-        catch (error) {
-            console.error(error)
-            setLoading(false)
-            if (error.msg)
-                showToast({ type: error.type, msg: tToasts(error.msg) })
+            catch (error) {
+                console.error(error)
+                if (error.msg)
+                    showToast({ type: error.type, msg: tToasts(error.msg) })
+            }
+            finally {
+                setAddingToCart(false)
+            }
         }
     }
 
     function handleChangeCountrySelector(event, value) {
         if (value?.id)
-            setUserLocation({ country: value.id, zone: ZoneConverter[value.id] })
+            setUserLocation({ country: value.id, continent: COUNTRIES[value.id].continent })
     }
 
     function handleColorChange(arr, index, color) {
@@ -445,6 +453,7 @@ export default withRouter(props => {
                                         <div className={styles.buyButtons}>
                                             <MyButton
                                                 onClick={handleAddToCart}
+                                                light
                                                 style={{
                                                     display: 'flex',
                                                     gap: '0.2rem',
@@ -548,7 +557,7 @@ export default withRouter(props => {
                             <div className={styles.shippingContainer}>
                                 <SelectorAutocomplete
                                     options={
-                                        Object.keys(COUNTRIES_POOL)
+                                        Object.keys(COUNTRIES)
                                             .map(key => ({ id: key, label: tCountries(key) }))
                                             .sort((a, b) => a.label.localeCompare(b.label, 'en', { sensitivity: 'base' }))
                                     }

@@ -3,6 +3,7 @@ import {
     getDoc,
     collection,
     getDocs,
+    updateDoc,
 } from "firebase/firestore"
 import { db } from "../firebaseInit"
 import MyError from "@/classes/MyError";
@@ -48,6 +49,22 @@ async function getAllCurrencies() {
     }
 }
 
+async function getShippingOptions() {
+    try {
+        const currRef = doc(db, process.env.NEXT_PUBLIC_COLL_APP_SETTINGS, 'shipping_options')
+        const currDoc = await getDoc(currRef)
+
+        if (!currDoc.exists()) {
+            console.error("Shipping options document does not exist")
+            throw new MyError({ message: 'default_error' })
+        }
+        return currDoc.data()
+    } catch (error) {
+        console.error("Error retrieving shipping options:", error)
+        throw error
+    }
+}
+
 async function emailIsProhibited(email) {
     try {
         const settingsRef = doc(db, process.env.NEXT_PUBLIC_COLL_APP_SETTINGS, 'deleted_users');
@@ -64,8 +81,35 @@ async function emailIsProhibited(email) {
     }
 }
 
+async function updateShippingOption(updatedShippingOption) {
+    try {
+        const settingsRef = doc(db, process.env.NEXT_PUBLIC_COLL_APP_SETTINGS, 'shipping_options');
+        const settingsDoc = await getDoc(settingsRef);
+
+        if (!settingsDoc.exists()) {
+            console.error("Shipping options document does not exist");
+            throw new MyError({ message: 'default_error' });
+        }
+
+        const currentShippingOptions = settingsDoc.data();
+
+        const currentShippingOptionsData = { ...currentShippingOptions.data, ...updatedShippingOption };
+
+        await updateDoc(settingsRef, { data: currentShippingOptionsData });
+
+        if (process.env.NEXT_PUBLIC_ENV === 'development')
+            console.log('Shipping options updated successfully');
+        return { message: 'Shipping options updated successfully', shippingOption: updatedShippingOption }
+    } catch (error) {
+        console.error('Error updating shipping options:', error);
+        throw error;
+    }
+}
+
 export {
     getAppSettings,
     getAllCurrencies,
     emailIsProhibited,
+    getShippingOptions,
+    updateShippingOption,
 }

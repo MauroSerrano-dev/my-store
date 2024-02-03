@@ -6,13 +6,24 @@ import Image from 'next/image'
 
 export default function ProductsSelector(props) {
     const {
-        url = ''
+        url = '',
+        showAll
     } = props
 
     const tCommon = useTranslation('common').t
 
     return (
         <div className={styles.container}>
+            {showAll &&
+                <Link
+                    className={`${styles.option} ${styles.optionAll} noUnderline`}
+                    href={`${url}/all`}
+                >
+                    <p>
+                        All
+                    </p>
+                </Link>
+            }
             {PRODUCTS_TYPES.map((type, i) =>
                 <Link
                     className={`${styles.option} noUnderline`}
@@ -34,14 +45,6 @@ export default function ProductsSelector(props) {
                     </p>
                 </Link>
             )}
-            <Link
-                className={`${styles.option} ${styles.optionAll} noUnderline`}
-                href={`${url}/all`}
-            >
-                <p>
-                    All
-                </p>
-            </Link>
         </div>
     )
 }

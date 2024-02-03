@@ -89,10 +89,10 @@ export default async function handler(req, res) {
                     email: customer_details.email,
                     phone: shipping_details.phone,
                     country: shipping_details.address.country,
-                    region: shipping_details.address.state === '' ? shipping_details.address.country : shipping_details.address.state,
+                    region: shipping_details.address.state || 'N/A',
                     address1: shipping_details.address.line1,
                     address2: shipping_details.address.line2,
-                    city: shipping_details.address.city,
+                    city: shipping_details.address.city || 'N/A',
                     zip: shipping_details.address.postal_code
                 }
             }
@@ -119,12 +119,12 @@ export default async function handler(req, res) {
                             quantity: prod.quantity,
                             variant: {
                                 id: purchaseProducts[i].variant.id,
+                                id_printify: prod.variant_id_printify,
                                 id_printify: purchaseProducts[i].variant.id_printify,
                                 art: purchaseProducts[i].variant.art,
                                 color_id: purchaseProducts[i].variant.color_id,
                                 size_id: purchaseProducts[i].variant.size_id,
                             },
-                            variant_id_printify: prod.variant_id_printify,
                             image_src: purchaseProducts[i].image_src,
                             status: STEPS[0]
                         }

@@ -20,6 +20,7 @@ async function createOrder(orderId, order) {
         await orderRef.set({
             ...order,
             products: order.products.map(prod => ({ ...prod, updated_at: now })),
+            status: 'in progress',
             create_at: now,
         })
 
@@ -109,7 +110,7 @@ async function updateProductStatus(order_id_printify, printify_products) {
 
         const orderData = orderDoc.data();
         const updatedProducts = orderData.products.map(product => {
-            const newPossibleStatus = printify_products.find(prod => prod.product_id === product.id_printify && prod.variant_id === product.variant_id_printify)?.status
+            const newPossibleStatus = printify_products.find(prod => prod.product_id == product.id_printify && prod.variant_id == product.variant.id_printify)?.status
             const newStatus = ALLOWED_WEBHOOK_STATUS.includes(newPossibleStatus) && ALLOWED_WEBHOOK_STATUS.includes(product.status)
                 ? newPossibleStatus || null
                 : product.status
@@ -120,7 +121,12 @@ async function updateProductStatus(order_id_printify, printify_products) {
             }
         })
 
-        await orderDoc.ref.update({ products: updatedProducts })
+        if (updatedProducts.every(prod => prod.status === 'canceled'))
+            orderData.status = 'canceled'
+        else if (updatedProducts.every(prod => prod.status === 'shipment-delivered'))
+            orderData.status = 'delivered'
+
+        await orderDoc.ref.update({ status: orderData.status, products: updatedProducts })
 
         console.log("Order products status updated successfully")
     } catch (error) {

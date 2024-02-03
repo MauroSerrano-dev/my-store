@@ -1,5 +1,5 @@
 import styles from '@/styles/admin/index.module.css'
-import NoFound404 from '../../../components/NoFound404';
+import NoFound404 from '../../components/NoFound404';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { useAppContext } from '@/components/contexts/AppContext';
 import { COMMON_TRANSLATES } from '@/consts';
@@ -9,6 +9,7 @@ import { showToast } from '@/utils/toasts';
 import { Avatar } from '@mui/material';
 import { convertStringToFormatDate } from '@/utils';
 import MyTable from '@/components/material-ui/MyTable';
+import MyError from '@/classes/MyError';
 
 export default function Admins() {
     const {
@@ -47,10 +48,14 @@ export default function Admins() {
             };
 
             const response = await fetch('/api/admin/admins-list', options)
-            const adminUsers = await response.json()
+            const responseJson = await response.json()
 
-            setAdminsList(adminUsers)
-        } catch (error) {
+            if (response.status >= 300)
+                throw new MyError(responseJson.message)
+
+            setAdminsList(responseJson.users)
+        }
+        catch (error) {
             console.error(error)
             if (error.msg)
                 showToast({ type: error.type, msg: tToasts(error.msg) });
@@ -88,7 +93,7 @@ export default function Admins() {
                                 ]}
                                 records={adminList.map(admin => ({
                                     ...admin,
-                                    photoURL: admin.photoURL && <Avatar src={admin.photoURL} />,
+                                    photoURL: <Avatar src={admin.photoURL}>{admin.displayName[0]}</Avatar>,
                                     isAdmin: String(admin.customClaims?.admin),
                                     disabled: String(admin.disabled),
                                     emailVerified: String(admin.emailVerified),
