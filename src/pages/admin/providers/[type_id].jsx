@@ -17,7 +17,7 @@ const RECORDS_ROWS = [
     { id: 'provider_id', title: 'Provider', type: 'provider' },
     { id: 'first_item', title: 'First Item', type: 'currency' },
     { id: 'add_item', title: 'Add Item', type: 'currency' },
-    { id: 'tax_rate', title: 'Tax Rate', type: 'percentage' },
+    { id: 'use_tax', title: 'Use Tax', type: 'boolean' },
 ]
 
 export default function Providers() {
@@ -92,8 +92,8 @@ export default function Providers() {
                         [key]: (
                             row.type === 'provider'
                                 ? { id: PROVIDERS_POOL[shippingOption.data[type_id][key][row.id]]?.id || shippingOption.data[type_id][key][row.id], title: PROVIDERS_POOL[shippingOption.data[type_id][key][row.id]]?.title || 'Invalid Provider ID' }
-                                : row.type === 'percentage'
-                                    ? { id: shippingOption.data[type_id][key][row.id], title: `${shippingOption.data[type_id][key][row.id] * 100}%` }
+                                : row.type === 'boolean'
+                                    ? { id: shippingOption.data[type_id][key][row.id], title: `${shippingOption.data[type_id][key][row.id]}` }
                                     : { id: shippingOption.data[type_id][key][row.id], title: '$'.concat((shippingOption.data[type_id][key][row.id] / 100).toFixed(2)) }
                         )
                     }

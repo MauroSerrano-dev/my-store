@@ -3313,164 +3313,148 @@ export const COUNTRIES = {
         tax: 0.24,
     },
     GL: {
-        continent: 'AMN',
+        continent: 'EU', // Printify interpreta como se fosse da Europa em vez da América do Norte
         tax: 0,
     },
     GT: {
         continent: 'AMN',
-        tax: 0,
+        tax: 0.12,
     },
     HN: {
         continent: 'AMN',
-        tax: 0,
+        tax: 0.15,
     },
     HU: {
         continent: 'EU',
-        tax: 0,
+        tax: 0.27,
     },
     IS: {
         continent: 'EUN',
-        tax: 0,
+        tax: 0.24,
     },
     ID: {
         continent: 'AS',
-        tax: 0,
+        tax: 0.11,
     },
     IE: {
         continent: 'EU',
-        tax: 0,
+        tax: 0.23,
     },
     IT: {
         continent: 'EU',
-        tax: 0,
+        tax: 0.22,
     },
     JM: {
         continent: 'AMN',
-        tax: 0,
+        tax: 0.15,
     },
     LR: {
         continent: 'AF',
-        tax: 0,
-    },
-    LY: {
-        continent: 'AF',
-        tax: 0,
+        tax: 0.1,
     },
     LI: {
         continent: 'EUN',
-        tax: 0,
+        tax: 0.081,
     },
     LU: {
         continent: 'EU',
-        tax: 0,
-    },
-    MG: {
-        continent: 'AF',
-        tax: 0,
-    },
-    MR: {
-        continent: 'AF',
-        tax: 0,
+        tax: 0.17,
     },
     MX: {
         continent: 'AMN',
-        tax: 0,
+        tax: 0.16,
     },
     MC: {
         continent: 'EU',
-        tax: 0,
+        tax: 0.2,
     },
     ME: {
         continent: 'EU',
-        tax: 0,
+        tax: 0.21,
     },
     MA: {
         continent: 'AF',
-        tax: 0,
+        tax: 0.2,
     },
     MZ: {
         continent: 'AF',
-        tax: 0,
+        tax: 0.16,
     },
     NL: {
         continent: 'EU',
-        tax: 0,
+        tax: 0.21,
     },
     NZ: {
         continent: 'OC',
-        tax: 0,
+        tax: 0.15,
     },
     NG: {
         continent: 'AF',
-        tax: 0,
+        tax: 0.075,
     },
     NO: {
         continent: 'EUN',
-        tax: 0,
+        tax: 0.25,
     },
     PA: {
         continent: 'AMN',
-        tax: 0,
+        tax: 0.07,
     },
     PY: {
         continent: 'AMS',
-        tax: 0,
+        tax: 0.1,
     },
     PE: {
         continent: 'AMS',
-        tax: 0,
+        tax: 0.18,
     },
     PH: {
         continent: 'AS',
-        tax: 0,
+        tax: 0.12,
     },
     PL: {
         continent: 'EU',
-        tax: 0,
+        tax: 0.23,
     },
     PT: {
         continent: 'EU',
-        tax: 0,
+        tax: 0.23,
     },
     RO: {
         continent: 'EU',
-        tax: 0,
+        tax: 0.19,
     },
     ZA: {
         continent: 'AF',
-        tax: 0,
+        tax: 0.15,
     },
     ES: {
         continent: 'EU',
-        tax: 0,
+        tax: 0.21,
     },
     SE: {
         continent: 'EUN',
-        tax: 0,
+        tax: 0.25,
     },
     CH: {
         continent: 'EUN',
-        tax: 0,
-    },
-    TN: {
-        continent: 'AF',
-        tax: 0,
+        tax: 0.081,
     },
     TR: {
         continent: 'EU',
-        tax: 0,
+        tax: 0.2,
     },
     US: {
         continent: 'AMN',
-        tax: 0,
+        tax: 0.073,
     },
     UY: {
         continent: 'AMS',
-        tax: 0,
+        tax: 0.22,
     },
     VE: {
         continent: 'AMS',
-        tax: 0,
+        tax: 0.16,
     },
 }
 

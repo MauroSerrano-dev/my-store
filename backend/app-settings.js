@@ -1,5 +1,5 @@
 import MyError from '@/classes/MyError';
-import { PRODUCTS_TYPES } from '@/consts';
+import { COUNTRIES, PRODUCTS_TYPES } from '@/consts';
 
 const admin = require('../firebaseAdminInit')
 
@@ -202,8 +202,16 @@ async function getShippingInfos(products, country) {
 
             return {
                 provider_id: option.provider_id,
-                shippingValue: acc.shippingValue + Math.round((isFirst ? option.first_item + option.add_item * (product.quantity - 1) : option.add_item * product.quantity) * (1 + option.tax_rate)),
-                taxValue: acc.taxValue + Math.round(prodVari.cost[option.provider_id] * product.quantity * option.tax_rate)
+                shippingValue: acc.shippingValue + Math.round(
+                    (isFirst
+                        ? option.first_item + option.add_item * (product.quantity - 1)
+                        : option.add_item * product.quantity
+                    ) * (1 + (option.use_tax ? COUNTRIES[country].tax : 0))
+                ),
+                taxValue: acc.taxValue + (option.use_tax
+                    ? Math.round(prodVari.cost[option.provider_id] * product.quantity * COUNTRIES[country].tax)
+                    : 0
+                )
             };
         }, { provider_id: 0, shippingValue: 0, taxValue: 0 });
 
