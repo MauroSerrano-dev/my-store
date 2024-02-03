@@ -1,7 +1,6 @@
 import ProductCart from '@/components/products/ProductCart'
 import styles from '@/styles/pages/cart.module.css'
-import { COLORS_POOL, COMMON_TRANSLATES, DEFAULT_LANGUAGE, LIMITS, SIZES_POOL } from '@/consts'
-import COUNTRIES_POOL from '../../public/locales/en/countries.json'
+import { COLORS_POOL, COMMON_TRANSLATES, COUNTRIES, DEFAULT_LANGUAGE, LIMITS, SIZES_POOL } from '@/consts'
 import { useEffect, useState } from 'react'
 import Selector from '@/components/material-ui/Selector'
 import CarouselProducts from '@/components/carousels/CarouselProducts'
@@ -13,7 +12,6 @@ import { cartItemModel } from '@/utils/models'
 import { LoadingButton } from '@mui/lab'
 import { useAppContext } from '@/components/contexts/AppContext'
 import { getProductPriceUnit } from '@/utils/prices'
-import ZoneConverter from '@/utils/country-zone.json'
 import { getAllProducts } from '../../frontend/product'
 import MyError from '@/classes/MyError'
 
@@ -122,6 +120,8 @@ export default function Cart() {
             console.error(error)
             if (error.msg)
                 showToast({ type: error.type, msg: tToasts(error.msg, error.customProps?.options || {}) })
+            else
+                showToast({ type: 'error', msg: tToasts('default_error') })
             if (error.customProps?.outOfStock)
                 setOutOfStock(error.customProps.outOfStock)
             if (error.customProps?.disabledProducts)
@@ -193,7 +193,7 @@ export default function Cart() {
 
     function handleChangeCountrySelector(event, value) {
         if (value?.id)
-            setUserLocation({ country: value.id, zone: ZoneConverter[value.id] })
+            setUserLocation({ country: value.id, continent: COUNTRIES[value.id].continent })
     }
 
     return (
@@ -267,7 +267,7 @@ export default function Cart() {
                                     </p>
                                     <SelectorAutocomplete
                                         options={
-                                            Object.keys(COUNTRIES_POOL)
+                                            Object.keys(COUNTRIES)
                                                 .map(key => ({ id: key, label: tCountries(key) }))
                                                 .sort((a, b) => a.label.localeCompare(b.label, 'en', { sensitivity: 'base' }))
                                         }

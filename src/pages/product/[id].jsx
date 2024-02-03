@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react'
 import ImagesSlider from '@/components/ImagesSlider'
 import ShoppingCartOutlinedIcon from '@mui/icons-material/ShoppingCartOutlined'
 import CreditCardOutlinedIcon from '@mui/icons-material/CreditCardOutlined'
-import { COLORS_POOL, SIZES_POOL, DEFAULT_LANGUAGE, COMMON_TRANSLATES, PRODUCTS_TYPES, CART_LOCAL_STORAGE, INICIAL_VISITANT_CART } from '@/consts'
+import { COLORS_POOL, SIZES_POOL, DEFAULT_LANGUAGE, COMMON_TRANSLATES, PRODUCTS_TYPES, CART_LOCAL_STORAGE, INICIAL_VISITANT_CART, COUNTRIES } from '@/consts'
 import Head from 'next/head'
 import ColorSelector from '@/components/ColorSelector'
 import SizesSelector from '@/components/SizesSelector'
@@ -17,7 +17,6 @@ import { showToast } from '@/utils/toasts'
 import HeartButton from '@/components/buttons-icon/HeartButton'
 import { cartItemModel, productInfoModel } from '@/utils/models'
 import SelectorAutocomplete from '@/components/material-ui/SelectorAutocomplete'
-import COUNTRIES_POOL from '../../../public/locales/en/countries.json'
 import { useAppContext } from '@/components/contexts/AppContext'
 import { getProductPriceUnit, getProductPriceWithoutPromotion } from '@/utils/prices'
 import Footer from '@/components/Footer'
@@ -25,7 +24,6 @@ import MyButton from '@/components/material-ui/MyButton'
 import Modal from '@/components/Modal'
 import { SlClose } from 'react-icons/sl'
 import { LoadingButton } from '@mui/lab'
-import ZoneConverter from '@/utils/country-zone.json'
 import ProductTag from '@/components/products/ProductTag'
 import { getProductVariantsInfos, mergeProducts } from '@/utils'
 import TableSizes from '@/components/products/TableSizes'
@@ -249,7 +247,7 @@ export default withRouter(props => {
 
     function handleChangeCountrySelector(event, value) {
         if (value?.id)
-            setUserLocation({ country: value.id, zone: ZoneConverter[value.id] })
+            setUserLocation({ country: value.id, continent: COUNTRIES[value.id].continent })
     }
 
     function handleColorChange(arr, index, color) {
@@ -559,7 +557,7 @@ export default withRouter(props => {
                             <div className={styles.shippingContainer}>
                                 <SelectorAutocomplete
                                     options={
-                                        Object.keys(COUNTRIES_POOL)
+                                        Object.keys(COUNTRIES)
                                             .map(key => ({ id: key, label: tCountries(key) }))
                                             .sort((a, b) => a.label.localeCompare(b.label, 'en', { sensitivity: 'base' }))
                                     }

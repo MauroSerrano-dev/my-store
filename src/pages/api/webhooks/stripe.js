@@ -89,10 +89,10 @@ export default async function handler(req, res) {
                     email: customer_details.email,
                     phone: shipping_details.phone,
                     country: shipping_details.address.country,
-                    region: shipping_details.address.state === '' ? shipping_details.address.country : shipping_details.address.state,
+                    region: shipping_details.address.state || 'N/A',
                     address1: shipping_details.address.line1,
                     address2: shipping_details.address.line2,
-                    city: shipping_details.address.city,
+                    city: shipping_details.address.city || 'N/A',
                     zip: shipping_details.address.postal_code
                 }
             }

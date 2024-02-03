@@ -1321,7 +1321,10 @@ export const PRODUCTS_TYPES = [
                     27: '33522',
                     6: '33522',
                 },
-                cost: 1843,
+                cost: {
+                    27: 1782,
+                    6: 1645,
+                },
                 inicial_price: 2970,
                 title: 'Royal/White / S',
                 grams: 110,
@@ -1334,7 +1337,10 @@ export const PRODUCTS_TYPES = [
                     27: '36255',
                     6: '39175',
                 },
-                cost: 1843,
+                cost: {
+                    27: 1782,
+                    6: 1645,
+                },
                 inicial_price: 2970,
                 title: 'Asphalt/White / S',
                 grams: 110,
@@ -1347,7 +1353,10 @@ export const PRODUCTS_TYPES = [
                     27: '36256',
                     6: '39211',
                 },
-                cost: 1843,
+                cost: {
+                    27: 1782,
+                    6: 1645,
+                },
                 inicial_price: 2970,
                 title: 'Red/White / S',
                 grams: 110,
@@ -1355,168 +1364,15 @@ export const PRODUCTS_TYPES = [
                 size_id: 14,
             },
             {
-                id: 'royal-white-m',
-                id_printify: {
-                    27: '33523',
-                    6: '33523',
-                },
-                cost: 1843,
-                inicial_price: 2970,
-                title: 'Royal/White / M',
-                grams: 131,
-                color_id: 1058,
-                size_id: 15,
-            },
-            {
-                id: 'asphalt-white-m',
-                id_printify: {
-                    27: '36257',
-                    6: '39253',
-                },
-                cost: 1843,
-                inicial_price: 2970,
-                title: 'Asphalt/White / M',
-                grams: 131,
-                color_id: 1535,
-                size_id: 15,
-            },
-            {
-                id: 'red-white-m',
-                id_printify: {
-                    27: '36258',
-                    6: '39289',
-                },
-                cost: 1843,
-                inicial_price: 2970,
-                title: 'Red/White / M',
-                grams: 131,
-                color_id: 1536,
-                size_id: 15,
-            },
-            {
-                id: 'royal-white-l',
-                id_printify: {
-                    27: '33524',
-                    6: '33524',
-                },
-                cost: 1843,
-                inicial_price: 2970,
-                title: 'Royal/White / L',
-                grams: 158,
-                color_id: 1058,
-                size_id: 16,
-            },
-            {
-                id: 'asphalt-white-l',
-                id_printify: {
-                    27: '36259',
-                    6: '39331',
-                },
-                cost: 1843,
-                inicial_price: 2970,
-                title: 'Asphalt/White / L',
-                grams: 158,
-                color_id: 1535,
-                size_id: 16,
-            },
-            {
-                id: 'red-white-l',
-                id_printify: {
-                    27: '36260',
-                    6: '39367',
-                },
-                cost: 1843,
-                inicial_price: 2970,
-                title: 'Red/White / L',
-                grams: 158,
-                color_id: 1536,
-                size_id: 16,
-            },
-            {
-                id: 'royal-white-xl',
-                id_printify: {
-                    27: '33525',
-                    6: '33525',
-                },
-                cost: 1843,
-                inicial_price: 2970,
-                title: 'Royal/White / XL',
-                grams: 190,
-                color_id: 1058,
-                size_id: 17,
-            },
-            {
-                id: 'asphalt-white-xl',
-                id_printify: {
-                    27: '36261',
-                    6: '39409',
-                },
-                cost: 1843,
-                inicial_price: 2970,
-                title: 'Asphalt/White / XL',
-                grams: 190,
-                color_id: 1535,
-                size_id: 17,
-            },
-            {
-                id: 'red-white-xl',
-                id_printify: {
-                    27: '36262',
-                    6: '39445',
-                },
-                cost: 1843,
-                inicial_price: 2970,
-                title: 'Red/White / XL',
-                grams: 190,
-                color_id: 1536,
-                size_id: 17,
-            },
-            {
-                id: 'royal-white-2xl',
-                id_printify: {
-                    27: '33526',
-                    6: '33526',
-                },
-                cost: 2187,
-                inicial_price: 3322,
-                title: 'Royal/White / 2XL',
-                grams: 228,
-                color_id: 1058,
-                size_id: 18,
-            },
-            {
-                id: 'asphalt-white-2xl',
-                id_printify: {
-                    27: '36263',
-                    6: '39487',
-                },
-                cost: 2187,
-                inicial_price: 3322,
-                title: 'Asphalt/White / 2XL',
-                grams: 228,
-                color_id: 1535,
-                size_id: 18,
-            },
-            {
-                id: 'red-white-2xl',
-                id_printify: {
-                    27: '36264',
-                    6: '39523',
-                },
-                cost: 2187,
-                inicial_price: 3322,
-                title: 'Red/White / 2XL',
-                grams: 228,
-                color_id: 1536,
-                size_id: 18,
-            },
-            {
                 id: 'white-black-s',
                 id_printify: {
                     27: '39151',
                     6: '39151',
                 },
-                cost: 1843,
+                cost: {
+                    27: 1782,
+                    6: 1742,
+                },
                 inicial_price: 2970,
                 title: 'White/Black / S',
                 grams: 110,
@@ -1529,7 +1385,10 @@ export const PRODUCTS_TYPES = [
                     27: '39193',
                     6: '39193',
                 },
-                cost: 1843,
+                cost: {
+                    27: 1782,
+                    6: 1645,
+                },
                 inicial_price: 2970,
                 title: 'Green/White / S',
                 grams: 110,
@@ -1542,7 +1401,10 @@ export const PRODUCTS_TYPES = [
                     27: '39196',
                     6: '39196',
                 },
-                cost: 1843,
+                cost: {
+                    27: 1782,
+                    6: 1645,
+                },
                 inicial_price: 2970,
                 title: 'Navy/White / S',
                 grams: 110,
@@ -1555,7 +1417,10 @@ export const PRODUCTS_TYPES = [
                     27: '39217',
                     6: '39178',
                 },
-                cost: 1843,
+                cost: {
+                    27: 1782,
+                    6: 1645,
+                },
                 inicial_price: 2970,
                 title: 'Black/White / S',
                 grams: 110,
@@ -1563,12 +1428,63 @@ export const PRODUCTS_TYPES = [
                 size_id: 14,
             },
             {
+                id: 'royal-white-m',
+                id_printify: {
+                    27: '33523',
+                    6: '33523',
+                },
+                cost: {
+                    27: 1782,
+                    6: 1645,
+                },
+                inicial_price: 2970,
+                title: 'Royal/White / M',
+                grams: 131,
+                color_id: 1058,
+                size_id: 15,
+            },
+            {
+                id: 'asphalt-white-m',
+                id_printify: {
+                    27: '36257',
+                    6: '39253',
+                },
+                cost: {
+                    27: 1782,
+                    6: 1645,
+                },
+                inicial_price: 2970,
+                title: 'Asphalt/White / M',
+                grams: 131,
+                color_id: 1535,
+                size_id: 15,
+            },
+            {
+                id: 'red-white-m',
+                id_printify: {
+                    27: '36258',
+                    6: '39289',
+                },
+                cost: {
+                    27: 1782,
+                    6: 1645,
+                },
+                inicial_price: 2970,
+                title: 'Red/White / M',
+                grams: 131,
+                color_id: 1536,
+                size_id: 15,
+            },
+            {
                 id: 'white-black-m',
                 id_printify: {
                     27: '39229',
                     6: '39229',
                 },
-                cost: 1843,
+                cost: {
+                    27: 1782,
+                    6: 1742,
+                },
                 inicial_price: 2970,
                 title: 'White/Black / M',
                 grams: 131,
@@ -1581,7 +1497,10 @@ export const PRODUCTS_TYPES = [
                     27: '39271',
                     6: '39271',
                 },
-                cost: 1843,
+                cost: {
+                    27: 1782,
+                    6: 1645,
+                },
                 inicial_price: 2970,
                 title: 'Green/White / M',
                 grams: 131,
@@ -1594,7 +1513,10 @@ export const PRODUCTS_TYPES = [
                     27: '39274',
                     6: '39274',
                 },
-                cost: 1843,
+                cost: {
+                    27: 1782,
+                    6: 1645,
+                },
                 inicial_price: 2970,
                 title: 'Navy/White / M',
                 grams: 131,
@@ -1607,7 +1529,10 @@ export const PRODUCTS_TYPES = [
                     27: '39295',
                     6: '39256',
                 },
-                cost: 1843,
+                cost: {
+                    27: 1782,
+                    6: 1645,
+                },
                 inicial_price: 2970,
                 title: 'Black/White / M',
                 grams: 131,
@@ -1615,12 +1540,63 @@ export const PRODUCTS_TYPES = [
                 size_id: 15,
             },
             {
+                id: 'royal-white-l',
+                id_printify: {
+                    27: '33524',
+                    6: '33524',
+                },
+                cost: {
+                    27: 1782,
+                    6: 1645,
+                },
+                inicial_price: 2970,
+                title: 'Royal/White / L',
+                grams: 158,
+                color_id: 1058,
+                size_id: 16,
+            },
+            {
+                id: 'asphalt-white-l',
+                id_printify: {
+                    27: '36259',
+                    6: '39331',
+                },
+                cost: {
+                    27: 1782,
+                    6: 1645,
+                },
+                inicial_price: 2970,
+                title: 'Asphalt/White / L',
+                grams: 158,
+                color_id: 1535,
+                size_id: 16,
+            },
+            {
+                id: 'red-white-l',
+                id_printify: {
+                    27: '36260',
+                    6: '39367',
+                },
+                cost: {
+                    27: 1782,
+                    6: 1645,
+                },
+                inicial_price: 2970,
+                title: 'Red/White / L',
+                grams: 158,
+                color_id: 1536,
+                size_id: 16,
+            },
+            {
                 id: 'white-black-l',
                 id_printify: {
                     27: '39307',
                     6: '39307',
                 },
-                cost: 1843,
+                cost: {
+                    27: 1782,
+                    6: 1645,
+                },
                 inicial_price: 2970,
                 title: 'White/Black / L',
                 grams: 158,
@@ -1633,7 +1609,10 @@ export const PRODUCTS_TYPES = [
                     27: '39349',
                     6: '39349',
                 },
-                cost: 1843,
+                cost: {
+                    27: 1782,
+                    6: 1645,
+                },
                 inicial_price: 2970,
                 title: 'Green/White / L',
                 grams: 158,
@@ -1646,7 +1625,10 @@ export const PRODUCTS_TYPES = [
                     27: '39352',
                     6: '39352',
                 },
-                cost: 1843,
+                cost: {
+                    27: 1782,
+                    6: 1645,
+                },
                 inicial_price: 2970,
                 title: 'Navy/White / L',
                 grams: 158,
@@ -1659,7 +1641,10 @@ export const PRODUCTS_TYPES = [
                     27: '39373',
                     6: '39334',
                 },
-                cost: 1843,
+                cost: {
+                    27: 1782,
+                    6: 1645,
+                },
                 inicial_price: 2970,
                 title: 'Black/White / L',
                 grams: 158,
@@ -1667,12 +1652,63 @@ export const PRODUCTS_TYPES = [
                 size_id: 16,
             },
             {
+                id: 'royal-white-xl',
+                id_printify: {
+                    27: '33525',
+                    6: '33525',
+                },
+                cost: {
+                    27: 1782,
+                    6: 1645,
+                },
+                inicial_price: 2970,
+                title: 'Royal/White / XL',
+                grams: 190,
+                color_id: 1058,
+                size_id: 17,
+            },
+            {
+                id: 'asphalt-white-xl',
+                id_printify: {
+                    27: '36261',
+                    6: '39409',
+                },
+                cost: {
+                    27: 1782,
+                    6: 1645,
+                },
+                inicial_price: 2970,
+                title: 'Asphalt/White / XL',
+                grams: 190,
+                color_id: 1535,
+                size_id: 17,
+            },
+            {
+                id: 'red-white-xl',
+                id_printify: {
+                    27: '36262',
+                    6: '39445',
+                },
+                cost: {
+                    27: 1782,
+                    6: 1645,
+                },
+                inicial_price: 2970,
+                title: 'Red/White / XL',
+                grams: 190,
+                color_id: 1536,
+                size_id: 17,
+            },
+            {
                 id: 'white-black-xl',
                 id_printify: {
                     27: '39385',
                     6: '39385',
                 },
-                cost: 1843,
+                cost: {
+                    27: 1782,
+                    6: 1742,
+                },
                 inicial_price: 2970,
                 title: 'White/Black / XL',
                 grams: 190,
@@ -1685,7 +1721,10 @@ export const PRODUCTS_TYPES = [
                     27: '39427',
                     6: '39427',
                 },
-                cost: 1843,
+                cost: {
+                    27: 1782,
+                    6: 1645,
+                },
                 inicial_price: 2970,
                 title: 'Green/White / XL',
                 grams: 190,
@@ -1698,7 +1737,10 @@ export const PRODUCTS_TYPES = [
                     27: '39430',
                     6: '39430',
                 },
-                cost: 1843,
+                cost: {
+                    27: 1782,
+                    6: 1645,
+                },
                 inicial_price: 2970,
                 title: 'Navy/White / XL',
                 grams: 190,
@@ -1711,7 +1753,10 @@ export const PRODUCTS_TYPES = [
                     27: '39451',
                     6: '39412',
                 },
-                cost: 1843,
+                cost: {
+                    27: 1782,
+                    6: 1645,
+                },
                 inicial_price: 2970,
                 title: 'Black/White / XL',
                 grams: 190,
@@ -1719,12 +1764,63 @@ export const PRODUCTS_TYPES = [
                 size_id: 17,
             },
             {
+                id: 'royal-white-2xl',
+                id_printify: {
+                    27: '33526',
+                    6: '33526',
+                },
+                cost: {
+                    27: 1993,
+                    6: 1807,
+                },
+                inicial_price: 3322,
+                title: 'Royal/White / 2XL',
+                grams: 228,
+                color_id: 1058,
+                size_id: 18,
+            },
+            {
+                id: 'asphalt-white-2xl',
+                id_printify: {
+                    27: '36263',
+                    6: '39487',
+                },
+                cost: {
+                    27: 1993,
+                    6: 1807,
+                },
+                inicial_price: 3322,
+                title: 'Asphalt/White / 2XL',
+                grams: 228,
+                color_id: 1535,
+                size_id: 18,
+            },
+            {
+                id: 'red-white-2xl',
+                id_printify: {
+                    27: '36264',
+                    6: '39523',
+                },
+                cost: {
+                    27: 1993,
+                    6: 1807,
+                },
+                inicial_price: 3322,
+                title: 'Red/White / 2XL',
+                grams: 228,
+                color_id: 1536,
+                size_id: 18,
+            },
+            {
                 id: 'white-black-2xl',
                 id_printify: {
                     27: '39463',
                     6: '39463',
                 },
-                cost: 2187,
+                cost: {
+                    27: 1993,
+                    6: 1904,
+                },
                 inicial_price: 3322,
                 title: 'White/Black / 2XL',
                 grams: 228,
@@ -1737,7 +1833,10 @@ export const PRODUCTS_TYPES = [
                     27: '39505',
                     6: '39505',
                 },
-                cost: 2187,
+                cost: {
+                    27: 1993,
+                    6: 1807,
+                },
                 inicial_price: 3322,
                 title: 'Green/White / 2XL',
                 grams: 228,
@@ -1750,7 +1849,10 @@ export const PRODUCTS_TYPES = [
                     27: '39508',
                     6: '39508',
                 },
-                cost: 2187,
+                cost: {
+                    27: 1993,
+                    6: 1807,
+                },
                 inicial_price: 3322,
                 title: 'Navy/White / 2XL',
                 grams: 228,
@@ -1763,13 +1865,16 @@ export const PRODUCTS_TYPES = [
                     27: '39529',
                     6: '39490',
                 },
-                cost: 2187,
+                cost: {
+                    27: 1993,
+                    6: 1807,
+                },
                 inicial_price: 3322,
                 title: 'Black/White / 2XL',
                 grams: 228,
                 color_id: 1062,
                 size_id: 18,
-            }
+            },
         ],
     },
     {
@@ -3097,6 +3202,277 @@ export const PRODUCTS_TYPES = [
         ]
     },
 ]
+
+export const COUNTRIES = {
+    AL: {
+        continent: 'EU',
+        tax: 0.2,
+    },
+    DZ: {
+        continent: 'AF',
+        tax: 0.19,
+    },
+    AD: {
+        continent: 'EU',
+        tax: 0.045,
+    },
+    AO: {
+        continent: 'AF',
+        tax: 0.14,
+    },
+    AR: {
+        continent: 'AMS',
+        tax: 0.21,
+    },
+    AU: {
+        continent: 'OC',
+        tax: 0.1,
+    },
+    AT: {
+        continent: 'EU',
+        tax: 0.2,
+    },
+    BE: {
+        continent: 'EU',
+        tax: 0.21,
+    },
+    BO: {
+        continent: 'AMS',
+        tax: 0.13,
+    },
+    BR: {
+        continent: 'AMS',
+        tax: 0.17,
+    },
+    BG: {
+        continent: 'EU',
+        tax: 0.2,
+    },
+    CM: {
+        continent: 'AF',
+        tax: 0.195,
+    },
+    CA: {
+        continent: 'AMN',
+        tax: 0.05,
+    },
+    CV: {
+        continent: 'AF',
+        tax: 0.15,
+    },
+    CL: {
+        continent: 'AMS',
+        tax: 0.19,
+    },
+    CO: {
+        continent: 'AMS',
+        tax: 0.19,
+    },
+    CR: {
+        continent: 'AMN',
+        tax: 0.13,
+    },
+    HR: {
+        continent: 'EU',
+        tax: 0.25,
+    },
+    DK: {
+        continent: 'EUN',
+        tax: 0.25,
+    },
+    EC: {
+        continent: 'AMS',
+        tax: 0.12,
+    },
+    FI: {
+        continent: 'EUN',
+        tax: 0.24,
+    },
+    FR: {
+        continent: 'EU',
+        tax: 0.2,
+    },
+    GE: {
+        continent: 'EU',
+        tax: 0.18,
+    },
+    DE: {
+        continent: 'EU',
+        tax: 0.19,
+    },
+    GB: {
+        continent: 'EU',
+        tax: 0.2,
+    },
+    GI: {
+        continent: 'EU',
+        tax: 0,
+    },
+    GR: {
+        continent: 'EU',
+        tax: 0.24,
+    },
+    GL: {
+        continent: 'AMN',
+        tax: 0,
+    },
+    GT: {
+        continent: 'AMN',
+        tax: 0,
+    },
+    HN: {
+        continent: 'AMN',
+        tax: 0,
+    },
+    HU: {
+        continent: 'EU',
+        tax: 0,
+    },
+    IS: {
+        continent: 'EUN',
+        tax: 0,
+    },
+    ID: {
+        continent: 'AS',
+        tax: 0,
+    },
+    IE: {
+        continent: 'EU',
+        tax: 0,
+    },
+    IT: {
+        continent: 'EU',
+        tax: 0,
+    },
+    JM: {
+        continent: 'AMN',
+        tax: 0,
+    },
+    LR: {
+        continent: 'AF',
+        tax: 0,
+    },
+    LY: {
+        continent: 'AF',
+        tax: 0,
+    },
+    LI: {
+        continent: 'EUN',
+        tax: 0,
+    },
+    LU: {
+        continent: 'EU',
+        tax: 0,
+    },
+    MG: {
+        continent: 'AF',
+        tax: 0,
+    },
+    MR: {
+        continent: 'AF',
+        tax: 0,
+    },
+    MX: {
+        continent: 'AMN',
+        tax: 0,
+    },
+    MC: {
+        continent: 'EU',
+        tax: 0,
+    },
+    ME: {
+        continent: 'EU',
+        tax: 0,
+    },
+    MA: {
+        continent: 'AF',
+        tax: 0,
+    },
+    MZ: {
+        continent: 'AF',
+        tax: 0,
+    },
+    NL: {
+        continent: 'EU',
+        tax: 0,
+    },
+    NZ: {
+        continent: 'OC',
+        tax: 0,
+    },
+    NG: {
+        continent: 'AF',
+        tax: 0,
+    },
+    NO: {
+        continent: 'EUN',
+        tax: 0,
+    },
+    PA: {
+        continent: 'AMN',
+        tax: 0,
+    },
+    PY: {
+        continent: 'AMS',
+        tax: 0,
+    },
+    PE: {
+        continent: 'AMS',
+        tax: 0,
+    },
+    PH: {
+        continent: 'AS',
+        tax: 0,
+    },
+    PL: {
+        continent: 'EU',
+        tax: 0,
+    },
+    PT: {
+        continent: 'EU',
+        tax: 0,
+    },
+    RO: {
+        continent: 'EU',
+        tax: 0,
+    },
+    ZA: {
+        continent: 'AF',
+        tax: 0,
+    },
+    ES: {
+        continent: 'EU',
+        tax: 0,
+    },
+    SE: {
+        continent: 'EUN',
+        tax: 0,
+    },
+    CH: {
+        continent: 'EUN',
+        tax: 0,
+    },
+    TN: {
+        continent: 'AF',
+        tax: 0,
+    },
+    TR: {
+        continent: 'EU',
+        tax: 0,
+    },
+    US: {
+        continent: 'AMN',
+        tax: 0,
+    },
+    UY: {
+        continent: 'AMS',
+        tax: 0,
+    },
+    VE: {
+        continent: 'AMS',
+        tax: 0,
+    },
+}
 
 export function getCurrencyByLocation(country, zone) {
     if (zone === 'Europe')
