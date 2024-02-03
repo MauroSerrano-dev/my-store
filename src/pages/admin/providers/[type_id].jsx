@@ -1,7 +1,7 @@
 import styles from '@/styles/admin/providers.module.css'
 import NoFound404 from '../../../components/NoFound404';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
-import { COMMON_TRANSLATES, LIMITS, PRODUCTS_TYPES, PROVIDERS_POOL } from '@/consts';
+import { COMMON_TRANSLATES, LIMITS, PROVIDERS_POOL } from '@/consts';
 import { useAppContext } from '@/components/contexts/AppContext';
 import { getShippingOptions, updateShippingOption } from '../../../../frontend/app-settings';
 import { useEffect, useState } from 'react';
@@ -17,8 +17,7 @@ const RECORDS_ROWS = [
     { id: 'provider_id', title: 'Provider', type: 'provider' },
     { id: 'first_item', title: 'First Item', type: 'currency' },
     { id: 'add_item', title: 'Add Item', type: 'currency' },
-    { id: 'tax', title: 'Tax First Item', type: 'currency' },
-    { id: 'add_tax', title: 'Tax Add Item', type: 'currency' },
+    { id: 'tax_rate', title: 'Tax Rate', type: 'percentage' },
 ]
 
 export default function Providers() {
@@ -93,7 +92,9 @@ export default function Providers() {
                         [key]: (
                             row.type === 'provider'
                                 ? { id: PROVIDERS_POOL[shippingOption.data[type_id][key][row.id]]?.id || shippingOption.data[type_id][key][row.id], title: PROVIDERS_POOL[shippingOption.data[type_id][key][row.id]]?.title || 'Invalid Provider ID' }
-                                : { id: shippingOption.data[type_id][key][row.id], title: '$'.concat((shippingOption.data[type_id][key][row.id] / 100).toFixed(2)) }
+                                : row.type === 'percentage'
+                                    ? { id: shippingOption.data[type_id][key][row.id], title: `${shippingOption.data[type_id][key][row.id] * 100}%` }
+                                    : { id: shippingOption.data[type_id][key][row.id], title: '$'.concat((shippingOption.data[type_id][key][row.id] / 100).toFixed(2)) }
                         )
                     }
                 )).reduce((acc, ele) => ({ ...acc, ...ele }), {})

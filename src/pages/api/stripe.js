@@ -175,15 +175,16 @@ export default async function handler(req, res) {
       if (customer)
         paymentMetadata.user_id = customer.id
 
-      const products_types = cartItems.reduce((acc, prod) =>
-        acc.some(type => type.id === prod.type_id)
-          ? acc.map(type => type.id === prod.type_id ? { ...type, quantity: type.quantity + prod.quantity } : type)
-          : acc.concat({ id: prod.type_id, quantity: prod.quantity }),
-        []
-      )
+      const productsLessInfo = cartItems.map(prod => (
+        {
+          type_id: prod.type_id,
+          variant_id: prod.variant.id,
+          quantity: prod.quantity
+        }
+      ))
 
-      const shippingInfos = await getShippingInfos(products_types, shippingCountry)
-      const shippingValue = Math.round(shippingInfos.value * currency.rate)
+      const shippingInfos = await getShippingInfos(productsLessInfo, shippingCountry)
+      const shippingValue = Math.round((shippingInfos.shippingValue + shippingInfos.taxValue) * currency.rate)
 
       const session = await stripe.checkout.sessions.create({
         payment_method_types: ["card"],

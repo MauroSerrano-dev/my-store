@@ -3,7 +3,7 @@ import { getShippingInfos } from "../../../../backend/app-settings";
 
 export default async function handler(req, res) {
     const { authorization } = req.headers
-    const { products_types, country } = req.query
+    const { products, country } = req.query
 
     if (!authorization)
         res.status(401).json({ error: "Invalid authentication" })
@@ -13,8 +13,8 @@ export default async function handler(req, res) {
 
     if (req.method === "GET") {
         try {
-            const value = await getShippingInfos(JSON.parse(products_types), country)
-            res.status(200).json({ data: value })
+            const response = await getShippingInfos(JSON.parse(products), country)
+            res.status(200).json({ data: response })
         }
         catch (error) {
             res.status(500).json({ error: error });

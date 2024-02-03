@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react'
 import ImagesSlider from '@/components/ImagesSlider'
 import ShoppingCartOutlinedIcon from '@mui/icons-material/ShoppingCartOutlined'
 import CreditCardOutlinedIcon from '@mui/icons-material/CreditCardOutlined'
-import { COLORS_POOL, SIZES_POOL, getShippingOptions, DEFAULT_LANGUAGE, COMMON_TRANSLATES, PRODUCTS_TYPES, CART_LOCAL_STORAGE, INICIAL_VISITANT_CART } from '@/consts'
+import { COLORS_POOL, SIZES_POOL, DEFAULT_LANGUAGE, COMMON_TRANSLATES, PRODUCTS_TYPES, CART_LOCAL_STORAGE, INICIAL_VISITANT_CART } from '@/consts'
 import Head from 'next/head'
 import ColorSelector from '@/components/ColorSelector'
 import SizesSelector from '@/components/SizesSelector'
@@ -53,7 +53,6 @@ export default withRouter(props => {
         mobile,
         router,
         session,
-        setLoading,
         userCurrency,
         setCart,
         cart,
@@ -76,10 +75,12 @@ export default withRouter(props => {
     const [currentSize, setCurrentSize] = useState(sz ? sz : SIZES_POOL.find(sz => sz.id === product?.sizes_ids[0]))
     const [currentPosition, setCurrentPosition] = useState('front')
 
-    const [shippingInfo, setShippingInfo] = useState({ providers_ids: {}, value: 0 })
+    const [shippingInfo, setShippingInfo] = useState({ value: 0 })
     const [buyNowModalOpen, setBuyNowModalOpen] = useState(false)
 
     const [disableCheckoutButton, setDisableCheckoutButton] = useState(false)
+
+    const [addingToCart, setAddingToCart] = useState(false)
 
     const productCurrentVariant = getProductVariantsInfos(product)?.find(vari => vari.size_id === currentSize?.id && vari.color_id === currentColor?.id)
 
@@ -119,14 +120,14 @@ export default withRouter(props => {
                         title: product.title,
                         image_src: product.images.find(img => img.color_id === productCurrentVariant.color_id && (!img.position || img.position === currentPosition)).src,
                         description: `${tCommon(product.type_id)} ${tColors(currentColor.id_string)} / ${currentSize.title}`,
-                        id_printify: uniquePositionPrintifyIds[shippingInfo.providers_ids[product.type_id]],
-                        provider_id: shippingInfo.providers_ids[product.type_id],
+                        id_printify: uniquePositionPrintifyIds[shippingInfo.provider_id],
+                        provider_id: shippingInfo.provider_id,
                         art_position: product.images[0].position
                             ? currentPosition
                             : null,
                         variant: {
                             ...productCurrentVariant,
-                            id_printify: typeof productCurrentVariant.id_printify === 'string' ? productCurrentVariant.id_printify : productCurrentVariant.id_printify[shippingInfo.providers_ids[product.type_id]],
+                            id_printify: typeof productCurrentVariant.id_printify === 'string' ? productCurrentVariant.id_printify : productCurrentVariant.id_printify[shippingInfo.provider_id],
                         },
                     })],
                     success_url: session
@@ -170,7 +171,7 @@ export default withRouter(props => {
                 }
             }
 
-            const response = await fetch(`/api/app-settings/shipping-value?products_types=${JSON.stringify([{ id: product.type_id, quantity: 1 }])}&country=${userLocation.country}`, options)
+            const response = await fetch(`/api/app-settings/shipping-value?products=${JSON.stringify([{ type_id: product.type_id, variant_id: productCurrentVariant.id, quantity: 1 }])}&country=${userLocation.country}`, options)
             const responseJson = await response.json()
 
             if (response.status >= 300)
@@ -186,9 +187,9 @@ export default withRouter(props => {
     }
 
     async function handleAddToCart() {
-        try {
-            if (cart) {
-                setLoading(true)
+        if (cart && !addingToCart) {
+            try {
+                setAddingToCart(true)
                 const newProduct = {
                     id: product.id,
                     variant_id: productCurrentVariant.id,
@@ -235,12 +236,14 @@ export default withRouter(props => {
                     }
                 ))
             }
-        }
-        catch (error) {
-            console.error(error)
-            setLoading(false)
-            if (error.msg)
-                showToast({ type: error.type, msg: tToasts(error.msg) })
+            catch (error) {
+                console.error(error)
+                if (error.msg)
+                    showToast({ type: error.type, msg: tToasts(error.msg) })
+            }
+            finally {
+                setAddingToCart(false)
+            }
         }
     }
 
@@ -452,6 +455,7 @@ export default withRouter(props => {
                                         <div className={styles.buyButtons}>
                                             <MyButton
                                                 onClick={handleAddToCart}
+                                                light
                                                 style={{
                                                     display: 'flex',
                                                     gap: '0.2rem',

@@ -1,4 +1,5 @@
 import MyError from '@/classes/MyError';
+import { PRODUCTS_TYPES } from '@/consts';
 
 const admin = require('../firebaseAdminInit')
 
@@ -143,17 +144,13 @@ async function emailIsProhibited(email) {
     }
 }
 
-async function getShippingInfos(products_types, country) {
+async function getShippingInfos(products, country) {
     try {
-        if (!Array.isArray(products_types))
-            throw new MyError('The "products_types" parameter must be an array')
+        if (!Array.isArray(products))
+            throw new MyError('The "products" parameter must be an array')
 
         if (typeof country !== 'string')
             throw new MyError('The "country" parameter must be a string')
-
-        const EU_COUNTRIES = ['PL', 'DE', 'BV', 'GE', 'SM', 'GI', 'GG', 'AT', 'HU', 'MD', 'HR', 'BE', 'IM', 'GR', 'IT', 'BY', 'GL', 'GP', 'LU', 'VA', 'JE', 'SK', 'BG', 'MK', 'PT', 'RE', 'FR', 'RO', 'TR', 'SI', 'XK', 'CZ', 'RS', 'ES', 'MC', 'ME', 'UA', 'AL', 'AM', 'CY', 'AX', 'AD', 'FO', 'BA', 'NL', 'MT']
-
-        const EU_NORTH_COUNTRIES = ['LV', 'LT', 'NO', 'FI', 'SE', 'EE', 'IS', 'DK', 'CH', 'LI']
 
         const settingsRef = admin.firestore().doc(`${process.env.NEXT_PUBLIC_COLL_APP_SETTINGS}/shipping_options`);
         const settingsDoc = await settingsRef.get();
@@ -162,27 +159,51 @@ async function getShippingInfos(products_types, country) {
             throw new MyError('shipping-options not found in app-settings')
 
         const shippingOptions = settingsDoc.data().data
+        const productsTypesAlreadyIn = []
+        const value = products.reduce((acc, product) => {
+            const option = getProductShippingOption(shippingOptions, product.type_id, country)
+            const isFirst = !productsTypesAlreadyIn.includes(product.type_id)
+            if (isFirst)
+                productsTypesAlreadyIn.push(product.type_id)
 
-        const value = products_types.reduce(
-            (acc, type) => {
-                const optionsCountries = Object.keys(shippingOptions[type.id])
-                let location = 'default'
-                if (optionsCountries.includes(country))
-                    location = country
-                else if (optionsCountries.includes('EU') && EU_COUNTRIES.includes(country))
-                    location = 'EU'
-                else if (optionsCountries.includes('EUN') && EU_NORTH_COUNTRIES.includes(country))
-                    location = 'EUN'
-                const option = shippingOptions[type.id][location]
-                return { providers_ids: { ...acc.providers_ids, [type.id]: option.provider_id }, value: acc.value + option.first_item + option.tax + (option.add_item + option.add_tax) * (type.quantity - 1) }
-            },
-            { providers_ids: {}, value: 0 }
+            const prodVari = PRODUCTS_TYPES.find(prod_type => prod_type.id === product.type_id).variants.find(vari => vari.id === product.variant_id)
+            if (!prodVari)
+                throw new MyError('shipping-options variant not found')
+            return {
+                provider_id: option.provider_id,
+                shippingValue: acc.shippingValue
+                    + Math.round(
+                        (isFirst
+                            ? option.first_item + option.add_item * (product.quantity - 1)
+                            : option.add_item * product.quantity
+                        ) * (1 + option.tax_rate)
+                    ),
+                taxValue: acc.taxValue + Math.round(prodVari.cost[option.provider_id] * product.quantity * option.tax_rate)
+            }
+        },
+            { provider_id: 0, shippingValue: 0, taxValue: 0 }
         )
         return value
     } catch (error) {
         console.error("Error getting shipping value:", error);
         throw error;
     }
+}
+
+function getProductShippingOption(shippingOptions, product_type_id, country) {
+    const EU_COUNTRIES = ['PL', 'DE', 'BV', 'GE', 'SM', 'GI', 'GG', 'AT', 'HU', 'MD', 'HR', 'BE', 'IM', 'GR', 'IT', 'BY', 'GL', 'GP', 'LU', 'VA', 'JE', 'SK', 'BG', 'MK', 'PT', 'RE', 'FR', 'RO', 'TR', 'SI', 'XK', 'CZ', 'RS', 'ES', 'MC', 'ME', 'UA', 'AL', 'AM', 'CY', 'AX', 'AD', 'FO', 'BA', 'NL', 'MT']
+
+    const EU_NORTH_COUNTRIES = ['LV', 'LT', 'NO', 'FI', 'SE', 'EE', 'IS', 'DK', 'CH', 'LI']
+
+    const optionsCountries = Object.keys(shippingOptions[product_type_id])
+    let location = 'default'
+    if (optionsCountries.includes(country))
+        location = country
+    else if (optionsCountries.includes('EU') && EU_COUNTRIES.includes(country))
+        location = 'EU'
+    else if (optionsCountries.includes('EUN') && EU_NORTH_COUNTRIES.includes(country))
+        location = 'EUN'
+    return shippingOptions[product_type_id][location]
 }
 
 export {
