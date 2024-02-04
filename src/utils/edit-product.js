@@ -80,7 +80,7 @@ export function isProductValid(product) {
         cost: type.variants.find(vari => vari.id === variant.id).cost
     }))
 
-    if (variants.some(vari => vari.cost + LIMITS.min_profit >= vari.price * (product.promotion ? 1 - product.promotion.percentage : 1)))
+    if (variants.some(vari => Math.max(...Object.values(vari.cost)) + LIMITS.min_profit >= vari.price * (product.promotion ? 1 - product.promotion.percentage : 1)))
         throw new MyError({ message: 'invalid_price' })
 }
 
