@@ -81,10 +81,11 @@ async function updateProduct(product_id, new_fields, inicial_product) {
             if (!existInPrintify)
                 throw new MyError({ message: 'Invalid printify ID', type: 'warning' })
         }
-
         const diffs = getObjectsDiff(productDoc.data(), inicial_product)
+        console.log('diffs', diffs)
 
         delete diffs.create_at
+        delete diffs.promotion
 
         if (Object.keys(diffs).length !== 0)
             throw new MyError({ message: 'You are no longer editing the latest version', type: 'warning' })
