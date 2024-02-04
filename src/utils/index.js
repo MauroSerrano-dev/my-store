@@ -14,16 +14,23 @@ export function getObjectsDiff(obj1, obj2) {
         return differentFields;
     }
 
+    if ((obj1.seconds || obj1._seconds) && (obj2.nanoseconds || obj2._nanoseconds)) {
+        if (isSameTimestamp(obj1, obj2))
+            return differentFields            
+    }
+
     for (const key in obj1) {
         if (obj1.hasOwnProperty(key)) {
             if (!obj2.hasOwnProperty(key)) {
                 differentFields[key] = obj1[key];
-            } else if (typeof obj1[key] === "object" && typeof obj2[key] === "object") {
+            }
+            else if (typeof obj1[key] === "object" && typeof obj2[key] === "object") {
                 const nestedDifferences = getObjectsDiff(obj1[key], obj2[key]);
                 if (Object.keys(nestedDifferences).length > 0) {
                     differentFields[key] = nestedDifferences;
                 }
-            } else if (obj1[key] !== obj2[key]) {
+            }
+            else if (obj1[key] !== obj2[key]) {
                 differentFields[key] = obj1[key];
             }
         }
@@ -207,4 +214,11 @@ export function getVariantProfitBySizeId(product, sizeId, productType) {
 export function getVariantProfitBySizeIdPromotion(product, sizeId, productType) {
     const futurePrice = product.variants.find(vari => vari.size_id === sizeId).price * (product.promotion ? (1 - product.promotion.percentage) : 1)
     return ((futurePrice - Math.max(...Object.values(PRODUCTS_TYPES.find(type => type.id === productType).variants.find(vari => vari.size_id === sizeId).cost))) / 100).toFixed(2)
+}
+
+export function isSameTimestamp(t1, t2) {
+    const secondsKey = t1.seconds !== undefined ? 'seconds' : '_seconds';
+    const nanosecondsKey = t1.nanoseconds !== undefined ? 'nanoseconds' : '_nanoseconds';
+
+    return t1[secondsKey] === t2[secondsKey] && t1[nanosecondsKey] === t2[nanosecondsKey];
 }
