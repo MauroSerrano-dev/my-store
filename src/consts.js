@@ -65,7 +65,9 @@ export const DEFAULT_PRODUCTS_TAGS = [
     'hoodies',
     'games',
     'music',
+    'japan',
     'rpg',
+    'space',
 ]
 
 export const CURRENCIES = {
@@ -109,6 +111,9 @@ export const THEMES_POOL = [
     'music',
     'rpg',
     'zombies',
+    'japan',
+    'animals',
+    'space',
 ]
 
 export const SEARCH_FILTERS = [
