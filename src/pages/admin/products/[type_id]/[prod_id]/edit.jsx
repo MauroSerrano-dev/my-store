@@ -81,11 +81,6 @@ export default withRouter(() => {
     }, [])
 
     useEffect(() => {
-        console.log('variants', product?.variants)
-        console.log('images', FINAL_IMAGES)
-    }, [product, images])
-
-    useEffect(() => {
         if (router.isReady) {
             callGetProductById(router.query.prod_id)
         }
