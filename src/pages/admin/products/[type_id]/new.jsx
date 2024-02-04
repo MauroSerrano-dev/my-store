@@ -70,10 +70,6 @@ export default withRouter(() => {
     const tToasts = useTranslation('toasts').t
 
     useEffect(() => {
-        console.log('variants', product?.variants)
-    }, [product])
-
-    useEffect(() => {
         setAdminMenuOpen(false)
     }, [])
 
