@@ -15,13 +15,15 @@ import { getProductsByQueries } from '../../frontend/product'
 import { showToast } from '@/utils/toasts'
 
 const categories = [
-  { id: 'games', url: '/search?h=games', img: 'https://firebasestorage.googleapis.com/v0/b/mrf-styles.appspot.com/o/app%2Fcategories%2Fgames.webp?alt=media&token=ad5cef32-4725-4bdd-aae4-a8302a5bf6a6' },
-  { id: 't-shirts', url: '/search?v=t-shirts', img: 'https://firebasestorage.googleapis.com/v0/b/mrf-styles.appspot.com/o/app%2Fcategories%2Ft-shirts.webp?alt=media&token=e91d2c95-a996-436c-817d-f078e25d814c' },
   { id: 'music', url: '/search?h=music', img: 'https://firebasestorage.googleapis.com/v0/b/mrf-styles.appspot.com/o/app%2Fcategories%2Fmusic.webp?alt=media&token=f7ea9fa6-a6d8-455d-96d5-16667780e145' },
+  { id: 'games', url: '/search?h=games', img: 'https://firebasestorage.googleapis.com/v0/b/mrf-styles.appspot.com/o/app%2Fcategories%2Fgames.webp?alt=media&token=ad5cef32-4725-4bdd-aae4-a8302a5bf6a6' },
+  { id: 'halloween', url: '/search?h=halloween', img: 'https://firebasestorage.googleapis.com/v0/b/mrf-styles.appspot.com/o/app%2Fcategories%2Fhalloween.webp?alt=media&token=4db30abb-2f19-4549-8748-9ac424d29f83' },
+  { id: 'japan', url: '/search?h=japan', img: 'https://firebasestorage.googleapis.com/v0/b/mrf-styles.appspot.com/o/app%2Fcategories%2Fjapan.webp?alt=media&token=a93962e7-71ce-4cd5-a12c-901d8117d2a9' },
+  { id: 'space', url: '/search?h=space', img: 'https://firebasestorage.googleapis.com/v0/b/mrf-styles.appspot.com/o/app%2Fcategories%2Fspace.webp?alt=media&token=446a9544-fd58-4186-9374-4c1528ff1263' },
+  { id: 'animals', url: '/search?h=animals', img: 'https://firebasestorage.googleapis.com/v0/b/mrf-styles.appspot.com/o/app%2Fcategories%2Fanimals.webp?alt=media&token=68f66a75-9e3c-4290-995f-72d3a41b9854' },
   { id: 'rpg', url: '/search?h=rpg', img: 'https://firebasestorage.googleapis.com/v0/b/mrf-styles.appspot.com/o/app%2Fcategories%2Frpg.webp?alt=media&token=70a43a1f-d1c9-4d3b-b66d-c96c5e2d25f4' },
+  { id: 't-shirts', url: '/search?v=t-shirts', img: 'https://firebasestorage.googleapis.com/v0/b/mrf-styles.appspot.com/o/app%2Fcategories%2Ft-shirts.webp?alt=media&token=e91d2c95-a996-436c-817d-f078e25d814c' },
   { id: 'mugs', url: '/search?v=mugs', img: 'https://firebasestorage.googleapis.com/v0/b/mrf-styles.appspot.com/o/app%2Fcategories%2Fmugs.webp?alt=media&token=e3f49c7c-ece1-4cb2-8b4e-72b6b4e648d4' },
-  { id: 'christmas', url: '/search?t=christmas', img: 'https://firebasestorage.googleapis.com/v0/b/mrf-styles.appspot.com/o/app%2Fcategories%2Fchristmas.webp?alt=media&token=5d351170-455e-410d-8d0f-79ce4cef0bed' },
-  { id: 'valentines', url: '/search?t=valentines', img: 'https://firebasestorage.googleapis.com/v0/b/mrf-styles.appspot.com/o/app%2Fcategories%2Fvalentines.webp?alt=media&token=d32eda94-cb25-4224-a838-41468d1ed061' },
 ]
 
 export default function Home() {

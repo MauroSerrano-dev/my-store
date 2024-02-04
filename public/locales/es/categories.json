@@ -1,8 +1,8 @@
 {
     "music": "Música",
     "rpg": "RPG",
-    "christmas": "Navidad",
-    "valentines": "San Valentín",
+    "japan": "Japón",
+    "halloween": "Halloween",
     "games": "Juegos",
     "t-shirts": "Camisetas",
     "mugs": "Tazas",
@@ -15,5 +15,7 @@
     "socks": "Calcetines",
     "long-sleeve": "Manga Larga",
     "raglan-tees": "Camisetas Raglán",
-    "promotion": "Promociones"
+    "promotion": "Promociones",
+    "animals": "Animales",
+    "space": "Espacio"
 }
