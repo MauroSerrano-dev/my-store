@@ -53,8 +53,8 @@ export default function ProductPriceInput(props) {
             />
             <Slider
                 value={price}
-                min={product.variants[0].cost}
-                max={product.variants.reduce((acc, vari) => vari.cost > acc.cost ? vari : acc, { cost: 0 }).cost * 5}
+                min={Math.max(...Object.values(product.variants[0].cost))}
+                max={product.variants.reduce((acc, vari) => Math.max(...Object.values(vari.cost)) > acc ? Math.max(...Object.values(vari.cost)) : acc, 0) * 5}
                 valueLabelDisplay="auto"
                 onChange={onChangeSlider}
             />
