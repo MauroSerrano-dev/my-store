@@ -53,7 +53,7 @@ export function newUserModel(props) {
  * @param {string} props.title - The title/name of the item.
  * @param {string} props.image_src - The image_src URL of the item.
  * @param {string} props.description - The description of the item.
- * @param {string} props.id_printify - The Printify ID of the item.
+ * @param {number} props.id_printify - The Printify ID of the item.
  * @param {string} props.provider_id - The provider ID of the item.
  * @param {Object} props.variant - The variant information of the item.
  * @param {Object} props.art_position - The product art position.

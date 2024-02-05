@@ -93,7 +93,7 @@ export default function Cart() {
                             art_position: prod.art_position,
                             variant: {
                                 ...prod.variant,
-                                id_printify: typeof prod.variant.id_printify === 'string' ? prod.variant.id_printify : prod.variant.id_printify[shippingInfo.provider_id]
+                                id_printify: typeof prod.variant.id_printify === 'object' ? prod.variant.id_printify[shippingInfo.provider_id] : prod.variant.id_printify
                             },
                         })
                     }),

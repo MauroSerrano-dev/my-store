@@ -60,7 +60,7 @@ async function filterNotInPrintify(cartItems) {
 
     while (!lastPage) {
         const { data } = await fetchPrintifyProducts(currentPage)
-        notInPrintify = notInPrintify.filter(prod => !data.some(p => String(p.id) === prod.id_printify && p.variants.some(v => String(v.id) === prod.variant.id_printify)))
+        notInPrintify = notInPrintify.filter(prod => !data.some(p => p.id == prod.id_printify && p.variants.some(v => v.id == prod.variant.id_printify)))
         lastPage = data.length === 0
         currentPage++
     }
@@ -77,9 +77,9 @@ async function filterNotInPrintify(cartItems) {
 async function isProductInPrintify(product) {
     let currentPage = 1;
     let lastPage = false;
-    let printify_ids = typeof Object.values(product.printify_ids)[0] === 'string'
-        ? Object.values(product.printify_ids)
-        : Object.values(product.printify_ids).reduce((acc, ids) => acc.concat(Object.values(ids)), [])
+    let printify_ids = typeof Object.values(product.printify_ids)[0] === 'object'
+        ? Object.values(product.printify_ids).reduce((acc, ids) => acc.concat(Object.values(ids)), [])
+        : Object.values(product.printify_ids)
 
     while (!lastPage) {
         const { data } = await fetchPrintifyProducts(currentPage);
