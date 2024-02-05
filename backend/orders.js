@@ -107,9 +107,9 @@ async function updateProductStatus(order_id_printify, printify_products) {
         const orderDoc = querySnapshot.docs[0]
 
         const now = admin.firestore.Timestamp.now()
-        console.log('printify_products', printify_products)
-        console.log('updatedProducts', updatedProducts)
         const orderData = orderDoc.data();
+        console.log('printify_products', printify_products)
+        console.log('orderData.products', orderData.products)
         const updatedProducts = orderData.products.map(product => {
             const newPossibleStatus = printify_products.find(prod => prod.product_id == product.id_printify && prod.variant_id == product.variant.id_printify)?.status
             const newStatus = ALLOWED_WEBHOOK_STATUS.includes(newPossibleStatus) && ALLOWED_WEBHOOK_STATUS.includes(product.status)
