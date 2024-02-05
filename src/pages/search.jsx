@@ -524,11 +524,11 @@ export default withRouter(() => {
                                         width={productWidth}
                                         inicialVariantId={product.variants.find(vari => {
                                             if (cl && ac)
-                                                return SEARCH_PRODUCT_COLORS.find(scolor => scolor.color_display.id_string === cl)?.colors.some(color => color.id === vari.color_id) && SEARCH_ART_COLORS.find(scolor => scolor.color_display.id_string === ac)?.id === vari.art.color_id
+                                                return SEARCH_PRODUCT_COLORS.find(scolor => scolor.color_display.id_string === cl)?.colors.some(color => color.id === vari.color_id) && vari.art.colors.includes(SEARCH_ART_COLORS.find(scolor => scolor.color_display.id_string === ac)?.id)
                                             if (cl)
                                                 return SEARCH_PRODUCT_COLORS.find(scolor => scolor.color_display.id_string === cl)?.colors.some(color => color.id === vari.color_id)
                                             if (ac) {
-                                                return SEARCH_ART_COLORS.find(scolor => scolor.color_display.id_string === ac)?.id === vari.art.color_id
+                                                return vari.art.colors.includes(SEARCH_ART_COLORS.find(scolor => scolor.color_display.id_string === ac)?.id)
                                             }
                                             return null
                                         })?.id || null}

@@ -35,11 +35,11 @@ export function isNewProductValid(product, images, translate) {
         showToast({ type: 'error', msg: translate('image_src_missing') })
         return false
     }
-    if (product.variants.some(vari => vari.art.color_id === null)) {
+    if (product.variants.some(vari => !vari.art.colors || vari.art.color.length === 0)) {
         showToast({ type: 'error', msg: translate('art_color_missing') })
         return false
     }
-    if (product.variants.some(vari => vari.art.id === null)) {
+    if (product.variants.some(vari => !vari.art.id)) {
         showToast({ type: 'error', msg: translate('art_id_missing') })
         return false
     }
@@ -68,10 +68,10 @@ export function isProductValid(product) {
     if (product.images.some(img => img.src === ''))
         throw new MyError({ message: 'image_src_missing' })
 
-    if (product.variants.some(vari => vari.art.color_id === null))
+    if (product.variants.some(vari => !vari.art.colors || vari.art.colors.length === 0))
         throw new MyError({ message: 'art_color_missing' })
 
-    if (product.variants.some(vari => vari.art.id === null))
+    if (product.variants.some(vari => !vari.art.id))
         throw new MyError({ message: 'art_id_missing' })
 
     const type = PRODUCTS_TYPES.find(type => type.id === product.type_id)
