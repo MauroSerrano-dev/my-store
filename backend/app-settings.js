@@ -201,7 +201,7 @@ async function getShippingInfos(products, country) {
             }
 
             return {
-                provider_id: option.provider_id,
+                providers_ids: { ...acc.providers_ids, [product.type_id]: option.provider_id },
                 shippingValue: acc.shippingValue + Math.round(
                     (isFirst
                         ? option.first_item + option.add_item * (product.quantity - 1)
@@ -213,7 +213,7 @@ async function getShippingInfos(products, country) {
                     : 0
                 )
             };
-        }, { provider_id: 0, shippingValue: 0, taxValue: 0 });
+        }, { providers_ids: {}, shippingValue: 0, taxValue: 0 });
 
         return value;
     } catch (error) {

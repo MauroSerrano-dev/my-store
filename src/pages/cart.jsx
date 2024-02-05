@@ -72,7 +72,6 @@ export default function Cart() {
             setBlockInteractions(true)
             setLoading(true)
             setDisableCheckoutButton(true)
-
             const options = {
                 method: 'POST',
                 headers: {
@@ -81,6 +80,7 @@ export default function Cart() {
                 },
                 body: JSON.stringify({
                     cartItems: cart.products.map(prod => {
+                        console.log(typeof prod.variant.id_printify === 'object' ? prod.variant.id_printify[shippingInfo.providers_ids[prod.type_id]] : prod.variant.id_printify)
                         return cartItemModel({
                             id: prod.id,
                             type_id: prod.type_id,
@@ -88,12 +88,12 @@ export default function Cart() {
                             title: prod.title,
                             image_src: prod.image_src,
                             description: `${tCommon(prod.type_id)} ${tColors(COLORS_POOL[prod.variant.color_id].id_string)} / ${tCommon(SIZES_POOL.find(sz => sz.id === prod.variant.size_id).title)}`,
-                            id_printify: prod.printify_ids[shippingInfo.provider_id],
-                            provider_id: shippingInfo.provider_id,
+                            id_printify: prod.printify_ids[shippingInfo.providers_ids[prod.type_id]],
+                            provider_id: shippingInfo.providers_ids[prod.type_id],
                             art_position: prod.art_position,
                             variant: {
                                 ...prod.variant,
-                                id_printify: typeof prod.variant.id_printify === 'string' ? prod.variant.id_printify : prod.variant.id_printify[shippingInfo.provider_id]
+                                id_printify: typeof prod.variant.id_printify === 'object' ? prod.variant.id_printify[shippingInfo.providers_ids[prod.type_id]] : prod.variant.id_printify
                             },
                         })
                     }),

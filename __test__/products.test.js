@@ -49,8 +49,8 @@ describe('Product Types Tests', () => {
         // Verifica se o campo id_printify existe
         expect(variant).toHaveProperty('id_printify');
 
-        // Se id_printify for uma string, verifica se é único
-        if (typeof variant.id_printify === 'string') {
+        // Se id_printify for uma number, verifica se é único
+        if (typeof variant.id_printify === 'number') {
           if (idPrintifyMap.has(variant.id_printify))
             console.error(`Invalid id_printify value "${variant.id_printify}" in variant "${variant.id}" in type "${type.id}"`);
           expect(idPrintifyMap.has(variant.id_printify)).toBeFalsy(); // Verifica se já foi usado
@@ -64,13 +64,13 @@ describe('Product Types Tests', () => {
             if (idPrintifyMap.has(id))
               console.error(`Invalid id_printify value "${id}" in variant "${variant.id}" in type "${type.id}"`);
 
-            expect(typeof id).toBe('string');
+            expect(typeof id).toBe('number');
             expect(idPrintifyMap.has(id)).toBeFalsy(); // Verifica se já foi usado
             idPrintifyMap.set(id, true);
           });
         }
         else {
-          // Se id_printify não for string nem objeto, emite um console de erro
+          // Se id_printify não for number nem objeto, emite um console de erro
           console.error(`Invalid id_printify format for variant "${variant.id}" in type "${type.id}"`);
         }
       });

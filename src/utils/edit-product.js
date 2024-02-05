@@ -85,5 +85,5 @@ export function isProductValid(product) {
 }
 
 export function getProductPrintifyIdsUniquePosition(printify_ids, position) {
-    return Object.keys(printify_ids).reduce((acc, provider_id) => ({ ...acc, [provider_id]: typeof printify_ids[provider_id] === 'string' ? printify_ids[provider_id] : printify_ids[provider_id][position || 'front'] }), {})
+    return Object.keys(printify_ids).reduce((acc, provider_id) => ({ ...acc, [provider_id]: typeof printify_ids[provider_id] === 'object' ? printify_ids[provider_id][position || 'front'] : printify_ids[provider_id] }), {})
 }

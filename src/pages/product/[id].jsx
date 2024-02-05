@@ -100,9 +100,9 @@ export default withRouter(props => {
         try {
             setDisableCheckoutButton(true)
 
-            const uniquePositionPrintifyIds = typeof Object.values(product.printify_ids)[0] === 'string'
-                ? product.printify_ids
-                : getProductPrintifyIdsUniquePosition(product.printify_ids, currentPosition)
+            const uniquePositionPrintifyIds = typeof Object.values(product.printify_ids)[0] === 'object'
+                ? getProductPrintifyIdsUniquePosition(product.printify_ids, currentPosition)
+                : product.printify_ids
 
             const options = {
                 method: 'POST',
@@ -118,14 +118,14 @@ export default withRouter(props => {
                         title: product.title,
                         image_src: product.images.find(img => img.color_id === productCurrentVariant.color_id && (!img.position || img.position === currentPosition)).src,
                         description: `${tCommon(product.type_id)} ${tColors(currentColor.id_string)} / ${currentSize.title}`,
-                        id_printify: uniquePositionPrintifyIds[shippingInfo.provider_id],
-                        provider_id: shippingInfo.provider_id,
+                        id_printify: uniquePositionPrintifyIds[shippingInfo.providers_ids[product.type_id]],
+                        provider_id: shippingInfo.providers_ids[product.type_id],
                         art_position: product.images[0].position
                             ? currentPosition
                             : null,
                         variant: {
                             ...productCurrentVariant,
-                            id_printify: typeof productCurrentVariant.id_printify === 'string' ? productCurrentVariant.id_printify : productCurrentVariant.id_printify[shippingInfo.provider_id],
+                            id_printify: typeof productCurrentVariant.id_printify === 'object' ? productCurrentVariant.id_printify[shippingInfo.providers_ids[product.type_id]] : productCurrentVariant.id_printify,
                         },
                     })],
                     success_url: session
@@ -215,9 +215,9 @@ export default withRouter(props => {
                         type_id: product.type_id,
                         title: product.title,
                         promotion: product.promotion,
-                        printify_ids: typeof Object.values(product.printify_ids)[0] === 'string'
-                            ? product.printify_ids
-                            : getProductPrintifyIdsUniquePosition(product.printify_ids, currentPosition),
+                        printify_ids: typeof Object.values(product.printify_ids)[0] === 'object'
+                            ? getProductPrintifyIdsUniquePosition(product.printify_ids, currentPosition)
+                            : product.printify_ids,
                         variant: productCurrentVariant,
                         default_variant: {
                             color_id: product.colors_ids[0],

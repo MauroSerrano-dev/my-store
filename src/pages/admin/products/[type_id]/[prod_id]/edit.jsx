@@ -106,7 +106,7 @@ export default withRouter(() => {
 
             setProduct({ ...product, variants: product.variants.map(vari => getProductVariantInfo(vari, product.type_id)) })
 
-            setHavePositionsVariants(typeof Object.values(product.printify_ids)[0] !== 'string')
+            setHavePositionsVariants(typeof Object.values(product.printify_ids)[0] === 'object')
 
             setImages(product.images.reduce((acc, image) =>
                 acc[image.color_id] === undefined
@@ -458,9 +458,9 @@ export default withRouter(() => {
     function handlePrintifyId(providerId, newValue, artPosition) {
         setProduct(prev => ({
             ...prev,
-            printify_ids: typeof Object.values(prev.printify_ids)[0] === 'string'
-                ? { ...prev.printify_ids, [providerId]: newValue }
-                : { ...prev.printify_ids, [providerId]: { ...prev.printify_ids[providerId], [artPosition]: newValue } }
+            printify_ids: typeof Object.values(prev.printify_ids)[0] === 'object'
+                ? { ...prev.printify_ids, [providerId]: { ...prev.printify_ids[providerId], [artPosition]: newValue } }
+                : { ...prev.printify_ids, [providerId]: newValue }
         }))
     }
 
@@ -696,7 +696,7 @@ export default withRouter(() => {
                                             <PrintifyIdPicker
                                                 onChoose={productPrintifyId => handlePrintifyId(provider.id, productPrintifyId, 'front')}
                                                 key={i}
-                                                value={typeof product.printify_ids[provider.id] === 'string' ? product.printify_ids[provider.id] : product.printify_ids[provider.id].front}
+                                                value={typeof product.printify_ids[provider.id] === 'object' ? product.printify_ids[provider.id].front : product.printify_ids[provider.id]}
                                                 colorText='var(--color-success)'
                                                 provider={provider}
                                                 blueprint_ids={TYPE.blueprint_ids}
@@ -709,7 +709,7 @@ export default withRouter(() => {
                                             <FormControlLabel
                                                 control={
                                                     <Switch
-                                                        checked={typeof Object.values(product.printify_ids)[0] !== 'string'}
+                                                        checked={typeof Object.values(product.printify_ids)[0] === 'object'}
                                                         onChange={handleBackVariant}
                                                         color='success'
                                                     />
@@ -717,11 +717,11 @@ export default withRouter(() => {
                                                 label="Back Variant"
                                             />
                                         }
-                                        {typeof Object.values(product.printify_ids)[0] !== 'string' && TYPE.allow_back_variant && TYPE.providers.map(prov_id => PROVIDERS_POOL[prov_id]).map((provider, i) =>
+                                        {typeof Object.values(product.printify_ids)[0] === 'object' && TYPE.allow_back_variant && TYPE.providers.map(prov_id => PROVIDERS_POOL[prov_id]).map((provider, i) =>
                                             <PrintifyIdPicker
                                                 onChoose={productPrintifyId => handlePrintifyId(provider.id, productPrintifyId, 'back')}
                                                 key={i}
-                                                value={typeof product.printify_ids[provider.id] === 'string' ? product.printify_ids[provider.id] : product.printify_ids[provider.id].back}
+                                                value={typeof product.printify_ids[provider.id] === 'object' ? product.printify_ids[provider.id].back : product.printify_ids[provider.id]}
                                                 colorText='var(--color-success)'
                                                 provider={provider}
                                                 blueprint_ids={TYPE.blueprint_ids}
