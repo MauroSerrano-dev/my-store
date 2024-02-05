@@ -120,7 +120,6 @@ export default async function handler(req, res) {
                             variant: {
                                 id: purchaseProducts[i].variant.id,
                                 id_printify: prod.variant_id_printify,
-                                id_printify: purchaseProducts[i].variant.id_printify,
                                 art: purchaseProducts[i].variant.art,
                                 color_id: purchaseProducts[i].variant.color_id,
                                 size_id: purchaseProducts[i].variant.size_id,

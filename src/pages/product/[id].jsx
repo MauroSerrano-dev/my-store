@@ -118,14 +118,14 @@ export default withRouter(props => {
                         title: product.title,
                         image_src: product.images.find(img => img.color_id === productCurrentVariant.color_id && (!img.position || img.position === currentPosition)).src,
                         description: `${tCommon(product.type_id)} ${tColors(currentColor.id_string)} / ${currentSize.title}`,
-                        id_printify: uniquePositionPrintifyIds[shippingInfo.provider_id],
-                        provider_id: shippingInfo.provider_id,
+                        id_printify: uniquePositionPrintifyIds[shippingInfo.providers_ids[product.type_id]],
+                        provider_id: shippingInfo.providers_ids[product.type_id],
                         art_position: product.images[0].position
                             ? currentPosition
                             : null,
                         variant: {
                             ...productCurrentVariant,
-                            id_printify: typeof productCurrentVariant.id_printify === 'object' ? productCurrentVariant.id_printify[shippingInfo.provider_id] : productCurrentVariant.id_printify,
+                            id_printify: typeof productCurrentVariant.id_printify === 'object' ? productCurrentVariant.id_printify[shippingInfo.providers_ids[product.type_id]] : productCurrentVariant.id_printify,
                         },
                     })],
                     success_url: session
