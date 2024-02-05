@@ -111,15 +111,17 @@ async function updateProductStatus(order_id_printify, printify_products) {
         console.log('printify_products', printify_products)
         console.log('orderData.products', orderData.products)
         const updatedProducts = orderData.products.map(product => {
-            const newPossibleStatus = printify_products.find(prod => prod.product_id == product.id_printify && prod.variant_id == product.variant.id_printify)?.status
-            const newStatus = ALLOWED_WEBHOOK_STATUS.includes(newPossibleStatus) && ALLOWED_WEBHOOK_STATUS.includes(product.status)
-                ? newPossibleStatus || null
-                : product.status
-            return {
-                ...product,
-                updated_at: newStatus !== product.status ? now : product.updated_at,
-                status: newStatus
-            }
+            const printifyProduct = printify_products.find(prod => prod.product_id == product.id_printify && prod.variant_id == product.variant.id_printify)
+            if (!printifyProduct)
+                return product
+            if (product.status === printifyProduct.status)
+                return product
+            else
+                return {
+                    ...product,
+                    updated_at: now,
+                    status: printifyProduct.status
+                }
         })
 
         if (updatedProducts.every(prod => prod.status === 'canceled'))
