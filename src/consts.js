@@ -218,16 +218,16 @@ export const SIZES_POOL = [
 ]
 
 export const PROVIDERS_POOL = {
-    1: { id: '1', title: 'SPOKE Custom Products' },
-    6: { id: '6', title: 'T Shirt and Sons' },
-    26: { id: '26', title: 'Textildruck Europa' },
-    27: { id: '27', title: 'Print Geek' },
-    28: { id: '28', title: 'District Photo' },
-    29: { id: '29', title: 'Monster Digital' },
-    39: { id: '39', title: 'SwiftPOD' },
-    43: { id: '43', title: 'Stoked On Printing' },
-    50: { id: '50', title: 'Underground Threads' },
-    87: { id: '87', title: 'Print Logistic' },
+    1: { id: 1, title: 'SPOKE Custom Products' },
+    6: { id: 6, title: 'T Shirt and Sons' },
+    26: { id: 26, title: 'Textildruck Europa' },
+    27: { id: 27, title: 'Print Geek' },
+    28: { id: 28, title: 'District Photo' },
+    29: { id: 29, title: 'Monster Digital' },
+    39: { id: 39, title: 'SwiftPOD' },
+    43: { id: 43, title: 'Stoked On Printing' },
+    50: { id: 50, title: 'Underground Threads' },
+    87: { id: 87, title: 'Print Logistic' },
 }
 
 export const MENU_OPTIONS = [
@@ -2031,7 +2031,7 @@ export const PRODUCTS_TYPES = [
         inicial_tags: ['long-sleeve'],
         metrics: { width: [50.8, 55.9, 60.96, 66.04, 71.12], length: [68.58, 71.12, 73.66, 76.2, 78.74], 'sleeve-from': [85.09, 87.63, 90.17, 92.71, 95.25] },
         sizes: [14, 15, 16, 17, 18],
-        colors: [521, 451, 418, 421, 358, 416, 367, 392, 425, 511, 433, 423],
+        colors: [521, 451, 418, 421, 358, 416, 369, 367, 392, 511, 433, 429, 423],
         key_features: ['without-side', 'ribbed-knit'],
         care_instructions: ['machine-wash-cold', 'not-dryclean', 'non-chlorine', 'tumble-dry-low', 'not-iron'],
         variants: [

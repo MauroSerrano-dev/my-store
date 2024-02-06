@@ -10,6 +10,7 @@ import { ref, listAll, getDownloadURL } from 'firebase/storage'
 import Image from 'next/image'
 import ButtonIcon from '../material-ui/ButtonIcon'
 import ClearRoundedIcon from '@mui/icons-material/ClearRounded'
+import { COLORS_POOL } from '@/consts'
 
 export default function ImagesEditor(props) {
     const {
@@ -58,7 +59,7 @@ export default function ImagesEditor(props) {
     async function handleChangePath(newPath) {
         const myRef = ref(storage, newPath)
         const response = await listAll(myRef)
-        const urlsPromises = response.items.map(item => getDownloadURL(item))
+        const urlsPromises = response.items.filter(item => item.name.includes(COLORS_POOL[product.colors_ids[colorIndex]].id_string)).map(item => getDownloadURL(item))
         const urls = await Promise.all(urlsPromises);
 
         setOptions([
