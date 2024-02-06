@@ -39,7 +39,7 @@ export const LIMITS = {
     input_country: 20,
     input_min_max: 4,
     min_profit: 400,
-    max_products_in_carousel: 10,
+    max_products_in_carousel: 12,
     max_products_in_search_page: 60,
 }
 
