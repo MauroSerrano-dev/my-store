@@ -247,14 +247,11 @@ export const MENU_FORWARD_OPTIONS = {
         { id: 'raglan-tees', type: 'link', href: '/search?v=raglan-tees' },
         { id: 'hoodies', type: 'link', href: '/search?v=hoodies' },
         { id: 'sweatshirts', type: 'link', href: '/search?v=sweatshirts' },
-        { id: 'mugs', type: 'link', href: '/search?v=mugs' },
     ],
     collections: COLLECTIONS.map(coll => ({ id: coll.title, type: 'link', href: `/search?c=${coll.id}` })),
     'most-searched': [
         { id: 'promotion', type: 'link', href: '/search?t=promotion' },
         { id: 'long-sleeve', type: 'link', href: '/search?t=long-sleeve' },
-        { id: 'funny', type: 'link', href: '/search?t=funny' },
-        { id: 'for-couples', type: 'link', href: '/search?t=for-couples' },
     ]
 }
 

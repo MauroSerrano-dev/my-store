@@ -30,7 +30,7 @@ export default function Cart() {
         getInicialCart,
     } = useAppContext()
 
-    const [disableCheckoutButton, setDisableCheckoutButton] = useState(false)
+    const [disableCheckoutButton, setDisableCheckoutButton] = useState(true)
     const [shippingInfo, setShippingInfo] = useState({ shippingValue: 0, taxValue: 0 })
     const [productsOne, setProductsOne] = useState()
     const [productsTwo, setProductsTwo] = useState()
@@ -80,7 +80,6 @@ export default function Cart() {
                 },
                 body: JSON.stringify({
                     cartItems: cart.products.map(prod => {
-                        console.log(typeof prod.variant.id_printify === 'object' ? prod.variant.id_printify[shippingInfo.providers_ids[prod.type_id]] : prod.variant.id_printify)
                         return cartItemModel({
                             id: prod.id,
                             type_id: prod.type_id,
@@ -157,6 +156,7 @@ export default function Cart() {
     async function callGetShippingInfo() {
         try {
             setLoadingShippingValue(true)
+            setDisableCheckoutButton(true)
 
             const productsLessInfo = cart.products.map(prod => (
                 {
@@ -184,9 +184,10 @@ export default function Cart() {
         catch (error) {
             console.error(error)
             if (error.msg)
-                showToast({ type: error.type, msg: tToasts(error.msg) })
-        }
-        finally {
+            showToast({ type: error.type, msg: tToasts(error.msg) })
+    }
+    finally {
+            setDisableCheckoutButton(false)
             setLoadingShippingValue(false)
         }
     }
