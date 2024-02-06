@@ -28,33 +28,54 @@ export default function PrintifyIdPicker(props) {
     const [modalPage, setModalPage] = useState(1)
     const [modalLastPage, setModalLastPage] = useState(1)
     const [chooseOne, setChooseOne] = useState()
+    const [controller, setController] = useState()
 
     useEffect(() => {
-        if (value && !chooseOne)
-            getInicialProduct()
-        else
-            setChooseOne(null)
-    }, [])
+        getInicialProduct()
+        if (controller)
+            controller.abort()
+    }, [value])
 
     useEffect(() => {
         getPrintifyProducts()
     }, [modalPage])
 
-    function getInicialProduct() {
-        const options = {
-            method: 'GET',
-            headers: {
-                authorization: process.env.NEXT_PUBLIC_APP_TOKEN,
-                prod_printify_id: value,
-            },
+    async function getInicialProduct() {
+        try {
+            if (value) {
+                setChooseOne()
+                const controller = new AbortController()
+
+                setController(controller)
+
+                const { signal } = controller;
+
+                const options = {
+                    method: 'GET',
+                    headers: {
+                        authorization: process.env.NEXT_PUBLIC_APP_TOKEN,
+                        prod_printify_id: value,
+                    },
+                    signal: signal,
+                }
+                const response = await fetch("/api/printify/product", options)
+
+                const responseJson = await response.json()
+
+                if (response.status >= 300)
+                    throw responseJson.error
+
+                setChooseOne(responseJson.data)
+            }
+            else {
+                setChooseOne(null)
+            }
         }
-        fetch("/api/printify/product", options)
-            .then(response => response.json())
-            .then(response => setChooseOne(response.data))
-            .catch(err => {
-                console.error(err)
-                showToast({ type: 'error', msg: tToasts('default_error') })
-            })
+        catch (error) {
+            console.error(error)
+            if (error.msg)
+                showToast({ type: error.type, msg: tToasts(error.msg) })
+        }
     }
 
     function getPrintifyProducts() {

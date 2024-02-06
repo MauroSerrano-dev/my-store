@@ -71,7 +71,7 @@ export default withRouter(props => {
 
     const [currentColor, setCurrentColor] = useState(cl ? cl : COLORS_POOL[product?.colors_ids[0]])
     const [currentSize, setCurrentSize] = useState(sz ? sz : SIZES_POOL.find(sz => sz.id === product?.sizes_ids[0]))
-    const [currentPosition, setCurrentPosition] = useState('front')
+    const [currentPosition, setCurrentPosition] = useState(product.default_art_position || null)
 
     const [shippingInfo, setShippingInfo] = useState({ value: 0 })
     const [buyNowModalOpen, setBuyNowModalOpen] = useState(false)
@@ -116,13 +116,11 @@ export default withRouter(props => {
                         type_id: product.type_id,
                         quantity: 1,
                         title: product.title,
-                        image_src: product.images.find(img => img.color_id === productCurrentVariant.color_id && (!img.position || img.position === currentPosition)).src,
+                        image_src: product.images.find(img => img.color_id === productCurrentVariant.color_id && (!currentPosition || img.position === currentPosition)).src,
                         description: `${tCommon(product.type_id)} ${tColors(currentColor.id_string)} / ${currentSize.title}`,
                         id_printify: uniquePositionPrintifyIds[shippingInfo.providers_ids[product.type_id]],
                         provider_id: shippingInfo.providers_ids[product.type_id],
-                        art_position: product.images[0].position
-                            ? currentPosition
-                            : null,
+                        art_position: currentPosition,
                         variant: {
                             ...productCurrentVariant,
                             id_printify: typeof productCurrentVariant.id_printify === 'object' ? productCurrentVariant.id_printify[shippingInfo.providers_ids[product.type_id]] : productCurrentVariant.id_printify,
@@ -194,7 +192,7 @@ export default withRouter(props => {
                     quantity: 1,
                 }
 
-                if (typeof Object.values(product.printify_ids)[0] === 'object')
+                if (currentPosition)
                     newProduct.art_position = currentPosition
 
                 if (session)
@@ -208,14 +206,12 @@ export default withRouter(props => {
                 const newProductFullInfo = productInfoModel(
                     {
                         id: product.id,
-                        art_position: product.images[0].position
-                            ? currentPosition
-                            : null,
+                        art_position: currentPosition,
                         quantity: 1,
                         type_id: product.type_id,
                         title: product.title,
                         promotion: product.promotion,
-                        printify_ids: typeof Object.values(product.printify_ids)[0] === 'object'
+                        printify_ids: currentPosition
                             ? getProductPrintifyIdsUniquePosition(product.printify_ids, currentPosition)
                             : product.printify_ids,
                         variant: productCurrentVariant,
@@ -223,7 +219,7 @@ export default withRouter(props => {
                             color_id: product.colors_ids[0],
                             size_id: product.sizes_ids[0],
                         },
-                        image_src: product.images.find(img => img.color_id === productCurrentVariant.color_id && (!img.position || img.position === currentPosition)).src,
+                        image_src: product.images.find(img => img.color_id === productCurrentVariant.color_id && (!currentPosition || img.position === currentPosition)).src,
                     }
                 )
                 setPosAddModal(true)
@@ -415,7 +411,7 @@ export default withRouter(props => {
                                                 onChange={handleSizeChange}
                                             />
                                         </div>
-                                        {product.images[0].position &&
+                                        {currentPosition &&
                                             <div className={styles.sizeSelector}>
                                                 <p style={{ textAlign: 'start', fontWeight: '700' }}>
                                                     {tProduct('choose_art_position')}

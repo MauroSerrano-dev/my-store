@@ -6,7 +6,7 @@ import { useEffect, useState } from 'react'
 import { COLLECTIONS, TAGS_POOL, PRODUCTS_TYPES, COLORS_POOL, SIZES_POOL, PROVIDERS_POOL, THEMES_POOL, SEARCH_ART_COLORS, COMMON_TRANSLATES } from '@/consts'
 import ColorSelector from '@/components/ColorSelector'
 import SizesSelector from '@/components/SizesSelector'
-import { FormControlLabel, Switch } from '@mui/material'
+import { ButtonGroup, FormControlLabel, Switch } from '@mui/material'
 import NoFound404 from '@/components/NoFound404'
 import Chain from '@/components/svgs/Chain'
 import BrokeChain from '@/components/svgs/BrokeChain'
@@ -105,6 +105,9 @@ export default withRouter(() => {
             setInicialProduct(product)
 
             setProduct({ ...product, variants: product.variants.map(vari => getProductVariantInfo(vari, product.type_id)) })
+
+            if (product.default_art_position)
+                setViewStatus(product.default_art_position)
 
             setHavePositionsVariants(typeof Object.values(product.printify_ids)[0] === 'object')
 
@@ -588,6 +591,7 @@ export default withRouter(() => {
                 ))
             setProduct(prev => ({
                 ...prev,
+                default_art_position: 'front',
                 printify_ids: Object.keys(prev.printify_ids).reduce((acc, key) => ({ ...acc, [key]: { front: prev.printify_ids[key], back: '' } }), {})
             }))
             setHavePositionsVariants(true)
@@ -602,6 +606,7 @@ export default withRouter(() => {
                 )
             setProduct(prev => ({
                 ...prev,
+                default_art_position: null,
                 printify_ids: Object.keys(prev.printify_ids).reduce((acc, key) => ({
                     ...acc,
                     [key]: prev.printify_ids[key].front
@@ -694,9 +699,9 @@ export default withRouter(() => {
                                     <div className={styles.sectionRight}>
                                         {TYPE.providers.map(prov_id => PROVIDERS_POOL[prov_id]).map((provider, i) =>
                                             <PrintifyIdPicker
-                                                onChoose={productPrintifyId => handlePrintifyId(provider.id, productPrintifyId, 'front')}
+                                                onChoose={productPrintifyId => handlePrintifyId(provider.id, productPrintifyId, [product.default_art_position])}
                                                 key={i}
-                                                value={typeof product.printify_ids[provider.id] === 'object' ? product.printify_ids[provider.id].front : product.printify_ids[provider.id]}
+                                                value={product.default_art_position ? product.printify_ids[provider.id][product.default_art_position] : product.printify_ids[provider.id]}
                                                 colorText='var(--color-success)'
                                                 provider={provider}
                                                 blueprint_ids={TYPE.blueprint_ids}
@@ -709,7 +714,7 @@ export default withRouter(() => {
                                             <FormControlLabel
                                                 control={
                                                     <Switch
-                                                        checked={typeof Object.values(product.printify_ids)[0] === 'object'}
+                                                        checked={product.default_art_position}
                                                         onChange={handleBackVariant}
                                                         color='success'
                                                     />
@@ -717,11 +722,11 @@ export default withRouter(() => {
                                                 label="Back Variant"
                                             />
                                         }
-                                        {typeof Object.values(product.printify_ids)[0] === 'object' && TYPE.allow_back_variant && TYPE.providers.map(prov_id => PROVIDERS_POOL[prov_id]).map((provider, i) =>
+                                        {product.default_art_position && TYPE.allow_back_variant && TYPE.providers.map(prov_id => PROVIDERS_POOL[prov_id]).map((provider, i) =>
                                             <PrintifyIdPicker
-                                                onChoose={productPrintifyId => handlePrintifyId(provider.id, productPrintifyId, 'back')}
+                                                onChoose={productPrintifyId => handlePrintifyId(provider.id, productPrintifyId, product.default_art_position === 'back' ? 'front' : 'back')}
                                                 key={i}
-                                                value={typeof product.printify_ids[provider.id] === 'object' ? product.printify_ids[provider.id].back : product.printify_ids[provider.id]}
+                                                value={product.printify_ids[provider.id][product.default_art_position === 'back' ? 'front' : 'back']}
                                                 colorText='var(--color-success)'
                                                 provider={provider}
                                                 blueprint_ids={TYPE.blueprint_ids}
@@ -886,6 +891,35 @@ export default withRouter(() => {
                                                     }}
                                                 />
                                             </div>
+                                            {product.default_art_position &&
+                                                <div className='flex column center' style={{ gap: '1rem' }}>
+                                                    <h3>Default Art Position</h3>
+                                                    <ButtonGroup
+                                                        sx={{
+                                                            width: '100%'
+                                                        }}
+                                                    >
+                                                        <MyButton
+                                                            variant={product.default_art_position === 'front' ? 'contained' : 'outlined'}
+                                                            onClick={() => updateProductField('default_art_position', 'front')}
+                                                            style={{
+                                                                width: '50%'
+                                                            }}
+                                                        >
+                                                            Front
+                                                        </MyButton>
+                                                        <MyButton
+                                                            variant={product.default_art_position === 'back' ? 'contained' : 'outlined'}
+                                                            onClick={() => updateProductField('default_art_position', 'back')}
+                                                            style={{
+                                                                width: '50%'
+                                                            }}
+                                                        >
+                                                            Back
+                                                        </MyButton>
+                                                    </ButtonGroup>
+                                                </div>
+                                            }
                                         </div>
                                     </section>
                                 }

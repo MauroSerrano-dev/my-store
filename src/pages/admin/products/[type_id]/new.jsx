@@ -1,6 +1,6 @@
 import ImagesSliderEditable from '@/components/ImagesSliderEditable'
 import styles from '@/styles/admin/products/type_id/new.module.css'
-import { FormControlLabel, Switch } from '@mui/material'
+import { ButtonGroup, FormControlLabel, Switch } from '@mui/material'
 import { useEffect, useState } from 'react'
 import { withRouter } from 'next/router'
 import { COLLECTIONS, TAGS_POOL, THEMES_POOL, PRODUCTS_TYPES, COLORS_POOL, SIZES_POOL, PROVIDERS_POOL, SEARCH_ART_COLORS, COMMON_TRANSLATES } from '@/consts'
@@ -43,6 +43,7 @@ const INICIAL_PRODUCT = {
     popularity: 0,
     printify_ids: [],
     total_sales: 0,
+    default_art_position: null,
 }
 
 export default withRouter(() => {
@@ -523,7 +524,11 @@ export default withRouter(() => {
                 ))
             setProduct(prev => ({
                 ...prev,
-                printify_ids: Object.keys(prev.printify_ids).reduce((acc, key) => ({ ...acc, [key]: { front: prev.printify_ids[key], back: '' } }), {})
+                default_art_position: 'front',
+                printify_ids: Object.keys(prev.printify_ids).reduce((acc, key) => ({
+                    ...acc,
+                    [key]: { front: prev.printify_ids[key], back: '' }
+                }), {})
             }))
             setHavePositionsVariants(true)
         }
@@ -537,6 +542,7 @@ export default withRouter(() => {
                 )
             setProduct(prev => ({
                 ...prev,
+                default_art_position: null,
                 printify_ids: Object.keys(prev.printify_ids).reduce((acc, key) => ({
                     ...acc,
                     [key]: prev.printify_ids[key].front
@@ -630,7 +636,7 @@ export default withRouter(() => {
                                             <PrintifyIdPicker
                                                 onChoose={productPrintifyId => handlePrintifyId(provider.id, productPrintifyId, 'front')}
                                                 key={i}
-                                                value={typeof product.printify_ids[provider.id] === 'object' ? product.printify_ids[provider.id].front : product.printify_ids[provider.id]}
+                                                value={product.default_art_position ? product.printify_ids[provider.id][product.default_art_position] : product.printify_ids[provider.id]}
                                                 colorText='var(--color-success)'
                                                 provider={provider}
                                                 blueprint_ids={type.blueprint_ids}
@@ -651,11 +657,11 @@ export default withRouter(() => {
                                                 label="Back Variant"
                                             />
                                         }
-                                        {typeof Object.values(product.printify_ids)[0] === 'object' && type.allow_back_variant && type.providers.map(prov_id => PROVIDERS_POOL[prov_id]).map((provider, i) =>
+                                        {product.default_art_position && type.allow_back_variant && type.providers.map(prov_id => PROVIDERS_POOL[prov_id]).map((provider, i) =>
                                             <PrintifyIdPicker
-                                                onChoose={productPrintifyId => handlePrintifyId(provider.id, productPrintifyId, 'back')}
+                                                onChoose={productPrintifyId => handlePrintifyId(provider.id, productPrintifyId, product.default_art_position === 'back' ? 'front' : 'back')}
                                                 key={i}
-                                                value={typeof product.printify_ids[provider.id] === 'object' ? product.printify_ids[provider.id].back : product.printify_ids[provider.id]}
+                                                value={product.printify_ids[provider.id][product.default_art_position === 'back' ? 'front' : 'back']}
                                                 colorText='var(--color-success)'
                                                 provider={provider}
                                                 blueprint_ids={type.blueprint_ids}
@@ -820,6 +826,35 @@ export default withRouter(() => {
                                                     }}
                                                 />
                                             </div>
+                                            {product.default_art_position &&
+                                                <div className='flex column center' style={{ gap: '1rem' }}>
+                                                    <h3>Default Art Position</h3>
+                                                    <ButtonGroup
+                                                        sx={{
+                                                            width: '100%'
+                                                        }}
+                                                    >
+                                                        <MyButton
+                                                            variant={product.default_art_position === 'front' ? 'contained' : 'outlined'}
+                                                            onClick={() => updateProductField('default_art_position', 'front')}
+                                                            style={{
+                                                                width: '50%'
+                                                            }}
+                                                        >
+                                                            Front
+                                                        </MyButton>
+                                                        <MyButton
+                                                            variant={product.default_art_position === 'back' ? 'contained' : 'outlined'}
+                                                            onClick={() => updateProductField('default_art_position', 'back')}
+                                                            style={{
+                                                                width: '50%'
+                                                            }}
+                                                        >
+                                                            Back
+                                                        </MyButton>
+                                                    </ButtonGroup>
+                                                </div>
+                                            }
                                         </div>
                                     </section>
                                 }

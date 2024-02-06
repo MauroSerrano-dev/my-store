@@ -9,7 +9,6 @@ import { LoadingButton } from '@mui/lab'
 import Order from '@/components/products/Order'
 import { showToast } from '@/utils/toasts'
 import { useTranslation } from 'next-i18next'
-import { getProductsInfo } from '../../frontend/product'
 import { orderProductModel } from '@/utils/models'
 
 export default function OrderStatus() {
