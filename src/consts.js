@@ -80,7 +80,6 @@ export const CURRENCIES = {
 export const NAVBAR_ITEMS = [
     { id: 't-shirts', query: 'v' },
     { id: 'hoodies', query: 'v' },
-    { id: 'mugs', query: 'v' },
     { id: 'sweatshirts', query: 'v' },
     { id: 'long-sleeve', query: 't' },
     { id: 'promotion', query: 't' },
