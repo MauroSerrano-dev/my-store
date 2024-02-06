@@ -63,6 +63,10 @@ export default function ProductAdmin(props) {
 
     const scrollColorsActive = (colorButtonSize + colorsButtonsGap) * product.colors_ids.length > width
 
+    const imagesList = product.default_art_position
+        ? product.images.filter(img => img.position === product.default_art_position)
+        : product.images
+
     function handleDragColorsStart() {
         setIsDraggingColors(true)
         document.body.style.cursor = 'grabbing'
@@ -205,7 +209,7 @@ export default function ProductAdmin(props) {
                             priority={i === 0}
                             quality={100}
                             key={i}
-                            src={product.images.filter(img => img.color_id === color_id)[product.image_showcase_index].src}
+                            src={imagesList.filter(img => img.color_id === color_id)[product.image_showcase_index].src}
                             fill
                             sizes={`${height * 2 / 3}px`}
                             alt={product.title}
