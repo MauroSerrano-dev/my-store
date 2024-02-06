@@ -12,7 +12,6 @@ import { useTranslation } from 'next-i18next';
 import { useAppContext } from './contexts/AppContext';
 import LanguageSelector from './buttons-icon/LanguageSelector';
 import AppAlert from './buttons-icon/AppAlert';
-import { SHOW_APP_ALERT } from '@/utils/app-controller';
 
 export default function NavBar(props) {
     const {
@@ -62,7 +61,7 @@ export default function NavBar(props) {
                         </motion.div>
                     }
                     {!mobile &&
-                        (SHOW_APP_ALERT
+                        (process.env.NEXT_PUBLIC_SHOW_APP_ALERT === 'true'
                             ? <AppAlert />
                             : <Link
                                 href={'/'}
@@ -84,7 +83,7 @@ export default function NavBar(props) {
                     {adminMode
                         ? <div></div>
                         : mobile
-                            ? (SHOW_APP_ALERT
+                            ? (process.env.NEXT_PUBLIC_SHOW_APP_ALERT === 'true'
                                 ? <AppAlert />
                                 : <Link
                                     href={'/'}

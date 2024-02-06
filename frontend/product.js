@@ -12,7 +12,7 @@ import {
 import { getProductVariantsInfos } from "@/utils"
 import { db } from "../firebaseInit"
 import { productInfoModel } from "@/utils/models"
-import { DEFAULT_LANGUAGE, PRODUCTS_TYPES, TAGS_POOL, THEMES_POOL } from "@/consts"
+import { DEFAULT_LANGUAGE, PRODUCTS_TYPES_ORDERED, TAGS_POOL, THEMES_POOL } from "@/consts"
 import MyError from "@/classes/MyError"
 import Translate from "translate"
 import Fuse from 'fuse.js'
@@ -199,7 +199,7 @@ async function getProductsByQueries(props) {
 
             const searchArr = inicialTags.concat(await Promise.all(translationPromises))
 
-            const fuse = new Fuse(TAGS_POOL.concat(THEMES_POOL.concat(PRODUCTS_TYPES.map(type => type.id))), { threshold: 0.4 })
+            const fuse = new Fuse(TAGS_POOL.concat(THEMES_POOL.concat(PRODUCTS_TYPES_ORDERED.map(type => type.id))), { threshold: 0.4 })
 
             const tags = inicialTags.concat(searchArr.map(tag => {
                 const fuseRes = fuse.search(tag)

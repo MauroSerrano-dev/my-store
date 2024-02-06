@@ -150,7 +150,7 @@ export default function ProductsId() {
     function getProfit(product) {
         const cheapestVariant = product.variants.find(vari => vari.price === (product.promotion ? product.promotion.min_price_original : product.min_price))
         const futurePrice = (product.promotion ? product.promotion.min_price_original : product.min_price) * (1 - (promotion.percentage / 100))
-        return ((futurePrice - Math.max(...Object.values(PRODUCTS_TYPES.find(type => type.id === product.type_id).variants.find(vari => vari.id === cheapestVariant.id).cost))) / 100).toFixed(2)
+        return ((futurePrice - Math.max(...Object.values(PRODUCTS_TYPES[product.type_id].variants.find(vari => vari.id === cheapestVariant.id).cost))) / 100).toFixed(2)
     }
 
     function handleSearch() {
@@ -382,7 +382,7 @@ export default function ProductsId() {
                                 )}
                             />
                         }
-                        {PRODUCTS_TYPES.find(tp => tp.id === router.query.type_id) &&
+                        {PRODUCTS_TYPES[router.query.type_id] &&
                             <Link
                                 href={`/admin/products/${router.query.type_id}/new`}
                                 style={{

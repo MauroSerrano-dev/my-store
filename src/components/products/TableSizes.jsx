@@ -21,7 +21,7 @@ export default function TableSizes(props) {
     const [unit, setUnit] = useState(userLocation?.country === 'US' ? 'imperial' : 'metric')
     const [firstTime, setFirstTime] = useState(true)
 
-    const PRODUCT_TYPE = PRODUCTS_TYPES.find(tp => tp.id === type)
+    const PRODUCT_TYPE = PRODUCTS_TYPES[type]
 
     useEffect(() => {
         if (firstTime && userLocation) {

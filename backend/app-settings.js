@@ -194,7 +194,7 @@ async function getShippingInfos(products, country) {
                 productsTypesAlreadyIn.push(product.type_id);
             }
 
-            const prodVari = PRODUCTS_TYPES.find(prod_type => prod_type.id === product.type_id).variants.find(vari => vari.id === product.variant_id);
+            const prodVari = PRODUCTS_TYPES[product.type_id].variants.find(vari => vari.id === product.variant_id);
 
             if (!prodVari) {
                 throw new MyError('shipping-options variant not found');

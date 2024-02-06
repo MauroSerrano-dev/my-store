@@ -4,7 +4,6 @@ import { useTranslation } from 'next-i18next'
 import { motion } from 'framer-motion'
 import { useAppContext } from '../contexts/AppContext'
 import WarningAmberRoundedIcon from '@mui/icons-material/WarningAmberRounded';
-import { DISABLE_CHECKOUT } from '@/utils/app-controller'
 
 export default function AppAlert() {
     const {
@@ -58,7 +57,7 @@ export default function AppAlert() {
                     </div>
                     <div className={styles.contentVisible}>
                         <ul>
-                            {DISABLE_CHECKOUT &&
+                            {process.env.NEXT_PUBLIC_DISABLE_CHECKOU === 'true' &&
                                 <li>
                                     {tToasts('checkout_temporarily_disabled')}
                                 </li>

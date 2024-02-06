@@ -74,7 +74,7 @@ export function isProductValid(product) {
     if (product.variants.some(vari => !vari.art.id))
         throw new MyError({ message: 'art_id_missing' })
 
-    const type = PRODUCTS_TYPES.find(type => type.id === product.type_id)
+    const type = PRODUCTS_TYPES[product.type_id]
     const variants = product.variants.map(variant => ({
         ...variant,
         cost: type.variants.find(vari => vari.id === variant.id).cost

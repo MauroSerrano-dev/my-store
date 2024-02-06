@@ -23,7 +23,6 @@ const categories = [
   { id: 'animals', url: '/search?h=animals', img: 'https://firebasestorage.googleapis.com/v0/b/mrf-styles.appspot.com/o/app%2Fcategories%2Fanimals.webp?alt=media&token=68f66a75-9e3c-4290-995f-72d3a41b9854' },
   { id: 'rpg', url: '/search?h=rpg', img: 'https://firebasestorage.googleapis.com/v0/b/mrf-styles.appspot.com/o/app%2Fcategories%2Frpg.webp?alt=media&token=70a43a1f-d1c9-4d3b-b66d-c96c5e2d25f4' },
   { id: 't-shirts', url: '/search?v=t-shirts', img: 'https://firebasestorage.googleapis.com/v0/b/mrf-styles.appspot.com/o/app%2Fcategories%2Ft-shirts.webp?alt=media&token=e91d2c95-a996-436c-817d-f078e25d814c' },
-  { id: 'mugs', url: '/search?v=mugs', img: 'https://firebasestorage.googleapis.com/v0/b/mrf-styles.appspot.com/o/app%2Fcategories%2Fmugs.webp?alt=media&token=e3f49c7c-ece1-4cb2-8b4e-72b6b4e648d4' },
 ]
 
 export default function Home() {
