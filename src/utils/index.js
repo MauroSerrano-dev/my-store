@@ -186,11 +186,11 @@ export function getDateFormat(country) {
 }
 
 export function getProductVariantsInfos(product) {
-    return product?.variants.map(vari => ({ ...PRODUCTS_TYPES.find(type => type.id === product?.type_id).variants.find(va => va.id === vari.id), ...vari }))
+    return product?.variants.map(vari => ({ ...PRODUCTS_TYPES[product?.type_id].variants.find(va => va.id === vari.id), ...vari }))
 }
 
 export function getProductVariantInfo(variant, productType) {
-    return { ...PRODUCTS_TYPES.find(type => type.id === productType).variants.find(va => va.id === variant.id), ...variant }
+    return { ...PRODUCTS_TYPES[productType].variants.find(va => va.id === variant.id), ...variant }
 }
 
 export function handleOpenModal(view, opacity, custom_value) {
@@ -208,12 +208,12 @@ export function handleCloseModal(view, opacity, custom_value) {
 
 export function getVariantProfitBySizeId(product, sizeId, productType) {
     const futurePrice = product.variants.find(vari => vari.size_id === sizeId).price
-    return ((futurePrice - Math.max(...Object.values(PRODUCTS_TYPES.find(type => type.id === productType).variants.find(vari => vari.size_id === sizeId).cost))) / 100).toFixed(2)
+    return ((futurePrice - Math.max(...Object.values(PRODUCTS_TYPES[productType].variants.find(vari => vari.size_id === sizeId).cost))) / 100).toFixed(2)
 }
 
 export function getVariantProfitBySizeIdPromotion(product, sizeId, productType) {
     const futurePrice = product.variants.find(vari => vari.size_id === sizeId).price * (product.promotion ? (1 - product.promotion.percentage) : 1)
-    return ((futurePrice - Math.max(...Object.values(PRODUCTS_TYPES.find(type => type.id === productType).variants.find(vari => vari.size_id === sizeId).cost))) / 100).toFixed(2)
+    return ((futurePrice - Math.max(...Object.values(PRODUCTS_TYPES[productType].variants.find(vari => vari.size_id === sizeId).cost))) / 100).toFixed(2)
 }
 
 export function isSameTimestamp(t1, t2) {

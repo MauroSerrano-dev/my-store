@@ -277,8 +277,8 @@ export const POPULARITY_POINTS = {
     purchase: 100,
 }
 
-export const PRODUCTS_TYPES = [
-    {
+export const PRODUCTS_TYPES = {
+    't-shirt': {
         id: 't-shirt',
         family_id: 't-shirts',
         color: '#1189c4',
@@ -1138,7 +1138,7 @@ export const PRODUCTS_TYPES = [
             },
         ],
     },
-    {
+    't-shirt-long-sleeve': {
         id: 't-shirt-long-sleeve',
         family_id: 't-shirts',
         color: '#365486',
@@ -1578,7 +1578,7 @@ export const PRODUCTS_TYPES = [
             },
         ],
     },
-    {
+    'raglan-tee-long-sleeve': {
         id: 'raglan-tee-long-sleeve',
         family_id: 'raglan-tees',
         color: '#e0824b',
@@ -2088,7 +2088,7 @@ export const PRODUCTS_TYPES = [
             },
         ],
     },
-    {
+    'sweatshirt': {
         id: 'sweatshirt',
         family_id: 'sweatshirts',
         color: '#009c75',
@@ -3018,7 +3018,7 @@ export const PRODUCTS_TYPES = [
             },
         ],
     },
-    {
+    'hoodie': {
         id: 'hoodie',
         family_id: 'hoodies',
         color: '#026539',
@@ -3528,7 +3528,7 @@ export const PRODUCTS_TYPES = [
             },
         ],
     },
-    {
+    'socks': {
         id: 'socks',
         family_id: 'socks',
         color: '#96305a',
@@ -3580,7 +3580,7 @@ export const PRODUCTS_TYPES = [
             },
         ]
     },
-    {
+    'mug': {
         id: 'mug',
         family_id: 'mugs',
         color: '#bA2326',
@@ -3612,7 +3612,7 @@ export const PRODUCTS_TYPES = [
             }
         ]
     },
-    {
+    'mug-c': {
         id: 'mug-c',
         family_id: 'mugs',
         color: '#bA2326',
@@ -3680,6 +3680,17 @@ export const PRODUCTS_TYPES = [
             }
         ]
     },
+}
+
+export const PRODUCTS_TYPES_ORDERED = [
+    PRODUCTS_TYPES['t-shirt'],
+    PRODUCTS_TYPES['t-shirt-long-sleeve'],
+    PRODUCTS_TYPES['raglan-tee-long-sleeve'],
+    PRODUCTS_TYPES['sweatshirt'],
+    PRODUCTS_TYPES['hoodie'],
+    PRODUCTS_TYPES['socks'],
+    PRODUCTS_TYPES['mug'],
+    PRODUCTS_TYPES['mug-c'],
 ]
 
 export const COUNTRIES = {

@@ -1,4 +1,4 @@
-import { PRODUCTS_TYPES } from '@/consts'
+import { PRODUCTS_TYPES_ORDERED } from '@/consts'
 import { useTranslation } from 'next-i18next'
 import Link from 'next/link'
 import styles from '@/styles/components/products/ProductsSelector.module.css'
@@ -24,7 +24,7 @@ export default function ProductsSelector(props) {
                     </p>
                 </Link>
             }
-            {PRODUCTS_TYPES.map((type, i) =>
+            {PRODUCTS_TYPES_ORDERED.map((type, i) =>
                 <Link
                     className={`${styles.option} noUnderline`}
                     key={i}

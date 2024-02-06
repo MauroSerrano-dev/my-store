@@ -17,7 +17,7 @@ export default function ProductTag(props) {
                 fontWeight: 600,
                 fontSize: 13,
                 borderRadius: '30rem',
-                backgroundColor: promotion ? 'var(--promotion-color)' : PRODUCTS_TYPES.find(type => type.id === product.type_id).color,
+                backgroundColor: promotion ? 'var(--promotion-color)' : PRODUCTS_TYPES[product.type_id].color,
                 whiteSpace: 'nowrap',
                 '--text-color': 'var(--text-white)',
                 ...style,

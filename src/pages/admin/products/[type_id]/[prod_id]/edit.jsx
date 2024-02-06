@@ -59,7 +59,7 @@ export default withRouter(() => {
     const tColors = useTranslation('colors').t
     const tToasts = useTranslation('toasts').t
 
-    const TYPE = PRODUCTS_TYPES.find(type => type.id === product?.type_id)
+    const TYPE = PRODUCTS_TYPES[product?.type_id]
     const COLORS = product?.colors_ids.map(cl_id => COLORS_POOL[cl_id])
     const SIZES = product?.sizes_ids.map(sz_id => SIZES_POOL.find(size => size.id === sz_id))
 
@@ -601,7 +601,7 @@ export default withRouter(() => {
                 setImages(prev =>
                     Object.keys(prev).reduce((acc, key) => ({
                         ...acc,
-                        [key]: prev[key].front
+                        [key]: prev[key][product.default_art_position]
                     }), {})
                 )
             setProduct(prev => ({
@@ -609,7 +609,7 @@ export default withRouter(() => {
                 default_art_position: null,
                 printify_ids: Object.keys(prev.printify_ids).reduce((acc, key) => ({
                     ...acc,
-                    [key]: prev.printify_ids[key].front
+                    [key]: prev.printify_ids[key][prev.default_art_position]
                 }), {})
             }))
             setHavePositionsVariants(false)
@@ -735,6 +735,35 @@ export default withRouter(() => {
                                                 }}
                                             />
                                         )}
+                                        {product.default_art_position &&
+                                            <div className='flex column center' style={{ gap: '1rem' }}>
+                                                <h3>Default Art Position</h3>
+                                                <ButtonGroup
+                                                    sx={{
+                                                        width: '100%'
+                                                    }}
+                                                >
+                                                    <MyButton
+                                                        variant={product.default_art_position === 'front' ? 'contained' : 'outlined'}
+                                                        onClick={() => updateProductField('default_art_position', 'front')}
+                                                        style={{
+                                                            width: '50%'
+                                                        }}
+                                                    >
+                                                        Front
+                                                    </MyButton>
+                                                    <MyButton
+                                                        variant={product.default_art_position === 'back' ? 'contained' : 'outlined'}
+                                                        onClick={() => updateProductField('default_art_position', 'back')}
+                                                        style={{
+                                                            width: '50%'
+                                                        }}
+                                                    >
+                                                        Back
+                                                    </MyButton>
+                                                </ButtonGroup>
+                                            </div>
+                                        }
                                     </div>
                                 </section>
                                 <section
@@ -891,35 +920,6 @@ export default withRouter(() => {
                                                     }}
                                                 />
                                             </div>
-                                            {product.default_art_position &&
-                                                <div className='flex column center' style={{ gap: '1rem' }}>
-                                                    <h3>Default Art Position</h3>
-                                                    <ButtonGroup
-                                                        sx={{
-                                                            width: '100%'
-                                                        }}
-                                                    >
-                                                        <MyButton
-                                                            variant={product.default_art_position === 'front' ? 'contained' : 'outlined'}
-                                                            onClick={() => updateProductField('default_art_position', 'front')}
-                                                            style={{
-                                                                width: '50%'
-                                                            }}
-                                                        >
-                                                            Front
-                                                        </MyButton>
-                                                        <MyButton
-                                                            variant={product.default_art_position === 'back' ? 'contained' : 'outlined'}
-                                                            onClick={() => updateProductField('default_art_position', 'back')}
-                                                            style={{
-                                                                width: '50%'
-                                                            }}
-                                                        >
-                                                            Back
-                                                        </MyButton>
-                                                    </ButtonGroup>
-                                                </div>
-                                            }
                                         </div>
                                     </section>
                                 }

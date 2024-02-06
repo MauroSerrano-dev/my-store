@@ -501,7 +501,7 @@ export default withRouter(props => {
                             <div className={styles.sectionBody}>
                                 <KeyFeatures
                                     product_type={product.type_id}
-                                    options={PRODUCTS_TYPES.find(type => type.id === product.type_id).key_features}
+                                    options={PRODUCTS_TYPES[product.type_id].key_features}
                                 />
                             </div>
                         </section>
@@ -513,7 +513,7 @@ export default withRouter(props => {
                             </div>
                             <div className={styles.sectionBody}>
                                 <CareInstructionsIcons
-                                    options={PRODUCTS_TYPES.find(type => type.id === product.type_id).care_instructions}
+                                    options={PRODUCTS_TYPES[product.type_id].care_instructions}
                                 />
                             </div>
                         </section>

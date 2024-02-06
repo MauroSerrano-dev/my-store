@@ -292,12 +292,12 @@ export default function Product(props) {
                             fontSize: width < 150 ? width * 0.065 : width * 0.055,
                             height: width < 150 ? '20%' : '17%',
                             top: width < 150 ? '-10%' : '-8.5%',
-                            backgroundColor: PRODUCTS_TYPES.find(type => type.id === product.type_id).color || 'var(--primary)',
+                            backgroundColor: PRODUCTS_TYPES[product.type_id].color || 'var(--primary)',
                         }}
                     >
                         <p>
                             {
-                                tCommon(PRODUCTS_TYPES.find(type => type.id === product.type_id).id)
+                                tCommon(PRODUCTS_TYPES[product.type_id].id)
                             }
                         </p>
                     </div>
@@ -365,7 +365,7 @@ export default function Product(props) {
                             left: width * 0.03,
                             backgroundColor: product.promotion
                                 ? 'var(--promotion-color)'
-                                : PRODUCTS_TYPES.find(type => type.id === product.type_id).color || 'var(--primary)',
+                                : PRODUCTS_TYPES[product.type_id].color || 'var(--primary)',
                         }}
                     >
                         <p>
