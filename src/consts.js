@@ -134,7 +134,6 @@ export const SEARCH_FILTERS = [
             'hoodies',
             'raglan-tees',
             'sweatshirts',
-            'mugs',
         ]
     },
     {
