@@ -389,6 +389,7 @@ export default function ProductsId() {
                                     position: 'fixed',
                                     right: 20,
                                     bottom: 20,
+                                    zIndex: 10,
                                 }}
                             >
                                 <Fab
