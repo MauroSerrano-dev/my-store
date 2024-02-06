@@ -57,7 +57,7 @@ export default function AppAlert() {
                     </div>
                     <div className={styles.contentVisible}>
                         <ul>
-                            {process.env.NEXT_PUBLIC_DISABLE_CHECKOU === 'true' &&
+                            {process.env.NEXT_PUBLIC_DISABLE_CHECKOUT === 'true' &&
                                 <li>
                                     {tToasts('checkout_temporarily_disabled')}
                                 </li>

@@ -31,7 +31,7 @@ export default async function handler(req, res) {
         user_language,
       } = req.body
 
-      if (process.env.NEXT_PUBLIC_DISABLE_CHECKOU === 'true')
+      if (process.env.NEXT_PUBLIC_DISABLE_CHECKOUT === 'true')
         res.status(400).json({ error: { type: 'warning', message: 'checkout_temporarily_disabled' } })
 
       if (cartItems.reduce((acc, prod) => acc + prod.quantity, 0) > LIMITS.cart_items)
