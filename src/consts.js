@@ -134,7 +134,6 @@ export const SEARCH_FILTERS = [
             'hoodies',
             'raglan-tees',
             'sweatshirts',
-            'mugs',
         ]
     },
     {
@@ -143,9 +142,6 @@ export const SEARCH_FILTERS = [
         options: [
             'promotion',
             'long-sleeve',
-            'funny',
-            'birthday',
-            'for-couples',
         ]
     }
 ]
