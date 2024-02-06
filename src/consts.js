@@ -206,6 +206,7 @@ export const SEARCH_ART_COLORS = [
     { id: 6, color_display: { color: '#e0824b', id_string: 'orange' } },
     { id: 7, color_display: { color: '#c62A32', id_string: 'red' } },
     { id: 8, color_display: { color: '#31221d', id_string: 'brown' } },
+    { id: 9, color_display: { color: '#9f70fd', id_string: 'purple' } },
 ]
 
 export const SIZES_POOL = [
@@ -293,7 +294,7 @@ export const PRODUCTS_TYPES = [
         care_instructions: ['machine-wash-cold', 'not-dryclean', 'not-bleach', 'tumble-dry-low', 'iron-low'],
         metrics: { width: [45.72, 50.8, 55.88, 60.96, 66.04], length: [71.12, 73.66, 76.2, 78.74, 81.28], sleeve: [20.9, 21.6, 22.2, 22.9, 23.5] },
         sizes: [14, 15, 16, 17, 18],
-        colors: [521, 418, 358, 362, 364, 369, 392, 424, 425, 511, 423],
+        colors: [521, 418, 358, 362, 364, 369, 392, 424, 425, 511, 420, 423],
         variants: [
             {
                 id: 'black-s',
@@ -447,6 +448,20 @@ export const PRODUCTS_TYPES = [
                 },
                 inicial_price: 1598,
                 color_id: 358,
+                size_id: 14,
+            },
+            {
+                id: 'orange-s',
+                id_printify: {
+                    29: 42796,
+                    87: 42796,
+                },
+                cost: {
+                    29: 959,
+                    87: 796,
+                },
+                inicial_price: 1598,
+                color_id: 420,
                 size_id: 14,
             },
             {
@@ -604,6 +619,20 @@ export const PRODUCTS_TYPES = [
                 size_id: 15,
             },
             {
+                id: 'orange-m',
+                id_printify: {
+                    29: 42799,
+                    87: 42799,
+                },
+                cost: {
+                    29: 959,
+                    87: 796,
+                },
+                inicial_price: 1598,
+                color_id: 420,
+                size_id: 15,
+            },
+            {
                 id: 'black-l',
                 id_printify: {
                     29: 38192,
@@ -755,6 +784,20 @@ export const PRODUCTS_TYPES = [
                 },
                 inicial_price: 1598,
                 color_id: 358,
+                size_id: 16,
+            },
+            {
+                id: 'orange-l',
+                id_printify: {
+                    29: 42802,
+                    87: 42802,
+                },
+                cost: {
+                    29: 959,
+                    87: 796,
+                },
+                inicial_price: 1598,
+                color_id: 420,
                 size_id: 16,
             },
             {
@@ -912,6 +955,20 @@ export const PRODUCTS_TYPES = [
                 size_id: 17,
             },
             {
+                id: 'orange-xl',
+                id_printify: {
+                    29: 42805,
+                    87: 42805,
+                },
+                cost: {
+                    29: 959,
+                    87: 796,
+                },
+                inicial_price: 1598,
+                color_id: 420,
+                size_id: 17,
+            },
+            {
                 id: 'black-2xl',
                 id_printify: {
                     29: 38220,
@@ -1063,6 +1120,20 @@ export const PRODUCTS_TYPES = [
                 },
                 inicial_price: 1827,
                 color_id: 358,
+                size_id: 18,
+            },
+            {
+                id: 'orange-2xl',
+                id_printify: {
+                    29: 42808,
+                    87: 42808,
+                },
+                cost: {
+                    29: 1096,
+                    87: 796,
+                },
+                inicial_price: 1598,
+                color_id: 420,
                 size_id: 18,
             },
         ],
