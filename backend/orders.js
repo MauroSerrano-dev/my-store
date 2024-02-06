@@ -113,6 +113,8 @@ async function updateProductStatus(order_id_printify, printify_products) {
             const printifyProduct = printify_products.find(prod => prod.product_id == product.id_printify && prod.variant_id == product.variant.id_printify)
             if (!printifyProduct)
                 return product
+            if (!ALLOWED_WEBHOOK_STATUS.includes(printifyProduct.status))
+                return product
             if (product.status === printifyProduct.status)
                 return product
             else
