@@ -108,8 +108,7 @@ async function updateProductStatus(order_id_printify, printify_products) {
 
         const now = admin.firestore.Timestamp.now()
         const orderData = orderDoc.data();
-        console.log('printify_products', printify_products)
-        console.log('orderData.products', orderData.products)
+
         const updatedProducts = orderData.products.map(product => {
             const printifyProduct = printify_products.find(prod => prod.product_id == product.id_printify && prod.variant_id == product.variant.id_printify)
             if (!printifyProduct)
