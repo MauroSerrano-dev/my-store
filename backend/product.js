@@ -304,6 +304,26 @@ async function getProductsByIds(ids) {
     }
 }
 
+async function getAllProductsIds() {
+    const firestore = admin.firestore();
+    const productsCollection = firestore.collection(process.env.NEXT_PUBLIC_COLL_PRODUCTS);
+
+    try {
+        const querySnapshot = await productsCollection.get();
+        const productIds = [];
+
+        querySnapshot.forEach(doc => {
+            productIds.push(doc.id);
+        });
+
+        console.log('All product IDs retrieved successfully!');
+        return productIds;
+    } catch (error) {
+        console.error('Error getting all product IDs:', error);
+        throw error;
+    }
+}
+
 export {
     createProduct,
     getProductById,
@@ -314,4 +334,5 @@ export {
     getDisabledProducts,
     removeExpiredPromotions,
     getProductsByIds,
+    getAllProductsIds,
 }

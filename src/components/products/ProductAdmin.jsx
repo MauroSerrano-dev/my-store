@@ -206,7 +206,7 @@ export default function ProductAdmin(props) {
                 >
                     {product.colors_ids.map((color_id, i) =>
                         <Image
-                            priority={i === 0}
+                            priority={currentVariant.color_id === color_id}
                             quality={100}
                             key={i}
                             src={imagesList.filter(img => img.color_id === color_id)[product.image_showcase_index].src}
