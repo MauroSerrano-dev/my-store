@@ -62,12 +62,10 @@ export const ALLOWED_WEBHOOK_STATUS = STEPS.concat(STEPS_ATTEMPT).concat('cancel
 
 export const DEFAULT_PRODUCTS_TAGS = [
     't-shirts',
-    'japan',
-    'hoodies',
     'games',
     'music',
+    'japan',
     'space',
-    'rpg',
 ]
 
 export const CURRENCIES = {
