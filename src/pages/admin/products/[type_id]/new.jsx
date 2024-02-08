@@ -41,6 +41,8 @@ const INICIAL_PRODUCT = {
     image_showcase_index: 0,
     image_hover_index: 1,
     popularity: 0,
+    popularity_month: 0,
+    popularity_year: 0,
     printify_ids: [],
     total_sales: 0,
     default_art_position: null,
