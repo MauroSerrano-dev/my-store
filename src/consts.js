@@ -194,12 +194,13 @@ export const SEARCH_ART_COLORS = [
     { id: 1, color_display: { color: '#000000', id_string: 'black' } },
     { id: 2, color_display: { color: '#ffffff', id_string: 'white' } },
     { id: 3, color_display: { color: '#525455', id_string: 'grey' } },
+    { id: 9, color_display: { color: '#9f70fd', id_string: 'purple' } },
     { id: 4, color_display: { color: '#2b4da4', id_string: 'blue' } },
     { id: 5, color_display: { color: '#026539', id_string: 'green' } },
+    { id: 10, color_display: { color: '#f8ed62', id_string: 'yellow' } },
     { id: 6, color_display: { color: '#e0824b', id_string: 'orange' } },
     { id: 7, color_display: { color: '#c62A32', id_string: 'red' } },
     { id: 8, color_display: { color: '#31221d', id_string: 'brown' } },
-    { id: 9, color_display: { color: '#9f70fd', id_string: 'purple' } },
 ]
 
 export const SIZES_POOL = [
