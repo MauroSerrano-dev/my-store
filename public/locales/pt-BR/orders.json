@@ -7,7 +7,7 @@
     "placed in_other": "realizados em",
     "sending-to-production": "Enviando para produção",
     "in-production": "Em produção",
-    "shipment-in-transit": "Em trânsito",
+    "shipment_in_transit": "Em trânsito",
     "shipment-delivery-attempt": "Tentativa de entrega",
     "shipment-delivered": "Entregue",
     "canceled": "Cancelado",
