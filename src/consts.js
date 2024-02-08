@@ -46,14 +46,14 @@ export const LIMITS = {
 export const STEPS = [
     'sending-to-production',
     'in-production',
-    'shipment-in-transit',
+    'shipment_in_transit',
     'shipment-delivered',
 ]
 
 export const STEPS_ATTEMPT = [
     'sending-to-production',
     'in-production',
-    'shipment-in-transit',
+    'shipment_in_transit',
     'shipment-delivery-attempt',
     'shipment-delivered',
 ]
