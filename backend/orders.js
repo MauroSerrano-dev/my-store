@@ -127,7 +127,7 @@ async function updateProductStatus(order_id_printify, printify_products) {
 
         if (updatedProducts.every(prod => prod.status === 'canceled'))
             orderData.status = 'canceled'
-        else if (updatedProducts.every(prod => prod.status === 'shipment-delivered'))
+        else if (updatedProducts.every(prod => prod.status === 'shipment_delivered'))
             orderData.status = 'delivered'
 
         await orderDoc.ref.update({ status: orderData.status, products: updatedProducts })
