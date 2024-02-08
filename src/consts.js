@@ -47,15 +47,15 @@ export const STEPS = [
     'sending-to-production',
     'in-production',
     'shipment_in_transit',
-    'shipment-delivered',
+    'shipment_delivered',
 ]
 
 export const STEPS_ATTEMPT = [
     'sending-to-production',
     'in-production',
     'shipment_in_transit',
-    'shipment-delivery-attempt',
-    'shipment-delivered',
+    'shipment_delivery_attempt',
+    'shipment_delivered',
 ]
 
 export const ALLOWED_WEBHOOK_STATUS = STEPS.concat(STEPS_ATTEMPT).concat('canceled')

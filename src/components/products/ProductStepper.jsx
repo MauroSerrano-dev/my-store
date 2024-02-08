@@ -28,16 +28,16 @@ export default function ProductStepper(props) {
         <Stepper
             connector={<QontoConnector />}
         >
-            {(product.status === 'shipment-delivery-attempt' ? STEPS_ATTEMPT : STEPS).map((step, i) => (
+            {(product.status === 'shipment_delivery_attempt' ? STEPS_ATTEMPT : STEPS).map((step, i) => (
                 <Step
                     key={step}
-                    completed={i <= (product.status === 'shipment-delivery-attempt' ? STEPS_ATTEMPT : STEPS).findIndex(step => step === product.status)}
+                    completed={i <= (product.status === 'shipment_delivery_attempt' ? STEPS_ATTEMPT : STEPS).findIndex(step => step === product.status)}
                     sx={{
                         '.MuiSvgIcon-root': {
-                            color: i <= (product.status === 'shipment-delivery-attempt' ? STEPS_ATTEMPT : STEPS).findIndex(step => step === product.status) ? 'var(--primary)' : '#999999',
+                            color: i <= (product.status === 'shipment_delivery_attempt' ? STEPS_ATTEMPT : STEPS).findIndex(step => step === product.status) ? 'var(--primary)' : '#999999',
                         },
                         '.MuiStepIcon-text': {
-                            fill: i <= (product.status === 'shipment-delivery-attempt' ? STEPS_ATTEMPT : STEPS).findIndex(step => step === product.status) ? 'var(--primary)' : 'var(--background-color)',
+                            fill: i <= (product.status === 'shipment_delivery_attempt' ? STEPS_ATTEMPT : STEPS).findIndex(step => step === product.status) ? 'var(--primary)' : 'var(--background-color)',
                             fontWeight: 600,
                         },
                     }}
@@ -46,8 +46,8 @@ export default function ProductStepper(props) {
                         sx={{
                             '.MuiStepLabel-label': {
                                 cursor: 'default',
-                                color: i <= (product.status === 'shipment-delivery-attempt' ? STEPS_ATTEMPT : STEPS).findIndex(step => step === product.status) ? 'var(--primary) !important' : '#999999',
-                                fontWeight: i <= (product.status === 'shipment-delivery-attempt' ? STEPS_ATTEMPT : STEPS).findIndex(step => step === product.status) ? 600 : 400,
+                                color: i <= (product.status === 'shipment_delivery_attempt' ? STEPS_ATTEMPT : STEPS).findIndex(step => step === product.status) ? 'var(--primary) !important' : '#999999',
+                                fontWeight: i <= (product.status === 'shipment_delivery_attempt' ? STEPS_ATTEMPT : STEPS).findIndex(step => step === product.status) ? 600 : 400,
                             }
                         }}
                     >
