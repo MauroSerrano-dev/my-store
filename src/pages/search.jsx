@@ -456,9 +456,9 @@ export default withRouter(() => {
                                                 QUERIES[key].showTitle
                                                     ? <span>{tSearch(QUERIES[key].title)}: {tCategories(value).toLowerCase()}</span>
                                                     : key === 'cl'
-                                                        ? <span className='flex row center' style={{ gap: '0.2rem' }}>product: {value} <CircleIcon style={{ color: SEARCH_PRODUCT_COLORS.find(cl => cl.color_display.id_string === value).color_display.color }} /></span>
+                                                        ? <span className='flex row center' style={{ gap: '0.2rem' }}>product: {value} <CircleIcon style={{ color: SEARCH_PRODUCT_COLORS.find(cl => cl.color_display.id_string === value)?.color_display.color }} /></span>
                                                         : key === 'ac'
-                                                            ? <span className='flex row center' style={{ gap: '0.2rem' }}>art: {value} <CircleIcon style={{ color: SEARCH_ART_COLORS.find(cl => cl.color_display.id_string === value).color_display.color }} /></span>
+                                                            ? <span className='flex row center' style={{ gap: '0.2rem' }}>art: {value} <CircleIcon style={{ color: SEARCH_ART_COLORS.find(cl => cl.color_display.id_string === value)?.color_display.color }} /></span>
                                                             : tCategories(value).toLowerCase()
                                             }
                                             onDelete={() => handleDeleteTag(key, value)}
