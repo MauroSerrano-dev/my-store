@@ -253,7 +253,7 @@ export default function Product(props) {
                     }}
                 >
                     {product.colors_ids.map((color_id, i) =>
-                        (!supportsHoverAndPointer || currentVariant.color_id === color_id) &&
+                        (supportsHoverAndPointer || currentVariant.color_id === color_id) &&
                         <Image
                             priority={currentVariant.color_id === color_id}
                             quality={100}
