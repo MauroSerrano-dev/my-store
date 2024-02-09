@@ -92,7 +92,7 @@ export function AppProvider({ children }) {
         const country = CountryConverter[Intl.DateTimeFormat().resolvedOptions().timeZone]
         setUserLocation({
             country: country,
-            continent: COUNTRIES[country].continent
+            continent: COUNTRIES[country]?.continent || null
         })
         updateSession()
         getCurrencies()
