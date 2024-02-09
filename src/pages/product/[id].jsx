@@ -88,7 +88,7 @@ export default withRouter(props => {
 
     useEffect(() => {
         setCurrentPosition(product.default_art_position)
-    }, [product])
+    }, [product.id])
 
     useEffect(() => {
         setCurrentColor(cl ? cl : COLORS_POOL[product?.colors_ids[0]])
