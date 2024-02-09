@@ -87,6 +87,10 @@ export default withRouter(props => {
     const ORIGINAL_PRICE = product && userCurrency && productCurrentVariant ? getProductPriceWithoutPromotion(product, productCurrentVariant, userCurrency.rate) : undefined
 
     useEffect(() => {
+        setCurrentPosition(product.default_art_position)
+    }, [product])
+
+    useEffect(() => {
         setCurrentColor(cl ? cl : COLORS_POOL[product?.colors_ids[0]])
         setCurrentSize(sz ? sz : SIZES_POOL.find(sz => sz.id === product?.sizes_ids[0]))
     }, [router])
