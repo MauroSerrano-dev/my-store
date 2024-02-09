@@ -65,7 +65,7 @@ export const DEFAULT_PRODUCTS_TAGS = [
     'games',
     'music',
     'japan',
-    'space',
+    'rpg',
 ]
 
 export const CURRENCIES = {
@@ -178,15 +178,15 @@ export const COLORS_POOL = {
 }
 
 export const SEARCH_PRODUCT_COLORS = [
-    { id: 1, color_display: { color: '#000000', id_string: 'black' }, colors: [COLORS_POOL[418], COLORS_POOL[1750]] },
-    { id: 2, color_display: { color: '#ffffff', id_string: 'white' }, colors: [COLORS_POOL[521], COLORS_POOL[1062]] },
+    { id: 1, color_display: { color: '#000000', id_string: 'black' }, colors: [COLORS_POOL[418], COLORS_POOL[1750], COLORS_POOL[2621]] },
+    { id: 2, color_display: { color: '#ffffff', id_string: 'white' }, colors: [COLORS_POOL[521], COLORS_POOL[1062], COLORS_POOL[2620]] },
     { id: 3, color_display: { color: '#525455', id_string: 'grey' }, colors: [COLORS_POOL[367], COLORS_POOL[424], COLORS_POOL[1535]] },
-    { id: 4, color_display: { color: '#cacaca', id_string: 'light-grey' }, colors: [COLORS_POOL[358]] },
-    { id: 5, color_display: { color: '#2b4da4', id_string: 'blue' }, colors: [COLORS_POOL[425], COLORS_POOL[1058], COLORS_POOL[392]] },
+    { id: 4, color_display: { color: '#cacaca', id_string: 'light-grey' }, colors: [COLORS_POOL[358], COLORS_POOL[451]] },
+    { id: 5, color_display: { color: '#2b4da4', id_string: 'blue' }, colors: [COLORS_POOL[425], COLORS_POOL[1058], COLORS_POOL[392], COLORS_POOL[2662]] },
     { id: 6, color_display: { color: '#1a1f35', id_string: 'navy' }, colors: [COLORS_POOL[511], COLORS_POOL[1795]] },
-    { id: 7, color_display: { color: '#026539', id_string: 'green' }, colors: [COLORS_POOL[364], COLORS_POOL[369], COLORS_POOL[1792]] },
+    { id: 7, color_display: { color: '#026539', id_string: 'green' }, colors: [COLORS_POOL[364], COLORS_POOL[369], COLORS_POOL[1792], COLORS_POOL[416]] },
     { id: 8, color_display: { color: '#e0824b', id_string: 'orange' }, colors: [COLORS_POOL[420]] },
-    { id: 9, color_display: { color: '#c62A32', id_string: 'red' }, colors: [COLORS_POOL[423], COLORS_POOL[1536], COLORS_POOL[395]] },
+    { id: 9, color_display: { color: '#c62A32', id_string: 'red' }, colors: [COLORS_POOL[423], COLORS_POOL[1536], COLORS_POOL[395], COLORS_POOL[2663]] },
     { id: 10, color_display: { color: '#31221d', id_string: 'brown' }, colors: [COLORS_POOL[362]] },
 ]
 
