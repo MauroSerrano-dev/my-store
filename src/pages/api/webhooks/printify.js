@@ -32,7 +32,7 @@ export default async function handler(req, res) {
 
             const now2 = new Date()
             console.log('now', now2)
-            console.log('orderRes', orderRes)
+            console.log('orderRes.data', orderRes.data)
 
             await updateProductStatus(orderPrintifyId, orderRes.data.line_items)
 
