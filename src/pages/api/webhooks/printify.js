@@ -30,7 +30,7 @@ export default async function handler(req, res) {
 
             const orderRes = await axios.get(base_url, options)
 
-            const now2 = new Date() 
+            const now2 = new Date()
             console.log('now', now2)
             console.log('orderRes', orderRes)
 
