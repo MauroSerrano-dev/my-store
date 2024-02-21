@@ -10,6 +10,7 @@ export default async function handler(req, res) {
 
         if (calculatedSignature !== providedSignatureWithoutPrefix) {
             console.error('Invalid authentication')
+            console.log('a', calculatedSignature, providedSignatureWithoutPrefix)
             res.status(401).json({ error: 'Invalid authentication' })
         }
 
