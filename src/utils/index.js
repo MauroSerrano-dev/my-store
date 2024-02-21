@@ -16,7 +16,7 @@ export function getObjectsDiff(obj1, obj2) {
 
     if ((obj1.seconds || obj1._seconds) && (obj2.nanoseconds || obj2._nanoseconds)) {
         if (isSameTimestamp(obj1, obj2))
-            return differentFields            
+            return differentFields
     }
 
     for (const key in obj1) {
@@ -221,4 +221,8 @@ export function isSameTimestamp(t1, t2) {
     const nanosecondsKey = t1.nanoseconds !== undefined ? 'nanoseconds' : '_nanoseconds';
 
     return t1[secondsKey] === t2[secondsKey] && t1[nanosecondsKey] === t2[nanosecondsKey];
+}
+
+export function transformImageUrl(originalUrl) {
+    return originalUrl.replace('/upload/', '/upload/w_300,h_300,c_fill/');
 }

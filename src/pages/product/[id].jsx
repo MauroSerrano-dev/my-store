@@ -25,7 +25,7 @@ import Modal from '@/components/Modal'
 import { SlClose } from 'react-icons/sl'
 import { LoadingButton } from '@mui/lab'
 import ProductTag from '@/components/products/ProductTag'
-import { getProductVariantsInfos, mergeProducts } from '@/utils'
+import { getProductVariantsInfos, mergeProducts, transformImageUrl } from '@/utils'
 import TableSizes from '@/components/products/TableSizes'
 import KeyFeatures from '@/components/products/KeyFeatures'
 import { ButtonGroup } from '@mui/material'
@@ -645,8 +645,8 @@ export async function getServerSideProps({ query, locale, resolvedUrl }) {
             productMetaImage: !product
                 ? 'https://mrfstyles.com/logos/circle-black.jpg'
                 : chooseColor
-                    ? product.images.filter(img => img.color_id === chooseColor.id)[product.image_showcase_index].src
-                    : product.images[product.image_showcase_index].src
+                    ? transformImageUrl(product.images.filter(img => img.color_id === chooseColor.id)[product.image_showcase_index].src)
+                    : transformImageUrl(product.images[product.image_showcase_index].src)
         }
     }
 }
