@@ -645,8 +645,8 @@ export async function getServerSideProps({ query, locale, resolvedUrl }) {
             productMetaImage: !product
                 ? 'https://mrfstyles.com/logos/circle-black.jpg'
                 : chooseColor
-                    ? product.images.filter(img => img.color_id === chooseColor.id)[product.image_showcase_index].src
-                    : product.images[product.image_showcase_index].src
+                    ? transformImageUrl(product.images.filter(img => img.color_id === chooseColor.id)[product.image_showcase_index].src)
+                    : transformImageUrl(product.images[product.image_showcase_index].src)
         }
     }
 }
