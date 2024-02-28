@@ -101,8 +101,8 @@ export default function Home() {
   return (
     <div className={styles.container}>
       <Head>
-        <meta property="og:title" content='Main' key='og:title' />
-        <meta property="og:image:alt" content='Main' key='og:image:alt' />
+        <meta property="og:title" content='MRF Styles' key='og:title' />
+        <meta property="og:image:alt" content='MRF Styles' key='og:image:alt' />
         <meta property="og:description" content="Elevate your style with MRF Styles! Your go-to for chic fashion finds." key='og:description' />
         <meta property="og:type" content="website" key='og:type' />
         <meta property="og:url" content='https://mrfstyles.com' key='og:url' />
