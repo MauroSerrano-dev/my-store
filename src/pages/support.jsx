@@ -154,7 +154,7 @@ export default function Support() {
                             onChange={handleSelector}
                             value={option}
                             options={[
-                                { value: 'none', name: 'Choose an option' },
+                                { value: 'none', name: tSupport('selector_placeholder') },
                                 { value: 'order_status', name: tSupport('order_status') },
                                 { value: 'order_problem', name: tSupport('order_problem') },
                                 { value: 'account_problem', name: tSupport('account_problem') },
