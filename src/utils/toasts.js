@@ -1,7 +1,7 @@
 import { toast } from 'react-toastify'
 
 /**
- * Função para exibir um toast de informação.
+ * Function to display toasts.
  *
  * @param {Object} props - Function props.
  * @param {'info' | 'success' | 'error'} props.type - Toast type. `Default: 'info'`
