@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import { useEffect, useRef } from 'react';
-import lottie from 'lottie-web';
+/* import lottie from 'lottie-web'; */
 import styles from '@/styles/components/NoFound404.module.css'
 import { useAppContext } from './contexts/AppContext';
 import { CircularProgress } from '@mui/material';
@@ -37,19 +37,19 @@ export default function NoFound404(props) {
         }
     }, [loading])
 
-    useEffect(() => {
-        const animation = lottie.loadAnimation({
-            container: animationContainer.current,
-            renderer: 'svg',
-            loop: true,
-            autoplay: true,
-            animationData: require('@/utils/animations/animation404.json'),
-        })
-
-        return () => {
-            animation.destroy();
-        }
-    }, [])
+    /*     useEffect(() => {
+            const animation = lottie.loadAnimation({
+                container: animationContainer.current,
+                renderer: 'svg',
+                loop: true,
+                autoplay: true,
+                animationData: require('@/utils/animations/animation404.json'),
+            })
+    
+            return () => {
+                animation.destroy();
+            }
+        }, []) */
 
     return (
         showLoadingScreen

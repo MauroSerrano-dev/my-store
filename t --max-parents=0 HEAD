@@ -1,0 +1,294 @@
+[33mbfb7521[m Initial commit from Create Next App
+[33m531dbf0[m a
+[33me594ff9[m carousel
+[33me06d851[m a
+[33m6426761[m a
+[33m8681477[m a
+[33m1dd2e68[m a
+[33m9618d7b[m a
+[33mf338fd6[m a
+[33m05a0761[m products
+[33m6c5d0af[m a
+[33m177f95b[m a
+[33m6cbf102[m admin
+[33mf12c7f6[m 'icons'
+[33m46fede3[m admin
+[33mfab8117[m admin
+[33m4a70821[m admin
+[33ma2b8b90[m a
+[33m379a469[m a
+[33md0cd33f[m a
+[33m3777af4[m add-product
+[33m2c03d94[m new-product
+[33m4862ee6[m a
+[33m5a0fd14[m a
+[33mbeaa1d1[m a
+[33m25d26fc[m a
+[33m9c4cbc1[m a
+[33mefb1bac[m a
+[33m199a850[m a
+[33m437e358[m a
+[33m39240d6[m a
+[33mdca832a[m a
+[33mefeb12f[m a
+[33mfdaa12b[m a
+[33mc5261e6[m a
+[33mf246efc[m cart
+[33m418304f[m a
+[33m9871281[m a
+[33mfa0f7f6[m a
+[33m983a2fc[m a
+[33m908f9d6[m animation
+[33mf46e6b1[m checkout
+[33mb376a84[m cart
+[33m4fe6cff[m a
+[33ma5e0c17[m a
+[33mca86426[m a
+[33m483ffe3[m a
+[33m829213b[m a
+[33mde72756[m a
+[33m2ca2576[m a
+[33m1a3b963[m a
+[33mb048f4f[m a
+[33m53a4c61[m a
+[33m33be8ef[m a
+[33m532bca6[m a
+[33m9c65d27[m a
+[33m1b6aff4[m a
+[33m90acb10[m a
+[33mf409a3e[m auth
+[33m08f2ee0[m auth
+[33m5439b2a[m auth
+[33m65b0779[m auth
+[33mac634c2[m auth
+[33mf2ce0f0[m auth
+[33m97558ce[m auth
+[33mced3b87[m auth
+[33m109450d[m auth
+[33m1f336ea[m auth
+[33me4ad26c[m auth
+[33m12d1f58[m auth
+[33m3f719f8[m auth
+[33m5a73ce3[m reset-password
+[33mcc281fa[m forgot-pass
+[33mace8664[m auth
+[33mbf1b1b4[m accessibility
+[33m4159c88[m auth
+[33m39a5eaf[m auth
+[33m8893726[m google analytics
+[33me84cb91[m google analytics
+[33m5df4b52[m google analytics
+[33m218b95c[m google analytics
+[33m1dc86be[m google analytics
+[33ma8f7aca[m google analytics
+[33m78ccf5d[m google analytics
+[33m648947d[m google analytics
+[33m8fc585a[m google analytics
+[33m4c0af36[m google analytics
+[33mc8b63c5[m google analytics
+[33m66dcdde[m google analytics
+[33m9dc43f2[m google analytics
+[33md81ad71[m google analytics
+[33m07b79a7[m google analytics
+[33m024e8ec[m google analytics
+[33m021562d[m google analytics
+[33m22fe8de[m google analytics
+[33m3a7163b[m google analytics
+[33m3affaf8[m google analytics
+[33m9daec59[m google analytics
+[33me8f5df5[m google analytics
+[33mfc55c9d[m google analytics
+[33m9e5e2df[m google analytics
+[33m2e2f74f[m google analytics
+[33m66556be[m google analytics
+[33mc9298f5[m google analytics
+[33m6be15df[m google analytics
+[33m5124e15[m googleAnalytics
+[33m6c4415d[m googleAnalytics
+[33m34132f0[m search
+[33m4597106[m search
+[33mc70326e[m bug
+[33mbf51277[m cartIcon
+[33m6bc4f33[m cartIcon
+[33m0256f51[m bugfix
+[33mb789f9e[m search
+[33m6b9213e[m footer
+[33m387f290[m bugfix
+[33m87b1e5a[m bugfix
+[33m8b79d7f[m styles
+[33md19dd08[m styles
+[33m36f5163[m styles
+[33me521850[m styles
+[33mf9a745a[m index
+[33m47f77f3[m bugfix
+[33mf810b6e[m bugFix
+[33macfa32a[m search
+[33m43883e3[m muita coisa
+[33m262dd01[m tags translation
+[33ma393de4[m stripe webhook
+[33me8d7da2[m a
+[33m1983091[m a
+[33m3007466[m bugfix-langdetect
+[33m0a6c2af[m bugfix-langdetect
+[33mfdf4881[m bugfix-langdetect
+[33m2aeb9b5[m a
+[33m75e9b4c[m search language
+[33m3a5d1a9[m search bar
+[33m387a58b[m printify order
+[33m610612b[m printify order
+[33m215f651[m printify order
+[33m894a95c[m printify order
+[33mfb7563a[m printify order
+[33mff87e6e[m printify order
+[33maad7c41[m printify order
+[33m4513363[m printify order
+[33m21a4b9a[m printify order
+[33m2238a51[m printify order
+[33ma4fe9ce[m printify order
+[33m5de01e1[m printify order
+[33m8ac2e43[m printify order
+[33mba9b842[m printify order
+[33m4285dff[m printify order
+[33m143fede[m printify order
+[33m5ca2a53[m printify order
+[33m516194c[m printify order
+[33m4f3cc4b[m printify order
+[33m037701d[m printify order
+[33m6be3526[m printify order
+[33m0f97033[m printify order
+[33ma449c14[m printify order
+[33me649402[m printify order
+[33m81621ca[m printify order
+[33m4c35ab8[m printify order
+[33m4a592d4[m printify order
+[33mb402ab8[m printify order
+[33mde12b15[m a
+[33m734330d[m color-selector
+[33m11ada38[m add new prod
+[33m1965e3a[m add new prod
+[33m6265dd7[m providers
+[33ma48a5bc[m providers
+[33m937199c[m tshirt-colors-sizes
+[33m64b6045[m currencyChange
+[33me0218d1[m currencyChange
+[33ma7f484d[m cartProduct each
+[33m1eea321[m cartProduct each
+[33m785f505[m cartProduct each
+[33m29ba1a2[m bugfix
+[33m7c48a29[m meta
+[33ma5634af[m meta
+[33m6acdc1b[m add-product
+[33m4ec7911[m add-product
+[33mcebcf6b[m add-product
+[33m1745cf3[m add-product
+[33m8df22ce[m colors and sizes
+[33mf74ff12[m colors and sizes
+[33m755b8d9[m new cart database
+[33m8a09567[m a
+[33mbb3e602[m bugfix
+[33m81923ac[m bugfix
+[33md4d541c[m bugfix
+[33m9cf4675[m bugfix
+[33m3e4de1c[m bugfix
+[33macce3a6[m bugfix
+[33m69e09c6[m bugfix
+[33me26d424[m bugfix
+[33mff11c94[m bugfix
+[33m60dbc1b[m bugfix
+[33m0981444[m bugfix
+[33m0740a04[m bugfix
+[33maf8dad0[m bugfix
+[33mc170d81[m bugfix
+[33mcdea8ca[m emptyCartAfterCheckout
+[33mbd86896[m emptyCartAfterCheckout
+[33m874c85c[m emptyCartAfterCheckout
+[33m9317d33[m emptyCartAfterCheckout
+[33m5e5ff34[m emptyCartAfterCheckout
+[33m9f18559[m emptyCartAfterCheckout
+[33m8a58da7[m emptyCartAfterCheckout
+[33mbbb458d[m emptyCartAfterCheckout
+[33m567ee64[m style
+[33m6ba4cf4[m style
+[33m6432204[m mobile navbar
+[33m26ccd8f[m mobile navbar
+[33mbbae5ff[m mobile navbar
+[33mbf4b585[m mobile navbar
+[33me28002d[m mobile navbar
+[33m4b16ea7[m mobile navbar
+[33m9832a57[m mobile
+[33mc52f676[m mobile
+[33m493ee42[m image product wpp
+[33mec3ea51[m image product wpp
+[33m9327778[m image product wpp
+[33m1c47fe8[m image product wpp
+[33macce9c2[m image product wpp
+[33m3657683[m image product wpp
+[33mb5db809[m image product wpp
+[33m721205d[m image product wpp
+[33mf70fa2b[m image product wpp
+[33m5483282[m image product wpp
+[33m2ace169[m image product wpp
+[33m2ede6a4[m image product wpp
+[33mbe6ffac[m image product wpp
+[33mb880ae5[m image product wpp
+[33mf487911[m image product wpp
+[33m2ce35a2[m image product wpp
+[33m36f96aa[m image product wpp
+[33mc4857fb[m image product wpp
+[33ma6fdfdb[m image product wpp
+[33m9b1c510[m image product wpp
+[33m143ee05[m image product wpp
+[33m58e6f74[m image product wpp
+[33ma8e0864[m image product wpp
+[33mcca1120[m image product wpp
+[33m0e36b22[m image product wpp
+[33m87153d2[m image product wpp
+[33mcc67abc[m image product wpp
+[33m7d8b511[m image product wpp
+[33m15f6a83[m image product wpp
+[33md5dc37a[m image product wpp
+[33md7c61d2[m image product wpp
+[33m3d57931[m image product wpp
+[33mdeaf6bc[m image product wpp
+[33m876dac1[m image product wpp
+[33m5458b83[m image product wpp
+[33mec6a4e4[m image product wpp
+[33mc1a4c75[m image product wpp
+[33mde075bd[m image product wpp
+[33m8fbc46b[m image product wpp
+[33me33a016[m image product wpp
+[33m8141f28[m image product wpp
+[33mc4a2a7d[m image product wpp
+[33mbb5f8c6[m image product wpp
+[33me1927a7[m image product wpp
+[33mc24d38a[m image product wpp
+[33mc838912[m image product wpp
+[33mf1df75d[m menuToggle
+[33ma60813c[m logo
+[33mfc9ba4c[m supporthover
+[33mc9e4109[m supporthover
+[33md85dc79[m itemProp
+[33m139354a[m menutoggle
+[33mf8e7d3c[m animation
+[33m58fd570[m test new meta logic
+[33m3c0ef66[m test new meta logic
+[33mc7a5658[m test new meta logic
+[33m854d9d8[m test new meta logic
+[33me76c3a6[m test new meta logic
+[33m5d2d9b1[m test new meta logic
+[33m827a6bf[m test new meta logic
+[33m87b4c00[m test new meta logic
+[33m3993cf8[m test new meta logic
+[33mfaf6e40[m test new meta logic
+[33m8199021[m test new meta logic
+[33mbf4e6c2[m test new meta logic
+[33ma424599[m test new meta logic
+[33m6c33f78[m test new meta logic
+[33m4ecae39[m test new meta logic
+[33mafef63d[m test new meta logic
+[33m3865d20[m test new meta logic
+[33m9b93f73[m loading
+[33m25cb51d[m loading
+[33m2a71814[m loading
+[33me9df4e6[m loading
+[33m55cff2d[m product 

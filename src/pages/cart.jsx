@@ -184,9 +184,9 @@ export default function Cart() {
         catch (error) {
             console.error(error)
             if (error.msg)
-            showToast({ type: error.type, msg: tToasts(error.msg) })
-    }
-    finally {
+                showToast({ type: error.type, msg: tToasts(error.msg) })
+        }
+        finally {
             setDisableCheckoutButton(false)
             setLoadingShippingValue(false)
         }

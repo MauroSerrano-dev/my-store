@@ -5,7 +5,7 @@ import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
 import { useEffect, useRef, useState } from 'react'
 import styles from '@/styles/pages/wishlist.module.css'
 import { useTranslation } from 'next-i18next';
-import lottie from 'lottie-web';
+/* import lottie from 'lottie-web'; */
 import { COMMON_TRANSLATES, LIMITS } from '@/consts'
 import NoFound404 from '@/components/NoFound404'
 import { useAppContext } from '@/components/contexts/AppContext'
@@ -67,19 +67,19 @@ export default function Wishlist() {
         }
     }
 
-    useEffect(() => {
-        const animation = lottie.loadAnimation({
-            container: animationContainer.current,
-            renderer: 'svg',
-            loop: true,
-            autoplay: true,
-            animationData: require('@/utils/animations/animationNoOrders.json'),
-        })
-
-        return () => {
-            animation.destroy()
-        }
-    }, [wishlistProducts])
+    /*     useEffect(() => {
+            const animation = lottie.loadAnimation({
+                container: animationContainer.current,
+                renderer: 'svg',
+                loop: true,
+                autoplay: true,
+                animationData: require('@/utils/animations/animationNoOrders.json'),
+            })
+    
+            return () => {
+                animation.destroy()
+            }
+        }, [wishlistProducts]) */
 
     return (
         session === undefined

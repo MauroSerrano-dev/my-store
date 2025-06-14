@@ -9,7 +9,7 @@ import { useTranslation } from 'next-i18next'
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
 import CarouselProducts from '@/components/carousels/CarouselProducts'
 import Footer from '@/components/Footer'
-import lottie from 'lottie-web';
+/* import lottie from 'lottie-web'; */
 import { useAppContext } from '@/components/contexts/AppContext';
 import { COMMON_TRANSLATES, LIMITS } from '@/consts';
 import { getOrdersByUserId } from '../../../frontend/orders';
@@ -94,19 +94,19 @@ export default function Orders() {
     }
 
 
-    useEffect(() => {
-        const animation = lottie.loadAnimation({
-            container: animationContainer.current,
-            renderer: 'svg',
-            loop: true,
-            autoplay: true,
-            animationData: require('@/utils/animations/animationNoOrders.json'),
-        })
-
-        return () => {
-            animation.destroy()
-        }
-    }, [orders])
+    /*     useEffect(() => {
+            const animation = lottie.loadAnimation({
+                container: animationContainer.current,
+                renderer: 'svg',
+                loop: true,
+                autoplay: true,
+                animationData: require('@/utils/animations/animationNoOrders.json'),
+            })
+    
+            return () => {
+                animation.destroy()
+            }
+        }, [orders]) */
 
     return (
         session === undefined

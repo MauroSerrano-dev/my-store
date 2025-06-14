@@ -13,7 +13,7 @@ import { LoadingButton } from '@mui/lab'
 import { showToast } from '@/utils/toasts'
 import { handleReCaptchaError, handleReCaptchaSuccess } from '@/utils/validations'
 import ReCAPTCHA from 'react-google-recaptcha'
-import lottie from 'lottie-web';
+/* import lottie from 'lottie-web'; */
 import MyError from '@/classes/MyError'
 
 const INICIAL_FIELDS = {
@@ -91,23 +91,23 @@ export default function Support() {
         }
     }
 
-    useEffect(() => {
-        let animation
-        if (animationSuccessContainer.current) {
-            animation = lottie.loadAnimation({
-                container: animationSuccessContainer.current,
-                renderer: 'svg',
-                loop: false,
-                autoplay: true,
-                animationData: require('@/utils/animations/successEmailSent.json'),
-            })
-        }
-
-        return () => {
-            if (animation)
-                animation.destroy();
-        }
-    }, [showSuccessScreen])
+    /*     useEffect(() => {
+            let animation
+            if (animationSuccessContainer.current) {
+                animation = lottie.loadAnimation({
+                    container: animationSuccessContainer.current,
+                    renderer: 'svg',
+                    loop: false,
+                    autoplay: true,
+                    animationData: require('@/utils/animations/successEmailSent.json'),
+                })
+            }
+    
+            return () => {
+                if (animation)
+                    animation.destroy();
+            }
+        }, [showSuccessScreen]) */
 
     useEffect(() => {
         let animation

@@ -13,7 +13,7 @@ import CircleIcon from '@mui/icons-material/Circle';
 import ProductSkeleton from '@/components/products/ProductSkeleton'
 import KeyboardArrowDownRoundedIcon from '@mui/icons-material/KeyboardArrowDownRounded';
 import MenuFilter from '@/components/MenuFilter'
-import lottie from 'lottie-web';
+/* import lottie from 'lottie-web'; */
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
 import { useTranslation } from 'next-i18next';
 import { useAppContext } from '@/components/contexts/AppContext'
@@ -208,23 +208,23 @@ export default withRouter(() => {
 
     const animationContainer = useRef(null)
 
-    useEffect(() => {
-        let animation
-        if (animationContainer.current) {
-            animation = lottie.loadAnimation({
-                container: animationContainer.current,
-                renderer: 'svg',
-                loop: true,
-                autoplay: true,
-                animationData: require('@/utils/animations/animationNoProducts.json'),
-            })
-        }
-
-        return () => {
-            if (animation)
-                animation.destroy();
-        }
-    }, [products])
+    /*     useEffect(() => {
+            let animation
+            if (animationContainer.current) {
+                animation = lottie.loadAnimation({
+                    container: animationContainer.current,
+                    renderer: 'svg',
+                    loop: true,
+                    autoplay: true,
+                    animationData: require('@/utils/animations/animationNoProducts.json'),
+                })
+            }
+    
+            return () => {
+                if (animation)
+                    animation.destroy();
+            }
+        }, [products]) */
 
     function handleChangeMinMax(value, field) {
         if (value.length > LIMITS.input_min_max) {

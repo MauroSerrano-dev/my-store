@@ -1,25 +1,25 @@
 import Link from 'next/link';
 import { useEffect, useRef } from 'react';
-import lottie from 'lottie-web';
+/* import lottie from 'lottie-web'; */
 import styles from '@/styles/components/Maintenance.module.css'
 
 export default function Maintenance() {
 
     const animationContainer = useRef(null)
 
-    useEffect(() => {
-        const animation = lottie.loadAnimation({
-            container: animationContainer.current,
-            renderer: 'svg', // or 'canvas' or 'html'
-            loop: true,
-            autoplay: true,
-            animationData: require('@/utils/animations/animationMaintenance.json'),
-        })
-
-        return () => {
-            animation.destroy();
-        }
-    }, [])
+    /*     useEffect(() => {
+            const animation = lottie.loadAnimation({
+                container: animationContainer.current,
+                renderer: 'svg', // or 'canvas' or 'html'
+                loop: true,
+                autoplay: true,
+                animationData: require('@/utils/animations/animationMaintenance.json'),
+            })
+    
+            return () => {
+                animation.destroy();
+            }
+        }, []) */
 
     return (
         <div

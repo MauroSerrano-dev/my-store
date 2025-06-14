@@ -19,7 +19,7 @@ export default function CarouselProducts(props) {
     const carouselRef = useRef(null)
 
     const [isDragging, setIsDragging] = useState(false)
-    const [antVisualBug, setAntVisualBug] = useState(false) //você é um gênio
+    const [antVisualBug, setAntVisualBug] = useState(false)
 
 
     function handleDragStart() {

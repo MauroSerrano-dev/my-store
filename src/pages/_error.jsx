@@ -1,6 +1,6 @@
 import Link from 'next/link'
 import { useEffect, useRef } from 'react'
-import lottie from 'lottie-web'
+/* import lottie from 'lottie-web' */
 import styles from '@/styles/pages/_error.module.css'
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
 import { useAppContext } from '@/components/contexts/AppContext'
@@ -28,19 +28,19 @@ function Error() {
         }
     }, [loading])
 
-    useEffect(() => {
-        const animation = lottie.loadAnimation({
-            container: animationContainer.current,
-            renderer: 'svg', // or 'canvas' or 'html'
-            loop: true,
-            autoplay: true,
-            animationData: require('@/utils/animations/animationError.json'),
-        })
-
-        return () => {
-            animation.destroy();
-        }
-    }, [])
+    /*     useEffect(() => {
+            const animation = lottie.loadAnimation({
+                container: animationContainer.current,
+                renderer: 'svg', // or 'canvas' or 'html'
+                loop: true,
+                autoplay: true,
+                animationData: require('@/utils/animations/animationError.json'),
+            })
+    
+            return () => {
+                animation.destroy();
+            }
+        }, []) */
 
     return (
         <div

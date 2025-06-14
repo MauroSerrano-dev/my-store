@@ -8,7 +8,7 @@ import { useAppContext } from '@/components/contexts/AppContext';
 import { COLORS_POOL, COMMON_TRANSLATES, SIZES_POOL } from '@/consts';
 import { convertTimestampToFormatDate, convertTimestampToFormatDateNoYear } from '@/utils'
 import Link from 'next/link'
-import lottie from 'lottie-web';
+/* import lottie from 'lottie-web'; */
 import Image from 'next/image'
 import ProductStepper from '@/components/products/ProductStepper'
 import ProductTag from '@/components/products/ProductTag'
@@ -52,23 +52,23 @@ export default function Orders() {
         getOrder()
     }, [])
 
-    useEffect(() => {
-        let animation
-        if (animationContainer.current) {
-            animation = lottie.loadAnimation({
-                container: animationContainer.current,
-                renderer: 'svg',
-                loop: true,
-                autoplay: true,
-                animationData: require('@/utils/animations/animationNoOrders.json'),
-            })
-        }
-
-        return () => {
-            if (animation)
-                animation.destroy();
-        }
-    }, [session, order])
+    /*     useEffect(() => {
+            let animation
+            if (animationContainer.current) {
+                animation = lottie.loadAnimation({
+                    container: animationContainer.current,
+                    renderer: 'svg',
+                    loop: true,
+                    autoplay: true,
+                    animationData: require('@/utils/animations/animationNoOrders.json'),
+                })
+            }
+    
+            return () => {
+                if (animation)
+                    animation.destroy();
+            }
+        }, [session, order]) */
 
     return (
         session === undefined
